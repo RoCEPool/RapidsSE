@@ -7,6 +7,42 @@ trackmemory force;
 success;
 
 //------------------------------------------------------------------------------
+// LEFT FILTER & PROJECT & POST PROJECT
+// select o_custkey, c_custkey, c_nationkey from orders inner join customer on customer.c_custkey = orders.o_custkey
+//   where o_orderkey >= 4;
+/optimise_passthru 
+pipeline indexJoinTest22
+begin
+  stage stageA on origin :
+    start
+    | pulse once
+    | stageB
+
+  stage stageB on all partitions :
+    scan ${testName2}_orders
+    | filter "type boolean $1 4 >= "
+    | project "type integer ( 19 ) $1 , type integer ( 19 ) $2 "
+    | combined 0
+    | stageC
+
+  stage stageC on all partitions :
+    indexJoin ${testName2}_customer IxC_CUSTKEY "BOUND $I1 $2 =="
+    | project "type integer ( 19 ) $2 , type integer ( 19 ) $3 , type integer ( 19 ) $6"
+    | combined 0
+    | stageD
+
+  stage stageD on origin :
+    output
+    | sink
+    | stageA
+end ;
+
+contains rows :
+  (148,148,11)
+  (149,149,19)
+
+
+//------------------------------------------------------------------------------
 // CO-PARTITIONED INDEXJOIN
 // CUSTOMER.C_CUSTKEY = ORDERS.O_CUSTKEY
 // PtnKey[CUSTOMER] = C_CUSTKEY

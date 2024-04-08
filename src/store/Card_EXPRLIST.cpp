@@ -109,6 +109,22 @@ Card_Expr* Card_EXPRLIST::pContains(Card_Expr* p_expr_arg)
 /*----------------------------------------------------------------------------*/
 /* return term0 of <expr> with term0 matching given $n stream-column          */
 /*----------------------------------------------------------------------------*/
+Card_Expr* Card_EXPRLIST::pDecode_expr(Symbol* pSymbol_expCol)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  RASSERT(pSymbol_expCol->bHasFacet(SF_EXP_COL));
+
+  i8 i_Child  = pSymbol_expCol->iTo_ordinal(SF_EXP_COL) - 1;
+
+  Card_Expr* p_expr_expCol = pGet_expr(i_Child);
+
+  return p_expr_expCol;
+}
+
+/*----------------------------------------------------------------------------*/
+/* return term0 of <expr> with term0 matching given $n stream-column          */
+/*----------------------------------------------------------------------------*/
 Card_Term* Card_EXPRLIST::pDecode_expr_term0(Symbol* pSymbol_expCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);

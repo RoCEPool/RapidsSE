@@ -327,6 +327,7 @@ void Card_Term::vX_expCol_To_tblCol(CardIter* pCI)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (Card_Term* p_term0 = pCI->Flux.m_pArriving->pDecode_expr_term0(pSymbol_this)) {
+    Card_Expr* p_expr = pCI->Flux.m_pArriving->pDecode_expr(pSymbol_this);
     Symbol* pSymbol_term0 = p_term0->pSymbol();
 
     if (pSymbol_term0->bHasFacet(SF_TBL_COL)) {
@@ -337,8 +338,8 @@ void Card_Term::vX_expCol_To_tblCol(CardIter* pCI)
       if (pCI->E.p_expr && pCI->E.p_expr->bIsScalarCol() && pCI->E.p_rpnCalc) {
         pCI->E.p_expr->pSymbol()->vApplyFacet(SF_TBL_COL, pSymbol_term0->szFacet(SF_TBL_COL));
 
-        if (pSymbol_term0->bHasFacet(SF_NMD_COL))
-          pCI->E.p_expr->pSymbol()->vApplyFacet(SF_NMD_COL, pSymbol_term0->szFacet(SF_NMD_COL));
+        if (p_expr->bHasFacet(SF_NMD_COL))
+          pCI->E.p_expr->pSymbol()->vApplyFacet(SF_NMD_COL, p_expr->szFacet(SF_NMD_COL));
 
       }
 
