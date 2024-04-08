@@ -413,13 +413,9 @@ Card* Dissector::pOp_filter(void)
 
   RASSERT(1 == p_expr->nChildCards());
 
-#ifdef Z_FILTER_BOOLPRED
   Card_BoolPred* p_boolPred = Card_BoolPred::pTo_boolPred(m_pCI,p_expr);
   p_filter->vAppendChild(p_boolPred);
   DELETE_CARD(p_expr);
-#else
-  p_filter->vAppendChild(p_expr);
-#endif
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // is it filter or having?

@@ -64,13 +64,6 @@ void XF_Prolog_Move_on::vXF_Move_on(void)
 
   m_pCI->vTransform(__FILE__, __func__, XF_PROLOG_MOVE_ON);
 
-  m_pCI->vBeginEach();
-  if (m_pCI->bEachOp(CK_o_WHERE)) {
-//    m_pCI->E.p_where->vDump(__func__);
-//    m_pCI->E.p_expr = m_pCI->E.p_where->pSub_expr(C_NOT_NULL);
-//    m_pCI->E.p_rpnCalc = m_pCI->E.p_where->pSub_rpnCalc(C_NOT_NULL);
-  }
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // for each <absJoin>/<on>/<rpnCalc>
   //   move/append to <where>/<rpnCalc>
@@ -104,8 +97,6 @@ void XF_Prolog_Move_on::vXF_Move_on(void)
       m_pCI->E.p_deck->vInsertChildAfter(m_pCI->E.p_where, m_pCI->E.p_absJoin);
     }
 
-//    m_pCI->E.p_on->vDump(__func__);
-#ifdef Z_FILTER_BOOLPRED
     Card_RpnCalc* p_rpnCalc_tmp = new Card_RpnCalc;
     Card_Expr* p_expr_tmp = new Card_Expr;
     p_expr_tmp->vAppendChild(p_rpnCalc_tmp);
@@ -115,15 +106,6 @@ void XF_Prolog_Move_on::vXF_Move_on(void)
     m_pCI->E.p_filter->vAppendChild(m_pCI->E.p_boolPred);
 
     DELETE_CARD(p_expr_tmp);
-#else
-    m_pCI->E.p_expr = m_pCI->E.p_where->pSub_expr();
-    m_pCI->E.p_rpnCalc = m_pCI->E.p_expr->pSub_rpnCalc(C_NOT_NULL);
-
-    // append the <absJoin>/<on>/<rpnCalc> to the <where>/<rpnCalc>
-    m_pCI->E.p_expr->vTransfer(m_pCI->E.p_on, SF_RLN_OP);
-//    m_pCI->E.p_expr->vDump(__func__);
-    m_pCI->E.p_expr->vApplyCast_x(m_pCI->E.p_on->xCast());
-#endif
 
     if (m_pCI->E.p_on->nChildCards()) {
       delete m_pCI->E.p_on->pPopChild_tail();

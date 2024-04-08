@@ -135,7 +135,6 @@ void Card_GbyAgg::vInject_foldExpr(CardIter* pCI)
 //Z_KEY_DIRECTION
   for (pCI->vBeginTarget(pCI->E.p_key,CK_EXPR); pCI->bEachTarget(); /**/) {
     Card_Expr* p_expr = pCI->E.xTarget.p_expr();
-//  for (Kid xRpnCalc(pCI->E.p_expr->pSub_rpnCalc()); xRpnCalc.bEach(CK_TERM); /**/) {
     for (pCI->vBeginTarget(p_expr,CK_TERM); pCI->bEachTarget(); /**/) {
       Card_Term* p_term = pCI->E.xTarget.p_term();
       if (p_term->pSymbol()->bHasFacet(SF_EXP_COL)) {

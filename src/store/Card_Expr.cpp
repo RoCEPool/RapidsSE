@@ -439,8 +439,6 @@ Card_Expr * Card_Expr::pInduct(CardIter* pCI, i8 iExp)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  //Card_RpnCalc* p_rpnCalc_arriving = pSub_rpnCalc();
-
   Card_Expr* p_expr_inducted = new Card_Expr;
   Symbol* pSymbol_expr_inducted = p_expr_inducted->pSymbol();
 
