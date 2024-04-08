@@ -1388,6 +1388,7 @@ Card_Expr* Dissector::pPop_expr4(Card_TermSeq* p_termSeq)
     p_termSeq->vDiscardHead();
     Facet xFacet_nmdCol = p_termSeq->xPop_facet();
     p_expr->pSymbol()->vApplyFacet(SF_NMD_COL, xFacet_nmdCol.m_sFacet);
+    p_expr->pSymbol()->Y_vSet(P_FixedNm);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1409,6 +1410,7 @@ Card_Expr* Dissector::pPop_expr4(Card_TermSeq* p_termSeq)
     p_termSeq->vDiscardHead();
     Facet xFacet_nmdCol = p_termSeq->xPop_facet();
     p_expr->pSymbol()->vApplyFacet(SF_NMD_COL, xFacet_nmdCol.m_sFacet);
+    p_expr->pSymbol()->Y_vSet(P_FixedNm);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

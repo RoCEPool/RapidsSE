@@ -331,14 +331,15 @@ void Card_Term::vX_expCol_To_tblCol(CardIter* pCI)
     Symbol* pSymbol_term0 = p_term0->pSymbol();
 
     if (pSymbol_term0->bHasFacet(SF_TBL_COL)) {
-      pSymbol_this->vDeleteFacet(SF_EXP_COL);
       pSymbol_this->vApplyCastFacets(pSymbol_term0);
+      pSymbol_this->vDeleteFacet(SF_EXP_COL);
       vMark1(MARK_CHANGED);
 
       if (pCI->E.p_expr && pCI->E.p_expr->bIsScalarCol() && pCI->E.p_rpnCalc) {
         pCI->E.p_expr->pSymbol()->vApplyFacet(SF_TBL_COL, pSymbol_term0->szFacet(SF_TBL_COL));
 
-        if (p_expr->bHasFacet(SF_NMD_COL))
+//      if (p_expr->bHasFacet(SF_NMD_COL))
+    if (p_expr->bHasFacet(SF_NMD_COL) && ! pCI->E.p_expr->pSymbol()->Y_bHas(P_FixedNm))
           pCI->E.p_expr->pSymbol()->vApplyFacet(SF_NMD_COL, p_expr->szFacet(SF_NMD_COL));
 
       }
