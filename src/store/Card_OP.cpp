@@ -662,7 +662,7 @@ void Card_OP::vRestate_emit(CardIter* pCI)
         if (pCI->E.p_Op->bIsCard(CK_o_HAVING))
           pCI->E.p_filter->vUpdate_expCol(pCI,pCI->Dic.m_p_expr, true);
         else
-          pCI->E.p_filter->vUpdate_expCol(pCI,pCI->Dic.m_p_expr, false);
+          pCI->E.p_filter->vUpdate_expCol(pCI,pCI->Dic.m_p_expr, true);
       }
     }
   }
@@ -702,12 +702,12 @@ void Card_OP::vRestate_emit(CardIter* pCI)
 
  //pCI->Flux.m_pArriving = pCI->G.p_emit;
 
-  if (CK_o_KEYEXISTS    == eCard_OP ||
-      CK_o_KEYNOTEXISTS == eCard_OP) {
-    pCI->Dic.m_p_expr = pCI->E.p_emit;
-    //pCI->Dic.m_p_expr = _pCard_Emit(pCI->G.p_Op->pSub_injectable());
-    vUpdate_expCol(pCI,pCI->Dic.m_p_expr);
-  }
+//  if (CK_o_KEYEXISTS    == eCard_OP ||
+//      CK_o_KEYNOTEXISTS == eCard_OP) {
+//    pCI->Dic.m_p_expr = pCI->E.p_emit;
+//    //pCI->Dic.m_p_expr = _pCard_Emit(pCI->G.p_Op->pSub_injectable());
+//    vUpdate_expCol(pCI,pCI->Dic.m_p_expr);
+//  }
   if (CK_o_WHERE        == eCard_OP) {
     pCI->Dic.m_p_expr = pCI->E.p_emit;
     //vUpdate_expCol(pCI,pCI->Dic.m_p_expr);

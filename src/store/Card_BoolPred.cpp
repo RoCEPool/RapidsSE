@@ -331,15 +331,24 @@ void Card_BoolPred::vUpdate_expCol(CardIter* pCI, Card_Emit* p_Dic_expr, bool bA
 
   auto bfCorrect = [pCI,bAlt,p_Dic_expr](Card* p_card)
   {
-    if (p_card->pSymbol()->bHasFacet(SF_EXP_COL))
-      _pCard_Term(p_card)->vUpdate_expCol(pCI,p_Dic_expr,bAlt);
+    if (! p_card->pSymbol()->bHasFacet(SF_EXP_COL))
+      return C_CONTINUE_RECURSION;
+
+    if (pCI->bAncestor(CK_RLNCONJ) &&
+        (pCI->pAncestor(CK_RLNCONJ)->pSymbol()->Y_bHas(P_CrlKeyTest) ||
+         pCI->pAncestor(CK_RLNCONJ)->pSymbol()->Y_bHas(P_SqyCall))) {
+      _pCard_Term(p_card)->vUpdate_expCol(pCI, p_Dic_expr, false);
+    }
+    else {
+      _pCard_Term(p_card)->vUpdate_expCol(pCI, p_Dic_expr, bAlt);
+    }
 
     return C_CONTINUE_RECURSION;
   };
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  bool bIgnore = bLambdaWalk(CK_TERM, bfCorrect);
+  bool bIgnore = bLambdaWalk(CK_TERM, bfCorrect, pCI);
   UNUSED(bIgnore);
 }
 

@@ -341,7 +341,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
 
   if ((m_pCI->E.p_filter = m_pCI->E.p_Op->pSub_filter())) {
     m_pCI->E.p_boolPred = m_pCI->E.p_filter->pSub_boolPred(C_NOT_NULL);
-    //m_pCI->G.p_boolPred->vDump(__func__);
+    //m_pCI->E.p_boolPred->vDump(__func__);
 
     //CardIter* pCI = m_pCI;
     auto bLambdaFn = [](Card_Term* p_term)

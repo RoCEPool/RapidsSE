@@ -76,7 +76,6 @@ void Card_Filter::vIndividuate_filter(CardIter* pCI)
 
   pCI->E.p_Op->vRemoveChild(pCI->E.p_filter);
 
-
   pCI->E.p_filter->vEnsure_stream(pCI);
 
   pCI->E.p_stream->vAppendChild(pCI->E.p_Op->pSub_emit()->pClone());
@@ -187,7 +186,7 @@ void Card_Filter::vPrint(Ribbon* pRibbon, i8 iDepth)
   s32 sName;
 
   sName.vSprint("%s%lld]filter"_Stz,
-                Stz::szDots(iDepth - 1),
+                Stz::szDots(0 == iDepth ? iDepth : iDepth - 1),
                 m_i_Child);
 
   pRibbon->vSprintSnippet(false,"%c%c%s %llx %lld"_Stz,

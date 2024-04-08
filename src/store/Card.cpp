@@ -1192,18 +1192,28 @@ bool Card::bIsPeek(i8 i_Child, eCK eChild)
 /*----------------------------------------------------------------------------*/
 /* visit all sub-cards of given eToSubs and apply lambda function             */
 /*----------------------------------------------------------------------------*/
-bool Card::bLambdaWalk(eCK eToSubs, std::function<bool(Card* pCard)> bfLambdaFn)
+bool Card::bLambdaWalk(eCK eToSubs,
+                       std::function<bool(Card* pCard)> bfLambdaFn,
+                       CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   if (CK_NONE == eToSubs || eToSubs == m_eCard) {
+    if (pCI)
+      pCI->vAncestorPush(this);
     bool bContinue = bfLambdaFn(this);
+    if (pCI)
+      pCI->vAncestorPop();
     if (! bContinue)
       return C_TERMINATE_RECURSION;
   }
 
   for (Kid xCard(this); xCard.bEach_opaque(); /**/) {
-    bool bContinue = xCard.pChild()->bLambdaWalk(eToSubs, bfLambdaFn);
+    if (pCI)
+      pCI->vAncestorPush(this);
+    bool bContinue = xCard.pChild()->bLambdaWalk(eToSubs, bfLambdaFn, pCI);
+    if (pCI)
+      pCI->vAncestorPop();
     if (! bContinue)
       return C_TERMINATE_RECURSION;
   }
