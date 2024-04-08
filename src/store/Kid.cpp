@@ -174,9 +174,7 @@ bool Kid::bEach(void)
   RASSERT(m_bBegun);
   RASSERT(m_bForwards);
 
-#ifdef Z_NO_RPNCALC
   RASSERT(CK_RPNCALC != m_pParent->eCard());
-#endif
 
   m_i_Child++;
   vChildUpdate();
@@ -216,9 +214,7 @@ bool Kid::bEach(eCK eChild)
 {
   _nonProper_
 
-#ifdef Z_NO_RPNCALC
   RASSERT(CK_RPNCALC != m_pParent->eCard());
-#endif
 
   while (bEach_opaque()) {
     if (this->eChild() == eChild)
@@ -250,9 +246,7 @@ bool Kid::bEach(eCK eChild, eCK eSub1)
 {
   _nonProper_
 
-#ifdef Z_NO_RPNCALC
   RASSERT(CK_RPNCALC != m_pParent->eCard());
-#endif
 
   while (bEach()) {
     if (this->eChild() == eChild) {
@@ -273,9 +267,7 @@ bool Kid::bEach(eCK eChild, eCK eSub1, eCK eSub2)
 {
   _nonProper_
 
-#ifdef Z_NO_RPNCALC
   RASSERT(CK_RPNCALC != m_pParent->eCard());
-#endif
 
   while (bEach()) {
     if (this->eChild() == eChild) {
@@ -298,9 +290,7 @@ bool Kid::bEach(eCK eChild, eCK eSub1, eCK eSub2, eCK eSub3)
 {
   _nonProper_
 
-#ifdef Z_NO_RPNCALC
   RASSERT(CK_RPNCALC != m_pParent->eCard());
-#endif
 
   while (bEach()) {
     if (this->eChild() == eChild) {
