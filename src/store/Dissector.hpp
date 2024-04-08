@@ -83,6 +83,8 @@ namespace STORE
     Card_RpnCalc*    pPop_rpnCalc   (Card_TermSeq* p_termSeq);
     Card_On*         pPop_on        (Card_TermSeq* p_termSeq);
 
+    Card_TermSeq*    pPop_exprSeq   (Card_TermSeq* p_termSeq);
+
     void             vCheckArgs     (i8 nArgs);
 
     Card_TermSeq*    pArg_termSeq   (i8 i_Arg);

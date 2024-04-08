@@ -1538,23 +1538,10 @@ Card_RpnCalc* Dissector::pPop_rpnCalc(Card_TermSeq* p_termSeq)
 
   Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
 
-  Card_Term* p_term_popped = nullptr;
-  while ( (p_term_popped = _pCard_Term(p_termSeq->pPopChild())) ) {
+  Card_TermSeq* p_exprSeq = pPop_exprSeq(p_termSeq);
+  p_rpnCalc->vTransferChildren(p_exprSeq);
+  DELETE_CARD(p_exprSeq);
 
-    if (
-        p_term_popped->pSymbol()->bHasFacet("AGGREGATES"_Stz)
-        || p_term_popped->pSymbol()->bHasFacet("AS"_Stz)
-        || p_term_popped->pSymbol()->bHasFacet(C_ASC)
-        || p_term_popped->pSymbol()->bHasFacet(C_DESC)
-        || p_term_popped->pSymbol()->bHasFacet("GROUPBY"_Stz)
-        || p_term_popped->pSymbol()->bHasFacet(SF_COMMA)
-        ) {
-      p_termSeq->vPushChild(p_term_popped);
-      break;
-    }
-
-    p_rpnCalc->vAppendChild(p_term_popped);
-  }
 
   return p_rpnCalc;
 }
@@ -1568,11 +1555,27 @@ Card_On * Dissector::pPop_on(Card_TermSeq* p_termSeq)
 
   Card_On* p_On = new Card_On;
 
+  Card_TermSeq* p_exprSeq = pPop_exprSeq(p_termSeq);
+  p_On->vTransferChildren(p_exprSeq);
+  DELETE_CARD(p_exprSeq);
+
+  return p_On;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop exprSeq                                                                */
+/*----------------------------------------------------------------------------*/
+Card_TermSeq* Dissector::pPop_exprSeq(Card_TermSeq* p_termSeq)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
+
+  Card_TermSeq* p_exprSeq = new Card_TermSeq;
+
   Card_Term* p_term_popped = nullptr;
   while ( (p_term_popped = _pCard_Term(p_termSeq->pPopChild())) ) {
 
     if (
-        p_term_popped->pSymbol()->bHasFacet("AGGREGATES"_Stz)
+           p_term_popped->pSymbol()->bHasFacet("AGGREGATES"_Stz)
         || p_term_popped->pSymbol()->bHasFacet("AS"_Stz)
         || p_term_popped->pSymbol()->bHasFacet(C_ASC)
         || p_term_popped->pSymbol()->bHasFacet(C_DESC)
@@ -1583,11 +1586,10 @@ Card_On * Dissector::pPop_on(Card_TermSeq* p_termSeq)
       break;
     }
 
-
-    p_On->vAppendChild(p_term_popped);
+    p_exprSeq->vAppendChild(p_term_popped);
   }
 
-  return p_On;
+  return p_exprSeq;
 }
 
 
