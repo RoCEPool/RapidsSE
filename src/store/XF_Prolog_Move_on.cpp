@@ -97,6 +97,7 @@ void XF_Prolog_Move_on::vXF_Move_on(void)
       m_pCI->E.p_deck->vInsertChildAfter(m_pCI->E.p_where, m_pCI->E.p_absJoin);
     }
 
+    m_pCI->E.p_filter = m_pCI->E.p_where->pSub_filter(C_NOT_NULL);
     Card_RpnCalc* p_rpnCalc_tmp = new Card_RpnCalc;
     Card_Expr* p_expr_tmp = new Card_Expr;
     p_expr_tmp->vAppendChild(p_rpnCalc_tmp);
