@@ -80,7 +80,7 @@ namespace STORE
     void vAppendToJob(Operand* pOperand);
     Stz* szArgs(void);
   
-    void vCreateTaskForOp(void);
+    void vCreateTaskForOp(bool bIsSecondary);
     eYX  eCrossTopology(void);
     eEV  eCurEvent(void);
     Word* pCurWord(void);
@@ -164,7 +164,7 @@ namespace STORE
     i8   iSendNode(void);
     void vSendNode(i8 iNde);
     void vSetAllocate(bool bAlloc);
-    void vSpawnTask(void);
+    void vSpawnTask(bool bIsSecondary = false);
     void vSetJobTask(Task* pJobTask);
     void vSetTags(void);
     Stage* pStage(void);
