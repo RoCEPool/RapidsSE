@@ -3755,6 +3755,10 @@ Card_RpnCalc* Card::pSub_rpnCalc(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
+#ifdef Z_NO_RPNCALC
+  vDebugPoint();
+#endif
+
   Card_RpnCalc* p_rpnCalc =
       _pCard_RpnCalc(pFindSubCard(CK_RPNCALC));
 
