@@ -893,7 +893,11 @@ void Card_Expr::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
                                      CK_STREAMKEY,
                                      CK_NONE);
 
-  eValidate_mustEither(CK_BOOLPRED, CK_RPNCALC, CK_NONE);
+#ifdef Z_NO_RPNCALC
+  vValidate_mustHave(CK_TERM, CK_NONE);
+#else
+  vValidate_mustHave(CK_RPNCALC, CK_NONE);
+#endif
 
   if (pCI->bAncestor(CK_s_KEY)) {
     //vDump(__func__);

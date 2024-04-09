@@ -1428,8 +1428,6 @@ void Card_OP::vRpn_expr(CardIter* pCI, String* psRpnExpr, Card_Expr* p_expr)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
   UNUSED(pCI);
 
-  Card_RpnCalc* p_rpnCalc = p_expr->pSub_rpnCalc(C_NOT_NULL);
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   Symbol* pSymbol = p_expr->pSymbol();
@@ -1452,7 +1450,7 @@ void Card_OP::vRpn_expr(CardIter* pCI, String* psRpnExpr, Card_Expr* p_expr)
   if (p_expr->bNeedsBrace(pCI))
     psRpnExpr->vConcat(" }"_Stz);
 
-  vRpn_rpnCalc(pCI, psRpnExpr, p_rpnCalc);
+  vRpn_termSeq(pCI, psRpnExpr, p_expr);
 }
 /*----------------------------------------------------------------------------*/
 #else
@@ -1486,6 +1484,7 @@ void Card_OP::vRpn_expr(CardIter* pCI, String* psRpnExpr, Card_Expr* p_expr)
     psRpnExpr->vConcat(" }"_Stz);
 
   vRpn_rpnCalc(pCI, psRpnExpr, p_rpnCalc);
+
 }
 #endif
 
@@ -1537,6 +1536,21 @@ void Card_OP::vRpn_term(CardIter* pCI, String* psRpnExpr, Card_Term* p_term)
 
   psRpnExpr->vCatSprint(" %s"_Stz, p_term->pSymbol()->szFacet_term());
 }
+
+/*----------------------------------------------------------------------------*/
+/* produce <expr> for p_rpnCalc                                               */
+/*----------------------------------------------------------------------------*/
+void Card_OP::vRpn_termSeq(CardIter* pCI, String* psRpnExpr, Card_Expr* p_expr)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  i8 nSubCards = p_expr->nItems();
+  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
+    Card_Term* pCard = p_expr->pGet_term(i_Child);
+    vRpn_term(pCI, psRpnExpr, _pCard_Term(pCard));
+  }
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
