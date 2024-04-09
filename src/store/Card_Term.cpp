@@ -455,6 +455,18 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 
   Card::vValidate_noChildren();
 
+#ifdef Z_NO_RPNCALC
+  (void)Card::eValidate_parentEither(pCI, CK_t_HSHCOL,// todo: NO!?
+                                     CK_ANDCONJ,
+                                     CK_BOUND,
+                                     CK_BOOLPRED,
+                                     CK_EXPR,
+                                     CK_RLNCONJ,
+                                     CK_s_HASHING,
+                                     CK_NOTCONJ,
+                                     CK_ORCONJ,
+                                     CK_NONE);
+#else
   (void)Card::eValidate_parentEither(pCI, CK_t_HSHCOL,// todo: NO!?
                                      CK_ANDCONJ,
                                      CK_BOUND,
@@ -465,6 +477,7 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
                                      CK_ORCONJ,
                                      CK_RPNCALC,
                                      CK_NONE);
+#endif
 
   Symbol* pSym_term = pSymbol();
   if (pSym_term->bIs_Col()) {
