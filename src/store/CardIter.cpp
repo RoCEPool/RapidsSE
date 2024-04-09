@@ -492,6 +492,43 @@ void CardIter::vBeginTarget(eCK ePrimary, eCK eTarget)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#ifdef Z_NO_RPNCALC
+void CardIter::vBeginTarget(Card* pPrimary, eCK eTarget)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  vPushEach();
+
+  eCK ePrimary = pPrimary->eCard();
+
+  E.Iter.ePrimary = ePrimary;
+  E.Iter.eTarget  = eTarget;
+
+  if (CK_s_KEY == ePrimary && CK_EXPR == eTarget) {
+    E.Iter.eSecondary = CK_NONE;
+    E.xTarget.vBegin();
+    E.xTarget.vParent(pPrimary);
+
+  }
+  else
+  if (CK_STREAMKEY == ePrimary && CK_EXPR == eTarget) {
+    E.Iter.eSecondary = CK_NONE;
+    E.xTarget.vBegin();
+    E.xTarget.vParent(pPrimary);
+  }
+  else
+  if (CK_EXPR == ePrimary && CK_TERM == eTarget) {
+    E.Iter.eSecondary = CK_NONE;
+    E.xTarget.vBegin();
+    E.xTarget.vParent(pPrimary->pSub_rpnCalc());
+
+  }
+  else {
+    NEVER_REACH
+  }
+}
+/*----------------------------------------------------------------------------*/
+#else
 void CardIter::vBeginTarget(Card* pPrimary, eCK eTarget)
 {
   _precondition_(_MAGIC_, _FOOTER_);
@@ -525,10 +562,8 @@ void CardIter::vBeginTarget(Card* pPrimary, eCK eTarget)
   else {
     NEVER_REACH
   }
-
-  //vMember(E.Iter.ePrimary, pPrimary);
-
 }
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* get board                                                                  */
