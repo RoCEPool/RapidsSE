@@ -795,18 +795,15 @@ void Card_Expr::vX_expCol_To_tblCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if ((pCI->E.p_rpnCalc = pSub_rpnCalc())) {
-    //vDump(__func__);
-    for (pCI->vBeginTarget(this,CK_TERM); pCI->bEachTarget(); /**/) {
-      if (! pCI->E.xTarget.p_term()->pSymbol()->bHasFacet(SF_EXP_COL))
-        continue;
+  for (pCI->vBeginTarget(this,CK_TERM); pCI->bEachTarget(); /**/) {
+    if (! pCI->E.xTarget.p_term()->pSymbol()->bHasFacet(SF_EXP_COL))
+      continue;
 
-      pCI->E.p_term = pCI->E.xTarget.p_term();
-      pCI->E.p_term->vX_expCol_To_tblCol(pCI);
-    }
-
-    pCI->E.p_term = nullptr;
+    pCI->E.p_term = pCI->E.xTarget.p_term();
+    pCI->E.p_term->vX_expCol_To_tblCol(pCI);
   }
+
+  pCI->E.p_term = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
