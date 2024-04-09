@@ -224,11 +224,10 @@ Card_Expr* Card_Expr::pCraft_expr_of_nmdCol(Column *pColumn, i8 iExpCol,
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#ifdef Z_NO_RPNCALC
 void Card_Expr::vApplyCast(CardIter* pCI, Card_Emit* p_Dic_expr)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  pCI->E.p_rpnCalc = pSub_rpnCalc();
 
   Cast xCast_last;
   xCast_last.m_xTypeId = TypeId();
@@ -246,9 +245,34 @@ void Card_Expr::vApplyCast(CardIter* pCI, Card_Emit* p_Dic_expr)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+}
+/*----------------------------------------------------------------------------*/
+#else
+void Card_Expr::vApplyCast(CardIter* pCI, Card_Emit* p_Dic_expr)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  pCI->E.p_rpnCalc = pSub_rpnCalc();
+
+  Cast xCast_last;
+  xCast_last.m_xTypeId = TypeId();
+  xCast_last.m_nTypeLength = 0;
+  xCast_last.m_nTypeScale = 0;
+  RASSERT(!xCast_last.m_xTypeId.bIsValid());
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  for (pCI->vBeginTarget(this,CK_TERM); pCI->bEachTarget(); /**/) {
+    pCI->E.p_term = pCI->E.xTarget.p_term();
+    pCI->E.p_term->vApplyCast(pCI, /*??*/p_Dic_expr, xCast_last);
+  }
+  pCI->E.p_term = nullptr;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   pCI->E.p_rpnCalc = nullptr;
 }
-
+#endif
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
@@ -497,6 +521,20 @@ Card_Expr * Card_Expr::pInduct(CardIter* pCI, i8 iExp)
 //  p_expr_inducted->vAppendChild(p_rpnCalc_inducted);
 
 
+#ifdef Z_NO_RPNCALC
+  Card_Term* p_term_inducted = new Card_Term;
+  p_term_inducted->vApplyCast_p(this);
+
+  if (bIsScalarCol() && pFirst_colSym(pCI)->bHasFacet(SF_TBL_COL)) {
+    p_term_inducted ->SYM(SF_TBL_COL, pFirst_colSym(pCI)->szFacet(SF_TBL_COL));
+  }
+  if (pSymbol()->bHasFacet(SF_EXP_COL)) {
+    p_term_inducted ->SYM(SF_EXP_COL, szFacet(SF_EXP_COL));
+  }
+
+  p_expr_inducted->vAppendChild(p_term_inducted);
+
+#else
   Card_RpnCalc* p_rpnCalc_inducted = new Card_RpnCalc;
 
   Card_Term* p_term_inducted = new Card_Term;
@@ -510,11 +548,8 @@ Card_Expr * Card_Expr::pInduct(CardIter* pCI, i8 iExp)
     p_term_inducted ->SYM(SF_EXP_COL, szFacet(SF_EXP_COL));
   }
 
-
-
-
-
   p_expr_inducted->vAppendChild(p_rpnCalc_inducted);
+#endif
 
   return p_expr_inducted;
 }
@@ -567,6 +602,22 @@ bool Card_Expr::bIsLiterals(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* is this expr a simple expression of a column?                              */
 /*----------------------------------------------------------------------------*/
+#ifdef Z_NO_RPNCALC
+bool Card_Expr::bIsScalarCol(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (nChildCards() > 1)
+    return false;
+
+  Card_Term* p_term_0 = pGet_term(0);
+  if (! p_term_0->pSymbol()->bHasFacet(SF_EXP_COL) &&  !p_term_0->pSymbol()->bHasFacet(SF_TBL_COL))
+    return false;
+
+  return true;
+}
+/*----------------------------------------------------------------------------*/
+#else
 bool Card_Expr::bIsScalarCol(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
@@ -580,6 +631,7 @@ bool Card_Expr::bIsScalarCol(void)
 
   return true;
 }
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* is this an expression of given symbol ?                                    */
