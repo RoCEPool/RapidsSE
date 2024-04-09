@@ -115,6 +115,22 @@ Card_Expr* Card_Expr::pCraft_expr_Of_expr(Card_Expr* p_expr, i8 iExpCol)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#ifdef Z_NO_RPNCALC
+Card_Expr* Card_Expr::pCraft_expr_Of_symbol(Symbol* pSymbol)
+{
+  _static_
+
+  Card_Expr* p_expr_new = new Card_Expr;
+  p_expr_new->vApplyCast_x(pSymbol->xCast());
+
+  Card_Term* p_term_new = (new Card_Term) ->SYM(pSymbol);
+  p_term_new->vApplyCast_x(pSymbol->xCast());
+  p_expr_new->vAppendChild(p_term_new);
+
+  return p_expr_new;
+}
+/*----------------------------------------------------------------------------*/
+#else
 Card_Expr* Card_Expr::pCraft_expr_Of_symbol(Symbol* pSymbol)
 {
   _static_
@@ -131,6 +147,7 @@ Card_Expr* Card_Expr::pCraft_expr_Of_symbol(Symbol* pSymbol)
 
   return p_expr_new;
 }
+#endif
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
