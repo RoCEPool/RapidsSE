@@ -571,6 +571,18 @@ bool Card_Expr::bIsKeyCol(void) {
 /*----------------------------------------------------------------------------*/
 /* is this a compound expr?                                                   */
 /*----------------------------------------------------------------------------*/
+#ifdef Z_NO_RPNCALC
+bool Card_Expr::bIsCompound(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (nChildCards() > 1)
+    return true;
+
+  return false;
+}
+/*----------------------------------------------------------------------------*/
+#else
 bool Card_Expr::bIsCompound(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
@@ -580,6 +592,7 @@ bool Card_Expr::bIsCompound(void)
 
   return false;
 }
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* is this a literals expr?                                                   */
@@ -791,6 +804,23 @@ void Card_Expr::vUpdate_expCol(CardIter* pCI, Card_Emit* p_arriving)
 /*----------------------------------------------------------------------------*/
 /* convert stmCol to tblCol                                                   */
 /*----------------------------------------------------------------------------*/
+#ifdef Z_NO_RPNCALC
+void Card_Expr::vX_expCol_To_tblCol(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  for (pCI->vBeginTarget(this,CK_TERM); pCI->bEachTarget(); /**/) {
+    if (! pCI->E.xTarget.p_term()->pSymbol()->bHasFacet(SF_EXP_COL))
+      continue;
+
+    pCI->E.p_term = pCI->E.xTarget.p_term();
+    pCI->E.p_term->vX_expCol_To_tblCol(pCI);
+  }
+
+  pCI->E.p_term = nullptr;
+}
+/*----------------------------------------------------------------------------*/
+#else
 void Card_Expr::vX_expCol_To_tblCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
@@ -808,6 +838,7 @@ void Card_Expr::vX_expCol_To_tblCol(CardIter* pCI)
     pCI->E.p_term = nullptr;
   }
 }
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* convert tblCol to stmCol                                                   */
