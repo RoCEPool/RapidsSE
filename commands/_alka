@@ -2,29 +2,37 @@
 /* _alka                                                                      */
 /*============================================================================*/
 
-__TPCH_SCHEMA_LOAD_SF0001;
+create table score(s_id varchar(6),c_id varchar(6),cj decimal(5,1));
+load score "../DATA/PartitionKey/score.csv";
+create index score_idx1 on score(s_id);
+create index score_idx2 on score(c_id);
 
-/weaved
+
+create table student(s_id varchar(6),s_name varchar(50),s_csrq date,s_sex varchar(10));
+load student "../DATA/PartitionKey/student.csv";
+create index student_idx1 on student(s_id);
+
+
+create table course(c_id varchar(6),c_name varchar(50),t_id varchar(6));
+load course "../DATA/PartitionKey/course.csv";
+create index course_idx1 on course(c_id);
+create index course_idx2 on course(t_id);
+
+
+create table teacher(t_id varchar(6),t_name varchar(50));
+load teacher "../DATA/PartitionKey/teacher.csv";
+create index teacher_idx1 on teacher(t_id);
+
+
+/keepcodefile
+/hasCodeFile
+/useCodeFile = "VARCHAR_2_NODE1_2"
+/pipeline_def
 /transliterated
-/pipelineName = "OptQ3"
-select l_orderkey,
-  sum(l_extendedprice*(1-l_discount)) as revenue,
-  o_orderdate,
-  o_shippriority
-from
-  customer,
-  orders,
-  lineitem
-where c_mktsegment = 'BUILDING'
-  and c_custkey = o_custkey
-  and l_orderkey = o_orderkey
-  and o_orderdate < '1995-03-15'
-  and l_shipdate > '1995-03-15'
-group by
-  l_orderkey,
-  o_orderdate,
-  o_shippriority
-order by
-  revenue desc,
-  o_orderdate
-limit 10;
+/weaved
+/pipelineName = "VARCHAR_2"
+select * from score js
+inner join student js2 on js.s_id =js2.s_id
+inner join course jc on js.c_id =jc.c_id
+inner join teacher jt on jc.t_id =jt.t_id;
+//rows: 5
