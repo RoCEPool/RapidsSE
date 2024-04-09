@@ -53,6 +53,10 @@ select * from ${testName2}_score js1
 inner join ${testName2}_student js2 on js1.s_id =js2.s_id;
 rows: 7
 
+/keepcodefile
+/pipeline_def
+/transliterated
+/weaved
 /pipelineName = "VARCHAR_2"
 select * from ${testName2}_score js
 inner join ${testName2}_student js2 on js.s_id =js2.s_id
