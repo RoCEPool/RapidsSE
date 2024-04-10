@@ -2491,12 +2491,11 @@ void Card::vPrintName(Ribbon* pRibbon, i8 iDepth, Stz* szCustomName)
                     szCustomName);
     }
     else {
-      sName.vSprint("%s%s *%lld:%lld:%lld"_Stz,
+      sName.vSprint("%s%s CK%lld#%lld"_Stz,
                     szCardNm(),
                     sHiddenChildren.szStz(),
-                    m_iSequence,
-                    m_nPrintCount,
-                    m_iFirstPrint);
+                    m_eCard,
+                    m_iSequence);
       sName.vToUpper();
     }
   }
@@ -2538,20 +2537,18 @@ void Card::vPrintNameSymbol(Ribbon* pRibbon, i8 iDepth)
 
   if (0 == iDepth) {
     if (m_xSymbol.bHasFacets())
-      sNameSymbol.vSprint("%s%s %s *%lld:%lld:%lld"_Stz,
+      sNameSymbol.vSprint("%s%s %s CK%lld#%lld"_Stz,
                           sName.szStz(),
                           sHiddenChildren.szStz(),
                           m_xSymbol.szFacet((i8)0),
-                          m_iSequence,
-                          m_nPrintCount,
-                          m_iFirstPrint);
+                          m_eCard,
+                          m_iSequence);
     else
-      sNameSymbol.vSprint("%s%s *%lld:%lld:%lld"_Stz,
+      sNameSymbol.vSprint("%s%s CK%lld#%lld"_Stz,
                           sName.szStz(),
                           sHiddenChildren.szStz(),
-                          m_iSequence,
-                          m_nPrintCount,
-                          m_iFirstPrint);
+                          m_eCard,
+                          m_iSequence);
 
   }
   else {
