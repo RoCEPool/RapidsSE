@@ -411,10 +411,6 @@ Card* Dissector::pOp_filter(void)
   Card_Expr* p_expr = pPop_expr4(p_termSeq);
   p_expr->pSymbol()->vApplyFacet(SF_EXP_COL, (i8)1);
 
-#ifndef Z_NO_RPNCALC
-  RASSERT(1 == p_expr->nChildCards());
-#endif
-
   Card_BoolPred* p_boolPred = Card_BoolPred::pTo_boolPred(m_pCI,p_expr);
   p_filter->vAppendChild(p_boolPred);
   DELETE_CARD(p_expr);

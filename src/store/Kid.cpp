@@ -214,10 +214,6 @@ bool Kid::bEach(eCK eChild)
 {
   _nonProper_
 
-#ifndef Z_NO_RPNCALC
-  RASSERT(CK_RPNCALC != m_pParent->eCard());
-#endif
-
   while (bEach_opaque()) {
     if (this->eChild() == eChild)
       return true;
