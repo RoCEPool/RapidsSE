@@ -118,11 +118,6 @@ Card::Card(eCK eCard, i8 iFixedDepth)
   if (CK_s_CONSTRAINT == eCard)
     vDebugPoint();
 
-#ifdef Z_NO_RPNCALC
-  if (CK_RPNCALC == eCard)
-    vDebugPoint();
-#endif
-
   m_eCard   = eCard;
   m_i_Child = C_UNKNOWN;
 

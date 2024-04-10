@@ -58,7 +58,6 @@ void XF_Prolog_Move_on::vMove(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* move <on> in <absJoin>'s to <where>                                        */
 /*----------------------------------------------------------------------------*/
-#ifdef Z_NO_RPNCALC
 void XF_Prolog_Move_on::vXF_Move_on(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_MOVE_ON, _FOOTER_);
@@ -138,7 +137,6 @@ void XF_Prolog_Move_on::vXF_Move_on(void)
 
   m_pCI->vEndTransform(__LINE__);
 }
-#endif
 
 /*============================================================================*/
 /* end                                                                        */

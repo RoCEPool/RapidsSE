@@ -18,8 +18,6 @@
 #include "Ribbon.hpp"
 #include "Symbol.hpp"
 
-#define Z_NO_RPNCALC
-
 namespace STORE
 {
   class Card_AbsJoin;

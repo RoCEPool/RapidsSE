@@ -337,7 +337,6 @@ i8 CardIter::nAncestors(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#ifdef Z_NO_RPNCALC
 Card_Expr* CardIter::pBackSearch_expr_For_col(Symbol* pSym_term_arg, i8 i_Before)
 {
   _precondition_( _MAGIC_, _FOOTER_);
@@ -379,7 +378,6 @@ Card_Expr* CardIter::pBackSearch_expr_For_col(Symbol* pSym_term_arg, i8 i_Before
 
   return p_expr_col;
 }
-#endif
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -491,7 +489,6 @@ void CardIter::vBeginTarget(eCK ePrimary, eCK eTarget)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#ifdef Z_NO_RPNCALC
 void CardIter::vBeginTarget(Card* pPrimary, eCK eTarget)
 {
   _precondition_(_MAGIC_, _FOOTER_);
@@ -526,7 +523,6 @@ void CardIter::vBeginTarget(Card* pPrimary, eCK eTarget)
     NEVER_REACH
   }
 }
-#endif
 
 /*----------------------------------------------------------------------------*/
 /* get board                                                                  */

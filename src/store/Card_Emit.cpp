@@ -143,9 +143,7 @@ Card_Needed* Card_Emit::pCraftRoot_needed(CardIter* pCI)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 1) append the referenced col's in rpnCalc of this projection into needed projection
 
-#ifdef Z_NO_RPNCALC
   for (Kid xEmit(this); xEmit.bEach(CK_EXPR); /**/) {
-#endif
     for (pCI->vBeginTarget(xEmit.p_expr(),CK_TERM); pCI->bEachTarget(); /**/) {
       Card_Term *p_term = pCI->E.xTarget.p_term();
       Symbol *pSym_term = p_term->pSymbol();
@@ -239,9 +237,7 @@ Card_Needed* Card_Emit::pCraft_needed_root(CardIter* pCI)
 
   Card_Needed *p_needed = new Card_Needed;
 
-#ifdef Z_NO_RPNCALC
   for (Kid xEmit(this); xEmit.bEach(CK_EXPR); /**/) {
-#endif
     for (pCI->vBeginTarget(xEmit.p_expr(),CK_TERM); pCI->bEachTarget(); /**/) {
       Card_Term *p_term = pCI->E.xTarget.p_term();
       Symbol *pSym_term = p_term->pSymbol();
@@ -337,10 +333,7 @@ void Card_Emit::vDerive_streamKey(CardIter *pCI)
      Card_Expr* p_expr_runkey = pCI->E.p_expr;
      Card_Term* p_term_runkey = p_expr_runkey->pGet_term(0);
      Card_Expr* p_expr_prjCol = pFind_expr_Matches(p_term_runkey->pSymbol());
-#ifdef Z_NO_RPNCALC
      if (p_expr_prjCol && 1 == p_expr_prjCol->nChildCards()) {
-#endif
-
        pCI->E.p_streamKey->vAdd_key_expr_BasedOn_expr(pCI, p_expr_prjCol, true, true);
      }
    }

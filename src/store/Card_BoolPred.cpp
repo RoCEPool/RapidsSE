@@ -52,7 +52,6 @@ Card_BoolPred::~Card_BoolPred(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* convert <expr>/<rpnCalc> to <boolPred>                                     */
 /*----------------------------------------------------------------------------*/
-#ifdef Z_NO_RPNCALC
 Card_BoolPred* Card_BoolPred::pTo_boolPred(CardIter* pCI, Card_Expr* p_expr_arg)
 {
   _static_
@@ -176,7 +175,6 @@ Card_BoolPred* Card_BoolPred::pTo_boolPred(CardIter* pCI, Card_Expr* p_expr_arg)
 
   return p_boolPred_new;
 }
-#endif
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/

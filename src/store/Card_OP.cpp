@@ -675,9 +675,7 @@ void Card_OP::vRestate_emit(CardIter* pCI)
     pCI->E.p_key = pCI->E.p_Op->pSub_key();
     pCI->E.p_emit->vApplyFacets(pCI,pCI->E.p_key);
 
-#ifdef Z_NO_RPNCALC
     for (Kid xEmit(pCI->E.p_emit); xEmit.bEach(CK_EXPR); /**/) {
-#endif
       for (pCI->vBeginTarget(xEmit.p_expr(),CK_TERM); pCI->bEachTarget(); /**/) {
 
         Card_Term *p_term_keyCol = pCI->E.xTarget.p_term();
@@ -1389,7 +1387,6 @@ void Card_OP::vRpn_sort(CardIter* pCI, String* psRpnExpr, Card_Sort* p_sort)
 /*----------------------------------------------------------------------------*/
 /* produce <expr> for top op                                                  */
 /*----------------------------------------------------------------------------*/
-#ifdef Z_NO_RPNCALC
 void Card_OP::vRpn_top(CardIter* pCI, String* psRpnExpr, Card_Top* p_top)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
@@ -1403,7 +1400,6 @@ void Card_OP::vRpn_top(CardIter* pCI, String* psRpnExpr, Card_Top* p_top)
 	psRpnExpr->vCatSprint(" type %s "_Stz, xTypeId.szTypeName());
   vRpn_termSeq(pCI, psRpnExpr, pCard_Expr);
 }
-#endif
 
 /*----------------------------------------------------------------------------*/
 /* produce <expr> for filter op                                               */
@@ -1425,7 +1421,6 @@ void Card_OP::vRpn_where(CardIter* pCI, String* psRpnExpr, Card_Where* p_where)
 /*----------------------------------------------------------------------------*/
 /* produce <expr> for p_expr                                                  */
 /*----------------------------------------------------------------------------*/
-#ifdef Z_NO_RPNCALC
 void Card_OP::vRpn_expr(CardIter* pCI, String* psRpnExpr, Card_Expr* p_expr)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
@@ -1455,7 +1450,6 @@ void Card_OP::vRpn_expr(CardIter* pCI, String* psRpnExpr, Card_Expr* p_expr)
 
   vRpn_termSeq(pCI, psRpnExpr, p_expr);
 }
-#endif
 
 /*----------------------------------------------------------------------------*/
 /* produce <expr> for p_rpnCalc                                               */

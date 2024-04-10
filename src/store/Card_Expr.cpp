@@ -68,7 +68,6 @@ Card_Expr::~Card_Expr(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#ifdef Z_NO_RPNCALC
 void Card_Expr::vAssemble_injCrlRsl(CardIter* pCI)
 {
   _static_
@@ -96,7 +95,6 @@ void Card_Expr::vAssemble_injCrlRsl(CardIter* pCI)
   pCI->E.p_expr->pSymbol()->Y_vSet(P_InjCrlKey);
 
 }
-#endif
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -116,7 +114,6 @@ Card_Expr* Card_Expr::pCraft_expr_Of_expr(Card_Expr* p_expr, i8 iExpCol)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#ifdef Z_NO_RPNCALC
 Card_Expr* Card_Expr::pCraft_expr_Of_symbol(Symbol* pSymbol)
 {
   _static_
@@ -130,12 +127,10 @@ Card_Expr* Card_Expr::pCraft_expr_Of_symbol(Symbol* pSymbol)
 
   return p_expr_new;
 }
-#endif
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#ifdef Z_NO_RPNCALC
 Card_Expr* Card_Expr::pCraft_expr_Of_term(Card_Term* p_term)
 {
   _static_
@@ -151,7 +146,6 @@ Card_Expr* Card_Expr::pCraft_expr_Of_term(Card_Term* p_term)
 
   return p_expr_new;
 }
-#endif
 
 /*----------------------------------------------------------------------------*/
 /* form project expression from gby key expression                            */
@@ -206,7 +200,6 @@ Card_Expr* Card_Expr::pCraft_expr_of_nmdCol(Column *pColumn, i8 iExpCol,
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#ifdef Z_NO_RPNCALC
 void Card_Expr::vApplyCast(CardIter* pCI, Card_Emit* p_Dic_expr)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
@@ -228,7 +221,6 @@ void Card_Expr::vApplyCast(CardIter* pCI, Card_Emit* p_Dic_expr)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 }
-#endif
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -373,14 +365,12 @@ Card_Term* Card_Expr::pGet_term(i8 i_Term)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-#ifdef Z_NO_RPNCALC
   if (i_Term >= nChildCards())
     return nullptr;
 
   Card_Term* p_term = _pCard_Term(pGetChild(i_Term));
 
   return p_term;
-#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -390,9 +380,7 @@ Card_Term* Card_Expr::pGet_term0(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-#ifdef Z_NO_RPNCALC
   RASSERT(1 == nChildCards());
-#endif
 
   Card_Term* p_term0 = pGet_term(0);
 
@@ -450,7 +438,6 @@ Card_Expr * Card_Expr::pInduct(CardIter* pCI, i8 iExp)
 //  p_expr_inducted->vAppendChild(p_rpnCalc_inducted);
 
 
-#ifdef Z_NO_RPNCALC
   Card_Term* p_term_inducted = new Card_Term;
   p_term_inducted->vApplyCast_p(this);
 
@@ -462,7 +449,6 @@ Card_Expr * Card_Expr::pInduct(CardIter* pCI, i8 iExp)
   }
 
   p_expr_inducted->vAppendChild(p_term_inducted);
-#endif
 
   return p_expr_inducted;
 }
@@ -484,7 +470,6 @@ bool Card_Expr::bIsKeyCol(void) {
 /*----------------------------------------------------------------------------*/
 /* is this a compound expr?                                                   */
 /*----------------------------------------------------------------------------*/
-#ifdef Z_NO_RPNCALC
 bool Card_Expr::bIsCompound(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
@@ -494,7 +479,6 @@ bool Card_Expr::bIsCompound(void)
 
   return false;
 }
-#endif
 
 /*----------------------------------------------------------------------------*/
 /* is this a literals expr?                                                   */
@@ -517,7 +501,6 @@ bool Card_Expr::bIsLiterals(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* is this expr a simple expression of a column?                              */
 /*----------------------------------------------------------------------------*/
-#ifdef Z_NO_RPNCALC
 bool Card_Expr::bIsScalarCol(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
@@ -531,7 +514,6 @@ bool Card_Expr::bIsScalarCol(void)
 
   return true;
 }
-#endif
 
 /*----------------------------------------------------------------------------*/
 /* is this an expression of given symbol ?                                    */
@@ -630,7 +612,6 @@ void Card_Expr::vPrint(Ribbon* pRibbon, i8 iDepth)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#ifdef Z_NO_RPNCALC
 bool Card_Expr::bSameAs(Card_Expr* p_expr_arg)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
@@ -653,7 +634,6 @@ bool Card_Expr::bSameAs(Card_Expr* p_expr_arg)
 
   return true;
 }
-#endif
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -669,7 +649,6 @@ void Card_Expr::vUpdate_expCol(CardIter* pCI, Card_Emit* p_arriving)
 /*----------------------------------------------------------------------------*/
 /* convert stmCol to tblCol                                                   */
 /*----------------------------------------------------------------------------*/
-#ifdef Z_NO_RPNCALC
 void Card_Expr::vX_expCol_To_tblCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
@@ -684,7 +663,6 @@ void Card_Expr::vX_expCol_To_tblCol(CardIter* pCI)
 
   pCI->E.p_term = nullptr;
 }
-#endif
 
 /*----------------------------------------------------------------------------*/
 /* convert tblCol to stmCol                                                   */
@@ -739,9 +717,7 @@ void Card_Expr::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
                                      CK_STREAMKEY,
                                      CK_NONE);
 
-#ifdef Z_NO_RPNCALC
   vValidate_mustHave(CK_TERM, CK_NONE);
-#endif
 
   if (pCI->bAncestor(CK_s_KEY)) {
     //vDump(__func__);

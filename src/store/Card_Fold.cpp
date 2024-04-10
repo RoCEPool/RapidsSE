@@ -102,12 +102,7 @@ void Card_Fold::vDerive_emit_fold(CardIter *pCI, SubQuery *pSubQuery_leftmost)
   pCI->vAppendNewChild(pCI->E.p_stream, CK_t_EMIT);
   pCI->vAppendNewChild(pCI->E.p_emit, CK_EXPR);
 
-#ifdef  Z_NO_RPNCALC
   pCI->vAppendNewChild(pCI->E.p_expr, CK_TERM, Symbol(SF_EXP_COL, "$1"_Stz));
-#else
-  pCI->vAppendNewChild(pCI->E.p_expr, CK_RPNCALC);
-  pCI->vAppendNewChild(pCI->E.p_rpnCalc, CK_TERM, Symbol(SF_EXP_COL, "$1"_Stz));
-#endif
 
   pCI->E.p_term->vApplyCast_x(p_expr_result->xCast());
 

@@ -205,7 +205,6 @@ void XF_Flatten_24_W_A_C_ro::vPromote_IQ_aggreg_To_gbyAgg_crlKey(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* enhance possible last IQ project adding crlKey to emit                     */
 /*----------------------------------------------------------------------------*/
-#ifdef Z_NO_RPNCALC
 void XF_Flatten_24_W_A_C_ro::vEnhance_IQ_emit_project_Add_crlKey(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_24_W_A_C_RO, _FOOTER_);
@@ -248,7 +247,6 @@ void XF_Flatten_24_W_A_C_ro::vEnhance_IQ_emit_project_Add_crlKey(CardIter* pCI)
 
   pCI->E.p_emit->vRenumberAll_expr();
 }
-#endif
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */

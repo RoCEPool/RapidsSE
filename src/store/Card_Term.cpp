@@ -335,9 +335,7 @@ void Card_Term::vX_expCol_To_tblCol(CardIter* pCI)
       pSymbol_this->vDeleteFacet(SF_EXP_COL);
       vMark1(MARK_CHANGED);
 
-#ifdef Z_NO_RPNCALC
       if (pCI->E.p_expr && pCI->E.p_expr->bIsScalarCol()) {
-#endif
         pCI->E.p_expr->pSymbol()->vApplyFacet(SF_TBL_COL, pSymbol_term0->szFacet(SF_TBL_COL));
 
 //      if (p_expr->bHasFacet(SF_NMD_COL))
@@ -457,7 +455,6 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 
   Card::vValidate_noChildren();
 
-#ifdef Z_NO_RPNCALC
   (void)Card::eValidate_parentEither(pCI, CK_t_HSHCOL,// todo: NO!?
                                      CK_ANDCONJ,
                                      CK_BOUND,
@@ -468,7 +465,6 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
                                      CK_NOTCONJ,
                                      CK_ORCONJ,
                                      CK_NONE);
-#endif
 
   Symbol* pSym_term = pSymbol();
   if (pSym_term->bIs_Col()) {
