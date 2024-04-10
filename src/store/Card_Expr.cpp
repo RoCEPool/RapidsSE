@@ -323,24 +323,6 @@ void Card_Expr::vApplyCast(CardIter* pCI, Card_Emit* p_Dic_expr)
   pCI->E.p_rpnCalc = nullptr;
 }
 #endif
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_Expr::vBump_expCol(i8 nBumpBy)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  //p_rpnCalc->vBump_expCol(nBumpBy);
-  Kid xRpnCalc(pSub_rpnCalc());
-  while (xRpnCalc.bEach(CK_TERM)) {
-
-    if (xRpnCalc.p_term()->pSymbol()->bHasFacet(SF_EXP_COL)) {
-      xRpnCalc.p_term()->vBump_ordCol(SF_EXP_COL, nBumpBy);
-      xRpnCalc.p_term()->vMark1(MARK_CHANGED);
-    }
-  }
-
-}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */

@@ -28,7 +28,6 @@ namespace STORE
                                             char cTblSyn, i8 iTblCol);
 
     void vApplyCast(CardIter* pCI, Card_Emit* p_Dic_expr);
-    void vBump_expCol(i8 nBumpBy);
     Card_Expr* pClone(void);
     bool bContains(CardIter* pCI, Symbol* pSymbol_arg);
     void vDeleteFacetIf(CardIter* pCI, eSF eFacet, eSF eAlsoFacet, char cTblSyn);
