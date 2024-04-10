@@ -41,6 +41,8 @@ namespace STORE
     ExtendedText* m_pOptStmt;
     ExtendedText* m_pCodeBlock;
 
+    i4 m_iaSequence[CK_ENUMS];
+
 
     // must be last
     Footer m_xFooter;
@@ -80,6 +82,8 @@ namespace STORE
 
     Stz* szQueryNm(void);
     void vQueryNm(Stz* szQueryNm);
+
+    i8 iSequence_next(eCK eCard);
 
     bool bTransform(Error& rxError, Pds* pPdsRowBuffer);
 

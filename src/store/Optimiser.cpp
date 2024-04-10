@@ -48,10 +48,13 @@ Optimiser::Optimiser(TagSet* p_JobTags)
 
   m_nJoinPermutations = 0;
 
-  for (i8 iIndex = 0; iIndex < C_PERMUTATIONS; iIndex++) {
-    m_sJoinPermutation[iIndex] = "(none)"_Stz;
+  for (i8 i_Index = 0; i_Index < C_PERMUTATIONS; i_Index++) {
+    m_sJoinPermutation[i_Index] = "(none)"_Stz;
   }
 
+  for (i8 i_Seq = 0; i_Seq < CK_ENUMS; i_Seq++) {
+    m_iaSequence[i_Seq] = 0;
+  }
 
   m_pPipelineDef = nullptr;
 
@@ -357,6 +360,16 @@ void Optimiser::vQueryNm(Stz* szQueryNm)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
 
   m_sQueryNm = szQueryNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get next sequence for card kind                                            */
+/*----------------------------------------------------------------------------*/
+i8 Optimiser::iSequence_next(eCK eCard)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_OPTIMISER, _FOOTER_);
+
+  return m_iaSequence[eCard]++;
 }
 
 /*----------------------------------------------------------------------------*/
