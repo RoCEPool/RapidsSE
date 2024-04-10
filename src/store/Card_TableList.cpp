@@ -57,21 +57,21 @@ Card_TableList* Card_TableList::pExtractList(Card_Deck* p_deck)
 
   Card_TableList* p_tableList = new Card_TableList;
 
-  Kid xKid(p_deck);
-  xKid.vEnded();
-  xKid.vBegin_reverse();
+  Kid xDeck(p_deck);
+  xDeck.vEnded();
+  xDeck.vBegin_reverse();
 
-  if (xKid.bEach_reverse(CK_c_FOLD)) {
-    xKid.vForwards(true);
+  if (xDeck.bEach_reverse(CK_c_FOLD)) {
+    xDeck.vForwards(true);
   }
   else {
-    xKid.vEnded();
-    xKid.vBegin();
+    xDeck.vEnded();
+    xDeck.vBegin();
   }
 
-  while (xKid.bEach(CK_o_FROM, CK_s_TABLE)) {
+  while (xDeck.bEach(CK_o_FROM, CK_s_TABLE)) {
 
-    Card_Table* p_table = _pCard_Table(xKid.pSub1());
+    Card_Table* p_table = _pCard_Table(xDeck.pSub1());
 
     Card* p_table_dup = _pCard_Table(p_table->pDupCard());
     p_tableList->vAppendChild(p_table_dup);
@@ -130,7 +130,7 @@ Card_Table* Card_TableList::pFind(char cTblSyn)
       continue;
 
     Card_Table* p_table = _pCard_Table(pChildCard);
-    char cTableSyn = p_table->pSymbol()->cSF_char();
+    char cTableSyn = p_table->pSymbol()->cTblSyn();
     if (cTableSyn == cTblSyn)
       return p_table;
   }
@@ -185,7 +185,7 @@ i8 Card_TableList::nGetTableSize(char cTblSyn)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   if (Card_TableSize* p_tableSize = pGetTableSize(cTblSyn))
-    return p_tableSize->pSymbol()->iSF_number();
+    return p_tableSize->pSymbol()->iTo_integer(SF_INT_LIT);
 
   return 0;
 }
@@ -211,7 +211,7 @@ Stz* Card_TableList::szToTableNm(char cTblSyn)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   if (Card_Table* p_table = pFind(cTblSyn))
-    return p_table->pSub_tableNm()->szFacet(SF_NONE);
+    return p_table->pSub_tableNm()->szFacet(SF_TBL_NM);
 
   return nullptr;
 }

@@ -62,14 +62,14 @@ i8 Card_Index::nCullNonusedBounds(CardIter* pCI) {
 
   i8 nCulled = 0;
 
-  //pCI->vSave();
+  //pCI->vPushEach();
 
-  //pCI->vChangeCard(pCI->G.p_indexList);
+  //pCI->vUseCard(pCI->G.p_indexList);
 
-  Kid xKid(pCI->G.p_indexList);
-  while (xKid.bEach(CK_INDEX)) {
+  Kid xIndexList(pCI->E.p_indexList);
+  while (xIndexList.bEach(CK_INDEX)) {
 
-    Card_Bounds* p_bounds = xKid.p_index()->pSub_bounds();
+    Card_Bounds* p_bounds = xIndexList.p_index()->pSub_bounds();
     if (! p_bounds)
       continue;
 
@@ -82,12 +82,12 @@ i8 Card_Index::nCullNonusedBounds(CardIter* pCI) {
       xCI_bounds.pChild()->vMark1(MARK_AT);
     }
 
-   // pCI->vPrintBoard(__func__,__LINE__);
+   // pCI->PRINTBOARD_dbg();
     nCulled += p_bounds->nCullBound(MARK_AT);
 
   }
 
-  //pCI->vRestore();
+  //pCI->vPopEach();
 
   return nCulled;
 }
@@ -124,7 +124,7 @@ Card_Index* Card_Index::pDerive(Index* pIndex)
     p_idxColList->vAppendChild(p_idxCol);
 
 //    Card_IdxColNm* p_idxColNm = new Card_IdxColNm;
-//    p_idxColNm->vCastFacets(pColumn->szColNm());
+//    p_idxColNm->vApplyCastFacets(pColumn->szColNm());
 //    p_idxCol->vAppendChild(p_idxColNm);
   }
 
@@ -143,9 +143,9 @@ void Card_Index::vAdd_streamKey_exprs(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  pCI->G.p_idxColList = pSub_idxColList();
+  pCI->E.p_idxColList = pSub_idxColList();
 
-  pCI->G.p_idxColList->vAdd_streamKey_exprs(pCI);
+  pCI->E.p_idxColList->vAdd_streamKey_exprs(pCI);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -216,13 +216,15 @@ bool Card_Index::bTblCol_IsKeyIn_index(Stz* szTblCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
+  RASSERT(Symbol::bIs_Tbl_Col(szTblCol));
+
   Card_IdxColList* p_idxColList = this->pSub_idxColList();
 
-  Kid xKid(p_idxColList);
-  while (xKid.bEach(CK_IDXCOL)) {
+  Kid xIdxColList(p_idxColList);
+  while (xIdxColList.bEach(CK_IDXCOL)) {
 
     // ? does n]idxCol:$c.n match given:$c.n
-    if (xKid.pChild()->pSymbol()->bHasFacet(szTblCol))
+    if (xIdxColList.pChild()->pSymbol()->bHasFacet(szTblCol))
       return true;
   }
 
@@ -236,14 +238,14 @@ Index* Card_Index::pGetIndex(Card_TableNm* p_tableNm)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Table* pTable = Card_Table::pAccess_Table(p_tableNm->szFacet(SF_NONE));
+  Table* pTable = Card_Table::pAccess_Table(p_tableNm->szFacet(SF_TBL_NM));
   if (! pTable)
     return nullptr;
 
-  Index* pIndex = pTable->pFindIndex(pSub_indexNm()->szFacet(SF_NONE));
+  Index* pIndex = pTable->pFindIndex(pSub_indexNm()->szFacet(SF_IDX_NM));
   if (! pIndex) {
     s256 sErrorMsg;
-    sErrorMsg.vSprint("index: %s"_Stz, pSub_indexNm()->szFacet(SF_NONE));
+    sErrorMsg.vSprint("index: %s"_Stz, pSub_indexNm()->szFacet(SF_IDX_NM));
     Error xError(EC_NO_SUCH_INDEX,sErrorMsg,(Stz*)__FILE__,__LINE__);
     throw xError;
   }
@@ -254,12 +256,12 @@ Index* Card_Index::pGetIndex(Card_TableNm* p_tableNm)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Index::vEnsure_Cast(CardIter *pCI)
+void Card_Index::vApplyCast(CardIter *pCI, Card_Emit* p_Dic_expr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if ((pCI->G.p_bounds = pSub_bounds()))
-    pCI->G.p_bounds->vEnsure_Cast(pCI);
+  if ((pCI->E.p_bounds = pSub_bounds()))
+    pCI->E.p_bounds->vApplyCast(pCI,/**/p_Dic_expr);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -270,6 +272,9 @@ void Card_Index::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   vValidate_mustHave(CK_INDEXNM,CK_NONE);
+  vValidate_mayHave(CK_BOUNDS,CK_IDXCOLLIST,CK_INDEXNM,CK_NONE);
+
+  (void)Card::eValidate_parentEither(pCI, CK_t_INDEXLIST, CK_NONE);
 
   if (pSymbol()->Y_bHas(P_ChosenIndex)) {
     RASSERT(pFindPpyRecursive(P_ChosenBound, CK_BOUND));

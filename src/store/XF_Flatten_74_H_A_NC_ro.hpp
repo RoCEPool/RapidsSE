@@ -3,11 +3,11 @@
 /*============================================================================*/
 #pragma once
 
-#include "XF_TRANSFORM.hpp"
+#include "XF_FLATTEN.hpp"
 
 namespace STORE
 {
-  class XF_Flatten_74_H_A_NC_ro : public XF_TRANSFORM
+  class XF_Flatten_74_H_A_NC_ro : public XF_FLATTEN
   {
   private:
     // must be last
@@ -20,9 +20,9 @@ namespace STORE
     XF_Flatten_74_H_A_NC_ro(CardIter* pCI);
    ~XF_Flatten_74_H_A_NC_ro(void) noexcept(false);
 
-    static void vXF_Flatten_74_H_A_NC_ro(CardIter* pCI);
+    static void vFlatten(CardIter* pCI);
 
-    void vXF_Flatten_74_H_A_NC_ro(void);
+    void vFlatten(void);
 
   private:
     Footer* aFooter(void);

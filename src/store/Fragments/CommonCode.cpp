@@ -31,17 +31,20 @@ void vAssignHash(Dynamic_T* aDynamicT) {
 	struct __STRUCT_FROM__* p__STRUCT_FROM__;
 
 	i8 iMixVal;
-	i8 iKeyHash;
+	i8 iMixLen;
+	byte* aMixVal;
 
 	// marker-start
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 	// column __COLUMN_NO__
 
 	iMixVal = p__STRUCT_FROM__->__COLUMN_FROM__.m_iAsI8;
+	iMixLen = sizeof(i8);
+	aMixVal = (byte*)&iMixVal;
 
-#ifdef WITH_CLANG
-  vExtern_RunningHash(&iKeyHash, (byte*)&iMixVal, sizeof(i8));
-#endif
+//#ifdef WITH_CLANG
+//  vExtern_RunningHash(&iKeyHash, (byte*)&iMixVal, sizeof(i8));
+//#endif
 	// marker-end
 }
 
@@ -58,18 +61,21 @@ void vAssignVchHash(Dynamic_T* aDynamicT) {
 	struct __STRUCT_FROM__* p__STRUCT_FROM__;
 
 	char* szMixVal;
-	i8 iKeyHash;
+	i8 iMixLen;
+	byte* aMixVal;
 
 	// marker-start
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 	// column __COLUMN_NO__
 
 	szMixVal = (char*)p__STRUCT_FROM__->__COLUMN_FROM__.m_iAsI8;
+	iMixLen = strlen(szMixVal);
+	aMixVal = (byte*)szMixVal;
 
-#ifdef WITH_CLANG
-	vExtern_RunningHash(&iKeyHash, (byte*)szMixVal, strlen(szMixVal));
-	//printf("Running hash of %s %lld: %lld\n", szMixVal, strlen(szMixVal), iKeyHash);
-#endif
+//#ifdef WITH_CLANG
+//	vExtern_RunningHash(&iKeyHash, (byte*)szMixVal, strlen(szMixVal));
+//	printf("Running hash of %s %lld: %lld\n", szMixVal, iMixLen, iKeyHash);
+//#endif
 	// marker-end
 }
 
@@ -208,7 +214,7 @@ void vCreatePayLoad(Dynamic_T* aDynamicT) {
     // create the payload
 
 #ifdef WITH_CLANG
-  vExtern_EntPayloadCreate(aDynamicT->m_xIndexInfoPL.m_aEntInt, __PAYLOADBYTES__);
+	aDynamicT->m_fp_vExtern_EntPayloadCreate(aDynamicT->m_xIndexInfoPL.m_aEntInt, __PAYLOADBYTES__);
 #endif
     // marker-end
 }
@@ -304,9 +310,9 @@ void vIndexInsertContinue(Dynamic_T* aDynamicT) {
   {
     // marker-start
 
-  }
+    }
 
-  aEntFound = aEntInserted;
+    aEntFound = aEntInserted;
 // marker-end
 
 }
@@ -410,20 +416,12 @@ i8 vIndexDefContinue(Dynamic_T* aDynamicT) {
 
 #ifdef WITH_CLANG
     bool bPayload = true;
-    i8 iKeyKind;
-
-    // create the indexDef
-    aDynamicT->m_xIndexInfoPL.m_aIndexDef = aExtern_IndexDefNew(__INDEX_COLUMNS__, (void*)&xColumnInfo);
-
-    // create the indexTree
-    aDynamicT->m_xIndexInfoPL.m_aIndexTree = aExtern_IndexTreeNew(aDynamicT->m_xIndexInfoPL.m_aIndexDef, &iKeyKind);
 
     // do we have a payload ?
     if (__COLUMNS_OUT__ == __INDEX_COLUMNS__)
       bPayload = false;
 
-    // set the entry kind
-    vExtern_EntWrkEntKind(aDynamicT->m_xIndexInfoPL.m_aEntWrk, bPayload, iKeyKind);
+		aDynamicT->m_fp_vExtern_IndexNew(aDynamicT, __INDEX_COLUMNS__, (void*)&xColumnInfo, bPayload);
 
 #endif
 
@@ -450,8 +448,8 @@ void vPotTubRowPix(Dynamic_T* aDynamicT) {
     // marker-start
 
 #ifdef WITH_CLANG
-    void* aRowPix = aExtern_RowPixNew(__COLUMNS_OUT__, &xColumnInfo);
-    __EXTERN_ROWPIX__(__TUB_POT__, aRowPix);
+    //void* aRowPix = aDynamicT->m_fp_aExtern_RowPixNew(__COLUMNS_OUT__, &xColumnInfo);
+    __EXTERN_ROWPIX__(__TUB_POT__, __COLUMNS_OUT__, &xColumnInfo);
 #endif
     __ROW_INFO_TO__.m_bInitialize = false;
     aDynamicT->m_bGeneratePot = __POT__;
@@ -486,7 +484,9 @@ i8 iPotTubContinue(Dynamic_T* aDynamicT) {
 
   // allocate a row from the tub
 #ifdef WITH_CLANG
-  __ROW_INFO_TO__.m_aRowCellArray = (byte*)__EXTERN_ALLOTROW__();
+	//__ROW_INFO_TO__.m_aRowCellArray = (byte*)__EXTERN_ALLOTROW__();
+
+	__EXTERN_ALLOTROW__();
 	__ROW_INFO_TO__.m_nStringAreaSize = sizeof(__ROW_INFO_TO__.m_cStringArea);
 #endif
 
@@ -528,7 +528,8 @@ i8 iPotTubContinue_pds(Dynamic_T* aDynamicT) {
 
 	// allocate a row from the tub
 #ifdef WITH_CLANG
-  __ROW_INFO_TO__.m_aRowCellArray = (byte*)__EXTERN_ALLOTROW__();
+  //__ROW_INFO_TO__.m_aRowCellArray = (byte*)__EXTERN_ALLOTROW__();
+	__EXTERN_ALLOTROW__();
 #endif
 
 	// check for error
@@ -598,7 +599,8 @@ i8 iEosPotTubBody(Dynamic_T* aDynamicT) {
 
   // allocate a row from the tub
 #ifdef WITH_CLANG
-  aDynamicT->m_xRowInfoTO.m_aRowCellArray = (byte*)__EXTERN_ALLOTROW__();
+  //aDynamicT->m_xRowInfoTO.m_aRowCellArray = (byte*)__EXTERN_ALLOTROW__();
+	__EXTERN_ALLOTROW__();
 	__ROW_INFO_TO__.m_nStringAreaSize = sizeof(__ROW_INFO_TO__.m_cStringArea);
 #endif
   if (aDynamicT->m_iErrorCode != (i8) EC_NONE) {
@@ -639,7 +641,8 @@ i8 iEosPotTubBody_pds(Dynamic_T* aDynamicT) {
 
 	// allocate a row from the tub
 #ifdef WITH_CLANG
-  aDynamicT->m_xRowInfoTO.m_aRowCellArray = (byte*)__EXTERN_ALLOTROW__();
+  //aDynamicT->m_xRowInfoTO.m_aRowCellArray = (byte*)
+	__EXTERN_ALLOTROW__();
 #endif
 	if (aDynamicT->m_iErrorCode != (i8) EC_NONE) {
 		return 0;
@@ -665,7 +668,8 @@ i8 iEosPLPotTub(Dynamic_T* aDynamicT) {
 	  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // allocate a row from the tub/pot
 #ifdef WITH_CLANG
-    __ROW_INFO_TO__.m_aRowCellArray = (byte*)__EXTERN_ALLOTROW__();
+    //__ROW_INFO_TO__.m_aRowCellArray = (byte*)
+		__EXTERN_ALLOTROW__();
 	  __ROW_INFO_TO__.m_nStringAreaSize = sizeof(__ROW_INFO_TO__.m_cStringArea);
 #endif
     // check for error
@@ -693,7 +697,8 @@ i8 iEosPLPotTub_pds(Dynamic_T* aDynamicT) {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // allocate a row from the tub/pot
 #ifdef WITH_CLANG
-  __ROW_INFO_TO__.m_aRowCellArray = (byte*)__EXTERN_ALLOTROW__();
+  //__ROW_INFO_TO__.m_aRowCellArray = (byte*)
+	__EXTERN_ALLOTROW__();
 #endif
   // check for error
   if (aDynamicT->m_iErrorCode != (i8) EC_NONE) {
@@ -721,7 +726,7 @@ void vEosPLPotTubEnd(Dynamic_T* aDynamicT) {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // move to next entry
 #ifdef WITH_CLANG
-    aDynamicT->m_xIndexInfoPL.m_aEntInt = (struct Ent_int*)aExtern_EntBufferNextEntry(
+    aDynamicT->m_xIndexInfoPL.m_aEntInt = (struct Ent_int*)aDynamicT->m_fp_aExtern_EntBufferNextEntry(
         &aDynamicT->m_xIndexInfoPL.m_aEntBuffer, aDynamicT->m_xIndexInfoPL.m_aEntInt);
 #endif
   }
@@ -762,7 +767,7 @@ void vEosPLIntKeyTraversal(Dynamic_T* aDynamicT) {
   // payload traversal
 #ifdef WITH_CLANG
   aDynamicT->m_xIndexInfoPL.m_aEntInt = (struct Ent_int*)
-      aExtern_IndexTreeBegin(aDynamicT->m_xIndexInfoPL.m_aIndexTree, &aDynamicT->m_xIndexInfoPL.m_aEntBuffer);
+      aDynamicT->m_fp_aExtern_IndexTreeBegin(aDynamicT->m_xIndexInfoPL.m_aIndexTree, &aDynamicT->m_xIndexInfoPL.m_aEntBuffer);
 #endif
 
 	if (!aDynamicT->m_iRowsProcessed)
@@ -804,12 +809,12 @@ i8 vEosPLGenKeyTraversal(Dynamic_T* aDynamicT) {
   // - - - - - - - - - - - - - -
   // payload traversal
 #ifdef WITH_CLANG
-  aDynamicT->m_xIndexInfoPL.m_aEntInt = (struct Ent_int*)aExtern_IndexTreeBegin(
+  aDynamicT->m_xIndexInfoPL.m_aEntInt = (struct Ent_int*)aDynamicT->m_fp_aExtern_IndexTreeBegin(
       aDynamicT->m_xIndexInfoPL.m_aIndexTree, &aDynamicT->m_xIndexInfoPL.m_aEntBuffer);
 #endif
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // traverse theindex
+  // traverse the index
   while (aDynamicT->m_xIndexInfoPL.m_aEntInt) {
 
     aDynamicT->m_bProcessRow = true;
@@ -883,8 +888,9 @@ void vPLToHashBegin(Dynamic_T* aDynamicT) {
 void vPLIntKeyToHash(Dynamic_T* aDynamicT) {
 
 	i8 iMixVal;
+	i8 iMixLen;
 	i8 iKeySize;
-	i8 iKeyHash;
+	byte* aMixVal;
 
 	struct __STRUCT_FROM__ {
 			union Vch_T __COLUMN_FROM__;
@@ -899,10 +905,13 @@ void vPLIntKeyToHash(Dynamic_T* aDynamicT) {
 	struct __STRUCT_TO__* p__STRUCT_TO__;
 
 	// marker-start
-	iMixVal = *(i8*)((char*)(&((struct Ent_int*)aDynamicT->m_xIndexInfoPL.m_aEntInt)->m_iIntElm0) + 8 + iKeySize);
-#ifdef WITH_CLANG
-	vExtern_RunningHash(&iKeyHash, (byte*)&iMixVal, sizeof(i8));
-#endif
+	  iMixVal = *(i8*)((char*)(&((struct Ent_int*)aDynamicT->m_xIndexInfoPL.m_aEntInt)->m_iIntElm0) + 8 + iKeySize);
+	  iMixLen = sizeof(i8);
+	  aMixVal = (byte*)&iMixVal;
+
+//#ifdef WITH_CLANG
+//	vExtern_RunningHash(&iKeyHash, (byte*)&iMixVal, sizeof(i8));
+//#endif
 
 	// marker-end
 }
@@ -941,7 +950,8 @@ void vPLSkipVchKey(Dynamic_T* aDynamicT) {
 		else {
 
 #ifdef WITH_CLANG
-		nSrcSize = iExtern_StrLibWordFlipSize(szSrcStz);
+		//nSrcSize = iExtern_StrLibWordFlipSize(szSrcStz);
+		nSrcSize = iWordFlipSize(szSrcStz);
 #endif
 
 		iKeySize += nSrcSize;
@@ -1059,11 +1069,12 @@ void vPLVchKeyToTub(Dynamic_T* aDynamicT) {
 		i8 iDstBufLen = __ROW_INFO_TO__.m_nStringAreaSize;
 
 #ifdef WITH_CLANG
-    nSrcSize = iExtern_StrLibWordFlipBack(szDstStz, nMaxStrAreaLen, szSrcStz);
+    //nSrcSize = iExtern_StrLibWordFlipBack(szDstStz, nMaxStrAreaLen, szSrcStz);
 
-//    for (i8 i_Byte = 0; i_Byte < 16; i_Byte++)
-//      printf("%c ", szDstStz[i_Byte]);
-//    printf("\n");
+		nSrcSize = iWordFlipBack(szDstStz, nMaxStrAreaLen, szSrcStz);
+		//for (i8 i_Byte = 0; i_Byte < 16; i_Byte++)
+		//	printf("%c ", szDstStz[i_Byte]);
+		//printf("\n");
 #endif
 
     // save the string offset
@@ -1299,16 +1310,22 @@ void vPayLoadToHash(Dynamic_T* aDynamicT) {
 	i8 __INDEX_COLUMN__;
 
 	i8 iMixVal;
+	i8 iMixLen;
 	i8 iKeyHash;
+	byte* aMixVal;
 
 	// marker-start
 	  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 	  // column __COLUMN_NO__
 
 	  iMixVal = aDynamicT->m_aiPayload[__INDEX_COLUMN__];
-#ifdef WITH_CLANG
-	  vExtern_RunningHash(&iKeyHash, (byte*)&iMixVal, sizeof(i8));
-#endif
+	  iMixLen = sizeof(i8);
+		aMixVal = (byte*)&iMixVal;
+
+
+//#ifdef WITH_CLANG
+//	  vExtern_RunningHash(&iKeyHash, (byte*)&iMixVal, sizeof(i8));
+//#endif
 
 	// marker-end
 }
@@ -1510,7 +1527,7 @@ void vStreamDefEnd(Dynamic_T* aDynamicT) {
 
   // marker-start
 #ifdef WITH_CLANG
-  aDynamicT->m_aStreamDefOut = aExtern_StreamDefNew(__COLUMNS_OUT__, (void*)&xColumnInfo);
+  aDynamicT->m_aStreamDefOut = aDynamicT->m_fp_aExtern_StreamDefNew(__COLUMNS_OUT__, (void*)&xColumnInfo);
 #endif
 
   // marker-end

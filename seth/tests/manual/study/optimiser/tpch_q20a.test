@@ -1,0 +1,45 @@
+--------------------------------------------------------------------------------
+-- tpch query20a (SF_0001)
+--------------------------------------------------------------------------------
+
+LOG 'TPC-H Q20a...';
+
+trackMemory force;
+success
+
+
+/optimiser_trace
+/transliterated
+/weaved
+/pipeline_Def
+/pipelineName = "OptQ20a"
+select s_name, s_address
+  from supplier, nation
+  where 
+       s_suppkey in (
+                       select ps_suppkey
+                         from PartSupp
+                        where
+                              ps_availqty > ( 
+                                              select 0.5 * sum(l_quantity)
+                                                from lineitem
+                                               where l_partkey  =  ps_partkey
+                                                 and l_shipdate >= date '1994-01-01'
+                                                 and l_shipdate <  date '1995-01-01' 
+                                            )
+                    )
+  and s_nationkey = n_nationkey
+;
+
+rows:
+  1
+
+MemoryLeaks;
+rows: 0
+
+CLEANUP {
+}
+
+--------------------------------------------------------------------------------
+-- end
+--------------------------------------------------------------------------------

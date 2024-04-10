@@ -12,6 +12,7 @@
 #include "Key.hpp"
 #include "Ent.hpp"
 #include "Ent_int.h"
+#include "eKE.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- Code Fragments ----------------------------------------------------------*/
@@ -37,15 +38,7 @@ void vIndexJoinIntKey(Dynamic_T* aDynamicT) {
   if (aDynamicT->m_xIndexInfoJ.m_bInitialize) {
 
 #ifdef WITH_CLANG
-    strcpy(&aDynamicT->m_xIndexInfoJ.m_cTableName[0], "__TABLENAME__");
-    strcpy(&aDynamicT->m_xIndexInfoJ.m_cIndexName[0], "__INDEXNAME__");
-
-    aDynamicT->m_xIndexInfoJ.m_aTable     = aExtern_FindTable(aDynamicT->m_xIndexInfoJ.m_cTableName);
-    aDynamicT->m_xIndexInfoJ.m_aIndex     = aExtern_FindIndex(aDynamicT->m_xIndexInfoJ.m_aTable, aDynamicT->m_xIndexInfoJ.m_cIndexName);
-    aDynamicT->m_xIndexInfoJ.m_aIndexDef  = aExtern_GetIndexDef(aDynamicT->m_xIndexInfoJ.m_aIndex);
-    aDynamicT->m_xIndexInfoJ.m_aIndexTree = aExtern_GetIndexTree(aDynamicT->m_xIndexInfoJ.m_aTable, aDynamicT->m_xIndexInfoJ.m_aIndex);
-
-    vExtern_EntWrkEntKind(aDynamicT->m_xIndexInfoJ.m_aEntWrk, 0, __KEY_KIND__);
+		aDynamicT->m_fp_vExtern_IndexFind(&aDynamicT->m_xIndexInfoJ,"__TABLENAME__","__INDEXNAME__");
 #endif
     bLeftOuterRow = false;
     aDynamicT->m_xIndexInfoJ.m_bInitialize = false;
@@ -72,15 +65,7 @@ void vIndexJoinGenKey(Dynamic_T* aDynamicT) {
   if (aDynamicT->m_xIndexInfoJ.m_bInitialize) {
 
 #ifdef WITH_CLANG
-    strcpy(&aDynamicT->m_xIndexInfoJ.m_cTableName[0], "__TABLENAME__");
-    strcpy(&aDynamicT->m_xIndexInfoJ.m_cIndexName[0], "__INDEXNAME__");
-
-    aDynamicT->m_xIndexInfoJ.m_aTable     = aExtern_FindTable(aDynamicT->m_xIndexInfoJ.m_cTableName);
-    aDynamicT->m_xIndexInfoJ.m_aIndex     = aExtern_FindIndex(aDynamicT->m_xIndexInfoJ.m_aTable, aDynamicT->m_xIndexInfoJ.m_cIndexName);
-    aDynamicT->m_xIndexInfoJ.m_aIndexDef  = aExtern_GetIndexDef(aDynamicT->m_xIndexInfoJ.m_aIndex);
-    aDynamicT->m_xIndexInfoJ.m_aIndexTree = aExtern_GetIndexTree(aDynamicT->m_xIndexInfoJ.m_aTable, aDynamicT->m_xIndexInfoJ.m_aIndex);
-
-    vExtern_EntWrkEntKind(aDynamicT->m_xIndexInfoJ.m_aEntWrk, 0, __KEY_KIND__);
+		aDynamicT->m_fp_vExtern_IndexFind(&aDynamicT->m_xIndexInfoJ,"__TABLENAME__","__INDEXNAME__");
 #endif
     bLeftOuterRow = false;
     aDynamicT->m_xIndexInfoJ.m_bInitialize = false;
@@ -158,7 +143,7 @@ void vIndexJoinCrossPosition(Dynamic_T* aDynamicT) {
 
 #ifdef WITH_CLANG
   // position at beginning of the index
-  __INDEX_INFO__.m_aEntInt =(struct Ent_int*)aExtern_IndexTreeBegin(
+  __INDEX_INFO__.m_aEntInt =(struct Ent_int*)aDynamicT->m_fp_aExtern_IndexTreeBegin(
         __INDEX_INFO__.m_aIndexTree, &__INDEX_INFO__.m_aEntBuffer);
 #endif
 
@@ -213,14 +198,14 @@ void vIndexJoinDereference(Dynamic_T* aDynamicT) {
   // dereference the entry
   iIndexBuffer = __INDEX_INFO__.m_aEntInt->Rrf.m_uBuffer;
   iIndexItem   = __INDEX_INFO__.m_aEntInt->Rrf.m_uItem;
-  aIndexCrw    = ( (char*)C_ADR_REGION + iIndexBuffer * C_1MB + C_CRW_FIRSTHEAD+ iIndexItem * C_CRW_HEADBYTES );
+  aIndexCrw    = ( (char*)C_ADR_REGION + iIndexBuffer * C_1MB + C_CRW_FIRSTHEAD + iIndexItem * C_CRW_HEADBYTES );
 
   // inflate the derefenced entry
   aHeadLine = (struct HeadLine_T *)aIndexCrw;
   auMetaCode = META_AREA(aHeadLine);
   ayDstByte = (byte*)__ROW_INFO_TO__.m_aRowCellArray + 8*__COLUMNS_INFLATED__;
   acStrArea = (char*)__ROW_INFO_TO__.m_acStrArea;
-  racStrArea = (char*)__ROW_INFO_TO__.m_acStrArea;
+  racStrArea = acStrArea;
   eStrInflateRule = SI_STRAREA_ADR;
   i_BaseOffsetDataX = C_1B  + C_8B  + __COLUMNS_TO_INFLATE_;
   ayDataByte = ADDR_ADD(byte*,aHeadLine,i_BaseOffsetDataX);
@@ -235,10 +220,10 @@ void vIndexJoinDereference(Dynamic_T* aDynamicT) {
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- vIndexJoinPosition -----------------------------------------------------*/
+/*-- vIndexJoinPosition_gen -----------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-// function-vIndexJoinPosition
-void vIndexJoinPosition(Dynamic_T* aDynamicT) {
+// function-vIndexJoinPosition_gen
+void vIndexJoinPosition_gen(Dynamic_T* aDynamicT) {
 
   IndexInfo __INDEX_INFO__;
 
@@ -248,8 +233,10 @@ void vIndexJoinPosition(Dynamic_T* aDynamicT) {
 
 #ifdef WITH_CLANG
   // position at lower bound
-  __INDEX_INFO__.m_aEntInt =  (struct Ent_int *)__INDEX_POSITION_LOWER__(
-      __INDEX_INFO__.m_aIndexTree, &__INDEX_INFO__.m_aEntBuffer, __INDEX_INFO__.m_aEntKey);
+	__INDEX_POSITION_LOWER__(
+      &__INDEX_INFO__);
+  //__INDEX_INFO__.m_aEntInt =  (struct Ent_int *)__INDEX_POSITION_LOWER__(
+  //    &__INDEX_INFO__);
 #endif
 
   // did we find the entry ?
@@ -262,8 +249,7 @@ void vIndexJoinPosition(Dynamic_T* aDynamicT) {
   // find the upper bound entry
 
 #ifdef WITH_CLANG
-  aDynamicT->m_xIndexInfoJ.m_aEntUpper = aExtern_IndexTreePositionLE(
-      aDynamicT->m_xIndexInfoJ.m_aIndexTree, aDynamicT->m_xIndexInfoJ.m_aEntKey);
+  aDynamicT->m_fp_vExtern_IndexTreePositionLE_gen(&aDynamicT->m_xIndexInfoJ);
 #endif
   __L_LABEL_INDEX_DEREF__:
 	aDynamicT->m_bProcessRow = true;
@@ -282,10 +268,58 @@ void vIndexJoinPosition(Dynamic_T* aDynamicT) {
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- vIndexAntiJoinPosition --------------------------------------------------*/
+/*-- vIndexJoinPosition_int -----------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-// function-vIndexAntiJoinPosition
-void vIndexAntiJoinPosition(Dynamic_T* aDynamicT) {
+// function-vIndexJoinPosition_int
+void vIndexJoinPosition_int(Dynamic_T* aDynamicT) {
+
+	IndexInfo __INDEX_INFO__;
+
+	__L_LABEL_OUTER_LOOP__:
+
+	// marker-start
+
+#ifdef WITH_CLANG
+	// position at lower bound
+	__INDEX_POSITION_LOWER__(
+      &__INDEX_INFO__);
+  //__INDEX_INFO__.m_aEntInt =  (struct Ent_int *)__INDEX_POSITION_LOWER__(
+  //    &__INDEX_INFO__);
+#endif
+
+	// did we find the entry ?
+	if ( ! aDynamicT->m_xIndexInfoJ.m_aEntInt ) {
+		aDynamicT->m_bProcessRow = false;
+		goto __L_LABEL_OUTER_LOOP__;
+	}
+
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+	// find the upper bound entry
+
+#ifdef WITH_CLANG
+  aDynamicT->m_fp_vExtern_IndexTreePositionLE_int(&aDynamicT->m_xIndexInfoJ);
+#endif
+	__L_LABEL_INDEX_DEREF__:
+	aDynamicT->m_bProcessRow = true;
+
+	if (aDynamicT->m_xIndexInfoJ.m_aEntInt == aDynamicT->m_xIndexInfoJ.m_aEntUpper) {
+
+		aDynamicT->m_bProcessRow = false;
+		goto __L_LABEL_OUTER_LOOP__;
+	}
+
+	// marker-end
+
+	L_Return:
+	return;
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- vIndexAntiJoinPosition_gen --------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-vIndexAntiJoinPosition_gen
+void vIndexAntiJoinPosition_gen(Dynamic_T* aDynamicT) {
 
 	IndexInfo __INDEX_INFO__;
 
@@ -295,8 +329,10 @@ void vIndexAntiJoinPosition(Dynamic_T* aDynamicT) {
 
 #ifdef WITH_CLANG
 	// position at lower bound
-  __INDEX_INFO__.m_aEntInt =  (struct Ent_int *)__INDEX_POSITION_LOWER__(
-      __INDEX_INFO__.m_aIndexTree, &__INDEX_INFO__.m_aEntBuffer, __INDEX_INFO__.m_aEntKey);
+	__INDEX_POSITION_LOWER__(
+      &__INDEX_INFO__);
+  //__INDEX_INFO__.m_aEntInt =  (struct Ent_int *)__INDEX_POSITION_LOWER__(
+  //    &__INDEX_INFO__);
 #endif
 
 	// did we find the entry ?
@@ -309,8 +345,55 @@ void vIndexAntiJoinPosition(Dynamic_T* aDynamicT) {
 	// find the upper bound entry
 
 #ifdef WITH_CLANG
-	aDynamicT->m_xIndexInfoJ.m_aEntUpper = aExtern_IndexTreePositionLE(
-      aDynamicT->m_xIndexInfoJ.m_aIndexTree, aDynamicT->m_xIndexInfoJ.m_aEntKey);
+	aDynamicT->m_fp_vExtern_IndexTreePositionLE_gen(&aDynamicT->m_xIndexInfoJ);
+#endif
+	__L_LABEL_INDEX_DEREF__:
+	aDynamicT->m_bProcessRow = true;
+
+	if (aDynamicT->m_xIndexInfoJ.m_aEntInt == aDynamicT->m_xIndexInfoJ.m_aEntUpper) {
+
+		aDynamicT->m_bProcessRow = true;
+		goto __L_LABEL_NEXT__;
+	}
+
+	// marker-end
+
+	L_Return:
+	return;
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- vIndexAntiJoinPosition_int --------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-vIndexAntiJoinPosition_int
+void vIndexAntiJoinPosition_int(Dynamic_T* aDynamicT) {
+
+	IndexInfo __INDEX_INFO__;
+
+	__L_LABEL_NEXT__:
+
+	// marker-start
+
+#ifdef WITH_CLANG
+	// position at lower bound
+	__INDEX_POSITION_LOWER__(
+      &__INDEX_INFO__);
+  //__INDEX_INFO__.m_aEntInt =  (struct Ent_int *)__INDEX_POSITION_LOWER__(
+  //    &__INDEX_INFO__);
+#endif
+
+	// did we find the entry ?
+	if ( ! aDynamicT->m_xIndexInfoJ.m_aEntInt ) {
+		aDynamicT->m_bProcessRow = true;
+		goto __L_LABEL_NEXT__;
+	}
+
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+	// find the upper bound entry
+
+#ifdef WITH_CLANG
+	aDynamicT->m_fp_vExtern_IndexTreePositionLE_int(&aDynamicT->m_xIndexInfoJ);
 #endif
 	__L_LABEL_INDEX_DEREF__:
 	aDynamicT->m_bProcessRow = true;
@@ -369,7 +452,7 @@ void vIndexJoinReturn(Dynamic_T* aDynamicT) {
 
   // move to next entry
 #ifdef WITH_CLANG
-  __INDEX_INFO__.m_aEntInt = (struct Ent_int*)aExtern_EntBufferNextEntry(
+  __INDEX_INFO__.m_aEntInt = (struct Ent_int*)aDynamicT->m_fp_aExtern_EntBufferNextEntry(
       &__INDEX_INFO__.m_aEntBuffer, __INDEX_INFO__.m_aEntInt);
 #endif
 
@@ -447,7 +530,7 @@ i8 iIndexJoinConstraint(Dynamic_T* aDynamicT) {
 
   // move to next entry
 #ifdef WITH_CLANG
-  __INDEX_INFO__.m_aEntInt = (struct Ent_int*)aExtern_EntBufferNextEntry(
+  __INDEX_INFO__.m_aEntInt = (struct Ent_int*)aDynamicT->m_fp_aExtern_EntBufferNextEntry(
       &__INDEX_INFO__.m_aEntBuffer, __INDEX_INFO__.m_aEntInt);
 #endif
 
@@ -512,7 +595,7 @@ i8 iIndexAntiJoinConstraint(Dynamic_T* aDynamicT) {
 			aDynamicT->m_bProcessRow = false;
 
     // move to next entry
-    aDynamicT->m_xIndexInfoJ.m_aEntInt = (struct Ent_int*)aExtern_EntBufferNextEntry(
+    aDynamicT->m_xIndexInfoJ.m_aEntInt = (struct Ent_int*)aDynamicT->m_fp_aExtern_EntBufferNextEntry(
         &aDynamicT->m_xIndexInfoJ.m_aEntBuffer, aDynamicT->m_xIndexInfoJ.m_aEntInt);
 #endif
         goto __L_LABEL_INDEX_DEREF__;
@@ -570,7 +653,7 @@ i8 iIndexSemiJoinConstraint(Dynamic_T* aDynamicT) {
     if ( ! aDynamicT->m_bProcessRow ) {
 #ifdef WITH_CLANG
         // move to next entry
-    aDynamicT->m_xIndexInfoJ.m_aEntInt = (struct Ent_int*)aExtern_EntBufferNextEntry(
+    aDynamicT->m_xIndexInfoJ.m_aEntInt = (struct Ent_int*)aDynamicT->m_fp_aExtern_EntBufferNextEntry(
         &aDynamicT->m_xIndexInfoJ.m_aEntBuffer, aDynamicT->m_xIndexInfoJ.m_aEntInt);
 #endif
         goto __L_LABEL_INDEX_DEREF__;
@@ -582,10 +665,10 @@ i8 iIndexSemiJoinConstraint(Dynamic_T* aDynamicT) {
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- vIndexLeftOuterJoinPosition ---------------------------------------------*/
+/*-- vIndexLeftOuterJoinPosition_gen ---------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-// function-vIndexLeftOuterJoinPosition
-void vIndexLeftOuterJoinPosition(Dynamic_T* aDynamicT) {
+// function-vIndexLeftOuterJoinPosition_gen
+void vIndexLeftOuterJoinPosition_gen(Dynamic_T* aDynamicT) {
 
   IndexInfo __INDEX_INFO__;
   bool bLeftOuterRow;
@@ -597,9 +680,10 @@ void vIndexLeftOuterJoinPosition(Dynamic_T* aDynamicT) {
 #ifdef WITH_CLANG
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // position at lower bound
-
-  __INDEX_INFO__.m_aEntInt =  (struct Ent_int *)__INDEX_POSITION_LOWER__(
-      __INDEX_INFO__.m_aIndexTree, &__INDEX_INFO__.m_aEntBuffer, __INDEX_INFO__.m_aEntKey);
+__INDEX_POSITION_LOWER__(
+      &__INDEX_INFO__);
+  //__INDEX_INFO__.m_aEntInt =  (struct Ent_int *)__INDEX_POSITION_LOWER__(
+  //    &__INDEX_INFO__);
 #endif
 
   // did we find the entry ?
@@ -611,8 +695,7 @@ void vIndexLeftOuterJoinPosition(Dynamic_T* aDynamicT) {
 	// find the upper bound entry
 
 #ifdef WITH_CLANG
-	aDynamicT->m_xIndexInfoJ.m_aEntUpper = aExtern_IndexTreePositionLE(
-      aDynamicT->m_xIndexInfoJ.m_aIndexTree, aDynamicT->m_xIndexInfoJ.m_aEntKey);
+	aDynamicT->m_fp_vExtern_IndexTreePositionLE_gen(&aDynamicT->m_xIndexInfoJ);
 #endif
 	__L_LABEL_INDEX_DEREF__:
 	aDynamicT->m_bProcessRow = true;;
@@ -629,6 +712,56 @@ void vIndexLeftOuterJoinPosition(Dynamic_T* aDynamicT) {
   // marker-end
 
 }
+
+/*----------------------------------------------------------------------------*/
+/*-- vIndexLeftOuterJoinPosition_int ---------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-vIndexLeftOuterJoinPosition_int
+void vIndexLeftOuterJoinPosition_int(Dynamic_T* aDynamicT) {
+
+	IndexInfo __INDEX_INFO__;
+	bool bLeftOuterRow;
+
+	__L_LABEL_JOIN_NULLS__:
+	__L_LABEL_OUTER_LOOP__:
+
+	// marker-start
+#ifdef WITH_CLANG
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // position at lower bound
+__INDEX_POSITION_LOWER__(
+      &__INDEX_INFO__);
+  //__INDEX_INFO__.m_aEntInt =  (struct Ent_int *)__INDEX_POSITION_LOWER__(
+  //    &__INDEX_INFO__);
+#endif
+
+	// did we find the entry ?
+	if ( ! aDynamicT->m_xIndexInfoJ.m_aEntInt ) {
+		goto __L_LABEL_JOIN_NULLS__;
+	}
+
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+	// find the upper bound entry
+
+#ifdef WITH_CLANG
+	aDynamicT->m_fp_vExtern_IndexTreePositionLE_int(&aDynamicT->m_xIndexInfoJ);
+#endif
+	__L_LABEL_INDEX_DEREF__:
+	aDynamicT->m_bProcessRow = true;;
+
+	if (aDynamicT->m_xIndexInfoJ.m_aEntInt == aDynamicT->m_xIndexInfoJ.m_aEntUpper) {
+		// did we join any rows with current left row ?
+		if (aDynamicT->m_iJoinedRows == 0)
+			goto __L_LABEL_JOIN_NULLS__;
+		else {
+			aDynamicT->m_bProcessRow = false;
+			goto __L_LABEL_OUTER_LOOP__;
+		}
+	}
+	// marker-end
+
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- vIndexLeftOuterNullCheck-------------------------------------------------*/

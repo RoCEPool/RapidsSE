@@ -1,5 +1,5 @@
 
-// Generated from /Users/alka/rapidsse/thirdparty/antlr/sql.g4 by ANTLR 4.8
+// Generated from /Users/craig/repos/rapidsse/thirdparty/antlr/sql.g4 by ANTLR 4.13.1
 
 #pragma once
 
@@ -17,775 +17,775 @@ namespace Parser {
 class  sqlBaseVisitor : public sqlVisitor {
 public:
 
-  virtual antlrcpp::Any visitStatements(sqlParser::StatementsContext *ctx) override {
+  virtual std::any visitStatements(sqlParser::StatementsContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitStatement(sqlParser::StatementContext *ctx) override {
+  virtual std::any visitStatement(sqlParser::StatementContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitStatementChoice(sqlParser::StatementChoiceContext *ctx) override {
+  virtual std::any visitStatementChoice(sqlParser::StatementChoiceContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitTags(sqlParser::TagsContext *ctx) override {
+  virtual std::any visitTags(sqlParser::TagsContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitKeyValueTag(sqlParser::KeyValueTagContext *ctx) override {
+  virtual std::any visitKeyValueTag(sqlParser::KeyValueTagContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitKeyOnlyTag(sqlParser::KeyOnlyTagContext *ctx) override {
+  virtual std::any visitKeyOnlyTag(sqlParser::KeyOnlyTagContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitTagName(sqlParser::TagNameContext *ctx) override {
+  virtual std::any visitTagName(sqlParser::TagNameContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitQueryCmd(sqlParser::QueryCmdContext *ctx) override {
+  virtual std::any visitQueryCmd(sqlParser::QueryCmdContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitQuery(sqlParser::QueryContext *ctx) override {
+  virtual std::any visitQuery(sqlParser::QueryContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitQueryHint(sqlParser::QueryHintContext *ctx) override {
+  virtual std::any visitQueryHint(sqlParser::QueryHintContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitHint(sqlParser::HintContext *ctx) override {
+  virtual std::any visitHint(sqlParser::HintContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitSelectQuery(sqlParser::SelectQueryContext *ctx) override {
+  virtual std::any visitSelectQuery(sqlParser::SelectQueryContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitSelectExpr(sqlParser::SelectExprContext *ctx) override {
+  virtual std::any visitSelectExpr(sqlParser::SelectExprContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitSetQuery(sqlParser::SetQueryContext *ctx) override {
+  virtual std::any visitSetQuery(sqlParser::SetQueryContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitSetExpr(sqlParser::SetExprContext *ctx) override {
+  virtual std::any visitSetExpr(sqlParser::SetExprContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitCorrClause(sqlParser::CorrClauseContext *ctx) override {
+  virtual std::any visitCorrClause(sqlParser::CorrClauseContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitWithQuery(sqlParser::WithQueryContext *ctx) override {
+  virtual std::any visitWithQuery(sqlParser::WithQueryContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitSubquery(sqlParser::SubqueryContext *ctx) override {
+  virtual std::any visitSubquery(sqlParser::SubqueryContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitNaturalJoin(sqlParser::NaturalJoinContext *ctx) override {
+  virtual std::any visitNaturalJoin(sqlParser::NaturalJoinContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitJoinUsing(sqlParser::JoinUsingContext *ctx) override {
+  virtual std::any visitJoinUsing(sqlParser::JoinUsingContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitJoinOn(sqlParser::JoinOnContext *ctx) override {
+  virtual std::any visitJoinOn(sqlParser::JoinOnContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitFetch(sqlParser::FetchContext *ctx) override {
+  virtual std::any visitFetch(sqlParser::FetchContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitValuesSubquery(sqlParser::ValuesSubqueryContext *ctx) override {
+  virtual std::any visitValuesSubquery(sqlParser::ValuesSubqueryContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitCrossJoin(sqlParser::CrossJoinContext *ctx) override {
+  virtual std::any visitCrossJoin(sqlParser::CrossJoinContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitTableReference(sqlParser::TableReferenceContext *ctx) override {
+  virtual std::any visitTableReference(sqlParser::TableReferenceContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitJoinType(sqlParser::JoinTypeContext *ctx) override {
+  virtual std::any visitJoinType(sqlParser::JoinTypeContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitExtendedJoinType(sqlParser::ExtendedJoinTypeContext *ctx) override {
+  virtual std::any visitExtendedJoinType(sqlParser::ExtendedJoinTypeContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitValuesExpr(sqlParser::ValuesExprContext *ctx) override {
+  virtual std::any visitValuesExpr(sqlParser::ValuesExprContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitAnidxCmd(sqlParser::AnidxCmdContext *ctx) override {
+  virtual std::any visitAnidxCmd(sqlParser::AnidxCmdContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitAntblCmd(sqlParser::AntblCmdContext *ctx) override {
+  virtual std::any visitAntblCmd(sqlParser::AntblCmdContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitBpaCmd(sqlParser::BpaCmdContext *ctx) override {
+  virtual std::any visitBpaCmd(sqlParser::BpaCmdContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitCompactIdxCmd(sqlParser::CompactIdxCmdContext *ctx) override {
+  virtual std::any visitCompactIdxCmd(sqlParser::CompactIdxCmdContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitCountCmd(sqlParser::CountCmdContext *ctx) override {
+  virtual std::any visitCountCmd(sqlParser::CountCmdContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitCreateCmd(sqlParser::CreateCmdContext *ctx) override {
+  virtual std::any visitCreateCmd(sqlParser::CreateCmdContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitCreateTableCmd(sqlParser::CreateTableCmdContext *ctx) override {
+  virtual std::any visitCreateTableCmd(sqlParser::CreateTableCmdContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitCreateIndexCmd(sqlParser::CreateIndexCmdContext *ctx) override {
+  virtual std::any visitCreateIndexCmd(sqlParser::CreateIndexCmdContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitDeleteCmd(sqlParser::DeleteCmdContext *ctx) override {
+  virtual std::any visitDeleteCmd(sqlParser::DeleteCmdContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitDisconnectCmd(sqlParser::DisconnectCmdContext *ctx) override {
+  virtual std::any visitDisconnectCmd(sqlParser::DisconnectCmdContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitDloadCmd(sqlParser::DloadCmdContext *ctx) override {
+  virtual std::any visitDloadCmd(sqlParser::DloadCmdContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitDocolCmd(sqlParser::DocolCmdContext *ctx) override {
+  virtual std::any visitDocolCmd(sqlParser::DocolCmdContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitDropCmd(sqlParser::DropCmdContext *ctx) override {
+  virtual std::any visitDropCmd(sqlParser::DropCmdContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitDropTableCmd(sqlParser::DropTableCmdContext *ctx) override {
+  virtual std::any visitDropTableCmd(sqlParser::DropTableCmdContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitDropIndexCmd(sqlParser::DropIndexCmdContext *ctx) override {
+  virtual std::any visitDropIndexCmd(sqlParser::DropIndexCmdContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitEmptyCmd(sqlParser::EmptyCmdContext *ctx) override {
+  virtual std::any visitEmptyCmd(sqlParser::EmptyCmdContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitExplainCmd(sqlParser::ExplainCmdContext *ctx) override {
+  virtual std::any visitExplainCmd(sqlParser::ExplainCmdContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitExplainOptions(sqlParser::ExplainOptionsContext *ctx) override {
+  virtual std::any visitExplainOptions(sqlParser::ExplainOptionsContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitExplainStageList(sqlParser::ExplainStageListContext *ctx) override {
+  virtual std::any visitExplainStageList(sqlParser::ExplainStageListContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitExplainRange(sqlParser::ExplainRangeContext *ctx) override {
+  virtual std::any visitExplainRange(sqlParser::ExplainRangeContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitExplainRangeChoice(sqlParser::ExplainRangeChoiceContext *ctx) override {
+  virtual std::any visitExplainRangeChoice(sqlParser::ExplainRangeChoiceContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitExplainFormat(sqlParser::ExplainFormatContext *ctx) override {
+  virtual std::any visitExplainFormat(sqlParser::ExplainFormatContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitExportCmd(sqlParser::ExportCmdContext *ctx) override {
+  virtual std::any visitExportCmd(sqlParser::ExportCmdContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitFileCmd(sqlParser::FileCmdContext *ctx) override {
+  virtual std::any visitFileCmd(sqlParser::FileCmdContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitInsertCmd(sqlParser::InsertCmdContext *ctx) override {
+  virtual std::any visitInsertCmd(sqlParser::InsertCmdContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitLoadCmd(sqlParser::LoadCmdContext *ctx) override {
+  virtual std::any visitLoadCmd(sqlParser::LoadCmdContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitLoadReplicatedCmd(sqlParser::LoadReplicatedCmdContext *ctx) override {
+  virtual std::any visitLoadReplicatedCmd(sqlParser::LoadReplicatedCmdContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitLoadOption(sqlParser::LoadOptionContext *ctx) override {
+  virtual std::any visitLoadOption(sqlParser::LoadOptionContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitLoadOptionKeys(sqlParser::LoadOptionKeysContext *ctx) override {
+  virtual std::any visitLoadOptionKeys(sqlParser::LoadOptionKeysContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitLogCmd(sqlParser::LogCmdContext *ctx) override {
+  virtual std::any visitLogCmd(sqlParser::LogCmdContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitLscolCmd(sqlParser::LscolCmdContext *ctx) override {
+  virtual std::any visitLscolCmd(sqlParser::LscolCmdContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitLsidxCmd(sqlParser::LsidxCmdContext *ctx) override {
+  virtual std::any visitLsidxCmd(sqlParser::LsidxCmdContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitLsidxcolCmd(sqlParser::LsidxcolCmdContext *ctx) override {
+  virtual std::any visitLsidxcolCmd(sqlParser::LsidxcolCmdContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitLsptncolCmd(sqlParser::LsptncolCmdContext *ctx) override {
+  virtual std::any visitLsptncolCmd(sqlParser::LsptncolCmdContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitLstblCmd(sqlParser::LstblCmdContext *ctx) override {
+  virtual std::any visitLstblCmd(sqlParser::LstblCmdContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitMemoryleaksCmd(sqlParser::MemoryleaksCmdContext *ctx) override {
+  virtual std::any visitMemoryleaksCmd(sqlParser::MemoryleaksCmdContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitNoopCmd(sqlParser::NoopCmdContext *ctx) override {
+  virtual std::any visitNoopCmd(sqlParser::NoopCmdContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitPipelineCmd(sqlParser::PipelineCmdContext *ctx) override {
+  virtual std::any visitPipelineCmd(sqlParser::PipelineCmdContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitPipelineStage(sqlParser::PipelineStageContext *ctx) override {
+  virtual std::any visitPipelineStage(sqlParser::PipelineStageContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitPipelineOpSeq(sqlParser::PipelineOpSeqContext *ctx) override {
+  virtual std::any visitPipelineOpSeq(sqlParser::PipelineOpSeqContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitPipelineOperator(sqlParser::PipelineOperatorContext *ctx) override {
+  virtual std::any visitPipelineOperator(sqlParser::PipelineOperatorContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitPipelineOpParam(sqlParser::PipelineOpParamContext *ctx) override {
+  virtual std::any visitPipelineOpParam(sqlParser::PipelineOpParamContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitPipelineTypeNames(sqlParser::PipelineTypeNamesContext *ctx) override {
+  virtual std::any visitPipelineTypeNames(sqlParser::PipelineTypeNamesContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitSetTraceCmd(sqlParser::SetTraceCmdContext *ctx) override {
+  virtual std::any visitSetTraceCmd(sqlParser::SetTraceCmdContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitSleepCmd(sqlParser::SleepCmdContext *ctx) override {
+  virtual std::any visitSleepCmd(sqlParser::SleepCmdContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitSleepUnits(sqlParser::SleepUnitsContext *ctx) override {
+  virtual std::any visitSleepUnits(sqlParser::SleepUnitsContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitSpaceCmd(sqlParser::SpaceCmdContext *ctx) override {
+  virtual std::any visitSpaceCmd(sqlParser::SpaceCmdContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitStatusCmd(sqlParser::StatusCmdContext *ctx) override {
+  virtual std::any visitStatusCmd(sqlParser::StatusCmdContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitSzidxCmd(sqlParser::SzidxCmdContext *ctx) override {
+  virtual std::any visitSzidxCmd(sqlParser::SzidxCmdContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitSztblCmd(sqlParser::SztblCmdContext *ctx) override {
+  virtual std::any visitSztblCmd(sqlParser::SztblCmdContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitTableSizesCmd(sqlParser::TableSizesCmdContext *ctx) override {
+  virtual std::any visitTableSizesCmd(sqlParser::TableSizesCmdContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitTraceOption(sqlParser::TraceOptionContext *ctx) override {
+  virtual std::any visitTraceOption(sqlParser::TraceOptionContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitTruncateCmd(sqlParser::TruncateCmdContext *ctx) override {
+  virtual std::any visitTruncateCmd(sqlParser::TruncateCmdContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitTrackmemoryCmd(sqlParser::TrackmemoryCmdContext *ctx) override {
+  virtual std::any visitTrackmemoryCmd(sqlParser::TrackmemoryCmdContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitUpdateCmd(sqlParser::UpdateCmdContext *ctx) override {
+  virtual std::any visitUpdateCmd(sqlParser::UpdateCmdContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitUnloadCmd(sqlParser::UnloadCmdContext *ctx) override {
+  virtual std::any visitUnloadCmd(sqlParser::UnloadCmdContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitTableDefinition(sqlParser::TableDefinitionContext *ctx) override {
+  virtual std::any visitTableDefinition(sqlParser::TableDefinitionContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitTablePartitioning(sqlParser::TablePartitioningContext *ctx) override {
+  virtual std::any visitTablePartitioning(sqlParser::TablePartitioningContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitColumnDefinition(sqlParser::ColumnDefinitionContext *ctx) override {
+  virtual std::any visitColumnDefinition(sqlParser::ColumnDefinitionContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitColumnNameList(sqlParser::ColumnNameListContext *ctx) override {
+  virtual std::any visitColumnNameList(sqlParser::ColumnNameListContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitIndexDefinition(sqlParser::IndexDefinitionContext *ctx) override {
+  virtual std::any visitIndexDefinition(sqlParser::IndexDefinitionContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitIndexMethod(sqlParser::IndexMethodContext *ctx) override {
+  virtual std::any visitIndexMethod(sqlParser::IndexMethodContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitDataType(sqlParser::DataTypeContext *ctx) override {
+  virtual std::any visitDataType(sqlParser::DataTypeContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitSqlDataType(sqlParser::SqlDataTypeContext *ctx) override {
+  virtual std::any visitSqlDataType(sqlParser::SqlDataTypeContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitIntervalType(sqlParser::IntervalTypeContext *ctx) override {
+  virtual std::any visitIntervalType(sqlParser::IntervalTypeContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitYearMonthIntervalType(sqlParser::YearMonthIntervalTypeContext *ctx) override {
+  virtual std::any visitYearMonthIntervalType(sqlParser::YearMonthIntervalTypeContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitDayTimeIntervalType(sqlParser::DayTimeIntervalTypeContext *ctx) override {
+  virtual std::any visitDayTimeIntervalType(sqlParser::DayTimeIntervalTypeContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitFixedLenChar(sqlParser::FixedLenCharContext *ctx) override {
+  virtual std::any visitFixedLenChar(sqlParser::FixedLenCharContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitVaryingLenChar(sqlParser::VaryingLenCharContext *ctx) override {
+  virtual std::any visitVaryingLenChar(sqlParser::VaryingLenCharContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitAsSubquery(sqlParser::AsSubqueryContext *ctx) override {
+  virtual std::any visitAsSubquery(sqlParser::AsSubqueryContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitSelectOrValues(sqlParser::SelectOrValuesContext *ctx) override {
+  virtual std::any visitSelectOrValues(sqlParser::SelectOrValuesContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitSelectList(sqlParser::SelectListContext *ctx) override {
+  virtual std::any visitSelectList(sqlParser::SelectListContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitSelectListItem(sqlParser::SelectListItemContext *ctx) override {
+  virtual std::any visitSelectListItem(sqlParser::SelectListItemContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitGroupByList(sqlParser::GroupByListContext *ctx) override {
+  virtual std::any visitGroupByList(sqlParser::GroupByListContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitGroupByListItem(sqlParser::GroupByListItemContext *ctx) override {
+  virtual std::any visitGroupByListItem(sqlParser::GroupByListItemContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitOrderByList(sqlParser::OrderByListContext *ctx) override {
+  virtual std::any visitOrderByList(sqlParser::OrderByListContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitOrderByListItem(sqlParser::OrderByListItemContext *ctx) override {
+  virtual std::any visitOrderByListItem(sqlParser::OrderByListItemContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitJoinUsingList(sqlParser::JoinUsingListContext *ctx) override {
+  virtual std::any visitJoinUsingList(sqlParser::JoinUsingListContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitJoinUsingListItem(sqlParser::JoinUsingListItemContext *ctx) override {
+  virtual std::any visitJoinUsingListItem(sqlParser::JoinUsingListItemContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitCorrList(sqlParser::CorrListContext *ctx) override {
+  virtual std::any visitCorrList(sqlParser::CorrListContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitCorrListItem(sqlParser::CorrListItemContext *ctx) override {
+  virtual std::any visitCorrListItem(sqlParser::CorrListItemContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitColAliases(sqlParser::ColAliasesContext *ctx) override {
+  virtual std::any visitColAliases(sqlParser::ColAliasesContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitColAliasList(sqlParser::ColAliasListContext *ctx) override {
+  virtual std::any visitColAliasList(sqlParser::ColAliasListContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitColAliasListItem(sqlParser::ColAliasListItemContext *ctx) override {
+  virtual std::any visitColAliasListItem(sqlParser::ColAliasListItemContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitPropertyList(sqlParser::PropertyListContext *ctx) override {
+  virtual std::any visitPropertyList(sqlParser::PropertyListContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitProperty(sqlParser::PropertyContext *ctx) override {
+  virtual std::any visitProperty(sqlParser::PropertyContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitValueList(sqlParser::ValueListContext *ctx) override {
+  virtual std::any visitValueList(sqlParser::ValueListContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitPredicate(sqlParser::PredicateContext *ctx) override {
+  virtual std::any visitPredicate(sqlParser::PredicateContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitJoinPredicate(sqlParser::JoinPredicateContext *ctx) override {
+  virtual std::any visitJoinPredicate(sqlParser::JoinPredicateContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitCasePredicate(sqlParser::CasePredicateContext *ctx) override {
+  virtual std::any visitCasePredicate(sqlParser::CasePredicateContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitCountAll(sqlParser::CountAllContext *ctx) override {
+  virtual std::any visitCountAll(sqlParser::CountAllContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitExtractFunc(sqlParser::ExtractFuncContext *ctx) override {
+  virtual std::any visitExtractFunc(sqlParser::ExtractFuncContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitScalarFunc(sqlParser::ScalarFuncContext *ctx) override {
+  virtual std::any visitScalarFunc(sqlParser::ScalarFuncContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitUnaryOp(sqlParser::UnaryOpContext *ctx) override {
+  virtual std::any visitUnaryOp(sqlParser::UnaryOpContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitCoalesceOp(sqlParser::CoalesceOpContext *ctx) override {
+  virtual std::any visitCoalesceOp(sqlParser::CoalesceOpContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitVarRef(sqlParser::VarRefContext *ctx) override {
+  virtual std::any visitVarRef(sqlParser::VarRefContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitPositionFunc(sqlParser::PositionFuncContext *ctx) override {
+  virtual std::any visitPositionFunc(sqlParser::PositionFuncContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitColRef(sqlParser::ColRefContext *ctx) override {
+  virtual std::any visitColRef(sqlParser::ColRefContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitCaseOp(sqlParser::CaseOpContext *ctx) override {
+  virtual std::any visitCaseOp(sqlParser::CaseOpContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitLiteralVal(sqlParser::LiteralValContext *ctx) override {
+  virtual std::any visitLiteralVal(sqlParser::LiteralValContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitOverlayFunc(sqlParser::OverlayFuncContext *ctx) override {
+  virtual std::any visitOverlayFunc(sqlParser::OverlayFuncContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitIfNullOp(sqlParser::IfNullOpContext *ctx) override {
+  virtual std::any visitIfNullOp(sqlParser::IfNullOpContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitSubqueryExistsOp(sqlParser::SubqueryExistsOpContext *ctx) override {
+  virtual std::any visitSubqueryExistsOp(sqlParser::SubqueryExistsOpContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitIsNullOp(sqlParser::IsNullOpContext *ctx) override {
+  virtual std::any visitIsNullOp(sqlParser::IsNullOpContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitInOp(sqlParser::InOpContext *ctx) override {
+  virtual std::any visitInOp(sqlParser::InOpContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitTrimFunc(sqlParser::TrimFuncContext *ctx) override {
+  virtual std::any visitTrimFunc(sqlParser::TrimFuncContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitLikeOp(sqlParser::LikeOpContext *ctx) override {
+  virtual std::any visitLikeOp(sqlParser::LikeOpContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitTypeOfOp(sqlParser::TypeOfOpContext *ctx) override {
+  virtual std::any visitTypeOfOp(sqlParser::TypeOfOpContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitNullIfOp(sqlParser::NullIfOpContext *ctx) override {
+  virtual std::any visitNullIfOp(sqlParser::NullIfOpContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitInlineCast(sqlParser::InlineCastContext *ctx) override {
+  virtual std::any visitInlineCast(sqlParser::InlineCastContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitBinaryOp(sqlParser::BinaryOpContext *ctx) override {
+  virtual std::any visitBinaryOp(sqlParser::BinaryOpContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitBetweenOp(sqlParser::BetweenOpContext *ctx) override {
+  virtual std::any visitBetweenOp(sqlParser::BetweenOpContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitAggFunc(sqlParser::AggFuncContext *ctx) override {
+  virtual std::any visitAggFunc(sqlParser::AggFuncContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitDecodeOp(sqlParser::DecodeOpContext *ctx) override {
+  virtual std::any visitDecodeOp(sqlParser::DecodeOpContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitConcatOp(sqlParser::ConcatOpContext *ctx) override {
+  virtual std::any visitConcatOp(sqlParser::ConcatOpContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitSubqueryExpr(sqlParser::SubqueryExprContext *ctx) override {
+  virtual std::any visitSubqueryExpr(sqlParser::SubqueryExprContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitIfOp(sqlParser::IfOpContext *ctx) override {
+  virtual std::any visitIfOp(sqlParser::IfOpContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitLikeEscapeOp(sqlParser::LikeEscapeOpContext *ctx) override {
+  virtual std::any visitLikeEscapeOp(sqlParser::LikeEscapeOpContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitSubStringFunc(sqlParser::SubStringFuncContext *ctx) override {
+  virtual std::any visitSubStringFunc(sqlParser::SubStringFuncContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitSubqueryInOp(sqlParser::SubqueryInOpContext *ctx) override {
+  virtual std::any visitSubqueryInOp(sqlParser::SubqueryInOpContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitLogicOp(sqlParser::LogicOpContext *ctx) override {
+  virtual std::any visitLogicOp(sqlParser::LogicOpContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitCastOp(sqlParser::CastOpContext *ctx) override {
+  virtual std::any visitCastOp(sqlParser::CastOpContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitParenthetic(sqlParser::ParentheticContext *ctx) override {
+  virtual std::any visitParenthetic(sqlParser::ParentheticContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitMethodCall(sqlParser::MethodCallContext *ctx) override {
+  virtual std::any visitMethodCall(sqlParser::MethodCallContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitVariableName(sqlParser::VariableNameContext *ctx) override {
+  virtual std::any visitVariableName(sqlParser::VariableNameContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitColumnRef(sqlParser::ColumnRefContext *ctx) override {
+  virtual std::any visitColumnRef(sqlParser::ColumnRefContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitColumnWildcard(sqlParser::ColumnWildcardContext *ctx) override {
+  virtual std::any visitColumnWildcard(sqlParser::ColumnWildcardContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitClassName(sqlParser::ClassNameContext *ctx) override {
+  virtual std::any visitClassName(sqlParser::ClassNameContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitFunctionName(sqlParser::FunctionNameContext *ctx) override {
+  virtual std::any visitFunctionName(sqlParser::FunctionNameContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitMethodName(sqlParser::MethodNameContext *ctx) override {
+  virtual std::any visitMethodName(sqlParser::MethodNameContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitCatalogName(sqlParser::CatalogNameContext *ctx) override {
+  virtual std::any visitCatalogName(sqlParser::CatalogNameContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitSchemaName(sqlParser::SchemaNameContext *ctx) override {
+  virtual std::any visitSchemaName(sqlParser::SchemaNameContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitTableName(sqlParser::TableNameContext *ctx) override {
+  virtual std::any visitTableName(sqlParser::TableNameContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitTableAlias(sqlParser::TableAliasContext *ctx) override {
+  virtual std::any visitTableAlias(sqlParser::TableAliasContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitColumnName(sqlParser::ColumnNameContext *ctx) override {
+  virtual std::any visitColumnName(sqlParser::ColumnNameContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitColumnAlias(sqlParser::ColumnAliasContext *ctx) override {
+  virtual std::any visitColumnAlias(sqlParser::ColumnAliasContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitCollationName(sqlParser::CollationNameContext *ctx) override {
+  virtual std::any visitCollationName(sqlParser::CollationNameContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitIndexName(sqlParser::IndexNameContext *ctx) override {
+  virtual std::any visitIndexName(sqlParser::IndexNameContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitPropertyName(sqlParser::PropertyNameContext *ctx) override {
+  virtual std::any visitPropertyName(sqlParser::PropertyNameContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitHintName(sqlParser::HintNameContext *ctx) override {
+  virtual std::any visitHintName(sqlParser::HintNameContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitExprHint(sqlParser::ExprHintContext *ctx) override {
+  virtual std::any visitExprHint(sqlParser::ExprHintContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitPropertyValue(sqlParser::PropertyValueContext *ctx) override {
+  virtual std::any visitPropertyValue(sqlParser::PropertyValueContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitHintValue(sqlParser::HintValueContext *ctx) override {
+  virtual std::any visitHintValue(sqlParser::HintValueContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitIdentifier(sqlParser::IdentifierContext *ctx) override {
+  virtual std::any visitIdentifier(sqlParser::IdentifierContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitQualifier(sqlParser::QualifierContext *ctx) override {
+  virtual std::any visitQualifier(sqlParser::QualifierContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitPrecision(sqlParser::PrecisionContext *ctx) override {
+  virtual std::any visitPrecision(sqlParser::PrecisionContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitScale(sqlParser::ScaleContext *ctx) override {
+  virtual std::any visitScale(sqlParser::ScaleContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitSize(sqlParser::SizeContext *ctx) override {
+  virtual std::any visitSize(sqlParser::SizeContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitLiteral(sqlParser::LiteralContext *ctx) override {
+  virtual std::any visitLiteral(sqlParser::LiteralContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitSimpleLiteral(sqlParser::SimpleLiteralContext *ctx) override {
+  virtual std::any visitSimpleLiteral(sqlParser::SimpleLiteralContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitBooleanLiteral(sqlParser::BooleanLiteralContext *ctx) override {
+  virtual std::any visitBooleanLiteral(sqlParser::BooleanLiteralContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitIntegerLiteral(sqlParser::IntegerLiteralContext *ctx) override {
+  virtual std::any visitIntegerLiteral(sqlParser::IntegerLiteralContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitSignedIntegerLiteral(sqlParser::SignedIntegerLiteralContext *ctx) override {
+  virtual std::any visitSignedIntegerLiteral(sqlParser::SignedIntegerLiteralContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitDecimalLiteral(sqlParser::DecimalLiteralContext *ctx) override {
+  virtual std::any visitDecimalLiteral(sqlParser::DecimalLiteralContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitSignedDecimalLiteral(sqlParser::SignedDecimalLiteralContext *ctx) override {
+  virtual std::any visitSignedDecimalLiteral(sqlParser::SignedDecimalLiteralContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitFloatLiteral(sqlParser::FloatLiteralContext *ctx) override {
+  virtual std::any visitFloatLiteral(sqlParser::FloatLiteralContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitSignedFloatLiteral(sqlParser::SignedFloatLiteralContext *ctx) override {
+  virtual std::any visitSignedFloatLiteral(sqlParser::SignedFloatLiteralContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitDateLiteral(sqlParser::DateLiteralContext *ctx) override {
+  virtual std::any visitDateLiteral(sqlParser::DateLiteralContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitTimeLiteral(sqlParser::TimeLiteralContext *ctx) override {
+  virtual std::any visitTimeLiteral(sqlParser::TimeLiteralContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitTimestampLiteral(sqlParser::TimestampLiteralContext *ctx) override {
+  virtual std::any visitTimestampLiteral(sqlParser::TimestampLiteralContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitStringLiteral(sqlParser::StringLiteralContext *ctx) override {
+  virtual std::any visitStringLiteral(sqlParser::StringLiteralContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitIntervalLiteral(sqlParser::IntervalLiteralContext *ctx) override {
+  virtual std::any visitIntervalLiteral(sqlParser::IntervalLiteralContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitYearMonthInterval(sqlParser::YearMonthIntervalContext *ctx) override {
+  virtual std::any visitYearMonthInterval(sqlParser::YearMonthIntervalContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitDayTimeInterval(sqlParser::DayTimeIntervalContext *ctx) override {
+  virtual std::any visitDayTimeInterval(sqlParser::DayTimeIntervalContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitNonReservedWord(sqlParser::NonReservedWordContext *ctx) override {
+  virtual std::any visitNonReservedWord(sqlParser::NonReservedWordContext *ctx) override {
     return visitChildren(ctx);
   }
 

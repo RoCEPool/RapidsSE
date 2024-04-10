@@ -18,48 +18,50 @@ namespace STORE
    ~Card_Expr(void) noexcept(false);
 
     //-----------------------------------------------------------
-    static Card_Expr* pGby_expr_From_expr_corr(Card_Expr* pExpr_corr);
-    static Card_Expr* pProj_expr_From_Gby_expr(Card_Expr* p_expr_gby, Stz* szAs=nullptr);
-    static Card_Expr* pProj_Simple_expr_Of(Card_Expr* p_expr, i8 i_Col);
+    static void vAssemble_injCrlRsl(CardIter* pCI);
 
-    static Card_Expr* pCraft_expr_nmdCol(Column *pColumn, i8 iExpCol,
-                                         char cTblSyn, i8 iTblCol);
-    static Card_Expr* pCast_expr_term_expCol(Card_Term* p_term);
+    static Card_Expr* pCraft_expr_Of_expr(Card_Expr* p_expr, i8 iExpCol);
+    static Card_Expr* pCraft_expr_Of_symbol(Symbol* pSymbol);
+    static Card_Expr* pCraft_expr_Of_term(Card_Term* p_term);
+    static Card_Expr* pCraft_expr_keyCol_Of_term(Card_Term *p_term);
+    static Card_Expr* pCraft_expr_of_nmdCol(Column *pColumn, i8 iExpCol,
+                                            char cTblSyn, i8 iTblCol);
 
-    void vBump_expCol(i8 nBumpBy, bool bSkipFoldExpr=false);
+    void vApplyCast(CardIter* pCI, Card_Emit* p_Dic_expr);
+    void vBump_expCol(i8 nBumpBy);
     Card_Expr* pClone(void);
     bool bContains(Symbol* pSymbol_arg);
-    void vAppend_nmdCol_synthetic(i8 iExpCol);
     void vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn);
-    void vEnsure_nmdCol(i8 iExpCol);
-    void vEnsure_Cast(CardIter* pCI);
+    void vEnsure_expr_Has_nmdCol(i8 iExpCol);
+
+    Symbol* pFirst_colSym(void);
     Symbol* pFirst_expCol(void);
     Symbol* pFirst_keyCol(void);
-    Symbol* pFirst_nmdCol(void);
     Symbol* pFirst_tblCol(void);
-    Symbol* pGet_Symbol(i8 i_Term);
+
+    Symbol*    pGet_Symbol(i8 i_Term);
     Card_Term* pGet_term(i8 i_Term);
     Card_Term* pGet_term0(void);
-    bool bHasTerm(Symbol* pSymbol);
 
-    bool bIsDescending(void);
+    bool bHasTerm(CardIter* pCI, Symbol* pSymbol);
+
     Card_Expr *pInduct(i8 iExp);
     bool bIsCompound(void);
     bool bIsLiterals(void);
     bool bIsScalarCol(void);
-    bool bIsScalarKey(void);
-    bool bIsExpressionOfKey(void);
+    bool bIsKeyCol(void);
 
     bool bMatches(Card_Expr* p_expr_arg);
 
+    bool bNeedsBrace(void);
     void vPrint(Ribbon* pRibbon, i8 iDepth);
-
-    void vRenumberForm_keyCol(i8 i_Expr);
-    void vRenumberForm_expCol(i8 i_Expr);
 
     bool bSameAs(Card_Expr* pExpr_arg);
 
-    void vShortForm(String* pString, Stz* szSep);
+    void vTransfer(STORE::Card *pChild_src, eSF eSymbol_limit);
+
+
+    void vUpdate_expCol(CardIter* pCI, Card_Emit* p_arriving);
 
     void vX_tblCol_To_expCol(CardIter* pCI);
     void vX_expCol_To_tblCol(CardIter* pCI);

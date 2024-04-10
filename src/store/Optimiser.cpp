@@ -38,10 +38,11 @@ Optimiser::Optimiser(TagSet* p_JobTags)
   m_p_JobTags      = p_JobTags;
   m_pUnOptPipeSpec = nullptr;
   m_pCardCtl       = new CardCtl;
-  
-  m_pBench       = new Bench(this);
 
-  m_pDissector   = new Dissector(m_pBench);
+  m_pBench       = new Bench(this);
+  m_pCI  = new CardIter(m_pBench);
+
+  m_pDissector   = new Dissector(m_pCI,m_pBench);
 
   m_sJoinOrder   = "(none)"_Stz;
 
@@ -51,7 +52,6 @@ Optimiser::Optimiser(TagSet* p_JobTags)
     m_sJoinPermutation[iIndex] = "(none)"_Stz;
   }
 
-  m_pCI = new CardIter(m_pBench);
 
   m_pPipelineDef = nullptr;
 
@@ -380,7 +380,7 @@ Stz* Optimiser::szWeave(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
 
-  Weaver *pWeaver = new Weaver(m_pBench, m_pPipelineDef);
+  Weaver *pWeaver = new Weaver(m_pCI, m_pBench, m_pPipelineDef);
 
   Board *pBoard_query = m_pBench->pGetBoard((i8) 0);
   pWeaver->vWeaveOptStmt(pBoard_query);

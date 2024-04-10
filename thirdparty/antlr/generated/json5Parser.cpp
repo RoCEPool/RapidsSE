@@ -1,5 +1,5 @@
 
-// Generated from /Users/craig/repos/rapidsse/thirdparty/antlr/json5.g4 by ANTLR 4.8
+// Generated from /Users/craig/repos/rapidsse/thirdparty/antlr/json5.g4 by ANTLR 4.13.1
 
 
 #include "json5Visitor.h"
@@ -9,14 +9,110 @@
 
 using namespace antlrcpp;
 using namespace Parser;
+
 using namespace antlr4;
 
-json5Parser::json5Parser(TokenStream *input) : Parser(input) {
-  _interpreter = new atn::ParserATNSimulator(this, _atn, _decisionToDFA, _sharedContextCache);
+namespace {
+
+struct Json5ParserStaticData final {
+  Json5ParserStaticData(std::vector<std::string> ruleNames,
+                        std::vector<std::string> literalNames,
+                        std::vector<std::string> symbolicNames)
+      : ruleNames(std::move(ruleNames)), literalNames(std::move(literalNames)),
+        symbolicNames(std::move(symbolicNames)),
+        vocabulary(this->literalNames, this->symbolicNames) {}
+
+  Json5ParserStaticData(const Json5ParserStaticData&) = delete;
+  Json5ParserStaticData(Json5ParserStaticData&&) = delete;
+  Json5ParserStaticData& operator=(const Json5ParserStaticData&) = delete;
+  Json5ParserStaticData& operator=(Json5ParserStaticData&&) = delete;
+
+  std::vector<antlr4::dfa::DFA> decisionToDFA;
+  antlr4::atn::PredictionContextCache sharedContextCache;
+  const std::vector<std::string> ruleNames;
+  const std::vector<std::string> literalNames;
+  const std::vector<std::string> symbolicNames;
+  const antlr4::dfa::Vocabulary vocabulary;
+  antlr4::atn::SerializedATNView serializedATN;
+  std::unique_ptr<antlr4::atn::ATN> atn;
+};
+
+::antlr4::internal::OnceFlag json5ParserOnceFlag;
+#if ANTLR4_USE_THREAD_LOCAL_CACHE
+static thread_local
+#endif
+Json5ParserStaticData *json5ParserStaticData = nullptr;
+
+void json5ParserInitialize() {
+#if ANTLR4_USE_THREAD_LOCAL_CACHE
+  if (json5ParserStaticData != nullptr) {
+    return;
+  }
+#else
+  assert(json5ParserStaticData == nullptr);
+#endif
+  auto staticData = std::make_unique<Json5ParserStaticData>(
+    std::vector<std::string>{
+      "json5", "obj", "pair", "key", "value", "arr"
+    },
+    std::vector<std::string>{
+      "", "'{'", "','", "'}'", "':'", "'['", "']'"
+    },
+    std::vector<std::string>{
+      "", "", "", "", "", "", "", "SINGLE_LINE_COMMENT", "MULTI_LINE_COMMENT", 
+      "LITERAL", "STRING", "IDENTIFIER", "NUMBER", "WS"
+    }
+  );
+  static const int32_t serializedATNSegment[] = {
+  	4,1,13,67,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,1,0,3,0,14,
+  	8,0,1,0,1,0,1,1,1,1,1,1,1,1,5,1,22,8,1,10,1,12,1,25,9,1,1,1,3,1,28,8,
+  	1,1,1,1,1,1,1,1,1,3,1,34,8,1,1,2,1,2,1,2,1,2,1,3,1,3,1,4,1,4,1,4,1,4,
+  	1,4,3,4,47,8,4,1,5,1,5,1,5,1,5,5,5,53,8,5,10,5,12,5,56,9,5,1,5,3,5,59,
+  	8,5,1,5,1,5,1,5,1,5,3,5,65,8,5,1,5,0,0,6,0,2,4,6,8,10,0,1,1,0,9,11,71,
+  	0,13,1,0,0,0,2,33,1,0,0,0,4,35,1,0,0,0,6,39,1,0,0,0,8,46,1,0,0,0,10,64,
+  	1,0,0,0,12,14,3,8,4,0,13,12,1,0,0,0,13,14,1,0,0,0,14,15,1,0,0,0,15,16,
+  	5,0,0,1,16,1,1,0,0,0,17,18,5,1,0,0,18,23,3,4,2,0,19,20,5,2,0,0,20,22,
+  	3,4,2,0,21,19,1,0,0,0,22,25,1,0,0,0,23,21,1,0,0,0,23,24,1,0,0,0,24,27,
+  	1,0,0,0,25,23,1,0,0,0,26,28,5,2,0,0,27,26,1,0,0,0,27,28,1,0,0,0,28,29,
+  	1,0,0,0,29,30,5,3,0,0,30,34,1,0,0,0,31,32,5,1,0,0,32,34,5,3,0,0,33,17,
+  	1,0,0,0,33,31,1,0,0,0,34,3,1,0,0,0,35,36,3,6,3,0,36,37,5,4,0,0,37,38,
+  	3,8,4,0,38,5,1,0,0,0,39,40,7,0,0,0,40,7,1,0,0,0,41,47,5,10,0,0,42,47,
+  	5,12,0,0,43,47,3,2,1,0,44,47,3,10,5,0,45,47,5,9,0,0,46,41,1,0,0,0,46,
+  	42,1,0,0,0,46,43,1,0,0,0,46,44,1,0,0,0,46,45,1,0,0,0,47,9,1,0,0,0,48,
+  	49,5,5,0,0,49,54,3,8,4,0,50,51,5,2,0,0,51,53,3,8,4,0,52,50,1,0,0,0,53,
+  	56,1,0,0,0,54,52,1,0,0,0,54,55,1,0,0,0,55,58,1,0,0,0,56,54,1,0,0,0,57,
+  	59,5,2,0,0,58,57,1,0,0,0,58,59,1,0,0,0,59,60,1,0,0,0,60,61,5,6,0,0,61,
+  	65,1,0,0,0,62,63,5,5,0,0,63,65,5,6,0,0,64,48,1,0,0,0,64,62,1,0,0,0,65,
+  	11,1,0,0,0,8,13,23,27,33,46,54,58,64
+  };
+  staticData->serializedATN = antlr4::atn::SerializedATNView(serializedATNSegment, sizeof(serializedATNSegment) / sizeof(serializedATNSegment[0]));
+
+  antlr4::atn::ATNDeserializer deserializer;
+  staticData->atn = deserializer.deserialize(staticData->serializedATN);
+
+  const size_t count = staticData->atn->getNumberOfDecisions();
+  staticData->decisionToDFA.reserve(count);
+  for (size_t i = 0; i < count; i++) { 
+    staticData->decisionToDFA.emplace_back(staticData->atn->getDecisionState(i), i);
+  }
+  json5ParserStaticData = staticData.release();
+}
+
+}
+
+json5Parser::json5Parser(TokenStream *input) : json5Parser(input, antlr4::atn::ParserATNSimulatorOptions()) {}
+
+json5Parser::json5Parser(TokenStream *input, const antlr4::atn::ParserATNSimulatorOptions &options) : Parser(input) {
+  json5Parser::initialize();
+  _interpreter = new atn::ParserATNSimulator(this, *json5ParserStaticData->atn, json5ParserStaticData->decisionToDFA, json5ParserStaticData->sharedContextCache, options);
 }
 
 json5Parser::~json5Parser() {
   delete _interpreter;
+}
+
+const atn::ATN& json5Parser::getATN() const {
+  return *json5ParserStaticData->atn;
 }
 
 std::string json5Parser::getGrammarFileName() const {
@@ -24,11 +120,15 @@ std::string json5Parser::getGrammarFileName() const {
 }
 
 const std::vector<std::string>& json5Parser::getRuleNames() const {
-  return _ruleNames;
+  return json5ParserStaticData->ruleNames;
 }
 
-dfa::Vocabulary& json5Parser::getVocabulary() const {
-  return _vocabulary;
+const dfa::Vocabulary& json5Parser::getVocabulary() const {
+  return json5ParserStaticData->vocabulary;
+}
+
+antlr4::atn::SerializedATNView json5Parser::getSerializedATN() const {
+  return json5ParserStaticData->serializedATN;
 }
 
 
@@ -52,7 +152,7 @@ size_t json5Parser::Json5Context::getRuleIndex() const {
 }
 
 
-antlrcpp::Any json5Parser::Json5Context::accept(tree::ParseTreeVisitor *visitor) {
+std::any json5Parser::Json5Context::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<json5Visitor*>(visitor))
     return parserVisitor->visitJson5(this);
   else
@@ -64,7 +164,11 @@ json5Parser::Json5Context* json5Parser::json5() {
   enterRule(_localctx, 0, json5Parser::RuleJson5);
   size_t _la = 0;
 
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
   auto onExit = finally([=] {
+#endif
     exitRule();
   });
   try {
@@ -74,11 +178,7 @@ json5Parser::Json5Context* json5Parser::json5() {
 
     _la = _input->LA(1);
     if ((((_la & ~ 0x3fULL) == 0) &&
-      ((1ULL << _la) & ((1ULL << json5Parser::T__0)
-      | (1ULL << json5Parser::T__4)
-      | (1ULL << json5Parser::LITERAL)
-      | (1ULL << json5Parser::STRING)
-      | (1ULL << json5Parser::NUMBER))) != 0)) {
+      ((1ULL << _la) & 5666) != 0)) {
       setState(12);
       value();
     }
@@ -115,7 +215,7 @@ size_t json5Parser::ObjContext::getRuleIndex() const {
 }
 
 
-antlrcpp::Any json5Parser::ObjContext::accept(tree::ParseTreeVisitor *visitor) {
+std::any json5Parser::ObjContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<json5Visitor*>(visitor))
     return parserVisitor->visitObj(this);
   else
@@ -127,7 +227,11 @@ json5Parser::ObjContext* json5Parser::obj() {
   enterRule(_localctx, 2, json5Parser::RuleObj);
   size_t _la = 0;
 
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
   auto onExit = finally([=] {
+#endif
     exitRule();
   });
   try {
@@ -177,6 +281,8 @@ json5Parser::ObjContext* json5Parser::obj() {
       break;
     }
 
+    default:
+      break;
     }
    
   }
@@ -209,7 +315,7 @@ size_t json5Parser::PairContext::getRuleIndex() const {
 }
 
 
-antlrcpp::Any json5Parser::PairContext::accept(tree::ParseTreeVisitor *visitor) {
+std::any json5Parser::PairContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<json5Visitor*>(visitor))
     return parserVisitor->visitPair(this);
   else
@@ -220,7 +326,11 @@ json5Parser::PairContext* json5Parser::pair() {
   PairContext *_localctx = _tracker.createInstance<PairContext>(_ctx, getState());
   enterRule(_localctx, 4, json5Parser::RulePair);
 
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
   auto onExit = finally([=] {
+#endif
     exitRule();
   });
   try {
@@ -266,7 +376,7 @@ size_t json5Parser::KeyContext::getRuleIndex() const {
 }
 
 
-antlrcpp::Any json5Parser::KeyContext::accept(tree::ParseTreeVisitor *visitor) {
+std::any json5Parser::KeyContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<json5Visitor*>(visitor))
     return parserVisitor->visitKey(this);
   else
@@ -278,7 +388,11 @@ json5Parser::KeyContext* json5Parser::key() {
   enterRule(_localctx, 6, json5Parser::RuleKey);
   size_t _la = 0;
 
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
   auto onExit = finally([=] {
+#endif
     exitRule();
   });
   try {
@@ -286,9 +400,7 @@ json5Parser::KeyContext* json5Parser::key() {
     setState(39);
     _la = _input->LA(1);
     if (!((((_la & ~ 0x3fULL) == 0) &&
-      ((1ULL << _la) & ((1ULL << json5Parser::LITERAL)
-      | (1ULL << json5Parser::STRING)
-      | (1ULL << json5Parser::IDENTIFIER))) != 0))) {
+      ((1ULL << _la) & 3584) != 0))) {
     _errHandler->recoverInline(this);
     }
     else {
@@ -338,7 +450,7 @@ size_t json5Parser::ValueContext::getRuleIndex() const {
 }
 
 
-antlrcpp::Any json5Parser::ValueContext::accept(tree::ParseTreeVisitor *visitor) {
+std::any json5Parser::ValueContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<json5Visitor*>(visitor))
     return parserVisitor->visitValue(this);
   else
@@ -349,7 +461,11 @@ json5Parser::ValueContext* json5Parser::value() {
   ValueContext *_localctx = _tracker.createInstance<ValueContext>(_ctx, getState());
   enterRule(_localctx, 8, json5Parser::RuleValue);
 
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
   auto onExit = finally([=] {
+#endif
     exitRule();
   });
   try {
@@ -425,7 +541,7 @@ size_t json5Parser::ArrContext::getRuleIndex() const {
 }
 
 
-antlrcpp::Any json5Parser::ArrContext::accept(tree::ParseTreeVisitor *visitor) {
+std::any json5Parser::ArrContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<json5Visitor*>(visitor))
     return parserVisitor->visitArr(this);
   else
@@ -437,7 +553,11 @@ json5Parser::ArrContext* json5Parser::arr() {
   enterRule(_localctx, 10, json5Parser::RuleArr);
   size_t _la = 0;
 
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
   auto onExit = finally([=] {
+#endif
     exitRule();
   });
   try {
@@ -487,6 +607,8 @@ json5Parser::ArrContext* json5Parser::arr() {
       break;
     }
 
+    default:
+      break;
     }
    
   }
@@ -499,102 +621,10 @@ json5Parser::ArrContext* json5Parser::arr() {
   return _localctx;
 }
 
-// Static vars and initialization.
-std::vector<dfa::DFA> json5Parser::_decisionToDFA;
-atn::PredictionContextCache json5Parser::_sharedContextCache;
-
-// We own the ATN which in turn owns the ATN states.
-atn::ATN json5Parser::_atn;
-std::vector<uint16_t> json5Parser::_serializedATN;
-
-std::vector<std::string> json5Parser::_ruleNames = {
-  "json5", "obj", "pair", "key", "value", "arr"
-};
-
-std::vector<std::string> json5Parser::_literalNames = {
-  "", "'{'", "','", "'}'", "':'", "'['", "']'"
-};
-
-std::vector<std::string> json5Parser::_symbolicNames = {
-  "", "", "", "", "", "", "", "SINGLE_LINE_COMMENT", "MULTI_LINE_COMMENT", 
-  "LITERAL", "STRING", "IDENTIFIER", "NUMBER", "WS"
-};
-
-dfa::Vocabulary json5Parser::_vocabulary(_literalNames, _symbolicNames);
-
-std::vector<std::string> json5Parser::_tokenNames;
-
-json5Parser::Initializer::Initializer() {
-	for (size_t i = 0; i < _symbolicNames.size(); ++i) {
-		std::string name = _vocabulary.getLiteralName(i);
-		if (name.empty()) {
-			name = _vocabulary.getSymbolicName(i);
-		}
-
-		if (name.empty()) {
-			_tokenNames.push_back("<INVALID>");
-		} else {
-      _tokenNames.push_back(name);
-    }
-	}
-
-  _serializedATN = {
-    0x3, 0x608b, 0xa72a, 0x8133, 0xb9ed, 0x417c, 0x3be7, 0x7786, 0x5964, 
-    0x3, 0xf, 0x45, 0x4, 0x2, 0x9, 0x2, 0x4, 0x3, 0x9, 0x3, 0x4, 0x4, 0x9, 
-    0x4, 0x4, 0x5, 0x9, 0x5, 0x4, 0x6, 0x9, 0x6, 0x4, 0x7, 0x9, 0x7, 0x3, 
-    0x2, 0x5, 0x2, 0x10, 0xa, 0x2, 0x3, 0x2, 0x3, 0x2, 0x3, 0x3, 0x3, 0x3, 
-    0x3, 0x3, 0x3, 0x3, 0x7, 0x3, 0x18, 0xa, 0x3, 0xc, 0x3, 0xe, 0x3, 0x1b, 
-    0xb, 0x3, 0x3, 0x3, 0x5, 0x3, 0x1e, 0xa, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 
-    0x3, 0x3, 0x3, 0x5, 0x3, 0x24, 0xa, 0x3, 0x3, 0x4, 0x3, 0x4, 0x3, 0x4, 
-    0x3, 0x4, 0x3, 0x5, 0x3, 0x5, 0x3, 0x6, 0x3, 0x6, 0x3, 0x6, 0x3, 0x6, 
-    0x3, 0x6, 0x5, 0x6, 0x31, 0xa, 0x6, 0x3, 0x7, 0x3, 0x7, 0x3, 0x7, 0x3, 
-    0x7, 0x7, 0x7, 0x37, 0xa, 0x7, 0xc, 0x7, 0xe, 0x7, 0x3a, 0xb, 0x7, 0x3, 
-    0x7, 0x5, 0x7, 0x3d, 0xa, 0x7, 0x3, 0x7, 0x3, 0x7, 0x3, 0x7, 0x3, 0x7, 
-    0x5, 0x7, 0x43, 0xa, 0x7, 0x3, 0x7, 0x2, 0x2, 0x8, 0x2, 0x4, 0x6, 0x8, 
-    0xa, 0xc, 0x2, 0x3, 0x3, 0x2, 0xb, 0xd, 0x2, 0x49, 0x2, 0xf, 0x3, 0x2, 
-    0x2, 0x2, 0x4, 0x23, 0x3, 0x2, 0x2, 0x2, 0x6, 0x25, 0x3, 0x2, 0x2, 0x2, 
-    0x8, 0x29, 0x3, 0x2, 0x2, 0x2, 0xa, 0x30, 0x3, 0x2, 0x2, 0x2, 0xc, 0x42, 
-    0x3, 0x2, 0x2, 0x2, 0xe, 0x10, 0x5, 0xa, 0x6, 0x2, 0xf, 0xe, 0x3, 0x2, 
-    0x2, 0x2, 0xf, 0x10, 0x3, 0x2, 0x2, 0x2, 0x10, 0x11, 0x3, 0x2, 0x2, 
-    0x2, 0x11, 0x12, 0x7, 0x2, 0x2, 0x3, 0x12, 0x3, 0x3, 0x2, 0x2, 0x2, 
-    0x13, 0x14, 0x7, 0x3, 0x2, 0x2, 0x14, 0x19, 0x5, 0x6, 0x4, 0x2, 0x15, 
-    0x16, 0x7, 0x4, 0x2, 0x2, 0x16, 0x18, 0x5, 0x6, 0x4, 0x2, 0x17, 0x15, 
-    0x3, 0x2, 0x2, 0x2, 0x18, 0x1b, 0x3, 0x2, 0x2, 0x2, 0x19, 0x17, 0x3, 
-    0x2, 0x2, 0x2, 0x19, 0x1a, 0x3, 0x2, 0x2, 0x2, 0x1a, 0x1d, 0x3, 0x2, 
-    0x2, 0x2, 0x1b, 0x19, 0x3, 0x2, 0x2, 0x2, 0x1c, 0x1e, 0x7, 0x4, 0x2, 
-    0x2, 0x1d, 0x1c, 0x3, 0x2, 0x2, 0x2, 0x1d, 0x1e, 0x3, 0x2, 0x2, 0x2, 
-    0x1e, 0x1f, 0x3, 0x2, 0x2, 0x2, 0x1f, 0x20, 0x7, 0x5, 0x2, 0x2, 0x20, 
-    0x24, 0x3, 0x2, 0x2, 0x2, 0x21, 0x22, 0x7, 0x3, 0x2, 0x2, 0x22, 0x24, 
-    0x7, 0x5, 0x2, 0x2, 0x23, 0x13, 0x3, 0x2, 0x2, 0x2, 0x23, 0x21, 0x3, 
-    0x2, 0x2, 0x2, 0x24, 0x5, 0x3, 0x2, 0x2, 0x2, 0x25, 0x26, 0x5, 0x8, 
-    0x5, 0x2, 0x26, 0x27, 0x7, 0x6, 0x2, 0x2, 0x27, 0x28, 0x5, 0xa, 0x6, 
-    0x2, 0x28, 0x7, 0x3, 0x2, 0x2, 0x2, 0x29, 0x2a, 0x9, 0x2, 0x2, 0x2, 
-    0x2a, 0x9, 0x3, 0x2, 0x2, 0x2, 0x2b, 0x31, 0x7, 0xc, 0x2, 0x2, 0x2c, 
-    0x31, 0x7, 0xe, 0x2, 0x2, 0x2d, 0x31, 0x5, 0x4, 0x3, 0x2, 0x2e, 0x31, 
-    0x5, 0xc, 0x7, 0x2, 0x2f, 0x31, 0x7, 0xb, 0x2, 0x2, 0x30, 0x2b, 0x3, 
-    0x2, 0x2, 0x2, 0x30, 0x2c, 0x3, 0x2, 0x2, 0x2, 0x30, 0x2d, 0x3, 0x2, 
-    0x2, 0x2, 0x30, 0x2e, 0x3, 0x2, 0x2, 0x2, 0x30, 0x2f, 0x3, 0x2, 0x2, 
-    0x2, 0x31, 0xb, 0x3, 0x2, 0x2, 0x2, 0x32, 0x33, 0x7, 0x7, 0x2, 0x2, 
-    0x33, 0x38, 0x5, 0xa, 0x6, 0x2, 0x34, 0x35, 0x7, 0x4, 0x2, 0x2, 0x35, 
-    0x37, 0x5, 0xa, 0x6, 0x2, 0x36, 0x34, 0x3, 0x2, 0x2, 0x2, 0x37, 0x3a, 
-    0x3, 0x2, 0x2, 0x2, 0x38, 0x36, 0x3, 0x2, 0x2, 0x2, 0x38, 0x39, 0x3, 
-    0x2, 0x2, 0x2, 0x39, 0x3c, 0x3, 0x2, 0x2, 0x2, 0x3a, 0x38, 0x3, 0x2, 
-    0x2, 0x2, 0x3b, 0x3d, 0x7, 0x4, 0x2, 0x2, 0x3c, 0x3b, 0x3, 0x2, 0x2, 
-    0x2, 0x3c, 0x3d, 0x3, 0x2, 0x2, 0x2, 0x3d, 0x3e, 0x3, 0x2, 0x2, 0x2, 
-    0x3e, 0x3f, 0x7, 0x8, 0x2, 0x2, 0x3f, 0x43, 0x3, 0x2, 0x2, 0x2, 0x40, 
-    0x41, 0x7, 0x7, 0x2, 0x2, 0x41, 0x43, 0x7, 0x8, 0x2, 0x2, 0x42, 0x32, 
-    0x3, 0x2, 0x2, 0x2, 0x42, 0x40, 0x3, 0x2, 0x2, 0x2, 0x43, 0xd, 0x3, 
-    0x2, 0x2, 0x2, 0xa, 0xf, 0x19, 0x1d, 0x23, 0x30, 0x38, 0x3c, 0x42, 
-  };
-
-  atn::ATNDeserializer deserializer;
-  _atn = deserializer.deserialize(_serializedATN);
-
-  size_t count = _atn.getNumberOfDecisions();
-  _decisionToDFA.reserve(count);
-  for (size_t i = 0; i < count; i++) { 
-    _decisionToDFA.emplace_back(_atn.getDecisionState(i), i);
-  }
+void json5Parser::initialize() {
+#if ANTLR4_USE_THREAD_LOCAL_CACHE
+  json5ParserInitialize();
+#else
+  ::antlr4::internal::call_once(json5ParserOnceFlag, json5ParserInitialize);
+#endif
 }
-
-json5Parser::Initializer json5Parser::_init;

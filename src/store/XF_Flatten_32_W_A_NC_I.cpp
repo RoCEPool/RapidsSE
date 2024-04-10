@@ -4,8 +4,6 @@
 
 #include "XF_Flatten_32_W_A_NC_I.hpp"
 
-#include "XF_Fold.hpp"
-#include "XF_Flatten_Smooth.hpp"
 #include "XF_Flatten_Left_subQuery.hpp"
 
 /*----------------------------------------------------------------------------*/
@@ -22,7 +20,7 @@ __aFooterFunction(XF_Flatten_32_W_A_NC_I)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Flatten_32_W_A_NC_I::XF_Flatten_32_W_A_NC_I(CardIter* pCI)
-: XF_TRANSFORM(CN_XF_FLATTEN_32_W_A_NC_I, pCI)
+: XF_FLATTEN(CN_XF_FLATTEN_32_W_A_NC_I, pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_32_W_A_NC_I, _FOOTER_);
 
@@ -42,13 +40,13 @@ XF_Flatten_32_W_A_NC_I::~XF_Flatten_32_W_A_NC_I(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Flatten_32_W_A_NC_I::vXF_Flatten_32_W_A_NC_I(CardIter* pCI)
+void XF_Flatten_32_W_A_NC_I::vFlatten(CardIter* pCI)
 {
   _static_
 
   XF_Flatten_32_W_A_NC_I* pXF_Flatten_32_W_A_NC_I = new XF_Flatten_32_W_A_NC_I(pCI);
 
-  pXF_Flatten_32_W_A_NC_I->vXF_Flatten_32_W_A_NC_I();
+  pXF_Flatten_32_W_A_NC_I->vFlatten();
 
   delete pXF_Flatten_32_W_A_NC_I;
 }
@@ -61,11 +59,11 @@ void XF_Flatten_32_W_A_NC_I::vXF_Flatten_32_W_A_NC_I(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* add level to op                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Flatten_32_W_A_NC_I::vXF_Flatten_32_W_A_NC_I(void)
+void XF_Flatten_32_W_A_NC_I::vFlatten(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_32_W_A_NC_I, _FOOTER_);
 
- // m_pCI->vPrintBoard(__func__,__LINE__);
+ // m_pCI->PRINTBOARD_dbg();
 
   // W A NC I
   // push a (single-value aggregate non-correlated in) sub-query before the main-query
@@ -83,31 +81,26 @@ void XF_Flatten_32_W_A_NC_I::vXF_Flatten_32_W_A_NC_I(void)
       ;
    */
 
-  m_pCI->vTransform(__func__, XF_FLATTEN_32_W_A_NC_I, "((vFlatten_32_W_A_NC_I))"_Stz);
+  m_pCI->vTransform(__FILE__, __func__, XF_FLATTEN_32_W_A_NC_I);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // fold of subQuery
 
-  XF_Fold* pFold = new XF_Fold(0, m_pCI->G.pDeck);
   CarryForward* pCarryForward =
-      pFold->pFold_nc_subQuery(m_pCI, "W_A_NC_I"_Stz,
-                               CK_o_WHERE, QO_IN_OP, SM_NONE);
+      pFold_nc_subQuery(m_pCI, "W_A_NC_I"_Stz, CK_o_WHERE, QO_IN_OP);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // smoothing of: subQuery | XF_Fold | Table* [Where] GbyAgg_PNO [Project (avg)] Having
 
   XF_Flatten_Left_subQuery::vRotate_Next(m_pCI);
 
-  XF_Flatten_Smooth* pSmooth = new XF_Flatten_Smooth;
-  pSmooth->vSmooth(m_pCI,pCarryForward);
+  vSmooth(m_pCI,pCarryForward);
 
-  m_pCI->G.pDeck->vMarksClearRecursive();
+  m_pCI->E.p_deck->vMarksClearRecursive();
 
- // m_pCI->vPrintBoard(__func__,__LINE__);
+ // m_pCI->PRINTBOARD_dbg();
 
   delete pCarryForward;
-  delete pSmooth;
-  delete pFold;
 
   m_pCI->vEndTransform(__LINE__);
 //vValidateBench();

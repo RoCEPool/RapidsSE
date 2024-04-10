@@ -60,9 +60,7 @@ namespace STORE
     void  vDesc(bool bDesc);
     bool  bDesc(void);
     eCN   eGetClassNo(void);
-  
-    Dtm*  aElmSeq_dtm(void);
-    i8    nElmSeqSize(void);
+
     void  vElmSeqSize(i8 nElmSeqSize);
     i8    iEntryNo(void);
     void  vEntryNo(i8 iEntryNo);
@@ -75,8 +73,6 @@ namespace STORE
     i8    iItem(void);
     void  vItem(i8 iItem);
 
-    Key*  aKey(void);
-    eKE   eKind(void);
     void  vKind(eKE eKind);
 
     tET   tNextEntry(i8 i_Level);
@@ -105,7 +101,59 @@ namespace STORE
 
     bool  bValidEnt(void);
     bool  bIsMagicValid(void);
- };
+
+		/*----------------------------------------------------------------------------*/
+		/* get address of the element bytes of the key in this entry                  */
+		/*----------------------------------------------------------------------------*/
+		inline Dtm* aElmSeq_dtm(void)
+		{
+			Dtm* aElmSeq = aKey()->aElmSeq_dtm();
+
+			ASSERT(aElmSeq == aAdd<Dtm*>(this,sizeof(Ent)));
+
+			return aElmSeq;
+		}
+
+		/*----------------------------------------------------------------------------*/
+    /* get size of the element sequence                                           */
+    /*----------------------------------------------------------------------------*/
+		inline i8 nElmSeqSizeGen(void)
+		{
+			return m_xKey.nElmSeqSize();;
+		}
+
+		/*----------------------------------------------------------------------------*/
+		/* get size of the element sequence                                           */
+		/*----------------------------------------------------------------------------*/
+		inline i8 nElmSeqSize(void)
+		{
+			i8 nBytes;
+
+			if (KE_GENERAL == m_xRef.eKind())
+				nBytes = m_xKey.nElmSeqSize();
+			else
+				nBytes = 0;
+
+			return nBytes;
+		}
+
+		/*----------------------------------------------------------------------------*/
+    /* get address of key                                                         */
+    /*----------------------------------------------------------------------------*/
+		inline Key* aKey(void)
+		{
+			return &m_xKey;
+		}
+
+		/*----------------------------------------------------------------------------*/
+		/* get entry key kind                                                        */
+		/*----------------------------------------------------------------------------*/
+		inline eKE eKind(void)
+		{
+			return m_xRef.eKind();
+		}
+
+		};
   
   /*--------------------------------------------------------------------------*/
   /* safe cast                                                                */

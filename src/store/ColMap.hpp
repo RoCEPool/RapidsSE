@@ -16,13 +16,11 @@ namespace STORE
     i8 m_nCols;
 
     struct {
-      i8   m_i_EmittedCol;  // emitted column $n
-
-      bool m_bPayload;      // payload or key?
-      i8   m_i_Cell;        // cell (base 0) of payload/key
-
-      //s32  m_sColNm;
-    } m_axCols[C_COLMAP];
+      bool m_bPayload;      //    payload or key?
+      i8   m_i_Cell;        //    cell (base 0) of payload/key
+                            // ->
+      i8   m_i_EmittedCol;  //    emitted column $n
+    } m_axCol[C_COLMAP];
 
   protected:
     // must be last
@@ -36,7 +34,7 @@ namespace STORE
 
    ~ColMap(void) noexcept(false);
 
-    void vAdd(i8 i_EmittedCol, bool bPayLoad, i8 i_Cell);
+    void vAdd3(bool bPayLoad, i8 i_Cell, i8 i_EmittedCol);
 
     void vDump(i8 i_Tab=0);
 

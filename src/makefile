@@ -54,7 +54,9 @@ endif
 # Variables
 CPP = g++
 
-WARNINGS = -Wall -Wextra -Wno-unused-function $(strip $(LINUX_WARNINGS) $(DARWIN_WARNINGS))
+# Note: We use -Wno-deprecated-declarations because of 3rd party library thrift
+#       uses deprecated methods in the std library
+WARNINGS = -Wall -Wextra -Wno-unused-function -Wno-deprecated-declarations $(strip $(LINUX_WARNINGS) $(DARWIN_WARNINGS))
 
 # Warnings that are treated as errors.
 # We first add the gcc/clang-specific warnings, then we add the warnings
@@ -97,8 +99,8 @@ FRAGMENT_IGNORE_WARNINGS += -Wno-unused-value
 ANTLR_IGNORE_WARNINGS  = $(strip $(LINUX_ANTLR_IGNORE_WARNINGS) $(DARWIN_ANTLR_IGNORE_WARNINGS))
 ANTLR_IGNORE_WARNINGS += -Wno-unused-parameter
 
-CPPFLAGS = -std=c++14 $(WARNINGS) $(ERRORS) -g -O3 $(strip $(LINUX_CPPFLAGS) $(DARWIN_CPPFLAGS))
-CPPFLAGS_DEBUG = -std=c++14 -DWITH_DEBUG_VERSION $(WARNINGS) $(ERRORS) -O0 -g3 $(strip $(LINUX_CPPFLAGS_DEBUG) $(DARWIN_CPPFLAGS_DEBUG))
+CPPFLAGS = -std=c++17 $(WARNINGS) $(ERRORS) -g -O3 $(strip $(LINUX_CPPFLAGS) $(DARWIN_CPPFLAGS))
+CPPFLAGS_DEBUG = -std=c++17 -DWITH_DEBUG_VERSION $(WARNINGS) $(ERRORS) -O0 -g3 $(strip $(LINUX_CPPFLAGS_DEBUG) $(DARWIN_CPPFLAGS_DEBUG))
 
 CFLAGS = $(WARNINGS) $(ERRORS) -g -O3 $(strip $(LINUX_CFLAGS) $(DARWIN_CFLAGS))
 CFLAGS_DEBUG = -DWITH_DEBUG_VERSION $(WARNINGS) $(ERRORS) -Wno-unused -O0 -g3 $(strip $(LINUX_CFLAGS_DEBUG) $(DARWIN_CFLAGS_DEBUG))
@@ -251,6 +253,7 @@ $(OBJ_DIR)/$(SRC_DIR)/../thirdparty/antlr/generated/%.o: $(SRC_DIR)/../thirdpart
 	$(DIR_GUARD)
 	@echo "Compiling ANTLR-generated file: $@"
 	@$(CPP) -c $(CPPFLAGS_ARCH) $(CPPFLAGS) $(ANTLR_IGNORE_WARNINGS) $(INCLUDES)  $< -o $@
+
 
 # Compile general source .cpp files into object files
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp $(OBJ_DIR)/%.d

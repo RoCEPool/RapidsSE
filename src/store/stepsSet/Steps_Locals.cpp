@@ -227,33 +227,33 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
-  else if (szTerm->bSame("Fun0[]"_Stz)) {
-    pCurrentWord->vEncodeCall("Fun0[].set"_Stz);
+  else if (szTerm->bSame("CrwHandler[]"_Stz)) {
+    pCurrentWord->vEncodeCall("CrwHandler[].set"_Stz);
     EXIT();
     return;
   }
-  else if (szTerm->bSame("Fun1[]"_Stz)) {
-    pCurrentWord->vEncodeCall("Fun1[].set"_Stz);
+  else if (szTerm->bSame("PdsHandler[]"_Stz)) {
+    pCurrentWord->vEncodeCall("PdsHandler[].set"_Stz);
     EXIT();
     return;
   }
-  else if (szTerm->bSame("Fun1_[]"_Stz)) {
-    pCurrentWord->vEncodeCall("Fun1_[].set"_Stz);
+  else if (szTerm->bSame("IndexHandler[]"_Stz)) {
+    pCurrentWord->vEncodeCall("IndexHandler[].set"_Stz);
     EXIT();
     return;
   }
-  else if (szTerm->bSame("Fun2[]"_Stz)) {
-    pCurrentWord->vEncodeCall("Fun2[].set"_Stz);
+  else if (szTerm->bSame("EosHandler[]"_Stz)) {
+    pCurrentWord->vEncodeCall("EosHandler[].set"_Stz);
     EXIT();
     return;
   }
-  else if (szTerm->bSame("Fun3[]"_Stz)) {
-    pCurrentWord->vEncodeCall("Fun3[].set"_Stz);
-    EXIT();
-    return;
-  }
-  else if (szTerm->bSame("Fun4[]"_Stz)) {
-    pCurrentWord->vEncodeCall("Fun4[].set"_Stz);
+	else if (szTerm->bSame("StartHandler[]"_Stz)) {
+		pCurrentWord->vEncodeCall("StartHandler[].set"_Stz);
+		EXIT();
+		return;
+	}
+  else if (szTerm->bSame("StreamDefHandler[]"_Stz)) {
+    pCurrentWord->vEncodeCall("StreamDefHandler[].set"_Stz);
     EXIT();
     return;
   }

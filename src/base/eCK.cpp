@@ -59,7 +59,6 @@ Stz* aCK[CK_ENUMS]
 
   /* */ "CK_ADDRESS"_Stz,      // CK_ADDRESS
   /* */ "CK_ANDCONJ"_Stz,      // CK_ANDCONJ
-  /* */ "CK_AS"_Stz,           // CK_AS
 
   /* */ "CK_BOOLPRED"_Stz,     // CK_BOOLPRED
   /* */ "CK_BOUND"_Stz,        // CK_BOUND
@@ -78,7 +77,6 @@ Stz* aCK[CK_ENUMS]
   /* */ "CK_DEBUG"_Stz,        // CK_DEBUG
   /* */ "CK_DECK"_Stz,         // CK_DECK
   /* */ "CK_DECISION"_Stz,     // CK_DECISION
-  /* */ "CK_DIRECTION"_Stz,    // CK_DIRECTION
   /* */ "CK_DISPOSITION"_Stz,  // CK_DISPOSITION
 
   /* */ "CK_EXPR"_Stz,         // CK_EXPR
@@ -117,7 +115,6 @@ Stz* aCK[CK_ENUMS]
   /* */ "CK_ROWCOUNT"_Stz,     // CK_ROWCOUNT
   /* */ "CK_ROWSIZE"_Stz,      // CK_ROWSIZE
   /* */ "CK_RPNCALC"_Stz,      // CK_RPNCALC
-  /* */ "CK_RPNEXPR"_Stz,      // CK_RPNEXPR
 
   /* */ "CK_SECTION"_Stz,      // CK_SECTION
   /* */ "CK_SENDKIND"_Stz,     // CK_SENDKIND
@@ -140,6 +137,7 @@ Stz* aCK[CK_ENUMS]
   /* */ "CK_TABLESIZE"_Stz,    // CK_TABLESIZE
   /* */ "CK_TBLSYN"_Stz,       // CK_TBLSYN
   /* */ "CK_TERM"_Stz,         // CK_TERM
+  /* */ "CK_TERMSEQ"_Stz,      // CK_TERMSEQ
   /* */ "CK_TOPOLOGY"_Stz,     // CK_TOPOLOGY
 
   /* */ "CK_UNIQUE"_Stz,       // CK_UNIQUE
@@ -204,7 +202,6 @@ Stz* aCK_short[CK_ENUMS]
 
   /* */ "address"_Stz,         // CK_ADDRESS
   /* */ "andConj"_Stz,         // CK_ANDCONJ
-  /* */ "as"_Stz,              // CK_AS
 
   /* */ "boolPred"_Stz,        // CK_BOOLPRED
   /* */ "bound"_Stz,           // CK_BOUND
@@ -223,7 +220,6 @@ Stz* aCK_short[CK_ENUMS]
   /* */ "debug"_Stz,           // CK_DEBUG
   /* */ "decision"_Stz,        // CK_DECISION
   /* */ "deck"_Stz,            // CK_DECK
-  /* */ "direction"_Stz,       // CK_DIRECTION
   /* */ "disp"_Stz,            // CK_DISPOSITION
 
   /* */ "expr"_Stz,            // CK_EXPR
@@ -262,7 +258,6 @@ Stz* aCK_short[CK_ENUMS]
   /* */ "rowCount"_Stz,        // CK_ROWCOUNT
   /* */ "rowSize"_Stz,         // CK_ROWSIZE
   /* */ "rpnCalc"_Stz,         // CK_RPNCALC
-  /* */ "rpnTerms"_Stz,        // CK_RPNEXPR
 
   /* */ "section"_Stz,         // CK_SECTION
   /* */ "sendKind"_Stz,        // CK_SENDKIND
@@ -285,6 +280,7 @@ Stz* aCK_short[CK_ENUMS]
   /* */ "tableSize"_Stz,       // CK_TABLESIZE
   /* */ "tblSyn"_Stz,          // CK_TBLSYN
   /* */ "term"_Stz,            // CK_TERM
+  /* */ "termSeq"_Stz,         // CK_TERMSEQ
   /* */ "topology"_Stz,        // CK_TOPOLOGY
 
   /* */ "unique"_Stz,          // CK_UNIQUE

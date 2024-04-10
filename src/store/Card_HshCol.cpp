@@ -50,12 +50,12 @@ void Card_HshCol::vX_tblCol_To_expCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Kid xKid(this);
-  while (xKid.bEach(CK_TERM)) {
-    if (!xKid.p_term()->pSymbol()->bIs_Tbl_Col())
+  Kid xHshCol(this);
+  while (xHshCol.bEach(CK_TERM)) {
+    if (!xHshCol.p_term()->pSymbol()->bHasFacet(SF_TBL_COL))
       continue;
 
-    xKid.p_term()->vX_tblCol_To_expCol(pCI);
+    xHshCol.p_term()->vX_tblCol_To_expCol(pCI);
   }
 }
 
@@ -66,7 +66,14 @@ void Card_HshCol::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  UNUSED(pParent);
+  RASSERT(! pSymbol()->nFacets());
+
+  (void)Card::eValidate_parentEither(pCI,
+                                     CK_s_HSHCOLLIST,
+                                     CK_NONE);
+
+  vValidate_mustHave(CK_TERM,CK_NONE);
+
   Card::vValidate(pCI,iDepth,pParent);
   pCI->vValidateChildren(this,iDepth+1);
   vValidationPassed();

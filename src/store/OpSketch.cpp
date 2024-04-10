@@ -191,11 +191,11 @@ void OpSketch::vCopyColMap(ColMap* pColsMap)
 
   m_pColMap->m_nCols = pColsMap->m_nCols;
   for (i8 i_Col = 0; nCols < pColsMap->m_nCols; i_Col++) {
-    if (pColsMap->m_axCols[i_Col].m_i_EmittedCol != C_UNKNOWN) {
+    if (pColsMap->m_axCol[i_Col].m_i_EmittedCol != C_UNKNOWN) {
       nCols++;
-      m_pColMap->m_axCols[i_Col].m_i_EmittedCol = pColsMap->m_axCols[i_Col].m_i_EmittedCol;
-      m_pColMap->m_axCols[i_Col].m_bPayload = pColsMap->m_axCols[i_Col].m_bPayload;
-      m_pColMap->m_axCols[i_Col].m_i_Cell = pColsMap->m_axCols[i_Col].m_i_Cell;
+      m_pColMap->m_axCol[i_Col].m_i_EmittedCol = pColsMap->m_axCol[i_Col].m_i_EmittedCol;
+      m_pColMap->m_axCol[i_Col].m_bPayload = pColsMap->m_axCol[i_Col].m_bPayload;
+      m_pColMap->m_axCol[i_Col].m_i_Cell = pColsMap->m_axCol[i_Col].m_i_Cell;
     }
   }
 }
@@ -285,7 +285,7 @@ bool OpSketch::bIsPayload(i8 i_Col)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
 
-  return m_pColMap->m_axCols[i_Col].m_bPayload ? true : false;
+  return m_pColMap->m_axCol[i_Col].m_bPayload ? true : false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -296,8 +296,8 @@ bool OpSketch::bIsEmittedColPayload(i8 i_emittedCol)
 	_precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
 
 	for (i8 i_Col = 0; i_Col < m_pColMap->m_nCols; i_Col++) {
-		if (m_pColMap->m_axCols[i_Col].m_i_EmittedCol == i_emittedCol)
-		  return m_pColMap->m_axCols[i_Col].m_bPayload;
+		if (m_pColMap->m_axCol[i_Col].m_i_EmittedCol == i_emittedCol)
+		  return m_pColMap->m_axCol[i_Col].m_bPayload;
 	}
 	RASSERT(0);
 	return false;
@@ -740,7 +740,7 @@ void OpSketch::vGenerateExprStacks(Stz* sExpr, bool bConstraint)
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get asc / desc
-    if (pTkn->bSame("asc"_Stz) || pTkn->bSame("desc"_Stz)) {
+    if (pTkn->bSame(C_ASC) || pTkn->bSame(C_DESC)) {
       continue;
     }
 
@@ -1380,7 +1380,7 @@ void OpSketch::vGetValue(eDM eDatum, char* sValue, i8& iValue, d8& dValue) {
 /*----------------------------------------------------------------------------*/
 /* add the init aggregate                                                     */
 /*----------------------------------------------------------------------------*/
-void OpSketch::vInitAgg(ePE ePreExp)
+void OpSketch::vInitAgg(ePE ePreExp, Stz* sStructColumn)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_OPSKETCH, _FOOTER_);
 
@@ -1391,23 +1391,21 @@ void OpSketch::vInitAgg(ePE ePreExp)
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case PE_ALL:
+		case PE_CNT:
       sOperation.vSprintCat("_PSH_INT(0)"_Stz);
+			sOperation.vSprint("%s = 0;\n"_Stz, sStructColumn);
       break;
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    case PE_CNT:
-      sOperation.vSprintCat("_PSH_INT(0)"_Stz);
-      break;
 
     case PE_MIN:
     case PE_MAX:
+		case PE_SUM:
       sOperation.vSprintCat("_PSH_NULL"_Stz);
+			sOperation.vSprint("%s = C_DATUM_NULL;\n"_Stz, sStructColumn);
       break;
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    case PE_SUM:
-      sOperation.vSprintCat("_PSH_NULL"_Stz);
-      break;
 
     default:
       break;
@@ -1415,6 +1413,40 @@ void OpSketch::vInitAgg(ePE ePreExp)
   }
   // push on the aggregate init stack
   m_pInitStack->vPushStz(sOperation);
+}
+
+/*----------------------------------------------------------------------------*/
+/* add the init aggregate                                                     */
+/*----------------------------------------------------------------------------*/
+void OpSketch::vInitAgg(ePE ePreExp, i8 i_ColPL)
+{
+	_precondition_(_ADDRESS_, _MAGIC_, CN_OPSKETCH, _FOOTER_);
+
+	s256 sOperation;
+	s32  sInitValue;
+
+	switch(ePreExp) {
+
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		case PE_ALL:
+		case PE_CNT:
+			//sOperation.vSprintCat("_PSH_INT(0)"_Stz);
+			sOperation.vSprint("aDynamicT->m_aiPayload[%lld] = 0;"_Stz, i_ColPL);
+			break;
+
+		case PE_MIN:
+		case PE_MAX:
+		case PE_SUM:
+			//sOperation.vSprintCat("_PSH_NULL"_Stz);
+			sOperation.vSprint("aDynamicT->m_aiPayload[%lld] = C_DATUM_NULL;"_Stz, i_ColPL);
+			break;
+
+		default:
+			break;
+			//NEVER_REACH;
+	}
+	// push on the aggregate init stack
+	m_pInitStack->vPushStz(sOperation);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1436,16 +1468,12 @@ void OpSketch::vPushAggCol(TypedStack* pExprStack, ePE ePreExp, eDM eExprType,i8
                         xStencilRow[m_eStencilTo], sColumn.azChar());
 
   if (m_eSketchKind == SK_GBYAGG) {
-    vInitAgg(ePreExp);
-    sOperation.vSprint("_ASSIGN(aDynamicT->m_aiPayload[%lld])"_Stz, i_ColPL);
-    m_pInitStack->vPushStr(sOperation);
+		vInitAgg(ePreExp, i_ColPL);
   } else {
-    vInitAgg(ePreExp);
+    vInitAgg(ePreExp, sStructColumn);
 
     RASSERT(m_eSketchKind == SK_AGGREG ||
             m_eSketchKind == SK_ORDAGG)
-    sOperation.vSprint("_ASSIGN(%s)\n"_Stz, sStructColumn.azChar());
-    m_pInitStack->vPushStr(sOperation);
   }
 
   switch (ePreExp) {
@@ -1841,11 +1869,17 @@ void OpSketch::vPushLiteral(TypedStack* pExprStack, IntStack* pTypeStack, Token*
     case DM_VCH:
       sOperation.vSprintCat("(\"%s\")"_Stz, pTkn->szChars());
       pExprStack->vPushStz(sOperation);
-      if (ePreExp == PE_EXP &&
+			if (ePreExp == PE_EXP) {
+				if (m_eSketchKind == SK_PRJTUB)
+				  pExprStack->vPushStz("_ALLOC_VCH_TUB(azStringDyn)"_Stz);
+				else if (m_eSketchKind == SK_PRJPOT)
+					pExprStack->vPushStz("_ALLOC_VCH_POT(azStringDyn)"_Stz);
+        else if (ePreExp == PE_EXP &&
           m_eSketchKind != SK_FILTER &&
           m_eSketchKind != SK_SEMIJOIN &&
           m_eSketchKind != SK_ANTIJOIN)
         pExprStack->vPushStz("_ALLOC_VCH(szStrArea)"_Stz);
+			}
       break;
     default:
       NEVER_REACH;
@@ -2003,15 +2037,20 @@ void OpSketch::vPushOrdCol(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePr
 
 //  }
 
-
-  if (pColumn->eColumnType() == CT_VARCHAR && ePreExp == PE_EXP &&
-      m_eSketchKind != SK_FILTER &&
-      m_eSketchKind != SK_SORT   &&
-      m_eSketchKind != SK_AGGREG &&
-      m_eSketchKind != SK_SEMIJOIN &&
-      m_eSketchKind != SK_ANTIJOIN
-      )
-    pExprStack->vPushStz("_ALLOC_VCH(szStrArea)"_Stz);
+  if ( pColumn->eColumnType() == CT_VARCHAR && ePreExp == PE_EXP) {
+		if (m_eSketchKind == SK_PRJTUB)
+			pExprStack->vPushStz("_ALLOC_VCH_TUB(azStringDyn)"_Stz);
+		else if (m_eSketchKind == SK_PRJPOT)
+			pExprStack->vPushStz("_ALLOC_VCH_POT(azStringDyn)"_Stz);
+		else if (pColumn->eColumnType() == CT_VARCHAR && ePreExp == PE_EXP &&
+						 (m_eSketchKind != SK_FILTER &&
+							m_eSketchKind != SK_SORT &&
+							m_eSketchKind != SK_AGGREG &&
+							m_eSketchKind != SK_SEMIJOIN &&
+							m_eSketchKind != SK_ANTIJOIN
+						 ))
+			pExprStack->vPushStz("_ALLOC_VCH(szStrArea)"_Stz);
+	}
 
   // push the type
   pTypeStack->vPush((i8)Column::eDatum(pColumn->eColumnType()));
@@ -2258,12 +2297,23 @@ void OpSketch::vPushAssignCol(TypedStack* pExprStack, ePE ePreExp, i8 i_Col, i8 
 			RASSERT(0);
       break;
 
-    case SK_PROJECT:
+		case SK_PROJECT:
       // make the column name
       sPush.vSprint("_ASSIGN(p%s->%s.m_iAsI8)\n"_Stz, xStencilRow[m_eStencilTo].m_szInclude, sColumn.azChar());
 
       pExprStack->vPushStz(sPush);
       break;
+
+		case SK_PRJTUB:
+		case SK_PRJPOT:
+			// make the column name
+			if (pColumn->eColumnType() == CT_VARCHAR)
+			  sPush.vSprint("_ASSIGN_TO_TUB(p%s->%s.m_iAsI8)\n"_Stz, xStencilRow[m_eStencilTo].m_szInclude, sColumn.azChar());
+			else
+				sPush.vSprint("_ASSIGN(p%s->%s.m_iAsI8)\n"_Stz, xStencilRow[m_eStencilTo].m_szInclude, sColumn.azChar());
+
+			pExprStack->vPushStz(sPush);
+			break;
 
     case SK_SORT:
       if (m_pIndexDef->eKeyKind()) {
@@ -2543,6 +2593,8 @@ TypedStack* OpSketch::pWorkingStack( ePE ePreExp, bool bConstraint)
     case SK_PROJECT:
     case SK_SORT:
     case SK_TOP:
+		case SK_PRJTUB:
+		case SK_PRJPOT:
       return m_pExprStack;
 
     case SK_ANTIJOIN:

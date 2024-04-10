@@ -27,6 +27,24 @@ EntBuffer* EntBuffer::pFindLeafBuffer(Key* aForKey)
   return pEntBuffer;
 }
 
+
+/*----------------------------------------------------------------------------*/
+/* position at a leaf buffer starting from this buffer                        */
+/*----------------------------------------------------------------------------*/
+EntBuffer* EntBuffer::pFindLeafBufferAscDsc(Key* aForKey)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
+
+  EntBuffer* pEntBuffer;
+
+  if (KE_INT == m_eEntKind)
+    pEntBuffer = pFindLeafBuffer_ascDscInt(aForKey);
+  else
+    pEntBuffer = pFindLeafBuffer_ascDscGen(aForKey);
+
+  return pEntBuffer;
+}
+
 /*----------------------------------------------------------------------------*/
 /* scan thru skip list and return entry before given key                      */
 /*----------------------------------------------------------------------------*/

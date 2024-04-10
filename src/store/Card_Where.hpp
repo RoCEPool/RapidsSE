@@ -23,10 +23,10 @@ namespace STORE
     static void vDeleteEmpyWhere(CardIter* pCI);
     static void vMarkWhereConjWrtTable(CardIter* pCI);
     static void vMoveWhereConjToTableFilter(CardIter* pCI, Stz* szWithMark);
+    static Card_Where* pNewAssembly(CardIter* pCI=nullptr);
 
-    static Card_Where* pNewWhereAssembly(void);
-
-   void vEarlyProject_add_transients(CardIter* pCI);
+    void vBurstAssembly(CardIter* pCI);
+    void vEarlyProject_add_transients(CardIter* pCI);
     void vEarlyProject_recurse_update(CardIter* pCI);
     void vSmooth(CardIter* pCI, CarryForward* pCarryForward);
 

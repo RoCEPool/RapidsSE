@@ -67,7 +67,7 @@ bool XF_Optimise_Derive_streamKey::bOptimise(void)
 
   bool bOptRun = false;
 
-  m_pCI->vTransform(__func__, XF_OPTIMISE_DERIVE_STREAMKEY, "Derive stream keys"_Stz);
+  m_pCI->vTransform(__FILE__, __func__, XF_OPTIMISE_DERIVE_STREAMKEY);
 
   RASSERT(nullptr == m_pCI->StreamOrder.m_pEmitted);
   RASSERT(nullptr == m_pCI->StreamOrder.m_pStreamKey);
@@ -96,17 +96,18 @@ bool XF_Optimise_Derive_streamKey::bFindStart_streamKey(void)
 
   bool bFoundKeyStart = false;
 
-  m_pCI->vClearRestart();
+  m_pCI->vClearRegisters();
+  m_pCI->vBeginEach();
 
   for (;;) {
-    if (m_pCI->pNextChildIf(CK_o_INDEXSCAN) ||
-        m_pCI->pNextChildIf(CK_o_GBYAGG) ||
-        m_pCI->pNextChildIf(CK_o_SORT) ) {
+    if (m_pCI->pPeekNextIf(CK_o_INDEXSCAN) ||
+        m_pCI->pPeekNextIf(CK_o_GBYAGG) ||
+        m_pCI->pPeekNextIf(CK_o_SORT) ) {
       bFoundKeyStart = true;
       break;
     }
 
-    if (! m_pCI->G_bEachMain_NONE())
+    if (!m_pCI->bEachOp())
       break;
   }
 
@@ -120,21 +121,21 @@ void XF_Optimise_Derive_streamKey::vPropagate_streamKey(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_DERIVE_STREAMKEY, _FOOTER_);
 
-  while (m_pCI->G_bEachMain_NONE()) {
+  while (m_pCI->bEachOp()) {
 
-    switch (m_pCI->G.e_MainCard) {
+    switch (m_pCI->E.e_Op) {
 
-      case CK_o_GBYAGG:     m_pCI->G.p_gbyAgg->vDerive_streamKey(m_pCI);     break;
-      case CK_o_INDEXJOIN:  m_pCI->G.p_indexJoin->vDerive_streamKey(m_pCI);  break;
-      case CK_o_INDEXSCAN:  m_pCI->G.p_indexScan->vDerive_streamKey(m_pCI);  break;
-      case CK_o_PROJECT:    m_pCI->G.p_project->vDerive_streamKey(m_pCI);    break;
-      case CK_o_SORT:       m_pCI->G.p_sort->vDerive_streamKey(m_pCI);       break;
+      case CK_o_GBYAGG:     m_pCI->E.p_gbyAgg->vDerive_streamKey(m_pCI);     break;
+      case CK_o_INDEXJOIN:  m_pCI->E.p_indexJoin->vDerive_streamKey(m_pCI);  break;
+      case CK_o_INDEXSCAN:  m_pCI->E.p_indexScan->vDerive_streamKey(m_pCI);  break;
+      case CK_o_PROJECT:    m_pCI->E.p_project->vDerive_streamKey(m_pCI);    break;
+      case CK_o_SORT:       m_pCI->E.p_sort->vDerive_streamKey(m_pCI);       break;
 
       default:
         break;
     }
 
-   // m_pCI->vPrintBoard(__func__,__LINE__);
+   // m_pCI->PRINTBOARD_dbg();
 
     if (! m_pCI->StreamOrder.m_pStreamKey)
       break;

@@ -1,0 +1,120 @@
+/*============================================================================*/
+/* __Q9_OPT1                                                                  */
+/*============================================================================*/
+
+// Alka's iMAC:
+// SF10-1N4P
+
+/keepCodeFile
+/optimise_passthru
+pipeline unamed
+begin
+
+  stage S00 on origin : 
+      start
+    | pulse     once
+    | next
+
+  stage S01 on all partitions : 
+      scan      nation
+    | next      
+
+  stage S02 on all partitions : 
+    indexJoin Supplier IxS_SUPPKEY " BOUND $I1 "
+    | filter    " type BOOLEAN $8 $1 == "
+    | project   " type VARCHAR ( 25 ) as C0_N_NAME $2
+                , type INTEGER ( 19 ) as C1_S_SUPPKEY $5 "
+    | dynamic
+    | next broadcast
+
+  stage S03 on all partitions :
+    indexJoin Lineitem IxL_SUPPKEY " BOUND $I1 $2 == "
+    | project   " type VARCHAR ( 25 ) as C0_N_NAME $1
+                , type DECIMAL ( 15 2 ) as C1_L_EXTENDEDPRICE $8
+                , type DECIMAL ( 15 2 ) as C2_L_DISCOUNT $9
+                , type DECIMAL ( 15 2 ) as C3_L_QUANTITY $7
+                , type INTEGER ( 19 ) as C4_L_ORDERKEY $3
+                , type INTEGER ( 19 ) as C5_L_PARTKEY $4
+                , type INTEGER ( 19 ) as C6_L_SUPPKEY $5 "
+    | hash      "type INTEGER $6"
+    | dynamic
+    | next      hashcast
+
+  stage S04 on all partitions :
+    indexJoin Part IxP_PARTKEY " BOUND $I1 $6 == "
+    | filter    " type BOOLEAN } $9 '%green%' 5 matchMiddle "
+    | project   "   type VARCHAR ( 25 ) as C0_N_NAME $1
+                , type DECIMAL ( 15 2 ) as C1_L_EXTENDEDPRICE $2
+                , type DECIMAL ( 15 2 ) as C2_L_DISCOUNT $3
+                , type DECIMAL ( 15 2 ) as C3_L_QUANTITY $4
+                , type INTEGER ( 19 ) as C4_L_ORDERKEY $5
+                , type INTEGER ( 19 ) as C5_L_PARTKEY $6
+                , type INTEGER ( 19 ) as C6_L_SUPPKEY $7 "
+    | hash      "type INTEGER $6"
+    |  dynamic
+    | next      hashcast
+
+  stage S05 on all partitions :
+    indexJoin PartSupp IxPS_PARTKEY " BOUND $I1 $6 == "
+    | filter    " type BOOLEAN $9 $7 == "
+    | project   "   type VARCHAR ( 25 ) as C0_N_NAME $1
+                , type DECIMAL ( 15 2 ) as C1_L_EXTENDEDPRICE $2
+                , type DECIMAL ( 15 2 ) as C2_L_DISCOUNT $3
+                , type DECIMAL ( 15 2 ) as C3_PS_SUPPLYCOST $11
+                , type DECIMAL ( 15 2 ) as C4_L_QUANTITY $4
+                , type INTEGER ( 19 ) as C5_L_ORDERKEY $5 "
+    |  dynamic
+    | next      broadcast
+
+  stage S06 on all partitions :
+    indexJoin Orders IxO_ORDERKEY " BOUND $I1 $6 == "
+    | project   "   type VARCHAR as C0_N_NAME $1
+                , type INTEGER ( 19 ) as C1_o_year $11 extract_year
+                , type DECIMAL ( 19 2 ) as C2_amount $2 1.00 $3 - * $4 $5 * - "
+    | gbyAgg    " groupBy
+                  type VARCHAR $1
+                , type INTEGER ( 19 ) $2
+                aggregates
+                  type VARCHAR as C0_COL0 $K1
+                , type INTEGER ( 19 ) as C1_COL1 $K2
+                , type DECIMAL ( 19 2 ) as C2_COL2 ) $3 sum "
+    |  dynamic
+    | next      
+
+  stage S07 on all nodes :
+    gbyAgg    " groupBy
+                  type VARCHAR $1
+                , type INTEGER ( 19 ) $2
+                aggregates
+                  type VARCHAR as C0_COL0 $K1
+                , type INTEGER ( 19 ) as C1_COL1 $K2
+                , type DECIMAL ( 19 2 ) as C2_COL2 ) $3 sum "
+    |  dynamic
+    | next      
+
+  stage S08 on origin :
+    gbyAgg    " groupBy
+                  type VARCHAR $1
+                , type INTEGER ( 19 ) $2
+                aggregates
+                  type VARCHAR as C0_COL0 $K1
+                , type INTEGER ( 19 ) as C1_COL1 $K2
+                , type DECIMAL ( 19 2 ) as C2_sum_profit ) $3 sum "
+    |  dynamic
+    | next      
+
+  stage S09 on origin :
+    sort      " type VARCHAR $1 ASC , type INTEGER ( 19 ) $2 DESC "
+    |  dynamic
+    | next      
+
+  stage S10 on origin :
+      output
+    | sink
+    | first
+
+end ;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

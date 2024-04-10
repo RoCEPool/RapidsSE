@@ -44,61 +44,13 @@ Card_From::~Card_From(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* table projection analysis                                                  */
-/*----------------------------------------------------------------------------*/
-Stz* Card_From::szColNm(i8 i_Col_base0)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Card_TableNm* p_tableNm = pSub_tableNm();
-
-  Table* pTable = Card_Table::pAccess_Table(p_tableNm->szFacet(SF_NONE));
-
-  StreamDef* pStreamDef = pTable->pStreamDef();
-
-  Column* pColumn = pStreamDef->pGetColumn(i_Col_base0);
-
-  Stz* szColNm = pColumn->szColNm();
-
-  return szColNm;
-}
-
-/*----------------------------------------------------------------------------*/
-/* smooth                                                                     */
-/*----------------------------------------------------------------------------*/
-void Card_From::vSmooth(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  pSymbol()->Y_vSet(P_Smoothed);
-
-  pCI->G.p_table = pSub_table();
-
-  pCI->G.p_OP->vRecreate_emit(pCI);
-}
-
-/*----------------------------------------------------------------------------*/
-/* smooth                                                                     */
-/*----------------------------------------------------------------------------*/
-void Card_From::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  pSymbol()->Y_vSet(P_Smoothed);
-
-  pCI->G.p_table = pSub_table();
-
-  RASSERT(pCarryForward->Table.m_bReproject);
-
-  pCI->G.p_OP->vRecreate_emit(pCI);
-}
-
-/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Card_From::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  vValidate_mustHave(CK_s_TABLE, CK_NONE);
 
   Card::vValidate(pCI,iDepth,pParent);
 
@@ -107,7 +59,6 @@ void Card_From::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   pCI->vValidateChildren(this,iDepth+1);
   vValidationPassed();
 }
-
 
 /*============================================================================*/
 /* end                                                                        */

@@ -48,15 +48,15 @@ void Card_Sort::vDerive_streamKey(CardIter* pCI)
 
   RASSERT(bPeg_Projection(pCI));
   RASSERT(bPeg_Key(pCI));
-  pCI->G.p_emit->vDelete_streamKey(pCI);
+  pCI->E.p_emit->vDelete_streamKey(pCI);
 
 
-  pCI->G.p_streamKey = pCI->StreamOrder.m_pStreamKey = Card_StreamKey::pTo_streamKey(pCI->G.p_key);
-  pCI->G.p_emit->vAppendChild(pCI->StreamOrder.m_pStreamKey);
+  pCI->E.p_streamKey = pCI->StreamOrder.m_pStreamKey = Card_StreamKey::pTo_streamKey(pCI->E.p_key);
+  pCI->E.p_emit->vAppendChild(pCI->StreamOrder.m_pStreamKey);
 
 
   // set running projection for use by next op
-  pCI->StreamOrder.m_pEmitted = pCI->G.p_emit;
+  pCI->StreamOrder.m_pEmitted = pCI->E.p_emit;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -64,21 +64,32 @@ void Card_Sort::vDerive_streamKey(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 void Card_Sort::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
   UNUSED(pCarryForward);
 
-  pCI->G.p_key = pCI->G.p_sort->pSub_key();
+  pCI->E.p_key = pCI->E.p_sort->pSub_key();
 
-  if (pCarryForward->Sort.m_bCorrect_After_Inject)
-    pCI->G.p_key->vBump_expCol_In_rpnCalc(pCI);
+//Z_KEY_DIRECTION
+  if (pCarryForward->Sort.m_bCorrect_After_Inject) {
+    for (pCI->vBeginTarget(pCI->E.p_key,CK_EXPR); pCI->bEachTarget(); /**/) {
+      for (Kid xRpnCalc(pCI->E.p_expr->pSub_rpnCalc()); xRpnCalc.bEach(CK_TERM); /**/) {
+        if (xRpnCalc.p_term()->pSymbol()->bHasFacet(SF_EXP_COL)) {
+          xRpnCalc.p_term()->vBump_ordCol(SF_EXP_COL);
+          xRpnCalc.p_term()->vMark1(MARK_CHANGED);
+        }
+      }
+    }
+  }
+
 
   vEnsure_stream(pCI);
 
-  if ((pCI->G.p_emit = pCI->G.p_sort->pSub_emit()))
-    pCI->G.p_sort->vDeleteSub(pCI->G.p_emit);
+  if ((pCI->E.p_emit = pCI->E.p_sort->pSub_emit()))
+    pCI->E.p_sort->vDeleteSub(pCI->E.p_emit);
 
   Card_Emit* p_emit_sort =  pCI->Flux.m_pArriving->pInduct(pCI);
-//  p_emit_sort->vDump(__func__);
+  //p_emit_sort->vDump(__func__);
+  //pCI->G.p_key->vDump(__func__);
 //  for (Kid xKey_sort(pSub_key()); xKey_sort.bEach(); /**/) {
 //    Card_Expr* p_expr_key = xKey_sort.p_expr();
 //
@@ -90,18 +101,21 @@ void Card_Sort::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
 
   for (Kid xEmit_sort(p_emit_sort); xEmit_sort.bEach(); /**/) {
     Card_Expr* p_expr_emit_sort = xEmit_sort.p_expr();
-    Card_Expr* p_expr_key = pCI->G.p_key->pDecode_scalar_expr_Via_symbol(p_expr_emit_sort->pSymbol());
+    Card_Expr* p_expr_key = pCI->E.p_key->pDecode_scalar_expr_Via_symbol(pCI,p_expr_emit_sort->pSymbol());
     if (! p_expr_key)
       continue;
     Symbol* pSym_expr_key = p_expr_key->pSymbol();
-    p_expr_emit_sort->pGet_term(0)->pSymbol()->vConcatFacets(pSym_expr_key);
+    //p_expr_emit_sort->vDump(__func__);
+    //p_expr_key->vDump(__func__);
+    //p_expr_emit_sort->pGet_term(0)->vDump(__func__);
+    p_expr_emit_sort->pGet_term(0)->pSymbol()->vApplyFacets(pSym_expr_key);
    }
 
 
 
-  pCI->G.p_stream->vAppendChild(p_emit_sort);
+  pCI->E.p_stream->vAppendChild(p_emit_sort);
 
-  pCI->Flux.m_pArriving = pSub_emit();
+  pCI->Dic.m_p_expr = pCI->Flux.m_pArriving = pSub_emit();
 }
 
 /*----------------------------------------------------------------------------*/

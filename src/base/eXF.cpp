@@ -11,7 +11,7 @@ Stz* aXF[XF_ENUMS]
   /* */ "XF_EPILOG_ADD_HASH_CAST"_Stz,
   /* */ "XF_EPILOG_ADD_INFLATE"_Stz,
   /* */ "XF_EPILOG_APPEND_SYNTHESIS"_Stz,
-  /* */ "XF_EPILOG_CRAFT_STREAMDEF"_Stz,
+  /* */ "XF_EPILOG_CULL_FACET"_Stz,
   /* */ "XF_EPILOG_DETERMINE_COLUMNS"_Stz,
   /* */ "XF_EPILOG_FUSE_PROJECT"_Stz,
   /* */ "XF_EPILOG_HASH_COLUMNS"_Stz,
@@ -22,7 +22,6 @@ Stz* aXF[XF_ENUMS]
   /* */ "XF_EPILOG_TYPE_CAST"_Stz,
   /* */ "XF_EPILOG_X_STMCOL_TO_COLNM"_Stz,
   /* */ "XF_EPILOG_X_TBLCOL_TO_EXPCOL"_Stz,
-  /* */ "XF_FLATTEN"_Stz,
   /* */ "XF_FLATTEN_10_F"_Stz,
   /* */ "XF_FLATTEN_24_W_A_C_RO"_Stz,
   /* */ "XF_FLATTEN_32_W_A_NC_I"_Stz,
@@ -41,11 +40,10 @@ Stz* aXF[XF_ENUMS]
   /* */ "XF_FLATTEN_LEFT_SUBQUERY"_Stz,
   /* */ "XF_FLATTEN_PREDICATE_PULLUP"_Stz,
   /* */ "XF_FLATTEN_PREDICATE_REPOSITION"_Stz,
-  /* */ "XF_FLATTEN_SMOOSH"_Stz,
-  /* */ "XF_FLATTEN_SMOOTH"_Stz,
+  /* */ "XF_FLATTEN_SUBQUERY"_Stz,
   /* */ "XF_FLATTEN_X_EXPCOL_TO_TBLCOL"_Stz,
   /* */ "XF_OPTIMISE_AGGREG_TO_SORT_ORDAGG"_Stz,
-  /* */ "XF_OPTIMISE_CULL_NONUSED_BOUND"_Stz,
+  /* */ "XF_OPTIMISE_CULL_BOUND"_Stz,
   /* */ "XF_OPTIMISE_CULL_USED_BOUND"_Stz,
   /* */ "XF_OPTIMISE_CUT_SORT"_Stz,
   /* */ "XF_OPTIMISE_DERIVE_STREAMKEY"_Stz,
@@ -83,6 +81,7 @@ Stz* aXF[XF_ENUMS]
   /* */ "XF_PROLOG_X_RPNCALC_TO_BOOLPRED"_Stz,
   /* */ "XF_PROLOG_X_SCAN_TO_FROM"_Stz,
   /* */ "XF_SYNTHESISE_CODE"_Stz,
+  /* */ "XF_VERIFY_DIC"_Stz,
 
 //  /* */ "XF_ENUMS"_Stz
 };
@@ -93,7 +92,7 @@ Stz* aXF_desc[XF_ENUMS]
 
   /* */ "<to be supplied>"_Stz, // XF_EPILOG_ADD_HASH_CAST
   /* */ "<to be supplied>"_Stz, // XF_EPILOG_APPEND_SYNTHESIS
-  /* */ "<to be supplied>"_Stz, // XF_EPILOG_CRAFT_STREAMDEF
+  /* */ "<to be supplied>"_Stz, // XF_EPILOG_CULL_FACET
   /* */ "<to be supplied>"_Stz, // XF_EPILOG_DETERMINE_COLUMNS
   /* */ "<to be supplied>"_Stz, // XF_EPILOG_FUSE_PROJECT
   /* */ "<to be supplied>"_Stz, // XF_EPILOG_HASH_COLUMNS
@@ -103,7 +102,6 @@ Stz* aXF_desc[XF_ENUMS]
   /* */ "<to be supplied>"_Stz, // XF_EPILOG_REINSTATE_STAGE
   /* */ "<to be supplied>"_Stz, // XF_EPILOG_X_STMCOL_TO_COLNM
   /* */ "<to be supplied>"_Stz, // XF_EPILOG_X_TBLCOL_TO_EXPCOL
-  /* */ "<to be supplied>"_Stz, // XF_FLATTEN
   /* */ "<to be supplied>"_Stz, // XF_FLATTEN_10_F
   /* */ "<to be supplied>"_Stz, // XF_FLATTEN_24_W_A_C_RO
   /* */ "<to be supplied>"_Stz, // XF_FLATTEN_32_W_A_NC_I
@@ -122,11 +120,10 @@ Stz* aXF_desc[XF_ENUMS]
   /* */ "<to be supplied>"_Stz, // XF_FLATTEN_LEFT_SUBQUERY
   /* */ "<to be supplied>"_Stz, // XF_FLATTEN_PREDICATE_PULLUP
   /* */ "<to be supplied>"_Stz, // XF_FLATTEN_PREDICATE_REPOSITION
-  /* */ "<to be supplied>"_Stz, // XF_FLATTEN_SMOOSH
-  /* */ "<to be supplied>"_Stz, // XF_FLATTEN_SMOOTH
+  /* */ "<to be supplied>"_Stz, // XF_FLATTEN_SUBQUERY
   /* */ "<to be supplied>"_Stz, // XF_FLATTEN_X_EXPCOL_TO_TBLCOL
   /* */ "<to be supplied>"_Stz, // XF_OPTIMISE_AGGREG_TO_SORT_ORDAGG
-  /* */ "<to be supplied>"_Stz, // XF_OPTIMISE_CULL_NONUSED_BOUND
+  /* */ "<to be supplied>"_Stz, // XF_OPTIMISE_CULL_BOUND
   /* */ "<to be supplied>"_Stz, // XF_OPTIMISE_CULL_USED_BOUND
   /* */ "<to be supplied>"_Stz, // XF_OPTIMISE_CUT_SORT
   /* */ "<to be supplied>"_Stz, // XF_OPTIMISE_DERIVE_STREAMKEY
@@ -163,6 +160,7 @@ Stz* aXF_desc[XF_ENUMS]
   /* */ "<to be supplied>"_Stz, // XF_PROLOG_X_RPNCALC_TO_BOOLPRED
   /* */ "<to be supplied>"_Stz, // XF_PROLOG_X_SCAN_TO_FROM
   /* */ "<to be supplied>"_Stz, // XF_SYNTHESISE_CODE
+  /* */ "<to be supplied>"_Stz, // XF_VERIFY_DIC
 
 // /* */        // XF_ENUMS"_Stz
 };

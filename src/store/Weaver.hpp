@@ -14,6 +14,8 @@ namespace STORE
   {
   protected:
 
+    CardIter* m_pCI;
+
     PipelineDef* m_pPipelineDef;
 
     Card_Deck* m_pDeck;
@@ -34,7 +36,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    Weaver(Bench* pBench, PipelineDef* pPipelineDef);
+    Weaver(CardIter* pCI, Bench* pBench, PipelineDef* pPipelineDef);
    ~Weaver(void) noexcept(false);
   
     void vWeaveOptStmt(Board* pBoard);

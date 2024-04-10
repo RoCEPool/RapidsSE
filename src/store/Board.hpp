@@ -19,7 +19,6 @@
 #include "Card_AGGREGATE.hpp"
 #include "Card_Aggreg.hpp"
 #include "Card_AndConj.hpp"
-#include "Card_As.hpp"
 
 #include "Card_BoolPred.hpp"
 #include "Card_Bound.hpp"
@@ -46,7 +45,6 @@
 #include "Card_Debug.hpp"
 #include "Card_Deck.hpp"
 #include "Card_Decision.hpp"
-#include "Card_Direction.hpp"
 
 #include "Card_Emit.hpp"
 #include "Card_Expr.hpp"         //
@@ -90,7 +88,7 @@
 #include "Card_Level.hpp"        //
 #include "Card_Limit.hpp"        //
 
-#include "Card_MAIN.hpp"
+#include "Card_OP.hpp"
 #include "Card_Map.hpp"
 #include "Card_Mapping.hpp"      //
 
@@ -114,7 +112,7 @@
 #include "Card_RowCount.hpp"
 #include "Card_RowSize.hpp"
 #include "Card_RpnCalc.hpp"
-#include "Card_RpnExpr.hpp"
+#include "Card_TermSeq.hpp"
 
 #include "Card_Scan.hpp"
 #include "Card_Section.hpp"
@@ -194,10 +192,9 @@ namespace STORE
     Board(i8 i_Board, eBK eBoard, Stz* szSqyNm, Bench* pBench);
    ~Board(void) noexcept(false);
 
-    static void vDerive_foldExpr_H_A_NC_ro(CardIter* pCI, SubQuery* pSubQuery_leftmost);
     static void vDerive_foldProjection_F(CardIter* pCI);
 
-    static bool bFindAndMarkSubQryCall(CardIter* p_conj);
+    static bool bMark_sqyCall(CardIter* pCI);
 
     i8   i_Board(void);
     void vBoardNo(i8 i_Board);
@@ -210,7 +207,7 @@ namespace STORE
 
     void vEndPhase(void);
 
-    void vPrintBoard(CardIter* pCI, Stz* szDescription=nullptr);
+    void vPrintBoard(CardIter* pCI);
 
     bool bPastPhase(eOH ePhase);
 
@@ -227,9 +224,7 @@ namespace STORE
   private:
     void vPinMargin(Ribbon* pRibbon);
     void vPinCards(CardIter* pCI, Ribbon* pRibbon);
-    void vPinTitle(Ribbon* pRibbon,
-                   i8 iTransformNo,
-                   Stz* szExplain=nullptr);
+    void vPinTitle(Ribbon* pRibbon);
 
     Footer* aFooter(void);
   };

@@ -2103,7 +2103,7 @@ void vTest34(void)
 	}
 
 	//StreamDef* pStreamDef = StreamDef::pStreamDefNew(16, aColumnInfo);
-	pRowPix = (RowPix*)RowPix::aRowPixNew(16, aColumnInfo);
+	pRowPix = RowPix::pRowPixNew(16, aColumnInfo);
 
 	for (i8 iIndex = 0; iIndex < 10000; iIndex++) {
 		pPdsBuffer = new Pds(pRowPix);

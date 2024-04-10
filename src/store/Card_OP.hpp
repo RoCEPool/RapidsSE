@@ -3,13 +3,14 @@
 /*============================================================================*/
 #pragma once
 
-#include "Card_MAIN.hpp"
+#include "Card.hpp"
+#include "Card_symbol.hpp"
 #include "IndexDef.hpp"
 #include "ColMap.hpp"
 
 namespace STORE
 {
-  class Card_OP : public Card_MAIN
+  class Card_OP : public Card_symbol<Card_OP>
   {  
   public:
     Card_OP(eCK eCard, i8 iFixedDepth);
@@ -21,9 +22,9 @@ namespace STORE
     void vApply_lambdaFn_ToAll_term(CardIter* pCI,
                                     std::function<bool(Card* pCard)> bfLambdaFn);
 
-    void vCorrect_expCol(Card_Emit* p_arriving);
+    void vUpdate_expCol(CardIter* pCI, Card_Emit* p_arriving, bool bAlt=false);
 
-    void vCullIfEmpty_filter(Card_Filter* p_filter);
+    void vCull_filter_IfEmpty(Card_Filter* p_filter);
 
     void vEarlyProject_root(CardIter* pCI);
     void vEarlyProject_backstep(CardIter* pCI);
@@ -43,36 +44,36 @@ namespace STORE
     bool bPeg_Key(CardIter* pCI);
     bool bPeg_Projection(CardIter* pCI);
 
-    void vRecreate_emit(CardIter* pCI, bool bRecreate=false);
+    void vRestate_emit(CardIter* pCI);
 
-    void vRpn_aggreg      (String* psRpnExpr, Card_Aggreg*    p_aggreg);
-    void vRpn_crossJoin   (String* psRpnExpr, Card_CrossJoin* p_crossJoin);
-    void vRpn_filter      (String* psRpnExpr, Card_Filter*    p_filter);
-    void vRpn_gbyAgg      (String* psRpnExpr, Card_GbyAgg*    p_gbyAgg);
-    void vRpn_hash        (String* psRpnExpr, Card_Hash*      p_hash);
-    void vRpn_having      (String* psRpnExpr, Card_Having*    p_having);
-    void vRpn_indexJoin   (String* psRpnExpr, Card_IndexJoin* p_indexJoin);
-    void vRpn_indexJoin_constraint(String* psRpnExpr, Card_IndexJoin* p_indexJoin);
-    void vRpn_indexScan   (String* psRpnExpr, Card_IndexScan* p_indexScan);
-    void vRpn_inflate     (String* psRpnExpr, Card_Inflate*   p_inflate);
-    void vRpn_keyExists   (String* psRpnExpr, Card_KeyExists* p_keyExists);
-    void vRpn_keyExists_constraint(String* psRpnExpr, Card_KeyExists* p_keyExists);
-    void vRpn_keyNotExists(String* psRpnExpr, Card_KeyNotExists* p_keyNotExists);
-    void vRpn_keyNotExists_constraint(String* psRpnExpr, Card_KeyNotExists* p_keyNotExists);
-    void vRpn_limit       (String* psRpnExpr, Card_Limit*     p_limit);
-    void vRpn_ordAgg      (String* psRpnExpr, Card_OrdAgg*    p_ordAgg);
-    void vRpn_project     (String* psRpnExpr, Card_Project*   p_project);
-    void vRpn_scan        (String* psRpnExpr, Card_Scan*      p_scan);
-    void vRpn_sort        (String* psRpnExpr, Card_Sort*      p_sort);
-    void vRpn_top         (String* psRpnExpr, Card_Top*       p_top);
-    void vRpn_where       (String* psRpnExpr, Card_Where*     p_where);
+    void vRpn_aggreg      (CardIter* pCI, String* psRpnExpr, Card_Aggreg*    p_aggreg);
+    void vRpn_crossJoin   (CardIter* pCI, String* psRpnExpr, Card_CrossJoin* p_crossJoin);
+    void vRpn_filter      (CardIter* pCI, String* psRpnExpr, Card_Filter*    p_filter);
+    void vRpn_gbyAgg      (CardIter* pCI, String* psRpnExpr, Card_GbyAgg*    p_gbyAgg);
+    void vRpn_hash        (CardIter* pCI, String* psRpnExpr, Card_Hash*      p_hash);
+    void vRpn_having      (CardIter* pCI, String* psRpnExpr, Card_Having*    p_having);
+    void vRpn_indexJoin   (CardIter* pCI, String* psRpnExpr, Card_IndexJoin* p_indexJoin);
+    void vRpn_indexJoin_constraint(CardIter* pCI, String* psRpnExpr, Card_IndexJoin* p_indexJoin);
+    void vRpn_indexScan   (CardIter* pCI, String* psRpnExpr, Card_IndexScan* p_indexScan);
+    void vRpn_inflate     (CardIter* pCI, String* psRpnExpr, Card_Inflate*   p_inflate);
+    void vRpn_keyExists   (CardIter* pCI, String* psRpnExpr, Card_KeyExists* p_keyExists);
+    void vRpn_keyExists_constraint(CardIter* pCI, String* psRpnExpr, Card_KeyExists* p_keyExists);
+    void vRpn_keyNotExists(CardIter* pCI, String* psRpnExpr, Card_KeyNotExists* p_keyNotExists);
+    void vRpn_keyNotExists_constraint(CardIter* pCI, String* psRpnExpr, Card_KeyNotExists* p_keyNotExists);
+    void vRpn_limit       (CardIter* pCI, String* psRpnExpr, Card_Limit*     p_limit);
+    void vRpn_ordAgg      (CardIter* pCI, String* psRpnExpr, Card_OrdAgg*    p_ordAgg);
+    void vRpn_project     (CardIter* pCI, String* psRpnExpr, Card_Project*   p_project);
+    void vRpn_scan        (CardIter* pCI, String* psRpnExpr, Card_Scan*      p_scan);
+    void vRpn_sort        (CardIter* pCI, String* psRpnExpr, Card_Sort*      p_sort);
+    void vRpn_top         (CardIter* pCI, String* psRpnExpr, Card_Top*       p_top);
+    void vRpn_where       (CardIter* pCI, String* psRpnExpr, Card_Where*     p_where);
 
-    void vRpn_expr        (String* psRpnExpr, Card_Expr*      p_expr);
-    void vRpn_rpnCalc     (String* psRpnExpr, Card_RpnCalc*   p_rpnCalc);
-    void vRpn_term        (String* psRpnExpr, Card_Term*      p_term);
+    void vRpn_expr        (CardIter* pCI, String* psRpnExpr, Card_Expr*      p_expr);
+    void vRpn_rpnCalc     (CardIter* pCI, String* psRpnExpr, Card_RpnCalc*   p_rpnCalc);
+    void vRpn_term        (CardIter* pCI, String* psRpnExpr, Card_Term*      p_term);
 
     Index*     pGetIndex_chosenIndex(void);
-    IndexDef*  pCraftIndexDef_key(void);
+    IndexDef*  pCraftIndexDef_key(CardIter* pCI);
     StreamDef* pCraftStreamDef_emitted(ColMap** ppColMap);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);

@@ -18,8 +18,6 @@ namespace STORE
 
     static Card_StreamKey* pTo_streamKey(Card_Key* p_key);
 
-    bool bIsEquivalentTo(Card_Key* p_key);
-
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 

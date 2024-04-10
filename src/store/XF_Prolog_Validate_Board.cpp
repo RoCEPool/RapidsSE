@@ -68,14 +68,15 @@ void XF_Prolog_Validate_Board::vValidate(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_VALIDATE_BOARD, _FOOTER_);
 
-  m_pCI->vTransform(__func__, XF_PROLOG_VALIDATE_BOARD, "validate boards"_Stz);
+  m_pCI->vTransform(__FILE__, __func__, XF_PROLOG_VALIDATE_BOARD);
 
-  Card_OP* p_OP = nullptr;
+  Card* p_OP = nullptr;
   //Card_Scan* p_scan = nullptr;
 
-  m_pCI->vClearRestart();
-  while (m_pCI->G_bEachMain_NONE()) {
-    switch (m_pCI->G.e_MainCard) {
+  m_pCI->vClearRegisters();
+  m_pCI->vBeginEach();
+  while (m_pCI->bEachOp()) {
+    switch (m_pCI->E.e_Op) {
 
       //case CK_o_SCAN: p_scan = m_pCI->G.p_scan; break;
 
@@ -93,8 +94,8 @@ void XF_Prolog_Validate_Board::vValidate(void)
         break;
 
       default:
-        if (m_pCI->G.p_OP)
-          p_OP = m_pCI->G.p_OP;
+        if (m_pCI->E.p_Op->bIsOp())
+          p_OP = m_pCI->E.p_Op;
         break;
     }
   }

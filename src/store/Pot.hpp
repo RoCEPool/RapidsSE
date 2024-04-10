@@ -13,7 +13,7 @@ namespace STORE
 
   class Pot : public Object
   {
-  private:
+  public:
   
     RowPix* m_pRowPix;    // condensed stream def
 
@@ -45,8 +45,8 @@ namespace STORE
     void vRowPix(RowPix* pRowPix);
   
     i8 nBuffers(void);
-  
-  private:
+
+	public:
     void vAddBuffer(i8 i_Ptn, DataBuffer* pDataBuffer);
 
     Footer* aFooter(void);

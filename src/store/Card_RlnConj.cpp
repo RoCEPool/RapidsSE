@@ -56,36 +56,30 @@ Card_RlnConj* Card_RlnConj::pClone(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* get the subquery correlation parameter                                     */
 /*----------------------------------------------------------------------------*/
-Card_Term* Card_RlnConj::pGetCorrCol(void)
+Card_Term* Card_RlnConj::pGet_term_crlKey(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-//  i8 nChildren = this->nChildCards();
-//  if (2 != nChildren)
-//    return nullptr;
 
   RASSERT(bIsCorrConj());
 
   Card* p_child_0 = this->pGetChild(0);
   Card* p_child_1 = this->pGetChild(1);
 
-  if (p_child_0->pSymbol()->bIs_Sqy_Prm())
+  if (p_child_0->pSymbol()->bHasFacet(SF_SQY_PRM))
     return _pCard_Term(p_child_1);
 
-  else
-  if (p_child_1->pSymbol()->bIs_Sqy_Prm())
+  if (p_child_1->pSymbol()->bHasFacet(SF_SQY_PRM))
     return _pCard_Term(p_child_0);
 
-  else
-    return nullptr;
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
 /* validate                                                                   */
 /*----------------------------------------------------------------------------*/
-void Card_RlnConj::vEnsure_Cast(CardIter *pCI)
+void Card_RlnConj::vApplyCast(CardIter *pCI, Card_Emit* p_Dic_expr)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -103,17 +97,17 @@ void Card_RlnConj::vEnsure_Cast(CardIter *pCI)
     switch (eCard) {
 
       case CK_ANDCONJ:
-        _pCard_AndConj(pCard)->vEnsure_Cast(pCI); break;
+        _pCard_AndConj(pCard)->vApplyCast(pCI, /*??*/p_Dic_expr); break;
       case CK_NOTCONJ:
-        _pCard_NotConj(pCard)->vEnsure_Cast(pCI); break;
+        _pCard_NotConj(pCard)->vApplyCast(pCI, /*??*/p_Dic_expr); break;
       case CK_ORCONJ:
-        _pCard_OrConj(pCard)->vEnsure_Cast(pCI);  break;
+        _pCard_OrConj(pCard)->vApplyCast(pCI, /*??*/p_Dic_expr);  break;
       case CK_RLNCONJ:
-        _pCard_RlnConj(pCard)->vEnsure_Cast(pCI); break;
+        _pCard_RlnConj(pCard)->vApplyCast(pCI, /*??*/p_Dic_expr); break;
 
 
       case CK_TERM:
-        _pCard_Term(pCard)->vEnsure_Cast(pCI, xCast_last);  break;
+        _pCard_Term(pCard)->vApplyCast(pCI, /*??*/p_Dic_expr, xCast_last);  break;
 
       default:
         NEVER_REACH
@@ -129,7 +123,7 @@ char Card_RlnConj::cGetTable_a(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Term* p_term_this_a = _pCard_Term(pGetChild(0));
-  char cTableSyn_this_a = p_term_this_a->szFacet(SF_NONE)->azChar()[1];
+  char cTableSyn_this_a = p_term_this_a->pSymbol()->cTblSyn();
 
   return cTableSyn_this_a;
 }
@@ -142,7 +136,7 @@ char Card_RlnConj::cGetTable_b(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Term* p_term_this_b = _pCard_Term(pGetChild(1));
-  char cTableSyn_this_b = p_term_this_b->szFacet(SF_NONE)->azChar()[1];
+  char cTableSyn_this_b = p_term_this_b->pSymbol()->cTblSyn();
 
   return cTableSyn_this_b;
 }
@@ -181,9 +175,9 @@ bool Card_RlnConj::bIsEq(Card_RlnConj* p_rlnConj_arg)
   if (nChildCards() != p_rlnConj_arg->nChildCards())
     return false;
 
-  for (Kid xKid(this); xKid.bEach(); /**/) {
-    Card_Term* p_term_this = xKid.p_term();
-    Card_Term* p_term_that = p_rlnConj_arg->pGetTerm(xKid.i_Child());
+  for (Kid xRlnConj(this); xRlnConj.bEach(); /**/) {
+    Card_Term* p_term_this = xRlnConj.p_term();
+    Card_Term* p_term_that = p_rlnConj_arg->pGetTerm(xRlnConj.i_Child());
 
     Symbol* pSymbol_this = p_term_this->pSymbol();
     Symbol* pSymbol_that = p_term_that->pSymbol();
@@ -242,15 +236,15 @@ bool Card_RlnConj::bIsIndexBound(Card_Index* p_index)
   Card_Term* pTerm_0 = _pCard_Term(this->pGetChild(0));
   Card_Term* pTerm_1 = _pCard_Term(this->pGetChild(1));
 
-  if (pTerm_0->pSymbol()->bIs_Tbl_Col()) {
+  if (pTerm_0->pSymbol()->bHasFacet(SF_TBL_COL)) {
     // + term_0 is $c.n
 
-    if (pTerm_1->pSymbol()->bIs_Tbl_Col()) {
+    if (pTerm_1->pSymbol()->bHasFacet(SF_TBL_COL)) {
       // + both are term:$c.n
 
       // ? is either term_0:$c.n or term_1:$c.n an index column
-      if (p_index->bTblCol_IsKeyIn_index(pTerm_0->szFacet(SF_NONE)) ||
-          p_index->bTblCol_IsKeyIn_index(pTerm_1->szFacet(SF_NONE)) )
+      if (p_index->bTblCol_IsKeyIn_index(pTerm_0->szFacet(SF_TBL_COL)) ||
+          p_index->bTblCol_IsKeyIn_index(pTerm_1->szFacet(SF_TBL_COL)) )
         return true;
 
       return false;
@@ -259,18 +253,18 @@ bool Card_RlnConj::bIsIndexBound(Card_Index* p_index)
       // + only term_0 is $c.n
 
       // ? is term_0:$c.n an index column
-      if (p_index->bTblCol_IsKeyIn_index(pTerm_0->szFacet(SF_NONE)))
+      if (p_index->bTblCol_IsKeyIn_index(pTerm_0->szFacet(SF_TBL_COL)))
         return true;
 
       return false;
     }
   }
   else
-  if (pTerm_1->pSymbol()->bIs_Tbl_Col()) {
+  if (pTerm_1->pSymbol()->bHasFacet(SF_TBL_COL)) {
     // + only term_1 is $c.n
 
     // ? is term_0:$c.n an index column
-    if (p_index->bTblCol_IsKeyIn_index(pTerm_1->szFacet(SF_NONE)) )
+    if (p_index->bTblCol_IsKeyIn_index(pTerm_1->szFacet(SF_TBL_COL)) )
       return true;
 
     return false;
@@ -287,9 +281,9 @@ char Card_RlnConj::cOtherTable(char cTblSyn)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Term* p_term_this_0 = _pCard_Term(pGetChild(0));
-  char cTableSyn_this_0 = p_term_this_0->szFacet(SF_NONE)->azChar()[1];
+  char cTableSyn_this_0 = p_term_this_0->pSymbol()->cTblSyn();
   Card_Term* p_term_this_1 = _pCard_Term(pGetChild(1));
-  char cTableSyn_this_1 = p_term_this_1->szFacet(SF_NONE)->azChar()[1];
+  char cTableSyn_this_1 = p_term_this_1->pSymbol()->cTblSyn();
 
   if (cTableSyn_this_0 == cTblSyn)
     return cTableSyn_this_1;
@@ -304,28 +298,29 @@ bool Card_RlnConj::bSubsetOf_bounds(Card_Bounds* p_bounds)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Kid xKid(p_bounds);
-  while (xKid.bEach(CK_BOUND)) {
+  Kid xBounds(p_bounds);
+  while (xBounds.bEach(CK_BOUND)) {
+    Card_Bound* p_bound = xBounds.p_bound();
+    Symbol* pSym_bound = p_bound->pSymbol();
 
-//    Stz* sz_bnd_idxCol = xKid.G.p_bound->pGetChild(0)->szFacet(SF_NONE);
-    Stz* sz_bnd_expCol = xKid.p_bound()->pGetChild(1)->szFacet(SF_NONE);
-    Stz* sz_bnd_rlnOpr    = xKid.p_bound()->szFacet(SF_NONE);
+    Card* p_child1_bound = p_bound->pGetChild(1);
+    Symbol* pSym_child1_bound = p_child1_bound->pSymbol();
 
-    Stz* sz_cmp_rlnOpr    = this->szFacet(SF_NONE);
-    Stz* sz_cmp_arg_0     = this->pGetChild(0)->szFacet(SF_NONE);
-    Stz* sz_cmp_arg_1     = this->pGetChild(1)->szFacet(SF_NONE);
+    Symbol* pSym_rlnConj = pSymbol();
+    Symbol* pSym_rlnConj_child0 = this->pGetChild(0)->pSymbol();
+    Symbol* pSym_rlnConj_child1 = this->pGetChild(1)->pSymbol();
 
-    if (! sz_cmp_rlnOpr->bSame(sz_bnd_rlnOpr))
+    if (! pSym_bound->bMatches(pSym_rlnConj))
       continue;
 
     // todo: need bounds to be bndTyp , etc
     // anyways...
 
-    if (sz_cmp_arg_0->bSame(sz_bnd_expCol))
-      return true;
-    if (sz_cmp_arg_1->bSame(sz_bnd_expCol))
+    if (pSym_rlnConj_child0->bMatches(pSym_child1_bound))
       return true;
 
+    if (pSym_rlnConj_child1->bMatches(pSym_child1_bound))
+      return true;
   }
 
   return false;
@@ -340,9 +335,9 @@ bool Card_RlnConj::bUsesTable(char cTblSyn)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Term* p_term_this_0 = _pCard_Term(pGetChild(0));
-  char cTableSyn_this_0 = p_term_this_0->szFacet(SF_NONE)->azChar()[1];
+  char cTableSyn_this_0 = p_term_this_0->pSymbol()->cTblSyn();
   Card_Term* p_term_this_1 = _pCard_Term(pGetChild(1));
-  char cTableSyn_this_1 = p_term_this_1->szFacet(SF_NONE)->azChar()[1];
+  char cTableSyn_this_1 = p_term_this_1->pSymbol()->cTblSyn();
 
   if (cTableSyn_this_0 == cTblSyn || cTableSyn_this_1 == cTblSyn)
     return true;
@@ -356,9 +351,11 @@ bool Card_RlnConj::bUsesTable(char cTblSyn)
 void Card_RlnConj::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-  UNUSED(pCI);
-  UNUSED(iDepth);
   UNUSED(pParent);
+
+  RASSERT( m_xSymbol.bHasFacet(SF_BOL_FN) ||
+           m_xSymbol.bHasFacet(SF_RLN_OP) ||
+           m_xSymbol.bHasFacet(SF_SQY_OP) );
 
   Kid xRpnCalc(this);
   while (xRpnCalc.bEach()) {

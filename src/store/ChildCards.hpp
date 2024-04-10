@@ -19,13 +19,15 @@ namespace STORE
   class ChildCards : public ListExo2_t<Card>
   {
   public:
-    ChildCards(void);
+    Card* m_pCard;
+
+    ChildCards(Card* pCard);
    ~ChildCards(void) noexcept(false);
 
-    void vAppendChild(Card* pChild);
+    void vAppendChild(Card* pChild, Card* pParent);
 
     i8   nChildCards(void);
-    i8   nChildCards(eCK eChild);
+    i8   nChildCards(eCK eChild_arg);
 
     void vDeleteAllChildren(void);
     void vDeleteChild(Card* pChild);
@@ -48,7 +50,8 @@ namespace STORE
     Card* pGetChild(i8 i_Child);
     Card* pGetChild(i8 i_Child, eCK& reChild);
 
-    bool  bHeadSame(Stz* szArg);
+    bool  bHeadSame(eSF eFacet);
+    bool  bHeadSame(eSF eFacet, Stz* szFacet);
 
     void  vInsertChildAfter(Card* pChild, Card* pAfter);
     void  vInsertChildBefore(Card* pChild, Card* pBefore);
@@ -61,18 +64,15 @@ namespace STORE
     Card* pPopChild(void);
     Card* pPopChild_tail(void);
     bool  bPopDeleteChildIf(eCK eCard, Symbol xSymbol);
-    void  vPushChild(Card* pChild);
+    void  vPushChild(Card* pChild, Card* pParent);
 
     bool bRemoveChild(Card* pChild);
     void vRemoveChild(Card* pChild);
+    void vRemoveChildLeavingSubs(Card* pChild);
     void vRemoveSub(Card* pSub);
-    void vReplaceChildWithItsSubs(Card* pChild);
     void vReplaceChild(Card* pChild, Card* pWith);
     void vRotateFirst(Card* pChild);
     void vRotateLast(Card* pChild);
-
-    void vTransferChildren(Card* pFrom);
-    void vTransferChildren(Card* pFrom, eSF eFacet_stopAfter);
   };
 }
 

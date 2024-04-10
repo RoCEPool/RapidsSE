@@ -62,48 +62,56 @@ void XF_Flatten_X_expCol_To_tblCol::vX_expCol_To_tblCol(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_X_EXPCOL_TO_TBLCOL, _FOOTER_);
 
-  m_pCI->vTransform(__func__, XF_FLATTEN_X_EXPCOL_TO_TBLCOL, "all $n become $c.n"_Stz);
+  m_pCI->vTransform(__FILE__, __func__, XF_FLATTEN_X_EXPCOL_TO_TBLCOL);
 
-  m_pCI->vClearRestart();
+  m_pCI->vClearRegisters();
+  m_pCI->vBeginEach();
 
   m_pCI->vBeginEach();
-  while (m_pCI->G_bEachMain_NONE()) {
-    if ((m_pCI->G.p_level = m_pCI->G.p_MainCard->pSub_level())) {
-      if (AL_PARTITION != m_pCI->G.p_level->pSymbol()->Y_iGet(P_Level))
+  while (m_pCI->bEachOp()) {
+    if ((m_pCI->E.p_level = m_pCI->E.p_Op->pSub_level())) {
+      if (AL_PARTITION != m_pCI->E.p_level->pSymbol()->Y_iGet(P_Level))
         continue;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // conversions prior to projection
 
-    if ((m_pCI->G.p_key = m_pCI->G.p_OP->pSub_key())) {
-      if (m_pCI->Flux.m_pArriving)
-        m_pCI->G.p_key->vX_expCol_To_tblCol(m_pCI);
-      m_pCI->G.p_key = nullptr;
+    if ((m_pCI->E.p_key = m_pCI->E.p_Op->pSub_key())) {
+      if (m_pCI->Flux.m_pArriving) {
+//Z_KEY_DIRECTION
+        for (m_pCI->vBeginTarget(m_pCI->E.p_key,CK_EXPR); m_pCI->bEachTarget(); /**/) {
+           m_pCI->E.p_expr->vX_expCol_To_tblCol(m_pCI);
+        }
+
+        m_pCI->E.p_expr = nullptr;
+
+      }
+      m_pCI->E.p_key = nullptr;
     }
 
-    if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter())) {
-      m_pCI->G.p_filter->vX_expCol_To_tblCol(m_pCI);
-      m_pCI->G.p_filter = nullptr;
+    if ((m_pCI->E.p_filter = m_pCI->E.p_Op->pSub_filter())) {
+      m_pCI->E.p_filter->vX_expCol_To_tblCol(m_pCI);
+      m_pCI->E.p_filter = nullptr;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // projection
 
-    if ((m_pCI->G.p_emit = m_pCI->G.p_MainCard->pSub_emit())) {
+    if ((m_pCI->E.p_emit = m_pCI->E.p_Op->pSub_emit())) {
       if (m_pCI->Flux.m_pArriving)
-        m_pCI->G.p_emit->vX_expCol_To_tblCol(m_pCI);
-      m_pCI->Flux.m_pArriving = m_pCI->G.p_emit;
-      m_pCI->G.p_emit = nullptr;
+        m_pCI->E.p_emit->vX_expCol_To_tblCol(m_pCI);
+      m_pCI->Dic.m_p_expr = m_pCI->Flux.m_pArriving = m_pCI->E.p_emit;
+      m_pCI->E.p_emit = nullptr;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // conversions after projection
 
-    if ((m_pCI->G.p_constraint = m_pCI->G.p_MainCard->pSub_constraint())) {
+    if ((m_pCI->E.p_constraint = m_pCI->E.p_Op->pSub_constraint())) {
       if (m_pCI->Flux.m_pArriving)
-        m_pCI->G.p_constraint->vX_expCol_To_tblCol(m_pCI);
-      m_pCI->G.p_constraint = nullptr;
+        m_pCI->E.p_constraint->vX_expCol_To_tblCol(m_pCI);
+      m_pCI->E.p_constraint = nullptr;
     }
 
   }

@@ -1,0 +1,99 @@
+/*============================================================================*/
+/* __Q4                                                                       */
+/*============================================================================*/
+
+/weaved
+select
+  o_orderpriority,
+  count(*) as order_count
+from
+  orders
+where
+  o_orderdate >= date '1993-07-01'
+  and o_orderdate < date '1993-07-01' + interval '3' month
+  and exists (
+    select
+      *
+    from
+      lineitem
+    where
+      l_orderkey = o_orderkey
+      and l_commitdate < l_receiptdate )
+group by
+  o_orderpriority
+order by
+  o_orderpriority;
+
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+
+/*
+pipeline unamed
+  tag <optimised> = 1 endTag
+begin
+
+  stage S00 on origin :
+      start
+    | pulse     once
+    | next
+
+  stage S01 on all partitions :
+      scan      Orders
+  //| inflate   Orders
+  //| filter    " type BOOLEAN $5 DATE '1993-07-01' >= $5 DATE '1993-10-01' < and "
+    | dynamic
+    | next
+
+  stage S02 on all partitions :
+  //  project   "   type VARCHAR ( 15 ) as C0_O_ORDERPRIORITY $6
+  //              , type INTEGER ( 19 ) as C1_O_ORDERKEY $1 "
+  //| hash      "type VARCHAR $1"
+      dynamic
+    | next      hashcast
+
+  stage S03 on all partitions :
+  //  keyExists Lineitem IxL_ORDERKEY " BOUND $I1 $2 == " " type BOOLEAN L_COMMITDATE L_RECEIPTDATE < "
+      dynamic
+    | next
+
+  stage S04 on all partitions :
+  //  project   " type VARCHAR ( 15 ) as C0_O_ORDERPRIORITY $1 "
+      dynamic
+    | next
+
+  stage S05 on all partitions :
+  //  gbyAgg    " groupBy
+  //                type VARCHAR as C0_O_ORDERPRIORITY $1
+  //              aggregates
+  //                type VARCHAR as C0_COL0 $K1
+  //              , type INTEGER ( 19 ) as C1_COL1 ) countAll "
+      dynamic
+    | next
+
+  stage S06 on all nodes :
+  //  gbyAgg    " groupBy
+  //                type VARCHAR $1
+  //              aggregates
+  //                type VARCHAR as C0_COL0 $K1
+  //              , type INTEGER ( 19 ) as C1_COL1 ) $2 sum "
+      dynamic
+    | next
+
+  stage S07 on origin :
+  //  gbyAgg    " groupBy
+  //                type VARCHAR $1
+  //              aggregates
+  //                type VARCHAR as C0_COL0 $K1
+  //              , type INTEGER ( 19 ) as C1_order_count ) $2 sum "
+      dynamic
+    | next
+
+  stage S08 on origin :
+      output
+    | sink
+    | first
+
+end ;
+*/

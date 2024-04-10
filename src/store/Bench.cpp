@@ -33,7 +33,8 @@ Bench::Bench(Optimiser* pOptimiser)
 
   m_iXform        = 0;
   m_eXform        = XF_NONE;
-  m_iPrint        = 0;
+  m_nPrintBoard   = 0;
+  m_nTransformPrint = 0;
 
   _checkInitialised_(CN_BENCH);
   
@@ -114,7 +115,7 @@ void Bench::vEndPhase(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
-  pCI->vBoardIteration();
+  pCI->vBeginBoard();
   while (pCI->bEachBoard())
     pCI->pBoard()->vEndPhase();
 }
@@ -122,7 +123,7 @@ void Bench::vEndPhase(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* get board of given name                                                    */
 /*----------------------------------------------------------------------------*/
-Board* Bench::pFindBoard_By_sqyNm_v2(Stz* szSqyNm)
+Board* Bench::pFindBoard_By_sqyNm(Stz* szSqyNm)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
@@ -130,7 +131,7 @@ Board* Bench::pFindBoard_By_sqyNm_v2(Stz* szSqyNm)
   for (i8 i_Board = 0; i_Board < nBoards; i_Board++) {
     Board *pBoard = this->pGet(i_Board);
 
-    if (pBoard->pSubQuery()->szSqyNm_v2()->bSame(szSqyNm))
+    if (pBoard->pSubQuery()->szSqyNm()->bSame(szSqyNm))
       return pBoard;
   }
 
@@ -140,7 +141,7 @@ Board* Bench::pFindBoard_By_sqyNm_v2(Stz* szSqyNm)
 /*----------------------------------------------------------------------------*/
 /* get board of given name                                                    */
 /*----------------------------------------------------------------------------*/
-Board* Bench::pFindBoard_By_sqyNo_v2(Stz* szSqyNo)
+Board* Bench::pFindBoard_By_sqyNo(Stz* szSqyNo)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
@@ -148,7 +149,7 @@ Board* Bench::pFindBoard_By_sqyNo_v2(Stz* szSqyNo)
   for (i8 i_Board = 0; i_Board < nBoards; i_Board++) {
     Board *pBoard = this->pGet(i_Board);
 
-    if (pBoard->pSubQuery()->szSqyNo_v2()->bSame(szSqyNo))
+    if (pBoard->pSubQuery()->szSqyNo()->bSame(szSqyNo))
       return pBoard;
   }
 
@@ -199,7 +200,6 @@ Board* Bench::pGetBoard(i8 i_Board)
     return nullptr;
 
   Board *pBoard = this->pGet(i_Board);
-  ASSERT(pBoard->i_Board() == i_Board);
   return pBoard;
 }
 
@@ -239,14 +239,14 @@ bool Bench::bPastPhase(CardIter* pCI, eOH ePhase)
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
   bool bPast = true;
-  pCI->vSave();
+  pCI->vPushEach();
 
-  pCI->vBoardIteration();
+  pCI->vBeginBoard();
   while (pCI->bEachBoard())
     if (! pCI->pBoard()->bPastPhase(ePhase))
       bPast = false;
 
-  pCI->vRestore();
+  pCI->vPopEach();
 
   return bPast;
 }
@@ -258,13 +258,13 @@ void Bench::vPhase(CardIter* pCI, eOH ePhase)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
-  pCI->vSave();
+  pCI->vPushEach();
 
-  pCI->vBoardIteration();
+  pCI->vBeginBoard();
   while (pCI->bEachBoard())
     pCI->pBoard()->vPhase(ePhase);
 
-  pCI->vRestore();
+  pCI->vPopEach();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -290,34 +290,37 @@ void Bench::vPipelineNm(Stz* szPipelineNm)
 /*----------------------------------------------------------------------------*/
 /* begin and record transformation information                                */
 /*----------------------------------------------------------------------------*/
-void Bench::vTransform(const char* azFunc, eXF eXform, Stz* szXdesc)
+void Bench::vTransform(const char* azXfile, const char* azXfunc, eXF eXform)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
   vXform_Inc();
-  vXfunc((Stz *) azFunc);
+
+  vXfile((Stz *) azXfile);
+  vXfunc((Stz *) azXfunc);
   vXform(eXform);
-  vXdesc(szXdesc);
+
+  m_nTransformPrint = 0;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get description of transformation                                          */
+/* get transformation function                                                */
 /*----------------------------------------------------------------------------*/
-Stz* Bench::szXdesc(void)
+Stz* Bench::szXfile(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
-  return m_sXdesc;
+  return m_sXfile;
 }
 
 /*----------------------------------------------------------------------------*/
-/* set description of transformation                                          */
+/* set transformation function                                                */
 /*----------------------------------------------------------------------------*/
-void Bench::vXdesc(Stz* szXdesc)
+void Bench::vXfile(Stz* szXfile)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
-  m_sXdesc = szXdesc;
+  m_sXfile = szXfile;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -381,43 +384,23 @@ void Bench::vXfunc(Stz* szXfunc)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get transformation phase                                                   */
-/*----------------------------------------------------------------------------*/
-Stz* Bench::szXhand(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
-
-  return m_sXhand;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set transformation phase                                                   */
-/*----------------------------------------------------------------------------*/
-void Bench::vXhand(const char* asXhand)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
-
-  m_sXhand = asXhand;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get print number                                                           */
 /*----------------------------------------------------------------------------*/
-i8 Bench::iPrint(void)
+i8 Bench::nPrintBoard(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
-  return m_iPrint;
+  return m_nPrintBoard;
 }
 
 /*----------------------------------------------------------------------------*/
 /* increment and get print number                                             */
 /*----------------------------------------------------------------------------*/
-i8 Bench::iPrint_inc(void)
+i8 Bench::nPrintBoard_inc(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
-  return m_iPrint++;
+  return m_nPrintBoard++;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -428,6 +411,16 @@ i8 Bench::iBenchNo(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
   return m_iBenchNo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* increment and get transform print number                                   */
+/*----------------------------------------------------------------------------*/
+i8 Bench::nTransformPrint_inc(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  return m_nTransformPrint++;
 }
 
 
@@ -441,13 +434,13 @@ void Bench::vValidate(CardIter* pCI)
 //  if (! AM::JOB::bHasTag(C_OPTIMISER_TRACE))
 //    return;
 
-  pCI->vSave();
+  pCI->vPushEach();
 
   i8 nBoards = this->nBoards();
   for (i8 i_Board = 0; i_Board < nBoards; i_Board++) {
     Board *pBoard = this->pGet(i_Board);
-    pCI->vUsingBoard(pBoard);
-    RASSERT(pCI->G.pBoard);
+    pCI->vUseBoard(pBoard);
+    RASSERT(pCI->E.pBoard);
 
     //pBoard->pState()->vDumpSet();
 
@@ -464,7 +457,7 @@ void Bench::vValidate(CardIter* pCI)
       break;
   }
 
-  pCI->vRestore();
+  pCI->vPopEach();
 
 
   XC::vXC(pCI);

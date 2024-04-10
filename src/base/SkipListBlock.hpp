@@ -26,16 +26,49 @@ namespace BASE
     SkipListBlock(eCN eClassNo, i8 nSizeEnt);
     ~SkipListBlock(void) noexcept(false);
 
-    void* aItem(void);
-    i8 iKey(void);
+		/*----------------------------------------------------------------------------*/
+		/* Get start addr of item                                                     */
+		/*----------------------------------------------------------------------------*/
+		inline void* aItem(void)
+		{
+			return (void*) m_xItem;
+		}
 
-    SkipListBlock* aNext(void);
+		/*----------------------------------------------------------------------------*/
+		/* Get key as i8                                                              */
+		/*----------------------------------------------------------------------------*/
+		inline i8 iKey(void)
+		{
+		//  conceptual__item* pItem = (conceptual__item*) m_xItem;
+			return m_xItem[0];
+		}
 
-    Row* aRow(void);
+		/*----------------------------------------------------------------------------*/
+		/* return next                                                                */
+		/*----------------------------------------------------------------------------*/
+		inline SkipListBlock* aNext(void)
+		{
+			return nullptr;
+		}
 
-    void vSetKey(i8 iKey);
+		/*----------------------------------------------------------------------------*/
+		/* set key                                                                    */
+		/*----------------------------------------------------------------------------*/
+		inline void vSetKey(i8 iKey)
+		{
+			conceptual__item* pItem = (conceptual__item*) m_xItem;
+			pItem->iKey = (i8) iKey;
+		}
 
-  };
+		/*----------------------------------------------------------------------------*/
+		/* get Row start addr (assumes i8 key in pds)                                 */
+		/*----------------------------------------------------------------------------*/
+		inline Row* aRow(void)
+		{
+			return aAdd<Row*>(m_xItem, sizeof(i8));
+		}
+
+	};
 }
 
 

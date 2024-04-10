@@ -1,0 +1,51 @@
+/*============================================================================*/
+/* __Q6_2N_P                                                                  */
+/*============================================================================*/
+
+/optimise_passthru
+pipeline Query6
+begin
+
+  stage S00 on origin : 
+      start
+    | pulse     once
+    | next
+
+  stage S01 on all partitions : 
+      scan      lineitem
+    | filter    " type BOOLEAN } $11 DATE '1994-01-01' >= $11 DATE '1994-01-01' INTERVAL_YM 3074 + < and 0.06 0.01 - 0.06 0.01 + $7 between and $5 24.00 < and "
+    | dynamic
+    | next      
+
+  stage S02 on all partitions : 
+    project   "   type DECIMAL ( 15 2 ) as C0_L_EXTENDEDPRICE $6
+                , type DECIMAL ( 15 2 ) as C1_L_DISCOUNT $7 "
+    | dynamic
+    | next      
+
+  stage S03 on all partitions : 
+    aggreg    "   type DECIMAL ( 19 2 ) as C0_COL0 ) $1 $2 * sum "
+    | dynamic
+    | next      
+
+  stage S04 on all nodes : 
+    aggreg    "   type DECIMAL ( 19 2 ) as C0_COL0 ) $1 sum "
+    | dynamic
+    | next      
+
+  stage S05 on origin : 
+    aggreg    "   type DECIMAL ( 19 2 ) as C0_revenue ) $1 sum "
+    | dynamic
+    | next      
+
+  stage S06 on origin :
+      output
+    | sink
+    | first
+
+end ;
+
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

@@ -47,7 +47,7 @@ void Card_Scan::vMorph_table_To_scan(STORE::CardIter *pCI)
 {
   _static_
 
-    pCI->G.p_from->vCard(CK_o_SCAN);
+    pCI->E.p_from->vCard(CK_o_SCAN);
 }
 
 
@@ -66,9 +66,9 @@ void Card_Scan::vMorph_table_To_scan(STORE::CardIter *pCI)
 
    pCI->Early.m_pOP_leaf = this;
 
-   pCI->Flux.m_pArriving = pSub_emit();
+   pCI->Dic.m_p_expr = pCI->Flux.m_pArriving = pSub_emit();
 
-  // pCI->vPrintBoard(__func__,__LINE__);
+  // pCI->PRINTBOARD_dbg();
 
    vDebugPoint();
 }

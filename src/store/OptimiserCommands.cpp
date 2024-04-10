@@ -135,18 +135,17 @@ bool STORE::bOpt_notation(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAc
   Bench* pBench = pOptimiser->pBench();
   Card_Deck* pDeck = pBench->pGetBoard((i8)0)->pDeck();
 
-  Kid xKid(pDeck);
+  Kid xDeck(pDeck);
 
-  while (xKid.bEach()) {
+  while (xDeck.bEach()) {
     s256 sShort = ""_Stz;
-    StrLib::vShortHand(sShort.azChar(), sShort.nAreaBytes(), xKid.pChild()->szCardNm()->azChar());
+    StrLib::vShortHand(sShort.azChar(), sShort.nAreaBytes(), xDeck.pChild()->szCardNm()->azChar());
     vTrace("%s "_Stz, sShort.azChar());
 
-    Card_TableNm* pCard_TableNm = xKid.pChild()->pSub_tableNm();
+    Card_TableNm* pCard_TableNm = xDeck.pChild()->pSub_tableNm();
     if(pCard_TableNm != nullptr)
     {
-      Card* pTableCard = _pCard(pCard_TableNm);
-      vTrace("%s "_Stz, pTableCard->szFacet(SF_NONE)->azChar());
+       vTrace("%s "_Stz, pCard_TableNm->szFacet(SF_TBL_NM)->azChar());
     }
   }
 

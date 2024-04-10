@@ -62,16 +62,17 @@ void XF_Prolog_Ensure_level::vEnsure_level(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_ENSURE_LEVEL, _FOOTER_);
 
-  m_pCI->vTransform(__func__, XF_PROLOG_ENSURE_LEVEL, "ensure op has level"_Stz);
+  m_pCI->vTransform(__FILE__, __func__, XF_PROLOG_ENSURE_LEVEL);
 
-  m_pCI->vClearRestart();
-  while (m_pCI->G_bEachMain_NONE()) {
-    Card_Level* p_level = m_pCI->G.p_MainCard->pSub_level();
+  m_pCI->vClearRegisters();
+  m_pCI->vBeginEach();
+  while (m_pCI->bEachOp()) {
+    Card_Level* p_level = m_pCI->E.p_Op->pSub_level();
     if (p_level)
       continue;
 
     p_level = new Card_Level(AL_PARTITION);
-    m_pCI->G.p_MainCard->vPushChild(p_level);
+    m_pCI->E.p_Op->vPushChild(p_level);
   }
 
   m_pCI->vEndTransform(__LINE__);

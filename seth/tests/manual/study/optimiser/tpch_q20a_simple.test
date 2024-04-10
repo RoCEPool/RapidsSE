@@ -1,0 +1,37 @@
+--------------------------------------------------------------------------------
+-- tpch query20a_simple (SF_0001)
+--------------------------------------------------------------------------------
+
+LOG 'TPC-H Q20a_simple...';
+
+trackMemory force;
+success
+
+
+/optimiser_trace
+/transliterated
+/weaved
+/pipeline_Def
+/pipelineName = "OptQ20a"
+select s_name, s_address
+  from supplier, nation
+  where 
+       s_suppkey in (
+                       select ps_suppkey
+                         from PartSupp 
+                    )
+  and s_nationkey = n_nationkey
+;
+
+rows:
+  1
+
+MemoryLeaks;
+rows: 0
+
+CLEANUP {
+}
+
+--------------------------------------------------------------------------------
+-- end
+--------------------------------------------------------------------------------

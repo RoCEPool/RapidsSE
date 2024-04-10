@@ -8,6 +8,8 @@
 
 namespace STORE
 {
+  static const bool C_SUB = true;
+
   class Kid
   {
   private:
@@ -43,7 +45,9 @@ namespace STORE
     void vDelete(void);
 
     bool bEach(void);
+    bool bEach_opaque(void);
     bool bEach(eCK eChild);
+    bool bEach_opaque(eCK eChild);
     bool bEach(eCK eChild, eCK eSub1);
     bool bEach(eCK eChild, eCK eSub1, eCK eSub2);
     bool bEach(eCK eChild, eCK eSub1, eCK eSub2, eCK eSub3);
@@ -54,8 +58,6 @@ namespace STORE
 
     bool bForwards(void);
     void vForwards(bool bForwards);
-
-    i8   iGetOdn(void);
 
     bool bLess(void);
 
@@ -79,27 +81,24 @@ namespace STORE
     bool bWithinRange(void);
 
     Card_AndConj*     p_andConj(void);
-    Card_Bound*       p_bound(void);
-    Card_CONJ*        p_CONJ(void);
-    Card_Correlation* p_correlation(void);
-    Card_Expr*        p_expr(void);
-    Card_Fold*        p_fold(void);
-    Card_HshCol*      p_hshCol(void);
-    Card_IdxCol*      p_idxCol(void);
-    Card_Index*       p_index(void);
-    Card_JoinOrder*   p_joinOrder(void);
-    Card_Map*         p_map(void);
-    Card_OP*          p_OP(void);
-    Card_OrConj*      p_orConj(void);
-    Card_RlnConj*     p_rlnConj(void);
-    Card_RpnCalc*     p_rpnCalc(void);
-    Card_Stage*       p_stage(void);
-    Card_StreamHead*  p_streamHead(void);
-    Card_StreamJoin*  p_streamJoin(void);
-    Card_StreamKey*   p_streamKey(void);
-    Card_StreamPer*   p_streamPer(void);
-    Card_Table*       p_table(void);
-    Card_Term*        p_term(void);
+    Card_Bound*       p_bound(bool bSub=false);
+    Card_Correlation* p_correlation(bool bSub=false);
+    Card_Expr*        p_expr(bool bSub=false);
+    Card_Fold*        p_fold(bool bSub=false);
+    Card_HshCol*      p_hshCol(bool bSub=false);
+    Card_IdxCol*      p_idxCol(bool bSub=false);
+    Card_Index*       p_index(bool bSub=false);
+    Card_JoinOrder*   p_joinOrder(bool bSub=false);
+    Card_Map*         p_map(bool bSub=false);
+    Card_RlnConj*     p_rlnConj(bool bSub=false);
+    Card_RpnCalc*     p_rpnCalc(bool bSub=false);
+    Card_Stage*       p_stage(bool bSub=false);
+    Card_StreamHead*  p_streamHead(bool bSub=false);
+    Card_StreamJoin*  p_streamJoin(bool bSub=false);
+    Card_StreamKey*   p_streamKey(bool bSub=false);
+    Card_StreamPer*   p_streamPer(bool bSub=false);
+    Card_Table*       p_table(bool bSub=false);
+    Card_Term*        p_term(bool bSub=false);
 
     private:
     void vChildReset(void);

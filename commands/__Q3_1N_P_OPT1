@@ -1,0 +1,107 @@
+/*============================================================================*/
+/* __Q3_1N_P_OPT1                                                             */
+/*============================================================================*/
+
+/optimise_passthru
+pipeline Query3
+begin
+
+  stage S00 on origin :
+      start
+    | pulse     once
+    | next
+
+  stage S01 on all partitions :
+      scan      Orders
+  | project   " type DATE as O_ORDERDATE O_ORDERDATE
+                  , type INTEGER ( 19 ) as O_SHIPPRIORITY O_SHIPPRIORITY
+                  , type INTEGER ( 19 ) as O_CUSTKEY O_CUSTKEY
+                  , type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY "
+    | filter    " type BOOLEAN O_ORDERDATE DATE '1995-03-15' < "
+    | hash      "type INTEGER O_ORDERKEY"
+    | dynamic
+    | next      hashcast
+
+  stage S02 on all partitions :
+    indexJoin Lineitem IxL_ORDERKEY " BOUND $I1 $4 == "
+    | project   " type INTEGER ( 19 ) as L_ORDERKEY L_ORDERKEY
+                , type DECIMAL ( 15 2 ) as L_EXTENDEDPRICE L_EXTENDEDPRICE
+                , type DECIMAL ( 15 2 ) as L_DISCOUNT L_DISCOUNT
+                , type DATE as L_SHIPDATE L_SHIPDATE
+                , type DATE as O_ORDERDATE O_ORDERDATE
+                , type INTEGER ( 19 ) as O_SHIPPRIORITY O_SHIPPRIORITY
+                , type INTEGER ( 19 ) as O_CUSTKEY O_CUSTKEY "
+    | filter    " type BOOLEAN L_SHIPDATE DATE '1995-03-15' > "
+    | project   " type INTEGER ( 19 ) as L_ORDERKEY L_ORDERKEY
+                , type DECIMAL ( 15 2 ) as L_EXTENDEDPRICE L_EXTENDEDPRICE
+                , type DECIMAL ( 15 2 ) as L_DISCOUNT L_DISCOUNT
+                , type DATE as O_ORDERDATE O_ORDERDATE
+                , type INTEGER ( 19 ) as O_SHIPPRIORITY O_SHIPPRIORITY
+                , type INTEGER ( 19 ) as O_CUSTKEY O_CUSTKEY "
+    | hash      "type INTEGER O_CUSTKEY"
+    | dynamic
+    | next      hashcast
+
+  stage S03 on all partitions :
+    indexJoin Customer IxC_CUSTKEY " BOUND $I1 O_CUSTKEY == "
+    | filter    " type BOOLEAN $13 'BUILDING' == "
+    | project   " type INTEGER ( 19 ) as L_ORDERKEY L_ORDERKEY
+                , type DECIMAL ( 15 2 ) as L_EXTENDEDPRICE L_EXTENDEDPRICE
+                , type DECIMAL ( 15 2 ) as L_DISCOUNT L_DISCOUNT
+                , type DATE as O_ORDERDATE O_ORDERDATE
+                , type INTEGER ( 19 ) as O_SHIPPRIORITY O_SHIPPRIORITY "
+    | gbyAgg    " groupBy
+                  type INTEGER ( 19 ) as L_ORDERKEY $1
+                , type DATE as O_ORDERDATE $4
+                , type INTEGER ( 19 ) as O_SHIPPRIORITY $5
+                aggregates
+                  type INTEGER ( 19 ) as C0_COL0 $K1
+                , type DECIMAL ( 19 2 ) as C1_COL1 ) $2 1.00 $3 - * sum
+                , type DATE as C2_COL2 $K2
+                , type INTEGER ( 19 ) as C3_COL3 $K3 "
+    | dynamic
+    | next
+
+  stage S04 on all nodes :
+    gbyAgg    " groupBy
+                  type INTEGER ( 19 ) $1
+                , type DATE $3
+                , type INTEGER ( 19 ) $4
+                aggregates
+                  type INTEGER ( 19 ) as C0_COL0 $K1
+                , type DECIMAL ( 19 2 ) as C1_COL1 ) $2 sum
+                , type DATE as C2_COL2 $K2
+                , type INTEGER ( 19 ) as C3_COL3 $K3 "
+    | dynamic
+    | next
+
+  stage S05 on origin :
+    gbyAgg    " groupBy
+                  type INTEGER ( 19 ) $1
+                , type DATE $3
+                , type INTEGER ( 19 ) $4
+                aggregates
+                  type INTEGER ( 19 ) as C0_COL0 $K1
+                , type DECIMAL ( 19 2 ) as C1_Revenue ) $2 sum
+                , type DATE as C2_COL2 $K2
+                , type INTEGER ( 19 ) as C3_COL3 $K3 "
+    | dynamic
+    | next
+
+  stage S6 on origin :
+    sort      " type DECIMAL ( 19 2 ) $2 DESC , type DATE $3 ASC "
+    | limit      10
+    | dynamic
+    | next
+
+  stage S11 on origin :
+      output
+    | sink
+    | first
+
+end ;
+
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

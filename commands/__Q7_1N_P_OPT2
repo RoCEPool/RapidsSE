@@ -1,0 +1,137 @@
+/*============================================================================*/
+/* __Q7_1N_P_OPT2                                                             */
+/*============================================================================*/
+
+// From: (__Q7)
+// SF10-1N1P : 27.93s
+// SF10-1N4P : 20.61s
+
+// NOTE: HASHCASTS in weaved pipelines were incorrect
+
+// To: (__Q7_SF10_OPT1)
+// SF10-1N1P : 26.88s
+// SF10-1N4P : 15.36s
+
+// To: (__Q7_SF10_OPT2)
+// SF10-1N1P : 17.72s
+// SF10-1N4P :  7.62s
+
+// To: Optimising vExtern_IndexTreePositionGE_int
+// SF10-1N1P : 14.58s
+// SF10-1N4P : 7.45s
+
+/optimise_passthru
+pipeline Query7
+begin
+
+  stage S00 on origin :
+      start
+    | pulse     once
+    | next
+
+  stage S01 on all partitions :
+    scan      Orders
+    | project   "   type INTEGER ( 19 ) as C0_O_CUSTKEY $2
+                   , type INTEGER ( 19 ) as C1_O_ORDERKEY $1 "
+    | hash      "type INTEGER $2"
+    | dynamic
+    | next      hashcast
+
+  stage S02 on all partitions :
+    indexJoin Lineitem IxL_ORDERKEY " BOUND $I1 $2 == "
+    | project   "   type DATE as C0_L_SHIPDATE $13
+                  , type DECIMAL ( 15 2 ) as C1_L_EXTENDEDPRICE $8
+                  , type DECIMAL ( 15 2 ) as C2_L_DISCOUNT $9
+                  , type INTEGER ( 19 ) as C3_L_SUPPKEY $5
+                  , type INTEGER ( 19 ) as C4_O_CUSTKEY $1 "
+    | filter    " type BOOLEAN $1 DATE '1995-01-01' >= $1 DATE '1996-12-31' <= and "
+    | hash      "type INTEGER $5"
+    | dynamic
+    | next      hashcast
+
+  stage S03 on all partitions :
+    indexJoin Customer IxC_CUSTKEY " BOUND $I1 $5 == "
+    | project   "   type DATE as C0_L_SHIPDATE $1
+                  , type DECIMAL ( 15 2 ) as C1_L_EXTENDEDPRICE $2
+                  , type DECIMAL ( 15 2 ) as C2_L_DISCOUNT $3
+                  , type INTEGER ( 19 ) as C3_C_NATIONKEY $9
+                  , type INTEGER ( 19 ) as C4_L_SUPPKEY $4 "
+    | hash      "type INTEGER $5"
+    | dynamic
+    | next      hashcast
+
+  stage S04 on all partitions :
+    indexJoin Supplier IxS_SUPPKEY " BOUND $I1 $5 == "
+    |  project   "   type DATE as C0_L_SHIPDATE $1
+                   , type DECIMAL ( 15 2 ) as C1_L_EXTENDEDPRICE $2
+                   , type DECIMAL ( 15 2 ) as C2_L_DISCOUNT $3
+                   , type INTEGER ( 19 ) as C3_C_NATIONKEY $4
+                   , type INTEGER ( 19 ) as C4_S_NATIONKEY $9 "
+    | dynamic
+    | next
+
+  stage S05 on all partitions :
+    indexJoin nation IxN_NATIONKEY " BOUND $I1 $5 == "
+    | project   "   type VARCHAR ( 25 ) as C0_N_NAME $7
+                  , type DATE as C1_L_SHIPDATE $1
+                  , type DECIMAL ( 15 2 ) as C2_L_EXTENDEDPRICE $2
+                  , type DECIMAL ( 15 2 ) as C3_L_DISCOUNT $3
+                  , type INTEGER ( 19 ) as C4_C_NATIONKEY $4 "
+    | dynamic
+    | next
+
+  stage S6 on all partitions :
+    indexJoin nation IxN_NATIONKEY " BOUND $I1 $5 == "
+    | project   "   type VARCHAR as C0_N_NAME $1
+                , type VARCHAR as C1_N_NAME $7
+                , type INTEGER ( 19 ) as C2_l_year $2 extract_year
+                , type DECIMAL ( 19 2 ) as C3_volume $3 1.00 $4 - * "
+    | filter    " type BOOLEAN $1 'GERMANY' == $2 'FRANCE' == and $1 'FRANCE' == $2 'GERMANY' == and or "
+    | gbyAgg    " groupBy
+                  type VARCHAR $1
+                , type VARCHAR $2
+                , type INTEGER ( 19 ) $3
+                aggregates
+                  type VARCHAR as C0_COL0 $K1
+                , type VARCHAR as C1_COL1 $K2
+                , type INTEGER ( 19 ) as C2_COL2 $K3
+                , type DECIMAL ( 19 2 ) as C3_COL3 ) $4 sum "
+    | dynamic
+    | next      
+
+  stage S7 on all nodes :
+    gbyAgg    " groupBy
+                  type VARCHAR $1
+                , type VARCHAR $2
+                , type INTEGER ( 19 ) $3
+                aggregates
+                  type VARCHAR as C0_COL0 $K1
+                , type VARCHAR as C1_COL1 $K2
+                , type INTEGER ( 19 ) as C2_COL2 $K3
+                , type DECIMAL ( 19 2 ) as C3_COL3 ) $4 sum "
+    | dynamic
+    | next      
+
+  stage S8 on origin :
+    gbyAgg    " groupBy
+                  type VARCHAR $1
+                , type VARCHAR $2
+                , type INTEGER ( 19 ) $3
+                aggregates
+                  type VARCHAR as C0_COL0 $K1
+                , type VARCHAR as C1_COL1 $K2
+                , type INTEGER ( 19 ) as C2_COL2 $K3
+                , type DECIMAL ( 19 2 ) as C3_Revenue ) $4 sum "
+    | dynamic
+    | next      
+
+  stage S9 on origin :
+      output
+    | sink
+    | first
+
+end ;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

@@ -220,12 +220,12 @@ LogicUnit::LogicUnit(void)
   m_bRcvdChildExit = false;
   m_bRcvdEnd = false;
 
-  m_afFun0 = nullptr;
-  m_afFun1 = nullptr;
-  m_afFun1_ = nullptr;
-  m_afFun2 = nullptr;
-  m_afFun3 = nullptr;
-  m_afFun4 = nullptr;
+  m_afCrwHandler       = nullptr;
+  m_afPdsHandler       = nullptr;
+  m_afIndexHandler     = nullptr;
+  m_afEosHandler       = nullptr;
+	m_afStartHandler     = nullptr;
+  m_afStreamDefHandler = nullptr;
 
   m_sStringA  = ""_Stz;
   m_sString0  = ""_Stz;

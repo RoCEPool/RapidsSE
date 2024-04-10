@@ -57,7 +57,6 @@ Stz* aSF[SF_ENUMS]
   /* */ "SF_NULL"_Stz,
 
   /* */ "SF_PARENTHESIS"_Stz,
-  /* */ "SF_PAY_COL"_Stz,
 
   /* */ "SF_RLN_OP"_Stz,
 
@@ -67,7 +66,7 @@ Stz* aSF[SF_ENUMS]
   /* */ "SF_SQY_PRM"_Stz,
   /* */ "SF_SQY_RSL"_Stz,
   /* */ "SF_STG_CAST"_Stz,
-  /* */ "SF_STG_NO"_Stz,
+  /* */ "SF_STG_NM"_Stz,
   /* */ "SF_STR_FN"_Stz,
   /* */ "SF_STR_LIT"_Stz,
 
@@ -81,6 +80,8 @@ Stz* aSF[SF_ENUMS]
   /* */ "SF_WHEN"_Stz,
 
   /* */ "SF_XK_CAST"_Stz,
+
+  /* */ "SF_RW_AGGREGATES"_Stz,
 
 //  /* */ "SF_ENUMS"_Stz
 };

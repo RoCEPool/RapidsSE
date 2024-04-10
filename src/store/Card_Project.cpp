@@ -4,7 +4,6 @@
 
 #include "Card_Project.hpp"
 
-#include "Card_As.hpp"
 #include "Card_Level.hpp"
 #include "Card_Emit.hpp"
 #include "Card_RpnCalc.hpp"
@@ -59,7 +58,7 @@ void Card_Project::vUnproject_foldExpr(CardIter* pCI,
   RASSERT(pCarryForward->Unproject.m_bUnproject_foldExpr);
 
   Card_Project* p_project_unproject = new Card_Project(CK_o_PROJECT);
-  pCI->G.pDeck->vAppendChild(p_project_unproject);
+  pCI->E.p_deck->vAppendChild(p_project_unproject);
   p_project_unproject->pSymbol()->Y_vSet(P_Unproject);
 
   Card_Level* p_level = new Card_Level(AL_ORIGIN);
@@ -72,18 +71,18 @@ void Card_Project::vUnproject_foldExpr(CardIter* pCI,
   p_stream->vAppendChild(p_emitted_unproject);
 
   i8 i_Col = 0;
-  i8 nChildren_projection = pCI->G.p_emit->nChildCards();
+  i8 nChildren_projection = pCI->E.p_emit->nChildCards();
   for (i8 i_expr_projection = 0;
        i_expr_projection < nChildren_projection;
        i_expr_projection++) {
 
     i_Col++;
 
-    pCI->G.p_expr = _pCard_Expr(pCI->G.p_emit->pGetChild(i_expr_projection));
-    if (pCI->G.p_expr->pSymbol()->bMatches(SF_EXP_COL, "$1"_Stz))
+    pCI->E.p_expr = _pCard_Expr(pCI->E.p_emit->pGetChild(i_expr_projection));
+    if (pCI->E.p_expr->pSymbol()->bMatches(SF_EXP_COL, "$1"_Stz))
       continue;
 
-    Card_Expr* p_expr_simple = Card_Expr::pProj_Simple_expr_Of(pCI->G.p_expr,i_Col);
+    Card_Expr* p_expr_simple = Card_Expr::pCraft_expr_Of_expr(pCI->E.p_expr, i_Col);
     p_expr_simple->vDeleteFacetRecursive(SF_KEY_COL);
 
     p_emitted_unproject->vAppendChild(p_expr_simple);
@@ -92,23 +91,13 @@ void Card_Project::vUnproject_foldExpr(CardIter* pCI,
   }
 
   p_emitted_unproject->vRenumberAll_expr();
+  //p_emitted_unproject->vDump(__func__);
 }
 
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_Project::vBump_Rightwards(i8 nBumpBy)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (Card_Emit* p_emit = pSub_emit())
-    p_emit->vBump_Rightwards(nBumpBy);
-}
 
 /*----------------------------------------------------------------------------*/
 /* craft emit for early project                                               */
@@ -125,6 +114,7 @@ Card_Emit* Card_Project::pCraft_emit_early(CardIter* pCI)
   for (Kid x_needed(pCI->Early.m_pNeeded_later); x_needed.bEach(CK_EXPR); /**/) {
     Card_Expr* p_expr_needed = x_needed.p_expr();
 
+    //RASSERT(pCI->Dic.m_p_expr == pCI->Flux.m_pArriving);
     Card_Expr* p_expr_arriving = pCI->Flux.m_pArriving->pContains(p_expr_needed);
     if (! p_expr_arriving)
       continue;
@@ -133,8 +123,8 @@ Card_Emit* Card_Project::pCraft_emit_early(CardIter* pCI)
 
     if (! p_expr_clone->pSymbol()->bHasFacet(SF_NMD_COL)) {
       Symbol oSymbol_nmdCol;
-      oSymbol_nmdCol.vFacet(SF_NMD_COL, p_emit_early->nChildCards());
-      p_expr_clone->pSymbol()->vAppendFacet(oSymbol_nmdCol.aFacet(SF_NMD_COL));
+      oSymbol_nmdCol.vApplyFacet(SF_NMD_COL, p_emit_early->nChildCards());
+      p_expr_clone->pSymbol()->vApplyFacet(oSymbol_nmdCol.aFacet(SF_NMD_COL));
     }
     p_emit_early->vAppendChild(p_expr_clone);
   }
@@ -154,24 +144,24 @@ void Card_Project::vDerive_streamKey(CardIter* pCI)
 
   // snap onto <project>/<projection>, delete existing <project>/<projection>/<key>
   RASSERT(bPeg_Projection(pCI));
-  pCI->G.p_emit->vDelete_streamKey(pCI);
+  pCI->E.p_emit->vDelete_streamKey(pCI);
 
   // derive new <project>/<projection>/<key>
-  pCI->G.p_streamKey = new Card_StreamKey;
-  pCI->G.p_emit->vDerive_streamKey(pCI);
+  pCI->E.p_streamKey = new Card_StreamKey;
+  pCI->E.p_emit->vDerive_streamKey(pCI);
 
-  if (! pCI->G.p_streamKey->nChildCards()) {
+  if (! pCI->E.p_streamKey->nChildCards()) {
 
-    delete pCI->G.p_streamKey;
-    pCI->G.p_streamKey = nullptr;
+    delete pCI->E.p_streamKey;
+    pCI->E.p_streamKey = nullptr;
     return;
   }
-  pCI->G.p_emit->vAppendChild(pCI->G.p_streamKey);
+  pCI->E.p_emit->vAppendChild(pCI->E.p_streamKey);
 
 
   // set running projection for use by next op
-  pCI->StreamOrder.m_pEmitted = pCI->G.p_emit;
-  pCI->StreamOrder.m_pStreamKey = pCI->G.p_streamKey;
+  pCI->StreamOrder.m_pEmitted = pCI->E.p_emit;
+  pCI->StreamOrder.m_pStreamKey = pCI->E.p_streamKey;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -185,7 +175,7 @@ void Card_Project::vEarlyProject_given_leaf(CardIter* pCI)
 
   pCI->Early.m_pOP_leaf = this;
 
- // pCI->vPrintBoard(__func__,__LINE__);
+ // pCI->PRINTBOARD_dbg();
 
   vDebugPoint();
 }
@@ -205,22 +195,22 @@ void Card_Project::vEarlyProject_recurse_needed(CardIter* pCI)
   /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
 
   RASSERT(pCI->Early.m_pOP_leaf);
-  RASSERT(pCI->G.p_project->pSymbol()->Y_bHas(P_Early));
+  RASSERT(pCI->E.p_project->pSymbol()->Y_bHas(P_Early));
 
-  if (! (pCI->G.p_needed = pSub_needed()))
+  if (! (pCI->E.p_needed = pSub_needed()))
     return;
 
   vEnsure_stream(pCI);
 
-  pCI->G.p_emit = pCraft_emit_early(pCI);
+  pCI->E.p_emit = pCraft_emit_early(pCI);
 
-  pCI->G.p_stream->vAppendChild(pCI->G.p_emit);
+  pCI->E.p_stream->vAppendChild(pCI->E.p_emit);
 
   //vInsertChildBefore(pCI->G.p_emit,pCI->G.p_needed);
 
-  pCI->Flux.m_pArriving = pCI->G.p_emit;
+  pCI->Dic.m_p_expr = pCI->Flux.m_pArriving = pCI->E.p_emit;
 
- // pCI->vPrintBoard(__func__,__LINE__);
+ // pCI->PRINTBOARD_dbg();
 
   vDebugPoint();
 }
@@ -232,25 +222,25 @@ void Card_Project::vInject_foldExpr(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  pCI->G.p_expr = new Card_Expr;
+  pCI->E.p_expr = new Card_Expr;
 
-  pCI->G.p_expr->pSymbol()->Y_vSet(P_Injected);
+  pCI->E.p_expr->pSymbol()->Y_vSet(P_Injected);
 
-  pCI->G.p_expr->pSymbol()->vAppendFacets(pCI->Sqy.m_pExpr_fold->pSymbol());
+  pCI->E.p_expr->pSymbol()->vApplyFacets(pCI->Flat.m_pExpr_fold->pSymbol());
 
-  pCI->G.p_rpnCalc = new Card_RpnCalc;
-  pCI->G.p_expr->vAppendChild(pCI->G.p_rpnCalc);
-  pCI->G.p_expr->vCast(pCI->G.p_rpnCalc);
+  pCI->E.p_rpnCalc = new Card_RpnCalc;
+  pCI->E.p_expr->vAppendChild(pCI->E.p_rpnCalc);
+  pCI->E.p_expr->vApplyCast_p(pCI->E.p_rpnCalc);
 
   Symbol x_Symbol_expCol1(SF_EXP_COL, 1);
-  pCI->G.p_term = pCI->Sqy.m_pExpr_fold->pSub_term()->pClone(&x_Symbol_expCol1);
+  pCI->E.p_term = pCI->Flat.m_pExpr_fold->pSub_term()->pClone(&x_Symbol_expCol1);
 
-  pCI->G.p_rpnCalc->vAppendChild(pCI->G.p_term);
+  pCI->E.p_rpnCalc->vAppendChild(pCI->E.p_term);
 
-  pCI->G.p_emit = pSub_emit();
+  pCI->E.p_emit = pSub_emit();
 
-  pCI->G.p_emit->vPushChild(pCI->G.p_expr);
-  pCI->G.p_emit->vRenumberAll_expr();
+  pCI->E.p_emit->vPushChild(pCI->E.p_expr);
+  pCI->E.p_emit->vRenumberAll_expr();
 
 }
 
@@ -292,31 +282,42 @@ void Card_Project::vEarlyProject_root(CardIter* pCI)
   RASSERT(! pCI->Early.m_pNeeded_later);
 
 
-  pCI->G.p_key = pSub_key();
-  pCI->G.p_emit = pSub_emit();
+  pCI->E.p_key = pSub_key();
+  pCI->E.p_emit = pSub_emit();
 
   // get the root needed form of projection
   pCI->Early.m_pOP_root = this;
   pCI->Early.m_pOP_leaf = nullptr;
-  pCI->Early.m_pNeeded_later  = pCI->G.p_emit->pCraftRoot_needed(pCI);
+  pCI->Early.m_pNeeded_later  = pCI->E.p_emit->pCraftRoot_needed(pCI);
 
   // insert empty early projection (has only needed) before this ordAgg
 //  Card_Project* p_project_early = pCI->Early.m_pNeeded_later->pNew_project_early(pCI);
-//  pCI->G_vInsertBefore(p_project_early, this);
-//  pCI->G_vMainResynch();
+//  pCI->vInsertBefore(p_project_early, this);
+//  pCI->vResynchOp();
   vAppendChild(pCI->Early.m_pNeeded_later->pDupCardRecursive());
 
   Card_OP::vEarlyProject_backstep(pCI);
 
-  pCI->G.p_MainCard = pCI->G.p_OP = this;
-  pCI->G.e_MainCard = CK_o_PROJECT;
+  pCI->E.p_Op = this;
+  pCI->E.e_Op = CK_o_PROJECT;
 
   /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
 
   RASSERT(pCI->Early.m_pOP_leaf);
-  RASSERT(! pCI->G.p_project->pSymbol()->Y_bHas(P_Early));
+  RASSERT(! pCI->E.p_project->pSymbol()->Y_bHas(P_Early));
 
-   pCI->G.p_OP->vRecreate_emit(pCI,true);
+  ((Card_OP*)pCI->E.p_Op)->vRestate_emit(pCI);
+}
+
+/*----------------------------------------------------------------------------*/
+/* craft needed                                                               */
+/*----------------------------------------------------------------------------*/
+void Card_Project::vCraft_needed_root(CardIter *pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  pCI->Early.m_pNeeded_later = pCI->E.p_emit->pCraft_needed_root(pCI);
+  DELETE_CARD(pCI->Early.m_pNeeded_later);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -328,9 +329,9 @@ void Card_Project::vSmooth_postAgg(CardIter* pCI, CarryForward* pCarryForward)
 
   UNUSED(pCarryForward);
 
-  pCI->G.p_project->pSymbol()->Y_vSet(P_Smoothed);
+  pCI->E.p_project->pSymbol()->Y_vSet(P_Smoothed);
 
-  pCI->Flux.m_pArriving = pSub_emit();
+  pCI->Dic.m_p_expr = pCI->Flux.m_pArriving = pSub_emit();
 
 }
 

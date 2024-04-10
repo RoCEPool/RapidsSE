@@ -52,12 +52,20 @@ EntBuffer* STORE::_pEntBuffer(void* aAddress)
 /*-- Externs -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 extern "C" void* aExtern_EntBufferNextEntry(void** ppEntBuffer, void* aPrevEntry) {
-  return EntBuffer::aGetNextEntry((EntBuffer **) ppEntBuffer, (Ent *) aPrevEntry);
-}
 
+	EntBuffer* pEntBuffer = *(EntBuffer**)(ppEntBuffer);
+	Ent* aEnt = (Ent*)aPrevEntry;
 
-void* aEntBuffer_nextEntry(void** ppEntBuffer, void* aPrevEntry) {
-  return EntBuffer::aGetNextEntry((EntBuffer**) ppEntBuffer, (Ent*) aPrevEntry);
+	Ent *aNextEntry = pEntBuffer->aNextEntry(aEnt, 0);
+
+	if (! aNextEntry ) {
+		pEntBuffer = pEntBuffer->pNextEntBuffer();
+		*ppEntBuffer = pEntBuffer;
+		if (pEntBuffer)
+			aNextEntry = pEntBuffer->aLeadEntry();
+	}
+
+	return aNextEntry;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -107,8 +115,8 @@ EntBuffer::EntBuffer(IndexTree* pIndexTree)
 
   //m_xSkipRoots
   m_aLazyChain  = nullptr;
-  
-  
+
+	m_nLevels             = AM::nLvlLevels();
   m_nInsert             = 0;
   m_nSplit              = 0;
   m_nMove               = 0;
@@ -402,7 +410,19 @@ Ent* EntBuffer::pMoveToNextEntry(Ent* aEnt, EntBuffer** ppEntBuffer)
 
   EntBuffer* pEntBuffer = *ppEntBuffer;
 
-  aEnt = pEntBuffer->aNextEntry(aEnt,0);
+  //aEnt = pEntBuffer->aNextEntry(aEnt,0);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+	tET tNextEntry = aEnt->m_taNextEntry[0];
+
+	if (C_ENT_END_TICKET == tNextEntry)
+		aEnt = nullptr;
+	else {
+
+	  i8 iNextEntryOffset = (i8)tNextEntry * C_ENT_QUANTA;
+
+	  aEnt = (Ent*) ((char*)pEntBuffer + 624 + iNextEntryOffset);
+  }
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (aEnt)
     return aEnt;
@@ -802,10 +822,8 @@ void EntBuffer::vDumpPriorVec(Ent* aPriorVec[])
   
 //  vTrace("  0:%p 1:%p 2:%p\n"_Stz,
 //         aPriorVec[0],aPriorVec[1],aPriorVec[2]);
-  
-  i8 nLvlLevels = AM::nLvlLevels();
 
-  for (i8 i_Lvl = 0; i_Lvl < nLvlLevels; i_Lvl++) {
+  for (i8 i_Lvl = 0; i_Lvl < m_nLevels; i_Lvl++) {
     Ent* aEnt = aPriorVec[i_Lvl];
     if (aEnt == aSkipRoots())
       vTrace("SKIP ROOT\n"_Stz);
@@ -972,22 +990,6 @@ Ent* EntBuffer::aEntArray(void)
   Ent* aEntAry = aItemArray();
   
   return aEntAry;
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* get lead entry (the entry after head entry                                 */
-/*----------------------------------------------------------------------------*/
-Ent* EntBuffer::aLeadEntry(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
-  
-  
-  Ent* aFirst = aNextEntry(aSkipRoots(),0);
-  
-  ASSERT(! aFirst || aFirst->bValidEnt());
-  
-  return aFirst;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1173,7 +1175,7 @@ Ent* EntBuffer::pMoveToGreaterEqualEntry_gen(Ent* aEnt, Key* aGivenKey, EntBuffe
       *ppEntBuffer = pEntBuffer->pNextEntBuffer();
       
       if (*ppEntBuffer) {
-        return pMoveToGreaterEqualEntry((*ppEntBuffer)->aSkipRoots(), aGivenKey, ppEntBuffer);
+        return pMoveToGreaterEqualEntry_gen((*ppEntBuffer)->aSkipRoots(), aGivenKey, ppEntBuffer);
       }
     }
     else
@@ -1213,7 +1215,10 @@ Ent* EntBuffer::pMoveToGreaterEqualEntry_int(Ent* aEnt, Key* aGivenKey, EntBuffe
       *ppEntBuffer = pEntBuffer->pNextEntBuffer();
       
       if (*ppEntBuffer) {
-        return pMoveToGreaterEqualEntry((*ppEntBuffer)->aSkipRoots(), aGivenKey, ppEntBuffer);
+        //return pMoveToGreaterEqualEntry_int((*ppEntBuffer)->aSkipRoots(), aGivenKey, ppEntBuffer);
+				pEntBuffer = *ppEntBuffer;
+				aEnt = pEntBuffer->aSkipRoots();
+				aEnt = pEntBuffer->aNextEntry(aEnt,0);
       }
     }
     else
@@ -1239,16 +1244,6 @@ Ent* EntBuffer::aNextEntry(Ent* aPrevEntry)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get next buffer                                                            */
-/*----------------------------------------------------------------------------*/
-EntBuffer* EntBuffer::pNextEntBuffer(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-  
-  return _pEntBuffer(m_tNextBuffer.pGetDataBuffer());
-}
-
-/*----------------------------------------------------------------------------*/
 /* set next buffer                                                            */
 /*----------------------------------------------------------------------------*/
 void EntBuffer::vNextEntBuffer(EntBuffer* pNextBuffer)
@@ -1259,50 +1254,6 @@ void EntBuffer::vNextEntBuffer(EntBuffer* pNextBuffer)
 
   RASSERT(m_tNextBuffer.pGetDataBuffer() == pNextBuffer);
 }
-
-/*----------------------------------------------------------------------------*/
-/* get next entry                                                             */
-/*----------------------------------------------------------------------------*/
-#if 0
-
-Ent* EntBuffer::aNextEntry(Ent* aCurrent, i8 iLevel)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
-  
-  ASSERT(aCurrent);
-  ASSERT(iLevel <= 5);
-  
-  ASSERT(aCurrent->bValidEnt());
-  
-  tET tNextEntry = aCurrent->tNextEntry(iLevel);
-  
-  if (C_ENT_END_TICKET == tNextEntry)
-    return nullptr;
-  
-  //RASSERT(tNextEntry < m_nItems);
-  
-  //vTrace("DIFF: %lldB\n"_Stz,nDifference(this,aGetItem(0)));
-  
-  i8 iNextEntryOffset = iToEntryOffset(tNextEntry);
-  Ent* aNextEnt = aGetItem(iNextEntryOffset);
-
-  ASSERT(! aNextEnt || aNextEnt->bValidEnt());
-  
-  return aNextEnt;
-}
-
-/*----------------------------------------------------------------------------*/
-
-#else
-
-Ent* EntBuffer::aNextEntry(Ent* aCurrent, i8 iLevel)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
-    
-  return aNextEntry_flat(aCurrent,iLevel);
-}
-
-#endif
 
 /*----------------------------------------------------------------------------*/
 /* get next entry                                                             */
@@ -1463,16 +1414,6 @@ void EntBuffer::vRestoreIndex(Index* pIndex)
 
   //ASSERT( ! m_pIndex );
   //m_pIndex = pIndex;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get skip roots                                                             */
-/*----------------------------------------------------------------------------*/
-SkipRoots* EntBuffer::aSkipRoots(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
-  
-  return & m_xSkipRoots;
 }
 
 /*----------------------------------------------------------------------------*/
