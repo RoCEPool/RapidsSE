@@ -82,6 +82,15 @@ void CrwTablePtn::vAnalyze(i8& nBuffers, i8& nRows, i8& jSumRowBytes)
 
   while(pCursor) {
     PdsBufferIdItem* pBufferIdStruct = (PdsBufferIdItem*) pCursor->aItem();
+#ifdef WITHOUT_BUFFERIDHASHMAP
+    UNUSED(pHashMap);
+    CrwBuffer* pCrwBuffer = _pCrwBuffer(pBufferIdStruct->oBufferId.m_pvAsAddress);
+    nBuffers++;
+
+    //pCrwBuffer->vShow();
+    nRows += (pCrwBuffer->nRows());
+    jSumRowBytes += pCrwBuffer->nAllotedBytes();
+#else
     HashMapEntry* pEntry = pHashMap->pEntryAt(pBufferIdStruct->oBufferId.m_pvAsAddress);
 
     CrwBuffer* pCrwBuffer = _pCrwBuffer(pEntry->m_pValObject);
@@ -92,7 +101,7 @@ void CrwTablePtn::vAnalyze(i8& nBuffers, i8& nRows, i8& jSumRowBytes)
     jSumRowBytes += pCrwBuffer->nAllotedBytes();
 
     pEntry->vDropLock();
-
+#endif
     pCursor = m_pPdsOfBufferIds->pNextSLBlock(pCursor, 0);
   }
 
@@ -192,6 +201,11 @@ void CrwTablePtn::vDump(void)
 
   while(pCursor) {
     PdsBufferIdItem* pBufferIdStruct = (PdsBufferIdItem*) pCursor->aItem();
+#ifdef WITHOUT_BUFFERIDHASHMAP
+    UNUSED(pHashMap);
+    CrwBuffer* pCrwBuffer = _pCrwBuffer(pBufferIdStruct->oBufferId.m_pvAsAddress);
+    pCrwBuffer->vShow();
+#else
     HashMapEntry* pEntry = pHashMap->pEntryAt(pBufferIdStruct->oBufferId.m_pvAsAddress);
 
     CrwBuffer* pCrwBuffer = _pCrwBuffer(pEntry->m_pValObject);
@@ -199,7 +213,7 @@ void CrwTablePtn::vDump(void)
     pCrwBuffer->vShow();
 
     pEntry->vDropLock();
-
+#endif
     pCursor = m_pPdsOfBufferIds->pNextSLBlock(pCursor, 0);
   }
 }
@@ -245,6 +259,11 @@ bool CrwTablePtn::bPopulateIndexTree(IndexTree* pIndexTree)
 
   while(pCursor) {
     PdsBufferIdItem* pBufferIdStruct = (PdsBufferIdItem*) pCursor->aItem();
+#ifdef WITHOUT_BUFFERIDHASHMAP
+    UNUSED(pHashMap);
+    CrwBuffer* pCrwBuffer = _pCrwBuffer(pBufferIdStruct->oBufferId.m_pvAsAddress);
+    pIndexTree->vInsertEntries(pCrwBuffer);
+#else
     HashMapEntry* pEntry = pHashMap->pEntryAt(pBufferIdStruct->oBufferId.m_pvAsAddress);
 
     CrwBuffer* pCrwBuffer = _pCrwBuffer(pEntry->m_pValObject);
@@ -252,7 +271,7 @@ bool CrwTablePtn::bPopulateIndexTree(IndexTree* pIndexTree)
     pIndexTree->vInsertEntries(pCrwBuffer);
 
     pEntry->vDropLock();
-
+#endif
     pCursor = m_pPdsOfBufferIds->pNextSLBlock(pCursor, 0);
   }
 
@@ -360,6 +379,11 @@ void CrwTablePtn::vVisualizeTable(void)
 
   while(pCursor) {
     PdsBufferIdItem* pBufferIdStruct = (PdsBufferIdItem*) pCursor->aItem();
+#ifdef WITHOUT_BUFFERIDHASHMAP
+    UNUSED(pHashMap);
+    CrwBuffer* pCrwBuffer = _pCrwBuffer(pBufferIdStruct->oBufferId.m_pvAsAddress);
+    vTrace("%lld"_Stz, pCrwBuffer->iDecile());
+#else
     HashMapEntry* pEntry = pHashMap->pEntryAt(pBufferIdStruct->oBufferId.m_pvAsAddress);
 
     CrwBuffer* pCrwBuffer = _pCrwBuffer(pEntry->m_pValObject);
@@ -367,7 +391,7 @@ void CrwTablePtn::vVisualizeTable(void)
     vTrace("%lld"_Stz, pCrwBuffer->iDecile());
 
     pEntry->vDropLock();
-
+#endif
     pCursor = m_pPdsOfBufferIds->pNextSLBlock(pCursor, 0);
   }
 

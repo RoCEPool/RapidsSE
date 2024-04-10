@@ -146,7 +146,8 @@ namespace STORE
   private:
 
     void vGetValue(eDM eDatum, char *sValue, i8& iValue, d8& dValue);
-    void vInitAgg(ePE ePreExp);
+    void vInitAgg(ePE ePreExp, Stz* sStructColumn);
+		void vInitAgg(ePE ePreExp, i8 i_ColPL);
 
     void vPayloadAgg(void);
 

@@ -39,7 +39,7 @@ namespace STORE
    ~EntWrk(void) noexcept(false);
 
     static void  vAppendElementEntInt(EntWrk* pEntWrk, i8 iInt);
-    static void  vAppendElementEntStz(EntWrk* pEntWrk, Stz* sValue);
+
     static byte* ayEachElm(Column* pColumn, i8& nBytes, byte** aayCursor);
     static void  vEntKind(EntWrk* pEntWrk, bool bPayload, eKE eKeyKind);
     static void  vEntDesc(EntWrk* pEntWrk, IndexDef* pIndexDef);
@@ -52,6 +52,7 @@ namespace STORE
     void  vAppendElement(Row* aRow, RowPix* pRowPix, i8 i_Col);
     void  vAppendElementInt(Row* aRow, i8 iInt);
     void  vAppendElementStz(Row* aRow, Stz* szStr);
+		void  vAppendElementEntStz(char* sValue);
     void  vAppendInt(i8 iArg);
     void  vAppendMinusInfinity(void);
     void  vAppendNull(void);
@@ -106,7 +107,6 @@ namespace STORE
     Footer* aFooter(void);
   };
   void  vEntWrk_appendElementEntInt(void* pEntWrk, i8 iInt);
-  void  vEntWrk_appendElementEntStz(void* pEntWrk, char* sValue);
   void  vEntWrk_entKind(void* pEntWrk, i8 bPayload, i8 iKeyKind);
   void  vEntWrk_payloadCreate(void* pEntWrk, i8 nPayloadBytes);
   void  vEntWrk_print(void* pEntWrk, void* pIndexDef);

@@ -21,9 +21,7 @@ namespace STORE
     i8 nCullBound(Stz* szWithMark);
     Card_Bound* pFindChosenBound(void);
 
-    void vEnsure_Cast(CardIter *pCI);
-
-    void vShortForm(String* pString_b);
+    void vApplyCast(CardIter *pCI, Card_Emit* p_Dic_expr);
 
     bool bHasEquivalentBound(Card_RlnConj* p_rlnConj);
     bool bUsesSqyRsl(void);

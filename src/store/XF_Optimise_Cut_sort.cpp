@@ -67,32 +67,33 @@ bool XF_Optimise_Cut_sort::bOptimise(void)
 
   bool bOptRun = false;
 
-  m_pCI->vTransform(__func__, XF_OPTIMISE_CUT_SORT, "Cut sort"_Stz);
+  m_pCI->vTransform(__FILE__, __func__, XF_OPTIMISE_CUT_SORT);
 
-  m_pCI->vClearRestart();
+  m_pCI->vClearRegisters();
+  m_pCI->vBeginEach();
 
   RASSERT(nullptr == m_pCI->StreamOrder.m_pEmitted);
   RASSERT(nullptr == m_pCI->StreamOrder.m_pStreamKey);
 
-  while (m_pCI->G_bEachMain_NONE()) {
+  while (m_pCI->bEachOp()) {
 
-    switch (m_pCI->G.e_MainCard) {
+    switch (m_pCI->E.e_Op) {
 
       case CK_o_SORT:
         if (! m_pCI->StreamOrder.m_pStreamKey)
          break;
 
-        m_pCI->G.p_key = m_pCI->G.p_sort->pSub_key();
-        if (! m_pCI->StreamOrder.m_pStreamKey->bIsEquivalentTo(m_pCI->G.p_key))
+        m_pCI->E.p_key = m_pCI->E.p_sort->pSub_key();
+        if (! m_pCI->StreamOrder.m_pStreamKey->bIsEqual(m_pCI,m_pCI->E.p_key))
           break;
 
-        m_pCI->vRemoveDeleteCurr(CK_o_SORT);
-//        if (m_pCI->G_bIsNextMain(CK_o_SORT)) {
-//          m_pCI->G_bEachMain_NONE();
-//          m_pCI->vRemoveDeleteCurr(CK_o_SORT);
-//          if (m_pCI->G_bIsNextMain(CK_o_SORT)) {
-//            m_pCI->G_bEachMain_NONE();
-//            m_pCI->vRemoveDeleteCurr(CK_o_SORT);
+        m_pCI->vRemoveDeleteMain(CK_o_SORT);
+//        if (m_pCI->pPeekNextIf(CK_o_SORT)) {
+//          m_pCI->bEachOp();
+//          m_pCI->vRemoveDeleteMain(CK_o_SORT);
+//          if (m_pCI->pPeekNextIf(CK_o_SORT)) {
+//            m_pCI->bEachOp();
+//            m_pCI->vRemoveDeleteMain(CK_o_SORT);
 //          }
 //        }
 
@@ -100,8 +101,8 @@ bool XF_Optimise_Cut_sort::bOptimise(void)
         break;
 
       default:
-        if (m_pCI->G.p_MainCard->pSub_emit()) {
-          m_pCI->StreamOrder.m_pEmitted = m_pCI->G.p_MainCard->pSub_emit();
+        if (m_pCI->E.p_Op->pSub_emit()) {
+          m_pCI->StreamOrder.m_pEmitted = m_pCI->E.p_Op->pSub_emit();
           m_pCI->StreamOrder.m_pStreamKey = m_pCI->StreamOrder.m_pEmitted->pSub_streamKey();
         }
         break;

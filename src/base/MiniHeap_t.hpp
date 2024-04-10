@@ -419,7 +419,7 @@ void MiniHeap_t<ITEM>::vIncItems(void)
 /* get address of data area                                                   */
 /*----------------------------------------------------------------------------*/
 template <class ITEM>
-ITEM* MiniHeap_t<ITEM>::aItemArray(void)
+inline ITEM* MiniHeap_t<ITEM>::aItemArray(void)
 {
   ITEM* aItemArea = (ITEM*)m_xWsp.ayArea();
   
@@ -430,7 +430,7 @@ ITEM* MiniHeap_t<ITEM>::aItemArray(void)
 /* get number of items in the buffer                                          */
 /*----------------------------------------------------------------------------*/
 template <class ITEM>
-i8 MiniHeap_t<ITEM>::nItems(void)
+inline i8 MiniHeap_t<ITEM>::nItems(void)
 {
   return m_nItems;
 }

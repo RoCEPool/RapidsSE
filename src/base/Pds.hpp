@@ -98,6 +98,7 @@ namespace BASE
     void            vStzSetSize(i8 nBytes);
     i8              iStzSetSize(void);
     void            vValidate(void);
+    bool            bValidPdsBuffer(void);
     bool            bVerify(void);
 
     // private:

@@ -62,39 +62,40 @@ void XF_Prolog_Reduce_not::vXF_not_Ops(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_REDUCE_NOT, _FOOTER_);
 
-  m_pCI->vTransform(__func__, XF_PROLOG_REDUCE_NOT, "not ops"_Stz);
+  m_pCI->vTransform(__FILE__, __func__, XF_PROLOG_REDUCE_NOT);
 
-  m_pCI->vClearRestart();
-  while (m_pCI->G_bEachSubOfMain(CK_RPNCALC)) {
+  m_pCI->vClearRegisters();
+  m_pCI->vBeginEach();
+  while (m_pCI->bEachOp_bySub(CK_RPNCALC)) {
 
-    Kid xKid(m_pCI->G.p_rpnCalc);
-    while (xKid.bEach(CK_TERM)) {
+    Kid xRpnCalc(m_pCI->E.p_rpnCalc);
+    while (xRpnCalc.bEach(CK_TERM)) {
 
-      Card_Term* p_term = xKid.p_term();
+      Card_Term* p_term = xRpnCalc.p_term();
 
-      if (! xKid.bMore())
+      if (! xRpnCalc.bMore())
         break;
 
-      if (p_term->pSymbol()->bSame("exists"_Stz)) {
+      if (p_term->pSymbol()->bHasFacet("exists"_Stz)) {
 
-        RASSERT(xKid.bEach(CK_TERM));
-        Card_Term* p_term_next = xKid.p_term();
-        if (p_term_next->pSymbol()->bSame("not"_Stz)) {
-          xKid.vBackstep();
-          m_pCI->G.p_rpnCalc->vRemoveChild(p_term_next);
+        RASSERT(xRpnCalc.bEach(CK_TERM));
+        Card_Term* p_term_next = xRpnCalc.p_term();
+        if (p_term_next->pSymbol()->bHasFacet("not"_Stz)) {
+          xRpnCalc.vBackstep();
+          m_pCI->E.p_rpnCalc->vRemoveChild(p_term_next);
           p_term->SYM(SF_SQY_OP,"notExists"_Stz);
           continue;
         }
         continue;
       }
 
-      if (xKid.p_term()->pSymbol()->bSame("in"_Stz)) {
+      if (xRpnCalc.p_term()->pSymbol()->bHasFacet("in"_Stz)) {
 
-        RASSERT(xKid.bEach(CK_TERM));
-        Card_Term* p_term_next = xKid.p_term();
-        if (p_term_next->pSymbol()->bSame("not"_Stz)) {
-          xKid.vBackstep();
-          m_pCI->G.p_rpnCalc->vRemoveChild(p_term_next);
+        RASSERT(xRpnCalc.bEach(CK_TERM));
+        Card_Term* p_term_next = xRpnCalc.p_term();
+        if (p_term_next->pSymbol()->bHasFacet("not"_Stz)) {
+          xRpnCalc.vBackstep();
+          m_pCI->E.p_rpnCalc->vRemoveChild(p_term_next);
           p_term->SYM(SF_SQY_OP,"notIn"_Stz);
           DELETE_CARD(p_term_next);
           continue;

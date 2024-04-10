@@ -20,6 +20,7 @@
 #include "LogicUnit.hpp"
 #include "Stream.hpp"
 #include "Stage.hpp"
+#include "TagConstants.h"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -97,7 +98,8 @@ void Step::vOpEnqueOperand(void)
 
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
 
-  pOp->vOpTrace(nullptr,(Stz*)__func__,false,
+	if (AM::TRACE::bVerbose(C_VB_OP))
+		pOp->vOpTrace(nullptr,(Stz*)__func__,false,
                  "// queue StartMarker into pipeline"_Stz);
 
   pOp->vAppendLeft(pOperand,this);
@@ -169,8 +171,9 @@ void Step::vOpHandlerEntry(void)
     
     if (m_pLogicUnit->m_xpPipein.bIsNotNull()) {
       Operand* pOperand = *m_pLogicUnit->m_xpPipein;
-    
-      m_pOp->vOpTrace(pOperand,(Stz*)__func__,true);
+
+			if (AM::TRACE::bVerbose(C_VB_OP))
+        m_pOp->vOpTrace(pOperand,(Stz*)__func__,true);
     }
     
   }
@@ -379,6 +382,13 @@ void Step::vOpPipeOut(void)
   
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
 
+  if(! BufferId::bIsBufferId(pOperand)) {
+    if(DataBuffer::bIsDataBuffer(pOperand->eGetClassNo())) {
+      DataBuffer* pDataBuffer = _pDataBuffer(pOperand);
+      AM::pHashMap()->vDropKeyLock(pDataBuffer->oGetBufferId().m_pvAsAddress);
+      pOperand = _pOperand((Object*)pDataBuffer->oGetBufferId().m_pvAsAddress);
+    }
+  }
 //  if (pOperand->bIsBuffer()) {
 //    LogicUnit* pLogicUnit = pOp->pOpLogicUnit();
 //    pLogicUnit->m_xpStats->m_nBuffOut++;

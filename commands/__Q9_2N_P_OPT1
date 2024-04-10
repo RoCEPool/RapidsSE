@@ -1,0 +1,140 @@
+/*============================================================================*/
+/* __Q9_2N_P_OPT1                                                             */
+/*============================================================================*/
+
+// PIPELINE FROM AWS SF100-2N
+
+/optimise_passthru
+pipeline Query9
+begin
+
+  stage S00 on origin :
+      start
+    | pulse     once
+    | next
+
+  stage S01 on all partitions :
+      scan      partsupp
+    | project   " type DECIMAL ( 15 2 ) as C0_PS_SUPPLYCOST $4
+                , type INTEGER ( 19 ) as C1_PS_PARTKEY $1
+                , type INTEGER ( 19 ) as C2_PS_SUPPKEY $2 "
+    | dynamic
+    | next      broadcast
+
+  stage S02 on all partitions :
+    indexJoin lineitem IxL_PARTKEY " BOUND $I1 $2 == "
+    | project   " type INTEGER ( 19 ) as C2_PS_SUPPKEY $3 ,
+                  type INTEGER ( 19 ) as L_SUPPKEY $6 ,
+                  type DECIMAL ( 15 2 ) as C0_L_EXTENDEDPRICE $9
+                , type DECIMAL ( 15 2 ) as C1_L_DISCOUNT $10
+                , type DECIMAL ( 15 2 ) as C2_PS_SUPPLYCOST $1
+                , type DECIMAL ( 15 2 ) as C3_L_QUANTITY $8
+                , type INTEGER ( 19 ) as C4_L_ORDERKEY $4
+                , type INTEGER ( 19 ) as C5_L_SUPPKEY $6
+                , type INTEGER ( 19 ) as C6_L_PARTKEY $5 "
+    | filter    " type BOOLEAN $1 $2 == "
+    | project   " type DECIMAL ( 15 2 ) as C0_L_EXTENDEDPRICE $3
+                , type DECIMAL ( 15 2 ) as C1_L_DISCOUNT $4
+                , type DECIMAL ( 15 2 ) as C2_PS_SUPPLYCOST $5
+                , type DECIMAL ( 15 2 ) as C3_L_QUANTITY $6
+                , type INTEGER ( 19 ) as C4_L_ORDERKEY $7
+                , type INTEGER ( 19 ) as C5_L_SUPPKEY $8
+                , type INTEGER ( 19 ) as C6_L_PARTKEY $9 "
+  | hash      "type INTEGER $7"
+  | dynamic
+  | next      hashcast
+
+  stage S03 on all partitions :
+    indexJoin part IxP_PARTKEY " BOUND $I1 $7 == "
+  | project   "   type VARCHAR ( 55 ) as C0_P_NAME $9
+                , type DECIMAL ( 15 2 ) as C0_L_EXTENDEDPRICE $1
+                , type DECIMAL ( 15 2 ) as C1_L_DISCOUNT $2
+                , type DECIMAL ( 15 2 ) as C3_PS_SUPPLYCOST $3
+                , type DECIMAL ( 15 2 ) as C4_L_QUANTITY $4
+                , type INTEGER ( 19 ) as C5_L_ORDERKEY $5
+                , type INTEGER ( 19 ) as C6_L_SUPPKEY $6 "
+  | filter    " type BOOLEAN } $1 '%green%' 5 matchMiddle "
+  | project   "   type DECIMAL ( 15 2 ) as C0_L_EXTENDEDPRICE $2
+                , type DECIMAL ( 15 2 ) as C1_L_DISCOUNT $3
+                , type DECIMAL ( 15 2 ) as C2_PS_SUPPLYCOST $4
+                , type DECIMAL ( 15 2 ) as C3_L_QUANTITY $5
+                , type INTEGER ( 19 ) as C4_L_ORDERKEY $6
+                , type INTEGER ( 19 ) as C5_L_SUPPKEY $7 "
+  | hash      "type INTEGER $6"
+  | dynamic
+  | next      hashcast
+
+  stage S04 on all partitions :
+    indexJoin supplier IxS_SUPPKEY " BOUND $I1 $6 == "
+    | project   " type DECIMAL ( 15 2 ) as C0_L_EXTENDEDPRICE $1
+                , type DECIMAL ( 15 2 ) as C1_L_DISCOUNT $2
+                , type DECIMAL ( 15 2 ) as C2_PS_SUPPLYCOST $3
+                , type DECIMAL ( 15 2 ) as C3_L_QUANTITY $4
+                , type INTEGER ( 19 ) as C4_S_NATIONKEY $10
+                , type INTEGER ( 19 ) as C5_L_ORDERKEY $5 "
+    | dynamic
+    | next      broadcast
+
+  stage S05 on all partitions :
+    indexJoin orders IxO_ORDERKEY " BOUND $I1 $6 == "
+    | project   " type DATE as C0_O_ORDERDATE $11
+                , type DECIMAL ( 15 2 ) as C1_L_EXTENDEDPRICE $1
+                , type DECIMAL ( 15 2 ) as C2_L_DISCOUNT $2
+                , type DECIMAL ( 15 2 ) as C3_PS_SUPPLYCOST $3
+                , type DECIMAL ( 15 2 ) as C4_L_QUANTITY $4
+                , type INTEGER ( 19 ) as C5_S_NATIONKEY $5 "
+    | dynamic
+    | next
+
+  stage S06 on all partitions :
+    indexJoin nation IxN_NATIONKEY " BOUND $I1 $6 == "
+    | project   " type VARCHAR as C0_N_NAME $8
+                , type INTEGER ( 19 ) as C1_o_year $1 extract_year
+                , type DECIMAL ( 19 2 ) as C2_amount $2 1.00 $3 - * $4 $5 * - "
+    | gbyAgg    " groupBy
+                  type VARCHAR $1
+                , type INTEGER ( 19 ) $2
+                aggregates
+                  type VARCHAR as C0_COL0 $K1
+                , type INTEGER ( 19 ) as C1_COL1 $K2
+                , type DECIMAL ( 19 2 ) as C2_COL2 ) $3 sum "
+    | dynamic
+    | next
+
+  stage S07 on all nodes :
+    gbyAgg    " groupBy
+                  type VARCHAR $1
+                , type INTEGER ( 19 ) $2
+                aggregates
+                  type VARCHAR as C0_COL0 $K1
+                , type INTEGER ( 19 ) as C1_COL1 $K2
+                , type DECIMAL ( 19 2 ) as C2_COL2 ) $3 sum "
+    | dynamic
+    | next
+
+  stage S08 on origin :
+    gbyAgg    " groupBy
+                  type VARCHAR $1
+                , type INTEGER ( 19 ) $2
+                aggregates
+                  type VARCHAR as C0_COL0 $K1
+                , type INTEGER ( 19 ) as C1_COL1 $K2
+                , type DECIMAL ( 19 2 ) as C2_sum_profit ) $3 sum "
+    | dynamic
+    | next
+
+  stage S09 on origin :
+    sort      " type VARCHAR $1 ASC , type INTEGER ( 19 ) $2 DESC "
+    | dynamic
+    | next
+
+  stage S16 on origin :
+      output
+    | sink
+    | first
+
+end ;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

@@ -4,7 +4,6 @@
 
 #include "Card_Expr.hpp"
 
-#include "Card_As.hpp"
 #include "Card_RpnCalc.hpp"
 #include "Card_BoolPred.hpp"
 #include "CardIter.hpp"
@@ -63,95 +62,120 @@ Card_Expr::~Card_Expr(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Card_Expr::pGby_expr_From_expr_corr(Card_Expr* pExpr_corr)
+void Card_Expr::vAssemble_injCrlRsl(CardIter* pCI)
 {
   _static_
 
-  RASSERT(CT_NONE != pExpr_corr->eCTVal());
+  eAL e_Level     = (eAL) pCI->E.p_level->pSymbol()->Y_iGet(P_Level);
 
-  Card_Expr*    p_expr_gby = new Card_Expr;
-  Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
-  Card_Term*    p_term    = pExpr_corr->pSub_term()->pClone();
+  if (AL_PARTITION == e_Level) {
+    pCI->E.p_expr = Card_Expr::pCraft_expr_keyCol_Of_term(pCI->E.p_expr->pGet_term0());
+  }
+  else {
+    Symbol xSymbol_KeyCol(SF_KEY_COL,1);
 
-  p_expr_gby->vAppendChild(p_rpnCalc);
-  p_rpnCalc->vAppendChild(p_term);
+    pCI->vNewMember(CK_EXPR);
+    i8 i_Board = pCI->Flat.m_pSqy_inner->pBoard()->i_Board();
+    pCI->E.p_expr->pSymbol()->vApplyFacet_varg(SF_NMD_COL, C_CRLKEY, i_Board);
+    pCI->vAppendNewChild(pCI->E.p_expr, CK_RPNCALC);
+    pCI->vAppendNewChild(pCI->E.p_rpnCalc, CK_TERM, &xSymbol_KeyCol);
 
-  p_rpnCalc->vCast(pExpr_corr->xCast());
-  p_term->vCast(pExpr_corr->xCast());
-  p_expr_gby->vCast(pExpr_corr->xCast());
+    pCI->E.p_term->vApplyCast_x(pCI->E.p_key->xCast());
+    pCI->E.p_expr->vApplyCast_x(pCI->E.p_key->xCast());
 
-  return p_expr_gby;
+    pCI->E.p_emit->vBump_expCol_In_rpnCalc(pCI);
+    pCI->E.p_key->pSymbol()->Y_vSet(P_ProjBumped);
+  }
+
+  pCI->E.p_expr->pSymbol()->Y_vSet(P_InjCrlKey);
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_Expr* Card_Expr::pCraft_expr_Of_expr(Card_Expr* p_expr, i8 iExpCol)
+{
+  _static_
+
+  RASSERT(CT_NONE != p_expr->eCTVal());
+
+  Symbol xSymbol_ExpCol(SF_EXP_COL, iExpCol, p_expr->xCast());
+  Card_Expr* p_expr_new = pCraft_expr_Of_symbol(&xSymbol_ExpCol);
+
+  return p_expr_new;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_Expr* Card_Expr::pCraft_expr_Of_symbol(Symbol* pSymbol)
+{
+  _static_
+
+  Card_Expr* p_expr_new = new Card_Expr;
+  p_expr_new->vApplyCast_x(pSymbol->xCast());
+
+  Card_RpnCalc* p_rpnCalc_new = new Card_RpnCalc;
+  p_expr_new->vAppendChild(p_rpnCalc_new);
+
+  Card_Term* p_term_new = (new Card_Term) ->SYM(pSymbol);
+  p_term_new->vApplyCast_x(pSymbol->xCast());
+  p_rpnCalc_new->vAppendChild(p_term_new);
+
+  return p_expr_new;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_Expr* Card_Expr::pCraft_expr_Of_term(Card_Term* p_term)
+{
+  _static_
+
+  Cast xCast = p_term->pSymbol()->xCast();
+
+  Card_Expr* p_expr_new = new Card_Expr;
+  p_expr_new->vApplyCast_x(xCast);
+
+  Card_RpnCalc* p_rpnCalc_new = new Card_RpnCalc;
+  p_expr_new->vAppendChild(p_rpnCalc_new);
+
+  Card_Term* p_term_new = p_term->pClone();
+  p_term_new->vApplyCast_x(xCast);
+  p_rpnCalc_new->vAppendChild(p_term_new);
+
+  return p_expr_new;
 }
 
 /*----------------------------------------------------------------------------*/
 /* form project expression from gby key expression                            */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Card_Expr::pProj_expr_From_Gby_expr(Card_Expr* p_expr_gby, Stz* szAs)
+Card_Expr* Card_Expr::pCraft_expr_keyCol_Of_term(Card_Term* p_term)
 {
   _static_
 
-  RASSERT(CT_NONE != p_expr_gby->eCTVal());
+  Card_Expr* p_expr = pCraft_expr_Of_term(p_term);
 
-  Symbol xSymbol_Kn(SF_KEY_COL,p_expr_gby->i_Child() + 1);
-
-  Card_Expr*    p_expr    = new Card_Expr;
-  p_expr->pSymbol()->vAppendFacet(SF_NMD_COL,szAs);
-  Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
-  Card_Term*    p_term    = p_expr_gby->pSub_term()->pClone(&xSymbol_Kn);
-
-  p_expr->vAppendChild(p_rpnCalc);
-  p_rpnCalc->vAppendChild(p_term);
-
-  p_rpnCalc->vCast(p_expr_gby->xCast());
-  p_term->vCast(p_expr_gby->xCast());
-  p_expr->vCast(p_expr_gby->xCast());
+  Symbol xSymbol_Kn(SF_KEY_COL, C_UNKNOWN);
+  p_expr->pGet_term0()->pSymbol()->vApplyFacets(&xSymbol_Kn);
 
   return p_expr;
 }
 
 
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card_Expr* Card_Expr::pProj_Simple_expr_Of(Card_Expr* p_expr, i8 i_Col)
-{
-  _static_
-
-  //p_expr->vDump();
-
-  RASSERT(CT_NONE != p_expr->eCTVal());
-
-  Symbol xSymbol_Dn(SF_EXP_COL, i_Col);
-
-  Card_Expr* p_expr_simple = new Card_Expr;
-
-  p_expr_simple->pSymbol()->vCastFacets(p_expr->pSymbol());
-
-  Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
-  p_rpnCalc->vCast(p_expr->xCast());
-
-  //Card_Term* p_term = p_expr->pSub_term()->pClone(&xSymbol_Dn);
-  //p_term->vCast(p_expr->xCast());
-  //p_term->vDump();
-
-  Card_Term* p_term = (new Card_Term) -> SYM(SF_EXP_COL,i_Col);
-
-  p_rpnCalc->vAppendChild(p_term);
-
-
-  p_expr_simple->vAppendChild(p_rpnCalc);
-  p_expr_simple->vCast(p_rpnCalc);
-
-  return p_expr_simple;
-}
 
 /*----------------------------------------------------------------------------*/
 /* craft a casted expr for given column                                       */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Card_Expr:: pCraft_expr_nmdCol(Column *pColumn, i8 iExpCol,
-                                          char cTblSyn, i8 iTblCol)
+Card_Expr* Card_Expr::pCraft_expr_of_nmdCol(Column *pColumn, i8 iExpCol,
+                                            char cTblSyn, i8 iTblCol)
 {
   _static_
 
@@ -161,44 +185,20 @@ Card_Expr* Card_Expr:: pCraft_expr_nmdCol(Column *pColumn, i8 iExpCol,
   xCast.m_nTypeScale    = pColumn->iColumnScale();
   xCast.m_bTypeNullable = pColumn->bIsNullable();
 
+  Symbol xSym(SF_TBL_COL, cTblSyn, iTblCol);
+  xSym.vApplyCast(xCast);
+
+  Card_Expr* p_expr_new = pCraft_expr_Of_symbol(&xSym);
+
   Stz* szNmdCol = pColumn->szColNm();
-
-  Card_Expr* p_expr_new = (new Card_Expr) -> SYM(SF_EXP_COL, iExpCol);
-  p_expr_new->vCast(xCast);
-  p_expr_new->pSymbol()->vAppendFacet(SF_NMD_COL, szNmdCol);
-
-  Card_RpnCalc *p_rpnCalc_new = (new Card_RpnCalc);
-  p_rpnCalc_new->vCast(xCast);
-  p_expr_new->vAppendChild(p_rpnCalc_new);
-
-  Card_Term *p_term_new = (new Card_Term) -> SYM(SF_TBL_COL, cTblSyn, iTblCol);
-  p_term_new->vCast(xCast);
-  p_rpnCalc_new->vAppendChild(p_term_new);
-
-  p_expr_new->pSymbol()->vAppendFacets(p_term_new->pSymbol());
+  p_expr_new->pSymbol()->vApplyFacet(SF_NMD_COL, szNmdCol);
+  p_expr_new->pSymbol()->vApplyFacet(SF_EXP_COL, iExpCol);
+  p_expr_new->pSymbol()->vApplyFacet(SF_TBL_COL, cTblSyn, iTblCol);
+  p_expr_new->pSymbol()->vApplyCast(xCast);
 
   return p_expr_new;
 }
 
-/*----------------------------------------------------------------------------*/
-/* craft a casted expr for given expCol term                                  */
-/*----------------------------------------------------------------------------*/
-Card_Expr* Card_Expr::pCast_expr_term_expCol(Card_Term* p_term)
-{
-  _static_
-
-  Card_Expr* p_expr_new = new Card_Expr;
-  p_expr_new->vCast(p_term->xCast());
-
-  Card_RpnCalc* p_rpnCalc_new = new Card_RpnCalc;
-  p_rpnCalc_new->vCast(p_term->xCast());
-  p_expr_new->vAppendChild(p_rpnCalc_new);
-
-  Card_Term *p_term_new = p_term->pClone();
-  p_rpnCalc_new->vAppendChild(p_term_new);
-
-  return p_expr_new;
-}
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
@@ -207,15 +207,47 @@ Card_Expr* Card_Expr::pCast_expr_term_expCol(Card_Term* p_term)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Expr::vBump_expCol(i8 nBumpBy, bool bSkipFoldExpr)
+void Card_Expr::vApplyCast(CardIter* pCI, Card_Emit* p_Dic_expr)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  pCI->E.p_rpnCalc = pSub_rpnCalc();
+
+  Cast xCast_last;
+  xCast_last.m_xTypeId = TypeId();
+  xCast_last.m_nTypeLength = 0;
+  xCast_last.m_nTypeScale = 0;
+  RASSERT(!xCast_last.m_xTypeId.bIsValid());
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  for (pCI->vBeginTarget(this,CK_TERM); pCI->bEachTarget(); /**/) {
+    pCI->E.p_term = pCI->E.xTarget.p_term();
+    pCI->E.p_term->vApplyCast(pCI, /*??*/p_Dic_expr, xCast_last);
+  }
+  pCI->E.p_term = nullptr;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  pCI->E.p_rpnCalc = nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Expr::vBump_expCol(i8 nBumpBy)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (Card_BoolPred* p_boolPred = pSub_boolPred())
-    p_boolPred->vBump_expCol(nBumpBy, bSkipFoldExpr);
-  else
-  if (Card_RpnCalc* p_rpnCalc = pSub_rpnCalc())
-    p_rpnCalc->vBump_expCol(nBumpBy, bSkipFoldExpr);
+  //p_rpnCalc->vBump_expCol(nBumpBy);
+  Kid xRpnCalc(pSub_rpnCalc());
+  while (xRpnCalc.bEach(CK_TERM)) {
+
+    if (xRpnCalc.p_term()->pSymbol()->bHasFacet(SF_EXP_COL)) {
+      xRpnCalc.p_term()->vBump_ordCol(SF_EXP_COL, nBumpBy);
+      xRpnCalc.p_term()->vMark1(MARK_CHANGED);
+    }
+  }
 
 }
 
@@ -238,26 +270,11 @@ bool Card_Expr::bContains(Symbol* pSymbol_arg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (Card_BoolPred* p_boolPred = pSub_boolPred())
-    return p_boolPred->bContains(pSymbol_arg);
-  else
-  if (Card_RpnCalc* p_rpnCalc = pSub_rpnCalc())
-    return p_rpnCalc->bContains(pSymbol_arg);
+  for (Kid xRpnCalc(pSub_rpnCalc()); xRpnCalc.bEach(CK_TERM); /**/)
+    if (xRpnCalc.p_term()->pSymbol()->bMatches(pSymbol_arg))
+      return true;
 
   return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* append a synthetic SF_NMD_COL                                              */
-/*----------------------------------------------------------------------------*/
-void Card_Expr::vAppend_nmdCol_synthetic(i8 iExpCol)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  s256 sColNm_synthetic;
-  sColNm_synthetic.vSprint("COL%lld"_Stz,iExpCol);
-
-  pSymbol()->vAppendFacet(SF_NMD_COL,sColNm_synthetic);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -267,82 +284,47 @@ void Card_Expr::vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (Card_BoolPred* p_boolPred = pSub_boolPred())
-    p_boolPred->vDeleteFacetIf(eFacet, eAlsoFacet, cTblSyn);
-  else
-  if (Card_RpnCalc* p_rpnCalc = pSub_rpnCalc())
-    p_rpnCalc->vDeleteFacetIf(eFacet, eAlsoFacet, cTblSyn);
+  for (Kid xTerm(pSub_rpnCalc()); xTerm.bEach(CK_TERM); /**/) {
+    xTerm.p_term()->vDeleteFacetIf(eFacet, eAlsoFacet, cTblSyn);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
 /* ensure expression has a SF_NMD_COL                                         */
 /*----------------------------------------------------------------------------*/
-void Card_Expr::vEnsure_nmdCol(i8 iExpCol)
+void Card_Expr::vEnsure_expr_Has_nmdCol(i8 iExpCol)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Symbol* pSymbol_expr = pSymbol();
-  if (pSymbol_expr->bHasFacet(SF_NMD_COL))
+  Symbol* pSym_expr = pSymbol();
+  if (pSym_expr->bHasFacet(SF_NMD_COL))
     return;
 
   if (! bIsCompound()) {
     Card_Term* p_term0 = pGet_term0();
-    if (p_term0->pSymbol()->bHasFacet(SF_NMD_COL)) {
-      pSymbol_expr->vAppendFacet(SF_NMD_COL,p_term0->szFacet(SF_NMD_COL));
+    Symbol* pSym_term0 = p_term0->pSymbol();
+    if (pSym_term0->bHasFacet(SF_NMD_COL)) {
+      pSym_expr->vApplyFacet(SF_NMD_COL, pSym_term0);
       return;
     }
   }
 
-  vAppend_nmdCol_synthetic(iExpCol);
+  // synthetic column name
+  pSym_expr->vApplyFacet(SF_NMD_COL,iExpCol);
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* return first key col in this rpn sequence                                  */
 /*----------------------------------------------------------------------------*/
-void Card_Expr::vEnsure_Cast(CardIter* pCI)
+Symbol* Card_Expr::pFirst_colSym(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  pCI->G.p_rpnCalc = pSub_rpnCalc();
+  for (Kid xRpnCalc(pSub_rpnCalc()); xRpnCalc.bEach(CK_TERM); /**/)
+    if (xRpnCalc.p_term()->pSymbol()->bHasFacet(SF_EXP_COL) || xRpnCalc.p_term()->pSymbol()->bHasFacet(SF_TBL_COL))
+      return xRpnCalc.p_term()->pSymbol();
 
-  Symbol* pSymbol_expr = pSymbol();
-  if (! xCast().m_xTypeId.bIsValid()) {
-    pCI->vPrintBoard(__func__,__LINE__,true);
-    vDump(__func__ );
-    NEVER_REACH
-  }
-  RASSERT(xCast().m_xTypeId.bIsValid());
-  RASSERT(xCast().m_xTypeId == pCI->G.p_rpnCalc->xCast().m_xTypeId);
-
-  TypeId xTypeId_save = xCast().m_xTypeId;
-
-  pCI->G.p_rpnCalc->vEnsure_Cast(pCI);
-
-
-
-//  if (pSymbol()->xCast().m_xTypeId != pCI->G.p_rpnCalc->xCast().m_xTypeId) {
-//    vDump(__func__);
-//    pCI->G.p_rpnCalc->vEnsure_Cast(pCI);
-//    vDebugPoint();
-//  }
-
-//  if (! pSymbol_expr->xCast().m_xTypeId.bIsValid())
-//    vCast(pCI->G.p_rpnCalc->xCast());
-//  else
-  if (pSymbol_expr->xCast().m_xTypeId == pCI->G.p_rpnCalc->xCast().m_xTypeId &&
-      (pSymbol_expr->xCast().m_nTypeLength   != pCI->G.p_rpnCalc->xCast().m_nTypeLength ||
-       pSymbol_expr->xCast().m_nTypeScale    != pCI->G.p_rpnCalc->xCast().m_nTypeScale  ||
-       pSymbol_expr->xCast().m_bTypeNullable != pCI->G.p_rpnCalc->xCast().m_bTypeNullable))
-    vCast(pCI->G.p_rpnCalc->xCast());
-
-  //RASSERT(pSymbol()->xCast().m_xTypeId == pCI->G.p_rpnCalc->xCast().m_xTypeId);
-
-//  if (pCI->G.p_rpnCalc->xCast().m_xTypeId.bIsValid())
-//    vCast(pCI->G.p_rpnCalc->xCast());
-
-  RASSERT(xTypeId_save == xCast().m_xTypeId);
-
-  pCI->G.p_rpnCalc = nullptr;
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -352,9 +334,11 @@ Symbol* Card_Expr::pFirst_expCol(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Symbol* p_expCol = pSub_rpnCalc()->pFirstStmCol();
+  for (Kid xRpnCalc(pSub_rpnCalc()); xRpnCalc.bEach(CK_TERM); /**/)
+    if (xRpnCalc.p_term()->pSymbol()->bHasFacet(SF_EXP_COL))
+      return xRpnCalc.p_term()->pSymbol();
 
-  return p_expCol;
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -364,21 +348,11 @@ Symbol* Card_Expr::pFirst_keyCol(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Symbol* p_keyCol = pSub_rpnCalc()->pFirstKeyCol();
+  for (Kid xRpnCalc(pSub_rpnCalc()); xRpnCalc.bEach(CK_TERM); /**/)
+    if (xRpnCalc.p_term()->pSymbol()->bHasFacet(SF_KEY_COL))
+      return xRpnCalc.p_term()->pSymbol();
 
-  return p_keyCol;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get first key col                                                          */
-/*----------------------------------------------------------------------------*/
-Symbol* Card_Expr::pFirst_nmdCol(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Symbol* p_nmdCol = pSub_rpnCalc()->pFirstNmdCol();
-
-  return p_nmdCol;
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -388,9 +362,11 @@ Symbol* Card_Expr::pFirst_tblCol(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Symbol* p_tblCol = pSub_rpnCalc()->pFirstTblCol();
+  for (Kid xRpnCalc(pSub_rpnCalc()); xRpnCalc.bEach(CK_TERM); /**/)
+    if (xRpnCalc.p_term()->pSymbol()->bHasFacet(SF_TBL_COL))
+      return xRpnCalc.p_term()->pSymbol();
 
-  return p_tblCol;
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -400,7 +376,7 @@ Symbol* Card_Expr::pGet_Symbol(i8 i_Term)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_Term* p_term_i = pSub_rpnCalc()->pGetTerm(i_Term);
+  Card_Term* p_term_i = pGet_term(i_Term);
   if (! p_term_i)
     return nullptr;
 
@@ -416,21 +392,42 @@ Card_Term* Card_Expr::pGet_term(i8 i_Term)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_Term* p_term_i = pSub_rpnCalc()->pGetTerm(i_Term);
+  if (i_Term >= pSub_rpnCalc()->nChildCards())
+    return nullptr;
 
-  return p_term_i;
+  Card_Term* p_term = _pCard_Term(pSub_rpnCalc()->pGetChild(i_Term));
+
+  return p_term;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get term 0                                                                 */
+/* get term 0 (of a scalar expr)                                              */
 /*----------------------------------------------------------------------------*/
 Card_Term* Card_Expr::pGet_term0(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_Term* p_term0 = pSub_rpnCalc()->pGetTerm(0);
+  RASSERT(1 == pSub_rpnCalc()->nChildCards());
+  Card_Term* p_term0 = pGet_term(0);
 
   return p_term0;
+}
+
+/*----------------------------------------------------------------------------*/
+/* does expression have term ?                                                */
+/*----------------------------------------------------------------------------*/
+bool Card_Expr::bHasTerm(CardIter* pCI, Symbol* pSymbol)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  for (pCI->vBeginTarget(this,CK_TERM); pCI->bEachTarget(); /**/) {
+    if (pCI->E.xTarget.p_term()->pSymbol()->bMatches(pSymbol)) {
+      pCI->vEndTarget();
+      return true;
+    }
+  }
+
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -440,37 +437,51 @@ Card_Expr * Card_Expr::pInduct(i8 iExp)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_RpnCalc* p_rpnCalc_arriving = pSub_rpnCalc();
+  //Card_RpnCalc* p_rpnCalc_arriving = pSub_rpnCalc();
 
   Card_Expr* p_expr_inducted = new Card_Expr;
   Symbol* pSymbol_expr_inducted = p_expr_inducted->pSymbol();
 
   //vDump(__func__);
-  p_expr_inducted->vCast(this);
+  p_expr_inducted->vApplyCast_p(this);
 
   Symbol* pSymbol_expr_arriving = pSymbol();
 
   RASSERT(pSymbol_expr_arriving->bHasFacet(SF_EXP_COL));
 
   if (pSymbol_expr_arriving->bHasFacet(SF_NMD_COL))
-    pSymbol_expr_inducted->vAppendFacet(SF_NMD_COL,
-                                         pSymbol_expr_arriving->szSF_chrSeq(SF_NMD_COL));
+    pSymbol_expr_inducted->vApplyFacet(SF_NMD_COL,pSymbol_expr_arriving);
   else
-    p_expr_inducted->vAppend_nmdCol_synthetic(iExp);
+    p_expr_inducted->pSymbol()->vApplyFacet(SF_NMD_COL,iExp);
 
-//  if (pSymbol_expr_arriving->bHasFacet(SF_KEY_COL))
-//    pSymbol_expr_inducted->vAppendFacet(SF_KEY_COL,
-//                                        pSymbol_expr_arriving->szSF_chrSeq(SF_KEY_COL));
+  if (pSymbol_expr_arriving->bHasFacet(SF_SQY_RSL))
+    pSymbol_expr_inducted->vApplyFacet(SF_SQY_RSL,pSymbol_expr_arriving);
+
 
   if (bIsScalarCol() && pGet_Symbol(0)->bHasFacet(SF_TBL_COL)) {
-    pSymbol_expr_inducted->vAppendFacet(SF_TBL_COL,
-                                        pGet_Symbol(0)->szSF_chrSeq(SF_TBL_COL));
+    pSymbol_expr_inducted->vApplyFacet(SF_TBL_COL,pGet_Symbol(0));
+  }
+
+//  Card_RpnCalc* p_rpnCalc_inducted = p_rpnCalc_arriving->pInduct(this);
+//  p_expr_inducted->vAppendChild(p_rpnCalc_inducted);
+
+
+  Card_RpnCalc* p_rpnCalc_inducted = new Card_RpnCalc;
+
+  Card_Term* p_term_inducted = new Card_Term;
+  p_term_inducted->vApplyCast_p(this);
+  p_rpnCalc_inducted->vAppendChild(p_term_inducted);
+
+  if (bIsScalarCol() && pFirst_colSym()->bHasFacet(SF_TBL_COL)) {
+    p_term_inducted ->SYM(SF_TBL_COL, pFirst_colSym()->szFacet(SF_TBL_COL));
+  }
+  if (pSymbol()->bHasFacet(SF_EXP_COL)) {
+    p_term_inducted ->SYM(SF_EXP_COL, szFacet(SF_EXP_COL));
   }
 
 
 
 
-  Card_RpnCalc* p_rpnCalc_inducted = p_rpnCalc_arriving->pInduct(this);
 
   p_expr_inducted->vAppendChild(p_rpnCalc_inducted);
 
@@ -478,28 +489,14 @@ Card_Expr * Card_Expr::pInduct(i8 iExp)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool Card_Expr::bIsDescending(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  if (Card_Direction* p_direction = pSub_direction())
-    if (p_direction->pSymbol()->bSame("DESC"_Stz))
-      return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* is this an expression of a key                                             */
 /*----------------------------------------------------------------------------*/
-bool Card_Expr::bIsExpressionOfKey(void) {
+bool Card_Expr::bIsKeyCol(void) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   Symbol *pSymbol_0 = pGet_Symbol(0);
 
-  if (pSymbol_0->bIs_Key_Col())
+  if (pSymbol_0->bHasFacet(SF_KEY_COL))
     return true;
 
   return false;
@@ -512,16 +509,10 @@ bool Card_Expr::bIsCompound(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  bool bCompound = false;
-  if (Card_BoolPred* p_boolPred = pSub_boolPred()) {
-    bCompound = p_boolPred->bIsCompound();
-  }
-  else
-  if (Card_RpnCalc* p_rpnCalc = pSub_rpnCalc()) {
-    bCompound = p_rpnCalc->bIsCompound();
-  }
+  if (pSub_rpnCalc()->nChildCards() > 1)
+    return true;
 
-  return bCompound;
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -531,16 +522,14 @@ bool Card_Expr::bIsLiterals(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  bool bCompound = false;
-  if (Card_BoolPred* p_boolPred = pSub_boolPred()) {
-    bCompound = p_boolPred->bIsLiterals();
-  }
-  else
-  if (Card_RpnCalc* p_rpnCalc = pSub_rpnCalc()) {
-    bCompound = p_rpnCalc->bIsLiterals();
+  Kid xRpnCalc(pSub_rpnCalc());
+  while (xRpnCalc.bEach(CK_TERM)) {
+    if (xRpnCalc.p_term()->pSymbol()->bHasFacet(SF_EXP_COL) ||
+        xRpnCalc.p_term()->pSymbol()->bHasFacet(SF_TBL_COL))
+      return false;
   }
 
-  return bCompound;
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -550,53 +539,14 @@ bool Card_Expr::bIsScalarCol(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  bool bScalarCol = false;
-  if (Card_BoolPred* p_boolPred = pSub_boolPred()) {
-    bScalarCol = p_boolPred->bIsScalarCol();
-  }
-  else
-  if (Card_RpnCalc* p_rpnCalc = pSub_rpnCalc()) {
-    bScalarCol = p_rpnCalc->bIsScalarCol();
-  }
+  if (pSub_rpnCalc()->nChildCards() > 1)
+    return false;
 
-  return bScalarCol;
-}
+  Card_Term* p_term_0 = pGet_term(0);
+  if (! p_term_0->pSymbol()->bHasFacet(SF_EXP_COL) &&  !p_term_0->pSymbol()->bHasFacet(SF_TBL_COL))
+    return false;
 
-/*----------------------------------------------------------------------------*/
-/* is this expr a simple expression of a key?                                 */
-/*----------------------------------------------------------------------------*/
-bool Card_Expr::bIsScalarKey(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  bool bScalarKey = false;
-  if (Card_BoolPred* p_boolPred = pSub_boolPred()) {
-    bScalarKey = p_boolPred->bIsScalarKey();
-  }
-  else
-  if (Card_RpnCalc* p_rpnCalc = pSub_rpnCalc()) {
-    bScalarKey = p_rpnCalc->bIsScalarKey();
-  }
-
-  return bScalarKey;
-}
-
-/*----------------------------------------------------------------------------*/
-/* does expression have term ?                                                */
-/*----------------------------------------------------------------------------*/
-bool Card_Expr::bHasTerm(Symbol* pSymbol)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  bool bHas = false;
-
-  if (Card_BoolPred* p_boolPred = pSub_boolPred())
-    bHas = p_boolPred->bHas_term(pSymbol);
-  else
-  if (Card_RpnCalc* p_rpnCalc = pSub_rpnCalc())
-    bHas = p_rpnCalc->bHasTerm(pSymbol);
-
-  return bHas;
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -611,6 +561,22 @@ bool Card_Expr::bMatches(Card_Expr* p_expr_arg)
 
   if (pSymbol_this->bMatches(pSymbol_arg))
     return true;
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Card_Expr::bNeedsBrace(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Kid xRpnCalc(pSub_rpnCalc());
+  while (xRpnCalc.bEach(CK_TERM)) {
+    if (xRpnCalc.p_term()->pSymbol()->bNeedsBrace())
+      return true;
+  }
+
   return false;
 }
 
@@ -660,6 +626,7 @@ void Card_Expr::vPrint(Ribbon* pRibbon, i8 iDepth)
                             );
   }
 
+  vPrintProperties(pRibbon, iDepth);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // secondary facets
@@ -669,30 +636,10 @@ void Card_Expr::vPrint(Ribbon* pRibbon, i8 iDepth)
       continue;
     Facet* aFacet = pSymbol->aFacet(i_Facet_secondary);
     pRibbon->vSprintSnippet(true, "%s~%lld"_Stz,
-                            aFacet->m_sChrSeq.szStz(),
+                            aFacet->m_sFacet.szStz(),
                             i_Facet_secondary);
   }
-}
 
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_Expr::vRenumberForm_keyCol(i8 i_Expr)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-
-  SYM(SF_KEY_COL,i_Expr);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_Expr::vRenumberForm_expCol(i8 i_Expr)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  SYM(SF_EXP_COL, i_Expr);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -702,44 +649,58 @@ bool Card_Expr::bSameAs(Card_Expr* p_expr_arg)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-//  if (xTypeId() != p_expr_arg->xTypeId())
-//    return false;
+  i8 nChildren = pSub_rpnCalc()->nChildCards();
 
-  Card_RpnCalc* p_rpnCalc_this = this->pSub_rpnCalc();
-  Card_RpnCalc* p_rpnCalc_arg  = p_expr_arg->pSub_rpnCalc();
-  if (!p_rpnCalc_this->bSameAs(p_rpnCalc_arg))
+  if (nChildren != p_expr_arg->pSub_rpnCalc(C_NOT_NULL)->nChildCards())
     return false;
 
-//  if (Card_Direction* p_direction_this = pSub_direction()) {
-//    if (Card_Direction *p_direction_arg = p_expr_arg->pSub_direction()) {
-//      if (! p_direction_this->pSymbol()->bSame(p_direction_arg->pSymbol()))
-//        return false;
-//    }
-//    else {
-//      return false;
-//    }
-//  }
-//  else
-//  if (p_expr_arg->pSub_direction()) {
-//    return false;
-//  }
+  for (i8 i_Child = 0; i_Child != nChildren; i_Child++) {
+    Card_Term* p_term_this = pGet_term(i_Child);
+    Card_Term* p_term_arg = p_expr_arg->pGet_term(i_Child);
+
+    if (p_term_this->bSymbolMatches(p_term_arg))
+      continue;
+
+    return false;
+  }
+
 
   return true;
 }
 
 /*----------------------------------------------------------------------------*/
-/* short form                                                                 */
+/*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Expr::vShortForm(String* pString, Stz* szSep)
+void Card_Expr::vTransfer(STORE::Card *pChild_src, eSF eSymbol_limit)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (Card_BoolPred* p_boolPred = pSub_boolPred())
-    p_boolPred->vShortForm(pString);
-  else
-  if (Card_RpnCalc* p_rpnCalc = pSub_rpnCalc())
-    p_rpnCalc->vShortForm(pString,szSep);
+  Card_RpnCalc* p_rpn_calc_this = pSub_rpnCalc();
 
+  bool bAppendAnd = false;
+  if (p_rpn_calc_this->nChildCards())
+    bAppendAnd = true;
+
+  p_rpn_calc_this->vTransferChildren(pChild_src, eSymbol_limit);
+
+  if (bAppendAnd) {
+    Card_Term *p_term_and = (new Card_Term) ->SYM(SF_BOL_OP,"and"_Stz);
+    p_rpn_calc_this->vAppendChild(p_term_and);
+  }
+
+  p_rpn_calc_this->vApplyCast_x(pChild_src->xCast());
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Expr::vUpdate_expCol(CardIter* pCI, Card_Emit* p_arriving)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  for (pCI->vBeginTarget(this,CK_TERM); pCI->bEachTarget(); /**/)
+    pCI->E.xTarget.p_term()->vUpdate_expCol(pCI,p_arriving);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -749,14 +710,20 @@ void Card_Expr::vX_expCol_To_tblCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  pCI->G.p_boolPred = nullptr;
-  pCI->G.p_rpnCalc  = nullptr;
+  if ((pCI->E.p_rpnCalc = pSub_rpnCalc())) {
+    //vDump(__func__);
+    Kid xRpnCalc(pSub_rpnCalc());
+    while (xRpnCalc.bEach(CK_TERM)) {
+      if (!xRpnCalc.p_term()->pSymbol()->bHasFacet(SF_EXP_COL))
+        continue;
 
-  if ((pCI->G.p_boolPred = pSub_boolPred()))
-    pCI->G.p_boolPred->vX_expCol_To_tblCol(pCI);
-  else
-  if ((pCI->G.p_rpnCalc = pSub_rpnCalc()))
-    pCI->G.p_rpnCalc->vX_expCol_To_tblCol(pCI);
+      pCI->E.p_term = xRpnCalc.p_term();
+      pCI->E.p_term->vX_expCol_To_tblCol(pCI);
+    }
+
+    pCI->E.p_term = nullptr;
+
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -769,15 +736,12 @@ void Card_Expr::vX_tblCol_To_expCol(CardIter* pCI)
   i8 nAncestors = pCI->nAncestors();
   pCI->vAncestorPush(this);
 
-  if (Card_BoolPred* p_boolPred = pSub_boolPred()) {
-    p_boolPred->vX_tblCol_To_expCol(pCI);
-    p_boolPred = nullptr;
+  for (Kid xRpnCalc(pSub_rpnCalc());xRpnCalc.bEach(CK_TERM); /**/) {
+    pCI->E.p_term = xRpnCalc.p_term();
+    pCI->E.p_term->vX_tblCol_To_expCol(pCI);
   }
-  else
-  if (Card_RpnCalc* p_rpnCalc = pSub_rpnCalc()) {
-    p_rpnCalc->vX_tblCol_To_expCol(pCI);
-    p_rpnCalc = nullptr;
-  }
+
+  pCI->E.p_term = nullptr;
 
   pCI->vAncestorPop();
   RASSERT(pCI->nAncestors() == nAncestors);
@@ -796,21 +760,36 @@ void Card_Expr::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
     if (m_xSymbol.nTypeLength() == 0) {
       vMark("?"_Stz,"l"_Stz);
       pCI->pAncestorParent()->vMark("?"_Stz,"l"_Stz);
-      pCI->vPrintBoard(__func__,__LINE__,true);
+      pCI->PRINTBOARD_dbg();
       vDump(__func__);
       vValidationFailed("Decimal length is 0 : %p"_Stz, this);
     }
   }
 
-  (void)Card::eValidate_parentEither(pCI, CK_t_EMIT, CK_c_FOLD, CK_s_INJECTABLE,
-                                     CK_s_KEY, CK_s_NEEDED, CK_STREAMKEY, CK_NONE);
+/**Z_KEY_DIRECTION validation*/
+  (void)Card::eValidate_parentEither(pCI,
+                                     CK_s_CONSTRAINT,
+                                     CK_t_EMIT,
+                                     CK_o_FILTER,
+                                     CK_s_KEY,
 
-  if (pCI->pAncestorFind(CK_s_KEY)) {
+                                     CK_c_FLAT,
+                                     CK_c_FOLD,
+                                     CK_s_INJECTABLE,
+                                     CK_s_NEEDED,
+                                     CK_STREAMKEY,
+                                     CK_NONE);
+
+  eValidate_mustEither(CK_BOOLPRED, CK_RPNCALC, CK_NONE);
+
+  if (pCI->bAncestor(CK_s_KEY)) {
     //vDump(__func__);
     if (! m_xSymbol.bHasFacet(SF_KEY_COL) || ! m_xSymbol.bValidate()) {
       vDump(__func__);
       vValidationFailed("SF_KEY_COL Missing : %p"_Stz,this);
     }
+
+    RASSERT(bIsScalarCol());
   }
 
   Card::vValidate(pCI,iDepth,pParent);

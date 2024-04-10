@@ -79,7 +79,7 @@ void Step::vBufferIdGetDataBuffer(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* BufferId[].getAndClear -- fetch operand and set to nullptr                */
+/* BufferId[]\clear -- fetch operand and set to nullptr                       */
 /*----------------------------------------------------------------------------*/
 void Step::vBufferIdGetAndClear(void)
 {

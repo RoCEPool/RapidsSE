@@ -46,7 +46,7 @@ void Card_CONDITION::vAddTransients(CardIter* pCI)
 
   auto bLambda = [pCI] (Card_Term* p_term) {
 
-    if (!p_term->bIsColSym())
+    if (!p_term->pSymbol()->bHasFacet(SF_EXP_COL) && !p_term->pSymbol()->bHasFacet(SF_TBL_COL))
       return C_CONTINUE_RECURSION;
 
     if (pCI->Early.m_pNeeded_later->pFind_expr_Matches(p_term->pSymbol()))
@@ -65,7 +65,7 @@ void Card_CONDITION::vAddTransients(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pSub_boolPred()->bApplyRecursive_term(bLambda);
+  pSub_boolPred()->bLambdaWalk_term(bLambda);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -75,10 +75,21 @@ void Card_CONDITION::vX_expCol_To_tblCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if ((pCI->G.p_boolPred = pSub_boolPred()))
-    pCI->G.p_boolPred->vX_expCol_To_tblCol(pCI);
-  else if ((pCI->G.p_rpnCalc = pSub_rpnCalc()))
-    pCI->G.p_rpnCalc->vX_expCol_To_tblCol(pCI);
+  if ((pCI->E.p_boolPred = pSub_boolPred()))
+    pCI->E.p_boolPred->vX_expCol_To_tblCol(pCI);
+  else {
+    Kid xRpnCalc(pSub_rpnCalc());
+    while (xRpnCalc.bEach(CK_TERM)) {
+      if (!xRpnCalc.p_term()->pSymbol()->bHasFacet(SF_EXP_COL))
+        continue;
+
+      pCI->E.p_term = xRpnCalc.p_term();
+      pCI->E.p_term->vX_expCol_To_tblCol(pCI);
+    }
+
+    pCI->E.p_term = nullptr;
+
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -88,28 +99,18 @@ void Card_CONDITION::vX_tblCol_To_expCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  pCI->G.p_boolPred = nullptr;
-  pCI->G.p_rpnCalc  = nullptr;
-  if ((pCI->G.p_boolPred = pSub_boolPred()))
-    pCI->G.p_boolPred->vX_tblCol_To_expCol(pCI);
-  else if ((pCI->G.p_rpnCalc = pSub_rpnCalc()))
-    pCI->G.p_rpnCalc->vX_tblCol_To_expCol(pCI);
+  pCI->E.p_boolPred = nullptr;
+  pCI->E.p_rpnCalc  = nullptr;
+  if ((pCI->E.p_boolPred = pSub_boolPred()))
+    pCI->E.p_boolPred->vX_tblCol_To_expCol(pCI);
+  else if ((pCI->E.p_expr = pSub_expr())) {
+    //vDump(__func__);
+    pCI->E.p_expr->vX_tblCol_To_expCol(pCI);
+  }
 
-  pCI->G.p_boolPred = nullptr;
-  pCI->G.p_rpnCalc  = nullptr;
+  pCI->E.p_boolPred = nullptr;
+  pCI->E.p_rpnCalc  = nullptr;
 }
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_CONDITION::vShortForm(String* p_string)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (Card_BoolPred* p_boolPred = pSub_boolPred())
-    p_boolPred->vShortForm(p_string);
-}
-
 
 /*============================================================================*/
 /* end                                                                        */

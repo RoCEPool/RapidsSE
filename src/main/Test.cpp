@@ -2084,53 +2084,55 @@ void vTest33(void)
 /*----------------------------------------------------------------------------*/
 /* test34                                                                     */
 /*----------------------------------------------------------------------------*/
-void vTest34(void) {
-  Pds *pPdsBuffer;
-  RowPix *pRowPix;
-  Row *pRow;
-  ColumnInfo aColumnInfo[16];
+void vTest34(void)
+{
+	Pds* pPdsBuffer;
+	RowPix* pRowPix;
+	Row* pRow;
+	ColumnInfo aColumnInfo[16];
 
-  for (i8 iIndex = 0; iIndex < 16; iIndex++) {
-    aColumnInfo[iIndex].m_iColumnNo = iIndex;
-    snprintf(aColumnInfo[iIndex].m_cColumnNm, 256, "Column%lld", iIndex);
-    aColumnInfo[iIndex].m_iColumnTypeId = CT_INTEGER;
-    aColumnInfo[iIndex].m_iColumnLength = 19;
-    aColumnInfo[iIndex].m_iColumnScale = 0;
-    aColumnInfo[iIndex].m_bIsNullable = false;
-    aColumnInfo[iIndex].m_bPtnKey = false;
-    aColumnInfo[iIndex].m_bIsAscending = true;
-  }
+	for (i8 iIndex = 0; iIndex < 16; iIndex++) {
+		aColumnInfo[iIndex].m_iColumnNo = iIndex;
+		snprintf(aColumnInfo[iIndex].m_cColumnNm, 256, "Column%lld", iIndex);
+		aColumnInfo[iIndex].m_iColumnTypeId = CT_INTEGER;
+		aColumnInfo[iIndex].m_iColumnLength = 19;
+		aColumnInfo[iIndex].m_iColumnScale = 0;
+		aColumnInfo[iIndex].m_bIsNullable = false;
+		aColumnInfo[iIndex].m_bPtnKey = false;
+		aColumnInfo[iIndex].m_bIsAscending = true;
+	}
 
-  //StreamDef* pStreamDef = StreamDef::pStreamDefNew(16, aColumnInfo);
-  pRowPix = (RowPix *) RowPix::aRowPixNew(16, aColumnInfo);
+	//StreamDef* pStreamDef = StreamDef::pStreamDefNew(16, aColumnInfo);
+	pRowPix = RowPix::pRowPixNew(16, aColumnInfo);
 
-  for (i8 iIndex = 0; iIndex < 10000; iIndex++) {
-    pPdsBuffer = new Pds(pRowPix);
+	for (i8 iIndex = 0; iIndex < 10000; iIndex++) {
+		pPdsBuffer = new Pds(pRowPix);
 
-    do {
-      pRow = pPdsBuffer->pAllotRow(C_VARGS_BEGIN,
-                                   1,
-                                   2,
-                                   3,
-                                   4,
-                                   5,
-                                   6,
-                                   7,
-                                   8,
-                                   9,
-                                   10,
-                                   11,
-                                   12,
-                                   13,
-                                   14,
-                                   15,
-                                   16,
-                                   C_VARGS_END);
-    } while (pRow);
+		do {
+			pRow = pPdsBuffer->pAllotRow(C_VARGS_BEGIN,
+																	 1,
+																	 2,
+																	 3,
+																	 4,
+																	 5,
+																	 6,
+																	 7,
+																	 8,
+																	 9,
+																	 10,
+																	 11,
+																	 12,
+																	 13,
+																	 14,
+																	 15,
+																	 16,
+																	 C_VARGS_END);
+		} while (pRow);
 
-    //pPdsBuffer->pFirstRow()->vDump(pStreamDef);
-    delete pPdsBuffer;
-  }
+		//pPdsBuffer->pFirstRow()->vDump(pStreamDef);
+		delete pPdsBuffer;
+	}
+
 }
 
     

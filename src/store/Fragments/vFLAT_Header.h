@@ -18,7 +18,144 @@
   return 0;                                                                                    \
 }
 
+/*----------------------------------------------------------------------------*/
+/* flip the bytes in each word of src string into dst                         */
+/*----------------------------------------------------------------------------*/
+i8 iWordFlipBack(char* psDst, i8 iDstBufSize, char* psSrc)
+{
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //vTrace("WORDFLIPBACK\n"_Stz);
+  //MemLib::vDumpWords(aSrc, 16);
+
+  struct _WordAsBytes {
+    union {
+      b1 m_yaByte[C_BYTES_PER_WORD];
+      i8 m_iI8;
+      u8 m_uU8;
+    };
+  };
+
+  i8 iSrcSize =  strlen(psSrc) + 1;
+
+  i8 iRoundUp = 0;
+  i8 iRemainder = iSrcSize % C_BYTES_PER_WORD;
+  if (iRemainder)
+    iRoundUp = C_BYTES_PER_WORD - iRemainder;
+
+  i8 iReqDstSize = iSrcSize + iRoundUp;
+  //ASSERT(0 == iReqDstSize % C_BYTES_PER_WORD);
+
+  //bool bRet = bCheckBufferSpace(__func__, iReqDstSize, iDstBufSize, pbResult);
+  //if (!bRet) {
+  //  return iReqDstSize;
+  //}
+
+	if (iDstBufSize < iReqDstSize) {
+		printf("Warning: Unhandled string truncation occurred in function %s.\n"
+					 "Destination buffer required %lld bytes, only had %lld bytes.\n",
+					 __func__,
+					 iReqDstSize,
+					 iDstBufSize);
+	}
+
+	memset(psDst,0,iReqDstSize);
+  //MemLib::vZero(psDst, iReqDstSize, CN_KEY);
+
+  //memcpy(psDst,psSrc,(size_t)iReqDstSize);
+  //MemLib::vCopy(psDst, psSrc, iReqDstSize, CN_KEY);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  w8* aWrd = (w8*)psDst;
+  w8* aWrdSrc = (w8*)psSrc;
+	i8 nWords;
+  for (nWords = iReqDstSize / C_BYTES_PER_WORD; nWords; nWords--) {
+
+    //MemLib::vWordFlip(aWrd++, aWrdSrc++);
+
+    struct _WordAsBytes* aAsBytes = (struct _WordAsBytes*)aWrd++;
+    struct _WordAsBytes* aAsBytesSrc = (struct _WordAsBytes*)aWrdSrc++;
+
+    byte yByte;
+
+    yByte = aAsBytesSrc->m_yaByte[0];
+    aAsBytes->m_yaByte[0] = aAsBytesSrc->m_yaByte[7];
+    aAsBytes->m_yaByte[7] = yByte;
+
+    yByte = aAsBytesSrc->m_yaByte[1];
+    aAsBytes->m_yaByte[1] = aAsBytesSrc->m_yaByte[6];
+    aAsBytes->m_yaByte[6] = yByte;
+
+    yByte = aAsBytesSrc->m_yaByte[2];
+    aAsBytes->m_yaByte[2] = aAsBytesSrc->m_yaByte[5];
+    aAsBytes->m_yaByte[5] = yByte;
+
+    yByte = aAsBytesSrc->m_yaByte[3];
+    aAsBytes->m_yaByte[3] = aAsBytesSrc->m_yaByte[4];
+    aAsBytes->m_yaByte[4] = yByte;
+  }
+
+  //vTrace("\nAFTER BACK : %s\n"_Stz, aDst);
+  //MemLib::vDumpWords(aSrc, iDstSize);
+
+  return iReqDstSize;
+}
+
+/*----------------------------------------------------------------------------*/
+/* flip the bytes in each word of src string and get the size                 */
+/*----------------------------------------------------------------------------*/
+i8 iWordFlipSize(char* psSrc) {
+
+  char cDst[1024];
+  return iWordFlipBack(&cDst[0], 1024, psSrc);
+}
+
+/*----------------------------------------------------------------------------*/
+/* flattened function -- STARTMARKER HANDLER                                  */
+/*----------------------------------------------------------------------------*/
+i8 iStartHandler(struct Dynamic_T* aDynamicT) {
+
+	// Initialize the function pointers to the extern "C" functions here
+
+#ifdef WITH_CLANG
+	aDynamicT->m_fp_vExtern_EntWrkAppendElementStz = &vExtern_EntWrkAppendElementStz;
+	aDynamicT->m_fp_aExtern_EntBufferNextEntry = &aExtern_EntBufferNextEntry;
+	aDynamicT->m_fp_vExtern_EntPayloadCreate = &vExtern_EntPayloadCreate;
+
+	aDynamicT->m_fp_vExtern_IndexFind = &vExtern_IndexFind;
+	aDynamicT->m_fp_vExtern_IndexNew = &vExtern_IndexNew;
+	aDynamicT->m_fp_aExtern_IndexTreeBegin = &aExtern_IndexTreeBegin;
+	aDynamicT->m_fp_aExtern_IndexTreeFindEntryAsc = &aExtern_IndexTreeFindEntryAsc;
+	aDynamicT->m_fp_aExtern_IndexTreeFindInsertGenAsc = &aExtern_IndexTreeFindInsertGenAsc;
+	aDynamicT->m_fp_aExtern_IndexTreeInsertEnt = &aExtern_IndexTreeInsertEnt;
+
+	aDynamicT->m_fp_vExtern_IndexTreePositionGE_gen = &vExtern_IndexTreePositionGE_gen;
+	aDynamicT->m_fp_vExtern_IndexTreePositionGT_gen = &vExtern_IndexTreePositionGT_gen;
+  aDynamicT->m_fp_vExtern_IndexTreePositionLE_gen = &vExtern_IndexTreePositionLE_gen;
+  aDynamicT->m_fp_vExtern_IndexTreePositionLT_gen = &vExtern_IndexTreePositionLT_gen;
+
+	aDynamicT->m_fp_vExtern_IndexTreePositionGE_int = &vExtern_IndexTreePositionGE_int;
+	aDynamicT->m_fp_vExtern_IndexTreePositionGT_int = &vExtern_IndexTreePositionGT_int;
+  aDynamicT->m_fp_vExtern_IndexTreePositionLE_int = &vExtern_IndexTreePositionLE_int;
+  aDynamicT->m_fp_vExtern_IndexTreePositionLT_int = &vExtern_IndexTreePositionLT_int;
+
+	aDynamicT->m_fp_vExtern_PotRowPix = &vExtern_PotRowPix;
+	aDynamicT->m_fp_vExtern_PotAllotRowPds = &vExtern_PotAllotRowPds;
+	aDynamicT->m_fp_aExtern_PdsRowBufferCellArray = &aExtern_PdsRowBufferCellArray;
+	aDynamicT->m_fp_vExtern_PotRowStrSize = &vExtern_PotRowStrSize;
+
+	aDynamicT->m_fp_aExtern_StreamDefNew = &aExtern_StreamDefNew;
+
+	aDynamicT->m_fp_vExtern_TubAllotRowPds = &vExtern_TubAllotRowPds;
+	aDynamicT->m_fp_vExtern_TubRowPix = &vExtern_TubRowPix;
+	aDynamicT->m_fp_vExtern_TubRowStrSize = &vExtern_TubRowStrSize;
+#endif
+
+	return 1;
+}
+
 typedef signed char i1;
+
 typedef unsigned short u2;
 typedef long long i8;
 typedef unsigned char byte;

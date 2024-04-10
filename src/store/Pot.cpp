@@ -30,17 +30,78 @@ extern "C" void* aExtern_PotAllotRowPds(void* pPot, i8 iKeyHash, char** aazStrAr
 }
 
 /*----------------------------------------------------------------------------*/
-/* allocate row string                                                        */
+/* allot a new row                                                            */
 /*----------------------------------------------------------------------------*/
-extern "C" void vExtern_PotRowStrSize(void* pPot, i8 iKeyHash, i8 nRowStrSize) {
-  Pot::vRowStrSize((Pot*)pPot, iKeyHash, nRowStrSize);
+extern "C" void vExtern_PotAllotRowPds(void* aDynamicT, byte* aMixIn, i8 iMixInLen, char** aazStrArea, i8* pnMaxStrAreaLen) {
+
+	Dynamic_T* pDynamic = (Dynamic_T*)aDynamicT;
+	Pot* pPot = (Pot*)pDynamic->m_pPot;
+
+	// calculate the key hash
+	i8 iKeyHash = HshLib::iHash(aMixIn,iMixInLen);
+
+	// get the lgtptn
+	LglPtnMap* pPtnMap = AM::pLglPtnMap();
+	LglPtn tLglPtn = pPtnMap->tHashToLglPtnId(iKeyHash);
+
+	try {
+		Row* aDstRow;
+
+		RowPix* pRowPix = pPot->m_pRowPix;
+
+		// get pds row buffer for given partition (new a first buffer if ncessary)
+		Pds* pPdsRowBuffer = _pPds(pPot->pBuffer(tLglPtn));
+		if (! pPdsRowBuffer || pPdsRowBuffer->nFreeBytes() < C_2KB) {
+			pPdsRowBuffer = new Pds(pRowPix);
+			pPot->vAddBuffer(tLglPtn,pPdsRowBuffer);
+		}
+
+		// new a row in pds row buffer (new another pds row buffer if necessary)
+		aDstRow = pPdsRowBuffer->pAllotRow();
+		if (! aDstRow) {
+			pPdsRowBuffer = new Pds(pRowPix);
+			pPot->vAddBuffer(tLglPtn,pPdsRowBuffer);
+			aDstRow = pPdsRowBuffer->pAllotRow();
+			RASSERT(aDstRow);
+		}
+		*aazStrArea = (char*)pPdsRowBuffer->azDepositString_begin();
+		*pnMaxStrAreaLen = pPdsRowBuffer->nFreeBytes();
+
+		pPdsRowBuffer->vLglPtn(tLglPtn);
+
+		pDynamic->m_xRowInfoPO.m_aRowCellArray = aDstRow->aCellArray();
+		pDynamic->m_xRowInfoPO.m_aPdsRowBuffer = pPdsRowBuffer;
+	}
+	catch (LowMemory xLowMemory) {
+		pDynamic->m_iErrorCode = EC_LOW_MEMORY;
+	}
 }
 
 /*----------------------------------------------------------------------------*/
 /* allocate row string                                                        */
 /*----------------------------------------------------------------------------*/
-extern "C" void vExtern_PotRowPix(void* pPot, void* pRowPix) {
-  Pot::vSetRowPix((Pot*)pPot, (RowPix*)pRowPix);
+extern "C" void vExtern_PotRowStrSize(void* aDynamicT, i8 nRowStrSize) {
+  //Pot::vRowStrSize((Pot*)pPot, iKeyHash, nRowStrSize);
+	Dynamic_T* pDynamicT = (Dynamic_T*)aDynamicT;
+	Pot* pPot = (Pot*)pDynamicT->m_pPot;
+
+	RASSERT(CN_POT == pPot->eGetClassNo());
+
+	//LglPtnMap* pPtnMap = AM::pLglPtnMap();
+	//i8 iKeyHsh = HshLib::iHash((byte*)&iMixIn,sizeof(iMixIn));
+
+	Pds* pPdsRowBuffer = _pPds(pDynamicT->m_xRowInfoPO.m_aPdsRowBuffer);
+
+	pPdsRowBuffer->vDepositString_end(nRowStrSize);
+}
+
+/*----------------------------------------------------------------------------*/
+/* allocate row string                                                        */
+/*----------------------------------------------------------------------------*/
+extern "C" void vExtern_PotRowPix(void* aPot, i8 nColumns, void* pColumnInfo) {
+	Pot* pPot = (Pot*)aPot;
+	RowPix* pRowPix = RowPix::pRowPixNew(nColumns, (ColumnInfo*)pColumnInfo);
+	pPot->vRowPix(pRowPix);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -4,10 +4,37 @@
 # This is a cloud-init script used for configuring a CentOS Stream 8 machine for running (not building) RapidsSE.
 # The base64-encoded version of this file must be less than 16kB.
 
-# We wrap everything in a subshell to redirect all output through the tee command
-# and to a file of our choosing.
 CLOUD_INIT_OUTPUT="/cloud-init-output.log"
+CLOUD_INIT_STATUS="/cloud-init-status.log"
+CLOUD_INIT_COMPLETE="/cloud-init-complete.log"
+CLOUD_INIT_COMPLETE_DEPRECATED="/tmp/cloud-init-complete.log"
+
 TEE_CMD=("tee" "-ia" "${CLOUD_INIT_OUTPUT}")
+RC_LOCAL="/etc/rc.d/rc.local"
+
+##
+# Functions
+##
+
+function status() {
+  echo "$@" > "${CLOUD_INIT_STATUS}"
+
+  echo
+  echo "$@"
+  echo
+}
+
+##
+
+function error() {
+  echo "$@" > "${CLOUD_INIT_STATUS}"
+
+  echo >&2 "****** Cloud init error *******"
+  echo >&2 "$@"
+  echo >&2 "****** Cloud init error *******"
+}
+
+##
 
 {
   if which tee &>/dev/null; then
@@ -20,10 +47,7 @@ TEE_CMD=("tee" "-ia" "${CLOUD_INIT_OUTPUT}")
 chmod a+r "${CLOUD_INIT_OUTPUT}"
 
 {
-echo
-echo ""
-echo "Starting the cloud-init setup script for AlmaLinux 8."
-echo ""
+status "Starting the cloud-init setup script."
 
 readonly ALMA8="alma8"
 readonly ALMA8_USER="ec2-user"
@@ -45,10 +69,7 @@ if [ -f /etc/system-release ]; then
 fi
 
 if [ -z "${OS_DIST}" ]; then
-  echo >&2 "****** Cloud init error *******"
-  echo >&2 "COULD NOT DETERMINE THE OS PLATFORM. EXITING EARLY."
-  echo >&2 "OS_VER = ${OS_VER}"
-  echo >&2 "****** Cloud init error *******"
+  error "COULD NOT DETERMINE THE OS PLATFORM. EXITING EARLY. OS_VER = ${OS_VER}"
   exit 1
 fi
 
@@ -58,10 +79,7 @@ echo "OS_HOME_DIR = ${OS_HOME_DIR}"
 
 
 # Modify the ec2-user on Alma 8
-echo
-echo "*** Creating an new user: ec2-user ***"
-echo
-
+status "Creating a new user: ec2-user"
 usermod -a -G wheel "${OS_USER}"
 
 # Setup passwordless sudo for user ec2-user
@@ -76,13 +94,10 @@ chmod 0400 "${SUDO_FILE}"
 
 
 # Set up SSH. We do this early so that we can still login if something goes wrong later on.
-echo
-echo "*** Installing a common internal SSH key ***"
-echo
+status "Installing a common internal SSH key"
 
 # All machines have the same public/private key
 SSH_DIR="${OS_HOME_DIR}/.ssh"
-
 mkdir -p "${SSH_DIR}" || exit
 
 cat <<EOF >>"${SSH_DIR}/authorized_keys"
@@ -143,15 +158,19 @@ chmod 644 "${SSH_DIR}/known_hosts"
 chown -R "${OS_USER}:${OS_USER}" "${SSH_DIR}"
 
 
+status "Setting up the rc.local file"
+if [ ! -f "${RC_LOCAL}" ]; then
+  {
+    echo "#!/bin/sh -e"
+    echo
+    echo
+  } > "${RC_LOCAL}"
+fi
+chmod +x "${RC_LOCAL}"
 
 # Partition, format and mount the instance stores if they are not already mounted.
-# This needs to be done whenever the instance is stopped, but not when it is rebooted.
-
-echo
-echo "*** Installing the SSD mount script ***"
-echo
-cat <<'EOF' >>"/etc/rc.d/rc.local"
-
+status "Installing the SSD mount script"
+cat <<'EOF' >>"${RC_LOCAL}"
 
 # Setup the SSDs on each boot
 
@@ -228,11 +247,8 @@ fi
 EOF
 
 # Run the above script
-echo
-echo "*** Running the SSD mount script ***"
-echo
-chmod +x /etc/rc.d/rc.local
-bash /etc/rc.d/rc.local
+status "Running the SSD mount script"
+bash "${RC_LOCAL}"
 
 
 # Give more memory to /dev/shm. Use 95% of system memory, or mem-10GB, whichever is larger.
@@ -240,9 +256,9 @@ SHM_SIZE=$(cat /proc/meminfo | grep "MemTotal:" | awk '{m1 = $2/1048576*0.95; m2
 if [ "${SHM_SIZE}" -eq 0 ]; then
   SHM_SIZE=1
 fi
-echo "Updating size of /dev/shm to 95% of system memory (${SHM_SIZE} GB)"
+status "Updating size of /dev/shm to 95% of system memory (${SHM_SIZE} GB)"
 {
-  echo ""
+  echo
   echo "# Set /dev/shm to 95% of system memory"
   echo "tmpfs     /dev/shm     tmpfs     defaults,size=${SHM_SIZE:-500}g     0 0 "
 } >>/etc/fstab
@@ -251,47 +267,35 @@ systemctl daemon-reload
 
 
 # Apply any package updates
-echo
-echo "*** Installing updates and necessary packages ***"
-echo
+status "Installing system updates"
 yum update -y
 
 # Install epel for gnu parallel
+status "Installing epel-release"
 yum install -y epel-release
 /usr/bin/crb enable
 
 # Need to have
-yum install -y gcc-c++ git git-lfs libatomic nmap-ncat iproute bc ncurses tar parallel
-
-# Good to have
-yum install -y vim unzip
+status "Installing gcc, git, et al"
+yum install -y gcc-c++ git git-lfs libatomic nmap-ncat iproute bc ncurses tar parallel vim unzip
 
 # Nice to have
+status "Installing useful utilities"
 yum install -y java-11-openjdk-headless iperf3 iotop telnet nload nethogs bmon iftop jq
 
 
 # DNS (Route 53) resolution
-# This will force unqualified names to tried with the .local domain name and
-# then be looked up in DNS.
-echo
-echo "*** Setting DNS domain name search qualifier ***"
-echo
+status "Setting DNS domain name search qualifier"
 echo "search local" >>/etc/resolv.conf
 
 
 # /etc/hosts shortcuts
-echo
-echo "*** Adding 192.168.0.5 as a shortcut for ci.rapidsdata.com to /etc/hosts ***"
-echo
+status "Adding 192.168.0.5 as a shortcut for ci.rapidsdata.com to /etc/hosts"
 echo "192.168.0.5 ci.rapidsdata.com" >>/etc/hosts
-# Otherwise it costs us money when we transfer data via the elastic IP associated with
-# this URL.
+
 
 # Setting IGMP to v2 instead of v3 (for multicast) for all network devices
-echo
-echo "*** Setting IGMP to v2 ***"
-echo
-
+status "Setting IGMP to v2"
 {
   echo
   echo "# Enable Multicast on AWS"
@@ -309,17 +313,13 @@ echo "" >>/etc/sysctl.conf
 
 
 # Change permissions to allow for writing to /opt
-echo
-echo "*** Setting /opt permissions ***"
-echo
+status "Setting /opt permissions"
 chown root:wheel /opt
 chmod g+w /opt
 
 
 # Vim annoyances
-echo
-echo "*** Setting vim preferences ***"
-echo
+status "Setting vim preferences"
 
 vimrc="${OS_HOME_DIR}/.vimrc"
 cat <<EOF >"${vimrc}"
@@ -340,35 +340,41 @@ chown "${OS_USER}:${OS_USER}" "${vimrc}"
 
 
 # Bash prompt
-echo
-echo "*** Setting bash preferences ***"
-echo
+status "Setting bash preferences"
 
 bash_profile="${OS_HOME_DIR}/.bash_profile"
 {
-  echo ""
-  echo '#export PS1="[\u@\h \W]\$ '
+  echo
   echo 'export PS1="\[\e[0;33m\]\u\[\e[0m\]@\[\e[0;32m\]\h\[\e[0m\]:\[\e[38;5;033m\]\W\[\e[0m\]\$ "'
-  echo ""
+  echo
 } >>"${bash_profile}"
 
 chown "${OS_USER}:${OS_USER}" "${bash_profile}"
 
 
 # Git setup
+status "git setup"
 sudo -H -u "${OS_USER}" git lfs install
 
-# NOTE: Moved these settings to the end because something in the yum update
-#       is resetting permissions in /opt and the file /etc/resolv.conf
 
+# Install a script that will indicate that the cloud-init is complete after rebooting
+cat <<EOF >>"${RC_LOCAL}"
 
-# Indicate cloud-init has completed by dropping a file in /tmp
-echo "$(date) Completed cloud-init script" >/tmp/cloud-init-complete
+echo "Completed the cloud-init setup script!" > "${CLOUD_INIT_STATUS}"
+echo "\$(date) Completed the cloud-init setup script!" > "${CLOUD_INIT_COMPLETE}"
+echo "\$(date) Completed the cloud-init setup script!" > "${CLOUD_INIT_COMPLETE_DEPRECATED}"
+echo "\$(date) Rebooted" >> "${CLOUD_INIT_OUTPUT}"
+EOF
 
-echo
-echo ""
-echo "Completed the cloud-init setup script!"
-echo ""
-echo
+{
+  echo
+  echo "Completed the cloud-init setup script!"
+  echo "System needs to be rebooted to apply changes."
+  echo
+  echo
+} >> "${CLOUD_INIT_OUTPUT}"
 
+# Reboot
+status "*** Rebooting now ***"
+reboot
 } 2>&1 | "${TEE_CMD[@]}"

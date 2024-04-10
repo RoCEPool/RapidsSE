@@ -24,12 +24,13 @@
 void vInflatePdsRowBegin(Dynamic_T* aDynamicT) {
 
 	i8* paW;
-	i8  i_CurrentRow;
+	void* aCurrentRow;
 	i8* piColumn;
 	void* aSubReturnLabel;
 
 	// marker-start
 	struct __STRUCT_TO__* p__STRUCT_TO__;
+	aCurrentRow = nullptr;
 
 	__L_LABEL__:
 
@@ -39,7 +40,7 @@ void vInflatePdsRowBegin(Dynamic_T* aDynamicT) {
 
 	paW = &aDynamicT->m_aW[0];
 
-	i_CurrentRow = -1;
+	//i_CurrentRow = -1;
 
 	__L_LABEL_LOOP__:
 
@@ -48,16 +49,23 @@ void vInflatePdsRowBegin(Dynamic_T* aDynamicT) {
 	// process the row
 	aDynamicT->m_bProcessRow = true;
 
-	i_CurrentRow++;
-	if (i_CurrentRow  >= aDynamicT->m_nRows) {
-		goto L_Return;
-	}
+	//i_CurrentRow++;
+	//if (i_CurrentRow  >= aDynamicT->m_nRows) {
+	//	goto L_Return;
+	//}
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 	// get the next row (should be able to add rowsize)
 #ifdef WITH_CLANG
-	aDynamicT->m_xRowInfoIT.m_aRowCellArray = aExtern_PdsRowBufferCellArray(aDynamicT->m_aPdsRowBuffer, i_CurrentRow);
+	//aDynamicT->m_xRowInfoIT.m_aRowCellArray = aDynamicT->m_fp_aExtern_PdsRowBufferCellArray(aDynamicT->m_aPdsRowBuffer, i_CurrentRow);
+	if ( ! aCurrentRow)
+		aDynamicT->m_xRowInfoIT.m_aRowCellArray = aExtern_PdsFirstRowCellArray(aDynamicT->m_xRowInfoIT.m_aPdsRowBuffer, &aCurrentRow);
+	else
+		aDynamicT->m_xRowInfoIT.m_aRowCellArray = aExtern_PdsNextRowCellArray(aDynamicT->m_xRowInfoIT.m_aPdsRowBuffer, &aCurrentRow);
 #endif
+
+	if ( ! aCurrentRow)
+		goto L_Return;
 
 	aDynamicT->m_xRowInfoIT.m_acStrArea = aDynamicT->m_xRowInfoIT.m_acStrAreaSav;
 

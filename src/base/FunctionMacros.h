@@ -100,6 +100,52 @@
   }                                             \
 }
 
+#define _ALLOC_VCH_TUB(azStringDyn)             \
+{                                               \
+  szArg1 = (char*)*(--paW);                     \
+  if ((i8)szArg1 == C_DATUM_NULL) {             \
+    *paW++ = C_DATUM_NULL;                      \
+  }                                             \
+  else {                                        \
+    nSrcSize = strlen(szArg1) + 1;              \
+    char *d = azStringDyn;                      \
+    const char *s = szArg1;                     \
+                                                \
+	 i8 iBytesToCopy = nSrcSize - 1;              \
+   while (iBytesToCopy--)                       \
+     *d++ = *s++;                               \
+                                                \
+    *d = '\0';                                  \
+		                                            \
+   *paW++ = (i8)azStringDyn;                    \
+	 aDynamicT->m_fp_vExtern_TubRowStrSize(aDynamicT->m_pTub,nSrcSize); \
+	 azStringDyn = azStringDyn + nSrcSize;        \
+  }                                             \
+}
+
+#define _ALLOC_VCH_POT(azStringDyn)             \
+{                                               \
+  szArg1 = (char*)*(--paW);                     \
+  if ((i8)szArg1 == C_DATUM_NULL) {             \
+    *paW++ = C_DATUM_NULL;                      \
+  }                                             \
+  else {                                        \
+    nSrcSize = strlen(szArg1) + 1;              \
+    char *d = azStringDyn;                      \
+    const char *s = szArg1;                     \
+                                                \
+	 i8 iBytesToCopy = nSrcSize - 1;              \
+   while (iBytesToCopy--)                       \
+     *d++ = *s++;                               \
+                                                \
+    *d = '\0';                                  \
+		                                            \
+   *paW++ = (i8)azStringDyn;                    \
+	 aDynamicT->m_fp_vExtern_PotRowStrSize(aDynamicT,nSrcSize); \
+	 azStringDyn = azStringDyn + nSrcSize;        \
+  }                                             \
+}
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // ASSIGNS
 
@@ -116,13 +162,22 @@
     --paW;                                                                  \
  }
 
+#define _ASSIGN_TO_TUB(iArgTo) \
+  {                            \
+	  char* szDstArea = *(--paW);                                               \
+	  amCellAddress = (m8*) &iArgTo;                                            \
+	  iOffset = - nDifference(szDstArea, amCellAddress);                        \
+	  iArgTo = iOffset;                                                         \
+  }
+
+
 #define _ASSIGN_TO_ENTINT(iArgTo)                                           \
   iArg1 = *(--paW);                                                         \
   vExtern_EntWrkAppendElementInt(iArgTo,iArg1);
 
 #define _ASSIGN_TO_ENTSTZ(iArgTo) \
   szArg1 = (char*)*(--paW);                                                 \
-  vExtern_EntWrkAppendElementStz(iArgTo,szArg1);
+  aDynamicT->m_fp_vExtern_EntWrkAppendElementStz(iArgTo,szArg1);
 
 
 #define _COPYSTR_IFTRUE(szAreaTo, iArgTo)                                   \

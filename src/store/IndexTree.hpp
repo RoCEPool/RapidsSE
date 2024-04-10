@@ -15,138 +15,224 @@ namespace STORE
   static const i8 C_HIGHER_LEVEL_ID = 0xFFFF;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
-  class IndexTree : public Object
-  {
-  private:
-    Lock      m_okLock;        // lock on the buffer tree
-    Index*    m_pIndex;        // which index
-    IndexDef* m_pIndexDef;     // index definition
-    i8        m_i_TablePtn;    // which table partition
-    
-    EntBuffer* m_pRootEntBuffer;    // the root ent buffer
-  
-    i8 m_nEntryBuffers;  // number of entry buffers
+  class IndexTree : public Object {
+	private:
+			Lock m_okLock;        // lock on the buffer tree
+			Index *m_pIndex;        // which index
+			IndexDef *m_pIndexDef;     // index definition
+			i8 m_i_TablePtn;    // which table partition
 
-    PayStrBuffer* m_pPayStrBuffer; // buffer(s) for pay strings
+			EntBuffer *m_pRootEntBuffer;    // the root ent buffer
 
-    i8 m_nTreeDeleteCnt; // insert
-    i8 m_nTreeInsertCnt; // insert
+			i8 m_nEntryBuffers;  // number of entry buffers
 
-    bool m_bTreeDebug; // currently debugging
-  
-    // must be last
-    Footer m_xFooter;
-    
-  public:
-    void* operator new(size_t);
-    void* operator new(size_t, IndexTree* pIndexTree);
-    void  operator delete(void*);
-    
-    IndexTree(Index* pIndex, IndexDef* pIndexDef, i8 i_TablePtn);
-   ~IndexTree(void) noexcept(false);
+			PayStrBuffer *m_pPayStrBuffer; // buffer(s) for pay strings
 
-    static char* aAllotPayStr(IndexTree* pIndexTree, Stz* szStz);
-    static void vDump(eCN eClass, Object* pObject, Stz* aTab);
+			i8 m_nTreeDeleteCnt; // insert
+			i8 m_nTreeInsertCnt; // insert
 
-    static Ent* aFindEntry(IndexTree* aIndexTree, Key* aKey);
-    static Ent* aFindEntry_hint(IndexTree* aIndexTree, Key* aKey, Ent* aEnt_recent=nullptr);
+			bool m_bTreeDebug; // currently debugging
 
-    static Ent* aFindEntry_CS2_v1(IndexTree* aIndexTree, Key* aKey);
-    static Ent* aFindEntry_CS2_v2(IndexTree* aIndexTree, Key* aKey);
-    static Ent* aFindEntry_CS2_v3(IndexTree* aIndexTree, Key* aKey);
-    static Ent* aFindEntry_CS2_v4(IndexTree* aIndexTree, Key* aKey);
-    static Ent* aFindEntry_CS2_v5(IndexTree* aIndexTree, Key* aKey);
-    static Ent* aFindEntry_CS2_v6(IndexTree* aIndexTree, Key* aKey);
-    static Ent* aFindEntry_CS2_v7(IndexTree* aIndexTree, Key* aKey);
-    static Ent* aFindEntry_CS2_v8(IndexTree* aIndexTree, Key* aKey);
-    static Ent* aFindEntry_CS2_v9(IndexTree* aIndexTree, Key* aKey);
-    static Ent* aFindEntry_CS2_v10(IndexTree* aIndexTree, Key* aKey);
-    static Ent* aFindEntry_CS2_v11(IndexTree* aIndexTree, Key* aKey);
-    static Ent* aFindEntry_CS2_v12(IndexTree* aIndexTree, Key* aKey);
-    static Ent* aFindEntry_CS2_v13(IndexTree* aIndexTree, Key* aKey);
-    static Ent* aFindEntry_CS2_v14(IndexTree* aIndexTree, Key* aKey);
-    static Ent* aFindEntry_CS2_v15(IndexTree* aIndexTree, Key* aKey);
-    static Ent* aFindEntry_CS2_v16(IndexTree* aIndexTree, Key* aKey);
-    static Ent* aFindEntry_CS2_v17(IndexTree* aIndexTree, Key* aKey);
-    static Ent* aFindEntry_CS2_v18(IndexTree* aIndexTree, Key* aKey);
-    static Ent* aFindEntry_CS2_v19(IndexTree* aIndexTree, Key* aKey_find);
-    static Ent* aFindEntry_CS2_v20(IndexTree* aIndexTree, Key* aKey_find);
-    static Ent* aFindEntry_CS2_v21(IndexTree* aIndexTree, Key* aKey_find);
-    static Ent* aFindEntry_CS2_v22(IndexTree* aIndexTree, Key* aKey_find);
-    static Ent* aFindEntry_CS2_v23(IndexTree* aIndexTree, Key* aKey_find);
-    static Ent* aFindEntry_CS2_v24(IndexTree* aIndexTree, Key* aKey_find);
-    static Ent* aFindEntry_CS2_v25(IndexTree* aIndexTree, Key* aKey_find);
-    static Ent* aFindEntry_CS2_v26(IndexTree* aIndexTree, Key* aKey_find);
-    static Ent* aFindEntry_CS2_v27(IndexTree* aIndexTree, Key* aKey_find, Ent* aEnt_recent=nullptr);
+			// must be last
+			Footer m_xFooter;
 
-    static Ent* aIndexBegin(IndexTree* pIndexTree, EntBuffer** ppEntBuffer);
-    static Ent* aInsertEnt(IndexTree* pIndexTree, Ent* pEnt, i8* piErrorCode);
-    static Ent* aInsertEntTop(IndexTree* aIndexTree, Ent* aEnt, Ent** aaEntBottom, i8 iTopCount, i8* piErrorCode);
-    static IndexTree* aNewIndexTree(IndexDef* pIndexDef, eKE* peKind);
-    static Ent* aPositionGE(IndexTree* aIndexTree, EntBuffer** ppEntBuffer, Key* aKey);
-    static Ent* aPositionGT(IndexTree* aIndexTree, EntBuffer** ppEntBuffer, Key* aKey);
-    static Ent* aPositionLE(IndexTree* aIndexTree, Key* aKey);
-    static Ent* aPositionLT(IndexTree* aIndexTree, Key* aKey);
+	public:
+			void *operator new(size_t);
 
-    PayStr*    pAllotPayStr(Stz* szStz);
-    i8         nBufferCount(void);
-    void       vCompact(void);
-    i8         iCountH0Entries(void);
-    void       vDelete(EntBuffer* pEntryBuffer, Ent* pEnt);
-    void       vDump(bool bSameHeight);
-    i8         nEntBuffers(void);
-    void       vEntBuffersDec(void);
-    void       vEntBuffersInc(void);
-    EntBuffer* pFirstH0Buffer(void);
-    Rrf        xwGetRef(Key* aFindKey);
-    Index*     pIndex(void);
-    IndexDef*  pIndexDef(void);
-    void       vInsertEntries(CrwBuffer* pCrwBuffer);
-    Ent*       pInsertEntTop_(Ent* aEnt, Ent** ppEntBottom, i8 iTopCount);
-    bool       bInsertEntry(Ent* aEnt);
-    bool       bInsertEntry(CrwBuffer* pCrwBuffer, i8 i_Row, Rrf& xRowRef);
-    Ent*       aInsertPayloadEntry(EntWrk& xEntWrk, i8 nPayloadBytes);
-    Ent*       aInsertEntry(Ent* aEnt);
-    eKE        eKeyKind(void);
-    void       vLazyBuild(void);
-    EntBuffer* pNewRootBuffer(void);
-    EntBuffer* pPositionH0Buffer(Key* aFindKey);
-    Ent*       aPositionPriorEntry(Key* aFindKey, EntBuffer** ppEntBuffer);
-    EntBuffer* pRootBuffer(void);
-    void       vRootBuffer(EntBuffer* pRootBuffer);
-    bool       bTreeDebug(void);
-    void       vTreeDebug(bool bDebug);
-    i8         nTreeDeleteCnt(void);
-    void       vTreeDeleteInc(void);
-    i8         nTreeInsertCnt(void);
-    void       vTreeInsertInc(void);
-    void       vTruncate(void);
-    bool       bVerify(void);
-    bool       bVerifyIndex(void);
-    void       vVisualize(void);
+			void *operator new(size_t, IndexTree *pIndexTree);
 
-    void       vExtractKey(EntWrk* pEntWrk, CrwBuffer* pCrwBuffer, i8 i_Row);
+			void operator delete(void *);
 
-    Footer*   aFooter(void);
-    
-  private:
-    void       vDumpLevel(EntBuffer* pEntBuffer);
-    EntBuffer* pFirstH1Buffer(void);
-    EntBuffer* pPopSubList(EntBuffer** ppSubList);
-  };
-  
+			IndexTree(Index *pIndex, IndexDef *pIndexDef, i8 i_TablePtn);
+
+			~IndexTree(void) noexcept(false);
+
+			static char *aAllotPayStr(IndexTree *pIndexTree, Stz *szStz);
+
+			static void vDump(eCN eClass, Object *pObject, Stz *aTab);
+
+			static Ent *aFindEntry(IndexTree *aIndexTree, Key *aKey);
+
+			static Ent *aFindEntryAsc(IndexTree *aIndexTree, Key *aKey);
+
+			static Ent *aFindEntryAscDsc(IndexTree *aIndexTree, Key *aKey);
+
+			static Ent *aFindEntry_hint(IndexTree *aIndexTree, Key *aKey, Ent *aEnt_recent = nullptr);
+
+			static Ent *aFindEntry_CS2_v1(IndexTree *aIndexTree, Key *aKey);
+
+			static Ent *aFindEntry_CS2_v2(IndexTree *aIndexTree, Key *aKey);
+
+			static Ent *aFindEntry_CS2_v3(IndexTree *aIndexTree, Key *aKey);
+
+			static Ent *aFindEntry_CS2_v4(IndexTree *aIndexTree, Key *aKey);
+
+			static Ent *aFindEntry_CS2_v5(IndexTree *aIndexTree, Key *aKey);
+
+			static Ent *aFindEntry_CS2_v6(IndexTree *aIndexTree, Key *aKey);
+
+			static Ent *aFindEntry_CS2_v7(IndexTree *aIndexTree, Key *aKey);
+
+			static Ent *aFindEntry_CS2_v8(IndexTree *aIndexTree, Key *aKey);
+
+			static Ent *aFindEntry_CS2_v9(IndexTree *aIndexTree, Key *aKey);
+
+			static Ent *aFindEntry_CS2_v10(IndexTree *aIndexTree, Key *aKey);
+
+			static Ent *aFindEntry_CS2_v11(IndexTree *aIndexTree, Key *aKey);
+
+			static Ent *aFindEntry_CS2_v12(IndexTree *aIndexTree, Key *aKey);
+
+			static Ent *aFindEntry_CS2_v13(IndexTree *aIndexTree, Key *aKey);
+
+			static Ent *aFindEntry_CS2_v14(IndexTree *aIndexTree, Key *aKey);
+
+			static Ent *aFindEntry_CS2_v15(IndexTree *aIndexTree, Key *aKey);
+
+			static Ent *aFindEntry_CS2_v16(IndexTree *aIndexTree, Key *aKey);
+
+			static Ent *aFindEntry_CS2_v17(IndexTree *aIndexTree, Key *aKey);
+
+			static Ent *aFindEntry_CS2_v18(IndexTree *aIndexTree, Key *aKey);
+
+			static Ent *aFindEntry_CS2_v19(IndexTree *aIndexTree, Key *aKey_find);
+
+			static Ent *aFindEntry_CS2_v20(IndexTree *aIndexTree, Key *aKey_find);
+
+			static Ent *aFindEntry_CS2_v21(IndexTree *aIndexTree, Key *aKey_find);
+
+			static Ent *aFindEntry_CS2_v22(IndexTree *aIndexTree, Key *aKey_find);
+
+			static Ent *aFindEntry_CS2_v23(IndexTree *aIndexTree, Key *aKey_find);
+
+			static Ent *aFindEntry_CS2_v24(IndexTree *aIndexTree, Key *aKey_find);
+
+			static Ent *aFindEntry_CS2_v25(IndexTree *aIndexTree, Key *aKey_find);
+
+			static Ent *aFindEntry_CS2_v26(IndexTree *aIndexTree, Key *aKey_find);
+
+			static Ent *aFindEntry_CS2_v27(IndexTree *aIndexTree, Key *aKey_find, Ent *aEnt_recent = nullptr);
+
+			static Ent *aIndexBegin(IndexTree *pIndexTree, EntBuffer **ppEntBuffer);
+
+			static Ent *aInsertEnt(IndexTree *pIndexTree, Ent *pEnt, i8 *piErrorCode);
+
+			static Ent *aInsertEntTop(IndexTree *aIndexTree, Ent *aEnt, Ent **aaEntBottom, i8 iTopCount, i8 *piErrorCode);
+
+			static IndexTree *aNewIndexTree(IndexDef *pIndexDef, eKE *peKind);
+
+			static Ent *aPositionGE(IndexTree *aIndexTree, EntBuffer **ppEntBuffer, Key *aKey);
+
+			static Ent *aPositionGT(IndexTree *aIndexTree, EntBuffer **ppEntBuffer, Key *aKey);
+
+			static Ent *aPositionLE(IndexTree *aIndexTree, Key *aKey);
+
+			static Ent *aPositionLT(IndexTree *aIndexTree, Key *aKey);
+
+			PayStr *pAllotPayStr(Stz *szStz);
+
+			i8 nBufferCount(void);
+
+			void vCompact(void);
+
+			i8 iCountH0Entries(void);
+
+			void vDelete(EntBuffer *pEntryBuffer, Ent *pEnt);
+
+			void vDump(bool bSameHeight);
+
+			i8 nEntBuffers(void);
+
+			void vEntBuffersDec(void);
+
+			void vEntBuffersInc(void);
+
+			Ent *aFindInsertEntryAscGen(Key *aKey, Ent *pEntInt, i8 nPayloadBytes, bool *pbInsertedEntry, i8 *piErrorCode);
+
+			EntBuffer *pFirstH0Buffer(void);
+
+			Rrf xwGetRef(Key *aFindKey);
+
+			Index *pIndex(void);
+
+			IndexDef *pIndexDef(void);
+
+			void vInsertEntries(CrwBuffer *pCrwBuffer);
+
+			Ent *pInsertEntTop_(Ent *aEnt, Ent **ppEntBottom, i8 iTopCount);
+
+			bool bInsertEntry(Ent *aEnt);
+
+			bool bInsertEntry(CrwBuffer *pCrwBuffer, i8 i_Row, Rrf &xRowRef);
+
+			Ent *aInsertPayloadEntry(EntWrk &xEntWrk, i8 nPayloadBytes);
+
+			Ent *aInsertEntry(Ent *aEnt);
+
+			eKE eKeyKind(void);
+
+			void vLazyBuild(void);
+
+			EntBuffer *pNewRootBuffer(void);
+
+			EntBuffer *pPositionH0Buffer(Key *aFindKey);
+
+			EntBuffer *pPositionH0Buffer_gen(Key *aFindKey);
+
+			EntBuffer *pPositionH0Buffer_int(Key *aFindKey);
+
+			Ent *aPositionPriorEntry(Key *aFindKey, EntBuffer **ppEntBuffer);
+
+			Ent *aPositionPriorEntryAsc(Key *aFindKey, EntBuffer **ppEntBuffer);
+
+			void vRootBuffer(EntBuffer *pRootBuffer);
+
+			bool bTreeDebug(void);
+
+			void vTreeDebug(bool bDebug);
+
+			i8 nTreeDeleteCnt(void);
+
+			void vTreeDeleteInc(void);
+
+			i8 nTreeInsertCnt(void);
+
+			void vTreeInsertInc(void);
+
+			void vTruncate(void);
+
+			bool bVerify(void);
+
+			bool bVerifyIndex(void);
+
+			void vVisualize(void);
+
+			void vExtractKey(EntWrk *pEntWrk, CrwBuffer *pCrwBuffer, i8 i_Row);
+
+			Footer *aFooter(void);
+
+	private:
+			void vDumpLevel(EntBuffer *pEntBuffer);
+
+			EntBuffer *pFirstH1Buffer(void);
+
+			EntBuffer *pPopSubList(EntBuffer **ppSubList);
+
+	public:
+
+		/*----------------------------------------------------------------------------*/
+		/* get root buffer                                                            */
+		/*----------------------------------------------------------------------------*/
+		inline EntBuffer *pRootBuffer(void) {
+			_precondition_(_ADDRESS_, _MAGIC_, CN_INDEXTREE, _FOOTER_);
+
+			return m_pRootEntBuffer;
+		}
+
+	};
+
   IndexTree* _pIndexTree(void* pAddr);
 
-  void* aIndexTree_allotPayStr(void* pIndexTree, char* sStr);
-  void* aIndexTree_begin(void* pIndexTree, void** ppEntBuffer);
-  void* aIndexTree_findEntry(void* aIndexTree, void* aKey);
-  void* aIndexTree_findEntry_hint(void* aIndexTree, void* aKey, void* aEnt_recent);
-  void* aIndexTree_insertEnt(void* aIndexDef, void* aEnt);
-  void* aIndexTree_insertEntTop(void* aIndexTree, void* aEnt, void** aaEntBottom, i8 iTopCount);
-  void  aIndexTree_positionGE(void* aIndexTree, void** aaEntBuffer, void* aKey);
-  void* aIndexTree_positionGT(void* aIndexTree, void** aaEntBuffer, void* aKey);
-  void* aIndexTree_positionLE(void* aIndexTree, void* aKey);
-  void* aIndexTree_positionLT(void* aIndexTree, void* aKey);
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
 

@@ -62,19 +62,19 @@ void XF_Prolog_Analyse_emit::vXF_Analyse(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_ANALYSE_EMIT, _FOOTER_);
 
-  m_pCI->vTransform(__func__, XF_PROLOG_ANALYSE_EMIT, "emit analysis"_Stz);
+  m_pCI->vTransform(__FILE__, __func__, XF_PROLOG_ANALYSE_EMIT);
 
   m_pCI->vBeginEach();
-  m_pCI->Flux.m_pArriving = m_pCI->G.p_emit = nullptr;
+  m_pCI->Flux.m_pArriving = m_pCI->E.p_emit = nullptr;
 
-  while (m_pCI->G_bEachMain_NONE()) {
+  while (m_pCI->bEachOp()) {
 
-    if (! m_pCI->G.p_OP)
+    if (! m_pCI->E.p_Op->bIsOp())
       continue;
 
-    m_pCI->G.p_OP->vRecreate_emit(m_pCI);
+    ((Card_OP*)m_pCI->E.p_Op)->vRestate_emit(m_pCI);
 
-  } // while (m_pCI->G_bEachMain_NONE())
+  } // while (m_pCI->bEachOp())
 
    m_pCI->vEndTransform(__LINE__);
 }

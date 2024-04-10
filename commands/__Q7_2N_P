@@ -1,0 +1,131 @@
+/*============================================================================*/
+/* __Q7 _2N_P                                                                 */
+/*============================================================================*/
+
+/optimise_passthru
+pipeline Query7
+begin
+
+  stage S00 on origin :
+      start
+    | pulse     once
+    | next
+
+  stage S01 on all partitions :
+      scan      nation
+    | project   "   type VARCHAR ( 25 ) as C0_N_NAME $2
+                  , type INTEGER ( 19 ) as C1_N_NATIONKEY $1 "
+    | dynamic
+    | next
+
+  stage S02 on all partitions :
+    indexJoin customer IxC_NATIONKEY " BOUND $I1 $2 == "
+    |  dynamic
+    | next
+
+  stage S03 on all partitions :
+    project   "   type VARCHAR ( 25 ) as C0_N_NAME $1
+                , type INTEGER ( 19 ) as C1_C_CUSTKEY $3 "
+    |  dynamic
+    | next
+
+  stage S04 on all partitions :
+    indexJoin orders IxO_CUSTKEY " BOUND $I1 $2 == "
+    |  dynamic
+    | next
+
+  stage S05 on all partitions :
+    project   "   type VARCHAR ( 25 ) as C0_N_NAME $1
+                , type INTEGER ( 19 ) as C1_O_ORDERKEY $3 "
+    | hash      "type INTEGER $2"
+    |  dynamic
+    | next      hashcast
+
+  stage S06 on all partitions :
+    indexJoin lineitem IxL_ORDERKEY " BOUND $I1 $2 == "
+    | filter    " type BOOLEAN $13 DATE '1995-01-01' >= $13 DATE '1996-12-31' <= and "
+    |  dynamic
+    | next
+
+  stage S07 on all partitions :
+    project   "   type DATE as C0_L_SHIPDATE $13
+                , type DECIMAL ( 15 2 ) as C1_L_EXTENDEDPRICE $8
+                , type DECIMAL ( 15 2 ) as C2_L_DISCOUNT $9
+                , type VARCHAR ( 25 ) as C3_N_NAME $1
+                , type INTEGER ( 19 ) as C4_L_SUPPKEY $5 "
+    | hash      "type INTEGER $5"
+    |  dynamic
+    | next      hashcast
+
+  stage S08 on all partitions :
+    indexJoin supplier IxS_SUPPKEY " BOUND $I1 $5 == "
+    |  dynamic
+    | next
+
+  stage S09 on all partitions :
+    project   "   type DATE as C0_L_SHIPDATE $1
+                , type DECIMAL ( 15 2 ) as C1_L_EXTENDEDPRICE $2
+                , type DECIMAL ( 15 2 ) as C2_L_DISCOUNT $3
+                , type VARCHAR ( 25 ) as C3_N_NAME $4
+                , type INTEGER ( 19 ) as C4_S_NATIONKEY $9 "
+    |  dynamic
+    | next
+
+  stage S10 on all partitions :
+    indexJoin nation IxN_NATIONKEY " BOUND $I1 $5 == "
+    |  dynamic
+    | next
+
+  stage S11 on all partitions :
+    filter    " type BOOLEAN $7 'GERMANY' == $4 'FRANCE' == and $7 'FRANCE' == $4 'GERMANY' == and or "
+    | project   "   type VARCHAR as C0_N_NAME $7
+                , type VARCHAR as C1_N_NAME $4
+                , type INTEGER ( 19 ) as C2_l_year $1 extract_year
+                , type DECIMAL ( 19 2 ) as C3_volume $2 1.00 $3 - * "
+    | gbyAgg    " groupBy
+                  type VARCHAR $1
+                , type VARCHAR $2
+                , type INTEGER ( 19 ) $3
+                aggregates
+                  type VARCHAR as C0_COL0 $K1
+                , type VARCHAR as C1_COL1 $K2
+                , type INTEGER ( 19 ) as C2_COL2 $K3
+                , type DECIMAL ( 19 2 ) as C3_COL3 ) $4 sum "
+    |  dynamic
+    | next
+
+  stage S13 on all nodes :
+    gbyAgg    " groupBy
+                  type VARCHAR $1
+                , type VARCHAR $2
+                , type INTEGER ( 19 ) $3
+                aggregates
+                  type VARCHAR as C0_COL0 $K1
+                , type VARCHAR as C1_COL1 $K2
+                , type INTEGER ( 19 ) as C2_COL2 $K3
+                , type DECIMAL ( 19 2 ) as C3_COL3 ) $4 sum "
+    |  dynamic
+    | next
+
+  stage S14 on origin :
+    gbyAgg    " groupBy
+                  type VARCHAR $1
+                , type VARCHAR $2
+                , type INTEGER ( 19 ) $3
+                aggregates
+                  type VARCHAR as C0_COL0 $K1
+                , type VARCHAR as C1_COL1 $K2
+                , type INTEGER ( 19 ) as C2_COL2 $K3
+                , type DECIMAL ( 19 2 ) as C3_revenue ) $4 sum "
+    |  dynamic
+    | next
+
+  stage S15 on origin :
+      output
+    | sink
+    | first
+
+end ;
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

@@ -55,12 +55,12 @@ Card_Bound* Card_Bound::pCreateFrom_rlnConj(Card_RlnConj *p_rlnConj,
   Card_Term* pTerm_0 = _pCard_Term(p_rlnConj->pGetChild(0));
   Card_Term* pTerm_1 = _pCard_Term(p_rlnConj->pGetChild(1));
 
-  Card_Bound* p_bound = Card_Bound::pBound_New(p_rlnConj->szFacet(SF_NONE));
+  Card_Bound* p_bound = Card_Bound::pBound_New(p_rlnConj->szFacet(SF_RLN_OP));
 
   Symbol xSymbol_idxCol(SF_IDX_COL,1);
 
-  if (pTerm_0->pSymbol()->bIs_Tbl_Col()) {
-    char cTblSyn_term_0 = pTerm_0->pSymbol()->cSF_tblSyn();
+  if (pTerm_0->pSymbol()->bHasFacet(SF_TBL_COL)) {
+    char cTblSyn_term_0 = pTerm_0->pSymbol()->cTblSyn();
     if (cTblSyn_term_0 == cTblSyn_boundedTo) {
       p_term = (new Card_Term) ->SYMPPY(&xSymbol_idxCol);
       p_bound->vAppendChild(p_term);
@@ -68,8 +68,8 @@ Card_Bound* Card_Bound::pCreateFrom_rlnConj(Card_RlnConj *p_rlnConj,
       p_bound->vAppendChild(p_term);
     }
     else
-    if (pTerm_1->pSymbol()->bIs_Tbl_Col()) {
-      char cTblSyn_term_1 = pTerm_1->pSymbol()->cSF_tblSyn();
+    if (pTerm_1->pSymbol()->bHasFacet(SF_TBL_COL)) {
+      char cTblSyn_term_1 = pTerm_1->pSymbol()->cTblSyn();
       if (cTblSyn_term_1 == cTblSyn_boundedTo) {
         p_term = (new Card_Term) ->SYMPPY(&xSymbol_idxCol);
         p_bound->vAppendChild(p_term);
@@ -81,8 +81,8 @@ Card_Bound* Card_Bound::pCreateFrom_rlnConj(Card_RlnConj *p_rlnConj,
     }
   }
   else
-  if (pTerm_1->pSymbol()->bIs_Tbl_Col()) {
-    char cTblSyn_term_1 = pTerm_1->pSymbol()->cSF_tblSyn();
+  if (pTerm_1->pSymbol()->bHasFacet(SF_TBL_COL)) {
+    char cTblSyn_term_1 = pTerm_1->pSymbol()->cTblSyn();
     if (cTblSyn_term_1 == cTblSyn_boundedTo) {
       p_term = (new Card_Term) ->SYMPPY(&xSymbol_idxCol);
       p_bound->vAppendChild(p_term);
@@ -134,20 +134,20 @@ bool Card_Bound::bValidBoundForRelnOp(Symbol *pBound, Symbol *pRelnOp)
 {
   _static_
 
-  if (pBound->bSame("BOUND"_Stz))
-    if (pRelnOp->bSame("="_Stz) || pRelnOp->bSame("=="_Stz))
+  if (pBound->bHasFacet("BOUND"_Stz))
+    if (pRelnOp->bHasFacet("="_Stz) || pRelnOp->bHasFacet("=="_Stz))
       return true;
     else
       return false;
   else
-  if (pBound->bSame("LBOUND"_Stz))
-    if (pRelnOp->bSame(">"_Stz) || pRelnOp->bSame(">="_Stz))
+  if (pBound->bHasFacet("LBOUND"_Stz))
+    if (pRelnOp->bHasFacet(">"_Stz) || pRelnOp->bHasFacet(">="_Stz))
       return true;
     else
       return false;
   else
-  if (pBound->bSame("UBOUND"_Stz))
-    if (pRelnOp->bSame("<="_Stz) || pRelnOp->bSame("<"_Stz))
+  if (pBound->bHasFacet("UBOUND"_Stz))
+    if (pRelnOp->bHasFacet("<="_Stz) || pRelnOp->bHasFacet("<"_Stz))
       return true;
     else
       return false;
@@ -167,12 +167,12 @@ void Card_Bound::vX_tblCol_To_expCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Kid xKid(this);
-  while (xKid.bEach(CK_TERM)) {
-    if (!xKid.p_term()->pSymbol()->bIs_Tbl_Col())
+  Kid xBound(this);
+  while (xBound.bEach(CK_TERM)) {
+    if (!xBound.p_term()->pSymbol()->bHasFacet(SF_TBL_COL))
       continue;
 
-    xKid.p_term()->vX_tblCol_To_expCol(pCI);
+    xBound.p_term()->vX_tblCol_To_expCol(pCI);
   }
 }
 
@@ -204,7 +204,7 @@ bool Card_Bound::bEquivalent(Card_RlnConj* p_rlnConj)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Bound::vEnsure_Cast(CardIter *pCI)
+void Card_Bound::vApplyCast(CardIter *pCI, Card_Emit* p_Dic_expr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -214,8 +214,8 @@ void Card_Bound::vEnsure_Cast(CardIter *pCI)
   xCast_last.m_nTypeScale = 0;
   RASSERT(! xCast_last.m_xTypeId.bIsValid());
 
-  for (Kid xKid(this); xKid.bEach(CK_TERM); /**/) {
-    xKid.p_term()->vEnsure_Cast(pCI, xCast_last);
+  for (Kid xBound(this); xBound.bEach(CK_TERM); /**/) {
+    xBound.p_term()->vApplyCast(pCI, /*??*/p_Dic_expr, xCast_last);
   }
 
 }
@@ -257,7 +257,7 @@ bool Card_Bound::bIsEBound(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (pSymbol()->bSame("=="_Stz))
+  if (pSymbol()->bHasFacet("=="_Stz))
     return true;
 
   return false;
@@ -270,7 +270,7 @@ bool Card_Bound::bIsLBound(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (pSymbol()->bSame(">"_Stz) || pSymbol()->bSame(">="_Stz))
+  if (pSymbol()->bHasFacet(">"_Stz) || pSymbol()->bHasFacet(">="_Stz))
     return true;
 
   return false;
@@ -283,7 +283,7 @@ bool Card_Bound::bIsUBound(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (pSymbol()->bSame("<"_Stz) || pSymbol()->bSame("<="_Stz))
+  if (pSymbol()->bHasFacet("<"_Stz) || pSymbol()->bHasFacet("<="_Stz))
     return true;
 
   return false;
@@ -296,10 +296,10 @@ Card_Term* Card_Bound::pGet_idxCol(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Kid xKid(this);
-  while (xKid.bEach(CK_TERM))
-    if (xKid.p_term()->pSymbol()->bIs_Idx_Col())
-      return xKid.p_term();
+  Kid xBound(this);
+  while (xBound.bEach(CK_TERM))
+    if (xBound.p_term()->pSymbol()->bHasFacet(SF_IDX_COL))
+      return xBound.p_term();
 
   return nullptr;
 }
@@ -312,9 +312,9 @@ Card_Term* Card_Bound::pGet_IfNot_idxCol(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  for (Kid xKid(this); xKid.bEach(CK_TERM); /**/)
-    if (!xKid.p_term()->pSymbol()->bIs_Idx_Col())
-      return xKid.p_term();
+  for (Kid xBound(this); xBound.bEach(CK_TERM); /**/)
+    if (!xBound.p_term()->pSymbol()->bHasFacet(SF_IDX_COL))
+      return xBound.p_term();
 
   return nullptr;
 }
@@ -327,9 +327,9 @@ Card_Term* Card_Bound::pGet_tblCol(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  for (Kid xKid(this); xKid.bEach(CK_TERM); /**/)
-    if (xKid.p_term()->bIsTblCol())
-      return xKid.p_term();
+  for (Kid xBound(this); xBound.bEach(CK_TERM); /**/)
+    if (xBound.p_term()->pSymbol()->bHasFacet(SF_TBL_COL))
+      return xBound.p_term();
 
   return nullptr;
 }
@@ -341,8 +341,9 @@ bool Card_Bound::bUsesSqyRsl(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  for (Kid xKid(this); xKid.bEach(CK_TERM); /**/) {
-    if (xKid.p_term()->bIs_expCol() && 1 == xKid.p_term()->iGetOdn())
+  for (Kid xBound(this); xBound.bEach(CK_TERM); /**/) {
+    if (xBound.p_term()->pSymbol()->bHasFacet(SF_EXP_COL) &&
+        1 == xBound.p_term()->pSymbol()->iTo_ordinal(SF_EXP_COL))
       return true;
   }
 
@@ -352,31 +353,16 @@ bool Card_Bound::bUsesSqyRsl(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Bound::vShortForm(String* pString_b, Stz* szSep)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  for (Kid xKid(this); xKid.bEach(CK_TERM); /**/) {
-    xKid.p_term()->vShortForm(pString_b,szSep);
-    szSep = " "_Stz;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 void Card_Bound::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (pSymbol()->bIs_Idx_Col()) {
-    Card::vValidate(pCI,iDepth,pParent);
-  pCI->vValidateChildren(this,iDepth+1);
-    vValidationPassed();
-    return;
-  }
+  vValidate_mayHave(CK_TERM,CK_NONE);
+  vValidate_mustHave(CK_TERM,CK_NONE);
 
-  RASSERT(pSymbol()->bIs_Rln_Op() || pSymbol()->bIs_None());
+  RASSERT(pSymbol()->bHasFacet(SF_RLN_OP) || ! pSymbol()->nFacets());
+
+  (void)Card::eValidate_parentEither(pCI, CK_BOUNDS, CK_NONE);
 
   UNUSED(pParent);
   Card::vValidate(pCI,iDepth,pParent);

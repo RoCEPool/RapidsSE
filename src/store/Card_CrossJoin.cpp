@@ -48,25 +48,25 @@ void Card_CrossJoin::vMorph_table_To_crossJoin(STORE::CardIter *pCI)
   _static_
     //Board::vChoose_index_For_crossJoin(pCI);
 
-  pCI->G.p_indexList = pCI->G.p_table->pSub_indexList();
+  pCI->E.p_indexList = pCI->E.p_table->pSub_indexList();
 
-//  pCI->G_vNewMember(CK_o_CROSSJOIN);
+//  pCI->vNewMember(CK_o_CROSSJOIN);
 //  pCI->G.p_table->vRelegate_table(pCI, pCI->G.p_crossJoin);
 
 
-  pCI->G.p_crossJoin = _pCard_CrossJoin(pCI->G.p_from->pCard(CK_o_CROSSJOIN));
-  pCI->G.p_index = pCI->G.p_crossJoin->pSub_index();
+  pCI->E.p_crossJoin = _pCard_CrossJoin(pCI->E.p_from->pCard(CK_o_CROSSJOIN));
+  pCI->E.p_index = pCI->E.p_crossJoin->pSub_index();
 
-  pCI->G_vNewMember(CK_BOUNDS,Symbol(SF_CROSS,"cross"_Stz));
-  pCI->G.p_index->vAppendChild(pCI->G.p_bounds);
+  pCI->vNewMember(CK_BOUNDS,Symbol(SF_CROSS,"cross"_Stz));
+  pCI->E.p_index->vAppendChild(pCI->E.p_bounds);
 
-  pCI->G_vNewMember(CK_BOUND);
-  pCI->G.p_bounds->vAppendChild(pCI->G.p_bound);
+  pCI->vNewMember(CK_BOUND);
+  pCI->E.p_bounds->vAppendChild(pCI->E.p_bound);
 
-  pCI->G_vNewMember(CK_TERM,Symbol(SF_IDX_COL,1));
-  pCI->G.p_bound->vAppendChild(pCI->G.p_term);
+  pCI->vNewMember(CK_TERM,Symbol(SF_IDX_COL,1));
+  pCI->E.p_bound->vAppendChild(pCI->E.p_term);
 
-  pCI->G.p_indexList->vChoose_index_For_crossJoin();
+  pCI->E.p_indexList->vChoose_index_For_crossJoin();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -85,21 +85,21 @@ void Card_CrossJoin::vEarlyProject_recurse_update(CardIter* pCI)
   //   we can restore to this save if projection needed get extended
   Card_Needed* p_needed_save = pCI->Early.m_pNeeded_later->pClone();
 
- // pCI->vPrintBoard(__func__,__LINE__);
+ // pCI->PRINTBOARD_dbg();
 
   Card_OP::vEarlyProject_backstep(pCI);
 
-  pCI->G.p_MainCard = pCI->G.p_OP = this;
-  pCI->G.e_MainCard = CK_o_CROSSJOIN;
+  pCI->E.p_Op = this;
+  pCI->E.e_Op = CK_o_CROSSJOIN;
 
   /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
 
 
- // pCI->vPrintBoard(__func__,__LINE__);
+ // pCI->PRINTBOARD_dbg();
 
-  pCI->G.p_OP->vRecreate_emit(pCI,true);
+  ((Card_OP*)pCI->E.p_Op)->vRestate_emit(pCI);
 
-  // pCI->vPrintBoard(__func__,__LINE__);
+  // pCI->PRINTBOARD_dbg();
 
   // restore needed
   delete pCI->Early.m_pNeeded_later;

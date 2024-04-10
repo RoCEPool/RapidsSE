@@ -1,100 +1,114 @@
 #!/bin/bash
 # shellcheck disable=SC2164
 
-# This is a cloud-init script used for configuring a CentOS 7 machine for building (not running) RapidsSE.
+# Cloud-init script for configuring CentOS 7 for building (not running) RapidsSE.
 # The base64-encoded version of this file must be less than 16kB.
 
-# We wrap everything in a subshell to redirect all output through the tee command
-# and to a file of our choosing.
-CLOUD_INIT_OUTPUT="/cloud-init-output.log"
-TEXLIVE_OUTPUT="/cloud-init-texlive.log"
-TEE_CMD=("tee" "-ia" "${CLOUD_INIT_OUTPUT}")
+CI="cloud-init"
+CI_OUTPUT="/${CI}-output.log"
+CI_STATUS="/${CI}-status.log"
+CI_COMPLETE="/${CI}-complete.log"
+CI_COMPLETE_DEP="/tmp/${CI_COMPLETE}"
 
-{
-  if which tee &>/dev/null; then
-    echo "Cloud init output being written out to file: ${CLOUD_INIT_OUTPUT}"
-  else
-    echo "ERROR: no tee utility available"
-    TEE_CMD=("echo")
+TEXLIVE_OUT="/${CI}-texlive.log"
+TEE_CMD=("tee" "-ia" "${CI_OUTPUT}")
+MAX_NET_RETRIES=10
+MAX_YUM_RETRIES=3
+RC_LOCAL="/etc/rc.d/rc.local"
+
+function status() {
+echo "$@" > "${CI_STATUS}"
+echo -e "\n$*\n"
+}
+
+function error() {
+echo "$@" > "${CI_STATUS}"
+local hdr="CLOUD INIT ERROR"
+echo >&2 -e "${hdr}\nERROR: $*\n${hdr}"
+}
+
+function retryCommand() {
+local maxRetries="$1"
+shift
+local cmd=("$@")
+local retries=1
+
+local re='^[0-9]+$'
+if ! [[ "${maxRetries}" =~ $re ]] ; then
+   error "First parameter to function retryCommand() is not a number" && exit 1
+fi
+
+while [ "${retries}" -le "${maxRetries}" ]; do
+  if [ "${retries}" -gt 1 ]; then
+    status "...retry attempt #${retries} of command: ${cmd[*]}"
   fi
-} > "${CLOUD_INIT_OUTPUT}"
-chmod a+r "${CLOUD_INIT_OUTPUT}"
 
-touch "${TEXLIVE_OUTPUT}"
-chmod a+r "${TEXLIVE_OUTPUT}"
+  ((retries++))
+
+  if "${cmd[@]}"; then
+    true
+    return
+  fi
+
+  sleep 1
+done
+
+false
+return
+}
 
 {
-echo
-echo ""
-echo "Starting the cloud-init setup script for CentOS 7."
-echo ""
+if which tee &>/dev/null; then
+  echo "Cloud init output being written out to file: ${CI_OUTPUT}"
+else
+  error "no tee utility available"
+  TEE_CMD=("echo")
+fi
+} > "${CI_OUTPUT}"
+chmod a+r "${CI_OUTPUT}"
 
-readonly CENTOS7="centos7"
-readonly CENTOS7_USER="ec2-user"
-readonly CENTOS7_HOME_DIR="/home/${CENTOS7_USER}"
+touch "${TEXLIVE_OUT}"
+chmod a+r "${TEXLIVE_OUT}"
 
-OS_DIST="unknown"
-OS_USER="unknown"
-OS_HOME_DIR="unknown"
+{
+status "Starting cloud-init for CentOS 7."
 
-# Ensure that we are on the right OS
 if [ -f /etc/system-release ]; then
   OS_VER=$(cat /etc/system-release)
 
   if [[ "${OS_VER}" =~ 'CentOS Linux release 7' ]]; then
-    OS_DIST="${CENTOS7}"
-    OS_USER="${CENTOS7_USER}"
-    OS_HOME_DIR="${CENTOS7_HOME_DIR}"
+    OS_DIST="centos7"
+    OS_USER="ec2-user"
+    OS_HOME="/home/ec2-user"
   fi
 fi
 
 if [ -z "${OS_DIST}" ]; then
-  echo >&2 "****** Cloud init error *******"
-  echo >&2 "COULD NOT DETERMINE THE OS PLATFORM. EXITING EARLY."
-  echo >&2 "OS_VER = ${OS_VER}"
-  echo >&2 "****** Cloud init error *******"
-  exit 1
+  error "COULD NOT DETERMINE THE OS PLATFORM. EXITING EARLY. OS_VER = ${OS_VER}" && exit 1
 fi
 
-echo "OS_DIST = ${OS_DIST}"
-echo "OS_USER = ${OS_USER}"
-echo "OS_HOME_DIR = ${OS_HOME_DIR}"
-
-
-# Create an ec2-user on CentOS 7
-echo
-echo "*** Creating an new user: ec2-user ***"
-echo
-
-useradd "${OS_USER}" || true
+status "Creating user: ${OS_USER}"
+useradd "${OS_USER}" || exit 1
 usermod -a -G wheel "${OS_USER}"
 
-# Setup passwordless sudo for user ec2-user
-# Wheel group already has this, but not passwordless
-SUDO_FILE="/etc/sudoers.d/ec2-user"
+SUDO_FILE="/etc/sudoers.d/${OS_USER}"
 {
   echo "# Let ${OS_USER} use sudo without a password"
-  echo "ec2-user  ALL=(ALL) NOPASSWD: ALL"
+  echo "${OS_USER}  ALL=(ALL) NOPASSWD: ALL"
 } >"${SUDO_FILE}"
 
 chmod 0400 "${SUDO_FILE}"
 
-# Set up SSH. We do this early so that we can still login if something goes wrong later on.
-echo
-echo "*** Installing a common internal SSH key ***"
-echo
-
-# All machines have the same public/private key
-SSH_DIR="${OS_HOME_DIR}/.ssh"
-
-mkdir -p "${SSH_DIR}" || exit
+status "Installing a SSH key"
+SSH_DIR="${OS_HOME}/.ssh"
+mkdir -p "${SSH_DIR}" || exit 1
 
 cat <<EOF >>"${SSH_DIR}/authorized_keys"
 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDHlTysxd228irQB6IiQj7LHFCtxLRD2jsYTcNkh9DcIqZ3gKjGIk6OmXE1LMhCBh5Y1e5DHTGeBPIgb2Clcj2N+lZI+H/T42Ysu0hUrllEjTsM35OPZu92azL1WnmZn8VWzGta8+mtDg/2PI8pUn9Z3ZxEoyd6TYm5k/CrZquH93mUT9jKVsNUsMNrwdYdgcJ9W6+K/hAqv87MPr28F7vb8/mQbAaB5d+PeOxrE4wEFl9fw7uh1m28NjXbyOLEbw6F/D3Ev5+3PZ50qKzQ9QFP2xFGHzT9Zk3jI76t1PBv/ZHrQ++XmWmy+CFfIaUVy2Dcf1JwnEH311nw5X83cGOv ${OS_USER}@localhost
 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCW2/5HwKvFlTKcc/v+l9aE94My4lgLNiQwvPCOrlsdvFNG1eietIefii6juPyQM4tzGbMjD5gqPqU9XPRU9OzZXLsPO/EPUE9ZTCGhQcjIH1/dVBO+01hMsjn9DSW4BhCMKU9UFxw41xgai4ZfJNnJg1qYY8MLKx+dzqPHFuivkRabDPrPQoH3eDQq9VeKZyUSHTcB07Jq0sk0cTa9afhUG/d3NtCwSDgW/9NkccUquMIqTi7396Rkcu2WktLlrDo8mkripSR2yp3wTs5QZ7Lonci/Ftp47GjBWKRdZRVBilYdnibFYnbGqMR800/cLI2lXaWIkkJ0piW5N7EnI/0P aws_rapidsse
 EOF
 
-cat <<EOF >${SSH_DIR}/id_rsa
+cat <<EOF >"${SSH_DIR}"/id_rsa
 -----BEGIN RSA PRIVATE KEY-----
 MIIEpAIBAAKCAQEAx5U8rMXdtvIq0AeiIkI+yxxQrcS0Q9o7GE3DZIfQ3CKmd4Co
 xiJOjplxNSzIQgYeWNXuQx0xngTyIG9gpXI9jfpWSPh/0+NmLLtIVK5ZRI07DN+T
@@ -138,44 +152,31 @@ StrictHostKeyChecking no
 EOF
 
 chmod 700 "${SSH_DIR}"
-chmod 600 "${SSH_DIR}/authorized_keys"
-chmod 600 "${SSH_DIR}/id_rsa"
-chmod 600 "${SSH_DIR}/config"
-chmod 644 "${SSH_DIR}/id_rsa.pub"
-chmod 644 "${SSH_DIR}/known_hosts"
+chmod 600 "${SSH_DIR}/authorized_keys" "${SSH_DIR}/id_rsa" "${SSH_DIR}/config"
+chmod 644 "${SSH_DIR}/id_rsa.pub" "${SSH_DIR}/known_hosts"
 
 chown -R "${OS_USER}:${OS_USER}" "${SSH_DIR}"
 
+status "Setting up rc.local file"
+if [ ! -f "${RC_LOCAL}" ]; then
+  echo -e "#!/bin/sh -e\n\n" > "${RC_LOCAL}"
+fi
+chmod +x "${RC_LOCAL}"
 
+status "Installing SSD mount script"
+cat <<'EOF' >>"${RC_LOCAL}"
 
-# Partition, format and mount the instance stores if they are not already mounted.
-# This needs to be done whenever the instance is stopped, but not when it is rebooted.
-
-echo
-echo "*** Installing the SSD mount script ***"
-echo
-cat <<'EOF' >>"/etc/rc.d/rc.local"
-
-
-# Setup the SSDs on each boot
-
+# Setup the SSDs
 LOCAL_USER="ec2-user"
 
 if ! mount | grep "/mnt/disk1" &>/dev/null; then
-
-# Get the name of any device (sans "/dev/") that is mounted under /
-# including the root filesystem, as we don't want to format this device.
-# e.g. /dev/nvme0n1 --> nvme0n1
 ignore_devices=($(df -h | grep -E "^/dev/" | awk '{if($6 ~ "^/") print $1;}' | cut -c 6-))
 
-# Get the list of block devices in the system.
 ssds=($(lsblk -d -n -o NAME))
 counter=0
 
 for device in "${ssds[@]}"
 do
-  # Ignore devices that are already mounted and devices that are a subset of
-  # the device the root filesystem is mounted on.
   ignore_device=0
   for ignore_device_name in ${ignore_devices[@]}; do
     if [[ "${ignore_device_name}" =~ ^"${device}".* ]]; then
@@ -184,42 +185,33 @@ do
     fi
   done
 
-  [ "${ignore_device}" -eq 1 ] && echo "Ignoring device ${device}" && continue
+  [ "${ignore_device}" -eq 1 ] && continue
 
-  # ignore non-nvme devices
   if ! [[ "${device}" =~ ^nvme.* ]]
   then
-    # ignore this device
-    echo "Ignoring device ${device}"
     continue
   fi
 
   device="/dev/${device}"
 
-  echo "Partitioning device ${device}"
-
   (
-    echo "o"  # Create DOS partition table
-    echo "n"  # Create a new partition
-    echo "p"  # New partition is a primary partition
-    echo "1"  # Partition #1
-    echo ""   # Start the new partition at the first sector
-    echo ""   # Make the new partition as big as possible
-    echo "w"  # write the changes and exit
+    echo "o"
+    echo "n"
+    echo "p"
+    echo "1"
+    echo ""
+    echo ""
+    echo "w"
   ) | fdisk "${device}" || exit
 
   sleep 2
 
-  # Get the partition name
   partition=$(lsblk -l -n -p -oNAME "${device}" | tail -n 1)
 
-  echo "Formatting partition ${partition}"
   counter=$((counter + 1))
   mount_point="/mnt/disk${counter}"
 
   mkfs.ext4 -E nodiscard -m0 "${partition}" || exit
-
-  echo "Mounting partition ${partition} to ${mount_point}"
 
   mkdir -p "${mount_point}"
   mount -o discard "${partition}" "${mount_point}" || exit
@@ -231,58 +223,31 @@ done
 fi
 EOF
 
-# Run the above script
-echo
-echo "*** Running the SSD mount script ***"
-echo
-chmod +x /etc/rc.d/rc.local
-bash /etc/rc.d/rc.local
+status "Running SSD mount script"
+bash "${RC_LOCAL}"
 
 
-# Give more memory to /dev/shm. Use 95% of system memory, or mem-10GB, whichever is larger.
 SHM_SIZE=$(cat /proc/meminfo | grep "MemTotal:" | awk '{m1 = $2/1048576*0.95; m2 = $2/1048576 - 10; if (m1 > m2) {m3 = m1} else {m3 = m2}; printf "%d\n", m3}')
 if [ "${SHM_SIZE}" -eq 0 ]; then
   SHM_SIZE=1
 fi
-echo "Updating size of /dev/shm to 95% of system memory (${SHM_SIZE} GB)"
+status "Updating /dev/shm"
 {
-  echo ""
-  echo "# Set /dev/shm to 95% of system memory"
+  echo -e "\n# Set /dev/shm to 95% of memory"
   echo "tmpfs     /dev/shm     tmpfs     defaults,size=${SHM_SIZE:-500}g     0 0 "
 } >>/etc/fstab
 mount -o remount /dev/shm
 
-
-# DNS (Route 53) resolution
-# This will force unqualified names to tried with the .local domain name and
-# then be looked up in DNS.
-echo
-echo "*** Setting DNS domain name search qualifier ***"
-echo
+status "DNS search qualifier"
 echo "search local" >>/etc/resolv.conf
 
-
-# /etc/hosts shortcuts
-echo
-echo "*** Adding 192.168.0.5 as a shortcut for ci.rapidsdata.com to /etc/hosts ***"
-echo
+status "Updating /etc/hosts"
 echo "192.168.0.5 ci.rapidsdata.com" >>/etc/hosts
-# Otherwise it costs us money when we transfer data via the elastic IP associated with
-# this URL.
 
-# Setting IGMP to v2 instead of v3 (for multicast) for all network devices
-echo
-echo "*** Setting IGMP to v2 ***"
-echo
+status "Setting IGMP to v2"
+echo -e "\n# Enable Multicast on AWS" >>/etc/sysctl.conf
 
-{
-  echo
-  echo "# Enable Multicast on AWS"
-} >>/etc/sysctl.conf
-
-# Get a list of all network devices
 mapfile -t netDevices < <(ip -o -4 addr | awk '{print $2}')
-
 for device in "${netDevices[@]}"; do
   sysctl net.ipv4.conf."${device}".force_igmp_version=2
   echo "net.ipv4.conf.${device}.force_igmp_version=2" >>/etc/sysctl.conf
@@ -290,112 +255,111 @@ done
 
 echo "" >>/etc/sysctl.conf
 
-
-# Change permissions to allow for writing to /opt
-echo
-echo "*** Setting /opt permissions ***"
-echo
+status "/opt permissions"
 chown root:wheel /opt
 chmod g+w /opt
 
-# Set up any pre-requisites
-# Note that we retry any network operations as these can fail or timeout for
-# various reasons. A timeout means that we ultimately cannot connect to this
-# machine.
-
+status "Installing AWS CLI"
 if ! which aws; then
-  # AWS CLI needs curl and unzip
-  while ! yum install -y curl wget unzip; do
-    sleep 1
-  done
+  declare -a cmd
+  cmd=("yum" "install" "-y" "curl" "wget" "unzip")
+  if ! retryCommand "${MAX_YUM_RETRIES}" "${cmd[@]}"; then
+    error "Could not download and install curl, wget and unzip"
+    exit 1
+  fi
 
-  while ! curl -L "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"; do
-    sleep 1
-  done
-
-  unzip awscliv2.zip
-  ./aws/install
+  cmd=("curl" "-L" "--fail" "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" "-o" "awscliv2.zip")
+  if retryCommand "${MAX_NET_RETRIES}" "${cmd[@]}"; then
+    unzip awscliv2.zip
+    ./aws/install
+  else
+    error "Could not download AWS CLIv2"
+    exit 1
+  fi
 fi
 
-# Install Tex Live in parallel in the background to /usr/local/texlive.
-# This is for generating PDF documentation.
-# Needs perl first.
+status "Installing perl"
 yum install -y perl
 
+status "Installing TexLive"
 (
-  echo
-  echo "*** Installing TexLive ***"
-  echo
-  cd /usr/local
-  aws s3 cp "s3://rapidsse-build-support/texlive/texlive.2022.${OS_DIST}.tar.gz" - | tar xz
-  chown -R root:root /usr/local/texlive
-  chmod -R g-w /usr/local/texlive
+cd /usr/local
+aws s3 cp "s3://rapidsse-build-support/texlive/texlive.2022.${OS_DIST}.tar.gz" - | tar xz
+chown -R root:root /usr/local/texlive
+chmod -R g-w /usr/local/texlive
 
-  echo
-  echo "Setting up TexLive environment variables"
-  {
-    echo
-    echo 'TEXLIVEDIR="/usr/local/texlive"'
-    echo 'PATH="${PATH}:${TEXLIVEDIR}/bin/x86_64-linux"'
-    echo 'MANPATH="${MANPATH}:${TEXLIVEDIR}/texmf-dist/doc/man"'
-    echo 'INFOPATH="${INFOPATH}:${TEXLIVEDIR}/texmf-dist/doc/info"'
-    echo
-    echo 'export PATH MANPATH INFOPATH'
-    echo
-  } >>/etc/profile.d/sh.local
+{
+  echo -e '\nTEXLIVEDIR="/usr/local/texlive"'
+  echo 'PATH="${PATH}:${TEXLIVEDIR}/bin/x86_64-linux"'
+  echo 'MANPATH="${MANPATH}:${TEXLIVEDIR}/texmf-dist/doc/man"'
+  echo 'INFOPATH="${INFOPATH}:${TEXLIVEDIR}/texmf-dist/doc/info"'
+  echo -e '\nexport PATH MANPATH INFOPATH\n'
+} >>/etc/profile.d/sh.local
 
-  echo
-  echo "TexLive installation complete"
-) &> "${TEXLIVE_OUTPUT}" &
+) &> "${TEXLIVE_OUT}" &
 
-# Apply any package updates
-echo
-echo "*** Installing updates and necessary packages ***"
-echo
+status "Installing system updates"
 yum update -y
-
-if [ "${OS_DIST}" = "${CENTOS7}" ]; then
-  yum install -y epel-release
-  echo "exclude=mirror.es.its.nyu.edu" >> /etc/yum/pluginconf.d/fastestmirror.conf  # mirror doesn't respond
-  yum install -y https://packages.endpointdev.com/rhel/7/os/x86_64/endpoint-repo.x86_64.rpm
-fi
-
-# Need to have
-yum install -y gcc-c++ git git-lfs cmake libuuid-devel unzip openssl-devel python3 perl-Digest-MD5 gawk vim-enhanced perl-Digest-MD5 perl-Env java-11-openjdk zip
+status "Installing epel"
+yum install -y epel-release
+status "Installing endpoint repo"
+echo "exclude=mirror.es.its.nyu.edu" >> /etc/yum/pluginconf.d/fastestmirror.conf  # mirror doesn't respond
+yum install -y https://packages.endpointdev.com/rhel/7/os/x86_64/endpoint-repo.x86_64.rpm
+status "Installing gcc, git, et al"
+yum install -y gcc-c++ git git-lfs libuuid-devel unzip openssl-devel python3 perl-Digest-MD5 gawk vim-enhanced perl-Digest-MD5 perl-Env java-11-openjdk zip
 yum install -y centos-release-scl
 yum install -y devtoolset-11-gcc devtoolset-11-gcc-c++ devtoolset-11-libatomic-devel
 
-# ShellCheck
-echo
-echo "*** Shellcheck ***"
+status "Installing cmake"
 (
-  cd /usr/local/bin
-  while ! curl -L "https://github.com/koalaman/shellcheck/releases/download/stable/shellcheck-stable.linux.x86_64.tar.xz" -o "shellcheck-stable.linux.x86_64.tar.xz"; do
-    sleep 1
-  done
-  tar xvJf shellcheck-stable.linux.x86_64.tar.xz --strip-components=1 shellcheck-stable/shellcheck
-  chown root:root shellcheck
-  rm -f shellcheck-stable.linux.x86_64.tar.xz
+CMAKE_VER="3.29.0"
+CMAKE_PLATFORM="linux-x86_64"
+CMAKE_FILE="cmake-${CMAKE_VER}-${CMAKE_PLATFORM}.sh"
+CMAKE_URL="https://github.com/Kitware/CMake/releases/download/v${CMAKE_VER}/${CMAKE_FILE}"
+CMAKE_INSTALL_DIR="/opt/cmake"
+
+cd /opt
+mkdir -p "${CMAKE_INSTALL_DIR}"
+
+cmd=("curl" "-L" "--fail" "${CMAKE_URL}" "-o" "${CMAKE_FILE}")
+
+if retryCommand "${MAX_NET_RETRIES}" "${cmd[@]}"; then
+  sh "${CMAKE_FILE}" --prefix="${CMAKE_INSTALL_DIR}" --skip-license --exclude-subdir
+  chown -R "${OS_USER}:${OS_USER}" "${CMAKE_INSTALL_DIR}"
+  rm -f "${CMAKE_FILE}"
+
+  # shellcheck disable=SC2016
+  echo -e 'export PATH="${PATH}:/opt/cmake/bin"\n' >>/etc/profile.d/sh.local
+
+else
+  error "Could not download CMake" && exit 1
+fi
 )
 
-# Documentation generator
+status "Shellcheck"
+(
+cd /usr/local/bin
+declare -a cmd
+SHCHK_FILE="shellcheck-stable.linux.x86_64.tar.xz"
+cmd=("curl" "-L" "--fail" "https://github.com/koalaman/shellcheck/releases/download/stable/${SHCHK_FILE}" "-o" "${SHCHK_FILE}")
+
+if retryCommand "${MAX_NET_RETRIES}" "${cmd[@]}"; then
+  tar "${SHCHK_FILE}" --strip-components=1 shellcheck-stable/shellcheck
+  chown root:root shellcheck
+  rm -f "${SHCHK_FILE}"
+else
+  error "Could not download ShellCheck" && exit 1
+fi
+)
+
+status "Installing Sphinx"
 sudo -H -u "${OS_USER}" python3 -m pip install -U --user sphinx
 
-# Runtimes
-# yum install -y libatomic nmap-netcat iproute
-
-# Nice to have
-# yum install -y java-11-openjdk iperf3 iotop telnet vim nload nethogs bmon iftop jq
-
+status "Git LFS init"
 sudo -H -u "${OS_USER}" git lfs install
 
-
-# Vim annoyances
-echo
-echo "*** Setting vim preferences ***"
-echo
-
-vimrc="${OS_HOME_DIR}/.vimrc"
+status "Vim preferences"
+vimrc="${OS_HOME}/.vimrc"
 cat <<EOF >"${vimrc}"
 set ts=2
 set sw=2
@@ -412,28 +376,21 @@ EOF
 
 chown "${OS_USER}:${OS_USER}" "${vimrc}"
 
-
-# Bash prompt
-echo
-echo "*** Setting bash preferences ***"
-echo
-
-bash_profile="${OS_HOME_DIR}/.bash_profile"
-{
-  echo ""
-  echo '#export PS1="[\u@\h \W]\$ '
-  echo 'export PS1="\[\e[0;33m\]\u\[\e[0m\]@\[\e[0;32m\]\h\[\e[0m\]:\[\e[38;5;033m\]\W\[\e[0m\]\$ "'
-  echo ""
-} >>"${bash_profile}"
-
+status "Bash preferences"
+bash_profile="${OS_HOME}/.bash_profile"
+echo -e '\nexport PS1="\[\e[0;33m\]\u\[\e[0m\]@\[\e[0;32m\]\h\[\e[0m\]:\[\e[38;5;033m\]\W\[\e[0m\]\$ "\n' >>"${bash_profile}"
 chown "${OS_USER}:${OS_USER}" "${bash_profile}"
 
-# Indicate cloud-init has completed by dropping a file in /tmp
-echo "$(date) Completed cloud-init script" >/tmp/cloud-init-complete
+cat <<EOF >>"${RC_LOCAL}"
 
-echo
-echo ""
-echo "Completed the cloud-init setup script!"
-echo ""
-echo
+echo "Completed the cloud-init setup!" > "${CI_STATUS}"
+echo "\$(date) Completed the cloud-init setup!" > "${CI_COMPLETE}"
+echo "\$(date) Completed the cloud-init setup!" > "${CI_COMPLETE_DEP}"
+echo "\$(date) Rebooted" >> "${CI_OUTPUT}"
+EOF
+
+echo "System needs to be rebooted to apply changes." >> "${CI_OUTPUT}"
+
+status "Rebooting now"
+reboot
 } 2>&1 | "${TEE_CMD[@]}"

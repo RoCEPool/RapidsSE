@@ -1,6 +1,52 @@
+// Source file: ../queries/having/rhaving2.sql
+// Result file: ../queries/having/results/having2.res
+
+/optimiser_trace
+/transliterated
+/weaved
+/pipeline_Def
+/pipelineName = "Having2"
+select sum(cola1) as ColA, avg(ucol), colb1, ucolvc from ${testName2}_table1 group by colb1, ucolvc having avg(ucol) < 200 order by colb1, ColA;
+ordered rows:
+  (62, 128.00, 'BLACK', 'ttt')
+  (243, 132.00, 'ORANGE', 'nnn')
+  (201, 122.00, 'PINK', 'vvv')
+  (457, 109.00, 'PURPLE', 'www')
+  (213, 93.00, 'RED', 'ccc')
+  (402, 172.00, 'TEAL', 'ccc')
+  (46, 106.00, 'aqua', 'nnn')
+  (74, 101.00, 'aqua', 'bbb')
+  (5, 123.00, 'black', 'iii')
+  (124, 144.00, 'black', 'mmm')
+  (235, 158.00, 'black', 'bbb')
+  (336, 40.00, 'blue', 'ppp')
+  (303, 62.00, 'gold', 'ccc')
+  (222, 62.00, 'green', 'yyy')
+  (415, 30.00, 'green', 'uuu')
+  (260, 81.00, 'grey', 'lll')
+  (380, 129.00, 'maroon', 'xxx')
+  (141, 31.00, 'orange', 'aaa')
+  (467, 57.00, 'orange', 'kkk')
+  (26, 86.00, 'peach', 'ooo')
+  (215, 140.00, 'purple', 'rrr')
+  (154, 178.00, 'violet', 'ddd')
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // Source file: ../queries/having/rnhaving1.sql
 // Result file: none
+/pipelineName = "Having1"
 select sum(cola1) as SumOf, colb1 from ${testName2}_table1 group by colb1 having SumOf > 500 order by colb1;
 ordered rows:
  (2270,'BLACK')
@@ -25,6 +71,7 @@ ordered rows:
 
 // Source file: ../queries/having/rhaving2.sql
 // Result file: ../queries/having/results/having2.res
+/pipelineName = "Having2"
 select sum(cola1) as ColA, avg(ucol), colb1, ucolvc from ${testName2}_table1 group by colb1, ucolvc having avg(ucol) < 200 order by colb1, ColA;
 ordered rows:
   ( 62, 128.000000,  'BLACK', 'ttt')
@@ -52,6 +99,7 @@ ordered rows:
 
 // Source file: ../queries/having/rhaving3.sql
 // Result file: ../queries/having/results/having3.res
+/pipelineName = "Having3"
 select sum(cola1), avg(ucol), colb1, ucolvc from ${testName2}_table1 group by colb1, ucolvc having colb1 = 'black' or ucolvc = 'aaa' order by colb1, ucolvc;
 ordered rows:
   ( 95, 662.000000, 'GREEN', 'aaa')
@@ -64,6 +112,7 @@ ordered rows:
 
 // Source file: ../queries/having/rhaving4.sql
 // Result file: ../queries/having/results/having4.res
+/pipelineName = "Having4"
 select sum(cola1), avg(ucol), colb1, ucolvc from ${testName2}_table1 group by colb1, ucolvc having colb1 = 'black' order by colb1, ucolvc;
 ordered rows:
   (235, 158.000000, 'black', 'bbb')
@@ -73,6 +122,7 @@ ordered rows:
 
 // Source file: ../queries/having/rhaving5.sql
 // Result file: ../queries/having/results/having5.res
+/pipelineName = "Having5"
 select sum(cola1) as SumOf, colb1 from ${testName2}_table1 group by colb1 having colb1 like 'bl%' order by colb1;
 ordered rows:
   (364, 'black')
@@ -80,6 +130,7 @@ ordered rows:
 
 // Source file: ../queries/having/rhaving1.sql
 // Result file: ../queries/having/results/having1.res
+/pipelineName = "Having6"
 select sum(cola1), colb1 from ${testName2}_table1 group by colb1 having sum(cola1) > 500 order by colb1;
 ordered rows:
   (2270, 'BLACK')
@@ -102,6 +153,7 @@ ordered rows:
   (1217, 'teal')
   (812, 'violet')
 
+/pipelineName = "Having7"
 select sum(cola1) as SumOf, colb1 from ${testName2}_table1 group by colb1 having sum(cola1) > 500;
 rows:
   (2270,'BLACK')
@@ -126,6 +178,7 @@ rows:
 
 // Source file: ../queries/having/rhaving2.sql
 // Result file: ../queries/having/results/having2.res
+/pipelineName = "Having8"
 select sum(cola1) as ColA, avg(ucol), colb1, ucolvc from ${testName2}_table1 group by colb1, ucolvc having avg(ucol) < 200;
 rows:
   ( 62, 128.000000, 'BLACK', 'ttt')
@@ -153,6 +206,7 @@ rows:
 
 // Source file: ../queries/having/rhaving3.sql
 // Result file: ../queries/having/results/having3.res
+/pipelineName = "Having9"
 select sum(cola1), avg(ucol), colb1, ucolvc from ${testName2}_table1 group by colb1, ucolvc having colb1 = 'black' or ucolvc = 'aaa';
 rows:
   ( 95, 662.000000, 'GREEN', 'aaa')
@@ -164,6 +218,7 @@ rows:
 
 // Source file: ../queries/having/rhaving4.sql
 // Result file: ../queries/having/results/having4.res
+/pipelineName = "Having10"
 select sum(cola1), avg(ucol), colb1, ucolvc from ${testName2}_table1 group by colb1, ucolvc having colb1 = 'black';
 rows:
   (235, 158.000000, 'black', 'bbb')
@@ -172,6 +227,7 @@ rows:
 
 // Source file: ../queries/having/rhaving5.sql
 // Result file: ../queries/having/results/having5.res
+/pipelineName = "Having11"
 select sum(cola1) as SumOf, colb1 from ${testName2}_table1 group by colb1 having colb1 like 'bl%';
 rows:
   (364, 'black')
@@ -179,6 +235,7 @@ rows:
 
 // Source file: ../queries/having/rhaving1.sql
 // Result file: ../queries/having/results/having1.res
+/pipelineName = "Having12"
 select sum(cola1), colb1 from ${testName2}_table1 group by colb1 having sum(cola1) > 500;
 rows:
   (2270, 'BLACK')

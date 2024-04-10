@@ -43,6 +43,7 @@ namespace BASE
     ~HashMap(void) noexcept(false);
 
     void    vAnalysis(void);
+    eBI     eClassToBI(eCN eClass);
     void    vDeleteKey(void* pKey);
     void    vDump(void);
     void    vDropKeyLock(void* pKey);
@@ -56,7 +57,9 @@ namespace BASE
     void    vInsertKeyValue(void* pKey, Object* pValue, eBI eBufferIdType);
     bool    bIsLocked(void* pKey);
 //    void    vReHash(void);
+    bool    bValidDataBuffer(DataBuffer* pDataBuffer);
     Object* pValueAt(void* pKey, bool bLockThis = true);
+    bool    bVerify(bool bLock);
 
 #ifdef WITH_HASHMAP_DEBUG
     void    vAppendHistory(void* pKey,

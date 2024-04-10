@@ -10,6 +10,7 @@ Stz* aBI[BI_ENUMS]
 
     /*    */ "BI_CRW"_Stz,
     /*    */ "BI_CSV"_Stz,
+    /*    */ "BI_ENT"_Stz,
     /*    */ "BI_HASHMAPSLOT"_Stz,
     /*    */ "BI_ROW"_Stz,
     /*    */ "BI_TASKLOCK"_Stz,

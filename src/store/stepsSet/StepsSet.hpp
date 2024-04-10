@@ -618,30 +618,20 @@ void vDdlLockAssertNone(void);
   void vFlushDerefMetrics(void);
 
   // reg fun
-  void vFun0Call(void);
-  void vFun0Get(void);
-  void vFun0Set(void);
-  void vFun0Setup(void);
-  void vFun1Call(void);
-  void vFun1Get(void);
-  void vFun1Set(void);
-  void vFun1Setup(void);
-  void vFun1_Call(void);
-  void vFun1_Get(void);
-  void vFun1_Set(void);
-  void vFun1_Setup(void);
-  void vFun2Call(void);
-  void vFun2Get(void);
-  void vFun2IsNotNull(void);
-  void vFun2Set(void);
-  void vFun2Setup(void);
-  void vFun3Call(void);
-  void vFun3Get(void);
-  void vFun3Set(void);
-  void vFun3Setup(void);
-  void vFun4Call(void);
-  void vFun4Get(void);
-  void vFun4Set(void);
+  void vCrwHandlerGet(void);
+  void vCrwHandlerSet(void);
+  void vPdsHandlerCall(void);
+  void vPdsHandlerGet(void);
+  void vPdsHandlerSet(void);
+  void vIndexHandlerGet(void);
+  void vIndexHandlerIsNotNull(void);
+  void vIndexHandlerSet(void);
+  void vEosHandlerGet(void);
+  void vEosHandlerSet(void);
+  void vStartHandlerGet(void);
+  void vStartHandlerSet(void);
+  void vStreamDefHandlerGet(void);
+  void vStreamDefHandlerSet(void);
 
   // grid
   void vGridDumpInfo(void);

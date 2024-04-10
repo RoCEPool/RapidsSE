@@ -4,7 +4,11 @@
 #pragma once
 
 //#include "eEC.h"
-
+#ifdef WITH_THREADSTACKSIZE
+#include "TlsKeys.hpp"
+extern pthread_key_t giTLS_ThreadStackAddr;
+extern AttachMap*    gpAttachMap;
+#endif
 namespace PRIMITIVES
 {
   // magic signature
@@ -71,6 +75,22 @@ namespace PRIMITIVES
   /*--------------------------------------------------------------------------*/
   inline bool bIsMagicValid(void)
   {
+#ifdef WITH_THREADSTACKSIZE
+    if(gpAttachMap) {
+      bool bSystemReady = AM::SYSTEM::bReady();
+      if (bSystemReady) {
+        void *pBaseThreadStackAddr = pthread_getspecific(giTLS_ThreadStackAddr);
+        if (C_UNKNOWN != (i8) giTLS_ThreadStackAddr &&
+            C_UNKNOWN != (i8) pBaseThreadStackAddr &&
+            0 != (i8) pBaseThreadStackAddr) {
+          i8 iCurStackAddr = 0;
+          char *aAddr0 = reinterpret_cast<char *>(pBaseThreadStackAddr);
+          char *aAddr1 = reinterpret_cast<char *>(&iCurStackAddr);
+          printf("%s %lld %p %p \n", __func__, (aAddr0 - aAddr1) / (C_1MB), aAddr1, aAddr0);
+        }
+      }
+    }
+#endif
     if (C_MAGIC == m_uMagic)
       return true;
     else

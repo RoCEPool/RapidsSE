@@ -69,6 +69,7 @@ Card_Hash* Card_Hash::pDerive(Card_Expr* p_expr,
   p_hshColList->vAppendChild(p_hshCol);
 
   Card_Term* p_card_term = p_expr->pGet_term(0)->pClone();
+  p_card_term->pSymbol()->vDeleteFacet(SF_EXP_COL);
   p_hshCol->vAppendChild(p_card_term);
 
   if (p_emitted_prev)

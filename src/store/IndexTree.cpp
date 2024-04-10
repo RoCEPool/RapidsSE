@@ -28,6 +28,11 @@
 #include "TablePtn.hpp"
 #include "Table.hpp"
 
+#include "ClangDynamic.h"
+#include "Op.hpp"
+#include "Stage.hpp"
+#include "Stream.hpp"
+
 bool mbCheckPriorVec = false;
 
 extern EnvFlags gxEnvFlags;;
@@ -114,6 +119,43 @@ IndexTree::~IndexTree(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Externs -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+extern "C" void* aExtern_IndexTreeFindInsertGenAsc(void* aDynamic, i8 nPayloadBytes, bool *pbInsertedEntry) {
+
+	// get Dynamic
+	Dynamic_T* pDynamicT = (Dynamic_T*)aDynamic;
+
+	// get the IndexTree
+	IndexTree* pIndexTree = (IndexTree*)pDynamicT->m_xIndexInfoPL.m_aIndexTree;
+
+	// get the key
+	Key* aKey = (Key*)pDynamicT->m_xIndexInfoPL.m_aEntKey;
+
+	// get the ent
+	Ent* pEntInt = (Ent*)pDynamicT->m_xIndexInfoPL.m_aEntInt;
+
+	// find and insert entry
+	Ent* pEntInserted =  pIndexTree->aFindInsertEntryAscGen(aKey, pEntInt, nPayloadBytes, pbInsertedEntry, &pDynamicT->m_iErrorCode);
+
+	//pDynamicT->m_aiPayload = pEntInserted->aiPayload();
+
+	pDynamicT->m_aiPayload = (i8 *) ((char *) pEntInserted
+																	 + sizeof(struct Ent_int)
+																	 + ((struct Ent_int *) pEntInserted)->m_iIntElm0
+																	 + 8);
+
+//	if (*pbInsertedEntry) {
+//		// zero the payload
+//
+//		for (i8 i = 0; i < nPayloadBytes; i++)
+//			pDynamicT->m_aiPayload[i] = 0;
+//	}
+
+
+
+	return pEntInserted;
+}
+
+
 extern "C" void* aExtern_IndexTreeAllotPayStr(void* pIndexTree, char* sStr) {
   return (void*)IndexTree::aAllotPayStr((IndexTree*)pIndexTree, (Stz*)sStr);
 }
@@ -123,7 +165,12 @@ extern "C" void* aExtern_IndexTreeBegin(void* pIndexTree, void** ppEntBuffer) {
 extern "C" void* aExtern_IndexTreeFindEntry(void* aIndexTree, void* aKey) {
   return (void*)IndexTree::aFindEntry((IndexTree*) aIndexTree, (Key*) aKey);
 }
-
+extern "C" void* aExtern_IndexTreeFindEntryAsc(void* aIndexTree, void* aKey) {
+  return (void*)IndexTree::aFindEntryAsc((IndexTree*) aIndexTree, (Key*) aKey);
+}
+extern "C" void* aExtern_IndexTreeFindEntryAscDsc(void* aIndexTree, void* aKey) {
+  return (void*)IndexTree::aFindEntryAscDsc((IndexTree*) aIndexTree, (Key*) aKey);
+}
 extern "C" void* aExtern_IndexTreeFindEntry_hint(void* aIndexTree, void* aKey, void* aEnt_recent) {
   return (void*)IndexTree::aFindEntry_hint((IndexTree*) aIndexTree, (Key*) aKey, (Ent*) aEnt_recent);
 }
@@ -135,23 +182,342 @@ extern "C" void* aExtern_IndexTreeInsertEntTop(void* aIndexTree, void* aEnt, voi
                                   iTopCount, piErrorCode);
 }
 extern "C" void* aExtern_IndexTreeNew(void* aIndexDef, i8* aiKeyKind) {
-  IndexTree* pIndexTree = new IndexTree(nullptr, (IndexDef*)aIndexDef, C_UNKNOWN);
-  *aiKeyKind = (i8)((IndexDef*)aIndexDef)->eKeyKind();
-  return pIndexTree;
-}
-extern "C" void* aExtern_IndexTreePositionGE(void* aIndexTree, void** aaEntBuffer, void* aKey) {
-  return IndexTree::aPositionGE((IndexTree*) aIndexTree, (EntBuffer**) aaEntBuffer, (Key*) aKey);
-}
-extern "C" void* aExtern_IndexTreePositionGT(void* aIndexTree, void** aaEntBuffer, void* aKey) {
-  return IndexTree::aPositionGT((IndexTree*) aIndexTree, (EntBuffer**) aaEntBuffer, (Key*) aKey);
-}
-extern "C" void *aExtern_IndexTreePositionLE(void* aIndexTree, void* aKey) {
-  return IndexTree::aPositionLE((IndexTree*) aIndexTree, (Key*) aKey);
-}
-extern "C" void *aExtern_IndexTreePositionLT(void* aIndexTree, void* aKey) {
-  return IndexTree::aPositionLT((IndexTree*) aIndexTree, (Key*) aKey);
+	IndexTree *pIndexTree = new IndexTree(nullptr, (IndexDef *) aIndexDef, C_UNKNOWN);
+	*aiKeyKind = (i8) ((IndexDef *) aIndexDef)->eKeyKind();
+	return pIndexTree;
 }
 
+extern "C" void vExtern_IndexNew(void* aDynamic, i8 nNumCols, ColumnInfo* pColumnInfo, bool bPayload) {
+
+	Dynamic_T* pDynamicT = (Dynamic_T*)aDynamic;
+	EntWrk* pEntWrk = (EntWrk*)pDynamicT->m_xIndexInfoPL.m_aEntWrk;
+
+	IndexDef* pIndexDef = new IndexDef;
+
+	for (i8 i_Col = 0; i_Col < nNumCols; i_Col++) {
+		pIndexDef->vAddColumn((Stz*)&pColumnInfo[i_Col].m_cColumnNm[0],
+													(TypeId)pColumnInfo[i_Col].m_iColumnTypeId,
+													pColumnInfo[i_Col].m_bIsAscending);
+
+		if (pColumnInfo[i_Col].m_bIsAscending == 0)
+			pIndexDef->vHasDescending(true);
+	}
+
+	pDynamicT->m_xIndexInfoPL.m_aIndexDef = pIndexDef;
+
+  IndexTree* pIndexTree = new IndexTree(nullptr, pIndexDef, C_UNKNOWN);
+
+	EntWrk::vEntKind(pEntWrk, bPayload, pIndexDef->eKeyKind());
+
+	pDynamicT->m_xIndexInfoPL.m_aIndexTree = pIndexTree;
+}
+
+extern "C" void vExtern_IndexFind(void* aIndexInfo, char* aTableName, char* aIndexName) {
+
+	LglPtn tLglPtn;
+	IndexInfo* pIndexInfo = (IndexInfo*)aIndexInfo;
+
+	Table* pTable = AM::pTableFind((Stz*)aTableName);
+	Index* pIndex = pTable->pFindIndex((Stz*)aIndexName);
+
+	pIndexInfo->m_aIndexDef = pIndex->pIndexDef();
+
+	StreamDef* pStreamDef = pTable->pStreamDef();
+	Op* pOp = MY::pOp();
+
+	if (pStreamDef->bReplicated()) {
+
+		Stage*  pStage   = pOp->pStage();
+		Stream* pStream0 = pStage->pGet(0);
+		Op*     pOp0_0   = pStream0->pGet(0);
+
+		tLglPtn = pOp0_0->tLglPtn();
+	}
+	else {
+		tLglPtn = pOp->tLglPtn();
+	}
+
+	i8 i_TablePtn = pTable->iPtnNoToTablePtn(tLglPtn);
+	TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
+
+	i8 iIndexNo = pIndex->iIndexNo();
+	pIndexInfo->m_aIndexTree = pTablePtn->pIndexTree(iIndexNo);
+}
+
+/*----------------------------------------------------------------------------*/
+/* position at entry greater than equal to given gen key                      */
+/*----------------------------------------------------------------------------*/
+extern "C" void vExtern_IndexTreePositionGE_gen(void* aIndexInfo) {
+
+	IndexInfo *pIndexInfo = (IndexInfo *) aIndexInfo;
+	IndexTree *pIndexTree = (IndexTree *) pIndexInfo->m_aIndexTree;
+	Key *aKey = (Key *) pIndexInfo->m_aEntKey;
+
+	EntBuffer *pEntBuffer = nullptr;
+	Ent *aEnt = nullptr;
+
+	pEntBuffer = pIndexTree->pPositionH0Buffer_gen(aKey);
+	if (!pEntBuffer) {
+		pIndexInfo->m_aEntInt = nullptr;
+		return;
+	}
+
+	aEnt = pEntBuffer->aFindEntryBefore_gen(aKey);
+	if (!aEnt) {
+		pIndexInfo->m_aEntInt = nullptr;
+	  return;
+  }
+
+	aEnt = EntBuffer::pMoveToGreaterEqualEntry_gen(aEnt, aKey, &pEntBuffer);
+
+	pIndexInfo->m_aEntBuffer = pEntBuffer;
+	pIndexInfo->m_aEntInt = (Ent_int*)aEnt;
+}
+
+/*----------------------------------------------------------------------------*/
+/* position at entry greater than equal to given int key                      */
+/*----------------------------------------------------------------------------*/
+extern "C" void vExtern_IndexTreePositionGE_int(void* aIndexInfo) {
+
+	IndexInfo *pIndexInfo = (IndexInfo *) aIndexInfo;
+	IndexTree *pIndexTree = (IndexTree *) pIndexInfo->m_aIndexTree;
+	Key *aKey = (Key *) pIndexInfo->m_aEntKey;
+
+	EntBuffer *pEntBuffer = nullptr;
+	Ent *aEnt = nullptr;
+
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+	//	pEntBuffer = pIndexTree->pPositionH0Buffer_int(aKey);
+	//	if (!pEntBuffer) {
+	//		pIndexInfo->m_aEntInt = nullptr;
+	//		return;
+	//	}
+
+	EntBuffer* pRootBuffer = pIndexTree->pRootBuffer();
+	if ( !  pRootBuffer) {
+		pIndexInfo->m_aEntInt = nullptr;
+		return;
+	}
+
+	if (pRootBuffer->iBufferHeight() == 0)
+		pEntBuffer = pRootBuffer;
+	else
+		pEntBuffer = pRootBuffer->pFindLeafBuffer_intO(aKey);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+	aEnt = pEntBuffer->aFindEntryBefore_MoveGE_int(aKey, &pEntBuffer);
+	if (!aEnt) {
+		pIndexInfo->m_aEntInt = nullptr;
+		return;
+	}
+
+	//aEnt = EntBuffer::pMoveToGreaterEqualEntry_int(aEnt, aKey, &pEntBuffer);
+
+	pIndexInfo->m_aEntBuffer = pEntBuffer;
+	pIndexInfo->m_aEntInt = (Ent_int*)aEnt;
+}
+
+/*----------------------------------------------------------------------------*/
+/* position at entry greater than given general key                           */
+/*----------------------------------------------------------------------------*/
+extern "C" void vExtern_IndexTreePositionGT_gen(void* aIndexInfo) {
+
+  IndexInfo *pIndexInfo = (IndexInfo *) aIndexInfo;
+	IndexTree *pIndexTree = (IndexTree *) pIndexInfo->m_aIndexTree;
+	Key *aKey = (Key *) pIndexInfo->m_aEntKey;
+
+	EntBuffer* pEntBuffer = nullptr;
+	Ent* aEnt = nullptr;
+
+	pEntBuffer = pIndexTree->pPositionH0Buffer_gen(aKey);
+	if ( !pEntBuffer ) {
+		pIndexInfo->m_aEntInt = nullptr;
+		return;
+	}
+
+	aEnt = pEntBuffer->aFindEntryBefore_gen(aKey);
+	if ( !aEnt ) {
+		pIndexInfo->m_aEntInt = nullptr;
+		return;
+	}
+
+	aEnt = EntBuffer::pMoveToGreaterThanEntry_gen(aEnt, aKey, &pEntBuffer);
+
+	pIndexInfo->m_aEntBuffer = pEntBuffer;
+	pIndexInfo->m_aEntInt = (Ent_int*)aEnt;
+}
+
+/*----------------------------------------------------------------------------*/
+/* position at entry greater than given integer key                           */
+/*----------------------------------------------------------------------------*/
+extern "C" void vExtern_IndexTreePositionGT_int(void* aIndexInfo) {
+
+	IndexInfo *pIndexInfo = (IndexInfo *) aIndexInfo;
+	IndexTree *pIndexTree = (IndexTree *) pIndexInfo->m_aIndexTree;
+	Key *aKey = (Key *) pIndexInfo->m_aEntKey;
+
+	EntBuffer* pEntBuffer = nullptr;
+	Ent* aEnt = nullptr;
+
+	pEntBuffer = pIndexTree->pPositionH0Buffer_int(aKey);
+	if ( !pEntBuffer ) {
+		pIndexInfo->m_aEntInt = nullptr;
+		return;
+	}
+
+	aEnt = pEntBuffer->aFindEntryBefore_int(aKey);
+	if ( !aEnt ) {
+		pIndexInfo->m_aEntInt = nullptr;
+		return;
+	}
+
+	aEnt = EntBuffer::pMoveToGreaterThanEntry_int(aEnt, aKey, &pEntBuffer);
+
+	pIndexInfo->m_aEntBuffer = pEntBuffer;
+	pIndexInfo->m_aEntInt = (Ent_int*)aEnt;
+}
+
+/*----------------------------------------------------------------------------*/
+//* position at entry less than equal to given general key                    */
+/*----------------------------------------------------------------------------*/
+extern "C" void vExtern_IndexTreePositionLE_gen(void* aIndexInfo) {
+
+	IndexInfo *pIndexInfo = (IndexInfo *) aIndexInfo;
+	IndexTree *pIndexTree = (IndexTree *) pIndexInfo->m_aIndexTree;
+	Key *aKey = (Key *) pIndexInfo->m_aEntKey;
+
+	EntBuffer* pEntBuffer = nullptr;
+	Ent* aEnt = nullptr;
+
+	pEntBuffer = pIndexTree->pPositionH0Buffer_gen(aKey);
+	if ( !pEntBuffer ) {
+		pIndexInfo->m_aEntUpper = nullptr;
+		return;
+	}
+
+	aEnt = pEntBuffer->aFindEntryBefore_gen(aKey);
+	if ( !aEnt ) {
+		pIndexInfo->m_aEntUpper = nullptr;
+		return;
+	}
+
+	aEnt = EntBuffer::pMoveToNextEntry(aEnt, &pEntBuffer);
+	if ( !aEnt ) {
+		pIndexInfo->m_aEntUpper = nullptr;
+		return;
+	}
+
+	aEnt = EntBuffer::pMoveToGreaterThanEntry_gen(aEnt, aKey, &pEntBuffer);
+
+	pIndexInfo->m_aEntUpper = (Ent_int*)aEnt;
+}
+
+/*----------------------------------------------------------------------------*/
+//* position at entry less than equal to given integer key                    */
+/*----------------------------------------------------------------------------*/
+extern "C" void vExtern_IndexTreePositionLE_int(void* aIndexInfo) {
+
+	IndexInfo *pIndexInfo = (IndexInfo *) aIndexInfo;
+	IndexTree *pIndexTree = (IndexTree *) pIndexInfo->m_aIndexTree;
+	Key *aKey = (Key *) pIndexInfo->m_aEntKey;
+
+	EntBuffer* pEntBuffer = nullptr;
+	Ent* aEnt = nullptr;
+
+	pIndexInfo->m_aEntUpper = nullptr;
+
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+	//	pEntBuffer = pIndexTree->pPositionH0Buffer_int(aKey);
+	//	if ( !pEntBuffer ) {
+	//		pIndexInfo->m_aEntUpper = nullptr;
+	//		return;
+	//	}
+
+	EntBuffer* pRootBuffer = pIndexTree->pRootBuffer();
+	if ( !  pRootBuffer) {
+		return;
+	}
+
+	if (pRootBuffer->iBufferHeight() == 0)
+		pEntBuffer = pRootBuffer;
+	else
+	  pEntBuffer = pRootBuffer->pFindLeafBuffer_intO(aKey);
+
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+	aEnt = pEntBuffer->aFindEntryBefore_int(aKey);
+	if ( !aEnt ) {
+		return;
+	}
+
+	aEnt = EntBuffer::pMoveToNextEntry(aEnt, &pEntBuffer);
+	if ( !aEnt ) {
+		return;
+	}
+
+	aEnt = EntBuffer::pMoveToGreaterThanEntry_int(aEnt, aKey, &pEntBuffer);
+
+	pIndexInfo->m_aEntUpper = (Ent_int*)aEnt;
+}
+
+/*----------------------------------------------------------------------------*/
+/* position at entry less than given general key                              */
+/*----------------------------------------------------------------------------*/
+extern "C" void vExtern_IndexTreePositionLT_gen(void* aIndexInfo) {
+
+	IndexInfo *pIndexInfo = (IndexInfo *) aIndexInfo;
+	IndexTree *pIndexTree = (IndexTree *) pIndexInfo->m_aIndexTree;
+	Key *aKey = (Key *) pIndexInfo->m_aEntKey;
+
+	EntBuffer* pEntBuffer = nullptr;
+	Ent* aEnt = nullptr;
+
+	pEntBuffer = pIndexTree->pPositionH0Buffer_gen(aKey);
+	if ( !pEntBuffer ) {
+		pIndexInfo->m_aEntUpper = nullptr;
+		return;
+	}
+
+	aEnt = pEntBuffer->aFindEntryBefore_gen(aKey);
+	if ( !aEnt ) {
+		pIndexInfo->m_aEntUpper = nullptr;
+		return;
+	}
+
+	aEnt = EntBuffer::pMoveToNextEntry(aEnt, &pEntBuffer);
+
+	pIndexInfo->m_aEntUpper = (Ent_int*)aEnt;
+}
+
+/*----------------------------------------------------------------------------*/
+/* position at entry less than given general key                              */
+/*----------------------------------------------------------------------------*/
+extern "C" void vExtern_IndexTreePositionLT_int(void* aIndexInfo) {
+
+	IndexInfo *pIndexInfo = (IndexInfo *) aIndexInfo;
+	IndexTree *pIndexTree = (IndexTree *) pIndexInfo->m_aIndexTree;
+	Key *aKey = (Key *) pIndexInfo->m_aEntKey;
+
+	EntBuffer* pEntBuffer = nullptr;
+	Ent* aEnt = nullptr;
+
+	pEntBuffer = pIndexTree->pPositionH0Buffer_int(aKey);
+	if ( !pEntBuffer ) {
+		pIndexInfo->m_aEntUpper = nullptr;
+		return;
+	}
+
+	aEnt = pEntBuffer->aFindEntryBefore_int(aKey);
+	if ( !aEnt ) {
+		pIndexInfo->m_aEntUpper = nullptr;
+		return;
+	}
+
+	aEnt = EntBuffer::pMoveToNextEntry(aEnt, &pEntBuffer);
+
+	pIndexInfo->m_aEntUpper = (Ent_int*)aEnt;
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Static ------------------------------------------------------------------*/
@@ -165,38 +531,6 @@ void IndexTree::vDump(eCN eClass, Object* pObject, Stz* aTab)
   UNUSED(eClass);
   UNUSED(pObject);
   UNUSED(aTab);
-}
-
-void* aIndexTree_allotPayStr(void* pIndexTree, char* sStr) {
-  return (void*)IndexTree::aAllotPayStr((IndexTree*)pIndexTree, (Stz*)sStr);
-}
-void* aIndexTree_begin(void* pIndexTree, void** ppEntBuffer) {
-  return (void*)IndexTree::aIndexBegin((IndexTree*)pIndexTree, (EntBuffer**) ppEntBuffer);
-}
-void* aIndexTree_findEntry(void* aIndexTree, void* aKey) {
-  return (void*)IndexTree::aFindEntry((IndexTree*) aIndexTree, (Key*) aKey);
-}
-void* aIndexTree_findEntry_hint(void* aIndexTree, void* aKey, void* aEnt_recent) {
-  return (void*)IndexTree::aFindEntry_hint((IndexTree*) aIndexTree, (Key*) aKey, (Ent*) aEnt_recent);
-}
-void* aIndexTree_insertEnt(void* aIndexTree, void* aEnt, i8* piErrorCode) {
-  return IndexTree::aInsertEnt((IndexTree*)aIndexTree, (Ent*)aEnt, piErrorCode);
-}
-void* aIndexTree_insertEntTop(void* aIndexTree, void* aEnt, void** aaEntBottom, i8 iTopCount, i8* piErrorCode) {
-  return IndexTree::aInsertEntTop((IndexTree*)aIndexTree, (Ent*)aEnt, (Ent**)aaEntBottom,
-                                  iTopCount, piErrorCode);
-}
-void* aIndexTree_positionGE(void* aIndexTree, void** aaEntBuffer, void* aKey) {
-  return IndexTree::aPositionGE((IndexTree*) aIndexTree, (EntBuffer**) aaEntBuffer, (Key*) aKey);
-}
-void* aIndexTree_positionGT(void* aIndexTree, void** aaEntBuffer, void* aKey) {
-  return IndexTree::aPositionGT((IndexTree*) aIndexTree, (EntBuffer**) aaEntBuffer, (Key*) aKey);
-}
-void *aIndexTree_positionLE(void* aIndexTree, void* aKey) {
-  return IndexTree::aPositionLE((IndexTree*) aIndexTree, (Key*) aKey);
-}
-void *aIndexTree_positionLT(void* aIndexTree, void* aKey) {
-  return IndexTree::aPositionLT((IndexTree*) aIndexTree, (Key*) aKey);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -282,96 +616,6 @@ IndexTree* IndexTree::aNewIndexTree(IndexDef* pIndexDef, eKE* peKind)
   *peKind = pIndexDef->eKeyKind();
 
   return pIndexTree;
-}
-
-/*----------------------------------------------------------------------------*/
-/* position at entry greater than equal to given key                          */
-/*----------------------------------------------------------------------------*/
-Ent* IndexTree::aPositionGE(IndexTree* pIndexTree, EntBuffer** ppEntBuffer, Key* aKey)
-{
-  EntBuffer* pEntBuffer = nullptr;
-  Ent* aEnt = nullptr;
-
-  pEntBuffer = pIndexTree->pPositionH0Buffer(aKey);
-  if ( !pEntBuffer )
-    return nullptr;
-
-  aEnt = pEntBuffer->aFindEntryBefore(aKey);
-  if ( !aEnt )
-    return nullptr;
-
-  aEnt = EntBuffer::pMoveToGreaterEqualEntry(aEnt, aKey, &pEntBuffer);
-
-  *ppEntBuffer = pEntBuffer;
-  return aEnt;
-}
-
-/*----------------------------------------------------------------------------*/
-/* position at entry greater than given key                                   */
-/*----------------------------------------------------------------------------*/
-Ent* IndexTree::aPositionGT(IndexTree* pIndexTree, EntBuffer** ppEntBuffer, Key* aKey)
-{
-  EntBuffer* pEntBuffer = nullptr;
-  Ent* aEnt = nullptr;
-
-  pEntBuffer = pIndexTree->pPositionH0Buffer(aKey);
-  if ( !pEntBuffer )
-    return nullptr;
-
-  aEnt = pEntBuffer->aFindEntryBefore(aKey);
-  if ( !aEnt )
-    return nullptr;
-
-  aEnt = EntBuffer::pMoveToGreaterThanEntry(aEnt, aKey, &pEntBuffer);
-
-  *ppEntBuffer = pEntBuffer;
-  return aEnt;
-}
-
-/*----------------------------------------------------------------------------*/
-//* position at entry less than equal to given key                            */
-/*----------------------------------------------------------------------------*/
-Ent* IndexTree::aPositionLE(IndexTree* pIndexTree, Key* aKey)
-{
-  EntBuffer* pEntBuffer = nullptr;
-  Ent* aEnt = nullptr;
-
-  pEntBuffer = pIndexTree->pPositionH0Buffer(aKey);
-  if ( !pEntBuffer )
-    return nullptr;
-
-  aEnt = pEntBuffer->aFindEntryBefore(aKey);
-  if ( !aEnt )
-    return nullptr;
-
-  aEnt = EntBuffer::pMoveToNextEntry(aEnt, &pEntBuffer);
-  if ( !aEnt )
-    return nullptr;
-
-  aEnt = EntBuffer::pMoveToGreaterThanEntry(aEnt, aKey, &pEntBuffer);
-
-  return aEnt;
-}
-
-/*----------------------------------------------------------------------------*/
-//* position at entry less than given key                                     */
-/*----------------------------------------------------------------------------*/
-Ent* IndexTree::aPositionLT(IndexTree* pIndexTree, Key* aKey)
-{
-  EntBuffer* pEntBuffer = nullptr;
-  Ent* aEnt = nullptr;
-
-  pEntBuffer = pIndexTree->pPositionH0Buffer(aKey);
-  if ( !pEntBuffer )
-    return nullptr;
-
-  aEnt = pEntBuffer->aFindEntryBefore(aKey);
-  if ( !aEnt )
-    return nullptr;
-
-  aEnt = EntBuffer::pMoveToNextEntry(aEnt, &pEntBuffer);
-
-  return aEnt;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1001,6 +1245,34 @@ EntBuffer* IndexTree::pPositionH0Buffer(Key* aFindKey)
 /*----------------------------------------------------------------------------*/
 /* position to the first H0 buffer which has given key                        */
 /*----------------------------------------------------------------------------*/
+EntBuffer* IndexTree::pPositionH0Buffer_gen(Key* aFindKey)
+{
+	_precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
+
+	if (m_pRootEntBuffer) {
+		return m_pRootEntBuffer->pFindLeafBuffer_gen(aFindKey);
+	}
+	else
+		return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* position to the first H0 buffer which has given key                        */
+/*----------------------------------------------------------------------------*/
+EntBuffer* IndexTree::pPositionH0Buffer_int(Key* aFindKey)
+{
+	_precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
+
+	if (m_pRootEntBuffer) {
+		return m_pRootEntBuffer->pFindLeafBuffer_int(aFindKey);
+	}
+	else
+		return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* position to the first H0 buffer which has given key                        */
+/*----------------------------------------------------------------------------*/
 Ent* IndexTree::aPositionPriorEntry(Key* aFindKey, EntBuffer** ppEntBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
@@ -1030,6 +1302,37 @@ Ent* IndexTree::aPositionPriorEntry(Key* aFindKey, EntBuffer** ppEntBuffer)
 }
 
 /*----------------------------------------------------------------------------*/
+/* position to the first H0 buffer which has given key                        */
+/*----------------------------------------------------------------------------*/
+Ent* IndexTree::aPositionPriorEntryAsc(Key* aFindKey, EntBuffer** ppEntBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
+
+  EntBuffer* pEntBuffer;
+
+  // root buffer ?
+  if ( ! m_pRootEntBuffer )
+    return nullptr;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - - -
+  // position at H0 buffer
+  pEntBuffer = m_pRootEntBuffer->pFindLeafBuffer(aFindKey);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - -
+  // position at prior entry
+  Ent* aEnt_prior = pEntBuffer->aFindEntryBefore(aFindKey);
+
+  // entry ?
+  if ( ! aEnt_prior )
+    return nullptr;
+
+  // return the prior entry and the buffer
+  *ppEntBuffer = pEntBuffer;
+  return aEnt_prior;
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* create a new root buffer                                                   */
 /*----------------------------------------------------------------------------*/
 EntBuffer* IndexTree::pNewRootBuffer(void)
@@ -1044,16 +1347,6 @@ EntBuffer* IndexTree::pNewRootBuffer(void)
   tLglPtn = m_i_TablePtn;
   m_pRootEntBuffer->vLglPtn(tLglPtn);
 
-  return m_pRootEntBuffer;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get root buffer                                                            */
-/*----------------------------------------------------------------------------*/
-EntBuffer* IndexTree::pRootBuffer(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
-  
   return m_pRootEntBuffer;
 }
 

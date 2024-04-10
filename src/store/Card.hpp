@@ -6,11 +6,8 @@
 #include "BASE.h"
 
 #include "eAL.h"
-#include "eFC.h"
 #include "eGC.h"
-#include "ePB.h"
 #include "eQO.h"
-#include "eRC.h"
 #include "eRO.h"
 #include "eTE.h"
 #include "eXK.h"
@@ -21,13 +18,14 @@
 #include "Ribbon.hpp"
 #include "Symbol.hpp"
 
+//#define Z_NO_RPNCALC
+
 namespace STORE
 {
   class Card_AbsJoin;
   class Card_Address;
   class Card_Aggreg;
   class Card_AndConj;
-  class Card_As;
 
   class Card_BoolPred;
   class Card_Bound;
@@ -52,7 +50,6 @@ namespace STORE
   class Card_Debug;
   class Card_Deck;
   class Card_Decision;
-  class Card_Direction;
 
   class Card_Emit;
   class Card_EXPRLIST;
@@ -122,7 +119,7 @@ namespace STORE
   class Card_RowCount;
   class Card_RowSize;
   class Card_RpnCalc;
-  class Card_RpnExpr;
+  class Card_TermSeq;
 
   class Card_Scan;
   class Card_Section;
@@ -173,12 +170,12 @@ extern Stz* P_Cell;
 extern Stz* P_ChosenBound;
 extern Stz* P_ChosenIndex;
 extern Stz* P_Count;
-extern Stz* P_CrlKeyExpr;
-extern Stz* P_CrlKeyPred;
+extern Stz* P_CrlKeyConj;
+extern Stz* P_CrlKeyDefn;
+extern Stz* P_CrlKeyTerm;
 extern Stz* P_CrlKeyTest;
-extern Stz* P_CrlRslTest;
-extern Stz* P_CrlSqy;
 extern Stz* P_DebugOption;
+extern Stz* P_Direction;
 extern Stz* P_Early;
 extern Stz* P_EmittedCol;
 extern Stz* P_FixedPos;
@@ -189,8 +186,7 @@ extern Stz* P_Injected;
 extern Stz* P_Invalid;
 extern Stz* P_Key;
 extern Stz* P_Level;
-extern Stz* P_NonCrlSqy;
-extern Stz* P_ParamOdn;
+extern Stz* P_PrmOdn;
 extern Stz* P_Payload;
 extern Stz* P_Permutation;
 extern Stz* P_Pointer;
@@ -200,7 +196,7 @@ extern Stz* P_SendKind;
 extern Stz* P_Smoothed;
 extern Stz* P_StageTopo;
 extern Stz* P_SqyCall;
-extern Stz* P_SqyNo;
+extern Stz* P_SqyRslTest;
 extern Stz* P_Unproject;
 
 extern Stz* C_CARD_HISTORY;
@@ -239,7 +235,11 @@ extern Stz* MARK_UNVALID;
 extern Stz* MARK_UP;
 extern Stz* MARK_VALID;
 
-extern Stz* C_SQCRLKEY;
+extern Stz* C_CRLKEY;
+extern Stz* C_SQYRSL;
+
+extern Stz* C_ASC;
+extern Stz* C_DESC;
 
 namespace STORE
 {
@@ -269,9 +269,6 @@ namespace STORE
 
     Symbol  m_xSymbol;
 
-    eFC     m_eConjForm;  // form of conjunction
-    eRC     m_eConjRot;   // rotation of conjunction
-
     i8 md__SeqNo;
     i8 md__FirstDetected;
     i8 md__LeakDetected;
@@ -281,8 +278,10 @@ namespace STORE
     i8      m_nFunctionCount;
     bool    m_bAddedCorrectly;
     bool    m_bRemovedCorrectly;
-    i8      m_iItemise;
+    i8      m_iCounter;
     Card*   m_pLastPrintParent;
+
+    Card*   m_pParent;
 
   protected:
     // must be last
@@ -312,27 +311,24 @@ namespace STORE
 
     void vAddedCorrectly(bool bAppended=true);
     bool bAllChildren(eCK eCard);
+    void vAppendChild(Card* pChild);
     Card* pAppendNewCard(eCK eCard);
-    bool bApplyRecursive(eCK eToSubs, std::function<bool(Card* pCard)> bfLambdaFn);
-    bool bApplyRecursive_term(std::function<bool(Card_Term* p_term)> bfLambdaFn);
+    void vApplyCast_p(Card* pCard_arg);
+    void vApplyCast_x(Cast xCast_arg);
 
     eCK  eCard(void);
     Card* pCard(eCK eCard);
     void vCard(eCK eCard);
     Stz* szCardNm(void);
-    void vCast(Card* pCard_arg);
-    void vCast(Cast xCast);
     void vCheckCorrectness(void);
     Cast xCast(void);
     i8   i_Child(void);
     void v_Child(i8 i_Child);
-    eFC  eConjForm(void);
-    void vConjForm(eFC eConjForm);
-    void vConjFormClearRecursive(void);
-    eRC  eConjRot(void);
-    void vConjRot(eRC eConjRot);
-    void vConjRotClearRecursive(void);
     Stz* szCoord(void);
+    i8   iCounter();
+    void vCounterInc(i8 iInc=1);
+    void vCounterReset(i8 iTo=0);
+
     eCT  eCTVal(void);
 
     void  vDeleteFacetRecursive(eSF eFacet);
@@ -342,36 +338,40 @@ namespace STORE
     Card* pDupCardRecursive(void);
     Card_SubSet* pDupSubCardsRecursive(i8 i_From, i8 i_Till=C_UNKNOWN);
 
+    bool  bEither(i8 /*eCK*/ iKind_first, ...);
+
     Stz*  szFacet(eSF eFacet_xchk);
-    Card* pFindCardRecursive(eCK eOfCard);
-    Card* pFindParentRecursive(Card* pSubCard);
-    Card* pFindPpyRecursive(Stz* szPpy, eCK eOfCard=CK_NONE);
-    Card* pFindMark1Recursive(char cMark1, eCK eOfCard=CK_NONE);
-    Card* pFindMark1Recursive(Stz* szMark1, eCK eOfCard=CK_NONE);
-    Card* pFindMark2Recursive(char cMark2, eCK eOfCard=CK_NONE);
-    Card* pFindMark2Recursive(Stz* szMark2, eCK eOfCard=CK_NONE);
-    Card* pFindSymbolRecursive(eCK eOfCard, Symbol* pSymbol, Card*& rpParent, Card* _opaque_=nullptr);
+    Card* pFindCardRecursive(eCK eCard);
+    Card* pFindParentRecursive(Card* pChild);
+    Card* pFindPpyRecursive(Stz* szPpy, eCK eCard=CK_NONE);
+    Card* pFindMark1Recursive(char cMark1, eCK eCard=CK_NONE);
+    Card* pFindMark1Recursive(Stz* szMark1, eCK eCard=CK_NONE);
+    Card* pFindMark2Recursive(char cMark2, eCK eCard=CK_NONE);
+    Card* pFindMark2Recursive(Stz* szMark2, eCK eCard=CK_NONE);
+    Card* pFindCard_WithSubFacet(eCK eCard, eSF eFacet);
+    Card* pFindSymbolRecursive(eCK eCard, Symbol* pSymbol, Card*& rpParent, Card* _opaque_=nullptr);
     bool  bFixedDepth(i8 iDepth);
     i8    iFixedDepth(void);
     void  vFixedDepth(i8 iFixedDepth);
     i8    nFunctionCount(void);
 
-    bool bHasFacetRecursive(eSF eFacet);
-    bool bHasSubRecursive(Card* pSubCard);
+    bool bHasChildFacet(eSF eFacet);
+    bool bHasSub(Card* pSubCard);
+    bool bHasSubFacet(eSF eFacet, i8 iDepth=0);
 
     void vIncFunctionCount(void);
+//    void  vInsertChildAfter(Card* pChild, Card* pAfter);
+//    void  vInsertChildBefore(Card* pChild, Card* pBefore);
     bool bIsCard(eCK eCard);
-    bool bIsConj(void);
     bool bIsConstruction(void);
     bool bIsMain(void);
-    bool bIsOne(i8 /*eCK*/ iCard, ...);
     bool bIsOp(void);
-    bool bIsPeek(eCK eCard);
-    bool bIsPeek(eCK eCard_1,eCK eCard_2);
-    bool bIsPeek(i8 i_Child, eCK eCard_1);
+    bool bIsPeek(eCK eChild0);
+    bool bIsPeek(eCK eChild0, eCK eChild1);
+    bool bIsPeek(i8 i_Child, eCK eChild);
 
-    i8   iItemise(void);
-    void vItemise(i8 iItemise);
+    bool bLambdaWalk(eCK eToSubs, std::function<bool(Card* pCard)> bfLambdaFn);
+    bool bLambdaWalk_term(std::function<bool(Card_Term* p_term)> bfLambdaFn);
 
     void vMark(Stz* szMark1, Stz* szMark2);
 
@@ -403,22 +403,29 @@ namespace STORE
     void vOnRemove_child(Card* pParent=nullptr);
     void vOnRemove_parent(Card* pChild=nullptr);
 
-    void vPrintCardRecursive(CardIter* pCI,
-                             Ribbon* pRibbon, i8 iDepth, Card* pParent,
-                             bool& rbPrune, eAL eLevel,
-                             bool bPrintBelow, i8 iXform, Stz* szXfunc);
+    Card* pParent(void);
+    void  vParent(Card* pParent);
     void vPrintCard_byCustomNm(Ribbon* pRibbon, i8 iDepth, Stz* szCustomNm);
     void vPrintCard_bySettings(Ribbon* pRibbon, i8 iDepth);
+    void vPrintRecursive(CardIter* pCI,
+                         Ribbon* pRibbon, i8 iDepth, Card* pParent,
+                         bool& rbPrune, eAL eLevel,
+                         bool bPrintBelow, i8 iXform, Stz* szXfunc);
+    void  vPushChild(Card* pChild);
 
     void vRemovedCorrectly(bool bRemoved=true);
     void vRenumberRoot(i8 i_Parent);
     void vRenumberRecursive(Card* pParent);
-    void vReplaceSubCard(Card* pSub, Card* pWith);
+    void vReplaceSubDelete(Card* pSub, Card* pWith);
+    void vReplaceSub(Card* pSub, Card* pWith);
 
+    i8   nSubCards(eCK eSub_arg);
     Symbol* pSymbol(void);
     bool bSymbolMatches(Symbol* pSymbol_arg);
     bool bSymbolMatches(Card* pCard_arg);
 
+    void vTransferChildren(Card* pFrom);
+    void vTransferChildren(Card* pFrom, eSF eFacet_stopAfter);
     TypeId xTypeId(void);
 
     bool bUpdateSymbolRecursive(eCK eSub, Symbol* pSymbol, Symbol* pWith);
@@ -434,12 +441,12 @@ namespace STORE
     void vValidate_noChildren(void);
     void vValidate_notHave(i8 /*eCK*/ iCard, ...);
     eCK  eValidate_parentEither(CardIter* pCI, i8 /*eCK*/ iCard_first, ...);
+    void vValidate_parentMust(CardIter* pCI, eCK eParent);
 
     void vValidationFailed(Stz* szFormat, ...);
     void vValidationPassed(void);
 
-  private:
-  private:
+  protected:
     void vCoord(void);
     void vCoord(Card* pParentCard);
 
@@ -454,6 +461,9 @@ namespace STORE
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
   public:
+
+    Card_Expr*          pGet_expr_z(i8 i_Element);
+    Card_Term*          pGet_term_z(i8 i_Element);
 
     Card_Address*       pSub_address(bool bNotNull=false);
     Card_Aggreg*        pSub_aggreg(bool bNotNull=false);
@@ -475,7 +485,6 @@ namespace STORE
     Card_Count*         pSub_count(bool bNotNull=false);
     Card_CrossJoin*     pSub_crossJoin(bool bNotNull=false);
     Card_Decision*      pSub_decision(bool bNotNull=false);
-    Card_Direction*     pSub_direction(bool bNotNull=false);
     Card_Emit*          pSub_emit(bool bNotNull=false);
     Card_Expr*          pSub_expr(bool bNotNull=false);
     Card_FiltPred*      pSub_filtPred(bool bNotNull=false);
@@ -488,6 +497,7 @@ namespace STORE
     Card_Hashing*       pSub_hashing(bool bNotNull=false);
     Card_HshCol*        pSub_hshCol(bool bNotNull=false);
     Card_HshColList*    pSub_hshColList(bool bNotNull=false);
+    Card_IdxCol*        pSub_idxCol(bool bNotNull=false);
     Card_IdxColList*    pSub_idxColList(bool bNotNull=false);
     Card_Index*         pSub_index(bool bNotNull=false);
     Card_IndexJoin*     pSub_indexJoin(bool bNotNull=false);
@@ -497,6 +507,7 @@ namespace STORE
     Card_Injectable*    pSub_injectable(bool bNotNull=false);
     Card_JoinCast*      pSub_joinCast(bool bNotNull=false);
     Card_JoinEstimate*  pSub_joinEstimate(bool bNotNull=false);
+    Card_JoinOrder*     pSub_joinOrder(bool bNotNull=false);
     Card_Key*           pSub_key(bool bNotNull=false);
     Card_KeyCells*      pSub_keyCells(bool bNotNull=false);
     Card_KeyExists*     pSub_keyExists(bool bNotNull=false);
@@ -522,6 +533,7 @@ namespace STORE
     Card_SqyCalls*      pSub_sqyCalls(bool bNotNull=false);
     Card_SqyInfo*       pSub_sqyInfo(bool bNotNull=false);
     Card_SqyNo*         pSub_sqyNo(bool bNotNull=false);
+    Card_Stage*         pSub_stage(bool bNotNull=false);
     Card_Stream*        pSub_stream(bool bNotNull=false);
     Card_StreamHead*    pSub_streamHead(bool bNotNull=false);
     Card_StreamJoin*    pSub_streamJoin(bool bNotNull=false);

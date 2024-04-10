@@ -35,7 +35,6 @@
 #include "eED.h"
 #include "eEK.h"
 #include "eEV.h"
-#include "eFC.h"
 #include "eFK.h"
 #include "eFM.h"
 #include "eFN.h"
@@ -81,7 +80,6 @@
 #include "eOR.h"
 #include "eOT.h"
 #include "ePA.h"
-#include "ePB.h"
 #include "ePD.h"
 #include "ePE.h"
 #include "ePF.h"
@@ -91,11 +89,11 @@
 #include "ePT.h"
 #include "eQC.h"
 #include "eQD.h"
+#include "eQF.h"
 #include "eQK.h"
 #include "eQN.h"
 #include "eQO.h"
 #include "eRA.h"
-#include "eRC.h"
 #include "eRF.h"
 #include "eRG.h"
 #include "eRK.h"
@@ -109,7 +107,6 @@
 #include "eSF.h"
 #include "eSI.h"
 #include "eSK.h"
-#include "eSM.h"
 #include "eSR.h"
 #include "eST.h"
 #include "eSY.h"
@@ -199,7 +196,6 @@ void EnumValidator::vValidateEnumStzArrays(void)
       {           aED[ED_ENUMS - 1],          "aED[]"_Stz,     "eED"_Stz },
       {           aEK[EK_ENUMS - 1],          "aEK[]"_Stz,     "eEK"_Stz },
       {           aEV[EV_ENUMS - 1],          "aEV[]"_Stz,     "eEV"_Stz },
-      {           aFC[FC_ENUMS - 1],          "aFC[]"_Stz,     "eFC"_Stz },
       {           aFK[FK_ENUMS - 1],          "aFK[]"_Stz,     "eFK"_Stz },
       {           aFM[FM_ENUMS - 1],          "aFM[]"_Stz,     "eFM"_Stz },
       {           aFN[FN_ENUMS - 1],          "aFN[]"_Stz,     "eFN"_Stz },
@@ -255,7 +251,6 @@ void EnumValidator::vValidateEnumStzArrays(void)
       {           aOT[OT_ENUMS - 1],          "aOT[]"_Stz,     "eOT"_Stz },
       {       aPA[PA_PRM_ENUMS - 1],          "aPA[]"_Stz,     "ePA"_Stz },
       { aPA_short[PA_PRM_ENUMS - 1],    "aPA_short[]"_Stz,     "ePA"_Stz },
-      {           aPB[PB_ENUMS - 1],          "aPB[]"_Stz,     "ePB"_Stz },
       {           aPD[PD_ENUMS - 1],          "aPD[]"_Stz,     "ePD"_Stz },
       {           aPE[PE_ENUMS - 1],          "aPE[]"_Stz,     "ePE"_Stz },
       {          aPF[PF_ENUMT_ - 1],          "aPF[]"_Stz,     "ePF"_Stz },
@@ -265,12 +260,12 @@ void EnumValidator::vValidateEnumStzArrays(void)
       {           aPT[PT_ENUMS - 1],          "aPT[]"_Stz,     "ePT"_Stz },
       {           aQC[QC_ENUMS - 1],          "aQC[]"_Stz,     "eQC"_Stz },
       {           aQD[QD_ENUMS - 1],          "aQD[]"_Stz,     "eQD"_Stz },
+      {           aQF[QF_ENUMS - 1],          "aQF[]"_Stz,     "eQF"_Stz },
       {           aQK[QK_ENUMS - 1],          "aQK[]"_Stz,     "eQK"_Stz },
       {           aQN[QN_ENUMS - 1],          "aQN[]"_Stz,     "eQN"_Stz },
       {           aQO[QO_ENUMS - 1],          "aQO[]"_Stz,     "eQO"_Stz },
       {           aRA[RA_ENUMS - 1],          "aRA[]"_Stz,     "eRA"_Stz },
       {     aRA_short[RA_ENUMS - 1],    "aRA_short[]"_Stz,     "eRA"_Stz },
-      {           aRC[RC_ENUMS - 1],          "aRC[]"_Stz,     "eRC"_Stz },
       {           aRF[RF_ENUMS - 1],          "aRF[]"_Stz,     "eRF"_Stz },
       {           aRG[RG_ENUMS - 1],          "aRG[]"_Stz,     "eRG"_Stz },
       {           aRK[RK_ENUMS - 1],          "aRK[]"_Stz,     "eRK"_Stz },
@@ -287,7 +282,6 @@ void EnumValidator::vValidateEnumStzArrays(void)
       {           aSF[SF_ENUMS - 1],          "aSF[]"_Stz,     "eSF"_Stz },
       {           aSI[SI_ENUMS - 1],          "aSI[]"_Stz,     "eSI"_Stz },
       {           aSK[SK_ENUMS - 1],          "aSK[]"_Stz,     "eSK"_Stz },
-      {           aSM[SM_ENUMS - 1],          "aSM[]"_Stz,     "eSM"_Stz },
       {           aSR[SR_ENUMS - 1],          "aSR[]"_Stz,     "eSR"_Stz },
       {           aST[ST_ENUMS - 1],          "aST[]"_Stz,     "eST"_Stz },
       {    aST_string[ST_ENUMS - 1],   "aST_string[]"_Stz,     "eST"_Stz },

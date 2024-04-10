@@ -18,16 +18,24 @@ namespace STORE
     Card_Key(eCK eCard, i8 iMaxDepth);
    ~Card_Key(void) noexcept(false);
 
-    void vAdd_key_expr_BasedOn_expr(Card_Expr* p_expr, bool bAsc);
-    bool bIsEqual(Card_Key* p_key_arg);
-    void vEnsure_Cast(CardIter *pCI);
-    Card_Expr* pDecode_scalar_expr_Via_symbol(Symbol* pSymbol);
+    static void vAssemble_injCrlKey(CardIter* pCI);
+
+    void vAdd_key_expr_BasedOn_expr(CardIter *pCI, Card_Expr* p_expr, bool bAsc, bool bAppend);
+    void vApplyCast(CardIter *pCI, Card_Emit* p_Dic_expr);
+    Card_Expr* pDecode_scalar_expr_Via_symbol(CardIter *pCI, Symbol* pSymbol);
+    Stz* szDirection(i8 i_Element);
+    i8 nElements(void);
+    Card_Expr* pFind_expr_key_Matches(CardIter *pCI, Symbol *pSymbol_arg);
+    Card_Expr* pFind_expr_key_Matches(CardIter *pCI, eSF eFacet_arg, Symbol* pSymbol_arg);
+
+    Card_Expr* pGet_expr(i8 i_Element);
+
+    bool bIsEqual(CardIter *pCI, Card_Key* p_key_arg);
 
     void vMapColumns(CardIter *pCI);
     void vPrint(Ribbon* pRibbon, i8 iDepth);
-    void vShortForm(String* pString);
 
-    IndexDef* pToIndexDef(void);
+    IndexDef* pTo_IndexDef(CardIter* pCI);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };

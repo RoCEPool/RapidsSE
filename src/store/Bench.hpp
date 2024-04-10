@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class XF_Flatten;
+  class XF_Flatten_subquery;
   class XF_Fold;
 
   class Bench : public Object
@@ -19,14 +19,14 @@ namespace STORE
     i8   m_iBenchNo;
     s32  m_sPipelineNm;
 
-    i8   m_iXform;
-    s32  m_sXhand;
-    s256 m_sXfunc;
-    s256 m_sXdesc;
-    i8   m_iPrint;
-
+    s256 m_sXfile;
     eXF  m_eXform;
+    s256 m_sXfunc;
 
+    i8   m_nPrintBoard;
+    i8   m_nTransformPrint;
+
+    i8   m_iXform;
 
   public:
 
@@ -40,8 +40,6 @@ namespace STORE
     Bench(Optimiser* pOptimiser);
    ~Bench(void) noexcept(false);
 
-
-
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     void vAddBoard(Board* pBoard);
@@ -49,8 +47,8 @@ namespace STORE
     void vDump(const char* azFunc);
     void vEndPhase(CardIter* pCI);
 
-    Board* pFindBoard_By_sqyNm_v2(Stz* szSqyNm);
-    Board* pFindBoard_By_sqyNo_v2(Stz* szSqyNo);
+    Board* pFindBoard_By_sqyNm(Stz* szSqyNm);
+    Board* pFindBoard_By_sqyNo(Stz* szSqyNo);
     Board* pFindBoard(Symbol* pSymbol_arg);
     SubQuery* pFindSubQuery(Symbol* pSymbol_arg);
 
@@ -66,21 +64,22 @@ namespace STORE
     Stz* szPipelineNm(void);
     void vPipelineNm(Stz* szPipelineNm);
 
-    void vTransform(const char* azFunc, eXF eXform, Stz* szXdesc);
+    void vTransform(const char* azXfile, const char* azXfunc, eXF eXform);
 
-    Stz* szXdesc(void);
-    void vXdesc(Stz* szXdesc);
+    Stz* szXfile(void);
+    void vXfile(Stz* szXfile);
     eXF  eXform(void);
     void vXform(eXF eXform);
     i8   iXform(void);
     void vXform_Inc(void);
     Stz* szXfunc(void);
     void vXfunc(Stz* szXfunc);
-    Stz* szXhand(void);
-    void vXhand(const char* asXhand);
-    i8   iPrint(void);
-    i8   iPrint_inc(void);
+
+    i8   nPrintBoard(void);
+    i8   nPrintBoard_inc(void);
     i8   iBenchNo(void);
+
+    i8   nTransformPrint_inc(void);
 
     void vValidate(CardIter* pCI);
 

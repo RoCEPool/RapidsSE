@@ -53,6 +53,7 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
   m_xDynamicT.m_aHeadLine0      = nullptr;
 
   m_xDynamicT.m_xRowInfoIT.m_bInitialize = true;
+
   for (i8 i = 0; i < 256; i++)
     m_xDynamicT.m_xRowInfoIT.m_iCell[i] = 0;
 #ifdef WITH_CHECK_INITIALISED
@@ -62,12 +63,14 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
 #endif
 	m_xDynamicT.m_xRowInfoIT.m_nStringAreaSize = _C_16KB;
 
+	m_xDynamicT.m_xRowInfoIT.m_aPdsRowBuffer = nullptr;
   m_xDynamicT.m_xRowInfoIT.m_aRowCellArray = (void*)&m_xDynamicT.m_xRowInfoIT.m_iCell[0];
   m_xDynamicT.m_xRowInfoIT.m_acStrArea     = (char*)&m_xDynamicT.m_xRowInfoIT.m_cStringArea[0];
   m_xDynamicT.m_xRowInfoIT.m_acStrAreaSav  = (char*)&m_xDynamicT.m_xRowInfoIT.m_cStringArea[0];
 
   // inflate J (SR_IJ)
   m_xDynamicT.m_xRowInfoIJ.m_bInitialize = true;
+
   for (i8 i = 0; i < 256; i++)
     m_xDynamicT.m_xRowInfoIJ.m_iCell[i] = 0;
 #ifdef WITH_CHECK_INITIALISED
@@ -77,12 +80,14 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
 #endif
 	m_xDynamicT.m_xRowInfoIJ.m_nStringAreaSize = _C_16KB;
 
+	m_xDynamicT.m_xRowInfoIJ.m_aPdsRowBuffer = nullptr;
   m_xDynamicT.m_xRowInfoIJ.m_aRowCellArray = (void*)&m_xDynamicT.m_xRowInfoIJ.m_iCell[0];
   m_xDynamicT.m_xRowInfoIJ.m_acStrArea     = (char*)&m_xDynamicT.m_xRowInfoIJ.m_cStringArea[0];
   m_xDynamicT.m_xRowInfoIJ.m_acStrAreaSav  = (char*)&m_xDynamicT.m_xRowInfoIJ.m_cStringArea[0];
 
   // project PL (SR_PL)
   m_xDynamicT.m_xRowInfoPL.m_bInitialize = true;
+
   for (i8 i = 0; i < 256; i++)
     m_xDynamicT.m_xRowInfoPL.m_iCell[i] = 0;
 #ifdef WITH_CHECK_INITIALISED
@@ -92,12 +97,14 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
 #endif
 	m_xDynamicT.m_xRowInfoPL.m_nStringAreaSize = _C_16KB;
 
+	m_xDynamicT.m_xRowInfoPL.m_aPdsRowBuffer = nullptr;
   m_xDynamicT.m_xRowInfoPL.m_aRowCellArray = (void*)&m_xDynamicT.m_xRowInfoPL.m_iCell[0];
   m_xDynamicT.m_xRowInfoPL.m_acStrArea     = (char*)&m_xDynamicT.m_xRowInfoPL.m_cStringArea[0];
   m_xDynamicT.m_xRowInfoPL.m_acStrAreaSav  = (char*)&m_xDynamicT.m_xRowInfoPL.m_cStringArea[0];
 
   // project T (SR_PT)
   m_xDynamicT.m_xRowInfoPT.m_bInitialize = true;
+
   for (i8 i = 0; i < 256; i++)
     m_xDynamicT.m_xRowInfoPT.m_iCell[i] = 0;
 #ifdef WITH_CHECK_INITIALISED
@@ -107,6 +114,7 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
 #endif
 	m_xDynamicT.m_xRowInfoPT.m_nStringAreaSize = _C_16KB;
 
+	m_xDynamicT.m_xRowInfoPT.m_aPdsRowBuffer = nullptr;
   m_xDynamicT.m_xRowInfoPT.m_aRowCellArray = (void*)&m_xDynamicT.m_xRowInfoPT.m_iCell[0];
   m_xDynamicT.m_xRowInfoPT.m_acStrArea     = (char*)&m_xDynamicT.m_xRowInfoPT.m_cStringArea[0];
   m_xDynamicT.m_xRowInfoPT.m_acStrAreaSav  = (char*)&m_xDynamicT.m_xRowInfoPT.m_cStringArea[0];
@@ -114,6 +122,7 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
 
   // join T & J (SR_TJ)
   m_xDynamicT.m_xRowInfoTJ.m_bInitialize = true;
+
   for (i8 i = 0; i < 256; i++)
     m_xDynamicT.m_xRowInfoTJ.m_iCell[i] = 0;
 #ifdef WITH_CHECK_INITIALISED
@@ -123,6 +132,7 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
 #endif
 	m_xDynamicT.m_xRowInfoTJ.m_nStringAreaSize = _C_16KB;
 
+	m_xDynamicT.m_xRowInfoTJ.m_aPdsRowBuffer = nullptr;
   m_xDynamicT.m_xRowInfoTJ.m_aRowCellArray = (void*)&m_xDynamicT.m_xRowInfoTJ.m_iCell[0];
   m_xDynamicT.m_xRowInfoTJ.m_acStrArea     = (char*)&m_xDynamicT.m_xRowInfoTJ.m_cStringArea[0];
   m_xDynamicT.m_xRowInfoTJ.m_acStrAreaSav  = (char*)&m_xDynamicT.m_xRowInfoTJ.m_cStringArea[0];
@@ -130,6 +140,7 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
 
   // aggregate T (SR_AT)
   m_xDynamicT.m_xRowInfoAT.m_bInitialize = true;
+
   for (i8 i = 0; i < 256; i++)
     m_xDynamicT.m_xRowInfoAT.m_iCell[i] = 0;
 #ifdef WITH_CHECK_INITIALISED
@@ -139,6 +150,7 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
 #endif
 	m_xDynamicT.m_xRowInfoAT.m_nStringAreaSize = _C_16KB;
 
+	m_xDynamicT.m_xRowInfoAT.m_aPdsRowBuffer = nullptr;
   m_xDynamicT.m_xRowInfoAT.m_aRowCellArray = (void*)&m_xDynamicT.m_xRowInfoAT.m_iCell[0];
   m_xDynamicT.m_xRowInfoAT.m_acStrArea     = (char*)&m_xDynamicT.m_xRowInfoAT.m_cStringArea[0];
   m_xDynamicT.m_xRowInfoAT.m_acStrAreaSav  = (char*)&m_xDynamicT.m_xRowInfoAT.m_cStringArea[0];
@@ -146,6 +158,7 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
   // tub output (SR_TO)
   m_xDynamicT.m_pTub        = nullptr;
   m_xDynamicT.m_xRowInfoTO.m_bInitialize = true;
+
   for (i8 i = 0; i < 256; i++)
     m_xDynamicT.m_xRowInfoTO.m_iCell[i] = 0;
 #ifdef WITH_CHECK_INITIALISED
@@ -155,6 +168,7 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
 #endif
 	m_xDynamicT.m_xRowInfoTO.m_nStringAreaSize = _C_16KB;
 
+	m_xDynamicT.m_xRowInfoTO.m_aPdsRowBuffer = nullptr;
   m_xDynamicT.m_xRowInfoTO.m_aRowCellArray = (void*)&m_xDynamicT.m_xRowInfoTO.m_iCell[0];
   m_xDynamicT.m_xRowInfoTO.m_acStrArea     = (char*)&m_xDynamicT.m_xRowInfoTO.m_cStringArea[0];
   m_xDynamicT.m_xRowInfoTO.m_acStrAreaSav  = (char*)&m_xDynamicT.m_xRowInfoTO.m_cStringArea[0];
@@ -163,6 +177,7 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
   m_xDynamicT.m_bGeneratePot = false;
   m_xDynamicT.m_pPot         = nullptr;
   m_xDynamicT.m_xRowInfoPO.m_bInitialize = true;
+
   for (i8 i = 0; i < 256; i++)
     m_xDynamicT.m_xRowInfoPO.m_iCell[i] = 0;
 #ifdef WITH_CHECK_INITIALISED
@@ -172,6 +187,7 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
 #endif
 	m_xDynamicT.m_xRowInfoPO.m_nStringAreaSize = _C_16KB;
 
+	m_xDynamicT.m_xRowInfoPO.m_aPdsRowBuffer = nullptr;
   m_xDynamicT.m_xRowInfoPO.m_aRowCellArray = (void*)&m_xDynamicT.m_xRowInfoPO.m_iCell[0];
   m_xDynamicT.m_xRowInfoPO.m_acStrArea     = (char*)&m_xDynamicT.m_xRowInfoPO.m_cStringArea[0];
   m_xDynamicT.m_xRowInfoPO.m_acStrAreaSav  = (char*)&m_xDynamicT.m_xRowInfoPO.m_cStringArea[0];
@@ -257,6 +273,42 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
   for (i8 iIndex = 1; iIndex < nElements; iIndex++) {
     m_xDynamicT.m_iaPow10[iIndex] = (i16)10 * m_xDynamicT.m_iaPow10[iIndex-1];
   }
+
+	//
+	// extern function pointers
+	//
+	m_xDynamicT.m_fp_vExtern_EntWrkAppendElementStz = nullptr;
+
+	m_xDynamicT.m_fp_aExtern_EntBufferNextEntry = nullptr;
+	m_xDynamicT.m_fp_vExtern_EntPayloadCreate = nullptr;
+
+	m_xDynamicT.m_fp_vExtern_IndexFind = nullptr;
+	m_xDynamicT.m_fp_vExtern_IndexNew = nullptr;
+	m_xDynamicT.m_fp_aExtern_IndexTreeBegin = nullptr;
+	m_xDynamicT.m_fp_aExtern_IndexTreeFindEntryAsc = nullptr;
+	m_xDynamicT.m_fp_aExtern_IndexTreeFindInsertGenAsc = nullptr;
+	m_xDynamicT.m_fp_aExtern_IndexTreeInsertEnt = nullptr;
+
+	m_xDynamicT.m_fp_vExtern_IndexTreePositionGE_gen = nullptr;
+	m_xDynamicT.m_fp_vExtern_IndexTreePositionGT_gen = nullptr;
+	m_xDynamicT.m_fp_vExtern_IndexTreePositionLE_gen = nullptr;
+	m_xDynamicT.m_fp_vExtern_IndexTreePositionLT_gen = nullptr;
+
+	m_xDynamicT.m_fp_vExtern_IndexTreePositionGE_int = nullptr;
+	m_xDynamicT.m_fp_vExtern_IndexTreePositionGT_int = nullptr;
+	m_xDynamicT.m_fp_vExtern_IndexTreePositionLE_int = nullptr;
+	m_xDynamicT.m_fp_vExtern_IndexTreePositionLT_int = nullptr;
+
+	m_xDynamicT.m_fp_aExtern_PdsRowBufferCellArray = nullptr;
+	m_xDynamicT.m_fp_vExtern_PotAllotRowPds = nullptr;
+	m_xDynamicT.m_fp_vExtern_PotRowStrSize = nullptr;
+	m_xDynamicT.m_fp_vExtern_PotRowPix = nullptr;
+
+	m_xDynamicT.m_fp_aExtern_StreamDefNew = nullptr;
+
+	m_xDynamicT.m_fp_vExtern_TubAllotRowPds = nullptr;
+	m_xDynamicT.m_fp_vExtern_TubRowPix = nullptr;
+	m_xDynamicT.m_fp_vExtern_TubRowStrSize = nullptr;
 
   _checkInitialised_(CN_DYNAMIC);
   

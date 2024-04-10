@@ -55,9 +55,9 @@ void Card_Filter::vDeleteEmptyFilters(CardIter* pCI) {
 
   _static_
 
-  while (pCI->G_bEachMain_NONE()) {
-    if ((pCI->G.p_filter = pCI->G.p_MainCard->pSub_filter()))
-      pCI->G.p_OP->vCullIfEmpty_filter(pCI->G.p_filter);
+  while (pCI->bEachOp()) {
+    if ((pCI->E.p_filter = pCI->E.p_Op->pSub_filter()))
+      ((Card_OP*)pCI->E.p_Op)->vCull_filter_IfEmpty(pCI->E.p_filter);
   }
 }
 
@@ -69,37 +69,25 @@ void Card_Filter::vIndividuate_filter(CardIter* pCI)
 {
   _static_
 
-  if (!pCI->G.p_MainCard->pSub_emit())
-    pCI->G.p_MainCard->vDump(__func__);
+  if (!pCI->E.p_Op->pSub_emit())
+    pCI->E.p_Op->vDump(__func__);
 
-  RASSERT(pCI->G.p_MainCard->pSub_emit());
+  RASSERT(pCI->E.p_Op->pSub_emit());
 
-  pCI->G.p_MainCard->vRemoveChild(pCI->G.p_filter);
+  pCI->E.p_Op->vRemoveChild(pCI->E.p_filter);
 
 
-  pCI->G.p_filter->vEnsure_stream(pCI);
+  pCI->E.p_filter->vEnsure_stream(pCI);
 
-  pCI->G.p_stream->vAppendChild(pCI->G.p_MainCard->pSub_emit()->pClone());
+  pCI->E.p_stream->vAppendChild(pCI->E.p_Op->pSub_emit()->pClone());
 
-  pCI->G.pDeck->vInsertChildAfter(pCI->G.p_filter, pCI->G.p_MainCard);
+  pCI->E.p_deck->vInsertChildAfter(pCI->E.p_filter, pCI->E.p_Op);
 
-  if (! pCI->G.p_filter->pSub_level()) {
-    pCI->G.p_filter->vPushChild(pCI->G.p_MainCard->pSub_level()->pDupCardRecursive());
+  if (! pCI->E.p_filter->pSub_level()) {
+    pCI->E.p_filter->vPushChild(pCI->E.p_Op->pSub_level()->pDupCardRecursive());
   }
 }
 
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card_Filter* Card_Filter::pNew(Card_Constraint* p_constraint)
-{
-  _static_
-
-  Card_Filter* p_filter = new Card_Filter;
-
-  p_filter->vAppendChild(p_constraint);
-  return p_filter;
-}
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
@@ -108,12 +96,12 @@ Card_Filter* Card_Filter::pNew(Card_Constraint* p_constraint)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Filter::vCorrect_expCol(Card_Emit* p_arriving)
+void Card_Filter::vUpdate_expCol(CardIter* pCI, Card_Emit* p_Dic_expr, bool bAlt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (Card_BoolPred* p_boolPred = pSub_boolPred())
-    p_boolPred->vCorrect_expCol(p_arriving);
+    p_boolPred->vUpdate_expCol(pCI, p_Dic_expr,bAlt);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -147,7 +135,7 @@ void Card_Filter::vEarlyProject_recurse_update(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
- // pCI->vPrintBoard(__func__,__LINE__);
+ // pCI->PRINTBOARD_dbg();
 
   // save the current projection needed
   //   we can restore to this save if projection needed get extended
@@ -160,27 +148,15 @@ void Card_Filter::vEarlyProject_recurse_update(CardIter* pCI)
 
   /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
 
- // pCI->vPrintBoard(__func__,__LINE__);
+ // pCI->PRINTBOARD_dbg();
 
-  pCI->G.p_OP->vRecreate_emit(pCI,true);
+  ((Card_OP*)pCI->E.p_Op)->vRestate_emit(pCI);
 
-  //pCI->vPrintBoard(__func__,__LINE__);
+  //pCI->PRINTBOARD_dbg();
 
   // restore needed
   delete pCI->Early.m_pNeeded_later;
   pCI->Early.m_pNeeded_later = p_needed_save;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_Filter::vExtend_rlnConj(Card_RlnConj *p_rlnConj)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Card_BoolPred* p_calcBool = this->pSub_boolPred();
-
-  p_calcBool->vExtend_andConj(p_rlnConj);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -229,16 +205,22 @@ void Card_Filter::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  vValidate_mustHave(CK_BOOLPRED, CK_NONE);
+  eValidate_mustEither(CK_BOOLPRED, CK_EXPR, CK_NONE);
 
   if (iDepth > 2) {
-   // pCI->vPrintBoard(__func__,__LINE__);
+   // pCI->PRINTBOARD_dbg();
     vValidationFailed("Filter is at depth %lld"_Stz, iDepth);
   }
 
   if (iDepth > 1)
-    (void)Card::eValidate_parentEither(pCI, CK_o_CROSSJOIN, CK_o_FROM, CK_o_HAVING,
-                                       CK_o_INDEXJOIN, CK_o_INDEXSCAN, CK_o_SCAN, CK_o_WHERE,
+    (void)Card::eValidate_parentEither(pCI,
+                                       CK_o_CROSSJOIN,
+                                       CK_o_FROM,
+                                       CK_o_HAVING,
+                                       CK_o_INDEXJOIN,
+                                       CK_o_INDEXSCAN,
+                                       CK_o_SCAN,
+                                       CK_o_WHERE,
                                        CK_NONE);
 
   if (CK_DECK == pParent->eCard()) {

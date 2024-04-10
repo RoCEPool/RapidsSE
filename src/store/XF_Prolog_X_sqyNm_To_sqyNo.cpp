@@ -39,13 +39,13 @@ XF_Prolog_X_sqyNm_To_sqyNo::~XF_Prolog_X_sqyNm_To_sqyNo(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Prolog_X_sqyNm_To_sqyNo::vConvert_deck_v2(CardIter* pCI)
+void XF_Prolog_X_sqyNm_To_sqyNo::vConvert_deck_sqyNm_toSqyNo(CardIter* pCI)
 {
   _static_
 
   XF_Prolog_X_sqyNm_To_sqyNo* pXF_Shorten_QueryNames = new XF_Prolog_X_sqyNm_To_sqyNo(pCI);
 
-  pXF_Shorten_QueryNames->vX_Deck_sqyNm_To_sqyNo_v2();
+  pXF_Shorten_QueryNames->vX_Deck_sqyNm_To_sqyNo();
 
   delete pXF_Shorten_QueryNames;
 }
@@ -58,67 +58,40 @@ void XF_Prolog_X_sqyNm_To_sqyNo::vConvert_deck_v2(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* shorten query names                                                        */
 /*----------------------------------------------------------------------------*/
-void XF_Prolog_X_sqyNm_To_sqyNo::vX_Board_sqyNm_To_sqyNo(void)
+void XF_Prolog_X_sqyNm_To_sqyNo::vX_Deck_sqyNm_To_sqyNo(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_X_SQYNM_TO_SQYNO, _FOOTER_);
 
-  m_pCI->vTransform(__func__, XF_PROLOG_X_SQYNM_TO_SQYNO, "pipe to sqyNo"_Stz);
-
-//  if (AM::JOB::bHasTag(C_OPTIMISER_TRACE))
-//    m_pCI->m_pBench->vDump(__func__);
-//
-//  s32 sSqyNo = m_pCI->G.pBoard->pSubQuery()->szSqyNo_v2();
-//
-//  if (Symbol::bIs_Sqy_No(sSqyNo)) {
-//    i8 iSqyNo = StrLib::iGleanInt(sSqyNo.azChar());
-//    Symbol xSymbol_sqyNm(SF_SQY_NO, iSqyNo);
-//    m_pCI->G.pBoard->pSubQuery()->vSqyNm(xSymbol_sqyNm.szSF_chrSeq(SF_SQY_NO));
-//  }
-//  else {
-//    vDebugPoint();
-//  }
-
-  m_pCI->vEndTransform(__LINE__);
-}
-
-/*----------------------------------------------------------------------------*/
-/* shorten query names                                                        */
-/*----------------------------------------------------------------------------*/
-void XF_Prolog_X_sqyNm_To_sqyNo::vX_Deck_sqyNm_To_sqyNo_v2(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_X_SQYNM_TO_SQYNO, _FOOTER_);
-
-  m_pCI->vTransform(__func__, XF_PROLOG_X_SQYNM_TO_SQYNO, "shorten query names"_Stz);
+  m_pCI->vTransform(__FILE__, __func__, XF_PROLOG_X_SQYNM_TO_SQYNO);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   CardIter* pCI = m_pCI;
-  auto bfTo_sqyNm = [pCI](Card* p_card) {
-    UNUSED(pCI);
+  auto bfTo_sqyNo = [pCI](Card* p_card)
+  {
     Symbol* pSymbol_card = p_card->pSymbol();
     if (! pSymbol_card->nFacets())
       return C_CONTINUE_RECURSION;
 
     Stz* szFacet_symbol = pSymbol_card->szFacet(0);
-    Board* pBoard = pCI->m_pBench->pFindBoard_By_sqyNm_v2(szFacet_symbol);
+    Board* pBoard = pCI->m_pBench->pFindBoard_By_sqyNm(szFacet_symbol);
     if (! pBoard)
       return C_CONTINUE_RECURSION;
 
     SubQuery* pSubQuery = pBoard->pSubQuery();
 
-    Symbol xSymbol_sqyNo(SF_SQY_NO,pSubQuery->szSqyNo_v2());
+    Symbol xSymbol_sqyNo(SF_SQY_NO, pSubQuery->szSqyNo());
 
-    pSymbol_card->vDeleteFacet(SF_SQY_NM);
-    pSymbol_card->vCastFacets(&xSymbol_sqyNo);
+    pSymbol_card->vDeleteFacet(SF_NMD_COL);
+    pSymbol_card->vApplyCastFacets(&xSymbol_sqyNo);
 
     return C_CONTINUE_RECURSION;
   };
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  bool b = m_pCI->G.pDeck->bApplyRecursive(CK_NONE, bfTo_sqyNm);
+  bool b = m_pCI->E.p_deck->bLambdaWalk(CK_NONE, bfTo_sqyNo);
   UNUSED(b);
-
 
   m_pCI->vEndTransform(__LINE__);
 }

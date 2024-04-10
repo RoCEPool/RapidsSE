@@ -1,0 +1,95 @@
+/*============================================================================*/
+/* __Q3_2N_P_OPT1                                                             */
+/*============================================================================*/
+
+/optimise_passthru
+pipeline unamed
+begin
+
+  stage S00 on origin :
+      start
+    | pulse     once
+    | next
+
+  stage S01 on all partitions :
+      scan      customer
+    | project   " type INTEGER ( 19 ) as C_CUSTKEY $1
+                , type VARCHAR ( 10 ) as C_MKTSEGMENT $7"
+    | filter    " type BOOLEAN C_MKTSEGMENT 'BUILDING' == "
+    | project   " type INTEGER ( 19 ) as C0_C_CUSTKEY $1 "
+    | dynamic
+    | next
+
+  stage S02 on all partitions :
+    indexJoin orders IxO_CUSTKEY " BOUND $I1 $1 == "
+    | project   " type DATE as O_ORDERDATE $6
+                  , type INTEGER ( 19 ) as O_SHIPPRIORITY $9
+                  , type INTEGER ( 19 ) as O_ORDERKEY $2 "
+    | filter    " type BOOLEAN O_ORDERDATE DATE '1995-03-15' < "
+    | hash      "type INTEGER ( 19 ) O_ORDERKEY"
+    | dynamic
+    | next      hashcast
+
+  stage S03 on all partitions :
+    indexJoin lineitem IxL_ORDERKEY " BOUND $I1 $3 == "
+    | project   " type INTEGER ( 19 ) as L_ORDERKEY L_ORDERKEY
+                , type DECIMAL ( 15 2 ) as L_EXTENDEDPRICE L_EXTENDEDPRICE
+                , type DECIMAL ( 15 2 ) as L_DISCOUNT L_DISCOUNT
+                , type DATE ( 0 ) as L_SHIPDATE L_SHIPDATE
+                , type DATE as O_ORDERDATE O_ORDERDATE
+                , type INTEGER ( 19 ) as O_SHIPPRIORITY O_SHIPPRIORITY "
+    | filter    " type BOOLEAN L_SHIPDATE DATE '1995-03-15' > "
+    | gbyAgg    " groupBy
+                  type INTEGER ( 19 ) as L_ORDERKEY L_ORDERKEY
+                , type DATE as O_ORDERDATE O_ORDERDATE
+                , type INTEGER ( 19 ) as O_SHIPPRIORITY O_SHIPPRIORITY
+                aggregates
+                  type INTEGER ( 19 ) as COL0 $K1
+                , type DECIMAL ( 19 2 ) as COL1 ) L_EXTENDEDPRICE 1.00 L_DISCOUNT - * sum
+                , type DATE as COL2 $K2
+                , type INTEGER ( 19 ) as COL3 $K3 "
+    | dynamic
+    | next
+
+  stage S04 on all nodes :
+    gbyAgg    " groupBy
+                  type INTEGER ( 19 ) $1
+                , type DATE $3
+                , type INTEGER ( 19 ) $4
+                aggregates
+                  type INTEGER ( 19 ) as C0_COL0 $K1
+                , type DECIMAL ( 19 2 ) as C1_COL1 ) $2 sum
+                , type DATE as C2_COL2 $K2
+                , type INTEGER ( 19 ) as C3_COL3 $K3 "
+    | dynamic
+    | next
+
+  stage S05 on origin :
+    gbyAgg    " groupBy
+                  type INTEGER ( 19 ) $1
+                , type DATE $3
+                , type INTEGER ( 19 ) $4
+                aggregates
+                  type INTEGER ( 19 ) as C0_COL0 $K1
+                , type DECIMAL ( 19 2 ) as C1_revenue ) $2 sum
+                , type DATE as C2_COL2 $K2
+                , type INTEGER ( 19 ) as C3_COL3 $K3 "
+    | dynamic
+    | next
+
+  stage S6 on origin :
+    sort      " type DECIMAL ( 19 2 ) $2 DESC , type DATE $3 ASC "
+    | limit      10
+    | dynamic
+    | next
+
+  stage S7 on origin :
+      output
+    | sink
+    | first
+
+end ;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

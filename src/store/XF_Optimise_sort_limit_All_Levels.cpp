@@ -67,9 +67,10 @@ bool XF_Optimise_sort_limit_All_Levels::bOptimise(void)
 
   bool bOptRun = false;
 
-  m_pCI->vTransform(__func__, XF_OPTIMISE_SORT_LIMIT_ALL_LEVELS, "optimise one time calcs"_Stz);
+  m_pCI->vTransform(__FILE__, __func__, XF_OPTIMISE_SORT_LIMIT_ALL_LEVELS);
 
-  m_pCI->vClearRestart();
+  m_pCI->vClearRegisters();
+  m_pCI->vBeginEach();
 
   //m_pCI->pBoard()->pState()->vInsert(aOT[OT_SORT_LIMIT_ALL_LEVELS]);
 

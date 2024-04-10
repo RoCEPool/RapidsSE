@@ -263,7 +263,11 @@ void Step::vTablePtnRootPdsCursor(void)
 {
   ENTRY();
   // Get the Pds addr from the Thread TLS
+  // NOTE: Only use this step after a grabRead or grabWrite on this tableptn
   Pds* pPds = _pPds(MY::pPdsCrwTablePtn());
+
+//  TablePtn* pTablePtn = *m_pLogicUnit->m_xpTablePtn;
+//  Pds* pPds = _pPds(AM::pHashMap()->pValueAt(pTablePtn->oRootBufferId().m_pvAsAddress));
   PdsCursor* pCursor = new PdsCursor(pPds);
 
   m_pDataStack->vPushPtr((Object*)pCursor);

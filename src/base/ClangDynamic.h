@@ -19,6 +19,7 @@ struct RowInfo {
   i8   m_iCell[256];
   char m_cStringArea[16384]; // _C_16KB;
 	i8   m_nStringAreaSize;
+	void* m_aPdsRowBuffer;
   void* m_aRowCellArray;
   char* m_acStrArea;
   char* m_acStrAreaSav;
@@ -111,8 +112,44 @@ struct Dynamic_T
 //  i8      m_iHasOrdAggRow;
 //  i8      m_iOrdAggDone;
 
-  i16 m_iaPow10[39];  // Note: 128 bit integers, which can represent up to
-                      // 39 digits (though not all 39 digit numbers)
+    i16 m_iaPow10[39];  // Note: 128 bit integers, which can represent up to
+    // 39 digits (though not all 39 digit numbers)
+
+	//
+	// extern function pointers
+	//
+	void  (*m_fp_vExtern_EntWrkAppendElementStz)(void*,char*);
+	void* (*m_fp_aExtern_EntBufferNextEntry)(void**,void*);
+	void (*m_fp_vExtern_EntPayloadCreate)(void*,i8);
+
+	void* (*m_fp_vExtern_IndexFind)(void*,char*,char*);
+	void* (*m_fp_vExtern_IndexNew)(void*,i8,void*,bool);
+	void* (*m_fp_aExtern_IndexTreeBegin)(void*,void**);
+	void* (*m_fp_aExtern_IndexTreeFindInsertGenAsc)(void*,i8,bool*);
+
+	void  (*m_fp_vExtern_IndexTreePositionGE_gen)(void*);
+	void  (*m_fp_vExtern_IndexTreePositionGT_gen)(void*);
+	void  (*m_fp_vExtern_IndexTreePositionLE_gen)(void*);
+	void  (*m_fp_vExtern_IndexTreePositionLT_gen)(void*);
+
+	void  (*m_fp_vExtern_IndexTreePositionGE_int)(void*);
+	void  (*m_fp_vExtern_IndexTreePositionGT_int)(void*);
+	void  (*m_fp_vExtern_IndexTreePositionLE_int)(void*);
+	void  (*m_fp_vExtern_IndexTreePositionLT_int)(void*);
+
+	void* (*m_fp_aExtern_IndexTreeFindEntryAsc)(void*,void*);
+	void* (*m_fp_aExtern_IndexTreeInsertEnt)(void*,void*,i8*);
+
+	void* (*m_fp_aExtern_PdsRowBufferCellArray)(void*,i8);
+	void  (*m_fp_vExtern_PotAllotRowPds)(void*,byte*,i8,char**,i8*);
+	void  (*m_fp_vExtern_PotRowStrSize)(void*,i8);
+	void  (*m_fp_vExtern_PotRowPix)(void*,i8,void*);
+
+	void* (*m_fp_aExtern_StreamDefNew)(i8,void*);
+
+	void  (*m_fp_vExtern_TubAllotRowPds)(void*,char**,i8*);
+	void  (*m_fp_vExtern_TubRowPix)(void*,i8,void*);
+	void  (*m_fp_vExtern_TubRowStrSize)(void*,i8);
 };
 
 /*============================================================================*/

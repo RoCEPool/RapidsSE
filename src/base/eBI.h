@@ -9,9 +9,10 @@ enum eBI // buffer id type
 
   /*  1 */ BI_CRW,
   /*  2 */ BI_CSV,
-  /*  3 */ BI_HASHMAPSLOT,
-  /*  4 */ BI_ROW,
-  /*  5 */ BI_TASKLOCK,
+  /*  3 */ BI_ENT,
+  /*  4 */ BI_HASHMAPSLOT,
+  /*  5 */ BI_ROW,
+  /*  6 */ BI_TASKLOCK,
 
   /*    */ BI_ENUMS,
 };

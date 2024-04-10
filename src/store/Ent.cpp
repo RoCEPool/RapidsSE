@@ -148,33 +148,6 @@ eCN Ent::eGetClassNo(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get address of the element bytes of the key in this entry                  */
-/*----------------------------------------------------------------------------*/
-Dtm* Ent::aElmSeq_dtm(void)
-{
-  Dtm* aElmSeq = aKey()->aElmSeq_dtm();
-  
-  ASSERT(aElmSeq == aAdd<Dtm*>(this,sizeof(Ent)));
-  
-  return aElmSeq;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get size of the element sequence                                           */
-/*----------------------------------------------------------------------------*/
-i8 Ent::nElmSeqSize(void)
-{
-  i8 nBytes;
-
-  if (KE_GENERAL == m_xRef.eKind())
-    nBytes = m_xKey.nElmSeqSize();
-  else
-    nBytes = 0;
-  
-  return nBytes;
-}
-
-/*----------------------------------------------------------------------------*/
 /* set size of the element sequence                                           */
 /*----------------------------------------------------------------------------*/
 void Ent::vElmSeqSize(i8 nElmSeqSize)
@@ -252,24 +225,6 @@ i8 Ent::iItem(void)
 void Ent::vItem(i8 iItem)
 {
   m_xRef.vItem(iItem);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get address of key                                                         */
-/*----------------------------------------------------------------------------*/
-Key* Ent::aKey(void)
-{
-  return &m_xKey;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get entry key kind                                                        */
-/*----------------------------------------------------------------------------*/
-eKE Ent::eKind(void)
-{
-  eKE eKind = m_xRef.eKind();
-  
-  return eKind;
 }
 
 /*----------------------------------------------------------------------------*/
