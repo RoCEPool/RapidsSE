@@ -1391,6 +1391,22 @@ void Card_OP::vRpn_sort(CardIter* pCI, String* psRpnExpr, Card_Sort* p_sort)
 /*----------------------------------------------------------------------------*/
 /* produce <expr> for top op                                                  */
 /*----------------------------------------------------------------------------*/
+#ifdef Z_NO_RPNCALC
+void Card_OP::vRpn_top(CardIter* pCI, String* psRpnExpr, Card_Top* p_top)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  UNUSED(pCI);
+
+  Card_Key *pCard_key = p_top->pSub_key();
+  Card_Expr *pCard_Expr = pCard_key->pSub_expr(C_NOT_NULL);
+  TypeId xTypeId = pCard_Expr->xTypeId();
+
+
+	psRpnExpr->vCatSprint(" type %s "_Stz, xTypeId.szTypeName());
+  vRpn_termSeq(pCI, psRpnExpr, pCard_Expr);
+}
+/*----------------------------------------------------------------------------*/
+#else
 void Card_OP::vRpn_top(CardIter* pCI, String* psRpnExpr, Card_Top* p_top)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
@@ -1402,9 +1418,10 @@ void Card_OP::vRpn_top(CardIter* pCI, String* psRpnExpr, Card_Top* p_top)
   TypeId xTypeId = pCard_Expr->xTypeId();
 
 
-	psRpnExpr->vCatSprint(" type %s "_Stz, xTypeId.szTypeName());
+  psRpnExpr->vCatSprint(" type %s "_Stz, xTypeId.szTypeName());
   vRpn_rpnCalc(pCI, psRpnExpr, pCard_Calc);
 }
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* produce <expr> for filter op                                               */
