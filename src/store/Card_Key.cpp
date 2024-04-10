@@ -281,11 +281,11 @@ void Card_Key::vPrint(Ribbon* pRibbon, i8 iDepth)
   sName.vSprintCat("%s"_Stz,
                    szCardNm());
 
-  pRibbon->vSprintSnippet(false,"%c%c%s %p"_Stz,
+  pRibbon->vSprintSnippet(false,"%c%c%s #%lld"_Stz,
                           cMark1(),
                           cMark2(),
                           sName.szStz(),
-                          ((char *) this) - (char *) AM::SYSARGS::aRegionAddr());
+                          m_iSequence);
 
 }
 
