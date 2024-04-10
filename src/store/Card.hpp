@@ -160,6 +160,7 @@ namespace STORE
 
 // These would really benefit from being const and being in a namespace
 // or class to avoid polluting the global namespace.
+extern Stz* P_AltFetch;
 extern Stz* P_BreakPt;
 extern Stz* P_BumpedBy;
 extern Stz* P_Cell;
