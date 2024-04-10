@@ -520,16 +520,15 @@ void Card_Emit::vPrint(Ribbon* pRibbon, i8 iDepth)
 //  sName.vSprintCat("%s"_Stz,
 //                   szCardNm());
 
-  sName.vSprint("%s%lld]out"_Stz,
+  sName.vSprint("%s%lld]emit"_Stz,
                 Stz::szDots(iDepth - 1),
                 m_i_Child);
 
-  pRibbon->vSprintSnippet(false,"%c%c%s %llx %lld"_Stz,
+  pRibbon->vSprintSnippet(false,"%c%c%s #%lld"_Stz,
                           cMark1(),
                           cMark2(),
                           sName.szStz(),
-                          ((char *) this) - (char *) AM::SYSARGS::aRegionAddr(),
-                          m_nFunctionCount);
+                          m_iSequence);
 
 }
 
