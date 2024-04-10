@@ -68,6 +68,36 @@ Card_Expr::~Card_Expr(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#ifdef Z_NO_RPNCALC
+void Card_Expr::vAssemble_injCrlRsl(CardIter* pCI)
+{
+  _static_
+
+  eAL e_Level     = (eAL) pCI->E.p_level->pSymbol()->Y_iGet(P_Level);
+
+  if (AL_PARTITION == e_Level) {
+    pCI->E.p_expr = Card_Expr::pCraft_expr_keyCol_Of_term(pCI->E.p_expr->pGet_term0());
+  }
+  else {
+    Symbol xSymbol_KeyCol(SF_KEY_COL,1);
+
+    pCI->vNewMember(CK_EXPR);
+    i8 i_Board = pCI->Flat.m_pSqy_inner->pBoard()->i_Board();
+    pCI->E.p_expr->pSymbol()->vApplyFacet_varg(SF_NMD_COL, C_CRLKEY, i_Board);
+    pCI->vAppendNewChild(pCI->E.p_expr, CK_TERM, &xSymbol_KeyCol);
+
+    pCI->E.p_term->vApplyCast_x(pCI->E.p_key->xCast());
+    pCI->E.p_expr->vApplyCast_x(pCI->E.p_key->xCast());
+
+    pCI->E.p_emit->vBump_expCol_In_rpnCalc(pCI);
+    pCI->E.p_key->pSymbol()->Y_vSet(P_ProjBumped);
+  }
+
+  pCI->E.p_expr->pSymbol()->Y_vSet(P_InjCrlKey);
+
+}
+/*----------------------------------------------------------------------------*/
+#else
 void Card_Expr::vAssemble_injCrlRsl(CardIter* pCI)
 {
   _static_
@@ -96,6 +126,7 @@ void Card_Expr::vAssemble_injCrlRsl(CardIter* pCI)
   pCI->E.p_expr->pSymbol()->Y_vSet(P_InjCrlKey);
 
 }
+#endif
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -152,6 +183,24 @@ Card_Expr* Card_Expr::pCraft_expr_Of_symbol(Symbol* pSymbol)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#ifdef Z_NO_RPNCALC
+Card_Expr* Card_Expr::pCraft_expr_Of_term(Card_Term* p_term)
+{
+  _static_
+
+  Cast xCast = p_term->pSymbol()->xCast();
+
+  Card_Expr* p_expr_new = new Card_Expr;
+  p_expr_new->vApplyCast_x(xCast);
+
+  Card_Term* p_term_new = p_term->pClone();
+  p_term_new->vApplyCast_x(xCast);
+  p_expr_new->vAppendChild(p_term_new);
+
+  return p_expr_new;
+}
+/*----------------------------------------------------------------------------*/
+#else
 Card_Expr* Card_Expr::pCraft_expr_Of_term(Card_Term* p_term)
 {
   _static_
@@ -170,6 +219,7 @@ Card_Expr* Card_Expr::pCraft_expr_Of_term(Card_Term* p_term)
 
   return p_expr_new;
 }
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* form project expression from gby key expression                            */
@@ -743,6 +793,31 @@ void Card_Expr::vPrint(Ribbon* pRibbon, i8 iDepth)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#ifdef Z_NO_RPNCALC
+bool Card_Expr::bSameAs(Card_Expr* p_expr_arg)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  i8 nChildren = nChildCards();
+
+  if (nChildren != p_expr_arg->nChildCards())
+    return false;
+
+  for (i8 i_Child = 0; i_Child != nChildren; i_Child++) {
+    Card_Term* p_term_this = pGet_term(i_Child);
+    Card_Term* p_term_arg = p_expr_arg->pGet_term(i_Child);
+
+    if (p_term_this->bSymbolMatches(p_term_arg))
+      continue;
+
+    return false;
+  }
+
+
+  return true;
+}
+/*----------------------------------------------------------------------------*/
+#else
 bool Card_Expr::bSameAs(Card_Expr* p_expr_arg)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
@@ -765,6 +840,7 @@ bool Card_Expr::bSameAs(Card_Expr* p_expr_arg)
 
   return true;
 }
+#endif
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
