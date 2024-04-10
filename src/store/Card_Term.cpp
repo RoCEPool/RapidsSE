@@ -139,7 +139,7 @@ void Card_Term::vApplyCast(CardIter* pCI, Card_Emit* p_Dic_expr, Cast& rxCast_la
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  if (pCI->E.p_key && pCI->E.p_expr && pCI->E.p_rpnCalc) {
+  if (pCI->E.p_key && pCI->E.p_expr) {
     if (! pCI->Dic.m_p_expr)
       return;
 
@@ -355,7 +355,7 @@ void Card_Term::vX_tblCol_To_expCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  RASSERT(pCI->E.p_boolPred || pCI->E.p_bound || pCI->E.p_expr || pCI->E.p_hshCol || pCI->E.p_rpnCalc);
+  RASSERT(pCI->E.p_boolPred || pCI->E.p_bound || pCI->E.p_expr || pCI->E.p_hshCol);
 
   Symbol* pSymbol_this = this->pSymbol();
 

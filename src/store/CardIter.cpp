@@ -1318,7 +1318,6 @@ bool CardIter::bEachTarget(void)
   RASSERT(! E.xTarget.bEnded());
 
   if (CK_EXPR    == E.Iter.ePrimary &&
-      CK_RPNCALC == E.Iter.eSecondary &&
       CK_TERM    == E.Iter.eTarget) {
     while (E.xTarget.bEach_opaque(E.Iter.eTarget)) {
       Card *pTarget = E.xTarget.pChild();
@@ -1657,7 +1656,6 @@ Card* CardIter::pMember(eCK eCard)
     case CK_RLNCONJ:        return E.p_rlnConj;
     case CK_ROWCOUNT:       return E.p_rowCount;
     case CK_ROWSIZE:        return E.p_rowSize;
-    case CK_RPNCALC:        return E.p_rpnCalc;
 
     case CK_o_SCAN:         return E.p_scan;
     case CK_SECTION:        return E.p_section;
@@ -1806,7 +1804,6 @@ void CardIter::vMember(eCK eCard, Card* pCard)
     case CK_RLNCONJ: E.p_rlnConj           = _pCard_RlnConj(pCard);break;
     case CK_ROWCOUNT: E.p_rowCount          = _pCard_RowCount(pCard); break;
     case CK_ROWSIZE: E.p_rowSize           = _pCard_RowSize(pCard); break;
-    case CK_RPNCALC: E.p_rpnCalc           = _pCard_RpnCalc(pCard); break;
 
     case CK_o_SCAN: E.p_scan              = _pCard_Scan(pCard); break;
     case CK_SECTION: E.p_section           = _pCard_Section(pCard); break;
@@ -1885,8 +1882,6 @@ bool CardIter::bMoreTarget(void)
 void CardIter::vNewMember(eCK eCard)
 {
   _precondition_(_MAGIC_, _FOOTER_);
-  if (CK_RPNCALC == eCard)
-    vDebugPoint();
 
   Card* pNew = new Card(eCard,C_UNKNOWN);
 
@@ -1899,8 +1894,6 @@ void CardIter::vNewMember(eCK eCard)
 void CardIter::vNewMember(eCK eCard, Symbol xSymbol)
 {
   _precondition_(_MAGIC_, _FOOTER_);
-  if (CK_RPNCALC == eCard)
-    vDebugPoint();
 
   Card* pNew = new Card(eCard,C_UNKNOWN);
 
@@ -2325,7 +2318,6 @@ void CardIter::vResetMembers(void)
   E.p_required         = nullptr;
   E.p_rowCount         = nullptr;
   E.p_rowSize          = nullptr;
-  E.p_rpnCalc          = nullptr;
 
   E.p_scan             = nullptr;
   E.p_section          = nullptr;
@@ -2614,7 +2606,6 @@ void CardIter::vValidateChildren(Card* pCard, i8 iDepth)
       case CK_RLNCONJ:        E.p_rlnConj->vValidate(this, iDepth, pCard);  break;
       case CK_ROWCOUNT:       E.p_rowCount->vValidate(this, iDepth, pCard);  break;
       case CK_ROWSIZE:        E.p_rowSize->vValidate(this, iDepth, pCard);  break;
-      case CK_RPNCALC:        E.p_rpnCalc->vValidate(this, iDepth, pCard);  break;
 
       case CK_o_SCAN:         E.p_scan->vValidate(this, iDepth, pCard);  break;
       case CK_SECTION:        E.p_section->vValidate(this, iDepth, pCard);  break;

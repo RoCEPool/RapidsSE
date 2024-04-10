@@ -4,7 +4,6 @@
 
 #include "Card_Emit.hpp"
 
-#include "Card_RpnCalc.hpp"
 
 #include "CardIter.hpp"
 #include "Card_GbyAgg.hpp"

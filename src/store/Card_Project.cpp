@@ -6,7 +6,6 @@
 
 #include "Card_Level.hpp"
 #include "Card_Emit.hpp"
-#include "Card_RpnCalc.hpp"
 #include "Card_Term.hpp"
 
 #include "CardIter.hpp"
@@ -233,35 +232,6 @@ void Card_Project::vEarlyProject_recurse_needed(CardIter* pCI)
  // pCI->PRINTBOARD_dbg();
 
   vDebugPoint();
-}
-
-/*----------------------------------------------------------------------------*/
-/* inject fold expr into this project                                         */
-/*----------------------------------------------------------------------------*/
-void Card_Project::vInject_foldExpr(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  pCI->E.p_expr = new Card_Expr;
-
-  pCI->E.p_expr->pSymbol()->Y_vSet(P_Injected);
-
-  pCI->E.p_expr->pSymbol()->vApplyFacets(pCI->Flat.m_pExpr_fold->pSymbol());
-
-  pCI->E.p_rpnCalc = new Card_RpnCalc;
-  pCI->E.p_expr->vAppendChild(pCI->E.p_rpnCalc);
-  pCI->E.p_expr->vApplyCast_p(pCI->E.p_rpnCalc);
-
-  Symbol x_Symbol_expCol1(SF_EXP_COL, 1);
-  pCI->E.p_term = pCI->Flat.m_pExpr_fold->pSub_term()->pClone(&x_Symbol_expCol1);
-
-  pCI->E.p_rpnCalc->vAppendChild(pCI->E.p_term);
-
-  pCI->E.p_emit = pSub_emit();
-
-  pCI->E.p_emit->vPushChild(pCI->E.p_expr);
-  pCI->E.p_emit->vRenumberAll_expr();
-
 }
 
 /*----------------------------------------------------------------------------*/

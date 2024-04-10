@@ -14,7 +14,6 @@ namespace STORE
     void  operator delete(void*);
   
     Card_Expr(void);
-    Card_Expr(Symbol* pSymbol);
    ~Card_Expr(void) noexcept(false);
 
     //-----------------------------------------------------------

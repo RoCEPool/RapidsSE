@@ -1529,23 +1529,6 @@ Card_Key* Dissector::pPop_key(Card_TermSeq* p_termSeq)
 /*----------------------------------------------------------------------------*/
 /* pop rpnCalc                                                                */
 /*----------------------------------------------------------------------------*/
-Card_RpnCalc* Dissector::pPop_rpnCalc(Card_TermSeq* p_termSeq)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
-
-  Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
-
-  Card_TermSeq* p_exprSeq = pPop_exprSeq(p_termSeq);
-  p_rpnCalc->vTransferChildren(p_exprSeq);
-  DELETE_CARD(p_exprSeq);
-
-
-  return p_rpnCalc;
-}
-
-/*----------------------------------------------------------------------------*/
-/* pop rpnCalc                                                                */
-/*----------------------------------------------------------------------------*/
 Card_On * Dissector::pPop_on(Card_TermSeq* p_termSeq)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);

@@ -30,7 +30,6 @@ namespace STORE
     void vEarlyProject_root(CardIter* pCI);
     void vCraft_needed_root(CardIter* pCI);
 
-    void vInject_foldExpr(CardIter* pCI);
     bool bIsCompound(void);
     bool bIsLiterals(CardIter* pCI);
 

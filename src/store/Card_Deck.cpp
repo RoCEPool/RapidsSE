@@ -377,7 +377,6 @@ void Card_Deck::vValidate(CardIter* pCI)
       case CK_RLNCONJ:      pCI->E.p_rlnConj->vValidate(pCI, 1, this); break;
       case CK_ROWCOUNT:     pCI->E.p_rowCount->vValidate(pCI, 1, this); break;
       case CK_ROWSIZE:      pCI->E.p_rowSize->vValidate(pCI, 1, this); break;
-      case CK_RPNCALC:      pCI->E.p_rpnCalc->vValidate(pCI, 1, this); break;
 
       case CK_o_SCAN:         pCI->E.p_scan->vValidate(pCI, 1, this); break;
       case CK_SECTION:      pCI->E.p_section->vValidate(pCI, 1, this); break;

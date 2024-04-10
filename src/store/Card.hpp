@@ -116,8 +116,6 @@ namespace STORE
   class Card_Required;
   class Card_RowCount;
   class Card_RowSize;
-  class Card_RpnCalc;
-  class Card_TermSeq;
 
   class Card_Scan;
   class Card_Section;
@@ -147,6 +145,7 @@ namespace STORE
   class Card_TableSize;
   class Card_TblSyn;
   class Card_Term;
+  class Card_TermSeq;
   class Card_Top;
   class Card_Topology;
 

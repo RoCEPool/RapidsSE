@@ -87,11 +87,9 @@ void Card_CONDITION::vX_tblCol_To_expCol(CardIter* pCI)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   pCI->E.p_boolPred = nullptr;
-  pCI->E.p_rpnCalc  = nullptr;
   if ((pCI->E.p_boolPred = pSub_boolPred()))
     pCI->E.p_boolPred->vX_tblCol_To_expCol(pCI);
   pCI->E.p_boolPred = nullptr;
-  pCI->E.p_rpnCalc  = nullptr;
 }
 
 /*============================================================================*/

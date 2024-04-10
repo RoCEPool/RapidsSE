@@ -1643,9 +1643,6 @@ void Card::vPrintRecursive(CardIter* pCI,
   if (rbPrune)
     return;
 
-  if (CK_RPNCALC == m_eCard)
-    vDebugPoint();
-
   if (! bPrintBelow)
     bPrintBelow = pCardCtl->bPrintBelow(m_eCard);
 
@@ -2383,7 +2380,6 @@ void Card::vPrintCard_byKind(Ribbon* pRibbon, i8 iDepth)
     case CK_t_EMIT:   _pCard_Emit(this)->vPrint(pRibbon, iDepth);    break;
     case CK_EXPR:     _pCard_Expr(this)->vPrint(pRibbon, iDepth);    break;
     case CK_s_KEY:    _pCard_Key(this)->vPrint(pRibbon, iDepth);     break;
-    case CK_RPNCALC:  _pCard_RpnCalc(this)->vPrint(pRibbon, iDepth); break;
     case CK_s_TABLE:  _pCard_Table(this)->vPrint(pRibbon, iDepth);   break;
     case CK_TERM:     _pCard_Term(this)->vPrint(pRibbon, iDepth);    break;
     case CK_o_FILTER: _pCard_Filter(this)->vPrint(pRibbon, iDepth);  break;

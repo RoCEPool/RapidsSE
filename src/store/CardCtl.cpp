@@ -609,7 +609,6 @@ void CardCtl::vReset(void)
   vPrintByKind(CK_ORCONJ,true);
   vPrintByKind(CK_RLNCONJ,true);
 
-  vPrintByKind(CK_RPNCALC,true);
   vPrintByKind(CK_s_TABLE, true);
   vPrintValue(CK_s_TABLE, false);
   //vPrintProperties(CK_s_TABLE, false);

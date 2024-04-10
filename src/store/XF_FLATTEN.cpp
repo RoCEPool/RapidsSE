@@ -371,13 +371,6 @@ void XF_FLATTEN::vSmooth(CardIter* pCI, CarryForward* pCarryForward, bool bEarly
 
   //  --  --  --  --  --  --  --  --  --  --  --  --  --  --
 
-  if (pCarryForward->Project_postAgg.m_bSeen &&  pCI->E.p_having) {
-    pCI->E.p_project->vInject_foldExpr(pCI);
-    pCI->E.p_emit = pCI->E.p_project->pSub_emit();
-    Card_Project::vUnproject_foldExpr(pCI, pCarryForward);
-    //pCI->PRINTBOARD_dbg();
-  }
-  else
   if (pCarryForward->Unproject.m_bUnproject_foldExpr) {
     pCI->E.p_emit = pCI->E.p_gbyAgg->pSub_emit();
     Card_Project::vUnproject_foldExpr(pCI, pCarryForward);

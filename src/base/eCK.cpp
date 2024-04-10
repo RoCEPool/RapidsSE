@@ -114,7 +114,6 @@ Stz* aCK[CK_ENUMS]
   /* */ "CK_RLNCONJ"_Stz,      // CK_RLNCONJ
   /* */ "CK_ROWCOUNT"_Stz,     // CK_ROWCOUNT
   /* */ "CK_ROWSIZE"_Stz,      // CK_ROWSIZE
-  /* */ "CK_RPNCALC"_Stz,      // CK_RPNCALC
 
   /* */ "CK_SECTION"_Stz,      // CK_SECTION
   /* */ "CK_SENDKIND"_Stz,     // CK_SENDKIND
@@ -257,7 +256,6 @@ Stz* aCK_short[CK_ENUMS]
   /* */ "rlnConj"_Stz,         // CK_RLNCONJ
   /* */ "rowCount"_Stz,        // CK_ROWCOUNT
   /* */ "rowSize"_Stz,         // CK_ROWSIZE
-  /* */ "rpnCalc"_Stz,         // CK_RPNCALC
 
   /* */ "section"_Stz,         // CK_SECTION
   /* */ "sendKind"_Stz,        // CK_SENDKIND

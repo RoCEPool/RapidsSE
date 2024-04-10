@@ -1452,35 +1452,6 @@ void Card_OP::vRpn_expr(CardIter* pCI, String* psRpnExpr, Card_Expr* p_expr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* produce <expr> for p_rpnCalc                                               */
-/*----------------------------------------------------------------------------*/
-void Card_OP::vRpn_rpnCalc(CardIter* pCI, String* psRpnExpr, Card_RpnCalc* p_rpnCalc)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  i8 nSubCards = p_rpnCalc->nItems();
-  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
-    Card* pCard = p_rpnCalc->pGet(i_Child);
-
-    eCK eCard = pCard->eCard();
-
-    switch (eCard) {
-
-      case CK_TERM:
-        vRpn_term(pCI, psRpnExpr, _pCard_Term(pCard));
-        break;
-
-      default:
-        //{;}
-        //vTrace("  skipping %s\n"_Stz,aCK[eCard]);
-        break;
-    }
-
-  }
-
-}
-
-/*----------------------------------------------------------------------------*/
 /* produce <expr> for p_term                                                  */
 /*----------------------------------------------------------------------------*/
 void Card_OP::vRpn_term(CardIter* pCI, String* psRpnExpr, Card_Term* p_term)

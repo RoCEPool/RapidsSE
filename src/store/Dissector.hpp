@@ -80,7 +80,6 @@ namespace STORE
     Card_HshCol*     pPop_hshCol    (Card_TermSeq* p_termSeq);
     Card_HshColList* pPop_hshColList(Card_TermSeq* p_termSeq);
     Card_Key*        pPop_key       (Card_TermSeq* p_termSeq);
-    Card_RpnCalc*    pPop_rpnCalc   (Card_TermSeq* p_termSeq);
     Card_On*         pPop_on        (Card_TermSeq* p_termSeq);
 
     Card_TermSeq*    pPop_exprSeq   (Card_TermSeq* p_termSeq);

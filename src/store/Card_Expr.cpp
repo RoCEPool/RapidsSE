@@ -4,7 +4,6 @@
 
 #include "Card_Expr.hpp"
 
-#include "Card_RpnCalc.hpp"
 #include "Card_BoolPred.hpp"
 #include "CardIter.hpp"
 #include "TypeSystem.hpp"
@@ -28,22 +27,6 @@ Card_Expr::Card_Expr(void)
 
   _checkInitialised_(CN_CARD);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-Card_Expr::Card_Expr(Symbol* pSymbol)
-: Card_symbol(CK_EXPR, C_UNKNOWN)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_RpnCalc* p_rpnCalc = new Card_RpnCalc(pSymbol);
-  vAppendChild(p_rpnCalc);
-
-  _checkInitialised_(CN_CARD);
-
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
