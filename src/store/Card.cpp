@@ -27,7 +27,7 @@ __aFooterFunction(Card)
 /*----------------------------------------------------------------------------*/
 i8 Card::m__iSeqGen { 1 };
 
-Stz* P_Altfetch     = "szAltFetch"_Stz;
+Stz* P_AltFetch     = "szAltFetch"_Stz;
 Stz* P_BreakPt      = "bBreakPt"_Stz;
 Stz* P_BumpedBy     = "nBumpedBy"_Stz;
 Stz* P_Cell         = "i_Cell"_Stz;
