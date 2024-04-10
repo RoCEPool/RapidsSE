@@ -259,6 +259,7 @@ namespace STORE
 
     eCK     m_eCard;
     i8      m_i_Child;
+    i8      m_iSequence;
     i8      m_iFixedDepth;
 
     Mark    m_xMark1;
@@ -266,11 +267,10 @@ namespace STORE
 
     Symbol  m_xSymbol;
 
-    i8 md__SeqNo;
+    i8 md__CardNo;
     i8 md__FirstDetected;
     i8 md__LeakDetected;
     i8      m_iFirstPrint;
-    eCK     m_eFirst;
     i8      m_nPrintCount;
     i8      m_nFunctionCount;
     bool    m_bAddedCorrectly;
@@ -418,6 +418,8 @@ namespace STORE
     void vReplaceSubDelete(Card* pSub, Card* pWith);
     void vReplaceSub(Card* pSub, Card* pWith);
 
+    i8   iSequence(void);
+    void vSequence(i8 iSequence);
     i8   nSubCards(eCK eSub_arg);
     Symbol* pSymbol(void);
     bool bSymbolMatches(Symbol* pSymbol_arg);

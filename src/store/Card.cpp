@@ -120,12 +120,13 @@ Card::Card(eCK eCard, i8 iFixedDepth)
 
   m_eCard   = eCard;
   m_i_Child = C_UNKNOWN;
+  m_iSequence = C_UNKNOWN;
 
   m_pLastPrintParent = nullptr;
   m_pParent = nullptr;
 
-  md__SeqNo = Card::m__iSeqGen++;
-  //gapCard[md__SeqNo] = this;
+  md__CardNo = Card::m__iSeqGen++;
+  //gapCard[md__CardNo] = this;
   md__FirstDetected  = C_UNKNOWN;
   md__LeakDetected   = C_UNKNOWN;
 
@@ -134,7 +135,6 @@ Card::Card(eCK eCard, i8 iFixedDepth)
   m_iFirstPrint = C_UNKNOWN;
   m_nPrintCount = 0;
   m_nFunctionCount = 0;
-  m_eFirst = CK_NONE;
 
   m_bAddedCorrectly   = false;
   m_bRemovedCorrectly = false;
@@ -145,10 +145,10 @@ Card::Card(eCK eCard, i8 iFixedDepth)
   vMark2(MARK_BLANK);
 
   s256 sCoord;
-  sCoord.vSprint("((%s new %04lld))"_Stz, aCK[m_eCard], md__SeqNo);
+  sCoord.vSprint("((%s new %04lld))"_Stz, aCK[m_eCard], md__CardNo);
   StrLib::vCopy(md_Coord, sizeof(md_Coord), sCoord.azChar());
-//  if (11 == md__SeqNo) {
-//    vTrace("Card [%02lld] %p\n"_Stz, md__SeqNo, this);
+//  if (11 == md__CardNo) {
+//    vTrace("Card [%02lld] %p\n"_Stz, md__CardNo, this);
 //    vDebugPoint();
 //  }
 
@@ -164,17 +164,17 @@ Card::~Card(void) noexcept(false)
   //_precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
 //  vTrace("Card [~%02lld] %p %s %s : %s\n"_Stz,
-//         md__SeqNo,this,aCK[m_eCard],m_xSymbol.m_sFacet.szStz(),md_Coord);
+//         md__CardNo,this,aCK[m_eCard],m_xSymbol.m_sFacet.szStz(),md_Coord);
 //
 //  if (this == pPriorCard)
 //    vDebugPoint();
 //
-//  if (678 == md__SeqNo) {
+//  if (678 == md__CardNo) {
 //    pPriorCard = this;
 //    vDebugPoint();
 //  }
 
-  //gapCard[md__SeqNo] = nullptr;
+  //gapCard[md__CardNo] = nullptr;
 
   RASSERT(! bMark1(MARK_DELETED));
 
@@ -1604,7 +1604,6 @@ void Card::vPrintRecursive(CardIter* pCI,
 
   if (C_UNKNOWN == m_iFirstPrint) {
     m_iFirstPrint = pCI->m_pBench->nPrintBoard();
-    m_eFirst = m_eCard;
   }
   m_nPrintCount++;
 
@@ -1811,6 +1810,26 @@ void Card::vReplaceSub(Card* pSub, Card* pWith)
   Card* pParent = pFindParentRecursive(pSub);
 
   pParent->vReplaceChild(pSub,pWith);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get sequence no                                                            */
+/*----------------------------------------------------------------------------*/
+i8 Card::iSequence(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  return m_iSequence;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set sequence no                                                            */
+/*----------------------------------------------------------------------------*/
+void Card::vSequence(i8 iSequence)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  m_iSequence = iSequence;
 }
 
 /*----------------------------------------------------------------------------*/
