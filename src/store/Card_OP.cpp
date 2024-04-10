@@ -675,7 +675,11 @@ void Card_OP::vRestate_emit(CardIter* pCI)
     pCI->E.p_key = pCI->E.p_Op->pSub_key();
     pCI->E.p_emit->vApplyFacets(pCI,pCI->E.p_key);
 
+#ifdef Z_NO_RPNCALC
+    for (Kid xEmit(pCI->E.p_emit); xEmit.bEach(CK_EXPR); /**/) {
+#else
     for (Kid xEmit(pCI->E.p_emit); xEmit.bEach(CK_EXPR, CK_RPNCALC); /**/) {
+#endif
       for (pCI->vBeginTarget(xEmit.p_expr(),CK_TERM); pCI->bEachTarget(); /**/) {
 
         Card_Term *p_term_keyCol = pCI->E.xTarget.p_term();

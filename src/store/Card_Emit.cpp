@@ -130,9 +130,9 @@ Card_Needed* Card_Emit::pCraftRoot_needed(CardIter* pCI)
   // this projection will be in an aggreg, gbyAgg or ordAgg
   RASSERT(((Card_OP*)pCI->E.p_Op)->bIsEarlyRoot());
 
-  if (8 == pCI->m_pBench->iBenchNo() && 56 == pCI->m_pBench->nPrintBoard()) {
-    //pCI->E.p_Op->vDump(__func__);
-    //this->vDump(__func__);
+  if (8 == pCI->m_pBench->iBenchNo() && 54 == pCI->m_pBench->nPrintBoard()) {
+//    pCI->E.p_Op->vDump(__func__);
+//    this->vDump(__func__);
     vDebugPoint();
   }
 
@@ -143,7 +143,11 @@ Card_Needed* Card_Emit::pCraftRoot_needed(CardIter* pCI)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 1) append the referenced col's in rpnCalc of this projection into needed projection
 
+#ifdef Z_NO_RPNCALC
+  for (Kid xEmit(this); xEmit.bEach(CK_EXPR); /**/) {
+#else
   for (Kid xEmit(this); xEmit.bEach(CK_EXPR, CK_RPNCALC); /**/) {
+#endif
     for (pCI->vBeginTarget(xEmit.p_expr(),CK_TERM); pCI->bEachTarget(); /**/) {
       Card_Term *p_term = pCI->E.xTarget.p_term();
       Symbol *pSym_term = p_term->pSymbol();
@@ -237,7 +241,11 @@ Card_Needed* Card_Emit::pCraft_needed_root(CardIter* pCI)
 
   Card_Needed *p_needed = new Card_Needed;
 
+#ifdef Z_NO_RPNCALC
+  for (Kid xEmit(this); xEmit.bEach(CK_EXPR); /**/) {
+#else
   for (Kid xEmit(this); xEmit.bEach(CK_EXPR, CK_RPNCALC); /**/) {
+#endif
     for (pCI->vBeginTarget(xEmit.p_expr(),CK_TERM); pCI->bEachTarget(); /**/) {
       Card_Term *p_term = pCI->E.xTarget.p_term();
       Symbol *pSym_term = p_term->pSymbol();
