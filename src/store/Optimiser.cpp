@@ -52,10 +52,6 @@ Optimiser::Optimiser(TagSet* p_JobTags)
     m_sJoinPermutation[i_Index] = "(none)"_Stz;
   }
 
-  for (i8 i_Seq = 0; i_Seq < CK_ENUMS; i_Seq++) {
-    m_iaSequence[i_Seq] = 0;
-  }
-
   m_pPipelineDef = nullptr;
 
   m_pOptStmt = nullptr;
@@ -63,9 +59,9 @@ Optimiser::Optimiser(TagSet* p_JobTags)
 
   _checkInitialised_(CN_OPTIMISER);
 
-//  MY::pJob()->pJobTags()->vAppend(C_OPTIMISER_TRACE);
-//  MY::pJob()->pJobTags()->vAppend(C_PIPELINE_DEF);
-//  MY::pJob()->pJobTags()->vAppend(C_WEAVED);
+  MY::pJob()->pJobTags()->vAppend(C_OPTIMISER_TRACE);
+  MY::pJob()->pJobTags()->vAppend(C_PIPELINE_DEF);
+  MY::pJob()->pJobTags()->vAppend(C_WEAVED);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
 }
@@ -360,16 +356,6 @@ void Optimiser::vQueryNm(Stz* szQueryNm)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
 
   m_sQueryNm = szQueryNm;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get next sequence for card kind                                            */
-/*----------------------------------------------------------------------------*/
-i8 Optimiser::iSequence_next(eCK eCard)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_OPTIMISER, _FOOTER_);
-
-  return m_iaSequence[eCard]++;
 }
 
 /*----------------------------------------------------------------------------*/

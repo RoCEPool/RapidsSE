@@ -28,6 +28,8 @@ namespace STORE
 
     i8   m_iXform;
 
+    i4 m_iaSequence[CK_ENUMS];
+
   public:
 
     // must be last
@@ -63,6 +65,8 @@ namespace STORE
     void vPhase(CardIter* pCI, eOH ePhase);
     Stz* szPipelineNm(void);
     void vPipelineNm(Stz* szPipelineNm);
+
+    i8 iSequence_next(eCK eCard);
 
     void vTransform(const char* azXfile, const char* azXfunc, eXF eXform);
 
