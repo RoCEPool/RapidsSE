@@ -11,8 +11,6 @@
   STD_BOOTFORK_TAG
   "
   define table tables (
-    catalogName       VARCHAR NOT NULL ,
-    schemaName        VARCHAR NOT NULL ,
     tableName         VARCHAR NOT NULL
   ) < metaData > = MetaDataTable[].print ;
   "

@@ -54,29 +54,35 @@
 
   Table[].isMetaData if
     Table[].getStep find execute
+    // Finished sending all bufferIds to the next op
+    // drop table ptn lock
+    TablePtn[].dropRead
+
+    // set counter0 to 0 to indicate lock released
+    false to counter0[]
+  else
+    TablePtn[].rootPdsCursor to PdsCursor[]
+    begin
+      PdsCursor[].currIsNotNull
+    while
+      PdsCursor[].getItemAddr TablePtn[].extractBufferId to BufferId[]
+
+      BufferId[].pipeOut
+
+      PdsCursor[].next
+    repeat
+
+    PdsCursor[].delete
+    nullptr to PdsCursor[]
+
+
+    // Finished sending all bufferIds to the next op
+    // drop table ptn lock
+    TablePtn[].dropRead
+
+    // set counter0 to 0 to indicate lock released
+    false to counter0[]
   then
-
-  TablePtn[].rootPdsCursor to PdsCursor[]
-  begin
-    PdsCursor[].currIsNotNull
-  while
-    PdsCursor[].getItemAddr TablePtn[].extractBufferId to BufferId[]
-
-    BufferId[].pipeOut
-
-    PdsCursor[].next
-  repeat
-
-  PdsCursor[].delete
-  nullptr to PdsCursor[]
-
-
-  // Finished sending all bufferIds to the next op
-  // drop table ptn lock
-  TablePtn[].dropRead
-
-  // set counter0 to 0 to indicate lock released
-  false to counter0[]
 
   // send an eos marker (there was no data)
   Marker[].newEosMarker
