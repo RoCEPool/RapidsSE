@@ -1400,14 +1400,6 @@ Card_Expr* Dissector::pPop_expr4(Card_TermSeq* p_termSeq)
     Card_Term* p_term_0 = p_expr->pGet_term0();
     p_term_0->vApplyCast_x(xCast);
   }
-#else
-  Card_RpnCalc* p_rpnCalc = pPop_rpnCalc(p_termSeq);
-  p_expr->vAppendChild(p_rpnCalc);
-    if (p_expr->pSub_rpnCalc(C_NOT_NULL)->nChildCards() == 1) {
-    Card_Term* p_term_0 = p_expr->pGet_term0();
-    p_term_0->vApplyCast_x(xCast);
-  }
-
 #endif
 
 

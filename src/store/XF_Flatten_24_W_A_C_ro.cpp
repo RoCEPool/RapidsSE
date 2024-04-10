@@ -248,52 +248,6 @@ void XF_Flatten_24_W_A_C_ro::vEnhance_IQ_emit_project_Add_crlKey(CardIter* pCI)
 
   pCI->E.p_emit->vRenumberAll_expr();
 }
-/*----------------------------------------------------------------------------*/
-#else
-void XF_Flatten_24_W_A_C_ro::vEnhance_IQ_emit_project_Add_crlKey(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_24_W_A_C_RO, _FOOTER_);
-
-  if (!pCI->pPeekNextIf(CK_o_PROJECT))
-    return;
-  RASSERT(pCI->bEachOp(CK_o_PROJECT));
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // pre-fold sq <project>
-
-  RASSERT (pCI->E.p_Op->bIsCard(CK_o_PROJECT));
-  RASSERT(CT_NONE != pCI->E.p_key->eCTVal());
-
-  pCI->E.p_emit = pCI->E.p_project->pSub_emit();
-  pCI->E.p_emit->vBump_expCol_In_rpnCalc(pCI);// TODO: ,nBumpBy);
-
-
-  // push <project>/_SQCRLKEY_
-  pCI->vPushChild(pCI->E.p_emit, CK_EXPR);
-  i8 i_Board = pCI->Flat.m_pSqy_inner->pBoard()->i_Board();
-  pCI->E.p_expr->pSymbol()->vApplyFacet_varg(SF_NMD_COL, C_CRLKEY, i_Board);
-  pCI->E.p_expr->pSymbol()->Y_vSet(P_InjCrlKey);
-
-  pCI->vAppendNewChild(pCI->E.p_expr, CK_RPNCALC);
-
-  pCI->vAppendNewChild(pCI->E.p_rpnCalc, CK_TERM, Symbol(SF_EXP_COL, "$1"_Stz));
-  Symbol x_Symbol_expCol1(SF_EXP_COL, 1);
-
-  pCI->E.p_term->vApplyCast_x(pCI->E.p_key->xCast());
-  pCI->E.p_expr->vApplyCast_x(pCI->E.p_key->xCast());
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // supplemental
-
-  pCI->E.p_expr = pCI->E.p_emit->pGet_expr(1);
-  pCI->E.p_expr->pSymbol()->vApplyFacet_varg(SF_NMD_COL, C_SQYRSL, i_Board);
-
-
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  pCI->E.p_emit->vRenumberAll_expr();
-}
 #endif
 
 /*----------------------------------------------------------------------------*/

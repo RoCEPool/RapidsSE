@@ -379,52 +379,6 @@ Card_Expr* CardIter::pBackSearch_expr_For_col(Symbol* pSym_term_arg, i8 i_Before
 
   return p_expr_col;
 }
-/*----------------------------------------------------------------------------*/
-#else
-Card_Expr* CardIter::pBackSearch_expr_For_col(Symbol* pSym_term_arg, i8 i_Before)
-{
-  _precondition_( _MAGIC_, _FOOTER_);
-
-  RASSERT(pSym_term_arg->bIs_Col());
-
-  Card_Expr* p_expr_col = nullptr;
-
-  for (i8 i_Main = i_Before - 1; i_Main >= 0; i_Main--) {
-    Card *pMain = this->E.p_deck->pGetChild(i_Main);
-    Card_Emit* p_emit = pMain->pSub_emit();
-
-    if (!p_emit)
-      continue;
-
-    //p_emit->vDump(__func__);
-
-    i8 nChildren_emit = p_emit->nChildCards();
-    for (i8 i_Child = 0; i_Child < nChildren_emit; i_Child++) {
-      Card *pChild_emit = p_emit->pGetChild(i_Child);
-      if (!pChild_emit->bIsCard(CK_EXPR))
-        continue;
-      Card_Expr* p_expr_emit = _pCard_Expr(pChild_emit);
-      Card_RpnCalc* p_rpnCalc = p_expr_emit->pSub_rpnCalc(C_NOT_NULL);
-      if (! p_rpnCalc)
-        continue;
-      if (1 != p_rpnCalc->nChildCards())
-        continue;
-
-      Symbol* pSym_rpnCalc_term0 = p_expr_emit->pGet_term(0)->pSymbol();
-      RASSERT(pSym_rpnCalc_term0->bIs_Col());
-
-      if (pSym_rpnCalc_term0->bMatches(pSym_term_arg)) {
-        p_expr_col = p_expr_emit;
-        break;
-      }
-    }
-
-    if (p_expr_col)
-      break;
-  }
-
-  return p_expr_col;
-}
 #endif
 
 /*----------------------------------------------------------------------------*/
@@ -566,42 +520,6 @@ void CardIter::vBeginTarget(Card* pPrimary, eCK eTarget)
     E.Iter.eSecondary = CK_NONE;
     E.xTarget.vBegin();
     E.xTarget.vParent(pPrimary);
-
-  }
-  else {
-    NEVER_REACH
-  }
-}
-/*----------------------------------------------------------------------------*/
-#else
-void CardIter::vBeginTarget(Card* pPrimary, eCK eTarget)
-{
-  _precondition_(_MAGIC_, _FOOTER_);
-
-  vPushEach();
-
-  eCK ePrimary = pPrimary->eCard();
-
-  E.Iter.ePrimary = ePrimary;
-  E.Iter.eTarget  = eTarget;
-
-  if (CK_s_KEY == ePrimary && CK_EXPR == eTarget) {
-    E.Iter.eSecondary = CK_NONE;
-    E.xTarget.vBegin();
-    E.xTarget.vParent(pPrimary);
-
-  }
-  else
-  if (CK_STREAMKEY == ePrimary && CK_EXPR == eTarget) {
-    E.Iter.eSecondary = CK_NONE;
-    E.xTarget.vBegin();
-    E.xTarget.vParent(pPrimary);
-  }
-  else
-  if (CK_EXPR == ePrimary && CK_TERM == eTarget) {
-    E.Iter.eSecondary = CK_RPNCALC;
-    E.xTarget.vBegin();
-    E.xTarget.vParent(pPrimary->pSub_rpnCalc());
 
   }
   else {

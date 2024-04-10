@@ -677,8 +677,6 @@ void Card_OP::vRestate_emit(CardIter* pCI)
 
 #ifdef Z_NO_RPNCALC
     for (Kid xEmit(pCI->E.p_emit); xEmit.bEach(CK_EXPR); /**/) {
-#else
-    for (Kid xEmit(pCI->E.p_emit); xEmit.bEach(CK_EXPR, CK_RPNCALC); /**/) {
 #endif
       for (pCI->vBeginTarget(xEmit.p_expr(),CK_TERM); pCI->bEachTarget(); /**/) {
 
@@ -1405,22 +1403,6 @@ void Card_OP::vRpn_top(CardIter* pCI, String* psRpnExpr, Card_Top* p_top)
 	psRpnExpr->vCatSprint(" type %s "_Stz, xTypeId.szTypeName());
   vRpn_termSeq(pCI, psRpnExpr, pCard_Expr);
 }
-/*----------------------------------------------------------------------------*/
-#else
-void Card_OP::vRpn_top(CardIter* pCI, String* psRpnExpr, Card_Top* p_top)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-  UNUSED(pCI);
-
-  Card_Key *pCard_key = p_top->pSub_key();
-  Card_RpnCalc *pCard_Calc = pCard_key->pSub_rpnCalc(C_NOT_NULL);
-  Card_Expr *pCard_Expr = pCard_key->pSub_expr(C_NOT_NULL);
-  TypeId xTypeId = pCard_Expr->xTypeId();
-
-
-  psRpnExpr->vCatSprint(" type %s "_Stz, xTypeId.szTypeName());
-  vRpn_rpnCalc(pCI, psRpnExpr, pCard_Calc);
-}
 #endif
 
 /*----------------------------------------------------------------------------*/
@@ -1472,40 +1454,6 @@ void Card_OP::vRpn_expr(CardIter* pCI, String* psRpnExpr, Card_Expr* p_expr)
     psRpnExpr->vConcat(" }"_Stz);
 
   vRpn_termSeq(pCI, psRpnExpr, p_expr);
-}
-/*----------------------------------------------------------------------------*/
-#else
-void Card_OP::vRpn_expr(CardIter* pCI, String* psRpnExpr, Card_Expr* p_expr)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-  UNUSED(pCI);
-
-  Card_RpnCalc* p_rpnCalc = p_expr->pSub_rpnCalc(C_NOT_NULL);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  Symbol* pSymbol = p_expr->pSymbol();
-  Cast xCast = pSymbol->xCast();
-
-  psRpnExpr->vCatSprint(" type %s"_Stz, aCT[xCast.m_xTypeId.eCTVal()]);
-
-  if (xCast.m_nTypeLength || xCast.m_nTypeScale) {
-    psRpnExpr->vCatSprint(" ( %lld"_Stz, xCast.m_nTypeLength);
-    if (xCast.m_nTypeScale)
-      psRpnExpr->vCatSprint(" %lld"_Stz, xCast.m_nTypeScale);
-    psRpnExpr->vCatSprint(" )"_Stz);
-  }
-
-  if (p_expr->pSymbol()->bHasFacet(SF_ITM_COL)) {
-    RASSERT(p_expr->pSymbol()->bHasFacet(SF_NMD_COL));
-    psRpnExpr->vCatSprint(" as %s"_Stz, p_expr->szFacet(SF_ITM_COL));
-  }
-
-  if (p_expr->bNeedsBrace(pCI))
-    psRpnExpr->vConcat(" }"_Stz);
-
-  vRpn_rpnCalc(pCI, psRpnExpr, p_rpnCalc);
-
 }
 #endif
 

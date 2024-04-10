@@ -145,8 +145,6 @@ Card_Needed* Card_Emit::pCraftRoot_needed(CardIter* pCI)
 
 #ifdef Z_NO_RPNCALC
   for (Kid xEmit(this); xEmit.bEach(CK_EXPR); /**/) {
-#else
-  for (Kid xEmit(this); xEmit.bEach(CK_EXPR, CK_RPNCALC); /**/) {
 #endif
     for (pCI->vBeginTarget(xEmit.p_expr(),CK_TERM); pCI->bEachTarget(); /**/) {
       Card_Term *p_term = pCI->E.xTarget.p_term();
@@ -243,8 +241,6 @@ Card_Needed* Card_Emit::pCraft_needed_root(CardIter* pCI)
 
 #ifdef Z_NO_RPNCALC
   for (Kid xEmit(this); xEmit.bEach(CK_EXPR); /**/) {
-#else
-  for (Kid xEmit(this); xEmit.bEach(CK_EXPR, CK_RPNCALC); /**/) {
 #endif
     for (pCI->vBeginTarget(xEmit.p_expr(),CK_TERM); pCI->bEachTarget(); /**/) {
       Card_Term *p_term = pCI->E.xTarget.p_term();
@@ -343,8 +339,6 @@ void Card_Emit::vDerive_streamKey(CardIter *pCI)
      Card_Expr* p_expr_prjCol = pFind_expr_Matches(p_term_runkey->pSymbol());
 #ifdef Z_NO_RPNCALC
      if (p_expr_prjCol && 1 == p_expr_prjCol->nChildCards()) {
-#else
-     if (p_expr_prjCol && 1 == p_expr_prjCol->pSub_rpnCalc(C_NOT_NULL)->nChildCards()) {
 #endif
 
        pCI->E.p_streamKey->vAdd_key_expr_BasedOn_expr(pCI, p_expr_prjCol, true, true);

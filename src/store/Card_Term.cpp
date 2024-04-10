@@ -337,8 +337,6 @@ void Card_Term::vX_expCol_To_tblCol(CardIter* pCI)
 
 #ifdef Z_NO_RPNCALC
       if (pCI->E.p_expr && pCI->E.p_expr->bIsScalarCol()) {
-#else
-      if (pCI->E.p_expr && pCI->E.p_expr->bIsScalarCol() && pCI->E.p_rpnCalc) {
 #endif
         pCI->E.p_expr->pSymbol()->vApplyFacet(SF_TBL_COL, pSymbol_term0->szFacet(SF_TBL_COL));
 
@@ -469,17 +467,6 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
                                      CK_s_HASHING,
                                      CK_NOTCONJ,
                                      CK_ORCONJ,
-                                     CK_NONE);
-#else
-  (void)Card::eValidate_parentEither(pCI, CK_t_HSHCOL,// todo: NO!?
-                                     CK_ANDCONJ,
-                                     CK_BOUND,
-                                     CK_BOOLPRED,
-                                     CK_RLNCONJ,
-                                     CK_s_HASHING,
-                                     CK_NOTCONJ,
-                                     CK_ORCONJ,
-                                     CK_RPNCALC,
                                      CK_NONE);
 #endif
 
