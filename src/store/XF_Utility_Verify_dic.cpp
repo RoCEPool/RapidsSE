@@ -194,7 +194,6 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
                                                      SF_TBL_COL,
                                                      SF_NONE));
       RASSERT(m_pCI->E.p_expr->bIsScalarCol());
-      m_pCI->E.p_rpnCalc = m_pCI->E.p_expr->pSub_rpnCalc(C_NOT_NULL);
       for (m_pCI->vBeginTarget(m_pCI->E.p_expr,CK_TERM); m_pCI->bEachTarget(); /**/) {
         m_pCI->E.p_term = m_pCI->E.xTarget.p_term();
         RASSERT(m_pCI->E.p_term->pSymbol()->bSingleFaceted(SF_TBL_COL));
@@ -226,7 +225,6 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
               m_pCI->E.p_expr->pSymbol()->bHasFacets(SF_KEY_COL,
                                                      SF_NONE));
 
-      m_pCI->E.p_rpnCalc = m_pCI->E.p_expr->pSub_rpnCalc(C_NOT_NULL);
       for (m_pCI->vBeginTarget(m_pCI->E.p_expr,CK_TERM); m_pCI->bEachTarget(); /**/) {
         m_pCI->E.p_term = m_pCI->E.xTarget.p_term();
         RASSERT(m_pCI->E.p_term->pSymbol()->bSingleFaceted(SF_TBL_COL)
