@@ -183,6 +183,15 @@ cmd::fillOut_allCmds
   "it_verifyTable.sen"      include
   "it_warnings.sen"         include
 
+  "md_catalog.sen"          include
+  "md_cluster.sen"          include
+  "md_columns.sen"          include
+  "md_indexColumns.sen"     include
+  //"md_indexes.sen"          include
+  "md_nodes.sen"            include
+  "md_queries.sen"          include
+  "md_schema.sen"           include
+  "md_sessions.sen"         include
   "md_tables.sen"           include
 
   "job_startSystem.sen"     include // last last

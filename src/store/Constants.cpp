@@ -245,6 +245,15 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("C_TDEF_SIZETABLE"_Stz,     C_TDEF_SIZETABLE);
   vAddConstant("C_TDEF_SPACE"_Stz,         C_TDEF_SPACE);
   vAddConstant("C_TDEF_STATUS"_Stz,        C_TDEF_STATUS);
+  vAddConstant("C_TDEF_CATALOG"_Stz,       C_TDEF_CATALOG);
+  vAddConstant("C_TDEF_CLUSTER"_Stz,       C_TDEF_CLUSTER);
+  vAddConstant("C_TDEF_COLUMNS"_Stz,       C_TDEF_COLUMNS);
+  vAddConstant("C_TDEF_INDEXCOLUMNS"_Stz,  C_TDEF_INDEXCOLUMNS);
+  vAddConstant("C_TDEF_INDEXES"_Stz,       C_TDEF_INDEXES);
+  vAddConstant("C_TDEF_NODES"_Stz,         C_TDEF_NODES);
+  vAddConstant("C_TDEF_QUERIES"_Stz,       C_TDEF_QUERIES);
+  vAddConstant("C_TDEF_SCHEMA"_Stz,        C_TDEF_SCHEMA);
+  vAddConstant("C_TDEF_SESSIONS"_Stz,      C_TDEF_SESSIONS);
   vAddConstant("C_TDEF_TABLES"_Stz,        C_TDEF_TABLES);
   vAddConstant("C_TDEF_TABLESIZES"_Stz,    C_TDEF_TABLESIZES);
   vAddConstant("C_TDEF_TOTALUNITS"_Stz,    C_TDEF_TOTALUNITS);

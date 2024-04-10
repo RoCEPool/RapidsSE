@@ -6,6 +6,15 @@
 enum eMD // MetaData Table
 {
   /* 0 */ MD_NONE=0,
+  /* 1 */ MD_CATALOG,
+  /* 2 */ MD_CLUSTER,
+  /* 3 */ MD_COLUMNS,
+  /* 4 */ MD_INDEXCOLUMNS,
+  /* 5 */ MD_INDEXES,
+  /* 6 */ MD_NODES,
+  /* 7 */ MD_QUERIES,
+  /* 8 */ MD_SCHEMA,
+  /* 9 */ MD_SESSIONS,
   /* 1 */ MD_TABLES,
   /*   */ MD_ENUMS
 };

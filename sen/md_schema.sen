@@ -1,0 +1,24 @@
+/*============================================================================*/
+/* md_schema.sen -- Define md__schema table                                   */
+/*============================================================================*/
+
+" md_schema.sen" .verbose
+
+: start::md_schema
+
+  // C_TDEF_SCHEMA
+
+  STD_BOOTFORK_TAG
+  "
+  define table schema (
+    catalogName VARCHAR NOT NULL ,
+    schemaName  VARCHAR NOT NULL
+  ) < metaData > = MetaDataTable[].schema ;
+  "
+  nullptr api::forkChild  api:executeCheck
+
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

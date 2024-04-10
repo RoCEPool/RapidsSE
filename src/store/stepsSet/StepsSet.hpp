@@ -1183,6 +1183,15 @@ void vJobIdLastJobIdFetch(void);
 
   // metaDataTable
   void vMetaDataTablePrint(void);
+  void vMetaDataTableCatalog(void);
+  void vMetaDataTableCluster(void);
+  void vMetaDataTableColumns(void);
+  void vMetaDataTableIndexColumns(void);
+  void vMetaDataTableIndexes(void);
+  void vMetaDataTableNodes(void);
+  void vMetaDataTableQueries(void);
+  void vMetaDataTableSchema(void);
+  void vMetaDataTableSessions(void);
 
   // ErrorMarker[]
   void vErrorMarkerDelete(void);

@@ -1,0 +1,27 @@
+/*============================================================================*/
+/* md_indexColumns.sen -- Define md__indexColumns table                                   */
+/*============================================================================*/
+
+" md_indexColumns.sen" .verbose
+
+: start::md_indexColumns
+
+  // C_TDEF_INDEXCOLUMNS
+
+  STD_BOOTFORK_TAG
+  "
+  define table indexColumns (
+    catalogName VARCHAR NOT NULL ,
+    schemaName  VARCHAR NOT NULL ,
+    tableName   VARCHAR NOT NULL ,
+    indexName   VARCHAR NOT NULL ,
+    columnName  VARCHAR NOT NULL
+  ) < metaData > = MetaDataTable[].indexColumns ;
+  "
+  nullptr api::forkChild  api:executeCheck
+
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

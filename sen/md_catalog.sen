@@ -1,0 +1,23 @@
+/*============================================================================*/
+/* md_catalog.sen -- Define md__catalog table                                 */
+/*============================================================================*/
+
+" md_catalog.sen" .verbose
+
+: start::md_catalog
+
+  // C_TDEF_CATALOG
+
+  STD_BOOTFORK_TAG
+  "
+  define table catalog (
+    catalogName VARCHAR NOT NULL
+  ) < metaData > = MetaDataTable[].catalog ;
+  "
+  nullptr api::forkChild  api:executeCheck
+
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

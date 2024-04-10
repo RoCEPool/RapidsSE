@@ -1,0 +1,23 @@
+/*============================================================================*/
+/* md_cluster.sen -- Define md__cluster table                                   */
+/*============================================================================*/
+
+" md_cluster.sen" .verbose
+
+: start::md_cluster
+
+  // C_TDEF_CLUSTER
+
+  STD_BOOTFORK_TAG
+  "
+  define table cluster (
+    clusterId   INTEGER NOT NULL
+  ) < metaData > = MetaDataTable[].cluster ;
+  "
+  nullptr api::forkChild  api:executeCheck
+
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

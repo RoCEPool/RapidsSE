@@ -31,11 +31,20 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_MetaDataTable(void)
 {
-  vAddStep("MetaDataTable[].print"_Stz,    &Step::vMetaDataTablePrint);
+  vAddStep("MetaDataTable[].print"_Stz,         &Step::vMetaDataTablePrint);
+  vAddStep("MetaDataTable[].catalog"_Stz,       &Step::vMetaDataTableCatalog);
+  vAddStep("MetaDataTable[].cluster"_Stz,       &Step::vMetaDataTableCluster);
+  vAddStep("MetaDataTable[].columns"_Stz,       &Step::vMetaDataTableColumns);
+  vAddStep("MetaDataTable[].indexColumns"_Stz,  &Step::vMetaDataTableIndexColumns);
+  vAddStep("MetaDataTable[].indexes"_Stz,       &Step::vMetaDataTableIndexes);
+  vAddStep("MetaDataTable[].nodes"_Stz,         &Step::vMetaDataTableNodes);
+  vAddStep("MetaDataTable[].queries"_Stz,       &Step::vMetaDataTableQueries);
+  vAddStep("MetaDataTable[].schema"_Stz,        &Step::vMetaDataTableSchema);
+  vAddStep("MetaDataTable[].sessions"_Stz,      &Step::vMetaDataTableSessions);
 }
 
 /*----------------------------------------------------------------------------*/
-/* MetaDataTable[].print -- delete an instance of table                       */
+/* MetaDataTable[].print --                                                   */
 /*----------------------------------------------------------------------------*/
 void Step::vMetaDataTablePrint(void)
 {
@@ -98,6 +107,96 @@ void Step::vMetaDataTablePrint(void)
   }
 
   AM::OP::vPipeToNextOp(m_pOp,pOperand,this);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* MetaDataTable[].catalog --                                                 */
+/*----------------------------------------------------------------------------*/
+void Step::vMetaDataTableCatalog(void)
+{
+  ENTRY();
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* MetaDataTable[].cluster --                                                 */
+/*----------------------------------------------------------------------------*/
+void Step::vMetaDataTableCluster(void)
+{
+  ENTRY();
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* MetaDataTable[].columns --                                                 */
+/*----------------------------------------------------------------------------*/
+void Step::vMetaDataTableColumns(void)
+{
+  ENTRY();
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* MetaDataTable[].indexColumns --                                            */
+/*----------------------------------------------------------------------------*/
+void Step::vMetaDataTableIndexColumns(void)
+{
+  ENTRY();
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* MetaDataTable[].indexes --                                                 */
+/*----------------------------------------------------------------------------*/
+void Step::vMetaDataTableIndexes(void)
+{
+  ENTRY();
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* MetaDataTable[].nodes --                                                   */
+/*----------------------------------------------------------------------------*/
+void Step::vMetaDataTableNodes(void)
+{
+  ENTRY();
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* MetaDataTable[].queries --                                                 */
+/*----------------------------------------------------------------------------*/
+void Step::vMetaDataTableQueries(void)
+{
+  ENTRY();
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* MetaDataTable[].schema --                                                  */
+/*----------------------------------------------------------------------------*/
+void Step::vMetaDataTableSchema(void)
+{
+  ENTRY();
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* MetaDataTable[].sessions --                                                */
+/*----------------------------------------------------------------------------*/
+void Step::vMetaDataTableSessions(void)
+{
+  ENTRY();
 
   EXIT();
 }

@@ -7,7 +7,16 @@
 Stz* aMD[MD_ENUMS]
 {
   /* 0 */ "NONE"_Stz,
-  /* 1 */ "MD_TABLES"_Stz,
+  /* 1 */ "MD_CATALOG"_Stz,
+  /* 2 */ "MD_CLUSTER"_Stz,
+  /* 3 */ "MD_COLUMNS"_Stz,
+  /* 4 */ "MD_INDEXCOLUMNS"_Stz,
+  /* 5 */ "MD_INDEXES"_Stz,
+  /* 6 */ "MD_NODES"_Stz,
+  /* 7 */ "MD_QUERIES"_Stz,
+  /* 8 */ "MD_SCHEMA"_Stz,
+  /* 9 */ "MD_SESSIONS"_Stz,
+  /* 10 */ "MD_TABLES"_Stz,
 //  /*   */ "MD_ENUMS"_Stz,
 };
 

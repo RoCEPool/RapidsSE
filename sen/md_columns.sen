@@ -1,0 +1,29 @@
+/*============================================================================*/
+/* md_columns.sen -- Define md__columns table                                   */
+/*============================================================================*/
+
+" md_columns.sen" .verbose
+
+: start::md_columns
+
+  // C_TDEF_COLUMNS
+
+  STD_BOOTFORK_TAG
+  "
+  define table columns (
+    catalogName VARCHAR NOT NULL ,
+    schemaName  VARCHAR NOT NULL ,
+    tableName   VARCHAR NOT NULL ,
+    type        INTEGER NOT NULL ,
+    scale       INTEGER NOT NULL ,
+    precision   INTEGER NOT NULL ,
+    nullable    BOOLEAN NOT NULL
+  ) < metaData > = MetaDataTable[].columns ;
+  "
+  nullptr api::forkChild  api:executeCheck
+
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

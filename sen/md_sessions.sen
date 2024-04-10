@@ -1,0 +1,25 @@
+/*============================================================================*/
+/* md_sessions.sen -- Define md__sessions table                                   */
+/*============================================================================*/
+
+" md_sessions.sen" .verbose
+
+: start::md_sessions
+
+  // C_TDEF_SESSIONS
+
+  STD_BOOTFORK_TAG
+  "
+  define table sessions (
+    sessionId   INTEGER NOT NULL ,
+    connect     BOOLEAN NOT NULL ,
+    status      VARCHAR NOT NULL
+  ) < metaData > = MetaDataTable[].sessions ;
+  "
+  nullptr api::forkChild  api:executeCheck
+
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
