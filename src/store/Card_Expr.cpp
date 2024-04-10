@@ -733,7 +733,7 @@ void Card_Expr::vPrint(Ribbon* pRibbon, i8 iDepth)
     if (i_Facet_secondary == i_Facet_primary)
       continue;
     Facet* aFacet = pSymbol->aFacet(i_Facet_secondary);
-    pRibbon->vSprintSnippet(true, "%s~%lld"_Stz,
+    pRibbon->vSprintSnippet(true, "<%s~%lld"_Stz,
                             aFacet->m_sFacet.szStz(),
                             i_Facet_secondary);
   }

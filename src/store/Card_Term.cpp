@@ -335,7 +335,11 @@ void Card_Term::vX_expCol_To_tblCol(CardIter* pCI)
       pSymbol_this->vDeleteFacet(SF_EXP_COL);
       vMark1(MARK_CHANGED);
 
+#ifdef Z_NO_RPNCALC
+      if (pCI->E.p_expr && pCI->E.p_expr->bIsScalarCol()) {
+#else
       if (pCI->E.p_expr && pCI->E.p_expr->bIsScalarCol() && pCI->E.p_rpnCalc) {
+#endif
         pCI->E.p_expr->pSymbol()->vApplyFacet(SF_TBL_COL, pSymbol_term0->szFacet(SF_TBL_COL));
 
 //      if (p_expr->bHasFacet(SF_NMD_COL))
