@@ -124,19 +124,6 @@ void Card_Where::vMoveWhereConjToTableFilter(CardIter* pCI, Stz* szWithMark) {
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* burst <where>/<filter>/<expr>/<rpnCalc>                                    */
-/*----------------------------------------------------------------------------*/
-void Card_Where::vBurstAssembly(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  pCI->E.p_where   = this;
-  pCI->E.p_filter  = pCI->E.p_where->pSub_filter(C_NOT_NULL);
-  pCI->E.p_expr    = pCI->E.p_filter->pSub_expr(C_NOT_NULL);
-  pCI->E.p_rpnCalc = pCI->E.p_expr->pSub_rpnCalc(C_NOT_NULL);
-}
-
-/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Card_Where::vEarlyProject_add_transients(CardIter* pCI)

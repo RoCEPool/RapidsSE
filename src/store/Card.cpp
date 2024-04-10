@@ -3750,28 +3750,6 @@ Card_RowSize* Card::pSub_rowSize(bool bNotNull)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#include "Card_RpnCalc.hpp"
-Card_RpnCalc* Card::pSub_rpnCalc(bool bNotNull)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-#ifdef Z_NO_RPNCALC
-  vDebugPoint();
-#endif
-
-  Card_RpnCalc* p_rpnCalc =
-      _pCard_RpnCalc(pFindSubCard(CK_RPNCALC));
-
-  if (bNotNull && !p_rpnCalc) {
-    NEVER_REACH
-  }
-
-  return p_rpnCalc;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 #include "Card_Scan.hpp"
 Card_Scan* Card::pSub_scan(bool bNotNull)
 {

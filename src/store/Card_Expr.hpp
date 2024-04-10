@@ -57,9 +57,6 @@ namespace STORE
 
     bool bSameAs(Card_Expr* pExpr_arg);
 
-    void vTransfer(STORE::Card *pChild_src, eSF eSymbol_limit);
-
-
     void vUpdate_expCol(CardIter* pCI, Card_Emit* p_arriving);
 
     void vX_tblCol_To_expCol(CardIter* pCI);

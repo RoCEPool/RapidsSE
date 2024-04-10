@@ -18,7 +18,7 @@
 #include "Ribbon.hpp"
 #include "Symbol.hpp"
 
-//#define Z_NO_RPNCALC
+#define Z_NO_RPNCALC
 
 namespace STORE
 {
@@ -528,7 +528,6 @@ namespace STORE
     Card_Required*      pSub_required(bool bNotNull=false);
     Card_RowCount*      pSub_rowCount(bool bNotNull=false);
     Card_RowSize*       pSub_rowSize(bool bNotNull=false);
-    Card_RpnCalc*       pSub_rpnCalc(bool bNotNull=false);
     Card_Scan*          pSub_scan(bool bNotNull=false);
     Card_Section*       pSub_section(bool bNotNull=false);
     Card_Spare*         pSub_spare(bool bNotNull=false);
