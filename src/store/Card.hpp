@@ -135,7 +135,6 @@ namespace STORE
   class Card_StreamSet;
   class Card_SubQuery;
   class Card_SubSet;
-  class Card_Synthesis;
 
   class Card_Table;
   class Card_TableInfo;
@@ -543,7 +542,6 @@ namespace STORE
     Card_StreamPtn*     pSub_streamPtn(bool bNotNull=false);
     Card_StreamSet*     pSub_streamSet(bool bNotNull=false);
     Card_SubQuery*      pSub_subQuery(bool bNotNull=false);
-    Card_Synthesis*     pSub_synthesis(bool bNotNull=false);
     Card_Table*         pSub_table(bool bNotNull=false);
     Card_TableInfo*     pSub_tableInfo(bool bNotNull=false);
     Card_TableNm*       pSub_tableNm(bool bNotNull=false);

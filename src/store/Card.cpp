@@ -4014,24 +4014,6 @@ Card_SubQuery* Card::pSub_subQuery(bool bNotNull)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#include "Card_Synthesis.hpp"
-Card_Synthesis* Card::pSub_synthesis(bool bNotNull)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_Synthesis* pSub_synthesis =
-      _pCard_Synthesis(pFindSubCard(CK_SYNTHESIS));
-
-  if (bNotNull && !pSub_synthesis) {
-    NEVER_REACH
-  }
-
-  return pSub_synthesis;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 #include "Card_Table.hpp"
 Card_Table* Card::pSub_table(bool bNotNull)
 {

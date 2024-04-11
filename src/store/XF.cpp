@@ -10,7 +10,6 @@
 
 #include "XF_Epilog_Add_hash_cast.hpp"
 #include "XF_Epilog_Add_inflate.hpp"
-#include "XF_Epilog_Append_synthesis.hpp"
 #include "XF_Epilog_Cull_facet.hpp"
 #include "XF_Epilog_Determine_Columns.hpp"
 #include "XF_Epilog_Fuse_project.hpp"
