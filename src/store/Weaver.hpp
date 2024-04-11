@@ -49,7 +49,7 @@ namespace STORE
   private:
   
     void vPipeline    (void);
-		void vPtnConsume  (void);
+		void vPtnConsume  (i8 iThreads);
 		void vPtnSend     (void);
     void vTags        (void);
     void vBegin       (void);

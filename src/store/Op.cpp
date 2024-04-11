@@ -54,7 +54,7 @@ Op::Op(Stream* p_Stream, OpSpec* p_OpSpec)
 : Operand(CN_OP)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
+
   RASSERT(p_Stream);
   RASSERT(p_OpSpec);
 
@@ -62,6 +62,13 @@ Op::Op(Stream* p_Stream, OpSpec* p_OpSpec)
   m_p_OpSpec = p_OpSpec;
 
   m_pTask   = nullptr;
+
+	m_nSecondaryTasks = 0;
+	for (i8 iIndex = 0; iIndex < C_MAX_SECONDARY; iIndex++) {
+		m_pSecondaryTasks[iIndex] = nullptr;
+		m_pPipeInSecondary[iIndex] = nullptr;
+	}
+
 
   //m_xOpId
 
@@ -72,10 +79,10 @@ Op::Op(Stream* p_Stream, OpSpec* p_OpSpec)
   m_bTraceOp  = false;
   m_bTraceAck = false;
   m_bAllocate = true;
-  
+
   m_pEvMgr    = new EvMgr;
-  
-  m_pPipeIn   = new PipeIn;
+
+  m_pPipeIn   = nullptr; //new PipeIn;
 
   // -- - -- - -- - -- - -- - -- - --
 
@@ -84,10 +91,12 @@ Op::Op(Stream* p_Stream, OpSpec* p_OpSpec)
   m_iRobin      = 0;
   m_iLocalRobin = 0;
 
+	m_iPtnThreadRobin   = 0;
+
   m_bPulsedLimit = false;
   m_iWorkQuanta = 0;
   m_iWorkDone = 0;
-  
+
   m_iMetricsQueued = 0;
 
   m_pMetricsStats = nullptr;
@@ -95,11 +104,11 @@ Op::Op(Stream* p_Stream, OpSpec* p_OpSpec)
   _checkInitialised_(CN_OP);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
+
   SMA<Job,CN_JOB> pPipelineJob = p_Stream->pPipeline()->pPipelineJob();
-  
+
   TagSet* pJobTags = AM::pJobTags(pPipelineJob);
-  
+
   if (AM::TRACE::bVerbose(C_VB_BOOT,C_VB_OP) ||
       pJobTags->bHasName(C_TAG_TRACEOP)) {
     m_bTraceOp = true;
@@ -110,7 +119,7 @@ Op::Op(Stream* p_Stream, OpSpec* p_OpSpec)
   }
 
   ++ gixOp;
-  
+
   _postcondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
 }
 
@@ -121,76 +130,110 @@ Op::~Op(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   // TODO: Arjun - If Operand is a bufferId, don't dereference it
+
   bool bAssert = false;
-  if (m_pPipeIn->pQueueLeft()->nItems() != 0) {
-    //vTrace("Operand Queue not empty\n"_Stz)
 
-    Operand *pOperand = m_pPipeIn->pQueueLeft()->pPopQueue();
-    while (pOperand) {
-      if (BufferId::bIsBufferId(pOperand)) {
-        pOperand = _pOperand(AM::pHashMap()->pValueAt(pOperand));
-      }
-      if (pOperand->bIsMarker()) {
-        if ((_pMarker(pOperand))->eOpMarker() == OM_CHILDEXIT)
-          AM::vDeleteOperand(pOperand, nullptr);
-        }
-        else {
-          bAssert = true;
-          vTrace("Operand Queue for OP %s has %s\n"_Stz, szOpNm(), AM::pOperandName(pOperand));
-        }
+	for (i8 iIndex = 0; iIndex < m_nSecondaryTasks; iIndex++) {
 
-      pOperand = m_pPipeIn->pQueueLeft()->pPopQueue();
-    }
-    if (bAssert)
-      RASSERT(0);
-  }
 
-  if (m_pPipeIn->pQueueRight()->nItems() != 0) {
-    vTrace("Operand Queue not empty\n"_Stz);
-    Operand *pOperand = m_pPipeIn->pQueueRight()->pPopQueue();
-    while (pOperand) {
-      vTrace("Operand Queue for OP %s has %s\n"_Stz, szOpNm(), AM::pOperandName(pOperand));
-      pOperand = m_pPipeIn->pQueueRight()->pPopQueue();
-    }
-    RASSERT(0);
-  }
+		if (m_pPipeInSecondary[iIndex]->pQueueLeft()->nItems() != 0) {
+			//vTrace("Operand Queue not empty\n"_Stz)
 
-  // drain the OOO queue
-  if (m_pPipeIn->pQueueOoO()->nItems() != 0) {
-    vTrace("Operand OOO Queue not empty\n"_Stz);
-    Operand *pOperand = m_pPipeIn->pQueueOoO()->pPopQueue();
-    while (pOperand) {
-      //vTrace("Operand Queue for OP %s has %s\n"_Stz, szOpNm(), AM::pOperandName(pOperand));
-      AM::vDeleteOperand(pOperand, nullptr);
-      pOperand = m_pPipeIn->pQueueOoO()->pPopQueue();
-    }
-  }
+			Operand *pOperand = m_pPipeInSecondary[iIndex]->pQueueLeft()->pPopQueue();
+			while (pOperand) {
+				if (BufferId::bIsBufferId(pOperand)) {
+					pOperand = _pOperand(AM::pHashMap()->pValueAt(pOperand));
+				}
+				if (pOperand->bIsMarker()) {
+					if ((_pMarker(pOperand))->eOpMarker() == OM_CHILDEXIT)
+						AM::vDeleteOperand(pOperand, nullptr);
+				} else {
+					bAssert = true;
+					vTrace("Operand Queue for OP %s has %s\n"_Stz, szOpNm(), AM::pOperandName(pOperand));
+				}
+
+				pOperand = m_pPipeInSecondary[iIndex]->pQueueLeft()->pPopQueue();
+			}
+			if (bAssert)
+				RASSERT(0);
+		}
+
+		if (m_pPipeInSecondary[iIndex]->pQueueRight()->nItems() != 0) {
+			vTrace("Operand Queue not empty\n"_Stz);
+			Operand *pOperand = m_pPipeInSecondary[iIndex]->pQueueRight()->pPopQueue();
+			while (pOperand) {
+				vTrace("Operand Queue for OP %s has %s\n"_Stz, szOpNm(), AM::pOperandName(pOperand));
+				pOperand = m_pPipeInSecondary[iIndex]->pQueueRight()->pPopQueue();
+			}
+			RASSERT(0);
+		}
+
+
+		// drain the OOO queue
+		if (m_pPipeInSecondary[iIndex]->pQueueOoO()->nItems() != 0) {
+			vTrace("Operand OOO Queue not empty\n"_Stz);
+			Operand *pOperand = m_pPipeInSecondary[iIndex]->pQueueOoO()->pPopQueue();
+			while (pOperand) {
+				//vTrace("Operand Queue for OP %s has %s\n"_Stz, szOpNm(), AM::pOperandName(pOperand));
+				AM::vDeleteOperand(pOperand, nullptr);
+				pOperand = m_pPipeInSecondary[iIndex]->pQueueOoO()->pPopQueue();
+			}
+		}
+
+		delete m_pPipeInSecondary[iIndex];
+	}
 
   delete m_pEvMgr;
 
   //delete m_pOperandWatch;
 
-  delete m_pPipeIn;
-    
+  //delete m_pPipeIn;
+    /*
   if (m_pTask.bIsNotNull()) {
     Task* pTask = *m_pTask;
-    
+
     while (TS_RETIRED != m_pTask->eState() ) {
       vTrace("Napping\n"_Stz);
       AM::vNapMsec(10, eGetClassNo());
     }
 
-    
+
     pTask->vGrabTaskLock((Stz*)__func__);
     RASSERT(TS_RETIRED == pTask->eState());
     pTask->vState(TS_DELETING);
     pTask->vDropTaskLock((Stz*)__func__);
-    
+
     m_pTask = nullptr;
-    
+
     delete pTask;
 
   }
+*/
+
+	for (i8 iIndex = 0; iIndex < m_nSecondaryTasks; iIndex++) {
+
+		Task* pTask = m_pSecondaryTasks[iIndex];
+
+		while (TS_RETIRED != pTask->eState() ) {
+			vTrace("Napping\n"_Stz);
+			AM::vNapMsec(10, eGetClassNo());
+		}
+
+
+		pTask->vGrabTaskLock((Stz*)__func__);
+		RASSERT(TS_RETIRED == pTask->eState());
+		pTask->vState(TS_DELETING);
+		pTask->vDropTaskLock((Stz*)__func__);
+
+		if (pTask->bIsSecondary())
+		  vTrace("Deleting task %p\n"_Stz, pTask);
+
+		m_pSecondaryTasks[iIndex] = nullptr;
+
+		delete pTask;
+	}
+
+	m_pTask = nullptr;
 
   if (m_pMetricsStats)
     delete m_pMetricsStats;
@@ -210,7 +253,7 @@ Op::~Op(void) noexcept(false)
 void Op::vAckJobTask(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
+
   //Task* pJobTask = m_p_PipelineOfOp->pPipelineJob()->pTask();
   //RASSERT(m_pTask->pInvoker() == pJobTask);
 
@@ -258,12 +301,64 @@ void Op::vAckJobTask(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* ack the job task                                                           */
+/*----------------------------------------------------------------------------*/
+void Op::vAckJobTask(Task* pTask)
+{
+	_precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+
+	//Task* pJobTask = m_p_PipelineOfOp->pPipelineJob()->pTask();
+	//RASSERT(m_pTask->pInvoker() == pJobTask);
+
+	SP_Op spOp;
+	i8 nAcksWereRemaining;
+	Task* pJobTask = pTask->pJobTask();
+
+	if (m_bTraceOp) {
+
+		if (AM::TRACE::bVBlong()) {
+			SP_Op spOp;
+
+			vTraceM("%s "
+							"%-18s pipelineJob=%p\n"_Stz, spOp.szLeading(this), __func__, pOuterJobOfOp()
+			);
+		} else {
+			vTrace("Op %s (%s (N%lld) (P%02lld)): acking invoking job\n"_Stz,
+						 szOpNm(),
+						 m_p_Stream->pStage()->szStageNm(),
+						 iNodeId(),
+						 tLglPtn().iAsI8());
+		}
+	}
+
+	if (m_bTraceOp && AM::TRACE::bVBlong())
+		spOp.szLeading(this);
+
+	AM::vAckWaitingTask(pJobTask, pTask, nAcksWereRemaining);
+
+	if (m_bTraceOp && AM::TRACE::bVBlong()) {
+		vTraceM("%s "
+						"%-18s nAcksWereRemaining=%lld\n"_Stz
+						, spOp.szAck(this), __func__, nAcksWereRemaining
+		);
+	}
+
+	if (m_bTraceAck)
+		vTrace("Op %s (%s (N%lld) (P%02lld)): acking invoking job (acksRemaining : %lld)\n"_Stz,
+					 szOpNm(),
+					 m_p_Stream->pStage()->szStageNm(),
+					 iNodeId(),
+					 tLglPtn().iAsI8(),
+					 nAcksWereRemaining);
+
+}
+/*----------------------------------------------------------------------------*/
 /* get ack job on end marker                                                  */
 /*----------------------------------------------------------------------------*/
 void Op::vAddWorkDone(i8 iWorkDone)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
+
   m_iWorkDone += iWorkDone;
 }
 
@@ -328,7 +423,7 @@ void Op::vAppendLeft(Operand* pOperand, Task* pTriggeringTask)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for biding op/task
-  
+
   eTS eTaskState = (eTS)AM::iTaskState(m_pTask);
   if (TS_BIDING_OPERAND == eTaskState) {
     AM::TASK::vTriggerBidingOperand(m_pTask, pTriggeringTask);
@@ -341,12 +436,112 @@ void Op::vAppendLeft(Operand* pOperand, Task* pTriggeringTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* append operand to this op's left operand queue                             */
+/*----------------------------------------------------------------------------*/
+void Op::vAppendLeftMulti(Operand* pOperand, Task* pTriggeringTask)
+{
+	_precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+
+	bool bBuffer = false;
+
+	// TODO: Arjun remove tmp BufferId check...
+	if( ! BufferId::bIsBufferId(pOperand)) {
+		if (AM::OPERAND::bIsOoO(pOperand)) {
+			vAppendOoOMulti(pOperand, pTriggeringTask);
+			return;
+		}
+
+		AM::METRICS::vDerefMetrics((i8) pOperand, pOperand->eGetClassNo(), DR_ENQUEUE);
+
+		// TODO: Arjun - Hack to convert Buffer address to BufferId before appending to queue
+		if (DataBuffer::bIsDataBuffer(pOperand->eGetClassNo())) {
+			//vTrace("vAppendLeft() converting Operator to bufferId\n"_Stz);
+			// Replace RowBuffer address with BufferId and append to queue
+			DataBuffer *pDataBuffer = _pDataBuffer(pOperand);
+			// Assert Prev and Next pointers are null
+			BufferId oBufferId = pDataBuffer->oGetBufferId();
+			pOperand = (Operand *) oBufferId.m_pvAsAddress;
+			AM::pHashMap()->vDropKeyLock(pOperand);
+			bBuffer = true;
+		}
+	}
+	else {
+		bBuffer = true;
+	}
+//  else
+//  {
+//    // We are done with this buffer, release its lock so it is allowed to be paged out
+//    // TODO: Arjun - Change to BufferId function
+//    vTrace("vAppendLeft() got bufferId\n"_Stz);
+//
+//    AM::pHashMap()->vDropKeyLock(pOperand);
+//  }
+
+  if (bBuffer) {
+		i8 i_PtnThreadRobinNext = iPtnThreadRobinNext()%m_nSecondaryTasks;
+		//vTrace("i_PtnThreadRobinNext = %lld\n"_Stz, i_PtnThreadRobinNext);
+		Task* pTask = m_pSecondaryTasks[i_PtnThreadRobinNext];
+		AM::vGrabTaskLock(pTask,(Stz*)__func__);
+		RASSERT(AM::bTaskIsLocked(pTask));
+
+		i8 nOperands = m_pPipeInSecondary[i_PtnThreadRobinNext]->pQueueLeft()->iAppendOperand(pOperand);
+
+		if (pOpLogicUnit()->m_xpStats.bIsNotNull()) {
+			if (nOperands > pOpLogicUnit()->m_xpStats->m_nMaxQs)
+				pOpLogicUnit()->m_xpStats->m_nMaxQs = nOperands;
+		}
+		AM::vOperandsInc();
+
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		// test for biding op/task
+
+		eTS eTaskState = (eTS)AM::iTaskState(pTask);
+		if (TS_BIDING_OPERAND == eTaskState) {
+			AM::TASK::vTriggerBidingOperand(pTask, pTriggeringTask);
+			return;
+		}
+		else {
+			AM::vDropTaskLock(pTask,(Stz*)__func__);
+			return;
+		}
+	}
+	else {
+		for (i8 iTask = 0; iTask < m_nSecondaryTasks; iTask++) {
+			Task *pTask = m_pSecondaryTasks[iTask];
+			AM::vGrabTaskLock(pTask, (Stz *) __func__);
+			RASSERT(AM::bTaskIsLocked(pTask));
+
+			i8 nOperands = m_pPipeInSecondary[iTask]->pQueueLeft()->iAppendOperand(pOperand);
+
+			if (pOpLogicUnit()->m_xpStats.bIsNotNull()) {
+				if (nOperands > pOpLogicUnit()->m_xpStats->m_nMaxQs)
+					pOpLogicUnit()->m_xpStats->m_nMaxQs = nOperands;
+			}
+			AM::vOperandsInc();
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+			// test for biding op/task
+
+			eTS eTaskState = (eTS) AM::iTaskState(pTask);
+			if (TS_BIDING_OPERAND == eTaskState) {
+				AM::TASK::vTriggerBidingOperand(pTask, pTriggeringTask);
+				//return;
+			} else {
+				AM::vDropTaskLock(pTask, (Stz *) __func__);
+				//return;
+			}
+		}
+	}
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* append operand to this op's operand out-of-order queue                     */
 /*----------------------------------------------------------------------------*/
 void Op::vAppendOoO(Operand* pOperand, Task* pTriggeringTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
+
   AM::METRICS::vDerefMetrics((i8)pOperand,pOperand->eGetClassNo(),DR_ENQUEUE);
 
   vGrabTaskLock();
@@ -370,7 +565,7 @@ void Op::vAppendOoO(Operand* pOperand, Task* pTriggeringTask)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for biding op/task
-  
+
   eTS eTaskState = (eTS)AM::iTaskState(m_pTask);
   if (TS_BIDING_OPERAND == eTaskState) {
     AM::TASK::vTriggerBidingOperand(m_pTask, pTriggeringTask);
@@ -383,9 +578,54 @@ void Op::vAppendOoO(Operand* pOperand, Task* pTriggeringTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* append operand to this op's operand out-of-order queue                     */
+/*----------------------------------------------------------------------------*/
+void Op::vAppendOoOMulti(Operand* pOperand, Task* pTriggeringTask)
+{
+	_precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+
+	AM::METRICS::vDerefMetrics((i8)pOperand,pOperand->eGetClassNo(),DR_ENQUEUE);
+
+	for (i8 iTask = 0; iTask < m_nSecondaryTasks; iTask++) {
+
+		Task *pTask = m_pSecondaryTasks[iTask];
+		AM::vGrabTaskLock(pTask, (Stz *) __func__);
+		RASSERT(AM::bTaskIsLocked(pTask));
+
+		IGNORE_RETURN(m_pPipeInSecondary[iTask]->pQueueOoO()->iAppendOperand(pOperand));
+
+		AM::vOperandsInc();
+
+		if (pOperand->bIsMarker())
+			RASSERT(pOperand->bIsMarker());
+		Marker *pMarker = _pMarker(pOperand);
+
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		/// if NODELOSS, latch the opertor queue
+		// no more operands can be accepted !!!
+		if (pMarker->eOpMarker() == OM_NODELOSSABORT) {
+			m_pPipeInSecondary[iTask]->pQueueOoO()->vLatch(true);
+			m_pPipeInSecondary[iTask]->pQueueLeft()->vLatch(true);
+		}
+
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		// test for biding op/task
+
+		eTS eTaskState = (eTS) AM::iTaskState(pTask);
+		if (TS_BIDING_OPERAND == eTaskState) {
+			AM::TASK::vTriggerBidingOperand(pTask, pTriggeringTask);
+			return;
+		} else {
+			AM::vDropTaskLock(pTask, (Stz *) __func__);
+			return;
+		}
+	}
+}
+
+/*----------------------------------------------------------------------------*/
 /* create task for op                                                         */
 /*----------------------------------------------------------------------------*/
-void Op::vCreateTaskForOp(bool bIsSecondary)
+Task* Op::pCreateTaskForOp(bool bIsSecondary)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
 
@@ -396,7 +636,7 @@ void Op::vCreateTaskForOp(bool bIsSecondary)
 				 );
 
   Word* pEntryWord = this->pEntryWord();
-  
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   pTask = new Task(this->szOpNm(),this);
@@ -405,6 +645,8 @@ void Op::vCreateTaskForOp(bool bIsSecondary)
   vTask(pTask);
 
   pTask->vSetInxPtr(pEntryWord);
+
+	return pTask;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -413,7 +655,7 @@ void Op::vCreateTaskForOp(bool bIsSecondary)
 eYX Op::eCrossTopology(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
+
   return m_p_OpSpec->eCrossTopology();
 }
 
@@ -423,7 +665,7 @@ eYX Op::eCrossTopology(void)
 eEV Op::eCurEvent(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
+
   return m_pEvMgr->m_eCurEvent;
 }
 
@@ -433,11 +675,11 @@ eEV Op::eCurEvent(void)
 Word* Op::pCurWord(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
+
   Task* pTask = MY::pTask();
-  
+
   Word* pCurWord = pTask->pCurWord();
-  
+
   return pCurWord;
 }
 
@@ -447,13 +689,13 @@ Word* Op::pCurWord(void)
 Deck* Op::pDeck(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
+
   Deck* pDeck = m_p_Stream->pDeck();
-  
+
   return pDeck;
 }
 
-  
+
 /*----------------------------------------------------------------------------*/
 /* sen . print                                                                */
 /*----------------------------------------------------------------------------*/
@@ -464,12 +706,12 @@ void Op::vDotPrint(Stz* szText)
   vTrace("[%s: op %10s] "
          "%s"
          "\n"_Stz
-         
+
          ,AM::pGrid()->pThisNode()->szNodeNm()
          ,szOpNm()
-         
+
          ,szText
-         
+
          ,C_VARGS_END
          );
 }
@@ -480,7 +722,7 @@ void Op::vDotPrint(Stz* szText)
 void Op::vDropTaskLock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-    
+
   AM::vDropTaskLock(m_pTask,(Stz*)__func__);
 }
 
@@ -490,7 +732,7 @@ void Op::vDropTaskLock(void)
 void Op::vDump(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
+
   vTrace("Op\n"_Stz);
   vTrace("--\n"_Stz);
   vTrace("%p:\n"_Stz,this);
@@ -505,19 +747,19 @@ void Op::vDump(void)
 Word* Op::pEntryWord(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
+
   Dic* pDicRoot = AM::DIC::pRoot();
-     
+
   s32 sEntryWord(szOpNm());
   sEntryWord.vConcat("_op"_Stz);
-  
+
   Word* pEntryWord = pDicRoot->pFindWord(sEntryWord);
-  
+
   if (! pEntryWord) {
     vTrace("ERROR: Could not find entry word: %s\n"_Stz, sEntryWord.szStz());
     RASSERT(pEntryWord);
   }
-  
+
   return pEntryWord;
 }
 
@@ -527,9 +769,9 @@ Word* Op::pEntryWord(void)
 i8 Op::nEventCount(eEV eEvent)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
+
   i8 nCount = m_pEvMgr->m_naEventCount[eEvent];
-  
+
   return nCount;
 }
 
@@ -542,6 +784,10 @@ void Op::vEventCountInc(eEV eEvent)
 
   m_pEvMgr->m_eCurEvent = eEvent;
 
+	if (eEvent == EV_M_START) {
+		//if (m_pEvMgr->m_naEventCount[m_pEvMgr->m_eCurEvent])
+		//	vTrace("Ummm\n"_Stz);
+	}
   m_pEvMgr->m_naEventCount[m_pEvMgr->m_eCurEvent]++;
 
   u4 uProcId;
@@ -555,11 +801,11 @@ void Op::vEventCountInc(eEV eEvent)
 Word* Op::pEventHandler(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
+
   Task* pTask = MY::pTask();
-  
+
   Word* pEventHandler = pTask->pEventHandler();
-  
+
   return pEventHandler;
 }
 
@@ -569,9 +815,9 @@ Word* Op::pEventHandler(void)
 Word* Op::pEventHandler(i8 i_OperandKind)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
+
   Word* pHandler = m_pEvMgr->m_pEventHandlers->pGet((eEV) i_OperandKind);
-  
+
   return pHandler;
 }
 
@@ -581,7 +827,7 @@ Word* Op::pEventHandler(i8 i_OperandKind)
 void Op::vEventHandler(i8 i_OperandKind, Word* pHandler)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
+
   m_pEvMgr->m_pEventHandlers->vSet((eEV) i_OperandKind, pHandler);
 }
 
@@ -591,7 +837,7 @@ void Op::vEventHandler(i8 i_OperandKind, Word* pHandler)
 EvMgr* Op::pEvMgr(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-    
+
   return m_pEvMgr;
 }
 
@@ -601,7 +847,7 @@ EvMgr* Op::pEvMgr(void)
 void Op::vGrabTaskLock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
+
   AM::vGrabTaskLock(m_pTask,(Stz*)__func__);
 }
 
@@ -611,7 +857,7 @@ void Op::vGrabTaskLock(void)
 void Op::vIncWorkDone(void)
 {
  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
+
   m_iWorkDone++;
 }
 
@@ -621,7 +867,7 @@ void Op::vIncWorkDone(void)
 bool Op::bIsLocked(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
+
   bool bLocked = AM::bTaskIsLocked(m_pTask);
 
   return bLocked;
@@ -716,14 +962,14 @@ bool Op::bIsEventValid(i8 i_OperandKind, i8 i_BufferType)
           return false;
         }
       }
-      
+
       // should not have received EV_M_EOS's > EV_M_DATAPULSE's
       if ( m_pEvMgr->m_naEventCount[EV_M_EOS] > m_pEvMgr->m_naEventCount[EV_M_DATAPULSE]) {
         vTrace("%s: %s arrived after EV_M_EOS and no new EV_M_DATAPULSE\n"_Stz,
                szOpNm(), aEV[i_OperandKind]);
         return false;
       }
-      
+
       break;
 
     case EV_D_PDSROWBUFFER:
@@ -771,7 +1017,7 @@ bool Op::bIsEventValid(i8 i_OperandKind, i8 i_BufferType)
                szOpNm(), aEV[i_OperandKind]);
         return false;
       }
-      
+
       // should not have received a EV_M_END
       if ( m_pEvMgr->m_naEventCount[EV_M_END]) {
         vTrace("%s: %s arrived after EV_M_END\n"_Stz,
@@ -787,13 +1033,13 @@ bool Op::bIsEventValid(i8 i_OperandKind, i8 i_BufferType)
                szOpNm(), aEV[i_OperandKind]);
         return false;
       }
-      
+
       // should not have received a EV_M_EOS
       if ( m_pEvMgr->m_naEventCount[EV_M_EOS]) {
         vTrace("%s: multiple EV_M_EOS arrived\n"_Stz, szOpNm());
         return false;
       }
-      
+
       // should not have received a EV_M_DATAPULSE
       if ( ! m_pEvMgr->m_naEventCount[EV_M_DATAPULSE]) {
         vTrace("%s: %s arrived without a prior EV_M_DATAPULSE\n"_Stz,
@@ -809,7 +1055,7 @@ bool Op::bIsEventValid(i8 i_OperandKind, i8 i_BufferType)
         return false;
       }
       break;
-      
+
     case EV_M_ERRORED:
       // Only StartOP receives an EV_M_ERRORED
       if ( ! szOpNm()->bSame("start"_Stz) ) {
@@ -817,7 +1063,7 @@ bool Op::bIsEventValid(i8 i_OperandKind, i8 i_BufferType)
                szOpNm(), aEV[i_OperandKind]);
         return false;
       }
-      
+
       // should have received an EV_M_ERROR
       if (m_pEvMgr->m_naEventCount[EV_M_ERROR]) {
         vTrace("%s: %s arrived without a prior EV_M_ERROR\n"_Stz,
@@ -833,13 +1079,13 @@ bool Op::bIsEventValid(i8 i_OperandKind, i8 i_BufferType)
 //               szOpNm(), aEV[i_OperandKind]);
 //        return false;
 //      }
-      
+
       // should not have received a EV_M_EXITING already
       if (m_pEvMgr->m_naEventCount[i_OperandKind]) {
         vTrace("%s: multiple EV_M_EXITING arrived\n"_Stz, szOpNm());
         return false;
       }
-      
+
       // should not have received a EV_M_EXITED
       if ( m_pEvMgr->m_naEventCount[EV_M_EXITED]) {
         vTrace("%s: %s arrived after EV_M_EXITED\n"_Stz,
@@ -932,13 +1178,13 @@ bool Op::bIsEventValid(i8 i_OperandKind, i8 i_BufferType)
           return false;
         }
       }
-      
+
       // should not have received a EV_M_STARTED already
       if (m_pEvMgr->m_naEventCount[i_OperandKind]) {
         vTrace("%s: multiple EV_M_STARTED's arrived\n"_Stz, szOpNm());
         return false;
       }
-    
+
       // Only StartOP/SinkOP receives an EV_M_STARTED
       if ( ! szOpNm()->bSame("start"_Stz) ) {
         vTrace("%s: incorrectly received a %s\n"_Stz,
@@ -961,7 +1207,7 @@ bool Op::bIsEventValid(i8 i_OperandKind, i8 i_BufferType)
         return false;
       }
   }
-  
+
   //m_naOperandCount[i_OperandKind]++;
   return true;
 }
@@ -972,8 +1218,18 @@ bool Op::bIsEventValid(i8 i_OperandKind, i8 i_BufferType)
 i8 Op::iLocalRobinNext(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
+
   return m_iLocalRobin++;
+}
+
+/*----------------------------------------------------------------------------*/
+/* generate next ptn thread round robin                                       */
+/*----------------------------------------------------------------------------*/
+i8 Op::iPtnThreadRobinNext(void)
+{
+	_precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+
+	return m_iPtnThreadRobin++;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -982,7 +1238,7 @@ i8 Op::iLocalRobinNext(void)
 i8 Op::iMetricsQueued(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
+
   return m_iMetricsQueued;
 }
 
@@ -992,7 +1248,7 @@ i8 Op::iMetricsQueued(void)
 void Op::vMetricsQueued(i8 iMetricsQueued)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
+
   m_iMetricsQueued = iMetricsQueued;
 }
 
@@ -1022,7 +1278,7 @@ void Op::vMetricsStats(Stats* pStats)
 i8 Op::iNextOp(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
+
   return m_p_OpSpec->iNextOp();
 }
 
@@ -1032,11 +1288,11 @@ i8 Op::iNextOp(void)
 Op* Op::pNextOp(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-    
+
   i8 i_NextOp = iNextOp();
 
   Op* p_NextOp = m_p_Stream->pGet(i_NextOp);
-  
+
   return p_NextOp;
 }
 
@@ -1046,7 +1302,7 @@ Op* Op::pNextOp(void)
 i8 Op::iNextStage(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
+
   return m_p_OpSpec->iNextStage();
 }
 
@@ -1056,12 +1312,12 @@ i8 Op::iNextStage(void)
 Stage* Op::pNextStage(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
+
   Deck* pDeck    = this->pDeck();
   i8 i_NextStage = this->iNextStage();
-  
+
   Stage* pNextStage = pDeck->pGet(i_NextStage);
-  
+
   return pNextStage;
 }
 
@@ -1071,9 +1327,9 @@ Stage* Op::pNextStage(void)
 i8 Op::iNodeId(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
+
   i8 iNodeId;
-  
+
   if (m_p_Stream->pStage()->pStageSpec()->bNodeTopo())
     iNodeId = m_p_Stream->iNodeId();
   else
@@ -1111,7 +1367,7 @@ void Op::vNodeLossAbort(void)
 i8 Op::i_Op(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
+
   return m_p_OpSpec->i_OpSpec();;
 }
 
@@ -1121,7 +1377,7 @@ i8 Op::i_Op(void)
 OperandWatch* Op::pOperandWatch(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
+
   return m_pEvMgr->m_pOperandWatch;
 }
 
@@ -1131,7 +1387,7 @@ OperandWatch* Op::pOperandWatch(void)
 LogicUnit* Op::pOpLogicUnit(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
+
   return m_pTask->pLogicUnit();
 }
 
@@ -1141,7 +1397,7 @@ LogicUnit* Op::pOpLogicUnit(void)
 Stz* Op::szOpNm(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
+
   return m_p_OpSpec->szOpNm();;
 }
 
@@ -1151,7 +1407,7 @@ Stz* Op::szOpNm(void)
 OpSpec* Op::pOpSpec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
+
   return m_p_OpSpec;
 }
 
@@ -1161,7 +1417,7 @@ OpSpec* Op::pOpSpec(void)
 TagSet* Op::pOpTags(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
+
   return m_pOpTags;
 }
 
@@ -1171,14 +1427,15 @@ TagSet* Op::pOpTags(void)
 void Op::vOpTags(TagSet* pOpTags)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
+
   m_pOpTags = pOpTags;
 }
 
 /*----------------------------------------------------------------------------*/
 /* trace operator action                                                      */
 /*----------------------------------------------------------------------------*/
-void Op::vOpTrace(Operand* pOperand
+void Op::vOpTrace(Task* pTask,
+									Operand* pOperand
                   ,Stz* szFunNm
                   ,bool bHandler
                   ,Stz* szSupplemental
@@ -1200,13 +1457,14 @@ void Op::vOpTrace(Operand* pOperand
     sOperand = "NULL"_Stz;
 
 
-  vTrace("%12s (%10s) (N%lld) (P%02lld) (job:%p) "
+  vTrace("%12s (%10s) (N%lld) (P%02lld(%c)) (job:%p) "
          "%18s %-15s %p %s\n"_Stz,
 
          szOpNm(),
          m_p_Stream->pStage()->szStageNm(),
          iNodeId(),
          tLglPtn().iAsI8(),
+				 pTask->bIsSecondary() ? 'S' : 'P',
          pOuterJobOfOp(),
 
          szFunNm,
@@ -1221,22 +1479,22 @@ void Op::vOpTrace(Operand* pOperand
 //    vDebugPoint();
 
   return;
-  
+
   L_Long_Form:
-  
+
   //if (m_bTraceOp) {
   if (! AM::TRACE::bVerbose(C_VB_OP))
     return;
-  
+
   SP_Op spOp;
-  
+
   if (pOperand) {
     if (bHandler) {
       vTraceM("%s "
             "%-18s %s #%0004ld @%p %s\n"_Stz
-                    
+
             ,spOp.szLeading(this)
-           
+
             ,szFunNm
             ,AM::pOperandName(pOperand)
             ,m_pEvMgr->m_naEventCount[m_pEvMgr->m_eCurEvent]
@@ -1247,9 +1505,9 @@ void Op::vOpTrace(Operand* pOperand
     else {
       vTraceM("%s "
               "%-18s %s @%p %s\n"_Stz
-                      
+
               ,spOp.szLeading(this)
-             
+
               ,szFunNm
               ,AM::pOperandName(pOperand)
               ,pOperand
@@ -1260,9 +1518,9 @@ void Op::vOpTrace(Operand* pOperand
   else {
     vTraceM("%s "
             "%-18s %s\n"_Stz
-                  
+
            ,spOp.szLeading(this)
-         
+
            ,szFunNm
            ,szSupplemental
          );
@@ -1278,7 +1536,7 @@ i8 Op::iOtherOp(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
 
   i8 i_OtherOp = m_p_OpSpec->iOtherOp();
-  
+
   return i_OtherOp;
 }
 
@@ -1290,7 +1548,7 @@ i8 Op::iOtherStage(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
 
   i8 i_OtherStage = m_p_OpSpec->iOtherStage();
-  
+
   return i_OtherStage;
 }
 
@@ -1300,12 +1558,12 @@ i8 Op::iOtherStage(void)
 Stage* Op::pOtherStage(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
+
   Deck* pDeck     = this->pDeck();
   i8 i_OtherStage = this->iOtherStage();
-    
+
   Stage* pOtherStage = pDeck->pGet(i_OtherStage);
-  
+
   return pOtherStage;
 }
 
@@ -1315,7 +1573,7 @@ Stage* Op::pOtherStage(void)
 Job* Op::pOuterJobOfOp(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
+
   Stream*   pStream   = this->pStream();
   Stage*    pStage    = pStream->pStage();
   Pipeline* pPipeline = pStage->pVertex()->pPipeline();
@@ -1330,7 +1588,7 @@ Job* Op::pOuterJobOfOp(void)
 Stz* Op::szSpot(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
+
   return m_sSpot;
 }
 
@@ -1340,31 +1598,44 @@ Stz* Op::szSpot(void)
 bool Op::bPause(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
+
   if (! m_bPulsedLimit)
     return false;
-  
+
   if (0 == m_iWorkDone % m_iWorkQuanta)
     return true;
-  
+
   return false;
 }
 
 /*----------------------------------------------------------------------------*/
 /* peek for operand from operand queue                                        */
 /*----------------------------------------------------------------------------*/
-bool Op::bPeekLeft(void)
+bool Op::bPeekLeft(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
+
   bool bOperand;
-  
-  vGrabTaskLock();
-  
-  bOperand = m_pPipeIn->pQueueLeft()->bPeekQueue();
-  
-  vDropTaskLock();
-  
+
+	AM::vGrabTaskLock(pTask,(Stz*)__func__);
+
+	PipeIn* pPipeIn = nullptr;
+
+	if (pTask == m_pTask)
+		pPipeIn = m_pPipeIn;
+	else {
+		for (i8 iIndex = 0; iIndex < m_nSecondaryTasks; iIndex++) {
+			if (m_pSecondaryTasks[iIndex] == pTask) {
+				pPipeIn = m_pPipeInSecondary[iIndex];
+				break;
+			}
+		}
+	}
+
+  bOperand = pPipeIn->pQueueLeft()->bPeekQueue();
+
+	AM::vDropTaskLock(pTask,(Stz*)__func__);
+
   return bOperand;
 }
 
@@ -1374,15 +1645,15 @@ bool Op::bPeekLeft(void)
 bool Op::bPeekOoO(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
+
   bool bOperandOoO;
-  
+
   vGrabTaskLock();
-  
+
   bOperandOoO = m_pPipeIn->pQueueLeft()->bPeekOoO();
-  
+
   vDropTaskLock();
-  
+
   return bOperandOoO;
 }
 
@@ -1392,7 +1663,7 @@ bool Op::bPeekOoO(void)
 Op* Op::pPipeDstOp(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
+
    // get the next stage the send is supposed to send to
   Stage* pDstStage = pNextStage();
 
@@ -1400,7 +1671,7 @@ Op* Op::pPipeDstOp(void)
   LglPtn tThisPtnId = tLglPtn();
   i8 iNxtOp        = iNextOp();
   Op* pDstOp = pDstStage->pPipeDstOp(tThisPtnId,iNxtOp);
-  
+
   return pDstOp;
 }
 
@@ -1410,7 +1681,7 @@ Op* Op::pPipeDstOp(void)
 Pipeline* Op::pPipeline(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
+
   return m_p_Stream->pPipeline();
 }
 
@@ -1422,7 +1693,7 @@ void Op::vPipeToNextOp(Operand* pOperand, Task* pTriggeringTask)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
 
 	if (AM::TRACE::bVerbose(C_VB_OP))
-	  vOpTrace(pOperand,(Stz*)__func__);
+	  vOpTrace(m_pTask, pOperand,(Stz*)__func__);
 
   // TODO: Arjun remove tmp BufferId check...
   if( ! BufferId::bIsBufferId(pOperand) ) {
@@ -1438,14 +1709,39 @@ void Op::vPipeToNextOp(Operand* pOperand, Task* pTriggeringTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* append operand to next op's operand queue                                  */
+/*----------------------------------------------------------------------------*/
+void Op::vPipeToNextOpTasks(Operand* pOperand, Task* pTriggeringTask)
+{
+	_precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+
+	//vTrace("vPipeToNextOpTasks %p \n"_Stz, pOperand);
+	if (AM::TRACE::bVerbose(C_VB_OP))
+		vOpTrace(m_pTask, pOperand,(Stz*)__func__);
+
+	// TODO: Arjun remove tmp BufferId check...
+	if( ! BufferId::bIsBufferId(pOperand) ) {
+		if (pOperand->bIsBuffer()) {
+			LogicUnit *pLogicUnit = this->pOpLogicUnit();
+			pLogicUnit->m_xpStats->m_nBuffOut++;
+		}
+	}
+
+	Op* pDstOp = pPipeDstOp();
+
+	pDstOp->vPipeToThisTasks(pOperand,pTriggeringTask);
+}
+
+/*----------------------------------------------------------------------------*/
 /* append operand to op's operand queue                                       */
 /*----------------------------------------------------------------------------*/
 void Op::vPipeToThis(Operand* pOperand, Task* pTriggeringTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
 
+
 	if (AM::TRACE::bVerbose(C_VB_OP))
-		vOpTrace(pOperand,(Stz*)__func__);
+		vOpTrace(m_pTask, pOperand,(Stz*)__func__);
 
   // TODO: Arjun remove tmp BufferId check...
   if( ! BufferId::bIsBufferId(pOperand)) {
@@ -1469,7 +1765,45 @@ void Op::vPipeToThis(Operand* pOperand, Task* pTriggeringTask)
     }
   }
 
-  vAppendLeft(pOperand,pTriggeringTask);
+    vAppendLeft(pOperand,pTriggeringTask);
+}
+
+/*----------------------------------------------------------------------------*/
+/* append operand to op's operand queue                                       */
+/*----------------------------------------------------------------------------*/
+void Op::vPipeToThisTasks(Operand* pOperand, Task* pTriggeringTask)
+{
+	_precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+
+	RASSERT(m_nSecondaryTasks > 1);
+
+	if (AM::TRACE::bVerbose(C_VB_OP))
+		vOpTrace(m_pTask, pOperand,(Stz*)__func__);
+
+	// TODO: Arjun remove tmp BufferId check...
+	if( ! BufferId::bIsBufferId(pOperand)) {
+		eCN eClassNo = pOperand->eGetClassNo();
+		if (CN_CRWBUFFER == eClassNo && AM::TRACE::bVerbose(C_VB_PIPEOUT_CRWBUF)) {
+			CrwBuffer *pCrwBuffer = _pCrwBuffer(pOperand);
+			vTrace("[%6s %10s]-Pipeout : CrwBuffer (%lld rows) to [%s %s]\n"_Stz, pStage()->szStageNm(), szOpNm(),
+						 pCrwBuffer->nRows(), this->pStage()->szStageNm(), this->szOpNm()
+			);
+		} else if (CN_CSVBUFFER == eClassNo && AM::TRACE::bVerbose(C_VB_PIPEOUT_CSVBUF)) {
+			CsvBuffer *pCsvBuffer = _pCsvBuffer(pOperand);
+			UNUSED(pCsvBuffer);
+			vTrace("[%6s %10s]-Pipeout : CsvBuffer to [%s %s]\n"_Stz, pStage()->szStageNm(), szOpNm(),
+						 this->pStage()->szStageNm(), this->szOpNm()
+			);
+		} else if (CN_PDS == eClassNo && AM::TRACE::bVerbose(C_VB_PIPEOUT_ROWBUF)) {
+			Pds *pPdsRowBuffer = _pPds(pOperand);
+			vTrace("[%6s %10s]-Pipeout : Pds (%lld rows) to [%s %s]\n"_Stz, pStage()->szStageNm(), szOpNm(),
+						 pPdsRowBuffer->nItems(), this->pStage()->szStageNm(), this->szOpNm()
+			);
+		}
+	}
+
+	//vTrace("OP has secondary threads\n"_Stz);
+	vAppendLeftMulti(pOperand,pTriggeringTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1492,7 +1826,7 @@ void Op::vPipeToOutput(Operand* pOperand)
 i8 Op::nPotSize(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-    
+
   i8 nBuffers = pOpLogicUnit()->m_nPotSize;
 
   return nBuffers;
@@ -1504,22 +1838,22 @@ i8 Op::nPotSize(void)
 Operand* Op::pPopLeft(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
+
   vGrabTaskLock();
   RASSERT(bIsLocked());
-  
+
   Operand* pOperand = m_pPipeIn->pQueueLeft()->pPopQueue();
-  
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
+
   if (pOperand) {
     vDropTaskLock();
 		if (AM::TRACE::bVerbose(C_VB_OP))
-			vOpTrace(pOperand,(Stz*)__func__,false);
+			vOpTrace(m_pTask, pOperand,(Stz*)__func__,false);
     AM::vOperandsDec();
-    
+
     AM::METRICS::vDerefMetrics((i8)pOperand,pOperand->eGetClassNo(),DR_DEQUEUE);
-   
+
     return pOperand;
   }
   else {
@@ -1531,42 +1865,71 @@ Operand* Op::pPopLeft(void)
 /*----------------------------------------------------------------------------*/
 /* pop operand OoO off the queue                                              */
 /*----------------------------------------------------------------------------*/
-Operand* Op::pPopOoO(void)
+Operand* Op::pPopOoO(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
-  vGrabTaskLock();
-  RASSERT(bIsLocked());
 
-  Operand* pOperand = m_pPipeIn->pQueueOoO()->pPopOoO();
-  
-  vDropTaskLock();
-  
+  //vGrabTaskLock();
+  //RASSERT(bIsLocked());
+
+	AM::vGrabTaskLock(pTask,(Stz*)__func__);
+
+	PipeIn* pPipeIn = nullptr;
+
+	if (pTask == m_pTask)
+		pPipeIn = m_pPipeIn;
+	else {
+		for (i8 iIndex = 0; iIndex < m_nSecondaryTasks; iIndex++) {
+			if (m_pSecondaryTasks[iIndex] == pTask) {
+				pPipeIn = m_pPipeInSecondary[iIndex];
+				break;
+			}
+		}
+	}
+  Operand* pOperand = pPipeIn->pQueueOoO()->pPopOoO();
+
+  //vDropTaskLock();
+	AM::vDropTaskLock(pTask,(Stz*)__func__);
+
   if (pOperand) {
     AM::vOperandsDec();
     AM::METRICS::vDerefMetrics((i8)pOperand,pOperand->eGetClassNo(),DR_DEQUEUE);
   }
-  
+
   return pOperand;
 }
 
 /*----------------------------------------------------------------------------*/
 /* pop operand first off OoO queue, if null then Left queue                   */
 /*----------------------------------------------------------------------------*/
-Operand* Op::pPopOoOLeft(bool* pbPageIn)
+Operand* Op::pPopOoOLeft(Task* pTask, bool* pbPageIn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
-  vGrabTaskLock();
-  RASSERT(bIsLocked());
-  
+
+  //vGrabTaskLock();
+  //RASSERT(bIsLocked());
+
+	AM::vGrabTaskLock(pTask,(Stz*)__func__);
+
   //Operand* pOperand = m_pQueueLeft->pPopQueue();
 
   *pbPageIn = false;
-  
-  bool bLeft = false;
 
-  Operand* pOperand = m_pPipeIn->pQueueOoO()->pPopOoO();
+  bool bLeft = false;
+	PipeIn* pPipeIn = nullptr;
+
+	if (pTask == m_pTask)
+		pPipeIn = m_pPipeIn;
+	else {
+		for (i8 iIndex = 0; iIndex < m_nSecondaryTasks; iIndex++) {
+			if (m_pSecondaryTasks[iIndex] == pTask) {
+				pPipeIn = m_pPipeInSecondary[iIndex];
+				break;
+			}
+		}
+	}
+
+  Operand* pOperand = pPipeIn->pQueueOoO()->pPopOoO();
   if (! pOperand) {
     // Peek at the Operand on the queue
     // If it is a bufferId that is not in memory,
@@ -1574,7 +1937,7 @@ Operand* Op::pPopOoOLeft(bool* pbPageIn)
     // Do NOT pop the operand off the queue.
     // We want this operator to re-run this function
     // once the operand is in memory.
-    Operand* pPeekOperand = m_pPipeIn->pQueueLeft()->pPeekQueue();
+    Operand* pPeekOperand = pPipeIn->pQueueLeft()->pPeekQueue();
     if (pPeekOperand)
     {
       // Operand is not null
@@ -1610,33 +1973,37 @@ Operand* Op::pPopOoOLeft(bool* pbPageIn)
 //        }
         // Operand is present in memory, so proceed as normal
       } else {
-        ASSERT( ! DataBuffer::bIsDataBuffer(pPeekOperand->eGetClassNo()));
+        //ASSERT( ! DataBuffer::bIsDataBuffer(pPeekOperand->eGetClassNo()));
       }
 
       // Assign pOperand the peeked operand. It may or may not have been converted from a BufferId
       pOperand = pPeekOperand;
 
       // Pop and discard the operand from the queue, as we are sure it is in memory.
-      Operand* pPopOperand = m_pPipeIn->pQueueLeft()->pPopQueue();
+      Operand* pPopOperand = pPipeIn->pQueueLeft()->pPopQueue();
       UNUSED(pPopOperand);
       bLeft=true;
     }
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
+
   if (! pOperand) {
-    RASSERT(bIsLocked());
+    //RASSERT(bIsLocked());
+		RASSERT(AM::bTaskIsLocked(pTask));
     return nullptr;
   }
-  
-  vDropTaskLock();
+
+  //vDropTaskLock();
+	AM::vDropTaskLock(pTask,(Stz*)__func__);
+
   AM::vOperandsDec();
 
   AM::METRICS::vDerefMetrics((i8)pOperand,pOperand->eGetClassNo(),DR_DEQUEUE);
 
 	if (AM::TRACE::bVerbose(C_VB_OP))
-		vOpTrace(pOperand
+		vOpTrace(pTask,
+						 pOperand
            ,(Stz*)__func__
            ,false
            ,bLeft ? "Left"_Stz : "OoO"_Stz);
@@ -1679,21 +2046,21 @@ Operand* Op::pPopOoOLeft(bool* pbPageIn)
 Operand* Op::pPopRight(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
+
   Operand* pOperand = nullptr;
-  
+
   vGrabTaskLock();
-  
+
   pOperand = m_pPipeIn->pQueueRight()->pPopQueue();
-  
+
   if (pOperand) {
     vDropTaskLock();
-    
+
     AM::vOperandsDec();
   }
-  
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
+
   if (pOperand) {
     if (m_bTraceOp)
       vTrace("%s::pPopQueueRight : %s %p\n"_Stz,
@@ -1701,7 +2068,7 @@ Operand* Op::pPopRight(void)
              AM::pOperandName(pOperand),
              pOperand);
   }
-  
+
   return pOperand;
 }
 
@@ -1728,7 +2095,7 @@ LglPtn Op::tLglPtn(void)
 bool Op::bPulsedLimit(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
+
   return m_bPulsedLimit;
 }
 
@@ -1738,7 +2105,7 @@ bool Op::bPulsedLimit(void)
 void Op::vPulsedLimit(bool bPulsedLimit)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
+
   m_bPulsedLimit = bPulsedLimit;
 }
 
@@ -1748,12 +2115,12 @@ void Op::vPulsedLimit(bool bPulsedLimit)
 i8 Op::nQueuedOperands(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
+
   i8 nLeft = m_pPipeIn->pQueueLeft()->nQueuedOperands();
   i8 nOoO  = m_pPipeIn->pQueueOoO()->nQueuedOperands();
 
   i8 nOperands = nLeft + nOoO;
-  
+
   return nOperands;
 }
 
@@ -1763,7 +2130,7 @@ i8 Op::nQueuedOperands(void)
 i8 Op::iRobinNext(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
+
   return m_iRobin++;
 }
 
@@ -1773,7 +2140,7 @@ i8 Op::iRobinNext(void)
 eXK Op::eSendCast(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
+
   eXK eSendCast = m_p_OpSpec->eSendCast();
   return eSendCast;
 }
@@ -1784,7 +2151,7 @@ eXK Op::eSendCast(void)
 void Op::vSendCast(eXK eSendCast)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
+
   RASSERT(eSendCast == m_p_OpSpec->eSendCast());
   m_eSendCast = eSendCast;
 }
@@ -1795,7 +2162,7 @@ void Op::vSendCast(eXK eSendCast)
 i8 Op::iSendNode(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
+
   return m_iSendNode;
 }
 
@@ -1805,7 +2172,7 @@ i8 Op::iSendNode(void)
 void Op::vSendNode(i8 iSendNode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
+
   m_iSendNode = iSendNode;
 }
 
@@ -1828,6 +2195,10 @@ void Op::vSetJobTask(Task* pJobTask)
 
   if (m_pTask)
     m_pTask->vJobTask(pJobTask);
+
+	for (i8 iIndex = 0; iIndex < m_nSecondaryTasks; iIndex++) {
+		m_pSecondaryTasks[iIndex]->vJobTask(pJobTask);
+	}
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1836,7 +2207,7 @@ void Op::vSetJobTask(Task* pJobTask)
 void Op::vSetTags(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
+
   TagSet* pPipeLineJobTags = AM::pJobTags(pOuterJobOfOp());
   m_pOpTags = _pTagSet(pPipeLineJobTags->pMemoryCopy());
   m_pOpTags->vReplace(C_TAG_JOBNM, szOpNm());
@@ -1848,14 +2219,13 @@ void Op::vSetTags(void)
 void Op::vSpawnTask(bool bIsSecondary)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-      
+
   Job* pJob = this->pOuterJobOfOp();
-  
-  vCreateTaskForOp(bIsSecondary);
+
+  Task* pTask = pCreateTaskForOp(bIsSecondary);
   pJob->vActiveOpsInc();
 
-  Task* pTask = this->pTask();
-
+  //Task* pTask = this->pTask();
 
   if (m_p_OpSpec->szOpNm()->bSame("dynamic"_Stz)) {
     pTask->m_pLogicUnit->m_xpLibInfo = pJob->pTask()->m_pLogicUnit->m_xpLibInfo;
@@ -1863,7 +2233,7 @@ void Op::vSpawnTask(bool bIsSecondary)
 
   if (m_pOpTags->bHasName(C_TAG_DEDICATEDTHD))
     pTask->vDedicatedThread(true);
-        
+
   Scheduler::vTaskApi_Add(pTask);
 }
 
@@ -1873,7 +2243,7 @@ void Op::vSpawnTask(bool bIsSecondary)
 Stz* Op::szStageName(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
+
   return m_p_Stream->pStage()->szStageNm();
 }
 
@@ -1883,7 +2253,7 @@ Stz* Op::szStageName(void)
 Stage* Op::pStage(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
+
   return m_p_Stream->pStage();
 }
 
@@ -1893,7 +2263,7 @@ Stage* Op::pStage(void)
 Stream* Op::pStream(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
+
   return m_p_Stream;
 }
 
@@ -1903,7 +2273,7 @@ Stream* Op::pStream(void)
 eYS Op::eStreamTopology_op(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
+
   return m_p_OpSpec->eStreamTopology_op();
 }
 
@@ -1913,7 +2283,7 @@ eYS Op::eStreamTopology_op(void)
 Task* Op::pTask(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
+
   return m_pTask;
 }
 
@@ -1923,8 +2293,17 @@ Task* Op::pTask(void)
 void Op::vTask(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
-  m_pTask = pTask;
+
+	m_pSecondaryTasks[m_nSecondaryTasks] = pTask;
+	m_pPipeInSecondary[m_nSecondaryTasks] = new PipeIn;
+
+	if ( ! pTask->bIsSecondary() ) {
+		m_pTask = pTask;
+		m_pPipeIn = m_pPipeInSecondary[m_nSecondaryTasks];
+	}
+
+	m_nSecondaryTasks++;
+
 }
 
 /*----------------------------------------------------------------------------*/

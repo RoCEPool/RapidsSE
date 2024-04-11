@@ -4,6 +4,13 @@
 
 // optimizer generates L_TAX instead of L_QUANTITY
 
+file _lineitem;
+/time load lineitem           "../TPCH/SF_0001/lineitem.tbl" ;
+//settrace verbose true;
+
+
+trackMemory;
+
 /pipeline_def
 /weaved
 /optimise_passthru
@@ -15,7 +22,7 @@ begin
     | pulse     once
     | next
 
-  stage S01 on all partitions multiple threads 2 :
+  stage S01 on all partitions multiple threads 2:
     scan      Lineitem
   | project   "   type VARCHAR ( 0 ) as L_RETURNFLAG L_RETURNFLAG
                 , type VARCHAR ( 0 ) as L_LINESTATUS L_LINESTATUS
@@ -102,6 +109,8 @@ stage S07 on origin :
 
 end ;
 
+sleep 5;
+MemoryLeaks;
 
 /*============================================================================*/
 /* end                                                                        */

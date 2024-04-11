@@ -1,0 +1,277 @@
+/*============================================================================*/
+/* OP_consume.sen -- Operator consume                                         */
+/*============================================================================*/
+
+" OP_consume.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* handler for EV_M_CANCELLING ...                                            */
+/*----------------------------------------------------------------------------*/
+: ptnConsume_Cancelling \handler
+
+  //"Operand:- EV_M_CANCELLING" .verbose
+  Sends[].handleCancelling if
+    EV_M_CANCELLING_handler
+  else
+    PipeIn[].delete
+    true
+  then
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for EV_M_CLEANING ...                                              */
+/*----------------------------------------------------------------------------*/
+: ptnConsume_Cleaning \handler
+
+  LogicUnit[].cleanup
+
+  //"Operand:- EV_M_CLEANING" .verbose
+  Sends[].handleCleaning if
+    Pipein[].pipeout
+  else
+    PipeIn[].delete
+  then
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for EV_M_ENDING ...                                                */
+/*----------------------------------------------------------------------------*/
+: ptnConsume_EndingMarker \handler
+
+  //"Operand:- EV_M_ENDING" .verbose
+  Sends[].handleEnding if
+    PipeIn[].pipeOut
+  else
+    PipeIn[].delete
+  then
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for EV_M_EOS ...                                                   */
+/*----------------------------------------------------------------------------*/
+: ptnConsume_EosMarker \handler
+
+  //"Operand:- EV_M_EOS" .verbose
+  Sends[].handleEos if
+    PipeIn[].pipeOut
+  else
+    PipeIn[].delete
+  then
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for EV_M_ERRORING ...                                              */
+/*----------------------------------------------------------------------------*/
+: ptnConsume_ErroringMarker \handler
+
+  //"Operand:- EV_M_ERRORING" .verbose
+  Sends[].handleErroring if
+    PipeIn[].pipeOut
+  else
+    PipeIn[].delete
+  then
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for EV_M_DATAPULSE ...                                             */
+/*----------------------------------------------------------------------------*/
+: ptnConsume_DataPulse \handler
+
+  //"Operand:- EV_M_DATAPULSE" .verbose
+  Sends[].handleDataPulse if
+    PipeIn[].pipeOut
+  else
+    PipeIn[].delete
+  then
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for EV_M_DESTROY ...                                               */
+/*----------------------------------------------------------------------------*/
+: ptnConsume_DESTROYMARKER \handler
+
+  //"Operand:- EV_M_DESTROY" .verbose
+  Sends[].handleDestroy if
+    PipeIn[].pipeOut
+  else
+    PipeIn[].delete
+  then
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for EV_M_END ...                                                   */
+/*----------------------------------------------------------------------------*/
+: ptnConsume_EndMarker \handler
+
+  //"Operand:- EV_M_END" .verbose
+  Sends[].handleEnd if
+    PipeIn[].pipeOut
+  else
+    PipeIn[].delete
+  then
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for EV_M_ERROR ...                                                 */
+/*----------------------------------------------------------------------------*/
+: ptnConsume_ErrorMarker \handler
+
+  PipeIn[].pipeOut
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for EV_M_EXITING ...                                               */
+/*----------------------------------------------------------------------------*/
+: ptnConsume_Exiting \handler
+
+  //"Operand:- EV_M_EXITING" .verbose
+  Sends[].handleExiting if
+    EV_M_EXITING_handler // calling op_loop exits
+  else
+    PipeIn[].delete
+    true
+  then
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for EV_M_INTERNALERROR ...                                         */
+/*----------------------------------------------------------------------------*/
+: ptnConsume_InternalError \handler
+
+  PipeIn[].pipeOut
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for EV_M_LEAVING ...                                               */
+/*----------------------------------------------------------------------------*/
+: ptnConsume_LeavingMarker \handler
+
+  //"Operand:- EV_M_LEAVING" .verbose
+  Sends[].handleLeaving if
+    PipeIn[].pipeOut
+  else
+    PipeIn[].delete
+  then
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for EV_M_LOWMEMORY ...                                             */
+/*----------------------------------------------------------------------------*/
+: ptnConsume_LowMemory \handler
+
+  PipeIn[].pipeOut
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for EV_M_START ...                                                 */
+/*----------------------------------------------------------------------------*/
+: ptnConsume_StartMarker \handler
+
+  //"Operand:- EV_M_START" .verbose
+  Sends[].handleStart if
+    PipeIn[].pipeOut
+  else
+    PipeIn[].delete
+  then
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for EV_D_STREAMDEF ...                                             */
+/*----------------------------------------------------------------------------*/
+: ptnConsume_StreamDef \handler
+
+  //"Operand:- EV_D_STREAMDEF" .verbose
+  Sends[].handleStreamDef if
+    PipeIn[].pipeOut
+  else
+    PipeIn[].delete
+  then
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for EV_M_TRIGGERED ...                                             */
+/*----------------------------------------------------------------------------*/
+: ptnConsume_TriggeredMarker \handler
+
+  //"Operand:- EV_M_TRIGGERED" .verbose
+  Sends[].handleTriggered if
+    PipeIn[].pipeOut
+  else
+    PipeIn[].delete
+  then
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute for consumeOp req                          (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+: ptnConsume_op \operator
+
+  _lu_initialise_
+
+  <Sends> >int Sends[].new
+
+  // set topology, next stage and op
+  op__topology
+
+  find: ptnConsume_Cancelling     EV_M_CANCELLING [op].handler!
+  find: ptnConsume_Cleaning       EV_M_CLEANING   [op].handler!
+  find: ptnConsume_DestroyMarker  EV_M_DESTROY    [op].handler!
+  find: ptnConsume_DataPulse      EV_M_DATAPULSE  [op].handler!
+  find: ptnConsume_EndMarker      EV_M_END        [op].handler!
+  find: ptnConsume_EndingMarker   EV_M_ENDING     [op].handler!
+  find: ptnConsume_EosMarker      EV_M_EOS        [op].handler!
+  find: ptnConsume_ErrorMarker    EV_M_ERROR      [op].handler!
+  find: ptnConsume_ErroringMarker EV_M_ERRORING   [op].handler!
+  find: ptnConsume_Exiting        EV_M_EXITING    [op].handler!
+  find: ptnConsume_InternalError  EV_M_INTERNALERROR  [op].handler!
+  find: ptnConsume_LeavingMarker  EV_M_LEAVING    [op].handler!
+  find: ptnConsume_LowMemory      EV_M_LOWMEMORY  [op].handler!
+  find: ptnConsume_StartMarker    EV_M_START      [op].handler!
+  find: ptnConsume_TriggeredMarker EV_M_TRIGGERED [op].handler!
+
+  find: ptnConsume_StreamDef      EV_D_STREAMDEF  [op].handler!
+
+  op__loop
+
+  Sends[].delete
+
+  _lu_finalise_
+  
+  op__retires
+  
+  HAZARD
+
+;
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: ptnConsume :: ptnConsume <Sends> ;
+
+: ptnConsume_cmdTags _cmdTags tagCopy: op_tags
+  tags{
+    <cmdDesc> = "--desc for op--"
+    <opEntry> = "ptnConsume_op"
+  }
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

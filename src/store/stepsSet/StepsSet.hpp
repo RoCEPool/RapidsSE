@@ -1317,6 +1317,7 @@ void vJobIdLastJobIdFetch(void);
   void vOpJobFetch(void);
   void vOpPipeBackIn(void);
   void vOpPipeOut(void);
+	void vOpPipeOutPtnTasks(void);
   void vOpPtnIdFetch(void);
   void vOpQueueLength(void);
   void vOpStageNameFetch(void);

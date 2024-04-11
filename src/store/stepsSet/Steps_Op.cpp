@@ -50,6 +50,7 @@ void Step::vAddSteps_Op(void)
   vAddStep("[op].partition@"_Stz,       &Step::vOpPartitionFetch);
   vAddStep("[op].pipeBackin"_Stz,       &Step::vOpPipeBackIn);
   vAddStep("[op].pipeout"_Stz,          &Step::vOpPipeOut);
+	vAddStep("[op].pipeoutPtnTasks"_Stz,  &Step::vOpPipeOutPtnTasks);
   vAddStep("[op].ptnId@"_Stz,           &Step::vOpPtnIdFetch);
   vAddStep("[op].queueLength@"_Stz,     &Step::vOpQueueLength);
   vAddStep("[op].stageName@"_Stz,       &Step::vOpStageNameFetch);
@@ -63,8 +64,11 @@ void Step::vAddSteps_Op(void)
 void Step::vOpAckJobTask(void)
 {
   ENTRY();
-  
-  m_pOp->vAckJobTask();
+
+	if (bIsSecondary())
+		m_pOp->vAckJobTask(this);
+	else
+    m_pOp->vAckJobTask();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -99,7 +103,7 @@ void Step::vOpEnqueOperand(void)
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
 
 	if (AM::TRACE::bVerbose(C_VB_OP))
-		pOp->vOpTrace(nullptr,(Stz*)__func__,false,
+		pOp->vOpTrace(this, nullptr,(Stz*)__func__,false,
                  "// queue StartMarker into pipeline"_Stz);
 
   pOp->vAppendLeft(pOperand,this);
@@ -115,8 +119,9 @@ void Step::vOpEventCountInc(void)
   ENTRY();
 
   eEV eEvent = (eEV) m_pDataStack->iPopInt(__func__);
-  
-  m_pOp->vEventCountInc(eEvent);
+
+	if ( ! bIsSecondary() )
+    m_pOp->vEventCountInc(eEvent);
   
   EXIT();
 }
@@ -173,7 +178,7 @@ void Step::vOpHandlerEntry(void)
       Operand* pOperand = *m_pLogicUnit->m_xpPipein;
 
 			if (AM::TRACE::bVerbose(C_VB_OP))
-        m_pOp->vOpTrace(pOperand,(Stz*)__func__,true);
+        m_pOp->vOpTrace(this, pOperand,(Stz*)__func__,true);
     }
     
   }
@@ -253,17 +258,17 @@ void Step::vOpIsEventValid(void)
 
   //vTrace("vOpIsEventValid:   %s\n"_Stz, m_pOp->szOpNm());
   // skip consumeOp operand validation
-  if ( ! m_pOp->szOpNm()->bSame("consumeOP"_Stz))
+  if ( ! m_pOp->szOpNm()->bSame("consumeOP"_Stz) &&
+	     ! m_pOp->szOpNm()->bSame("ptnConsume"_Stz) &&
+			 ! bIsSecondary() )
     bValid = m_pOp->bIsEventValid(i_OperandKind, i_BufferType);
-  
+
   if ( ! bValid ) {
     vTrace("Steps_Op  vOpIsEventValid:   %s\n"_Stz, m_pOp->szOpNm());
     RASSERT(0);
-
   }
-  
-  m_pDataStack->vPushInt(bValid);
-  
+
+	m_pDataStack->vPushInt(bValid);
   EXIT();
 }
 
@@ -398,6 +403,35 @@ void Step::vOpPipeOut(void)
   AM::OP::vPipeToNextOp(m_pOp,pOperand,this);
   
   EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* [op].pipeOutPtnTasks -- append operand onto ptn tasks of next operator     */
+/*----------------------------------------------------------------------------*/
+void Step::vOpPipeOutPtnTasks(void)
+{
+	ENTRY();
+
+	Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
+
+	//vTrace("[op].pipeoutPtnTasks %p\n"_Stz, pOperand);
+
+	if(! BufferId::bIsBufferId(pOperand)) {
+		if(DataBuffer::bIsDataBuffer(pOperand->eGetClassNo())) {
+			DataBuffer* pDataBuffer = _pDataBuffer(pOperand);
+			AM::pHashMap()->vDropKeyLock(pDataBuffer->oGetBufferId().m_pvAsAddress);
+			pOperand = _pOperand((Object*)pDataBuffer->oGetBufferId().m_pvAsAddress);
+		}
+	}
+//  if (pOperand->bIsBuffer()) {
+//    LogicUnit* pLogicUnit = pOp->pOpLogicUnit();
+//    pLogicUnit->m_xpStats->m_nBuffOut++;
+//  }
+//  pOp->vPipeToNextOp(pOperand,this);
+
+	AM::OP::vPipeToNextOpTasks(m_pOp,pOperand,this);
+
+	EXIT();
 }
 
 /*----------------------------------------------------------------------------*/

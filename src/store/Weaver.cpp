@@ -114,19 +114,19 @@ void Weaver::vPtnSend(void)
 	_precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
 
 	vTabOp();
-	vConcat_cmd("ptnSend"_Stz);      vEolOp();
+	vConcat_cmd("ptnSendSE"_Stz);      vEolOp();
 	//vTabOp();
 }
 
 /*----------------------------------------------------------------------------*/
 /* weave : dynamic :                                                          */
 /*----------------------------------------------------------------------------*/
-void Weaver::vPtnConsume(void)
+void Weaver::vPtnConsume(i8 iThreads)
 {
 	_precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
 
 	vTabOp();
-	vConcat_cmd("ptnConsume"_Stz);      vEolOp();
+	vConcat_cmd("ptnConsume %lld"_Stz, iThreads);      vEolOp();
 	//vTabOp();
 }
 
@@ -1005,7 +1005,7 @@ void Weaver::vWeaveOptStmt(Board* pBoard)
     vDynamic(pStageDef);
 
 		if (iThreads > 1)
-			vPtnConsume();
+			vPtnConsume(iThreads);
 
     if (CK_o_CAST == xDeck.eChild())
       vOp(xDeck.pChild());

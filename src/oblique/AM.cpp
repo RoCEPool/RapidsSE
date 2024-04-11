@@ -1837,6 +1837,17 @@ void AM::OP::vPipeToNextOp(Op* pCurrOp, Operand* pOperand,
   pCurrOp->vPipeToNextOp(pOperand,pTriggeringTask);
 }
 
+/*----------------------------------------------------------------------------*/
+/* append operand onto next operator in pipeline                              */
+/*----------------------------------------------------------------------------*/
+void AM::OP::vPipeToNextOpTasks(Op* pCurrOp, Operand* pOperand,
+													 Task* pTriggeringTask)
+{
+	_static_
+
+	pCurrOp->vPipeToNextOpTasks(pOperand,pTriggeringTask);
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* append operand onto next operator in pipeline                              */

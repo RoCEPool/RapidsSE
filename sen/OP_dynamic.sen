@@ -59,6 +59,9 @@
   //"OP_dynamic got a CRWBUFFER" .
 
   Pipein[]\clear to CrwBuffer[]
+
+  //CrwBuffer[] "OP_dynamic got a CrwBuffer %v" str.format .
+
   CrwBuffer[] CrwHandler[] false dynamic[].execute not if
     to errorCode
 
@@ -207,6 +210,8 @@
   //"OP_dynamic got a PDSROWBUFFER" .
 
   Pipein[]\clear to Pds[]
+
+  //Pds[] "OP_dynamic got a PDSROWBUFFER %v" str.format .
 
   // handle BT_DATA only
   Pds[].bufferType@ BT_DATA != if

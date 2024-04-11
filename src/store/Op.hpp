@@ -21,6 +21,8 @@ namespace STORE { class Deck;
 
 namespace STORE
 {
+		const i8 C_MAX_SECONDARY = 10;
+
   class Op : public Operand
   {
   private:
@@ -29,6 +31,9 @@ namespace STORE
     SMA<OpSpec,CN_OPSPEC> m_p_OpSpec;  // specification of this operator
 
     SMA<Task,CN_TASK>     m_pTask;     // task of op
+
+		i8           m_nSecondaryTasks;
+		Task*        m_pSecondaryTasks[C_MAX_SECONDARY];
 
     Gid_t<CN_OP> m_xOpId;     // op id in grid
     s256         m_sSpot;     // operator grid position/path
@@ -41,7 +46,8 @@ namespace STORE
     EvMgr*   m_pEvMgr;    // event handlers
          
     PipeIn*  m_pPipeIn;   // in-bound queues
- 
+		PipeIn*  m_pPipeInSecondary[C_MAX_SECONDARY];
+
     // -- - -- - -- - -- - -- - -- - --
     // move these in logic unit???
   
@@ -49,7 +55,8 @@ namespace STORE
     eXK  m_eSendCast;   // send kind
     i8   m_iRobin;      // send Round Robin partition/node/thread
     i8   m_iLocalRobin; // send Round Robin local ptn/node/thread
-      
+
+		i8   m_iPtnThreadRobin;
 
     // can these go???
     bool m_bPulsedLimit;  // is this a pulsed operand?
@@ -73,14 +80,17 @@ namespace STORE
   
     // - - - - - - - - - - - - - - - -
     void vAckJobTask(void);
+		void vAckJobTask(Task* pTask);
     void vAddWorkDone(i8 iWorkDone);
     bool bAllocateMemory(void);
     void vAppendLeft(Operand* pOperand, Task* pTriggeringTask);
+		void vAppendLeftMulti(Operand* pOperand, Task* pTriggeringTask);
     void vAppendOoO(Operand* pOperand, Task* pTriggeringTask);
+		void vAppendOoOMulti(Operand* pOperand, Task* pTriggeringTask);
     void vAppendToJob(Operand* pOperand);
     Stz* szArgs(void);
   
-    void vCreateTaskForOp(bool bIsSecondary);
+    Task* pCreateTaskForOp(bool bIsSecondary);
     eYX  eCrossTopology(void);
     eEV  eCurEvent(void);
     Word* pCurWord(void);
@@ -126,7 +136,8 @@ namespace STORE
     OpSpec* pOpSpec(void);
     TagSet* pOpTags(void);
     void vOpTags(TagSet* pOpTags);
-    void vOpTrace(Operand* pOperand
+    void vOpTrace(Task* pTask,
+									Operand* pOperand
                   ,Stz* szFunNm
                   ,bool bHandler=true
                   ,Stz* szSupplemental=""_Stz
@@ -139,19 +150,23 @@ namespace STORE
 
     Stz* szSpot(void);
     bool bPause(void);
-    bool bPeekLeft(void);
+    bool bPeekLeft(Task* pTask);
     bool bPeekOoO(void);
     Op*  pPipeDstOp(void);
     Pipeline* pPipeline(void);
     void vPipeToNextOp(Operand* pOperand, Task* pTriggeringTask);
+		void vPipeToNextOpTasks(Operand* pOperand, Task* pTriggeringTask);
     void vPipeToThis(Operand* pOperand, Task* pTriggeringTask);
+		void vPipeToThisTasks(Operand* pOperand, Task* pTriggeringTask);
     void vPipeToOutput(Operand* pOperand);
-    Operand* pPopOoO(void);
-    Operand* pPopOoOLeft(bool* pbPageIn);
+    Operand* pPopOoO(Task* pTask);
+    Operand* pPopOoOLeft(Task* pTask, bool* pbPageIn);
     Operand* pPopRight(void);
     LglPtn  tLglPtn(void);
     Operand* pPopLeft(void);
-    i8   nPotSize(void);
+    i8 nPotSize(void);
+		i8 iPtnThreadRobinNext(void);
+
     bool bPulsedLimit(void);
     void vPulsedLimit(bool bPulsedLimit);
   
