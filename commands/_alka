@@ -2,37 +2,30 @@
 /* _alka                                                                      */
 /*============================================================================*/
 
-create table score(s_id varchar(6),c_id varchar(6),cj decimal(5,1));
-load score "../DATA/PartitionKey/score.csv";
-create index score_idx1 on score(s_id);
-create index score_idx2 on score(c_id);
+_nation;
 
+load nation "../TPCH/SF_0001/nation.tbl";
 
-create table student(s_id varchar(6),s_name varchar(50),s_csrq date,s_sex varchar(10));
-load student "../DATA/PartitionKey/student.csv";
-create index student_idx1 on student(s_id);
+///keepCodeFile
+///pipeline_def
+///weaved
+//select * from tables;
 
-
-create table course(c_id varchar(6),c_name varchar(50),t_id varchar(6));
-load course "../DATA/PartitionKey/course.csv";
-create index course_idx1 on course(c_id);
-create index course_idx2 on course(t_id);
-
-
-create table teacher(t_id varchar(6),t_name varchar(50));
-load teacher "../DATA/PartitionKey/teacher.csv";
-create index teacher_idx1 on teacher(t_id);
-
-
-/keepcodefile
-/hasCodeFile
-/useCodeFile = "VARCHAR_2_NODE1_2"
 /pipeline_def
-/transliterated
-/weaved
-/pipelineName = "VARCHAR_2"
-select * from score js
-inner join student js2 on js.s_id =js2.s_id
-inner join course jc on js.c_id =jc.c_id
-inner join teacher jt on jc.t_id =jt.t_id;
-//rows: 5
+/optimise_passthru
+pipeline Q
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | next
+  stage stageA on all partitions :
+    scan nation
+    | project "type INTEGER ( 19 ) $1"
+    | combined 0
+    | next
+  stage stageLast on origin :
+    output
+    | sink
+    | first
+end ;

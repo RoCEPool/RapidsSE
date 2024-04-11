@@ -67,6 +67,8 @@ void vInflatePdsRowBegin(Dynamic_T* aDynamicT) {
 	if ( ! aCurrentRow)
 		goto L_Return;
 
+	p__STRUCT_TO__ = (struct __STRUCT_TO__*)aDynamicT->m_xRowInfoIT.m_aRowCellArray;
+
 	aDynamicT->m_xRowInfoIT.m_acStrArea = aDynamicT->m_xRowInfoIT.m_acStrAreaSav;
 
 	piColumn = (i8*)aDynamicT->m_xRowInfoIT.m_aRowCellArray;

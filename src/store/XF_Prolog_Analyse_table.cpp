@@ -119,8 +119,8 @@ void XF_Prolog_Analyse_table::vXF_Analyse_table(Symbol* pSymbol_tableSyn)
     Table* pTable = Card_Table::pAccess_Table(p_tableNm->szFacet(SF_TBL_NM));
     m_pCI->E.p_table->pSymbol()->Y_vSet(P_Pointer, pTable);
 
-//  if (pTable->bAltFetch)
-    m_pCI->E.p_table->pSymbol()->Y_vSet(P_AltFetch,"<tba>"_Stz);
+    if (pTable->bIsMetaDataTable())
+      m_pCI->E.p_table->pSymbol()->Y_vSet(P_AltFetch,"<tba>"_Stz);
 
     i8 jTableSize;
     i8 jRowSize;
@@ -166,7 +166,7 @@ void XF_Prolog_Analyse_table::vXF_Analyse_table_passThru(Symbol* pSymbol_tableSy
     Table *pTable = Card_Table::pAccess_Table(p_tableNm->szFacet(SF_TBL_NM));
     m_pCI->E.p_table->pSymbol()->Y_vSet(P_Pointer, pTable);
 
-//  if (pTable->bAltFetch)
+  if (pTable->bIsMetaDataTable())
     m_pCI->E.p_table->pSymbol()->Y_vSet(P_AltFetch,"<tba>"_Stz);
   }
 

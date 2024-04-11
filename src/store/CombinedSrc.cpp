@@ -747,6 +747,7 @@ void CombinedSrc::vSynthesizeCode(Stencil* pStencil, bool bFirstStage, bool bLas
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // operator stub
         vAppendCodeFragment(pOpSketch, "vOperatorStub"_Stz);
+				vAppendStencilFrom(pOpSketch);
         vAppendStencilTo(pOpSketch);
 
         vAppendCodeFragment(pOpSketch, "iPotTubBegin"_Stz);
