@@ -119,6 +119,10 @@ Card::Card(eCK eCard, i8 iFixedDepth)
   if (CK_s_CONSTRAINT == eCard)
     vDebugPoint();
 
+#ifdef Z_NO_SYNTHESIS
+  RASSERT(CK_SYNTHESIS != eCard);
+#endif
+
   m_eCard   = eCard;
   m_i_Child = C_UNKNOWN;
   m_iSequence = C_UNKNOWN;
@@ -4018,6 +4022,10 @@ Card_SubQuery* Card::pSub_subQuery(bool bNotNull)
 Card_Synthesis* Card::pSub_synthesis(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+#ifdef Z_NO_SYNTHESIS
+  NEVER_REACH
+#endif
 
   Card_Synthesis* pSub_synthesis =
       _pCard_Synthesis(pFindSubCard(CK_SYNTHESIS));
