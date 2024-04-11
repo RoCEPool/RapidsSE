@@ -32,6 +32,8 @@ namespace STORE
     Card_Filter* pEnsure_filter(void);
     void vEnsure_stream(CardIter* pCI);
 
+    void vFuse_project_Viable(CardIter* pCI);
+
     bool bIsEarlyLeaf(CardIter* pCI);
     bool bIsEarlyRoot(void);
     bool bIsNodeLevel(void);
