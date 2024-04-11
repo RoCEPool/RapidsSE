@@ -427,11 +427,7 @@ void Card_OP::vMapColumns(CardIter *pCI)
   pCI->E.p_key = pSub_key();
   pCI->E.p_emit = pSub_emit();
 
-#ifdef Z_NO_SYNTHESIS
   pCI->vAppendNewChild(pCI->E.p_Op, CK_s_MAPPING);
-#else
-  pCI->vAppendNewChild(CK_SYNTHESIS, CK_s_MAPPING);
-#endif
   pCI->vAppendNewChild(pCI->E.p_mapping, CK_KEYCELLS);
   pCI->vAppendNewChild(pCI->E.p_mapping, CK_PAYLOADCELLS);
 
