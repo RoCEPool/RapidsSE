@@ -229,9 +229,7 @@ void XF_Flatten_24_W_A_C_ro::vEnhance_IQ_emit_project_Add_crlKey(CardIter* pCI)
   pCI->E.p_expr->pSymbol()->vApplyFacet_varg(SF_NMD_COL, C_CRLKEY, i_Board);
   pCI->E.p_expr->pSymbol()->Y_vSet(P_InjCrlKey);
 
-  pCI->vAppendNewChild(pCI->E.p_expr, CK_RPNCALC);
-
-  pCI->vAppendNewChild(pCI->E.p_rpnCalc, CK_TERM, Symbol(SF_EXP_COL, "$1"_Stz));
+  pCI->vAppendNewChild(pCI->E.p_expr, CK_TERM, Symbol(SF_EXP_COL, "$1"_Stz));
   Symbol x_Symbol_expCol1(SF_EXP_COL, 1);
 
   pCI->E.p_term->vApplyCast_x(pCI->E.p_key->xCast());
@@ -249,6 +247,7 @@ void XF_Flatten_24_W_A_C_ro::vEnhance_IQ_emit_project_Add_crlKey(CardIter* pCI)
 
   pCI->E.p_emit->vRenumberAll_expr();
 }
+
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/

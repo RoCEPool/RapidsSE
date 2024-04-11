@@ -139,7 +139,6 @@ namespace STORE
     Card_RlnConj *       p_rlnConj;
     Card_RowCount *      p_rowCount;
     Card_RowSize *       p_rowSize;
-    Card_RpnCalc *       p_rpnCalc;
 
     Card_Scan *          p_scan;
     Card_Section *       p_section;

@@ -31,7 +31,7 @@ namespace STORE
     Card_Emit* pInduct(CardIter* pCI);
     void vInject_expr_nmdCol_table(CardIter* pCI);
     bool bIsCompound(void);
-    bool bIsLiterals(void);
+    bool bIsLiterals(CardIter* pCI);
     void vMapColumns(CardIter* pCI);
     void vPrint(Ribbon* pRibbon, i8 iDepth);
     void vPush_foldExpr_Into_emit(CardIter* pCI, Card_Expr* p_expr_fold);

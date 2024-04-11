@@ -69,8 +69,8 @@ namespace STORE
     void vRpn_where       (CardIter* pCI, String* psRpnExpr, Card_Where*     p_where);
 
     void vRpn_expr        (CardIter* pCI, String* psRpnExpr, Card_Expr*      p_expr);
-    void vRpn_rpnCalc     (CardIter* pCI, String* psRpnExpr, Card_RpnCalc*   p_rpnCalc);
     void vRpn_term        (CardIter* pCI, String* psRpnExpr, Card_Term*      p_term);
+    void vRpn_termSeq     (CardIter* pCI, String* psRpnExpr, Card_Expr*      p_expr);
 
     Index*     pGetIndex_chosenIndex(void);
     IndexDef*  pCraftIndexDef_key(CardIter* pCI);

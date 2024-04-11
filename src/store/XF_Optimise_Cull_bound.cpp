@@ -125,7 +125,8 @@ bool XF_Optimise_Cull_bound::bXF_Cull_Used_bound(void)
 
       m_pCI->vRecurseBegin(m_pCI->E.p_filter);
       while ((m_pCI->E.p_rlnConj = _pCard_RlnConj(m_pCI->pRecurseEach(CK_RLNCONJ)))) {
-        if (m_pCI->E.p_rlnConj->bSubsetOf_bounds(m_pCI->E.p_bounds)) {
+        if (m_pCI->E.p_rlnConj->bSubsetOf_bounds(m_pCI->E.p_bounds) &&
+            ! m_pCI->E.p_rlnConj->pSymbol()->Y_bHas(P_CrlKeyTest)) {
           //RASSERT(m_pCI->G.p_rlnConj->bIsJoinConj());
           m_pCI->E.p_rlnConj->vMark1(MARK_AT);
         }
@@ -141,7 +142,6 @@ bool XF_Optimise_Cull_bound::bXF_Cull_Used_bound(void)
        m_pCI->vRecurseBegin(m_pCI->E.p_constraint);
       while ((m_pCI->E.p_rlnConj = _pCard_RlnConj(m_pCI->pRecurseEach(CK_RLNCONJ)))) {
         if (m_pCI->E.p_rlnConj->bSubsetOf_bounds(m_pCI->E.p_bounds)) {
-          //RASSERT(m_pCI->G.p_rlnConj->bIsJoinConj());
           m_pCI->E.p_rlnConj->vMark1(MARK_AT);
         }
       }

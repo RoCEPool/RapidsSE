@@ -61,7 +61,8 @@ Stz* Stz::szDots(i8 nDots)
     case 14:  return ".............."_Stz;
     case 15:  return "..............."_Stz;
     case 16:  return "................"_Stz;
-    default:  return "(max-dots)......."_Stz;
+    default:
+      return "(max-dots)......."_Stz;
   }
 }
 

@@ -27,7 +27,7 @@ __aFooterFunction(Card)
 /*----------------------------------------------------------------------------*/
 i8 Card::m__iSeqGen { 1 };
 
-Stz* P_AggOp        = "bAggOp"_Stz;
+Stz* P_AltFetch     = "szAltFetch"_Stz;
 Stz* P_BreakPt      = "bBreakPt"_Stz;
 Stz* P_BumpedBy     = "nBumpedBy"_Stz;
 Stz* P_Cell         = "i_Cell"_Stz;
@@ -42,6 +42,7 @@ Stz* P_DebugOption  = "szDebugOption"_Stz;
 Stz* P_Direction    = "szDirection"_Stz;
 Stz* P_Early        = "bEarly"_Stz;
 Stz* P_EmittedCol   = "i_EmittedCol"_Stz;
+Stz* P_FixedNm      = "bFixedNm"_Stz;
 Stz* P_FixedPos     = "bFixedPos"_Stz;
 Stz* P_FusedProject = "bFusedProject"_Stz;
 Stz* P_HashOf       = "szHashOf"_Stz;
@@ -115,17 +116,18 @@ Card::Card(eCK eCard, i8 iFixedDepth)
 
   MemLib::vZero(md_Coord, sizeof(md_Coord), CN_CARD);
 
-  if (CK_BOUNDS == eCard)
+  if (CK_s_CONSTRAINT == eCard)
     vDebugPoint();
 
   m_eCard   = eCard;
   m_i_Child = C_UNKNOWN;
+  m_iSequence = C_UNKNOWN;
 
   m_pLastPrintParent = nullptr;
   m_pParent = nullptr;
 
-  md__SeqNo = Card::m__iSeqGen++;
-  //gapCard[md__SeqNo] = this;
+  md__CardNo = Card::m__iSeqGen++;
+  //gapCard[md__CardNo] = this;
   md__FirstDetected  = C_UNKNOWN;
   md__LeakDetected   = C_UNKNOWN;
 
@@ -134,7 +136,6 @@ Card::Card(eCK eCard, i8 iFixedDepth)
   m_iFirstPrint = C_UNKNOWN;
   m_nPrintCount = 0;
   m_nFunctionCount = 0;
-  m_eFirst = CK_NONE;
 
   m_bAddedCorrectly   = false;
   m_bRemovedCorrectly = false;
@@ -145,10 +146,10 @@ Card::Card(eCK eCard, i8 iFixedDepth)
   vMark2(MARK_BLANK);
 
   s256 sCoord;
-  sCoord.vSprint("((%s new %04lld))"_Stz, aCK[m_eCard], md__SeqNo);
+  sCoord.vSprint("((%s new %04lld))"_Stz, aCK[m_eCard], md__CardNo);
   StrLib::vCopy(md_Coord, sizeof(md_Coord), sCoord.azChar());
-//  if (11 == md__SeqNo) {
-//    vTrace("Card [%02lld] %p\n"_Stz, md__SeqNo, this);
+//  if (11 == md__CardNo) {
+//    vTrace("Card [%02lld] %p\n"_Stz, md__CardNo, this);
 //    vDebugPoint();
 //  }
 
@@ -164,17 +165,17 @@ Card::~Card(void) noexcept(false)
   //_precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
 //  vTrace("Card [~%02lld] %p %s %s : %s\n"_Stz,
-//         md__SeqNo,this,aCK[m_eCard],m_xSymbol.m_sFacet.szStz(),md_Coord);
+//         md__CardNo,this,aCK[m_eCard],m_xSymbol.m_sFacet.szStz(),md_Coord);
 //
 //  if (this == pPriorCard)
 //    vDebugPoint();
 //
-//  if (678 == md__SeqNo) {
+//  if (678 == md__CardNo) {
 //    pPriorCard = this;
 //    vDebugPoint();
 //  }
 
-  //gapCard[md__SeqNo] = nullptr;
+  //gapCard[md__CardNo] = nullptr;
 
   RASSERT(! bMark1(MARK_DELETED));
 
@@ -603,8 +604,6 @@ void Card::vDump(const char* azFunc, Stz* szTitle, i8 iDepth)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-	return;
-
   if (0 == iDepth) {
     if (szTitle)
       vTrace("^^%s [%s] %p /P %p\n"_Stz,szTitle,azFunc,this,m_pParent);
@@ -1009,6 +1008,30 @@ bool Card::bHasChildFacet(eSF eFacet)
 }
 
 /*----------------------------------------------------------------------------*/
+/* has given facet?                                                           */
+/*----------------------------------------------------------------------------*/
+bool Card::bHasFacet(eSF eFacet)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  bool b = m_xSymbol.bHasFacet(eFacet);
+
+  return b;
+}
+
+/*----------------------------------------------------------------------------*/
+/* has given facet?                                                           */
+/*----------------------------------------------------------------------------*/
+bool Card::bHasFacet(eSF eFacet, Stz* szFacet)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  bool b = m_xSymbol.bHasFacet(eFacet, szFacet);
+
+  return b;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is given card a sub card of this card?                                     */
 /*----------------------------------------------------------------------------*/
 bool Card::bHasSub(Card* pSubCard)
@@ -1170,18 +1193,28 @@ bool Card::bIsPeek(i8 i_Child, eCK eChild)
 /*----------------------------------------------------------------------------*/
 /* visit all sub-cards of given eToSubs and apply lambda function             */
 /*----------------------------------------------------------------------------*/
-bool Card::bLambdaWalk(eCK eToSubs, std::function<bool(Card* pCard)> bfLambdaFn)
+bool Card::bLambdaWalk(eCK eToSubs,
+                       std::function<bool(Card* pCard)> bfLambdaFn,
+                       CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   if (CK_NONE == eToSubs || eToSubs == m_eCard) {
+    if (pCI)
+      pCI->vAncestorPush(this);
     bool bContinue = bfLambdaFn(this);
+    if (pCI)
+      pCI->vAncestorPop();
     if (! bContinue)
       return C_TERMINATE_RECURSION;
   }
 
   for (Kid xCard(this); xCard.bEach_opaque(); /**/) {
-    bool bContinue = xCard.pChild()->bLambdaWalk(eToSubs, bfLambdaFn);
+    if (pCI)
+      pCI->vAncestorPush(this);
+    bool bContinue = xCard.pChild()->bLambdaWalk(eToSubs, bfLambdaFn, pCI);
+    if (pCI)
+      pCI->vAncestorPop();
     if (! bContinue)
       return C_TERMINATE_RECURSION;
   }
@@ -1572,7 +1605,7 @@ void Card::vPrintRecursive(CardIter* pCI,
 
   if (C_UNKNOWN == m_iFirstPrint) {
     m_iFirstPrint = pCI->m_pBench->nPrintBoard();
-    m_eFirst = m_eCard;
+    m_iSequence = pCI->m_pBench->iSequence_next(m_eCard);
   }
   m_nPrintCount++;
 
@@ -1610,9 +1643,6 @@ void Card::vPrintRecursive(CardIter* pCI,
 
   if (rbPrune)
     return;
-
-  if (CK_RPNCALC == m_eCard)
-    vDebugPoint();
 
   if (! bPrintBelow)
     bPrintBelow = pCardCtl->bPrintBelow(m_eCard);
@@ -1782,6 +1812,26 @@ void Card::vReplaceSub(Card* pSub, Card* pWith)
   Card* pParent = pFindParentRecursive(pSub);
 
   pParent->vReplaceChild(pSub,pWith);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get sequence no                                                            */
+/*----------------------------------------------------------------------------*/
+i8 Card::iSequence(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  return m_iSequence;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set sequence no                                                            */
+/*----------------------------------------------------------------------------*/
+void Card::vSequence(i8 iSequence)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  m_iSequence = iSequence;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2351,7 +2401,6 @@ void Card::vPrintCard_byKind(Ribbon* pRibbon, i8 iDepth)
     case CK_t_EMIT:   _pCard_Emit(this)->vPrint(pRibbon, iDepth);    break;
     case CK_EXPR:     _pCard_Expr(this)->vPrint(pRibbon, iDepth);    break;
     case CK_s_KEY:    _pCard_Key(this)->vPrint(pRibbon, iDepth);     break;
-    case CK_RPNCALC:  _pCard_RpnCalc(this)->vPrint(pRibbon, iDepth); break;
     case CK_s_TABLE:  _pCard_Table(this)->vPrint(pRibbon, iDepth);   break;
     case CK_TERM:     _pCard_Term(this)->vPrint(pRibbon, iDepth);    break;
     case CK_o_FILTER: _pCard_Filter(this)->vPrint(pRibbon, iDepth);  break;
@@ -2443,11 +2492,11 @@ void Card::vPrintName(Ribbon* pRibbon, i8 iDepth, Stz* szCustomName)
                     szCustomName);
     }
     else {
-      sName.vSprint("%s%s *%lld:%lld"_Stz,
+      sName.vSprint("%s%s CK%lld#%lld"_Stz,
                     szCardNm(),
                     sHiddenChildren.szStz(),
-                    m_nPrintCount,
-                    m_iFirstPrint);
+                    m_eCard,
+                    m_iSequence);
       sName.vToUpper();
     }
   }
@@ -2489,18 +2538,18 @@ void Card::vPrintNameSymbol(Ribbon* pRibbon, i8 iDepth)
 
   if (0 == iDepth) {
     if (m_xSymbol.bHasFacets())
-      sNameSymbol.vSprint("%s%s %s *%lld:%lld"_Stz,
+      sNameSymbol.vSprint("%s%s %s CK%lld#%lld"_Stz,
                           sName.szStz(),
                           sHiddenChildren.szStz(),
                           m_xSymbol.szFacet((i8)0),
-                          m_nPrintCount,
-                          m_iFirstPrint);
+                          m_eCard,
+                          m_iSequence);
     else
-      sNameSymbol.vSprint("%s%s *%lld:%lld"_Stz,
+      sNameSymbol.vSprint("%s%s CK%lld#%lld"_Stz,
                           sName.szStz(),
                           sHiddenChildren.szStz(),
-                          m_nPrintCount,
-                          m_iFirstPrint);
+                          m_eCard,
+                          m_iSequence);
 
   }
   else {
@@ -3708,24 +3757,6 @@ Card_RowSize* Card::pSub_rowSize(bool bNotNull)
   }
 
   return p_rowSize;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-#include "Card_RpnCalc.hpp"
-Card_RpnCalc* Card::pSub_rpnCalc(bool bNotNull)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_RpnCalc* p_rpnCalc =
-      _pCard_RpnCalc(pFindSubCard(CK_RPNCALC));
-
-  if (bNotNull && !p_rpnCalc) {
-    NEVER_REACH
-  }
-
-  return p_rpnCalc;
 }
 
 /*----------------------------------------------------------------------------*/

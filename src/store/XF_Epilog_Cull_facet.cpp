@@ -99,6 +99,9 @@ void XF_Epilog_Cull_facet::vCull_facet(void)
             pSym_term->vCullFacet(SF_EXP_COL);
         }
       }
+      if (pSym_term->bHasFacet(SF_NMD_COL))
+        pSym_term->vCullFacet(SF_NMD_COL);
+
 
       RASSERT(1 == pSym_term->nFacets());
       return true;

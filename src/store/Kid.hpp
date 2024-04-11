@@ -91,7 +91,6 @@ namespace STORE
     Card_JoinOrder*   p_joinOrder(bool bSub=false);
     Card_Map*         p_map(bool bSub=false);
     Card_RlnConj*     p_rlnConj(bool bSub=false);
-    Card_RpnCalc*     p_rpnCalc(bool bSub=false);
     Card_Stage*       p_stage(bool bSub=false);
     Card_StreamHead*  p_streamHead(bool bSub=false);
     Card_StreamJoin*  p_streamJoin(bool bSub=false);

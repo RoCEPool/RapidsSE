@@ -116,7 +116,6 @@ enum eCK : i8 // card kind
   /* */ CK_RLNCONJ,
   /* */ CK_ROWCOUNT,
   /* */ CK_ROWSIZE,
-  /* */ CK_RPNCALC,
 
   /* */ CK_SECTION,
   /* */ CK_SENDKIND,
