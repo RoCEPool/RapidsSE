@@ -80,7 +80,6 @@ void XF_Epilog_Fuse_project::vFuse_project(void)
     if (! m_pCI->Next.m_pProject ||
         m_pCI->Next.m_pProject->bIsCompound() ||
         m_pCI->Next.m_pProject->bIsLiterals(m_pCI)) {
-      m_pCI->E.p_stream->vFuse_project_NoViable(m_pCI);
 
       goto L_UPDATE_PRIOR_EMITTED;
     }
@@ -111,7 +110,6 @@ void XF_Epilog_Fuse_project::vFuse_project__(void)
         m_pCI->Next.m_pProject->bIsCompound() ||
         m_pCI->Next.m_pProject->bIsLiterals(m_pCI)) {
       m_pCI->E.p_stream = m_pCI->E.p_scan->pSub_stream();
-      m_pCI->E.p_stream->vFuse_project_NoViable(m_pCI);
       continue;
     }
 
@@ -129,7 +127,6 @@ void XF_Epilog_Fuse_project::vFuse_project__(void)
         m_pCI->Next.m_pProject->bIsCompound() ||
         m_pCI->Next.m_pProject->bIsLiterals(m_pCI)) {
       m_pCI->E.p_stream = m_pCI->E.p_indexScan->pSub_stream();
-      m_pCI->E.p_stream->vFuse_project_NoViable(m_pCI);
       continue;
     }
 
@@ -154,7 +151,6 @@ void XF_Epilog_Fuse_project::vFuse_project__(void)
         m_pCI->Next.m_pProject->bIsCompound() ||
         m_pCI->Next.m_pProject->bIsLiterals(m_pCI)) {
       m_pCI->E.p_stream = m_pCI->E.p_indexJoin->pSub_stream();
-      m_pCI->E.p_stream->vFuse_project_NoViable(m_pCI);
       m_pCI->Dic.m_p_expr = m_pCI->Flux.m_pArriving = m_pCI->E.p_Op->pSub_emit();
       continue;
     }
@@ -182,7 +178,6 @@ void XF_Epilog_Fuse_project::vFuse_project__(void)
         m_pCI->Next.m_pProject->bIsCompound() ||
         m_pCI->Next.m_pProject->bIsLiterals(m_pCI)) {
       m_pCI->E.p_stream = m_pCI->E.p_crossJoin->pSub_stream();
-      m_pCI->E.p_stream->vFuse_project_NoViable(m_pCI);
       m_pCI->Dic.m_p_expr = m_pCI->Flux.m_pArriving = m_pCI->E.p_Op->pSub_emit();
       continue;
     }

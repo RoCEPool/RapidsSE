@@ -304,6 +304,10 @@ void Card_OP::vEnsure_stream(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
+#ifdef Z_NO_STREAM
+  NEVER_REACH
+#endif
+
   if (! (pCI->E.p_stream = pSub_stream()) ) {
     pCI->vAppendNewChild(this, CK_s_STREAM);
   }
@@ -505,6 +509,221 @@ bool Card_OP::bPeg_Projection(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* create/recreate emit                                                       */
 /*----------------------------------------------------------------------------*/
+#ifdef Z_NO_STREAM
+void Card_OP::vRestate_emit(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  pCI->E.p_injectable = pCI->E.p_Op->pSub_injectable();
+  pCI->E.p_key        = pCI->E.p_Op->pSub_key();
+  pCI->E.p_needed     = pCI->E.p_Op->pSub_needed();
+  pCI->E.p_stream     = nullptr;
+
+  eCK eCard_OP = pCI->E.p_Op->eCard();
+  switch (eCard_OP) {
+
+    case CK_c_COMBINED:
+    case CK_c_SEND:
+    case CK_c_STAGE:
+    case CK_o_CALL:
+    case CK_o_CORRELATION:
+      RASSERT(! pCI->E.p_Op->pSub_emit());
+      break;
+
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    case CK_o_AGGREG:
+    case CK_o_CROSSJOIN:
+    case CK_o_GBYAGG:
+    case CK_o_ORDAGG:
+      pCI->E.p_emit = pCI->E.p_Op->pSub_emit(C_NOT_NULL);
+      pCI->E.p_emit->vEnsure_expr_Has_nmdCol();
+      if (pCI->Flux.m_pArriving) {
+        pCI->Dic.m_p_expr = pCI->Flux.m_pArriving;
+        pCI->E.p_key = pCI->E.p_Op->pSub_key();
+        pCI->E.p_emit->vApplyCast(pCI,/*??*/pCI->Dic.m_p_expr);
+        pCI->E.p_key = nullptr;
+      }
+      pCI->E.p_emit->vIncFunctionCount();
+      if (AM::JOB::bHasTag(C_OPTIMISER_TRACE))
+        vDebugPoint();
+      break;
+
+    case CK_o_PROJECT:
+      if (pCI->m_pBench->eXform() == XF_PROLOG_ANALYSE_EMIT) {
+        vDebugPoint();
+      }
+
+      pCI->E.p_emit = pCI->E.p_Op->pSub_emit(C_NOT_NULL);
+      pCI->E.p_emit->vEnsure_expr_Has_nmdCol();
+      if (pCI->Flux.m_pArriving) {
+        pCI->Dic.m_p_expr = pCI->Flux.m_pArriving;
+        pCI->E.p_emit->vApplyCast(pCI,/*??*/pCI->Dic.m_p_expr);
+      }
+      pCI->E.p_emit->vIncFunctionCount();
+      break;
+
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    case CK_o_FROM:
+      if (pCI->E.p_Op->pSub_keyExists() || pCI->E.p_Op->pSub_keyNotExists() )
+        goto L_o_KEYEXISTS;
+      [[clang::fallthrough]];
+    case CK_o_INDEXJOIN:
+    case CK_o_INDEXSCAN:
+    case CK_o_SCAN:
+      if ((pCI->E.p_emit = pCI->E.p_Op->pSub_emit()))
+        pCI->E.p_Op->vDeleteChild(pCI->E.p_emit);
+
+      if (pCI->Flux.m_pArriving) {
+        pCI->E.p_emit = pCI->Flux.m_pArriving->pInduct(pCI);
+      }
+      else
+        pCI->E.p_emit = new Card_Emit;
+
+      pCI->E.p_table = pCI->E.p_Op->pSub_table(C_NOT_NULL);
+      pCI->E.p_emit->vInject_expr_nmdCol_table(pCI);
+
+
+      pCI->E.p_Op->vAppendChild(pCI->E.p_emit);
+
+      if ((pCI->E.p_filter = pCI->E.p_Op->pSub_filter()) &&
+          (pCI->E.p_boolPred = pCI->E.p_filter->pSub_boolPred())) {
+        pCI->Dic.m_p_expr = pCI->Flux.m_pArriving;
+        pCI->E.p_boolPred->vApplyCast(pCI,/*??*/pCI->Dic.m_p_expr);
+      }
+
+      pCI->E.p_emit->vIncFunctionCount();
+      break;
+
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    case CK_o_HAVING:
+      vDebugPoint();
+      [[clang::fallthrough]];
+
+    case CK_o_HASH:
+    case CK_o_KEYEXISTS:
+    case CK_o_KEYNOTEXISTS:
+    case CK_o_LIMIT:
+    case CK_o_SORT:
+    case CK_o_TOP:
+    case CK_o_WHERE:
+    L_o_KEYEXISTS:
+      if ((pCI->E.p_emit = pCI->E.p_Op->pSub_emit()))
+        pCI->E.p_Op->vDeleteChild(pCI->E.p_emit);
+
+      pCI->E.p_emit = pCI->Flux.m_pArriving->pInduct(pCI);
+      pCI->E.p_Op->vAppendChild(pCI->E.p_emit);
+      pCI->E.p_emit->vIncFunctionCount();
+
+//      pCI->G.p_Op->vDump(__func__);
+//      vDebugPoint();
+
+      break;
+
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    case CK_o_CAST:
+    case CK_o_FILTER:
+    case CK_o_INFLATE:
+      //pCI->G.p_Op->vDump(__func__);
+      NEVER_REACH
+      break;
+
+    default:
+      pCI->E.p_Op->vDump(__func__);
+      NEVER_REACH
+      break;
+
+  } // switch(pCI->G.e_Op)
+
+
+//  pCI->G.p_Op->vDump(__func__);
+//  vDebugPoint();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  if ((pCI->E.p_filter = pCI->E.p_Op->pSub_filter())) {
+    RASSERT(pCI->E.p_Op->bEither(CK_o_CROSSJOIN,
+                                 CK_o_FROM,
+                                 CK_o_HAVING,
+                                 CK_o_INDEXJOIN,
+                                 CK_o_INDEXSCAN,
+                                 CK_o_KEYEXISTS,
+                                 CK_o_KEYNOTEXISTS,
+                                 CK_o_SCAN,
+                                 CK_o_WHERE,
+                                 CK_NONE));
+    if (pCI->E.p_Op->bEither(CK_o_KEYEXISTS, CK_o_KEYNOTEXISTS, CK_NONE)) {
+      if (pCI->Flux.m_pArriving) {
+        pCI->Dic.m_p_expr = _pCard_Emit(pCI->E.p_Op->pSub_injectable());
+        //pCI->Dic.m_p_expr->vDump(__func__);
+        pCI->E.p_filter->vUpdate_expCol(pCI,pCI->Dic.m_p_expr, true);
+      }
+    }
+    else {
+      if (pCI->Flux.m_pArriving) {
+        pCI->Dic.m_p_expr = pCI->Flux.m_pArriving;
+        //pCI->Dic.m_p_expr->vDump(__func__);
+        if (pCI->E.p_Op->bIsCard(CK_o_HAVING))
+          pCI->E.p_filter->vUpdate_expCol(pCI,pCI->Dic.m_p_expr, true);
+        else
+          pCI->E.p_filter->vUpdate_expCol(pCI,pCI->Dic.m_p_expr, true);
+      }
+    }
+  }
+//  pCI->G.p_Op->vDump(__func__);
+//  vDebugPoint();
+
+  if (pCI->E.p_emit && pCI->E.p_Op->pSub_key()) {
+    if (AM::JOB::bHasTag(C_OPTIMISER_TRACE))
+      vDebugPoint();
+    pCI->E.p_key = pCI->E.p_Op->pSub_key();
+    pCI->E.p_emit->vApplyFacets(pCI,pCI->E.p_key);
+
+    for (Kid xEmit(pCI->E.p_emit); xEmit.bEach(CK_EXPR); /**/) {
+      for (pCI->vBeginTarget(xEmit.p_expr(),CK_TERM); pCI->bEachTarget(); /**/) {
+
+        Card_Term *p_term_keyCol = pCI->E.xTarget.p_term();
+        Symbol *pSym_term_keyCol = p_term_keyCol->pSymbol();
+        if (! pSym_term_keyCol->bHasFacet(SF_KEY_COL))
+          continue;
+
+        i8 i_Key = pSym_term_keyCol->iTo_ordinal(SF_KEY_COL) - 1;
+        Card_Expr *p_expr_key = pCI->E.p_key->pGet_expr(i_Key);
+        if (p_expr_key->bIsScalarCol()) {
+          //p_expr_key->pSymbol()->vDump();
+          p_expr_key->pSymbol()->vApplyFacets(pSym_term_keyCol);
+          //p_expr_key->pSymbol()->vDump();
+          vDebugPoint();
+        }
+      }
+    }
+//    pCI->G.p_Op->vDump(__func__);
+//    vDebugPoint();
+
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+ //pCI->Flux.m_pArriving = pCI->G.p_emit;
+
+//  if (CK_o_KEYEXISTS    == eCard_OP ||
+//      CK_o_KEYNOTEXISTS == eCard_OP) {
+//    pCI->Dic.m_p_expr = pCI->E.p_emit;
+//    //pCI->Dic.m_p_expr = _pCard_Emit(pCI->G.p_Op->pSub_injectable());
+//    vUpdate_expCol(pCI,pCI->Dic.m_p_expr);
+//  }
+  if (CK_o_WHERE        == eCard_OP) {
+    pCI->Dic.m_p_expr = pCI->E.p_emit;
+    //vUpdate_expCol(pCI,pCI->Dic.m_p_expr);
+  }
+
+  if (CK_o_SORT== eCard_OP) {
+    pCI->Dic.m_p_expr = pCI->E.p_emit;
+    pCI->E.p_key->vApplyCast(pCI,/*??*/pCI->Dic.m_p_expr);
+  }
+  pCI->Flux.m_pArriving = pCI->E.p_emit;
+}
+/*----------------------------------------------------------------------------*/
+#else
 void Card_OP::vRestate_emit(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
@@ -700,7 +919,7 @@ void Card_OP::vRestate_emit(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
- //pCI->Flux.m_pArriving = pCI->G.p_emit;
+  //pCI->Flux.m_pArriving = pCI->G.p_emit;
 
 //  if (CK_o_KEYEXISTS    == eCard_OP ||
 //      CK_o_KEYNOTEXISTS == eCard_OP) {
@@ -719,6 +938,7 @@ void Card_OP::vRestate_emit(CardIter* pCI)
   }
   pCI->Flux.m_pArriving = pCI->E.p_emit;
 }
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* produce <expr> for aggreg op                                               */

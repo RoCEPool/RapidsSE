@@ -17,7 +17,6 @@ namespace STORE
    ~Card_Stream(void) noexcept(false);
 
     void vFuse_project_Viable(CardIter* pCI);
-    void vFuse_project_NoViable(CardIter* pCI);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
