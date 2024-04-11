@@ -32,8 +32,11 @@ readonly BOOTSTRAP_COMMON_FN="${BOOTSTRAP_DIR}/common.fn"
 readonly DEBUG=0
 
 # How long to run the seth tests for (in seconds) before declaring that they are hung.
-# Defaulting to 45 minutes.
-readonly SETH_TIMEOUT="3800"
+readonly SETH_TIMEOUT_BASE="3800"
+
+# A multiplier that is applied to the above SETH_TIMEOUT_BASE when the tests
+# are run in debug mode. This may be a fractional value (e.g. 1.5).
+readonly SETH_TIMEOUT_DEBUG_MULTIPLIER=2
 
 # Maximum disk space utilisation % that we will accept on the current partition
 # before we forcibly stop the tests. This is trying to catch situations where
@@ -79,6 +82,10 @@ CONFIG_FILE=""
 
 # This is the collection of tests that are actually run by bamboo.
 TESTLIST_FILE=""
+
+# The actual timeout that Seth should use before believing that the system
+# has hung or crashed.
+SETH_TIMEOUT="${SETH_TIMEOUT_BASE}"
 
 ###############################################################################
 ### Functions                                                               ###
@@ -137,6 +144,14 @@ function processArgs() {
 
   if ! [[ "${TARGET}" = *debug* || "${TARGET}" = *release* ]]; then
     errorExit "Non-optional parameter 1 must contain the substring \"debug\" or \"release\""
+  fi
+
+  # Adjust the Seth timeout value if we are running in debug.
+  # Note that SETH_TIMEOUT is output as an integer value.
+  if [[ "${TARGET}" = *debug* ]]; then
+    SETH_TIMEOUT="$(echo "(${SETH_TIMEOUT_BASE} * ${SETH_TIMEOUT_DEBUG_MULTIPLIER}" $ | bc -l)"
+    echo "Extending the Seth timeout value from ${SETH_TIMEOUT_BASE} to ${SETH_TIMEOUT} seconds "\
+         "because we are running against a debug build of SE."
   fi
 
   CONFIG_FILE="$2"
