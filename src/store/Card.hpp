@@ -18,6 +18,8 @@
 #include "Ribbon.hpp"
 #include "Symbol.hpp"
 
+//#define Z_NO_STREAM
+
 namespace STORE
 {
   class Card_AbsJoin;
