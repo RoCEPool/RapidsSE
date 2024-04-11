@@ -681,7 +681,7 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
       if (m_pOpDef->i_Op() == 0) {
         vDebugPoint();
         if (3 == pColPpg->m_nPropagated) {
-          p_expr_a->vDump(__func__, "--EXPR ARRIVING at SubCard--"_Stz);
+          //p_expr_a->vDump(__func__, "--EXPR ARRIVING at SubCard--"_Stz);
           vDebugPoint();
         }
       }
@@ -720,7 +720,7 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
         if (m_pOpDef->i_Op() == 0) {
           vDebugPoint();
           if (3 == pColPpg->m_nPropagated) {
-            p_expr_e->vDump(__func__, "--EXPR PPG at SubCard--"_Stz);
+            //p_expr_e->vDump(__func__, "--EXPR PPG at SubCard--"_Stz);
             vDebugPoint();
           }
         }
