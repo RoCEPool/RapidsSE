@@ -314,6 +314,9 @@ void XF_Synthesise_pipelineDef::vCraftArgDefs(void)
       break;
 
     case CK_o_INFLATE:
+      if (p_OP->pSymbol()->Y_bHas(P_AltFetch))
+        m_pOpDef->m_sAlt = p_OP->pSymbol()->Y_szGet(P_AltFetch);
+
       m_pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_Inflate(p_OP)->pSub_tableNm()->szFacet(SF_TBL_NM)));
       break;
 

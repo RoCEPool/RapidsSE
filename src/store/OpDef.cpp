@@ -238,11 +238,12 @@ void OpDef::vDump(i8 i_Tab)
   _precondition_(_ADDRESS_, _MAGIC_, CN_OPDEF, _FOOTER_);
 
   i8 nTab_plus = 4;
-  vTrace("%sOpDef: [%lld] %s %s\n"_Stz,
+  vTrace("%sOpDef: [%lld] %s %s %s\n"_Stz,
          Stz::szTab(i_Tab),
          m_i_Op,
          m_sOpNm.szStz(),
-         md_Coord);
+         md_Coord,
+         m_sAlt.szStz());
 
   i8 nSpaces = 4;
   if (m_pStreamDef_arriving) {
