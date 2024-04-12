@@ -159,7 +159,8 @@ void Card_Project::vDerive_streamKey(CardIter* pCI)
 
   // snap onto <project>/<projection>, delete existing <project>/<projection>/<key>
   RASSERT(bPeg_Projection(pCI));
-  pCI->E.p_emit->vDelete_streamKey(pCI);
+
+  pCI->E.p_emit->vDeleteSub(CK_STREAMKEY);
 
   // derive new <project>/<projection>/<key>
   pCI->E.p_streamKey = new Card_StreamKey;

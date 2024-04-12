@@ -52,8 +52,8 @@ void Card_IndexJoin::vDerive_streamKey(CardIter* pCI)
 
   RASSERT(bPeg_Projection(pCI));
   RASSERT(bPeg_Chosen_index(pCI));
-  pCI->E.p_emit->vDelete_streamKey(pCI);
 
+   pCI->E.p_emit->vDeleteSub(CK_STREAMKEY);
 
   if (pCI->StreamOrder.m_pStreamKey) {
     pCI->E.p_streamKey = _pCard_StreamKey(pCI->StreamOrder.m_pStreamKey->pDupCardRecursive());

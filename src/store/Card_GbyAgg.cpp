@@ -49,7 +49,8 @@ void Card_GbyAgg::vDerive_streamKey(CardIter* pCI)
 
   RASSERT(bPeg_Projection(pCI));
   RASSERT(bPeg_Key(pCI));
-  pCI->E.p_emit->vDelete_streamKey(pCI);
+
+  pCI->E.p_emit->vDeleteSub(CK_STREAMKEY);
 
   pCI->StreamOrder.m_pStreamKey = Card_StreamKey::pTo_streamKey(pCI->E.p_key);
   pCI->E.p_emit->vAppendChild(pCI->StreamOrder.m_pStreamKey);

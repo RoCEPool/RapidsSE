@@ -300,19 +300,6 @@ Card_Needed* Card_Emit::pCraft_needed_root(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_Emit::vDelete_streamKey(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  if ((pCI->E.p_streamKey = pSub_streamKey()))
-    vDeleteChild(pCI->E.p_streamKey);
-
-  pCI->E.p_streamKey = nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
 /* derive the key of this projection (of running key)                         */
 /*----------------------------------------------------------------------------*/
 void Card_Emit::vDerive_streamKey(CardIter *pCI)

@@ -55,7 +55,8 @@ void Card_IndexScan::vDerive_streamKey(CardIter* pCI)
 
   RASSERT(bPeg_Projection(pCI));
   RASSERT(bPeg_Chosen_index(pCI));
-  pCI->E.p_emit->vDelete_streamKey(pCI);
+
+  pCI->E.p_emit->vDeleteSub(CK_STREAMKEY);
 
   // derive new <indexScan>/<projection>/<key>
   pCI->E.p_streamKey = new Card_StreamKey;
