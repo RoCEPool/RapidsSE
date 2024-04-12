@@ -453,9 +453,13 @@ void XF_Flatten_24_W_A_C_ro::vRestate_emit_fold(CardIter* pCI)
 
   RASSERT(CK_c_FOLD == pCI->E.e_Op);
 
+#ifdef Z_NO_STREAM
+  pCI->E.p_fold->vAppendChild(pCI->Flux.m_pArriving->pDupCardRecursive());
+#else
   pCI->E.p_stream = new Card_Stream;
   pCI->E.p_fold->vAppendChild(pCI->E.p_stream);
   pCI->E.p_stream->vAppendChild(pCI->Flux.m_pArriving->pDupCardRecursive());
+#endif
 }
 
 /*----------------------------------------------------------------------------*/

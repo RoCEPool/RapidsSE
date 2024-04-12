@@ -18,7 +18,7 @@
 #include "Ribbon.hpp"
 #include "Symbol.hpp"
 
-//#define Z_NO_STREAM
+#define Z_NO_STREAM
 
 namespace STORE
 {

@@ -62,6 +62,50 @@ void Card_Sort::vDerive_streamKey(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* smooth                                                                     */
 /*----------------------------------------------------------------------------*/
+#ifdef Z_NO_STREAM
+void Card_Sort::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  UNUSED(pCarryForward);
+
+  pCI->E.p_key = pCI->E.p_sort->pSub_key();
+
+//Z_KEY_DIRECTION
+  if (pCarryForward->Sort.m_bCorrect_After_Inject) {
+    for (pCI->vBeginTarget(pCI->E.p_key,CK_EXPR); pCI->bEachTarget(); /**/) {
+      for (pCI->vBeginTarget(pCI->E.xTarget.p_expr(),CK_TERM); pCI->bEachTarget(); /**/) {
+        pCI->E.p_term = pCI->E.xTarget.p_term();
+        if (pCI->E.p_term->pSymbol()->bHasFacet(SF_EXP_COL)) {
+          pCI->E.p_term->vBump_ordCol(SF_EXP_COL);
+          pCI->E.p_term->vMark1(MARK_CHANGED);
+        }
+      }
+    }
+  }
+
+
+  if ((pCI->E.p_emit = pCI->E.p_sort->pSub_emit()))
+    pCI->E.p_sort->vDeleteSub(pCI->E.p_emit);
+
+  Card_Emit* p_emit_sort =  pCI->Flux.m_pArriving->pInduct(pCI);
+
+  for (Kid xEmit_sort(p_emit_sort); xEmit_sort.bEach(); /**/) {
+    Card_Expr* p_expr_emit_sort = xEmit_sort.p_expr();
+    Card_Expr* p_expr_key = pCI->E.p_key->pDecode_scalar_expr_Via_symbol(pCI,p_expr_emit_sort->pSymbol());
+    if (! p_expr_key)
+      continue;
+    Symbol* pSym_expr_key = p_expr_key->pSymbol();
+    p_expr_emit_sort->pGet_term(0)->pSymbol()->vApplyFacets(pSym_expr_key);
+   }
+
+
+
+  pCI->E.p_sort->vAppendChild(p_emit_sort);
+
+  pCI->Dic.m_p_expr = pCI->Flux.m_pArriving = pSub_emit();
+}
+/*----------------------------------------------------------------------------*/
+#else
 void Card_Sort::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
@@ -110,7 +154,7 @@ void Card_Sort::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
     //p_expr_key->vDump(__func__);
     //p_expr_emit_sort->pGet_term(0)->vDump(__func__);
     p_expr_emit_sort->pGet_term(0)->pSymbol()->vApplyFacets(pSym_expr_key);
-   }
+  }
 
 
 
@@ -118,6 +162,7 @@ void Card_Sort::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
 
   pCI->Dic.m_p_expr = pCI->Flux.m_pArriving = pSub_emit();
 }
+#endif
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
