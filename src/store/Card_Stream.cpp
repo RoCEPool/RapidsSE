@@ -43,6 +43,10 @@ void Card_Stream::vFuse_project_Viable(CardIter *pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
+#ifdef Z_NO_STREAM
+  NEVER_REACH
+#endif
+
   RASSERT(pCI->E.p_Op->bEither(CK_o_SCAN, CK_o_INDEXSCAN, CK_o_INDEXJOIN, CK_o_CROSSJOIN, CK_NONE));
   pCI->Next.m_pEmitted = pCI->Next.m_pProject->pSub_emit();
 
