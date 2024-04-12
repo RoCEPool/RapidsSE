@@ -600,7 +600,6 @@ void Card_OP::vRestate_emit(CardIter* pCI)
       pCI->E.p_table = pCI->E.p_Op->pSub_table(C_NOT_NULL);
       pCI->E.p_emit->vInject_expr_nmdCol_table(pCI);
 
-
       pCI->E.p_Op->vAppendChild(pCI->E.p_emit);
 
       if ((pCI->E.p_filter = pCI->E.p_Op->pSub_filter()) &&
@@ -631,17 +630,13 @@ void Card_OP::vRestate_emit(CardIter* pCI)
       pCI->E.p_emit = pCI->Arriving.m_pEmit->pInduct(pCI);
       pCI->E.p_Op->vAppendChild(pCI->E.p_emit);
       pCI->E.p_emit->vIncFunctionCount();
-
-//      pCI->G.p_Op->vDump(__func__);
-//      vDebugPoint();
-
       break;
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     case CK_o_CAST:
     case CK_o_FILTER:
     case CK_o_INFLATE:
-      //pCI->G.p_Op->vDump(__func__);
+      pCI->E.p_Op->vDump(__func__);
       NEVER_REACH
       break;
 
@@ -652,9 +647,6 @@ void Card_OP::vRestate_emit(CardIter* pCI)
 
   } // switch(pCI->G.e_Op)
 
-
-//  pCI->G.p_Op->vDump(__func__);
-//  vDebugPoint();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -672,14 +664,12 @@ void Card_OP::vRestate_emit(CardIter* pCI)
     if (pCI->E.p_Op->bEither(CK_o_KEYEXISTS, CK_o_KEYNOTEXISTS, CK_NONE)) {
       if (pCI->Arriving.m_pEmit) {
         pCI->Dic.m_p_expr = _pCard_Emit(pCI->E.p_Op->pSub_injectable());
-        //pCI->Dic.m_p_expr->vDump(__func__);
         pCI->E.p_filter->vUpdate_expCol(pCI,pCI->Dic.m_p_expr, true);
       }
     }
     else {
       if (pCI->Arriving.m_pEmit) {
         pCI->Dic.m_p_expr = pCI->Arriving.m_pEmit;
-        //pCI->Dic.m_p_expr->vDump(__func__);
         if (pCI->E.p_Op->bIsCard(CK_o_HAVING))
           pCI->E.p_filter->vUpdate_expCol(pCI,pCI->Dic.m_p_expr, true);
         else
@@ -687,8 +677,6 @@ void Card_OP::vRestate_emit(CardIter* pCI)
       }
     }
   }
-//  pCI->G.p_Op->vDump(__func__);
-//  vDebugPoint();
 
   if (pCI->E.p_emit && pCI->E.p_Op->pSub_key()) {
     if (AM::JOB::bHasTag(C_OPTIMISER_TRACE))
@@ -707,32 +695,15 @@ void Card_OP::vRestate_emit(CardIter* pCI)
         i8 i_Key = pSym_term_keyCol->iTo_ordinal(SF_KEY_COL) - 1;
         Card_Expr *p_expr_key = pCI->E.p_key->pGet_expr(i_Key);
         if (p_expr_key->bIsScalarCol()) {
-          //p_expr_key->pSymbol()->vDump();
           p_expr_key->pSymbol()->vApplyFacets(pSym_term_keyCol);
-          //p_expr_key->pSymbol()->vDump();
           vDebugPoint();
         }
       }
     }
-//    pCI->G.p_Op->vDump(__func__);
-//    vDebugPoint();
 
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
- //pCI->Arriving.m_pEmit = pCI->G.p_emit;
-
-//  if (CK_o_KEYEXISTS    == eCard_OP ||
-//      CK_o_KEYNOTEXISTS == eCard_OP) {
-//    pCI->Dic.m_p_expr = pCI->E.p_emit;
-//    //pCI->Dic.m_p_expr = _pCard_Emit(pCI->G.p_Op->pSub_injectable());
-//    vUpdate_expCol(pCI,pCI->Dic.m_p_expr);
-//  }
-  if (CK_o_WHERE        == eCard_OP) {
-    pCI->Dic.m_p_expr = pCI->E.p_emit;
-    //vUpdate_expCol(pCI,pCI->Dic.m_p_expr);
-  }
 
   if (CK_o_SORT== eCard_OP) {
     pCI->Dic.m_p_expr = pCI->E.p_emit;

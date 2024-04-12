@@ -2424,14 +2424,17 @@ void CardIter::vResynchOp(Card* pCard)
 /*----------------------------------------------------------------------------*/
 /* capture prior projection                                                   */
 /*----------------------------------------------------------------------------*/
-void CardIter::vSnapArriving(void)
+void CardIter::vSnap_emit_arriving(void)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
   if (Card_Emit* p_emit = E.p_Op->pSub_emit()) {
     Arriving.m_pEmit = p_emit;
     Dic.m_p_expr = p_emit;
+
+    Arriving.m_pStreamKey = E.p_Op->pSub_streamKey();
   }
+
 }
 
 /*----------------------------------------------------------------------------*/

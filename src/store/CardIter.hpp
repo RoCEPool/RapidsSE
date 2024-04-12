@@ -213,7 +213,7 @@ namespace STORE
     void vResynchOp(Card* pCard);
     bool bRewindOp(void);
 
-    void vSnapArriving(void);
+    void vSnap_emit_arriving(void);
 
     i8   i_Target(void);
     void vTransform(const char* azXfile, const char* azFunc, eXF eXform);

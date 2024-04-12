@@ -154,7 +154,7 @@ void XF_Synthesise_pipelineDef::vCraftPipelineDef(void)
       vCraftStageDef();
     else {
       vCraftOpDef();
-      m_pCI->vSnapArriving();
+      m_pCI->vSnap_emit_arriving();
     }
   }
 
