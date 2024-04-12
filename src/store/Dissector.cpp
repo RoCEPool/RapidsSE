@@ -299,6 +299,13 @@ Card* Dissector::pOp_aggreg(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // aggElist : aggregate expression list
 
+#ifdef Z_NO_STREAM
+  Card_Emit* p_emit = pPop_emit(p_termSeq);
+  //p_emit->pSymbol()->Y_vSet(P_BreakPt);
+
+  p_aggreg->vAppendChild(p_emit);
+
+#else
   Card_Stream* p_stream = new Card_Stream;
   p_aggreg->vAppendChild(p_stream);
 
@@ -306,6 +313,7 @@ Card* Dissector::pOp_aggreg(void)
   p_emit->pSymbol()->Y_vSet(P_BreakPt);
 
   p_stream->vAppendChild(p_emit);
+#endif
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

@@ -1899,8 +1899,13 @@ void Card_OP::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   if (eCard() == CK_o_INFLATE)
     return;
 
+#ifdef Z_NO_STREAM
+  if (pCI->pBoard()->pState()->bHasName(aOH[OH_PROLOG]))
+    vValidate_mustHave(CK_s_LEVEL, CK_NONE);
+#else
   if (pCI->pBoard()->pState()->bHasName(aOH[OH_PROLOG]))
     vValidate_mustHave(CK_s_LEVEL, CK_s_STREAM, CK_NONE);
+#endif
 }
 
 /*============================================================================*/

@@ -24,7 +24,11 @@ __vDeleteFunction(Card_Emit, CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Emit::Card_Emit(void)
+#ifdef Z_NO_STREAM
+: Card_EXPRLIST(CK_t_EMIT, 2)
+#else
 : Card_EXPRLIST(CK_t_EMIT, 3)
+#endif
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
           
@@ -586,11 +590,13 @@ void Card_Emit::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
+#ifndef Z_NO_STREAM
   RASSERT(CK_s_STREAM == pParent->eCard());
 
   (void)Card::eValidate_parentEither(pCI,
                                      CK_s_STREAM,
                                      CK_NONE);
+#endif
 
   if (! pSub_expr())
     pCI->PRINTBOARD_dbg();
