@@ -219,13 +219,14 @@ void Card_Project::vEarlyProject_recurse_needed(CardIter* pCI)
   if (! (pCI->E.p_needed = pSub_needed()))
     return;
 
-  vEnsure_stream(pCI);
-
   pCI->E.p_emit = pCraft_emit_early(pCI);
 
+#ifdef Z_NO_STREAM
+  vAppendChild(pCI->E.p_emit);
+#else
+  vEnsure_stream(pCI);
   pCI->E.p_stream->vAppendChild(pCI->E.p_emit);
-
-  //vInsertChildBefore(pCI->G.p_emit,pCI->G.p_needed);
+#endif
 
   pCI->Dic.m_p_expr = pCI->Flux.m_pArriving = pCI->E.p_emit;
 
