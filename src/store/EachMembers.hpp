@@ -157,7 +157,6 @@ namespace STORE
     Card_StreamSet *     p_streamSet;
     Card_SubQuery *      p_subQuery;
     Card_SubSet *        p_subSet;
-    Card_Synthesis *     p_synthesis;
 
     Card_Table *         p_table;
     Card_TableInfo *     p_tableInfo;

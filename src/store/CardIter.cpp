@@ -1674,7 +1674,6 @@ Card* CardIter::pMember(eCK eCard)
     case CK_STREAMSET:      return E.p_streamSet;
     case CK_SUBQUERY:       return E.p_subQuery;
     case CK_SUBSET:         return E.p_subSet;
-    case CK_SYNTHESIS:      return E.p_synthesis;
 
     case CK_s_TABLE:        return E.p_table;
     case CK_t_TABLEINFO:    return E.p_tableInfo;
@@ -1821,7 +1820,6 @@ void CardIter::vMember(eCK eCard, Card* pCard)
     case CK_STREAMSET: E.p_streamSet         = _pCard_StreamSet(pCard); break;
     case CK_SUBQUERY: E.p_subQuery          = _pCard_SubQuery(pCard); break;
     case CK_SUBSET: E.p_subSet            = _pCard_SubSet(pCard); break;
-    case CK_SYNTHESIS: E.p_synthesis         = _pCard_Synthesis(pCard); break;
 
     case CK_s_TABLE: E.p_table             = _pCard_Table(pCard); break;
     case CK_t_TABLEINFO: E.p_tableInfo         = _pCard_TableInfo(pCard); break;
@@ -2334,7 +2332,6 @@ void CardIter::vResetMembers(void)
   E.p_streamJoin       = nullptr;
   E.p_subQuery         = nullptr;
   E.p_subSet           = nullptr;
-  E.p_synthesis        = nullptr;
 
   E.p_table            = nullptr;
   E.p_tableInfo        = nullptr;
@@ -2621,7 +2618,6 @@ void CardIter::vValidateChildren(Card* pCard, i8 iDepth)
       case CK_STREAMSET:      E.p_streamSet->vValidate(this, iDepth, pCard);  break;
       case CK_SUBQUERY:       E.p_subQuery->vValidate(this, iDepth, pCard);  break;
       case CK_SUBSET:         E.p_subSet->vValidate(this, iDepth, pCard);  break;
-      case CK_SYNTHESIS:      E.p_synthesis->vValidate(this, iDepth, pCard);  break;
 
       case CK_s_TABLE:        E.p_table->vValidate(this, iDepth, pCard);  break;
       case CK_t_TABLEINFO:    E.p_tableInfo->vValidate(this, iDepth, pCard);  break;

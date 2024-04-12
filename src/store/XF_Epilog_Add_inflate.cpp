@@ -87,8 +87,6 @@ void XF_Epilog_Add_inflate::vBifurcate_inflate(void)
         m_pCI->E.p_inflate->vAppendChild(m_pCI->E.p_emit->pDupCardRecursive());
       if (m_pCI->E.p_injectable)
         m_pCI->E.p_inflate->vAppendChild(m_pCI->E.p_injectable->pDupCardRecursive());
-      if (m_pCI->E.p_synthesis)
-        m_pCI->E.p_inflate->vAppendChild(m_pCI->E.p_synthesis->pDupCardRecursive());
 
     }
   }

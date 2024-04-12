@@ -130,7 +130,6 @@ enum eCK : i8 // card kind
   /* */ CK_STREAMSET,
   /* */ CK_SUBQUERY,
   /* */ CK_SUBSET,
-  /* */ CK_SYNTHESIS,
 
   /* */ CK_TABLELIST,
   /* */ CK_TABLEPTN,
