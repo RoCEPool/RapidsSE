@@ -784,9 +784,9 @@ void Op::vEventCountInc(eEV eEvent)
 
   m_pEvMgr->m_eCurEvent = eEvent;
 
-	if (eEvent == EV_M_START) {
-		//if (m_pEvMgr->m_naEventCount[m_pEvMgr->m_eCurEvent])
-		//	vTrace("Ummm\n"_Stz);
+	if (szOpNm()->bSame("consume"_Stz) && eEvent == EV_M_START) {
+		if (m_pEvMgr->m_naEventCount[m_pEvMgr->m_eCurEvent])
+			vTrace("Ummm\n"_Stz);
 	}
   m_pEvMgr->m_naEventCount[m_pEvMgr->m_eCurEvent]++;
 
@@ -1621,14 +1621,10 @@ bool Op::bPeekLeft(Task* pTask)
 
 	PipeIn* pPipeIn = nullptr;
 
-	if (pTask == m_pTask)
-		pPipeIn = m_pPipeIn;
-	else {
-		for (i8 iIndex = 0; iIndex < m_nSecondaryTasks; iIndex++) {
-			if (m_pSecondaryTasks[iIndex] == pTask) {
-				pPipeIn = m_pPipeInSecondary[iIndex];
-				break;
-			}
+	for (i8 iIndex = 0; iIndex < m_nSecondaryTasks; iIndex++) {
+		if (m_pSecondaryTasks[iIndex] == pTask) {
+			pPipeIn = m_pPipeInSecondary[iIndex];
+			break;
 		}
 	}
 
@@ -1715,7 +1711,7 @@ void Op::vPipeToNextOpTasks(Operand* pOperand, Task* pTriggeringTask)
 {
 	_precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
 
-	//vTrace("vPipeToNextOpTasks %p \n"_Stz, pOperand);
+	vTrace("vPipeToNextOpTasks %p \n"_Stz, pOperand);
 	if (AM::TRACE::bVerbose(C_VB_OP))
 		vOpTrace(m_pTask, pOperand,(Stz*)__func__);
 
@@ -1876,16 +1872,13 @@ Operand* Op::pPopOoO(Task* pTask)
 
 	PipeIn* pPipeIn = nullptr;
 
-	if (pTask == m_pTask)
-		pPipeIn = m_pPipeIn;
-	else {
-		for (i8 iIndex = 0; iIndex < m_nSecondaryTasks; iIndex++) {
-			if (m_pSecondaryTasks[iIndex] == pTask) {
-				pPipeIn = m_pPipeInSecondary[iIndex];
-				break;
-			}
+	for (i8 iIndex = 0; iIndex < m_nSecondaryTasks; iIndex++) {
+		if (m_pSecondaryTasks[iIndex] == pTask) {
+			pPipeIn = m_pPipeInSecondary[iIndex];
+			break;
 		}
 	}
+
   Operand* pOperand = pPipeIn->pQueueOoO()->pPopOoO();
 
   //vDropTaskLock();
@@ -1918,14 +1911,10 @@ Operand* Op::pPopOoOLeft(Task* pTask, bool* pbPageIn)
   bool bLeft = false;
 	PipeIn* pPipeIn = nullptr;
 
-	if (pTask == m_pTask)
-		pPipeIn = m_pPipeIn;
-	else {
-		for (i8 iIndex = 0; iIndex < m_nSecondaryTasks; iIndex++) {
-			if (m_pSecondaryTasks[iIndex] == pTask) {
-				pPipeIn = m_pPipeInSecondary[iIndex];
-				break;
-			}
+	for (i8 iIndex = 0; iIndex < m_nSecondaryTasks; iIndex++) {
+		if (m_pSecondaryTasks[iIndex] == pTask) {
+			pPipeIn = m_pPipeInSecondary[iIndex];
+			break;
 		}
 	}
 
@@ -2116,8 +2105,13 @@ i8 Op::nQueuedOperands(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
 
-  i8 nLeft = m_pPipeIn->pQueueLeft()->nQueuedOperands();
-  i8 nOoO  = m_pPipeIn->pQueueOoO()->nQueuedOperands();
+	i8 nLeft = 0;
+	i8 nOoO = 0;
+
+	for (i8 iIndex = 0; iIndex < m_nSecondaryTasks; iIndex++) {
+		nLeft += m_pPipeInSecondary[iIndex]->pQueueLeft()->nQueuedOperands();
+		nOoO  += m_pPipeInSecondary[iIndex]->pQueueOoO()->nQueuedOperands();
+	}
 
   i8 nOperands = nLeft + nOoO;
 
