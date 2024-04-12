@@ -2424,7 +2424,7 @@ void CardIter::vResynchOp(Card* pCard)
 /*----------------------------------------------------------------------------*/
 /* snap emit                                                                  */
 /*----------------------------------------------------------------------------*/
-void CardIter::vSnap_emit_arriving(bool bSub_emit)
+void CardIter::vSnapIf_arriving(bool bSub_emit)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 

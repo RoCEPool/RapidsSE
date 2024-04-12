@@ -79,7 +79,7 @@ void Card_GbyAgg::vEarlyProject_root(CardIter* pCI)
   if (pCI->pPeekPrev()->bIsCard(CK_o_PROJECT)) {
 
     pCI->Early.m_pOP_leaf = this;
-    pCI->vSnap_emit_arriving();
+    pCI->vSnapIf_arriving();
 
    // pCI->PRINTBOARD_dbg();
     return;

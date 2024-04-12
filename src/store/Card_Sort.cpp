@@ -101,7 +101,7 @@ void Card_Sort::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
 
   pCI->E.p_sort->vAppendChild(p_emit_sort);
 
-  pCI->vSnap_emit_arriving();
+  pCI->vSnapIf_arriving();
 }
 
 /*----------------------------------------------------------------------------*/

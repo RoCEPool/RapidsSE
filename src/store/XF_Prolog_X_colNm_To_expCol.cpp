@@ -65,7 +65,7 @@ void XF_Prolog_X_colNm_To_expCol::vXF_colNm_To_expCol(void)
   m_pCI->vTransform(__FILE__, __func__, XF_PROLOG_X_COLNM_TO_EXPCOL);
 
   m_pCI->vClearRegisters();
-  for (m_pCI->vBeginEach(); m_pCI->bEachOp(); m_pCI->vSnap_emit_arriving()) {
+  for (m_pCI->vBeginEach(); m_pCI->bEachOp(); m_pCI->vSnapIf_arriving()) {
     if (! m_pCI->Arriving.m_pEmit)
       continue;
 

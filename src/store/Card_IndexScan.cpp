@@ -77,7 +77,7 @@ void Card_IndexScan::vEarlyProject_leaf(CardIter* pCI)
 
   pCI->Early.m_pOP_leaf = this;
 
-  pCI->vSnap_emit_arriving();
+  pCI->vSnapIf_arriving();
 
  // pCI->PRINTBOARD_dbg();
 

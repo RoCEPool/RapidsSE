@@ -101,7 +101,7 @@ void XF_Flatten_X_expCol_To_tblCol::vX_expCol_To_tblCol(void)
     if ((m_pCI->E.p_emit = m_pCI->E.p_Op->pSub_emit())) {
       if (m_pCI->Arriving.m_pEmit)
         m_pCI->E.p_emit->vX_expCol_To_tblCol(m_pCI);
-      m_pCI->vSnap_emit_arriving();
+      m_pCI->vSnapIf_arriving();
       m_pCI->E.p_emit = nullptr;
     }
 

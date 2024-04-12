@@ -710,7 +710,7 @@ void Card_OP::vRestate_emit(CardIter* pCI)
     pCI->Dic.m_p_expr = pCI->E.p_emit;
     pCI->E.p_key->vApplyCast(pCI,/*??*/pCI->Dic.m_p_expr);
   }
-  pCI->vSnap_emit_arriving();
+  pCI->vSnapIf_arriving();
 
   RASSERT(pCI->E.p_Op->pSub_emit() == pCI->E.p_emit);
 }

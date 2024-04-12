@@ -77,8 +77,7 @@ void XF_Utility_Verify_dic::vVerify_dic_loop(void)
 
     vVerify_dic_OP();
 
-    if (m_pCI->E.p_Op->pSub_emit())
-      m_pCI->Arriving.m_pEmit = m_pCI->E.p_Op->pSub_emit();
+    m_pCI->vSnapIf_arriving();
   }
 
   m_pCI->vEndTransform(__LINE__);

@@ -219,7 +219,7 @@ void Card_Project::vEarlyProject_recurse_needed(CardIter* pCI)
 
   vAppendChild(pCI->E.p_emit);
 
-  pCI->vSnap_emit_arriving(false);
+  pCI->vSnapIf_arriving(false);
 
  // pCI->PRINTBOARD_dbg();
 
@@ -313,7 +313,7 @@ void Card_Project::vSmooth_postAgg(CardIter* pCI, CarryForward* pCarryForward)
 
   pCI->E.p_project->pSymbol()->Y_vSet(P_Smoothed);
 
-  pCI->vSnap_emit_arriving();
+  pCI->vSnapIf_arriving();
 
 }
 

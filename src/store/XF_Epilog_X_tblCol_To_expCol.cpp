@@ -139,7 +139,7 @@ void XF_Epilog_X_tblCol_To_expCol::vTo_expCol(void)
   // aspects of operators which need the emit of the operator
   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
-  m_pCI->vSnap_emit_arriving();
+  m_pCI->vSnapIf_arriving();
   if (m_pCI->E.p_Op->pSub_emit())
     m_pCI->X.m_pExprList_a = m_pCI->E.p_Op->pSub_emit();
 
