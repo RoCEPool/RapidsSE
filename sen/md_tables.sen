@@ -12,7 +12,7 @@
   "
   define table tables (
     szTableName         VARCHAR NOT NULL
-  ) < metaData > = MetaDataTable[].print ;
+  ) < metaData > = MetaDataTable[].tables ;
   "
   nullptr api::forkChild  api:executeCheck
 

@@ -1192,6 +1192,7 @@ void vJobIdLastJobIdFetch(void);
   void vMetaDataTableQueries(void);
   void vMetaDataTableSchema(void);
   void vMetaDataTableSessions(void);
+  void vMetaDataTableTables(void);
 
   // ErrorMarker[]
   void vErrorMarkerDelete(void);
