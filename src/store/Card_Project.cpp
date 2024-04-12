@@ -49,7 +49,6 @@ Card_Project::~Card_Project(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#ifdef Z_NO_STREAM
 void Card_Project::vUnproject_foldExpr(CardIter* pCI,
                                        CarryForward* pCarryForward)
 {
@@ -90,52 +89,6 @@ void Card_Project::vUnproject_foldExpr(CardIter* pCI,
   p_emitted_unproject->vRenumberAll_expr();
   //p_emitted_unproject->vDump(__func__);
 }
-/*----------------------------------------------------------------------------*/
-#else
-void Card_Project::vUnproject_foldExpr(CardIter* pCI,
-                                       CarryForward* pCarryForward)
-{
-  _static_
-
-  RASSERT(pCarryForward->Unproject.m_bUnproject_foldExpr);
-
-  Card_Project* p_project_unproject = new Card_Project(CK_o_PROJECT);
-  pCI->E.p_deck->vAppendChild(p_project_unproject);
-  p_project_unproject->pSymbol()->Y_vSet(P_Unproject);
-
-  Card_Level* p_level = new Card_Level(AL_ORIGIN);
-  p_project_unproject->vAppendChild(p_level);
-
-  Card_Stream* p_stream = new Card_Stream;
-  p_project_unproject->vAppendChild(p_stream);
-
-  Card_Emit* p_emitted_unproject = new Card_Emit;
-  p_stream->vAppendChild(p_emitted_unproject);
-
-  i8 i_Col = 0;
-  i8 nChildren_projection = pCI->E.p_emit->nChildCards();
-  for (i8 i_expr_projection = 0;
-       i_expr_projection < nChildren_projection;
-       i_expr_projection++) {
-
-    i_Col++;
-
-    pCI->E.p_expr = _pCard_Expr(pCI->E.p_emit->pGetChild(i_expr_projection));
-    if (pCI->E.p_expr->pSymbol()->bMatches(SF_EXP_COL, "$1"_Stz))
-      continue;
-
-    Card_Expr* p_expr_simple = Card_Expr::pCraft_expr_Of_expr(pCI->E.p_expr, i_Col);
-    p_expr_simple->vDeleteFacetRecursive(SF_KEY_COL);
-
-    p_emitted_unproject->vAppendChild(p_expr_simple);
-
-    vDebugPoint();
-  }
-
-  p_emitted_unproject->vRenumberAll_expr();
-  //p_emitted_unproject->vDump(__func__);
-}
-#endif
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
@@ -264,12 +217,7 @@ void Card_Project::vEarlyProject_recurse_needed(CardIter* pCI)
 
   pCI->E.p_emit = pCraft_emit_early(pCI);
 
-#ifdef Z_NO_STREAM
   vAppendChild(pCI->E.p_emit);
-#else
-  vEnsure_stream(pCI);
-  pCI->E.p_stream->vAppendChild(pCI->E.p_emit);
-#endif
 
   pCI->Dic.m_p_expr = pCI->Flux.m_pArriving = pCI->E.p_emit;
 
@@ -377,11 +325,7 @@ void Card_Project::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
   UNUSED(pParent);
 
-#ifdef Z_NO_STREAM
   vValidate_mustHave(CK_s_LEVEL, CK_t_EMIT, CK_NONE);
-#else
-  vValidate_mustHave(CK_s_LEVEL, CK_s_STREAM, CK_NONE);
-#endif
 
   Card::vValidate(pCI,iDepth,pParent);
   Card_OP::vValidate(pCI,iDepth,pParent);

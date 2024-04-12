@@ -77,7 +77,6 @@ void Card_Fold::vMorph_to_flat(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* derive the fold emit for a (non-correlated?) subquery                      */
 /*----------------------------------------------------------------------------*/
-#ifdef Z_NO_STREAM
 void Card_Fold::vDerive_emit_fold(CardIter *pCI, SubQuery *pSubQuery_leftmost)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
@@ -113,45 +112,6 @@ void Card_Fold::vDerive_emit_fold(CardIter *pCI, SubQuery *pSubQuery_leftmost)
     pCI->E.p_expr->pSymbol()->vApplyFacet(SF_NMD_COL, p_expr_result->pSymbol());
   pCI->E.p_expr->vApplyCast_x(p_expr_result->xCast());
 }
-/*----------------------------------------------------------------------------*/
-#else
-void Card_Fold::vDerive_emit_fold(CardIter *pCI, SubQuery *pSubQuery_leftmost)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  bool bCorrelated = pSubQuery_leftmost->nCorrCols();
-  UNUSED(bCorrelated);
-
-
-  pCI->E.p_emit = nullptr;
-  for (i8 i_Main = pCI->Flat.m_i_fold - 1; i_Main >= 0; i_Main--) {
-    Card *pMain = pCI->E.p_deck->pGetChild(i_Main);
-    if ((pCI->E.p_emit = pMain->pSub_emit()))
-      break;
-  }
-  if (! pCI->E.p_emit)
-    return;
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  Card_Expr* p_expr_result = pCI->Dic.m_p_expr->pGet_expr((i8) 0);
-
-  pCI->vAppendNewChild(pCI->E.p_fold, CK_s_STREAM);
-  pCI->vAppendNewChild(pCI->E.p_stream, CK_t_EMIT);
-  pCI->vAppendNewChild(pCI->E.p_emit, CK_EXPR);
-
-  pCI->vAppendNewChild(pCI->E.p_expr, CK_TERM, Symbol(SF_EXP_COL, "$1"_Stz));
-
-  pCI->E.p_term->vApplyCast_x(p_expr_result->xCast());
-
-
-  pCI->E.p_expr->pSymbol()->vApplyFacet(SF_SQY_RSL, pSubQuery_leftmost->pBoard()->i_Board());
-  pCI->E.p_expr->pSymbol()->vApplyFacet(SF_EXP_COL, (i8) 1);
-  if (p_expr_result->pSymbol()->bHasFacet(SF_NMD_COL))
-    pCI->E.p_expr->pSymbol()->vApplyFacet(SF_NMD_COL, p_expr_result->pSymbol());
-  pCI->E.p_expr->vApplyCast_x(p_expr_result->xCast());
-}
-#endif
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */

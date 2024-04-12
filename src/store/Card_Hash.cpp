@@ -48,7 +48,6 @@ Card_Hash::~Card_Hash(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#ifdef Z_NO_STREAM
 Card_Hash* Card_Hash::pDerive(Card_Expr* p_expr,
                               Card_Emit* p_emitted_prev)
 {
@@ -75,38 +74,6 @@ Card_Hash* Card_Hash::pDerive(Card_Expr* p_expr,
 
   return p_hash;
 }
-/*----------------------------------------------------------------------------*/
-#else
-Card_Hash* Card_Hash::pDerive(Card_Expr* p_expr,
-                              Card_Emit* p_emitted_prev)
-{
-  _static_
-  UNUSED(p_emitted_prev);
-
-  Card_Hash* p_hash = new Card_Hash;
-
-  Card_Stream* p_stream = new Card_Stream;
-  p_hash->vAppendChild(p_stream);
-
-  Card_Level* p_level = new Card_Level(AL_PARTITION);
-  p_hash->vAppendChild(p_level);
-
-  Card_HshColList* p_hshColList = new Card_HshColList;
-  p_hash->vAppendChild(p_hshColList);
-
-  Card_HshCol* p_hshCol = new Card_HshCol;
-  p_hshColList->vAppendChild(p_hshCol);
-
-  Card_Term* p_card_term = p_expr->pGet_term(0)->pClone();
-  p_card_term->pSymbol()->vDeleteFacet(SF_EXP_COL);
-  p_hshCol->vAppendChild(p_card_term);
-
-  if (p_emitted_prev)
-    p_stream->vAppendChild(p_emitted_prev->pClone());
-
-  return p_hash;
-}
-#endif
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */

@@ -64,7 +64,6 @@ void Card_Filter::vDeleteEmptyFilters(CardIter* pCI) {
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#ifdef Z_NO_STREAM
 void Card_Filter::vIndividuate_filter(CardIter* pCI)
 {
   _static_
@@ -84,30 +83,6 @@ void Card_Filter::vIndividuate_filter(CardIter* pCI)
     pCI->E.p_filter->vPushChild(pCI->E.p_Op->pSub_level()->pDupCardRecursive());
   }
 }
-/*----------------------------------------------------------------------------*/
-#else
-void Card_Filter::vIndividuate_filter(CardIter* pCI)
-{
-  _static_
-
-  if (!pCI->E.p_Op->pSub_emit())
-    pCI->E.p_Op->vDump(__func__);
-
-  RASSERT(pCI->E.p_Op->pSub_emit());
-
-  pCI->E.p_Op->vRemoveChild(pCI->E.p_filter);
-
-  pCI->E.p_filter->vEnsure_stream(pCI);
-
-  pCI->E.p_stream->vAppendChild(pCI->E.p_Op->pSub_emit()->pClone());
-
-  pCI->E.p_deck->vInsertChildAfter(pCI->E.p_filter, pCI->E.p_Op);
-
-  if (! pCI->E.p_filter->pSub_level()) {
-    pCI->E.p_filter->vPushChild(pCI->E.p_Op->pSub_level()->pDupCardRecursive());
-  }
-}
-#endif
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
@@ -243,15 +218,9 @@ void Card_Filter::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
                                        CK_o_WHERE,
                                        CK_NONE);
 
-#ifdef Z_NO_STREAM
   if (CK_DECK == pParent->eCard()) {
     vValidate_mustHave(CK_s_LEVEL, CK_t_EMIT, CK_NONE);
   }
-#else
-    if (CK_DECK == pParent->eCard()) {
-    vValidate_mustHave(CK_s_LEVEL, CK_s_STREAM, CK_NONE);
-  }
-#endif
 
   UNUSED(pParent);
   Card::vValidate(pCI,iDepth,pParent);

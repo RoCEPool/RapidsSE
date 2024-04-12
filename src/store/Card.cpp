@@ -119,10 +119,6 @@ Card::Card(eCK eCard, i8 iFixedDepth)
   if (CK_STREAMKEY == eCard)
     vDebugPoint();
 
-#ifdef Z_NO_STREAM
-  RASSERT(CK_s_STREAM != eCard);
-#endif
-
   m_eCard   = eCard;
   m_i_Child = C_UNKNOWN;
   m_iSequence = C_UNKNOWN;
@@ -3897,9 +3893,6 @@ Card_Stream* Card::pSub_stream(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-#ifdef Z_NO_STREAM
-  NEVER_REACH
-#endif
 
   Card_Stream* p_stream =
       _pCard_Stream(pFindSubCard(CK_s_STREAM));

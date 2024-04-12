@@ -58,7 +58,6 @@ void XF_Epilog_Fuse_project::vFuse(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* fuse <OP injecting> <project/emitted> -> <OP/stream/emitted>               */
 /*----------------------------------------------------------------------------*/
-#ifdef Z_NO_STREAM
 void XF_Epilog_Fuse_project::vFuse_project(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_EPILOG_FUSE_PROJECT, _FOOTER_);
@@ -94,46 +93,6 @@ void XF_Epilog_Fuse_project::vFuse_project(void)
 
   m_pCI->vEndTransform(__LINE__);
 }
-/*----------------------------------------------------------------------------*/
-#else
-void XF_Epilog_Fuse_project::vFuse_project(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_EPILOG_FUSE_PROJECT, _FOOTER_);
-
-  m_pCI->vTransform(__FILE__, __func__, XF_EPILOG_FUSE_PROJECT);
-
-  m_pCI->vClearRegisters();
-  m_pCI->vBeginEach();
-  while (m_pCI->bEachOp()) {
-
-    // test for injecting op
-    if (! m_pCI->E.p_Op->bEither(CK_o_SCAN, CK_o_INDEXSCAN, CK_o_INDEXJOIN, CK_o_CROSSJOIN, CK_NONE))
-      goto L_UPDATE_PRIOR_EMITTED;
-
-    m_pCI->Next.m_pProject = _pCard_Project(m_pCI->pPeekNextIf(CK_o_PROJECT));
-
-    m_pCI->E.p_stream = m_pCI->E.p_Op->pSub_stream();
-
-    // test for viable next <project>
-    if (! m_pCI->Next.m_pProject ||
-        m_pCI->Next.m_pProject->bIsCompound() ||
-        m_pCI->Next.m_pProject->bIsLiterals(m_pCI)) {
-
-      goto L_UPDATE_PRIOR_EMITTED;
-    }
-
-    m_pCI->E.p_stream->vFuse_project_Viable(m_pCI);
-    m_pCI->E.p_deck->vDeleteChild(m_pCI->Next.m_pProject);
-    m_pCI->E.p_Op->pSymbol()->Y_vSet(P_FusedProject);
-
-    L_UPDATE_PRIOR_EMITTED:
-    if (m_pCI->E.p_Op->pSub_emit())
-      m_pCI->Dic.m_p_expr = m_pCI->Flux.m_pArriving = m_pCI->E.p_Op->pSub_emit();
-  }
-
-  m_pCI->vEndTransform(__LINE__);
-}
-#endif
 
 /*============================================================================*/
 /* end                                                                        */

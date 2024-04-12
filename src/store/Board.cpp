@@ -90,13 +90,7 @@ void Board::vDerive_foldProjection_F(CardIter* pCI)
   if (! pCI->E.p_emit)
     return;
 
-#ifdef Z_NO_STREAM
   pCI->E.p_fold->vAppendChild(pCI->E.p_emit->pDupCardRecursive());
-#else
-  pCI->E.p_stream = new Card_Stream;
-  pCI->E.p_fold->vAppendChild(pCI->E.p_stream);
-  pCI->E.p_stream->vAppendChild(pCI->E.p_emit->pDupCardRecursive());
-#endif
 }
 
 /*----------------------------------------------------------------------------*/

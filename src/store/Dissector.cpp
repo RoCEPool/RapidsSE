@@ -299,21 +299,11 @@ Card* Dissector::pOp_aggreg(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // aggElist : aggregate expression list
 
-#ifdef Z_NO_STREAM
   Card_Emit* p_emit = pPop_emit(p_termSeq);
   //p_emit->pSymbol()->Y_vSet(P_BreakPt);
 
   p_aggreg->vAppendChild(p_emit);
 
-#else
-  Card_Stream* p_stream = new Card_Stream;
-  p_aggreg->vAppendChild(p_stream);
-
-  Card_Emit* p_emit = pPop_emit(p_termSeq);
-  p_emit->pSymbol()->Y_vSet(P_BreakPt);
-
-  p_stream->vAppendChild(p_emit);
-#endif
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -489,16 +479,8 @@ Card* Dissector::pOp_gbyAgg(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // aggElist : aggregate expression list
 
-#ifdef Z_NO_STREAM
   Card_Emit* p_emit = pPop_emit(p_termSeq);
   p_aggreg->vAppendChild(p_emit);
-#else
-  Card_Stream* p_stream = new Card_Stream;
-  p_aggreg->vAppendChild(p_stream);
-
-  Card_Emit* p_emit = pPop_emit(p_termSeq);
-  p_stream->vAppendChild(p_emit);
-#endif
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   delete p_termSeq;
@@ -879,16 +861,8 @@ Card* Dissector::pOp_ordAgg(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // aggElist : aggregate expression list
 
-#ifdef Z_NO_STREAM
   Card_Emit* p_emit = pPop_emit(p_termSeq);
   p_ordAgg->vAppendChild(p_emit);
-#else
-  Card_Stream* p_stream = new Card_Stream;
-  p_ordAgg->vAppendChild(p_stream);
-
-  Card_Emit* p_emit = pPop_emit(p_termSeq);
-  p_stream->vAppendChild(p_emit);
-#endif
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -946,22 +920,12 @@ Card* Dissector::pOp_project(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-#ifdef Z_NO_STREAM
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // projElist : project expression list
 
   Card_Emit* p_emit = pPop_emit(p_termSeq);
   p_project->vAppendChild(p_emit);
-#else
-  Card_Stream* p_stream = new Card_Stream;
-  p_project->vAppendChild(p_stream);
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // projElist : project expression list
-
-  Card_Emit* p_emit = pPop_emit(p_termSeq);
-  p_stream->vAppendChild(p_emit);
-#endif
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   delete p_termSeq;
