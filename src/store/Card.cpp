@@ -116,7 +116,7 @@ Card::Card(eCK eCard, i8 iFixedDepth)
 
   MemLib::vZero(md_Coord, sizeof(md_Coord), CN_CARD);
 
-  if (CK_s_CONSTRAINT == eCard)
+  if (CK_STREAMKEY == eCard)
     vDebugPoint();
 
 #ifdef Z_NO_STREAM
