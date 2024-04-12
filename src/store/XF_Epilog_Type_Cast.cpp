@@ -126,7 +126,7 @@ void XF_Epilog_Type_Cast::vCast(void)
           CK_o_INDEXJOIN == m_pCI->E.e_Op ||
           CK_o_INDEXSCAN == m_pCI->E.e_Op) {
 
-        m_pCI->Dic.m_p_expr = m_pCI->Arriving.m_pEmit = m_pCI->E.p_emit;
+        m_pCI->vSnap_emit_arriving();
 
         m_pCI->E.p_emit->vApplyCast(m_pCI,/*??*/m_pCI->Arriving.m_pEmit);
         m_pCI->E.p_emit->vRenumberAll_expr();
@@ -144,11 +144,11 @@ void XF_Epilog_Type_Cast::vCast(void)
 
         m_pCI->E.p_emit->vApplyCast(m_pCI,/*??*/m_pCI->Arriving.m_pEmit);
         m_pCI->E.p_emit->vRenumberAll_expr();
-        m_pCI->Dic.m_p_expr = m_pCI->Arriving.m_pEmit = m_pCI->E.p_emit;
+        m_pCI->vSnap_emit_arriving();
          m_pCI->E.p_key = nullptr;
       }
       else {
-        m_pCI->Dic.m_p_expr = m_pCI->Arriving.m_pEmit = m_pCI->E.p_emit;
+        m_pCI->vSnap_emit_arriving();
       }
 
       if ((m_pCI->E.p_streamKey = m_pCI->E.p_Op->pSub_streamKey()))
