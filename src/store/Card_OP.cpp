@@ -536,6 +536,7 @@ void Card_OP::vRestate_emit(CardIter* pCI)
   pCI->E.p_injectable = pCI->E.p_Op->pSub_injectable();
   pCI->E.p_key        = pCI->E.p_Op->pSub_key();
   pCI->E.p_needed     = pCI->E.p_Op->pSub_needed();
+  pCI->E.p_emit       = pCI->E.p_Op->pSub_emit();
 
   eCK eCard_OP = pCI->E.p_Op->eCard();
   switch (eCard_OP) {
@@ -709,7 +710,9 @@ void Card_OP::vRestate_emit(CardIter* pCI)
     pCI->Dic.m_p_expr = pCI->E.p_emit;
     pCI->E.p_key->vApplyCast(pCI,/*??*/pCI->Dic.m_p_expr);
   }
-  pCI->Arriving.m_pEmit = pCI->E.p_emit;
+  pCI->vSnap_emit_arriving();
+
+  RASSERT(pCI->E.p_Op->pSub_emit() == pCI->E.p_emit);
 }
 
 /*----------------------------------------------------------------------------*/

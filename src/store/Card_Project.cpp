@@ -313,7 +313,7 @@ void Card_Project::vSmooth_postAgg(CardIter* pCI, CarryForward* pCarryForward)
 
   pCI->E.p_project->pSymbol()->Y_vSet(P_Smoothed);
 
-  pCI->Dic.m_p_expr = pCI->Arriving.m_pEmit = pSub_emit();
+  pCI->vSnap_emit_arriving();
 
 }
 

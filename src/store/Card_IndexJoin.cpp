@@ -85,7 +85,7 @@ void Card_IndexJoin::vEarlyProject_recurse_add(CardIter* pCI)
       pCI->pPeekPrev()->bIsCard(CK_o_PROJECT)) {
 
     pCI->Early.m_pOP_leaf = this;
-    pCI->Dic.m_p_expr = pCI->Arriving.m_pEmit = pSub_emit();
+    pCI->vSnap_emit_arriving();
 
    // pCI->PRINTBOARD_dbg();
     return;
