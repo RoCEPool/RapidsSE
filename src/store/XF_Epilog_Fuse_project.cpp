@@ -88,7 +88,7 @@ void XF_Epilog_Fuse_project::vFuse_project(void)
 
     L_UPDATE_PRIOR_EMITTED:
     if (m_pCI->E.p_Op->pSub_emit())
-      m_pCI->Dic.m_p_expr = m_pCI->Flux.m_pArriving = m_pCI->E.p_Op->pSub_emit();
+      m_pCI->Dic.m_p_expr = m_pCI->Arriving.m_pEmit = m_pCI->E.p_Op->pSub_emit();
   }
 
   m_pCI->vEndTransform(__LINE__);

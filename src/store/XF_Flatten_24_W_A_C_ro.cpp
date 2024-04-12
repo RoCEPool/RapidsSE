@@ -280,7 +280,7 @@ void XF_Flatten_24_W_A_C_ro::vConvert_OQ_sqyPrm_Into_expCol(CardIter* pCI,
           xConj.pChild()->pSymbol()->vApplyFacets(&xSym_expCol1);
 
           Card_Expr* p_expr_found =
-              pCI->Flux.m_pArriving->pGet_expr((i8) 0);
+              pCI->Arriving.m_pEmit->pGet_expr((i8) 0);
 
           xConj.pChild()->vApplyCast_x(p_expr_found->xCast());
 
@@ -385,7 +385,7 @@ void XF_Flatten_24_W_A_C_ro::vConvert_OQ_sqyNo_Into_expCol(CardIter* pCI,
       DELETE_CARD(p_prev_conj);
 
       p_conj_child->pSymbol()->vApplyFacet(SF_EXP_COL, "$2"_Stz);
-      Card_Expr* p_expr_found = pCI->Flux.m_pArriving->pGet_expr(1);
+      Card_Expr* p_expr_found = pCI->Arriving.m_pEmit->pGet_expr(1);
       p_conj_child->vApplyCast_x(p_expr_found->xCast());
       p_conj_child->vMark1(MARK_CHANGED);
 
@@ -438,13 +438,13 @@ void XF_Flatten_24_W_A_C_ro::vRestate_emit_fold(CardIter* pCI)
 
     if (Card_Emit* p_emit = pCI->E.p_Op->pSub_emit()) {
       //pCI->PRINTBOARD_dbg();
-      pCI->Dic.m_p_expr = pCI->Flux.m_pArriving = p_emit;
+      pCI->Dic.m_p_expr = pCI->Arriving.m_pEmit = p_emit;
     }
   }
 
   RASSERT(CK_c_FOLD == pCI->E.e_Op);
 
-  pCI->E.p_fold->vAppendChild(pCI->Flux.m_pArriving->pDupCardRecursive());
+  pCI->E.p_fold->vAppendChild(pCI->Arriving.m_pEmit->pDupCardRecursive());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -518,7 +518,7 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
   // restate the emits of the leading OQ:<from>* sequence
-  pCI->Flux.m_pArriving = nullptr;
+  pCI->Arriving.m_pEmit = nullptr;
   while (pCI->pPeekNextIf(CK_o_FROM) && pCI->bEachOp(CK_o_FROM)) {
     ((Card_OP*)pCI->E.p_Op)->vRestate_emit(pCI);
   }
@@ -566,7 +566,7 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
   }
   pCI->vForwards(true);
 
-  pCI->Dic.m_p_expr = pCI->Flux.m_pArriving = pCI->E.p_Op->pSub_emit();
+  pCI->Dic.m_p_expr = pCI->Arriving.m_pEmit = pCI->E.p_Op->pSub_emit();
   RASSERT(pCI->bEachOp(CK_c_FOLD));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -595,7 +595,8 @@ void CardIter::vClearRegisters(void)
 
   //Flat.m_p_term_crlKey  = nullptr;
 
-  Flux.m_pArriving = nullptr;
+  Arriving.m_pEmit = nullptr;
+  Arriving.m_pStreamKey = nullptr;
   Dic.m_p_expr     = nullptr;
   Dic.m_p_key      = nullptr;
 
@@ -607,7 +608,7 @@ void CardIter::vClearRegisters(void)
   Early.m_pNeeded_later = nullptr;
 
   StreamOrder.m_pStreamKey = nullptr;
-  StreamOrder.m_pEmitted   = nullptr;
+  StreamOrder.m_pEmit   = nullptr;
 
   X.m_pExprList_a = nullptr;
   X.m_pExprList_i = nullptr;
@@ -2373,7 +2374,7 @@ Card_Expr* CardIter::pResolvePrior_expr(Card_Term* p_term)
   if (! p_arriving)
     return nullptr;
 
-  //RASSERT(p_arriving == this->Flux.m_pArriving);
+  //RASSERT(p_arriving == this->Arriving.m_pEmit);
 
   Card_Expr* p_expr_resolved = p_arriving->pResolve_expr(p_term);
   return p_expr_resolved;
@@ -2428,7 +2429,7 @@ void CardIter::vSnapArriving(void)
   _precondition_(_MAGIC_, _FOOTER_);
 
   if (Card_Emit* p_emit = E.p_Op->pSub_emit()) {
-    Flux.m_pArriving = p_emit;
+    Arriving.m_pEmit = p_emit;
     Dic.m_p_expr = p_emit;
   }
 }

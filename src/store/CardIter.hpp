@@ -30,19 +30,20 @@ namespace STORE
     EachMembers E;
 
     struct {
-      Card_OP*      m_pOP_root;
-      Card_OP *     m_pOP_leaf;
-      Card_Needed * m_pNeeded_later;
-    } Early;
-
-    struct {
-      Card_Emit * m_pArriving;
-    } Flux;
+      Card_Emit * m_pEmit;
+      Card_StreamKey * m_pStreamKey;
+    } Arriving;
 
     struct {
       Card_Emit * m_p_expr;
       Card_Emit * m_p_key;
     } Dic;
+
+    struct {
+      Card_OP*      m_pOP_root;
+      Card_OP *     m_pOP_leaf;
+      Card_Needed * m_pNeeded_later;
+    } Early;
 
     struct {
       Card_Project * m_pProject;
@@ -72,7 +73,7 @@ namespace STORE
 
     struct {
       Card_StreamKey * m_pStreamKey;
-      Card_Emit *   m_pEmitted;
+      Card_Emit *   m_pEmit;
     } StreamOrder;
 
     struct {

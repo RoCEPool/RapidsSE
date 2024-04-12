@@ -91,7 +91,7 @@ void XF_FLATTEN::vFold_basic(CardIter* pCI, Stz* szFoldNm, eCK eCardWithSQ)
   while (pCI->bEachOp()) {
 
     if (pCI->E.p_Op->pSub_emit())
-      pCI->Dic.m_p_expr = pCI->Flux.m_pArriving =
+      pCI->Dic.m_p_expr = pCI->Arriving.m_pEmit =
       pCI->E.p_emit = pCI->E.p_Op->pSub_emit();
 
     if (pCI->pPeekNextIf(CK_c_FOLD))
@@ -229,7 +229,7 @@ CarryForward* XF_FLATTEN::pFold_nc_subQuery(CardIter* pCI, Stz* szFoldNm,
   while (pCI->bEachOp()) {
 
     if (pCI->E.p_Op->pSub_emit())
-      pCI->Dic.m_p_expr = pCI->Flux.m_pArriving =
+      pCI->Dic.m_p_expr = pCI->Arriving.m_pEmit =
       pCI->E.p_emit = pCI->E.p_Op->pSub_emit();
 
     if (pCI->pPeekNextIf(CK_c_FOLD))
@@ -311,8 +311,8 @@ void XF_FLATTEN::vSmooth(CardIter* pCI, CarryForward* pCarryForward, bool bEarly
   // [Where]
   if (pCI->pPeekNextIf(CK_o_WHERE) && pCI->bEachOp(CK_o_WHERE)) {
     if (pCarryForward->Where_preAgg.m_bSeen) {
-      //pCI->Flux.m_pArriving->vDump(__func__,"Smooth where"_Stz);
-      pCI->Dic.m_p_expr = pCI->Flux.m_pArriving;
+      //pCI->Arriving.m_pEmit->vDump(__func__,"Smooth where"_Stz);
+      pCI->Dic.m_p_expr = pCI->Arriving.m_pEmit;
       pCI->E.p_where->vSmooth(pCI, pCarryForward);
       //pCI->PRINTBOARD_dbg();
     }
@@ -342,7 +342,7 @@ void XF_FLATTEN::vSmooth(CardIter* pCI, CarryForward* pCarryForward, bool bEarly
       //pCI->PRINTBOARD_dbg();
 
     }
-    pCI->Dic.m_p_expr = pCI->Flux.m_pArriving = pCI->E.p_gbyAgg->pSub_emit();
+    pCI->Dic.m_p_expr = pCI->Arriving.m_pEmit = pCI->E.p_gbyAgg->pSub_emit();
   }
 
   // [project (avg)]
@@ -439,7 +439,7 @@ void XF_FLATTEN::vInto_KEYnotEXISTS(CardIter* pCI)
       pCI->E.p_rlnConj->pSymbol()->bHasFacet("notExists"_Stz))
     p_from_exists->vAppendChild(new Card_KeyNotExists);
 
-  pCI->Dic.m_p_expr = pCI->Flux.m_pArriving = p_emitted_table;
+  pCI->Dic.m_p_expr = pCI->Arriving.m_pEmit = p_emitted_table;
   pCI->E.p_rlnConj->vMorph_sqlOp_To_EQ(pCI, pCI->E.p_term);
 
   DELETE_CARD(pCI->E.p_term);

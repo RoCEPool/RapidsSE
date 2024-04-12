@@ -76,7 +76,7 @@ void Card_KeyNotExists::vEarlyProject_recurse_add(CardIter* pCI)
   if (pCI->pPeekPrev()->bIsCard(CK_o_PROJECT)) {
 
     pCI->Early.m_pOP_leaf = this;
-    pCI->Dic.m_p_expr = pCI->Flux.m_pArriving = pSub_emit();
+    pCI->Dic.m_p_expr = pCI->Arriving.m_pEmit = pSub_emit();
 
    // pCI->PRINTBOARD_dbg();
     return;

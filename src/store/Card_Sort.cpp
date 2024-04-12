@@ -56,7 +56,7 @@ void Card_Sort::vDerive_streamKey(CardIter* pCI)
 
 
   // set running projection for use by next op
-  pCI->StreamOrder.m_pEmitted = pCI->E.p_emit;
+  pCI->StreamOrder.m_pEmit = pCI->E.p_emit;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -86,7 +86,7 @@ void Card_Sort::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
   if ((pCI->E.p_emit = pCI->E.p_sort->pSub_emit()))
     pCI->E.p_sort->vDeleteSub(pCI->E.p_emit);
 
-  Card_Emit* p_emit_sort =  pCI->Flux.m_pArriving->pInduct(pCI);
+  Card_Emit* p_emit_sort =  pCI->Arriving.m_pEmit->pInduct(pCI);
 
   for (Kid xEmit_sort(p_emit_sort); xEmit_sort.bEach(); /**/) {
     Card_Expr* p_expr_emit_sort = xEmit_sort.p_expr();
@@ -101,7 +101,7 @@ void Card_Sort::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
 
   pCI->E.p_sort->vAppendChild(p_emit_sort);
 
-  pCI->Dic.m_p_expr = pCI->Flux.m_pArriving = pSub_emit();
+  pCI->Dic.m_p_expr = pCI->Arriving.m_pEmit = pSub_emit();
 }
 
 /*----------------------------------------------------------------------------*/

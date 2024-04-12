@@ -448,7 +448,7 @@ void XF_Synthesise_pipelineDef::vCraftStreamDefs(void)
 
   if (p_OP->bIsCard(CK_o_INDEXJOIN)) {
     m_pOpDef->m_pStreamDef_arriving =
-        m_pCI->Flux.m_pArriving->pTo_StreamDef(nullptr, nullptr, p_OP);
+        m_pCI->Arriving.m_pEmit->pTo_StreamDef(nullptr, nullptr, p_OP);
   }
   else
 
@@ -458,7 +458,7 @@ void XF_Synthesise_pipelineDef::vCraftStreamDefs(void)
   else
   if (p_OP->bIsCard(CK_o_INDEXJOIN)) {
     m_pOpDef->m_pStreamDef_arriving =
-        m_pCI->Flux.m_pArriving->pTo_StreamDef(nullptr, nullptr, p_OP);
+        m_pCI->Arriving.m_pEmit->pTo_StreamDef(nullptr, nullptr, p_OP);
   }
   else
   if (p_OP->bIsCard(CK_o_INFLATE)) {
@@ -623,13 +623,13 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(void)
   if (! m_pCI->E.p_Op->bEither(CK_o_CROSSJOIN, CK_o_INDEXJOIN, CK_NONE))
     return;
 
-  if (! m_pCI->Flux.m_pArriving)
+  if (! m_pCI->Arriving.m_pEmit)
     return;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   //i8 nArriving = m_pCI->G.p_arriving->nChildCards();
-  i8 nArriving = m_pCI->Flux.m_pArriving->nChildCards();
+  i8 nArriving = m_pCI->Arriving.m_pEmit->nChildCards();
   ColPpg* pColPpg = new ColPpg(nArriving);
   m_pOpDef->vColPpg(pColPpg);
 
@@ -643,7 +643,7 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_PIPELINEDEF, _FOOTER_);
 
-  Card_Emit* p_arriving = m_pCI->Flux.m_pArriving;
+  Card_Emit* p_arriving = m_pCI->Arriving.m_pEmit;
   Card_Emit* p_emit  = pSubCard->pSub_emit();
 
 //  if (AM::JOB::bHasTag(C_OPTIMISER_TRACE)) {

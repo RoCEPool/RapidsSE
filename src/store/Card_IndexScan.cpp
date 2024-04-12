@@ -64,7 +64,7 @@ void Card_IndexScan::vDerive_streamKey(CardIter* pCI)
   pCI->E.p_emit->vAppendChild(pCI->E.p_streamKey);
 
   // set running projection for use by next op
-  pCI->StreamOrder.m_pEmitted = pCI->E.p_emit;
+  pCI->StreamOrder.m_pEmit = pCI->E.p_emit;
   pCI->StreamOrder.m_pStreamKey = pCI->E.p_streamKey;
 }
 
@@ -77,7 +77,7 @@ void Card_IndexScan::vEarlyProject_leaf(CardIter* pCI)
 
   pCI->Early.m_pOP_leaf = this;
 
-  pCI->Dic.m_p_expr = pCI->Flux.m_pArriving = pSub_emit();
+  pCI->Dic.m_p_expr = pCI->Arriving.m_pEmit = pSub_emit();
 
  // pCI->PRINTBOARD_dbg();
 

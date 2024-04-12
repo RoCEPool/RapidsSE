@@ -111,7 +111,7 @@ Card_Emit* Card_Project::pCraft_emit_early(CardIter* pCI)
   Card_Emit* p_emit_early = new Card_Emit;
 
 //  pCI->Early.m_pNeeded_later->vDump(__func__);
-//  pCI->Flux.m_pArriving->vDump(__func__);
+//  pCI->Arriving.m_pEmit->vDump(__func__);
 
   for (Kid x_needed(pCI->Early.m_pNeeded_later); x_needed.bEach(CK_EXPR); /**/) {
     Card_Expr* p_expr_needed = x_needed.p_expr();
@@ -120,8 +120,8 @@ Card_Emit* Card_Project::pCraft_emit_early(CardIter* pCI)
       vDebugPoint();
     }
 
-      //RASSERT(pCI->Dic.m_p_expr == pCI->Flux.m_pArriving);
-    Card_Expr* p_expr_arriving = pCI->Flux.m_pArriving->pContains(p_expr_needed);
+      //RASSERT(pCI->Dic.m_p_expr == pCI->Arriving.m_pEmit);
+    Card_Expr* p_expr_arriving = pCI->Arriving.m_pEmit->pContains(p_expr_needed);
     if (! p_expr_arriving) {
       //vTrace("NOT MATCHING\n"_Stz);
       continue;
@@ -175,7 +175,7 @@ void Card_Project::vDerive_streamKey(CardIter* pCI)
 
 
   // set running projection for use by next op
-  pCI->StreamOrder.m_pEmitted = pCI->E.p_emit;
+  pCI->StreamOrder.m_pEmit = pCI->E.p_emit;
   pCI->StreamOrder.m_pStreamKey = pCI->E.p_streamKey;
 }
 
@@ -219,7 +219,7 @@ void Card_Project::vEarlyProject_recurse_needed(CardIter* pCI)
 
   vAppendChild(pCI->E.p_emit);
 
-  pCI->Dic.m_p_expr = pCI->Flux.m_pArriving = pCI->E.p_emit;
+  pCI->Dic.m_p_expr = pCI->Arriving.m_pEmit = pCI->E.p_emit;
 
  // pCI->PRINTBOARD_dbg();
 
@@ -313,7 +313,7 @@ void Card_Project::vSmooth_postAgg(CardIter* pCI, CarryForward* pCarryForward)
 
   pCI->E.p_project->pSymbol()->Y_vSet(P_Smoothed);
 
-  pCI->Dic.m_p_expr = pCI->Flux.m_pArriving = pSub_emit();
+  pCI->Dic.m_p_expr = pCI->Arriving.m_pEmit = pSub_emit();
 
 }
 

@@ -1423,7 +1423,7 @@ void Symbol::vApplyFacet(eSF eFacet, i8 iInt)
 
   switch (eFacet) {
 
-   case SF_EXP_COL:    vFacet_Exp_Col(iInt);    break;
+    case SF_EXP_COL:    vFacet_Exp_Col(iInt);    break;
     case SF_IDX_COL:    vFacet_Idx_Col(iInt);    break;
     case SF_INT_LIT:    vFacet_Int_Lit(iInt);    break;
     case SF_ITM_COL:    vFacet_Itm_Col(iInt);    break;
