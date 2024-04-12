@@ -31,6 +31,7 @@ namespace STORE
 
     void vDeleteAllChildren(void);
     void vDeleteChild(Card* pChild);
+    void vDeleteSub(eCK eSub);
     void vDeleteSub(Card* pSub);
 
     void vDiscardHead(void);

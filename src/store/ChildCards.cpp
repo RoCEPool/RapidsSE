@@ -116,7 +116,16 @@ void ChildCards::vDeleteChild(Card* pChild)
 }
 
 /*----------------------------------------------------------------------------*/
-/* remove and delete given immediate child card (non-recursive)               */
+/* remove and delete given sub                                                */
+/*----------------------------------------------------------------------------*/
+void ChildCards::vDeleteSub(eCK eSub)
+{
+  if (Card* pSub = pFindSubCard(eSub))
+    vDeleteSub(pSub);
+}
+
+/*----------------------------------------------------------------------------*/
+/* remove and delete given sub                                                */
 /*----------------------------------------------------------------------------*/
 void ChildCards::vDeleteSub(Card* pSub)
 {
