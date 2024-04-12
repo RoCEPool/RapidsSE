@@ -29,7 +29,7 @@ begin
     | pulse     once
     | next
 
-  stage S01 on all partitions :
+  stage S01 on all partitions  multiple threads 4:
     scan      Orders
     | project   "   type INTEGER ( 19 ) as C0_O_CUSTKEY $2
                    , type INTEGER ( 19 ) as C1_O_ORDERKEY $1 "
@@ -37,7 +37,7 @@ begin
     | dynamic
     | next      hashcast
 
-  stage S02 on all partitions :
+  stage S02 on all partitions  multiple threads 4:
     indexJoin Lineitem IxL_ORDERKEY " BOUND $I1 $2 == "
     | project   "   type DATE as C0_L_SHIPDATE $13
                   , type DECIMAL ( 15 2 ) as C1_L_EXTENDEDPRICE $8

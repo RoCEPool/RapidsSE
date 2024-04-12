@@ -27,7 +27,7 @@ begin
      | combined 0
      | next
 
-   stage S03 on all partitions :
+   stage S03 on all partitions  multiple threads 4:
      indexJoin orders IxO_CUSTKEY "BOUND $I1 C_CUSTKEY =="
      | project "type integer ( 19 ) as O_ORDERKEY O_ORDERKEY ,
                 type VARCHAR ( 0 ) as N2_N_NAME N2_N_NAME"
@@ -35,7 +35,7 @@ begin
      | combined 0
      | next hashcast
 
-   stage S04 on all partitions :
+   stage S04 on all partitions  multiple threads 4:
      indexJoin LineItem IxL_ORDERKEY "BOUND $I1 O_ORDERKEY =="
      | project "type INTEGER ( 19 ) as L_SUPPKEY L_SUPPKEY ,
                 type VARCHAR ( 0 ) as N2_N_NAME N2_N_NAME ,

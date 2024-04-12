@@ -25,7 +25,7 @@ begin
     | pulse     once
     | next
 
-  stage S01 on all partitions :
+  stage S01 on all partitions  multiple threads 4:
     scan      Lineitem
     |  project   "type DECIMAL ( 15 2 ) as C0_L_QUANTITY $5
                  , type DECIMAL ( 15 2 ) as C0_L_EXTENDEDPRICE $6
