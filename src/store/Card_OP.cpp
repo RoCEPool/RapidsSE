@@ -298,24 +298,6 @@ Card_Filter* Card_OP::pEnsure_filter(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_OP::vEnsure_stream(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-#ifdef Z_NO_STREAM
-  NEVER_REACH
-#endif
-
-  if (! (pCI->E.p_stream = pSub_stream()) ) {
-    pCI->vAppendNewChild(this, CK_s_STREAM);
-  }
-
-  RASSERT(pCI->E.p_stream);
-}
-
-/*----------------------------------------------------------------------------*/
 /* fuse next projection into this op                                          */
 /*----------------------------------------------------------------------------*/
 #ifdef Z_NO_STREAM
