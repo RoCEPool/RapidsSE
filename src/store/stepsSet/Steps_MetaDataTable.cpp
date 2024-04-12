@@ -50,6 +50,39 @@ void Step::vMetaDataTableCatalog(void)
 {
   ENTRY();
 
+  Table* pTable = _pTable(*m_pLogicUnit->m_xpTable);
+  StreamDef* pStreamDef = pTable->pStreamDef();
+
+  Pds* pPdsRowBuffer = new Pds(pStreamDef, false, BT_DATA);
+
+  Word* pCatalog = m_oDicStack.pFindWord("catalogs"_Stz);
+  Dic* pCatalogDic = _pDic(pCatalog->pObject());
+
+  // Get last word in dic catalog
+  Word* pCatalogFolderWord = pCatalogDic->pLastWord();
+
+  // iterate dic catalog
+  while(pCatalogFolderWord) {
+
+    // get catalog name
+    s256 sCatalogNm(pCatalogFolderWord->szWordNm());
+
+    Row* pRow = pPdsRowBuffer->pAllotRow(C_VARGS_BEGIN,
+                                         sCatalogNm.szStz(),
+                                         C_VARGS_END);
+
+    if(! pRow) {
+      ASSERT(0);
+      break;
+    }
+
+//    vTrace("%s\n"_Stz, sCatalogNm.szStz());
+
+    pCatalogFolderWord = pCatalogFolderWord->pPrevWord();
+  }
+
+  m_pDataStack->vPushPtr((Object*)pPdsRowBuffer);
+
   EXIT();
 }
 
@@ -160,11 +193,11 @@ void Step::vMetaDataTableTables(void)
     // get table name
     s256 sTableNm(pTableFolderWord->szWordNm());
 
-    // find table in current dic
+    // find tableNm folder in current dic
     Word *pWordTable = m_oDicStack.pFindWord(sTableNm);
+    Dic *pDicTable = _pDic(pWordTable->pObject());
 
     // find actual table in this table dic
-    Dic *pDicTable = _pDic(pWordTable->pObject());
     Word *pWord = pDicTable->pFindWord(sTableNm);
     Table *pTableCur = _pTable(pWord->pObject());
 
