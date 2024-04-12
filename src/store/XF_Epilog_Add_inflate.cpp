@@ -83,8 +83,13 @@ void XF_Epilog_Add_inflate::vBifurcate_inflate(void)
 
       if (m_pCI->E.p_table)
         m_pCI->E.p_inflate->vAppendChild(m_pCI->E.p_table->pDupCardRecursive());
+#ifdef Z_NO_STREAM
+      if (m_pCI->E.p_emit)
+        m_pCI->E.p_inflate->vAppendChild(m_pCI->E.p_emit->pDupCardRecursive());
+#else
       if (m_pCI->E.p_stream)
         m_pCI->E.p_inflate->vAppendChild(m_pCI->E.p_stream->pDupCardRecursive());
+#endif
       if (m_pCI->E.p_injectable)
         m_pCI->E.p_inflate->vAppendChild(m_pCI->E.p_injectable->pDupCardRecursive());
       if (m_pCI->E.p_synthesis)
