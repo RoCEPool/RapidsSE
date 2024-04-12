@@ -122,7 +122,6 @@
 #include "Card_SqyInfo.hpp"
 #include "Card_SqyNo.hpp"
 #include "Card_Stage.hpp"
-#include "Card_Stream.hpp"
 #include "Card_StreamHead.hpp"
 #include "Card_StreamJoin.hpp"
 #include "Card_StreamKey.hpp"

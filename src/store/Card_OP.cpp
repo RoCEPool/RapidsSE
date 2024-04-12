@@ -536,7 +536,6 @@ void Card_OP::vRestate_emit(CardIter* pCI)
   pCI->E.p_injectable = pCI->E.p_Op->pSub_injectable();
   pCI->E.p_key        = pCI->E.p_Op->pSub_key();
   pCI->E.p_needed     = pCI->E.p_Op->pSub_needed();
-  pCI->E.p_stream     = nullptr;
 
   eCK eCard_OP = pCI->E.p_Op->eCard();
   switch (eCard_OP) {

@@ -18,8 +18,6 @@
 #include "Ribbon.hpp"
 #include "Symbol.hpp"
 
-#define Z_NO_STREAM
-
 namespace STORE
 {
   class Card_AbsJoin;
@@ -128,7 +126,6 @@ namespace STORE
   class Card_SqyInfo;
   class Card_SqyNo;
   class Card_Stage;
-  class Card_Stream;
   class Card_StreamHead;
   class Card_StreamJoin;
   class Card_StreamKey;
@@ -536,7 +533,6 @@ namespace STORE
     Card_SqyInfo*       pSub_sqyInfo(bool bNotNull=false);
     Card_SqyNo*         pSub_sqyNo(bool bNotNull=false);
     Card_Stage*         pSub_stage(bool bNotNull=false);
-    Card_Stream*        pSub_stream(bool bNotNull=false);
     Card_StreamHead*    pSub_streamHead(bool bNotNull=false);
     Card_StreamJoin*    pSub_streamJoin(bool bNotNull=false);
     Card_StreamKey*     pSub_streamKey(bool bNotNull=false);

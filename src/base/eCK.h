@@ -49,7 +49,6 @@ enum eCK : i8 // card kind
   /* */ CK_s_LEVEL,
   /* */ CK_s_MAPPING,
   /* */ CK_s_NEEDED,
-  /* */ CK_s_STREAM,
   /* */ CK_s_TABLE,
 
   // tertiary cards

@@ -149,7 +149,6 @@ namespace STORE
     Card_SqyInfo *       p_sqyInfo;
     Card_SqyNo *         p_sqyNo;
     Card_Stage *         p_stage;
-    Card_Stream *        p_stream;
     Card_StreamHead *    p_streamHead;
     Card_StreamJoin *    p_streamJoin;
     Card_StreamKey *     p_streamKey;

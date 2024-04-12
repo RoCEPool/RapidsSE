@@ -3888,25 +3888,6 @@ Card_Stage* Card::pSub_stage(bool bNotNull)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#include "Card_Stream.hpp"
-Card_Stream* Card::pSub_stream(bool bNotNull)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-
-  Card_Stream* p_stream =
-      _pCard_Stream(pFindSubCard(CK_s_STREAM));
-
-  if (bNotNull && !p_stream) {
-    NEVER_REACH
-  }
-
-  return p_stream;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 #include "Card_StreamHead.hpp"
 Card_StreamHead* Card::pSub_streamHead(bool bNotNull)
 {

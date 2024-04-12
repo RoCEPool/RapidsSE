@@ -1666,7 +1666,6 @@ Card* CardIter::pMember(eCK eCard)
     case CK_SQYINFO:        return E.p_sqyInfo;
     case CK_SQYNO:          return E.p_sqyNo;
     case CK_c_STAGE:        return E.p_stage;
-    case CK_s_STREAM:       return E.p_stream;
     case CK_STREAMHEAD:     return E.p_streamHead;
     case CK_STREAMJOIN:     return E.p_streamJoin;
     case CK_STREAMKEY:      return E.p_streamKey;
@@ -1814,7 +1813,6 @@ void CardIter::vMember(eCK eCard, Card* pCard)
     case CK_SQYINFO: E.p_sqyInfo           = _pCard_SqyInfo(pCard); break;
     case CK_SQYNO: E.p_sqyNo             = _pCard_SqyNo(pCard); break;
     case CK_c_STAGE: E.p_stage             = _pCard_Stage(pCard); break;
-    case CK_s_STREAM: E.p_stream            = _pCard_Stream(pCard); break;
     case CK_STREAMHEAD: E.p_streamHead        = _pCard_StreamHead(pCard); break;
     case CK_STREAMJOIN: E.p_streamJoin        = _pCard_StreamJoin(pCard); break;
     case CK_STREAMKEY: E.p_streamKey         = _pCard_StreamKey(pCard); break;
@@ -2327,7 +2325,6 @@ void CardIter::vResetMembers(void)
   E.p_sqyCalls         = nullptr;
   E.p_sqyInfo          = nullptr;
   E.p_sqyNo            = nullptr;
-  E.p_stream           = nullptr;
   E.p_streamKey        = nullptr;
   E.p_streamPer        = nullptr;
   E.p_streamPtn        = nullptr;
@@ -2616,7 +2613,6 @@ void CardIter::vValidateChildren(Card* pCard, i8 iDepth)
       case CK_SQYINFO:        E.p_sqyInfo->vValidate(this, iDepth, pCard);  break;
       case CK_SQYNO:          E.p_sqyNo->vValidate(this, iDepth, pCard);  break;
       case CK_c_STAGE:        E.p_stage->vValidate(this, iDepth, pCard);  break;
-      case CK_s_STREAM:       E.p_stream->vValidate(this, iDepth, pCard);  break;
       case CK_STREAMHEAD:     E.p_streamHead->vValidate(this, iDepth, pCard);  break;
       case CK_STREAMJOIN:     E.p_streamJoin->vValidate(this, iDepth, pCard);  break;
       case CK_STREAMKEY:      E.p_streamKey->vValidate(this, iDepth, pCard);  break;
