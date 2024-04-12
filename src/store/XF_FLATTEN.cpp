@@ -337,7 +337,7 @@ void XF_FLATTEN::vSmooth(CardIter* pCI, CarryForward* pCarryForward, bool bEarly
       //pCI->PRINTBOARD_dbg();
 
     }
-    pCI->Dic.m_p_expr = pCI->Arriving.m_pEmit = pCI->E.p_gbyAgg->pSub_emit();
+    pCI->vSnapIf_arriving();
   }
 
   // [project (avg)]
