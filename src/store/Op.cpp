@@ -1711,7 +1711,8 @@ void Op::vPipeToNextOpTasks(Operand* pOperand, Task* pTriggeringTask)
 {
 	_precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
 
-	vTrace("vPipeToNextOpTasks %p \n"_Stz, pOperand);
+	//vTrace("vPipeToNextOpTasks %p \n"_Stz, pOperand);
+
 	if (AM::TRACE::bVerbose(C_VB_OP))
 		vOpTrace(m_pTask, pOperand,(Stz*)__func__);
 
