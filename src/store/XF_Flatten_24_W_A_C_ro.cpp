@@ -515,7 +515,7 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
   // restate the emits of the leading OQ:<from>* sequence
-  pCI->Arriving.m_pEmit = nullptr;
+  pCI->vSnap_arriving(nullptr);
   while (pCI->pPeekNextIf(CK_o_FROM) && pCI->bEachOp(CK_o_FROM)) {
     ((Card_OP*)pCI->E.p_Op)->vRestate_emit(pCI);
   }

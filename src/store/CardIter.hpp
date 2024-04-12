@@ -213,6 +213,8 @@ namespace STORE
     void vResynchOp(Card* pCard);
     bool bRewindOp(void);
 
+    void vSnap_arriving(Card_Emit* p_emit);
+    void vSnapIf_arriving(Card_Emit* p_emit);
     void vSnapIf_arriving(bool bSub_emit=true);
 
     i8   i_Target(void);

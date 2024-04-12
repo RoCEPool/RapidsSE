@@ -65,7 +65,7 @@ void XF_Prolog_Analyse_emit::vXF_Analyse(void)
   m_pCI->vTransform(__FILE__, __func__, XF_PROLOG_ANALYSE_EMIT);
 
   m_pCI->vBeginEach();
-  m_pCI->Arriving.m_pEmit = m_pCI->E.p_emit = nullptr;
+  m_pCI->vSnap_arriving(nullptr);
 
   while (m_pCI->bEachOp()) {
 

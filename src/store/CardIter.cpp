@@ -2424,6 +2424,30 @@ void CardIter::vResynchOp(Card* pCard)
 /*----------------------------------------------------------------------------*/
 /* snap emit                                                                  */
 /*----------------------------------------------------------------------------*/
+void CardIter::vSnap_arriving(Card_Emit* p_emit)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  Arriving.m_pEmit = p_emit;
+  Dic.m_p_expr = p_emit;
+}
+
+/*----------------------------------------------------------------------------*/
+/* snap emit                                                                  */
+/*----------------------------------------------------------------------------*/
+void CardIter::vSnapIf_arriving(Card_Emit* p_emit)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  if (p_emit) {
+    Arriving.m_pEmit = p_emit;
+    Dic.m_p_expr = p_emit;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* snap emit                                                                  */
+/*----------------------------------------------------------------------------*/
 void CardIter::vSnapIf_arriving(bool bSub_emit)
 {
   _precondition_(_MAGIC_, _FOOTER_);
