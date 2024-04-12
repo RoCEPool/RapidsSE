@@ -225,8 +225,7 @@ CarryForward* XF_FLATTEN::pFold_nc_subQuery(CardIter* pCI, Stz* szFoldNm,
   pCI->vBeginEach();
   while (pCI->bEachOp()) {
 
-    if (pCI->E.p_Op->pSub_emit())
-      pCI->Dic.m_p_expr = pCI->Arriving.m_pEmit = pCI->E.p_emit = pCI->E.p_Op->pSub_emit();
+    pCI->vSnapIf_arriving();
 
     if (pCI->pPeekNextIf(CK_c_FOLD))
       break;
