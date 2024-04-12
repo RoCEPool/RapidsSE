@@ -30,7 +30,7 @@ namespace STORE
     EachMembers E;
 
     struct {
-      Card_Emit * m_pEmit;
+      Card_Emit *      m_pEmit;
       Card_StreamKey * m_pStreamKey;
     } Arriving;
 
@@ -47,7 +47,7 @@ namespace STORE
 
     struct {
       Card_Project * m_pProject;
-      Card_Emit * m_pEmitted;
+      Card_Emit *   m_pEmitted;
     } Next;
 
     struct {
@@ -72,8 +72,8 @@ namespace STORE
     } Flat;
 
     struct {
+      Card_Emit *      m_pEmit;
       Card_StreamKey * m_pStreamKey;
-      Card_Emit *   m_pEmit;
     } StreamOrder;
 
     struct {
@@ -213,8 +213,8 @@ namespace STORE
     void vResynchOp(Card* pCard);
     bool bRewindOp(void);
 
-    void vSnap_arriving(Card_Emit* p_emit);
-    void vSnapIf_arriving(Card_Emit* p_emit);
+    void vSnap_arriving(Card_Emit* p_emit, Card_StreamKey * pStreamKey);
+    void vSnapIf_arriving(Card_Emit* p_emit, Card_StreamKey * pStreamKey);
     void vSnapIf_arriving(bool bSub_emit=true);
 
     i8   i_Target(void);

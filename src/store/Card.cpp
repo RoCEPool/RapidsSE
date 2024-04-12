@@ -3925,6 +3925,8 @@ Card_StreamKey* Card::pSub_streamKey(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
+  //RASSERT(CK_t_EMIT != m_eCard);
+
   Card_StreamKey* p_streamKey =
       _pCard_StreamKey(pFindSubCard(CK_STREAMKEY));
 

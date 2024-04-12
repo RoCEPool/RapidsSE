@@ -2424,24 +2424,28 @@ void CardIter::vResynchOp(Card* pCard)
 /*----------------------------------------------------------------------------*/
 /* snap emit                                                                  */
 /*----------------------------------------------------------------------------*/
-void CardIter::vSnap_arriving(Card_Emit* p_emit)
+void CardIter::vSnap_arriving(Card_Emit* p_emit, Card_StreamKey* pStreamKey)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
   Arriving.m_pEmit = p_emit;
   Dic.m_p_expr = p_emit;
+
+  Arriving.m_pStreamKey = pStreamKey;
 }
 
 /*----------------------------------------------------------------------------*/
 /* snap emit                                                                  */
 /*----------------------------------------------------------------------------*/
-void CardIter::vSnapIf_arriving(Card_Emit* p_emit)
+void CardIter::vSnapIf_arriving(Card_Emit* p_emit, Card_StreamKey * pStreamKey)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
   if (p_emit) {
     Arriving.m_pEmit = p_emit;
     Dic.m_p_expr = p_emit;
+
+    Arriving.m_pStreamKey = pStreamKey;
   }
 }
 
@@ -2453,20 +2457,10 @@ void CardIter::vSnapIf_arriving(bool bSub_emit)
   _precondition_(_MAGIC_, _FOOTER_);
 
   if (bSub_emit) {
-    if (Card_Emit *p_emit = E.p_Op->pSub_emit()) {
-      Arriving.m_pEmit = p_emit;
-      Dic.m_p_expr = p_emit;
-
-      Arriving.m_pStreamKey = E.p_Op->pSub_streamKey();
-    }
+    vSnapIf_arriving(E.p_Op->pSub_emit(),E.p_Op->pSub_streamKey());
   }
   else {
-    if (E.p_emit) {
-      Arriving.m_pEmit = E.p_emit;
-      Dic.m_p_expr = E.p_emit;
-
-      Arriving.m_pStreamKey = E.p_Op->pSub_streamKey();
-    }
+    vSnapIf_arriving(E.p_emit,E.p_Op->pSub_streamKey());
   }
 }
 

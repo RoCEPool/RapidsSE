@@ -88,7 +88,7 @@ bool XF_Optimise_gbyAgg_To_ordAgg::bOptimise(void)
       default:
         if (m_pCI->E.p_Op->pSub_emit()) {
           m_pCI->StreamOrder.m_pEmit = m_pCI->E.p_Op->pSub_emit();
-          m_pCI->StreamOrder.m_pStreamKey = m_pCI->StreamOrder.m_pEmit->pSub_streamKey();
+          m_pCI->StreamOrder.m_pStreamKey = m_pCI->E.p_Op->pSub_streamKey();
         }
         break;
     }

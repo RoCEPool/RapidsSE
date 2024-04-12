@@ -434,7 +434,7 @@ void XF_FLATTEN::vInto_KEYnotEXISTS(CardIter* pCI)
       pCI->E.p_rlnConj->pSymbol()->bHasFacet("notExists"_Stz))
     p_from_exists->vAppendChild(new Card_KeyNotExists);
 
-  pCI->vSnapIf_arriving(p_emitted_table);
+  pCI->vSnapIf_arriving(p_emitted_table,nullptr);
   pCI->E.p_rlnConj->vMorph_sqlOp_To_EQ(pCI, pCI->E.p_term);
 
   DELETE_CARD(pCI->E.p_term);
