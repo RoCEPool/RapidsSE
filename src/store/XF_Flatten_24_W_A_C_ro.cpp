@@ -436,10 +436,7 @@ void XF_Flatten_24_W_A_C_ro::vRestate_emit_fold(CardIter* pCI)
     if (CK_c_FOLD == pCI->E.e_Op)
       break;
 
-    if (Card_Emit* p_emit = pCI->E.p_Op->pSub_emit()) {
-      //pCI->PRINTBOARD_dbg();
-      pCI->Dic.m_p_expr = pCI->Arriving.m_pEmit = p_emit;
-    }
+    pCI->vSnapIf_arriving();
   }
 
   RASSERT(CK_c_FOLD == pCI->E.e_Op);
