@@ -11,8 +11,8 @@
   STD_BOOTFORK_TAG
   "
   define table schema (
-    catalogName VARCHAR NOT NULL ,
-    schemaName  VARCHAR NOT NULL
+    szCatalogName VARCHAR NOT NULL ,
+    szSchemaName  VARCHAR NOT NULL
   ) < metaData > = MetaDataTable[].schema ;
   "
   nullptr api::forkChild  api:executeCheck

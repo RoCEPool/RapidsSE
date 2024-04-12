@@ -11,7 +11,7 @@
   STD_BOOTFORK_TAG
   "
   define table tables (
-    tableName         VARCHAR NOT NULL
+    szTableName         VARCHAR NOT NULL
   ) < metaData > = MetaDataTable[].print ;
   "
   nullptr api::forkChild  api:executeCheck

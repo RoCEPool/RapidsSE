@@ -11,13 +11,13 @@
   STD_BOOTFORK_TAG
   "
   define table columns (
-    catalogName VARCHAR NOT NULL ,
-    schemaName  VARCHAR NOT NULL ,
-    tableName   VARCHAR NOT NULL ,
-    type        INTEGER NOT NULL ,
-    scale       INTEGER NOT NULL ,
-    precision   INTEGER NOT NULL ,
-    nullable    BOOLEAN NOT NULL
+    szCatalogName    VARCHAR NOT NULL ,
+    szSchemaName     VARCHAR NOT NULL ,
+    szTableName      VARCHAR NOT NULL ,
+    iType            INTEGER NOT NULL ,
+    iScale           INTEGER NOT NULL ,
+    iPrecision       INTEGER NOT NULL ,
+    bNullable        BOOLEAN NOT NULL
   ) < metaData > = MetaDataTable[].columns ;
   "
   nullptr api::forkChild  api:executeCheck

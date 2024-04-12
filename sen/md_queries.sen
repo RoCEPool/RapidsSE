@@ -11,11 +11,11 @@
   STD_BOOTFORK_TAG
   "
   define table queries (
-    queryId         INTEGER NOT NULL ,
-    timestamp       TIMESTAMP NOT NULL ,
-    sqyText         VARCHAR NOT NULL ,
-    submitTimeStamp TIMESTAMP NOT NULL ,
-    status          VARCHAR NOT NULL
+    iQueryId          INTEGER NOT NULL ,
+    tiTimestamp       TIMESTAMP NOT NULL ,
+    szSqlText         VARCHAR NOT NULL ,
+    szSubmitTimeStamp TIMESTAMP NOT NULL ,
+    szStatus          VARCHAR NOT NULL
   ) < metaData > = MetaDataTable[].queries ;
   "
   nullptr api::forkChild  api:executeCheck

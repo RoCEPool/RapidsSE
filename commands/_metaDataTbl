@@ -62,7 +62,7 @@ create table sessions (
 create table queries (
   queryId         INTEGER NOT NULL,
   timestamp       TIMESTAMP,
-  sqyText         VARCHAR(32),
+  sqlText         VARCHAR(32),
   submitTimeStamp TIMESTAMP,
   status          VARCHAR(32)
 );

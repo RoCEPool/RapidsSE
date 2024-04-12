@@ -32,6 +32,7 @@
 void Step::vAddSteps_MetaDataTable(void)
 {
   vAddStep("MetaDataTable[].print"_Stz,         &Step::vMetaDataTablePrint);
+
   vAddStep("MetaDataTable[].catalog"_Stz,       &Step::vMetaDataTableCatalog);
   vAddStep("MetaDataTable[].cluster"_Stz,       &Step::vMetaDataTableCluster);
   vAddStep("MetaDataTable[].columns"_Stz,       &Step::vMetaDataTableColumns);
@@ -49,8 +50,6 @@ void Step::vAddSteps_MetaDataTable(void)
 void Step::vMetaDataTablePrint(void)
 {
   ENTRY();
-
-  vTrace("GOT METADATASTEP\n"_Stz);
 
   Table* pTable = _pTable(*m_pLogicUnit->m_xpTable);
   StreamDef* pStreamDef = pTable->pStreamDef();

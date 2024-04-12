@@ -11,9 +11,9 @@
   STD_BOOTFORK_TAG
   "
   define table sessions (
-    sessionId   INTEGER NOT NULL ,
-    connect     BOOLEAN NOT NULL ,
-    status      VARCHAR NOT NULL
+    iSessionId    INTEGER NOT NULL ,
+    bConnect      BOOLEAN NOT NULL ,
+    szStatus      VARCHAR NOT NULL
   ) < metaData > = MetaDataTable[].sessions ;
   "
   nullptr api::forkChild  api:executeCheck

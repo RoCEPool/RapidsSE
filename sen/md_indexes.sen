@@ -11,10 +11,10 @@
   STD_BOOTFORK_TAG
   "
   define table indexes (
-    catalogName VARCHAR NOT NULL ,
-    schemaName  VARCHAR NOT NULL ,
-    tableName   VARCHAR NOT NULL ,
-    indexName   VARCHAR NOT NULL
+    szCatalogName VARCHAR NOT NULL ,
+    szSchemaName  VARCHAR NOT NULL ,
+    szTableName   VARCHAR NOT NULL ,
+    szIndexName   VARCHAR NOT NULL
   ) < metaData > = MetaDataTable[].indexes ;
   "
   nullptr api::forkChild  api:executeCheck

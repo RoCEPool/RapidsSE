@@ -1016,31 +1016,31 @@ void Engine::vMetaDataTables(void)
   StreamDef* pStreamDef;
 
   pStreamDef = AM::pStreamDefFind(C_TDEF_CATALOG);
-  gpAttachMap->m_pMetaDataTables->vStreamDef(MD_TABLES,pStreamDef);
+  gpAttachMap->m_pMetaDataTables->vStreamDef(MD_CATALOG,pStreamDef);
 
   pStreamDef = AM::pStreamDefFind(C_TDEF_CLUSTER);
-  gpAttachMap->m_pMetaDataTables->vStreamDef(MD_TABLES,pStreamDef);
+  gpAttachMap->m_pMetaDataTables->vStreamDef(MD_CLUSTER,pStreamDef);
 
   pStreamDef = AM::pStreamDefFind(C_TDEF_COLUMNS);
-  gpAttachMap->m_pMetaDataTables->vStreamDef(MD_TABLES,pStreamDef);
+  gpAttachMap->m_pMetaDataTables->vStreamDef(MD_COLUMNS,pStreamDef);
 
   pStreamDef = AM::pStreamDefFind(C_TDEF_INDEXCOLUMNS);
-  gpAttachMap->m_pMetaDataTables->vStreamDef(MD_TABLES,pStreamDef);
+  gpAttachMap->m_pMetaDataTables->vStreamDef(MD_INDEXCOLUMNS,pStreamDef);
 
 //  pStreamDef = AM::pStreamDefFind(C_TDEF_INDEXES);
-//  gpAttachMap->m_pMetaDataTables->vStreamDef(MD_TABLES,pStreamDef);
+//  gpAttachMap->m_pMetaDataTables->vStreamDef(MD_INDEXES,pStreamDef);
 
   pStreamDef = AM::pStreamDefFind(C_TDEF_NODES);
-  gpAttachMap->m_pMetaDataTables->vStreamDef(MD_TABLES,pStreamDef);
+  gpAttachMap->m_pMetaDataTables->vStreamDef(MD_NODES,pStreamDef);
 
   pStreamDef = AM::pStreamDefFind(C_TDEF_QUERIES);
-  gpAttachMap->m_pMetaDataTables->vStreamDef(MD_TABLES,pStreamDef);
+  gpAttachMap->m_pMetaDataTables->vStreamDef(MD_QUERIES,pStreamDef);
 
   pStreamDef = AM::pStreamDefFind(C_TDEF_SCHEMA);
-  gpAttachMap->m_pMetaDataTables->vStreamDef(MD_TABLES,pStreamDef);
+  gpAttachMap->m_pMetaDataTables->vStreamDef(MD_SCHEMA,pStreamDef);
 
   pStreamDef = AM::pStreamDefFind(C_TDEF_SESSIONS);
-  gpAttachMap->m_pMetaDataTables->vStreamDef(MD_TABLES,pStreamDef);
+  gpAttachMap->m_pMetaDataTables->vStreamDef(MD_SESSIONS,pStreamDef);
 
   pStreamDef = AM::pStreamDefFind(C_TDEF_TABLES);
   gpAttachMap->m_pMetaDataTables->vStreamDef(MD_TABLES,pStreamDef);

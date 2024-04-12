@@ -11,10 +11,10 @@
   STD_BOOTFORK_TAG
   "
   define table nodes (
-    nodeId            INTEGER NOT NULL ,
-    address           VARCHAR NOT NULL ,
-    port              INTEGER NOT NULL ,
-    connectTimeStamp  TIMESTAMP  NOT NULL
+    iNodeId             INTEGER NOT NULL ,
+    szAddress           VARCHAR NOT NULL ,
+    iPort               INTEGER NOT NULL ,
+    tsConnectTimeStamp  TIMESTAMP  NOT NULL
   ) < metaData > = MetaDataTable[].nodes ;
   "
   nullptr api::forkChild  api:executeCheck
