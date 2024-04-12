@@ -219,7 +219,7 @@ void Card_Project::vEarlyProject_recurse_needed(CardIter* pCI)
 
   vAppendChild(pCI->E.p_emit);
 
-  pCI->Dic.m_p_expr = pCI->Arriving.m_pEmit = pCI->E.p_emit;
+  pCI->vSnap_emit_arriving(false);
 
  // pCI->PRINTBOARD_dbg();
 
