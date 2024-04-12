@@ -174,15 +174,22 @@ void XF_Flatten_24_W_A_C_ro::vPromote_IQ_aggreg_To_gbyAgg_crlKey(CardIter* pCI)
 
     pCI->E.p_gbyAgg = _pCard_GbyAgg(pCI->E.p_Op);
     pCI->E.p_level  = pCI->E.p_gbyAgg->pSub_level();
+#ifdef Z_NO_STREAM
+    pCI->E.p_emit   = pCI->E.p_gbyAgg->pSub_emit();
+#else
     pCI->E.p_stream = pCI->E.p_gbyAgg->pSub_stream();
     pCI->E.p_emit   = pCI->E.p_stream->pSub_emit();
+#endif
 
     // -- -- -- -- -- -- -- -- -- -- --
     // key
 
     Card_Key::vAssemble_injCrlKey(pCI);
+#ifdef Z_NO_STREAM
+    pCI->E.p_gbyAgg->vInsertChildBefore(pCI->E.p_key, pCI->E.p_emit);
+#else
     pCI->E.p_gbyAgg->vInsertChildBefore(pCI->E.p_key, pCI->E.p_stream);
-
+#endif
     // -- -- -- -- -- -- -- -- -- -- --
     // emit
 
