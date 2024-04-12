@@ -318,6 +318,43 @@ void Card_OP::vEnsure_stream(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* fuse next projection into this op                                          */
 /*----------------------------------------------------------------------------*/
+#ifdef Z_NO_STREAM
+void Card_OP::vFuse_project_Viable(CardIter *pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  RASSERT(pCI->E.p_Op->bEither(CK_o_SCAN, CK_o_INDEXSCAN, CK_o_INDEXJOIN, CK_o_CROSSJOIN, CK_NONE));
+  pCI->Next.m_pEmitted = pCI->Next.m_pProject->pSub_emit();
+
+  if ((pCI->E.p_emit = pCI->E.p_Op->pSub_emit()))
+    pCI->E.p_Op->vDeleteChild(pCI->E.p_emit);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // no arrived columns (only injected), emitted is next emitted
+
+  // <scan> or <indexScan>
+
+  if (pCI->E.p_Op->bEither(CK_o_SCAN, CK_o_INDEXSCAN, CK_NONE)) {
+    pCI->E.p_Op->vAppendChild(pCI->Next.m_pEmitted->pClone());
+    return;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // arrived (and injected) columns, emitted is next emitted
+
+  // <indexJoin> or <crossJoin>
+
+  //
+  pCI->E.p_Op->vAppendChild(pCI->Next.m_pEmitted->pClone());
+
+  // delete any SF_EXP_COL facet with SF_TBL_COL of this op's table
+  pCI->E.p_emit = pCI->E.p_Op->pSub_emit();
+  pCI->E.p_table = pCI->E.p_Op->pSub_table();
+  char cTblSyn = pCI->E.p_table->pSymbol()->cTblSyn();
+  pCI->E.p_emit->vDeleteFacetIf(pCI,SF_EXP_COL, SF_TBL_COL, cTblSyn);
+}
+/*----------------------------------------------------------------------------*/
+#else
 void Card_OP::vFuse_project_Viable(CardIter *pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
@@ -352,6 +389,7 @@ void Card_OP::vFuse_project_Viable(CardIter *pCI)
   char cTblSyn = pCI->E.p_table->pSymbol()->cTblSyn();
   pCI->E.p_emit->vDeleteFacetIf(pCI,SF_EXP_COL, SF_TBL_COL, cTblSyn);
 }
+#endif
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
