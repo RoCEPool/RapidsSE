@@ -54,8 +54,6 @@ void ChildCards::vAppendChild(Card* pChild, Card* pParent)
   vAppend(pChild);
 
   pChild->vAddedCorrectly();
-
-  pChild->vOnAdd_child();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -423,7 +421,6 @@ void ChildCards::vInsertChildAfter(Card* pChild, Card* pAfter)
   vInsertAfter(pChild,pAfter);
 
   pChild->vAddedCorrectly();
-  pChild->vOnAdd_child();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -439,7 +436,6 @@ void ChildCards::vInsertChildBefore(Card* pChild, Card* pBefore)
   vInsertBefore(pChild,pBefore);
 
   pChild->vAddedCorrectly();
-  pChild->vOnAdd_child();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -511,7 +507,6 @@ Card* ChildCards::pPopChild(void)
   pChild->vParent(nullptr);
 
   pChild->vRemovedCorrectly();
-  pChild->vOnRemove_child();
 
   return pChild;
 }
@@ -562,7 +557,6 @@ void ChildCards::vPushChild(Card* pChild, Card* pParent)
   vPush(pChild);
 
   pChild->vAddedCorrectly();
-  pChild->vOnAdd_child();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -580,7 +574,6 @@ bool ChildCards::bRemoveChild(Card* pChild)
   pChild->vParent(nullptr);
 
   pChild->vRemovedCorrectly();
-  pChild->vOnRemove_child();
 
   return true;
 }
@@ -598,7 +591,6 @@ void ChildCards::vRemoveChild(Card* pChild)
   pChild->vParent(nullptr);
 
   pChild->vRemovedCorrectly();
-  pChild->vOnRemove_child();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -635,7 +627,6 @@ void ChildCards::vRemoveSub(Card* pSub)
     if (pSub_test == pSub) {
       RASSERT(bRemoveChild(pSub_test));
       pSub_test->vRemovedCorrectly();
-      pSub_test->vOnRemove_child();
       break;
     }
     pSub_test->vRemoveSub(pSub);
@@ -658,10 +649,8 @@ void ChildCards::vReplaceChild(Card* pChild, Card* pWith)
   pChild->vParent(nullptr);
 
   pWith->vAddedCorrectly();
-  pWith->vOnAdd_child();
 
   pChild->vRemovedCorrectly();
-  pChild->vOnRemove_child();
 }
 
 /*----------------------------------------------------------------------------*/
