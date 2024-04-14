@@ -36,9 +36,6 @@ namespace STORE
 
     void vDiscardHead(void);
 
-    void vEnsureFirst(eCK eChild);
-    void vEnsureLast(eCK eChild);
-
     i8    iFindChild(Card* pChild);
     Card* pFindChild(eCK eCard);
     Card* pFindChild(eCK eCard, i8& i_Child);
@@ -72,8 +69,6 @@ namespace STORE
     void vRemoveChildLeavingSubs(Card* pChild);
     void vRemoveSub(Card* pSub);
     void vReplaceChild(Card* pChild, Card* pWith);
-    void vRotateFirst(Card* pChild);
-    void vRotateLast(Card* pChild);
   };
 }
 

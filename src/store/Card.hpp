@@ -326,6 +326,8 @@ namespace STORE
     Card_SubSet* pDupSubCardsRecursive(i8 i_From, i8 i_Till=C_UNKNOWN);
 
     bool  bEither(i8 /*eCK*/ iKind_first, ...);
+    void vEnsureFirst(eCK eChild);
+    void vEnsureLast(eCK eChild);
 
     Stz*  szFacet(eSF eFacet_xchk);
     Card* pFindCardRecursive(eCK eCard);
@@ -396,6 +398,8 @@ namespace STORE
     void vRenumberRecursive(Card* pParent);
     void vReplaceSubDelete(Card* pSub, Card* pWith);
     void vReplaceSub(Card* pSub, Card* pWith);
+    void vRotateFirst(Card* pChild);
+    void vRotateLast(Card* pChild);
 
     i8   iSequence(void);
     void vSequence(i8 iSequence);

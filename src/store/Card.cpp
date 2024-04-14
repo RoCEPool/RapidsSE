@@ -719,6 +719,41 @@ bool Card::bEither(i8 /*eCK*/ iKind_first, ...)
 }
 
 /*----------------------------------------------------------------------------*/
+/* ensure card is first                                                       */
+/*----------------------------------------------------------------------------*/
+void Card::vEnsureFirst(eCK eChild)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  i8 i_Child;
+  Card* pChild = pFindChild(eChild,i_Child);
+  if ((! pChild) || 0 == i_Child)
+    return;
+
+  vRotateFirst(pChild);
+}
+
+/*----------------------------------------------------------------------------*/
+/* ensure card is first                                                       */
+/*----------------------------------------------------------------------------*/
+void Card::vEnsureLast(eCK eChild)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card* pChild_last = pPeekChild_tail();
+  if (! pChild_last)
+    return;
+  if (eChild == pChild_last->eCard())
+    return;
+
+  Card* pChild = pFindChild(eChild);
+  if (! pChild)
+    return;
+
+  vRotateLast(pChild);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get facet symbol                                                           */
 /*----------------------------------------------------------------------------*/
 Stz* Card::szFacet(eSF eFacet_xchk)
@@ -1671,6 +1706,28 @@ void Card::vReplaceSub(Card* pSub, Card* pWith)
   Card* pParent = pFindParentRecursive(pSub);
 
   pParent->vReplaceChild(pSub,pWith);
+}
+
+/*----------------------------------------------------------------------------*/
+/* remove and push child card                                                 */
+/*----------------------------------------------------------------------------*/
+void Card::vRotateFirst(Card* pChild)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  vRemoveChild(pChild);
+  vPushChild(pChild);
+}
+
+/*----------------------------------------------------------------------------*/
+/* remove and append child card                                               */
+/*----------------------------------------------------------------------------*/
+void Card::vRotateLast(Card* pChild)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  vRemoveChild(pChild);
+  vAppendChild(pChild);
 }
 
 /*----------------------------------------------------------------------------*/
