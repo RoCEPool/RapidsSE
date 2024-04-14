@@ -17,7 +17,6 @@ namespace STORE
    ~Card_StreamPtn(void) noexcept(false);
 
     bool bContainsKey(Symbol* p_Y_tblCol);
-    bool bIsEmpty(void);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };

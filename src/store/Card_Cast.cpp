@@ -54,7 +54,7 @@ eXK Card_Cast::eStageCast(CardIter* pCI,
 
   UNUSED(pCI);
 
-  RASSERT(p_streamPtn && ! p_streamPtn->bIsEmpty());
+  RASSERT(p_streamPtn && p_streamPtn->nChildCards());
   /*
    *           Prev     Curr
    *   tblPtn  $a.1     $b.1
