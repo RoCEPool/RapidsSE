@@ -197,51 +197,6 @@ void Card::vCardLeaks(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* check for leaks                                                            */
-/*----------------------------------------------------------------------------*/
-void Card::vConsistencyCheck(Card* p_deck, i8 iTransformNo)
-{
-  _static_
-  UNUSED(p_deck);
-  UNUSED(iTransformNo);
-
-//  for (i8 i_Card = 0; i_Card < m__iSeqGen; i_Card++) {
-//    if (! gapCard[i_Card])
-//      continue;
-//
-//    Card* p_cardInQuestion = gapCard[i_Card];
-//
-//    // is this the first time a transformation has seen this card?
-//    if (C_UNKNOWN == p_cardInQuestion->md__FirstDetected)
-//      p_cardInQuestion->md__FirstDetected = iTransformNo;
-//
-//    // is the card the entire deck?
-//    if (p_cardInQuestion == p_deck)
-//      continue;
-//
-//    // is the card in the deck?
-//    if (p_deck->pFindParentRecursive(p_cardInQuestion))
-//      continue;
-//
-//    // **Leak Detected**
-//
-//    // is this the first time this card has been detected?
-//    if (C_UNKNOWN != p_cardInQuestion->md__LeakDetected)
-//      continue;
-//
-//    // report the leak
-//    p_cardInQuestion->md__LeakDetected = iTransformNo;
-//    vTrace("Card leak detected : %04lld %p %s:%s\n"_Stz,
-//         i_Card,
-//         p_cardInQuestion,
-//         aCK[p_cardInQuestion->eCard()],
-//         p_cardInQuestion->szFacet());
-//    vDebugPoint();
-//  }
-//
-}
-
-/*----------------------------------------------------------------------------*/
 /* convert eAL to eYG                                                         */
 /*----------------------------------------------------------------------------*/
 eYG Card::e_aggLevel_To_stageTopo(eAL eLevel)

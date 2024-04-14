@@ -285,8 +285,6 @@ namespace STORE
 
     static void vCardLeaks(void);
 
-    static void vConsistencyCheck(Card* p_deck, i8 iTransformNo);
-
     static bool bIsConstruction(eCK eCard);
     static bool bIsMain(eCK eCard);
     static bool bIsOp(eCK eCard);
