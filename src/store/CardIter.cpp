@@ -1441,8 +1441,6 @@ void CardIter::vEndTransform(i8 iLineNo)
 
   if (E.pBoard) {
 
-    E.p_deck->vCheckCorrectness();
-
     if (!  E.pBoard->pState()->bHasName(aXF[m_pBench->eXform()]))
       E.pBoard->pState()->vInsert(aXF[m_pBench->eXform()]);
 

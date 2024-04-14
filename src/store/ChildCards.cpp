@@ -52,8 +52,6 @@ void ChildCards::vAppendChild(Card* pChild, Card* pParent)
   pChild->vParent(pParent);
 
   vAppend(pChild);
-
-  pChild->vAddedCorrectly();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -419,8 +417,6 @@ void ChildCards::vInsertChildAfter(Card* pChild, Card* pAfter)
   pChild->vParent(pAfter->pParent());
 
   vInsertAfter(pChild,pAfter);
-
-  pChild->vAddedCorrectly();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -434,8 +430,6 @@ void ChildCards::vInsertChildBefore(Card* pChild, Card* pBefore)
   pChild->vParent(pBefore->pParent());
 
   vInsertBefore(pChild,pBefore);
-
-  pChild->vAddedCorrectly();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -506,8 +500,6 @@ Card* ChildCards::pPopChild(void)
 
   pChild->vParent(nullptr);
 
-  pChild->vRemovedCorrectly();
-
   return pChild;
 }
 
@@ -555,8 +547,6 @@ void ChildCards::vPushChild(Card* pChild, Card* pParent)
 
   pChild->vParent(pParent);
   vPush(pChild);
-
-  pChild->vAddedCorrectly();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -573,8 +563,6 @@ bool ChildCards::bRemoveChild(Card* pChild)
   vRemove(pChild);
   pChild->vParent(nullptr);
 
-  pChild->vRemovedCorrectly();
-
   return true;
 }
 
@@ -589,8 +577,6 @@ void ChildCards::vRemoveChild(Card* pChild)
 
   vRemove(pChild);
   pChild->vParent(nullptr);
-
-  pChild->vRemovedCorrectly();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -626,7 +612,6 @@ void ChildCards::vRemoveSub(Card* pSub)
 
     if (pSub_test == pSub) {
       RASSERT(bRemoveChild(pSub_test));
-      pSub_test->vRemovedCorrectly();
       break;
     }
     pSub_test->vRemoveSub(pSub);
@@ -648,9 +633,6 @@ void ChildCards::vReplaceChild(Card* pChild, Card* pWith)
   vReplace(pChild, pWith);
   pChild->vParent(nullptr);
 
-  pWith->vAddedCorrectly();
-
-  pChild->vRemovedCorrectly();
 }
 
 /*----------------------------------------------------------------------------*/

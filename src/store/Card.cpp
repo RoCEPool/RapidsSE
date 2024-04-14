@@ -132,9 +132,6 @@ Card::Card(eCK eCard, i8 iFixedDepth)
   m_iFirstPrint = C_UNKNOWN;
   m_nPrintCount = 0;
 
-  m_bAddedCorrectly   = false;
-  m_bRemovedCorrectly = false;
-
   m_iCounter = 0;
 
   vMark1(MARK_BLANK);
@@ -175,9 +172,6 @@ Card::~Card(void) noexcept(false)
   RASSERT(! bMark1(MARK_DELETED));
 
   vMark1(MARK_DELETED);
-
-  RASSERT( (m_bAddedCorrectly && m_bRemovedCorrectly) ||
-           (! m_bAddedCorrectly && ! m_bRemovedCorrectly));
 
   for (Card* pCard = pPopChild(); pCard; pCard = pPopChild())
     delete pCard;
@@ -365,19 +359,6 @@ bool Card::bIsOp(eCK eCard)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* card has been appended correctly                                           */
-/*----------------------------------------------------------------------------*/
-void Card::vAddedCorrectly(bool bAppended)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  RASSERT(CK_DECK != eCard());
-  RASSERT(m_pParent)
-
-  m_bAddedCorrectly = bAppended;
-}
-
-/*----------------------------------------------------------------------------*/
 /* are all children given kind?                                               */
 /*----------------------------------------------------------------------------*/
 bool Card::bAllChildren(eCK eCard)
@@ -487,20 +468,6 @@ Cast Card::xCast(void)
   Cast xCast = pSymbol()->xCast();
 
   return xCast;
-}
-
-/*----------------------------------------------------------------------------*/
-/* visit all sub-cards and check correctness                                   */
-/*----------------------------------------------------------------------------*/
-void Card::vCheckCorrectness(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  RASSERT(CK_DECK == eCard() || m_bAddedCorrectly);
-
-  for (Kid xCard(this); xCard.bEach_opaque(); /**/) {
-    xCard.pChild()->vCheckCorrectness();
-  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1632,17 +1599,6 @@ void Card::vPushChild(Card* pChild)
 }
 
 /*----------------------------------------------------------------------------*/
-/* card has been removed correctly                                            */
-/*----------------------------------------------------------------------------*/
-void Card::vRemovedCorrectly(bool bRemoved)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  RASSERT(!m_pParent)
-  m_bRemovedCorrectly = bRemoved;
-}
-
-/*----------------------------------------------------------------------------*/
 /* renumber subCard's                                                         */
 /*----------------------------------------------------------------------------*/
 void Card::vRenumberRoot(i8 i_Board)
@@ -1868,10 +1824,8 @@ bool Card::bUpdateSymbolRecursive(eCK eSub, Symbol* pSymbol, Symbol* pWith)
 void Card::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-  UNUSED(pCI);
-  UNUSED(pParent);
 
-  RASSERT(m_bAddedCorrectly);
+  UNUSED(pParent);
 
   RASSERT(bFixedDepth(iDepth));
 

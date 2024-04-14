@@ -269,8 +269,6 @@ namespace STORE
     i8 md__LeakDetected;
     i8      m_iFirstPrint;
     i8      m_nPrintCount;
-    bool    m_bAddedCorrectly;
-    bool    m_bRemovedCorrectly;
     i8      m_iCounter;
     Card*   m_pLastPrintParent;
 
@@ -302,7 +300,6 @@ namespace STORE
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
-    void vAddedCorrectly(bool bAppended=true);
     bool bAllChildren(eCK eCard);
     void vAppendChild(Card* pChild);
     Card* pAppendNewCard(eCK eCard);
@@ -313,7 +310,6 @@ namespace STORE
     Card* pCard(eCK eCard);
     void vCard(eCK eCard);
     Stz* szCardNm(void);
-    void vCheckCorrectness(void);
     Cast xCast(void);
     i8   i_Child(void);
     void v_Child(i8 i_Child);
@@ -398,7 +394,6 @@ namespace STORE
                          bool bPrintBelow, i8 iXform, Stz* szXfunc);
     void  vPushChild(Card* pChild);
 
-    void vRemovedCorrectly(bool bRemoved=true);
     void vRenumberRoot(i8 i_Parent);
     void vRenumberRecursive(Card* pParent);
     void vReplaceSubDelete(Card* pSub, Card* pWith);
