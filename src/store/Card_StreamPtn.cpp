@@ -43,20 +43,6 @@ Card_StreamPtn::~Card_StreamPtn(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_StreamPtn::vAddKey(Symbol* p_Y_tblCol)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_StreamKey* p_streamKey = new Card_StreamKey;
-
-  p_streamKey->pSymbol()->vApplyCastFacets(p_Y_tblCol);
-
-  vAppendChild(p_streamKey);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 bool Card_StreamPtn::bContainsKey(Symbol *p_Y_tblCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
@@ -81,16 +67,6 @@ bool Card_StreamPtn::bIsEmpty(void)
     return false;
 
   return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_StreamPtn::vResetKeys(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  vDeleteAllChildren();
 }
 
 /*----------------------------------------------------------------------------*/

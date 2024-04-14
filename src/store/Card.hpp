@@ -18,6 +18,8 @@
 #include "Ribbon.hpp"
 #include "Symbol.hpp"
 
+//#define Z_PART_STREAMKEY
+
 namespace STORE
 {
   class Card_AbsJoin;

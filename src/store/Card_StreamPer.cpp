@@ -54,7 +54,8 @@ Card_StreamPer::~Card_StreamPer(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* estimate the query cost of this join permutation sequence                  */
 /*----------------------------------------------------------------------------*/
-void Card_StreamPer::vEstStreamCost(Card_TableList* p_tableList,
+void Card_StreamPer::vEstStreamCost(CardIter* pCI,
+                                    Card_TableList* p_tableList,
                                     Card_FiltPredList* p_filtPredList)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
@@ -93,7 +94,8 @@ void Card_StreamPer::vEstStreamCost(Card_TableList* p_tableList,
 
       nFilterPred_prev = p_filtPredList->nFiltersFor(cTblSyn_head);
 
-      p_streamPtn->vAddKey(p_tableList->pGetTablePtn(cTblSyn_head)->pSymbol());
+      //p_streamPtn->vAdd_streamKey(p_tableList->pGetTablePtn(cTblSyn_head)->pSymbol());
+      pCI->vAppendNewChild(p_streamPtn,CK_STREAMKEY,p_tableList->pGetTablePtn(cTblSyn_head)->pSymbol());
       continue;
     }
 
@@ -106,7 +108,8 @@ void Card_StreamPer::vEstStreamCost(Card_TableList* p_tableList,
     // get info for this join
     char cTblSyn_join = xStreamPer.p_streamJoin()->pSymbol()->cTblSyn();
 
-    eXK eJoinCast = this->eJoinCast(p_streamPtn,
+    eXK eJoinCast = this->eJoinCast(pCI,
+                                    p_streamPtn,
                                     p_tableList,
                                     xStreamPer.p_streamJoin());
 
@@ -153,7 +156,8 @@ void Card_StreamPer::vEstStreamCost(Card_TableList* p_tableList,
 /*----------------------------------------------------------------------------*/
 /* compute the cast from prev join to curr/given stream join                  */
 /*----------------------------------------------------------------------------*/
-eXK Card_StreamPer::eJoinCast(Card_StreamPtn*  p_streamPtn,
+eXK Card_StreamPer::eJoinCast(CardIter* pCI,
+                              Card_StreamPtn*  p_streamPtn,
                               Card_TableList*  p_tableList,
                               Card_StreamJoin* p_streamJoin)
 {
@@ -187,7 +191,8 @@ eXK Card_StreamPer::eJoinCast(Card_StreamPtn*  p_streamPtn,
     p_Y_idxCol_join  = p_Y_term_0_cmp;
   }
 
-  eXK eStageCast = Card_Cast::eStageCast(p_streamPtn,
+  eXK eStageCast = Card_Cast::eStageCast(pCI,
+                                         p_streamPtn,
                                          p_Y_tblCol_prior,
                                          p_Y_tablePtn_join,
                                          p_Y_idxCol_join);

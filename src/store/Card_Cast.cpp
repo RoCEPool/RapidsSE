@@ -44,12 +44,15 @@ Card_Cast::~Card_Cast(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* determine the stage cast from prev to curr (assuming cmpPred ==)           */
 /*----------------------------------------------------------------------------*/
-eXK Card_Cast::eStageCast(Card_StreamPtn* p_streamPtn,
+eXK Card_Cast::eStageCast(CardIter* pCI,
+                          Card_StreamPtn* p_streamPtn,
                           Symbol* p_Y_tblCol_prior,
                           Symbol* p_Y_tablePtn_join,
                           Symbol* p_Y_idxCol_join)
 {
   _static_
+
+  UNUSED(pCI);
 
   RASSERT(p_streamPtn && ! p_streamPtn->bIsEmpty());
   /*
@@ -117,17 +120,17 @@ eXK Card_Cast::eStageCast(Card_StreamPtn* p_streamPtn,
   switch (eCast) {
 
     case XK_BROADCAST:
-      p_streamPtn->vResetKeys();
-      p_streamPtn->vAddKey(p_Y_tablePtn_join);
+      p_streamPtn->vDeleteAllChildren();
+       pCI->vAppendNewChild(p_streamPtn,CK_STREAMKEY,p_Y_tablePtn_join);
       break;
 
     case XK_HASHCAST:
-      p_streamPtn->vResetKeys();
-      p_streamPtn->vAddKey(p_Y_tablePtn_join);
+      p_streamPtn->vDeleteAllChildren();
+      pCI->vAppendNewChild(p_streamPtn,CK_STREAMKEY,p_Y_tablePtn_join);
       break;
 
     case XK_UNICAST:
-      p_streamPtn->vAddKey(p_Y_tablePtn_join);
+      pCI->vAppendNewChild(p_streamPtn,CK_STREAMKEY,p_Y_tablePtn_join);
       break;
 
     default:

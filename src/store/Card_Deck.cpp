@@ -71,7 +71,8 @@ void Card_Deck::vAddStageCasts(CardIter* pCI)
 
       if (! p_OP_prev) {
         Card_Table* p_table_first = pCI->E.p_Op->pSub_table();
-        p_streamPtn->vAddKey(p_table_first->pSub_tablePtn()->pSymbol());
+        //p_streamPtn->vAdd_streamKey(p_table_first->pSub_tablePtn()->pSymbol());
+        pCI->vAppendNewChild(p_streamPtn,CK_STREAMKEY,p_table_first->pSub_tablePtn()->pSymbol());
       }
       else {
         eStageCast = pCI->E.p_deck->eAddStageCast_toPrev_cast(pCI,
@@ -159,7 +160,8 @@ eXK Card_Deck::eAddStageCast_toPrev_cast(CardIter*        pCI,
 
   Symbol* p_Y_tablePtn_join = p_tablePtn_join->pSymbol();
 
-  eXK eStageCast = Card_Cast::eStageCast(p_streamPtn,
+  eXK eStageCast = Card_Cast::eStageCast(pCI,
+                                         p_streamPtn,
                                          p_Y_tblCol_prior,
                                          p_Y_tablePtn_join,
                                          p_Y_idxCol_join);

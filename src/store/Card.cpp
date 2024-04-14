@@ -458,6 +458,11 @@ Card* Card::pCard(eCK eCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
+#ifdef Z_PART_STREAMKEY
+  if (CK_STREAMKEY == eCard)
+    vDebugPoint();
+#endif
+
   m_eCard = eCard;
 
   return this;

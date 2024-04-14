@@ -108,14 +108,15 @@ Card_StreamSet* Card_StreamSet::pComputeAllPermutations(Card_TableList* p_tableL
 /*----------------------------------------------------------------------------*/
 /* compute the load of all permutations                                       */
 /*----------------------------------------------------------------------------*/
-void Card_StreamSet::vEstCostsForAllPermutations(Card_TableList*    p_tableList,
+void Card_StreamSet::vEstCostsForAllPermutations(CardIter* pCI,
+                                                 Card_TableList*    p_tableList,
                                                  Card_FiltPredList* p_filtPredList)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   Kid xStreamSet(this);
   while (xStreamSet.bEach())
-    xStreamSet.p_streamPer()->vEstStreamCost(p_tableList, p_filtPredList);
+    xStreamSet.p_streamPer()->vEstStreamCost(pCI,p_tableList, p_filtPredList);
 }
 
 /*----------------------------------------------------------------------------*/
