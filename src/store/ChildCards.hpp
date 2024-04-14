@@ -24,7 +24,7 @@ namespace STORE
     ChildCards(Card* pCard);
    ~ChildCards(void) noexcept(false);
 
-    void vAppendChild(Card* pChild, Card* pParent);
+    void vAppendChild(Card* pChild);
 
     i8   nChildCards(void);
     i8   nChildCards(eCK eChild_arg);
@@ -62,7 +62,7 @@ namespace STORE
     Card* pPopChild(void);
     Card* pPopChild_tail(void);
     bool  bPopDeleteChildIf(eCK eCard, Symbol xSymbol);
-    void  vPushChild(Card* pChild, Card* pParent);
+    void  vPushChild(Card* pChild);
 
     bool bRemoveChild(Card* pChild);
     void vRemoveChild(Card* pChild);

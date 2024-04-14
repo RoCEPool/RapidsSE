@@ -259,7 +259,6 @@ namespace STORE
     i8      m_iSequence;
     i8      m_iFixedDepth;
     i8      m_iFirstPrint;
-    Card*   m_pParent;
     Card*   m_pLastPrintParent;
 
     Mark    m_xMark1;
@@ -384,15 +383,12 @@ namespace STORE
     void vMarksClearRecursive(void);
     void vMarksTestRecursive(void);
 
-    Card* pParent(void);
-    void  vParent(Card* pParent);
     void vPrintCard_byCustomNm(Ribbon* pRibbon, i8 iDepth, Stz* szCustomNm);
     void vPrintCard_bySettings(Ribbon* pRibbon, i8 iDepth);
     void vPrintRecursive(CardIter* pCI,
                          Ribbon* pRibbon, i8 iDepth, Card* pParent,
                          bool& rbPrune, eAL eLevel,
                          bool bPrintBelow, i8 iXform, Stz* szXfunc);
-    void  vPushChild(Card* pChild);
 
     void vRenumberRoot(i8 i_Parent);
     void vRenumberRecursive(Card* pParent);

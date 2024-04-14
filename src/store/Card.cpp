@@ -120,7 +120,6 @@ Card::Card(eCK eCard, i8 iFixedDepth)
   m_iSequence = C_UNKNOWN;
 
   m_pLastPrintParent = nullptr;
-  m_pParent = nullptr;
 
   md__CardNo = Card::m__iSeqGen++;
   //gapCard[md__CardNo] = this;
@@ -379,7 +378,7 @@ void Card::vAppendChild(Card* pChild)
 {
   RASSERT(pChild);
 
-  ChildCards::vAppendChild(pChild,this);
+  ChildCards::vAppendChild(pChild);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -572,9 +571,9 @@ void Card::vDump(const char* azFunc, Stz* szTitle, i8 iDepth)
 
   if (0 == iDepth) {
     if (szTitle)
-      vTrace("^^%s [%s] %p /P %p\n"_Stz,szTitle,azFunc,this,m_pParent);
+      vTrace("^^%s [%s] %p\n"_Stz,szTitle,azFunc,this);
     else
-      vTrace("^^Card Dump [%s] %p /P %p\n"_Stz,azFunc,this,m_pParent);
+      vTrace("^^Card Dump [%s] %p\n"_Stz,azFunc,this);
   }
 
   s4K sFacets;
@@ -583,9 +582,8 @@ void Card::vDump(const char* azFunc, Stz* szTitle, i8 iDepth)
   s4K sProperties;
   m_xSymbol.Y_vTo_String(sProperties);
 
-  vTrace("  %p /P %p %18s %s%s : %s%s <%s> {%s} (%s:%lld.%lld)\n"_Stz
+  vTrace("  %p %18s %s%s : %s%s <%s> {%s} (%s:%lld.%lld)\n"_Stz
         , this
-        , m_pParent
         , aCK_short[m_eCard]
         , Stz::szTab(iDepth)
         , md_Coord[0] ? md_Coord : (char*)aCK[m_eCard]
@@ -782,7 +780,6 @@ Card* Card::pFindParentRecursive(Card* pChild)
 
     Card* pParent = pTestCard->pFindParentRecursive(pChild);
     if (pParent) {
-      RASSERT(pChild->pParent() == pParent);
       return pParent;
     }
   }
@@ -1480,23 +1477,6 @@ void Card::vMarksTestRecursive(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* parent card                                                                */
-/*----------------------------------------------------------------------------*/
-Card* Card::pParent(void)
-{
-  return m_pParent;
-}
-
-/*----------------------------------------------------------------------------*/
-/* parent card                                                                */
-/*----------------------------------------------------------------------------*/
-void Card::vParent(Card* pParent)
-{
-  RASSERT(! pParent || ! m_pParent);
-  m_pParent = pParent;
-}
-
-/*----------------------------------------------------------------------------*/
 /* print                                                                      */
 /*----------------------------------------------------------------------------*/
 void Card::vPrintRecursive(CardIter* pCI,
@@ -1622,16 +1602,6 @@ void Card::vPrintCard_bySettings(Ribbon* pRibbon, i8 iDepth)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card::vPushChild(Card* pChild)
-{
-  RASSERT(pChild);
-
-  ChildCards::vPushChild(pChild,this);
-}
-
-/*----------------------------------------------------------------------------*/
 /* renumber subCard's                                                         */
 /*----------------------------------------------------------------------------*/
 void Card::vRenumberRoot(i8 i_Board)
@@ -1690,7 +1660,6 @@ void Card::vReplaceSubDelete(Card* pSub, Card* pWith)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   Card* pParent = pFindParentRecursive(pSub);
-  RASSERT(pSub->pParent() == pParent);
   pParent->vReplaceChild(pSub,pWith);
 
   DELETE_CARD(pSub);
@@ -1883,21 +1852,6 @@ void Card::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   UNUSED(pParent);
 
   RASSERT(bFixedDepth(iDepth));
-
-  if (m_pParent) {
-    if (m_pParent->pFindParentRecursive(this) != m_pParent) {
-      pCI->PRINTBOARD_dbg();
-      vDump(__func__);
-      vValidationFailed("Invalid Parent : %p"_Stz, this);
-    }
-  }
-  else {
-    if (CK_DECK != m_eCard) {
-      pCI->PRINTBOARD_dbg();
-      vDump(__func__);
-      vValidationFailed("Missing Parent : %p"_Stz, this);
-    }
-  }
 
   if (! m_xSymbol.bValidate()) {
     pCI->PRINTBOARD_dbg();
