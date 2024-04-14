@@ -85,7 +85,8 @@ namespace STORE
 
 
     i8 m_nAncestors;
-    Card* m_apAncestry[C_CARD_ANCESTRY];
+    Card* m_paAncestry[C_CARD_ANCESTRY];
+    i8    m_iaAncestry[C_CARD_ANCESTRY];
 
   protected:
     // must be last
@@ -106,6 +107,7 @@ namespace STORE
     void vAppendNewChild(Card* pParent, eCK eChild, Symbol xSymbol);
 
     bool  bAncestor(eCK eCard);
+    i8    i_Ancestor(Card* pAncestor);
     Card* pAncestor(i8 i_Ancestor);
     Card* pAncestor(eCK eCard, i8* ai_Ancestor= nullptr);
     void  vAncestorDump(Card* pCard = nullptr);
@@ -113,6 +115,10 @@ namespace STORE
     void  vAncestorPop(void);
     void  vAncestorPush(Card* pCard);
     i8    nAncestors(void);
+
+    i8    iAncestorCounter(Card* pAncestor);
+    void  vAncestorCounterInc(Card* pAncestor, i8 iInc=1);
+    void  vAncestorCounterResetAll(i8 iTo=0);
 
     // todo: merge these two [A294]
     Card_Expr* pBackSearch_expr_For_col(Symbol* pSym_term_arg, i8 i_Before);

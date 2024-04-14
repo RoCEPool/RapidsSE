@@ -58,7 +58,8 @@ CardIter::CardIter(Bench* pBench)
 //  G.p_deck     = nullptr;
 
   m_nAncestors = 0;
-  MemLib::vZero(m_apAncestry,sizeof(m_apAncestry),CN_CARDITER);
+  MemLib::vZero(m_paAncestry, sizeof(m_paAncestry), CN_CARDITER);
+  MemLib::vZero(m_iaAncestry, sizeof(m_iaAncestry), CN_CARDITER);
 
   vResetMembers();
   vClearRegisters();
@@ -231,7 +232,22 @@ Card* CardIter::pAncestor(i8 i_Ancestor)
   if (i_GetAncestor < 0 || i_GetAncestor > m_nAncestors)
     return nullptr;
 
-  return m_apAncestry[i_GetAncestor];
+  return m_paAncestry[i_GetAncestor];
+}
+
+/*----------------------------------------------------------------------------*/
+/* get ancestor                                                               */
+/*----------------------------------------------------------------------------*/
+i8 CardIter::i_Ancestor(Card* pAncestor)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+
+  for (i8 i_Ancestor = m_nAncestors-1; i_Ancestor >= 0; i_Ancestor--) {
+    if (pAncestor == m_paAncestry[i_Ancestor])
+      return i_Ancestor;
+  }
+
+  return C_UNKNOWN;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -242,7 +258,7 @@ Card* CardIter::pAncestor(eCK eCard, i8* ai_Ancestor)
   _precondition_(_MAGIC_, _FOOTER_);
 
   for (i8 i_Ancestor = m_nAncestors-1; i_Ancestor >= 0; i_Ancestor--) {
-    Card *pCard_ancestor = m_apAncestry[i_Ancestor];
+    Card *pCard_ancestor = m_paAncestry[i_Ancestor];
 
     if (pCard_ancestor->bIsCard(eCard)) {
       if (ai_Ancestor)
@@ -258,7 +274,7 @@ Card* CardIter::pAncestor(eCK eCard, i8* ai_Ancestor)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dump ancestry                                                             */
+/* dump ancestry                                                              */
 /*----------------------------------------------------------------------------*/
 void CardIter::vAncestorDump(Card* pCard)
 {
@@ -267,7 +283,7 @@ void CardIter::vAncestorDump(Card* pCard)
   vTrace("^^ Ancestor Dump\n"_Stz);
 
   for (i8 i_Ancestor = 0; i_Ancestor < m_nAncestors; i_Ancestor++) {
-    Card* pCard_ancestor = m_apAncestry[i_Ancestor];
+    Card* pCard_ancestor = m_paAncestry[i_Ancestor];
     vTrace("  [%lld] %p %s /%lld\n"_Stz,
            i_Ancestor,
            pCard_ancestor,
@@ -296,7 +312,7 @@ Card* CardIter::pAncestorParent(void)
   if (! m_nAncestors)
     return nullptr;
 
-  return m_apAncestry[m_nAncestors-1];
+  return m_paAncestry[m_nAncestors - 1];
 }
 
 /*----------------------------------------------------------------------------*/
@@ -321,7 +337,7 @@ void CardIter::vAncestorPush(Card* pCard)
 
    RASSERT(m_nAncestors < C_CARD_ANCESTRY);
 
-  m_apAncestry[m_nAncestors++] = pCard;
+  m_paAncestry[m_nAncestors++] = pCard;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -332,6 +348,43 @@ i8 CardIter::nAncestors(void)
   _precondition_(_MAGIC_,_FOOTER_);
 
   return m_nAncestors;
+}
+
+/*----------------------------------------------------------------------------*/
+/* return counter                                                             */
+/*----------------------------------------------------------------------------*/
+i8 CardIter::iAncestorCounter(Card* pAncestor)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  i8 i_Ancestor = CardIter::i_Ancestor(pAncestor);
+
+  i8 iCounter = m_iaAncestry[i_Ancestor];
+
+  return iCounter;
+}
+
+/*----------------------------------------------------------------------------*/
+/* return next counter                                                        */
+/*----------------------------------------------------------------------------*/
+void CardIter::vAncestorCounterInc(Card* pAncestor, i8 iInc)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  i8 i_Ancestor = CardIter::i_Ancestor(pAncestor);
+
+  m_iaAncestry[i_Ancestor] += iInc;
+}
+
+/*----------------------------------------------------------------------------*/
+/* reset counter                                                              */
+/*----------------------------------------------------------------------------*/
+void CardIter::vAncestorCounterResetAll(i8 iTo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  for (i8 i_Ancestor = 0; i_Ancestor < C_CARD_ANCESTRY; i_Ancestor++)
+    m_iaAncestry[i_Ancestor] += iTo;
 }
 
 /*----------------------------------------------------------------------------*/
