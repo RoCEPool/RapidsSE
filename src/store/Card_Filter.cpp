@@ -185,12 +185,11 @@ void Card_Filter::vPrint(Ribbon* pRibbon, i8 iDepth)
                 Stz::szDots(0 == iDepth ? iDepth : iDepth - 1),
                 m_i_Child);
 
-  pRibbon->vSprintSnippet(false,"%c%c%s %llx %lld"_Stz,
+  pRibbon->vSprintSnippet(false,"%c%c%s %llx"_Stz,
                           cMark1(),
                           cMark2(),
                           sName.szStz(),
-                          ((char *) this) - (char *) AM::SYSARGS::aRegionAddr(),
-                          m_nFunctionCount);
+                          ((char *) this) - (char *) AM::SYSARGS::aRegionAddr());
 
 }
 /*----------------------------------------------------------------------------*/

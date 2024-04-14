@@ -562,9 +562,6 @@ void Card_OP::vRestate_emit(CardIter* pCI)
         pCI->E.p_emit->vApplyCast(pCI,/*??*/pCI->Dic.m_p_expr);
         pCI->E.p_key = nullptr;
       }
-      pCI->E.p_emit->vIncFunctionCount();
-      if (AM::JOB::bHasTag(C_OPTIMISER_TRACE))
-        vDebugPoint();
       break;
 
     case CK_o_PROJECT:
@@ -578,7 +575,6 @@ void Card_OP::vRestate_emit(CardIter* pCI)
         pCI->Dic.m_p_expr = pCI->Arriving.m_pEmit;
         pCI->E.p_emit->vApplyCast(pCI,/*??*/pCI->Dic.m_p_expr);
       }
-      pCI->E.p_emit->vIncFunctionCount();
       break;
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -609,7 +605,6 @@ void Card_OP::vRestate_emit(CardIter* pCI)
         pCI->E.p_boolPred->vApplyCast(pCI,/*??*/pCI->Dic.m_p_expr);
       }
 
-      pCI->E.p_emit->vIncFunctionCount();
       break;
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -630,7 +625,6 @@ void Card_OP::vRestate_emit(CardIter* pCI)
 
       pCI->E.p_emit = pCI->Arriving.m_pEmit->pInduct(pCI);
       pCI->E.p_Op->vAppendChild(pCI->E.p_emit);
-      pCI->E.p_emit->vIncFunctionCount();
       break;
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --

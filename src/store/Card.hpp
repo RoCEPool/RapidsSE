@@ -269,7 +269,6 @@ namespace STORE
     i8 md__LeakDetected;
     i8      m_iFirstPrint;
     i8      m_nPrintCount;
-    i8      m_nFunctionCount;
     bool    m_bAddedCorrectly;
     bool    m_bRemovedCorrectly;
     i8      m_iCounter;
@@ -347,7 +346,6 @@ namespace STORE
     bool  bFixedDepth(i8 iDepth);
     i8    iFixedDepth(void);
     void  vFixedDepth(i8 iFixedDepth);
-    i8    nFunctionCount(void);
 
     bool bHasChildFacet(eSF eFacet);
     bool bHasFacet(eSF eFacet);
@@ -355,11 +353,7 @@ namespace STORE
     bool bHasSub(Card* pSubCard);
     bool bHasSubFacet(eSF eFacet, i8 iDepth=0);
 
-    void vIncFunctionCount(void);
-//    void  vInsertChildAfter(Card* pChild, Card* pAfter);
-//    void  vInsertChildBefore(Card* pChild, Card* pBefore);
     bool bIsCard(eCK eCard);
-    bool bIsConstruction(void);
     bool bIsMain(void);
     bool bIsOp(void);
     bool bIsPeek(eCK eChild0);

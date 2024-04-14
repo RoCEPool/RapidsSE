@@ -131,7 +131,6 @@ Card::Card(eCK eCard, i8 iFixedDepth)
 
   m_iFirstPrint = C_UNKNOWN;
   m_nPrintCount = 0;
-  m_nFunctionCount = 0;
 
   m_bAddedCorrectly   = false;
   m_bRemovedCorrectly = false;
@@ -984,16 +983,6 @@ void Card::vFixedDepth(i8 iFixedDepth)
 }
 
 /*----------------------------------------------------------------------------*/
-/* fetch function count                                                       */
-/*----------------------------------------------------------------------------*/
-i8 Card::nFunctionCount(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  return m_nFunctionCount;
-}
-
-/*----------------------------------------------------------------------------*/
 /* is there a sub card with given facet?                                      */
 /*----------------------------------------------------------------------------*/
 bool Card::bHasChildFacet(eSF eFacet)
@@ -1069,38 +1058,6 @@ bool Card::bHasSubFacet(eSF eFacet, i8 iDepth)
 }
 
 /*----------------------------------------------------------------------------*/
-/* increment function count                                                   */
-/*----------------------------------------------------------------------------*/
-void Card::vIncFunctionCount(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  m_nFunctionCount++;
-}
-
-/*----------------------------------------------------------------------------*/
-/* insert child card after given card                                         */
-/*----------------------------------------------------------------------------*/
-//void Card::vInsertChildAfter(Card* pChild, Card* pAfter)
-//{
-//  RASSERT(pChild);
-//  RASSERT(pAfter);
-//
-//  ChildCards::vInsertAfter(pChild,pAfter);
-//}
-
-/*----------------------------------------------------------------------------*/
-/* insert child card before given card                                        */
-/*----------------------------------------------------------------------------*/
-//void Card::vInsertChildBefore(Card* pChild, Card* pBefore)
-//{
-//  RASSERT(pChild);
-//  RASSERT(pBefore);
-//
-//  ChildCards::vInsertBefore(pChild,pBefore);
-//}
-
-/*----------------------------------------------------------------------------*/
 /* is this card the given kind?                                               */
 /*----------------------------------------------------------------------------*/
 bool Card::bIsCard(eCK eCard)
@@ -1111,19 +1068,6 @@ bool Card::bIsCard(eCK eCard)
     return true;
   else
     return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this card a construction card                                           */
-/*----------------------------------------------------------------------------*/
-bool Card::bIsConstruction(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (bIsConstruction(eCard()))
-    return true;
-
-  return false;
 }
 
 /*----------------------------------------------------------------------------*/
