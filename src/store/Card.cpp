@@ -130,7 +130,6 @@ Card::Card(eCK eCard, i8 iFixedDepth)
   m_iFixedDepth = iFixedDepth;
 
   m_iFirstPrint = C_UNKNOWN;
-  m_nPrintCount = 0;
 
   m_iCounter = 0;
 
@@ -1479,7 +1478,6 @@ void Card::vPrintRecursive(CardIter* pCI,
     m_iFirstPrint = pCI->m_pBench->nPrintBoard();
     m_iSequence = pCI->m_pBench->iSequence_next(m_eCard);
   }
-  m_nPrintCount++;
 
   if (0 == iDepth) {
     if (   bIsCard(CK_o_AGGREG)

@@ -258,6 +258,9 @@ namespace STORE
     i8      m_i_Child;
     i8      m_iSequence;
     i8      m_iFixedDepth;
+    i8      m_iFirstPrint;
+    Card*   m_pParent;
+    Card*   m_pLastPrintParent;
 
     Mark    m_xMark1;
     Mark    m_xMark2;
@@ -267,12 +270,7 @@ namespace STORE
     i8 md__CardNo;
     i8 md__FirstDetected;
     i8 md__LeakDetected;
-    i8      m_iFirstPrint;
-    i8      m_nPrintCount;
-    i8      m_iCounter;
-    Card*   m_pLastPrintParent;
-
-    Card*   m_pParent;
+     i8      m_iCounter;
 
   protected:
     // must be last
