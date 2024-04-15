@@ -266,6 +266,8 @@ namespace STORE
 
     Symbol  m_xSymbol;
 
+    bool    m_bChanged;
+
     i8 md__CardNo;
     i8 md__FirstDetected;
     i8 md__LeakDetected;
@@ -305,6 +307,8 @@ namespace STORE
     void vCard(eCK eCard);
     Stz* szCardNm(void);
     Cast xCast(void);
+    bool bChanged(void);
+    void vChanged(bool bChanged);
     i8   i_Child(void);
     void v_Child(i8 i_Child);
     Stz* szCoord(void);

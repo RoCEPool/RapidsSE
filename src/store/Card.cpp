@@ -130,6 +130,8 @@ Card::Card(eCK eCard, i8 iFixedDepth)
 
   m_iFirstPrint = C_UNKNOWN;
 
+  vChanged(true);
+
   vMark1(MARK_BLANK);
   vMark2(MARK_BLANK);
 
@@ -449,6 +451,26 @@ Stz* Card::szCardNm(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   return aCK_short[m_eCard];
+}
+
+/*----------------------------------------------------------------------------*/
+/* get changed                                                                */
+/*----------------------------------------------------------------------------*/
+bool Card::bChanged(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  return m_bChanged;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set changed                                                                */
+/*----------------------------------------------------------------------------*/
+void Symbol::vChanged(bool bChanged)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card = bChanged;
 }
 
 /*----------------------------------------------------------------------------*/
