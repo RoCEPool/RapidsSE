@@ -544,6 +544,10 @@ void XF_Synthesise_pipelineDef::vCraftColInj(ColInj* pColInj, Card *pSubCard)
   Card_Injectable* p_injected = pSubCard->pSub_injectable();
   Card_Emit*   p_emit = pSubCard->pSub_emit();
 
+  pColInj->m_sRefer.vSprint("]emit #%lld"_Stz,
+                            //pSubCard->szCardNm(),
+                            p_emit->iSequence());
+
   //p_emit->vDump(__func__);
 
   if (m_pStageDef->i_Stage() == 2) {
@@ -645,6 +649,9 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
 
   Card_Emit* p_arriving = m_pCI->Arriving.m_pEmit;
   Card_Emit* p_emit  = pSubCard->pSub_emit();
+
+  pColPpg->m_sRefer.vSprint("]emit #%lld"_Stz,
+                            p_emit->iSequence());
 
 //  if (AM::JOB::bHasTag(C_OPTIMISER_TRACE)) {
 //    p_arriving->vDump(__func__, "--ARRIVING at SubCard--"_Stz);
@@ -784,7 +791,10 @@ void XF_Synthesise_pipelineDef::vCraftKeyMap(void)
 
   m_pOpDef->m_pKeyMap = new KeyMap;
 
+
   m_pCI->E.p_emit = m_pCI->E.p_Op->pSub_emit();
+  m_pOpDef->m_pKeyMap->m_sRefer.vSprint("]emit #%lld"_Stz,
+                                        m_pCI->E.p_emit->iSequence());
 
 //Z_KEY_DIRECTION
   for (m_pCI->vBeginTarget(m_pCI->E.p_Op->pSub_key(),CK_EXPR); m_pCI->bEachTarget(); /**/) {

@@ -311,14 +311,14 @@ void OpDef::vDump(i8 i_Tab)
   }
 
   if (m_pColPpg) {
-    vTrace("%s%s : ColPpg\n"_Stz,
-           Stz::szTab(i_Tab), Stz::szSpaces(nSpaces));
+    vTrace("%s%s : ColPpg %s\n"_Stz,
+           Stz::szTab(i_Tab), Stz::szSpaces(nSpaces), m_pColInj->m_sRefer.szStz());
     m_pColPpg->vDump(i_Tab + 1);
   }
 
   if (m_pColInj) {
-    vTrace("%s%s : ColInj\n"_Stz,
-           Stz::szTab(i_Tab), Stz::szSpaces(nSpaces));
+    vTrace("%s%s : ColInj %s\n"_Stz,
+           Stz::szTab(i_Tab), Stz::szSpaces(nSpaces), m_pColInj->m_sRefer.szStz());
     m_pColInj->vDump(i_Tab + 1);
   }
 
@@ -329,8 +329,8 @@ void OpDef::vDump(i8 i_Tab)
   }
 
   if (m_pKeyMap) {
-    vTrace("%s%s : KeyMap\n"_Stz,
-           Stz::szTab(i_Tab),Stz::szSpaces(nSpaces));
+    vTrace("%s%s : KeyMap %s\n"_Stz,
+           Stz::szTab(i_Tab),Stz::szSpaces(nSpaces), m_pKeyMap->m_sRefer.szStz());
     m_pKeyMap->vDump(i_Tab + 1);
   }
 

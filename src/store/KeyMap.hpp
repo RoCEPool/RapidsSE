@@ -13,6 +13,8 @@ namespace STORE
 
   public:
 
+    s32  m_sRefer;
+
     i8 m_nCols;
 
     struct {
