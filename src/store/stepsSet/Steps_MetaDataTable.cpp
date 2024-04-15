@@ -113,6 +113,97 @@ void Step::vMetaDataTableIndexColumns(void)
 {
   ENTRY();
 
+  Table* pTable = _pTable(*m_pLogicUnit->m_xpTable);
+  StreamDef* pStreamDef = pTable->pStreamDef();
+
+  Pds* pPdsRowBuffer = new Pds(pStreamDef, false, BT_DATA);
+
+  // get current folder
+  i8 iDepth =  m_oDicStack.nItems();
+  Object* pPtrDic =  m_oDicStack.pPick(iDepth - 1);
+
+  // Get table dict
+  Dic* pDic = _pDic(pPtrDic);
+  Word* pTableFolderWord = pDic->pLastWord();
+
+  // get the schema name
+  i8 i = 2;
+  while( pDic->eDicKind() != DK_SCHEMA) {
+    pPtrDic = m_oDicStack.pPick(iDepth - i);
+    pDic = _pDic(pPtrDic);
+    i++;
+  }
+
+  s256 sSchemaNm(pDic->szDicNm());
+
+  // get the catalog name
+  while( pDic->eDicKind() != DK_CATALOG) {
+    pPtrDic = m_oDicStack.pPick(iDepth - i);
+    pDic = _pDic(pPtrDic);
+    i++;
+  }
+
+  s256 sCatalogNm(pDic->szDicNm());
+
+  // iterate dic table
+
+  while(pTableFolderWord) {
+    // get table name
+    s256 sTableNm(pTableFolderWord->szWordNm());
+
+    // find tableNm folder in current dic
+    Word *pWordTable = m_oDicStack.pFindWord(sTableNm);
+    Dic *pDicTable = _pDic(pWordTable->pObject());
+
+    // find actual table in this table dic
+    Word *pWord = pDicTable->pFindWord(sTableNm);
+    Table *pTableCur = _pTable(pWord->pObject());
+
+    if( ! pTableCur->bIsUserCreated()) {
+      pTableFolderWord = pTableFolderWord->pPrevWord();
+      continue;
+    }
+
+    // find indexes folder
+    Word* pIndexesFolder = pDicTable->pFindWord("indexes"_Stz);
+
+    // Iterate the indexes folder if it exists
+    if(pIndexesFolder) {
+      Dic* pIndexesDic = _pDic(pIndexesFolder->pObject());
+      Word* pIndexWord = pIndexesDic->pLastWord();
+
+      while(pIndexWord) {
+        Index* pIndex = _pIndex(pIndexWord->pObject());
+
+        i8 nColumns = pIndex->nColumns();
+        i8 i_Col = 0;
+
+        while(i_Col < nColumns) {
+          // Add index info to pds
+          Row *pRow = pPdsRowBuffer->pAllotRow(C_VARGS_BEGIN,
+                                               sCatalogNm.szStz(),
+                                               sSchemaNm.szStz(),
+                                               pTableCur->szTableNm(),
+                                               pIndex->szIndexNm(),
+                                               pIndex->pGetColumn(i_Col)->szColNm(),
+                                               C_VARGS_END);
+          i_Col++;
+
+          if (!pRow) {
+            ASSERT(0);
+            break;
+          }
+        }
+        pIndexWord = pIndexWord->pPrevWord();
+      }
+    }
+
+//    vTrace("%s\n"_Stz, pTableCur->szTableNm());
+
+    pTableFolderWord = pTableFolderWord->pPrevWord();
+  }
+
+  m_pDataStack->vPushPtr((Object*)pPdsRowBuffer);
   EXIT();
 }
 
