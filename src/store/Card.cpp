@@ -464,7 +464,13 @@ bool Card::bChanged(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  return m_bChanged;
+  if (m_bChanged)
+    return true;
+
+  if (m_xSymbol.bChanged())
+    return true;
+
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -475,6 +481,8 @@ void Card::vChanged(bool bChanged)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   m_bChanged = bChanged;
+
+  m_xSymbol.vChanged(bChanged);
 }
 
 /*----------------------------------------------------------------------------*/
