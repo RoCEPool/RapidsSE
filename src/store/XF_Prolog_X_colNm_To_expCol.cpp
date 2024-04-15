@@ -113,6 +113,9 @@ void XF_Prolog_X_colNm_To_expCol::vX_colNm_To_expCol(void)
       // terms do not have nmdCol
       p_term_colNm->pSymbol()->vDeleteFacet(SF_NMD_COL);
 
+      if (Symbol* pSym_head = p_expr_defn->pHeadIf_symbol(SF_TBL_COL)) {
+        p_term_colNm->pSymbol()->vApplyFacet(SF_TBL_COL,pSym_head);
+      }
     }
 
     //
