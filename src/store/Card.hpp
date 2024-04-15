@@ -20,8 +20,6 @@
 
 //#define Z_PART_STREAMKEY
 
-#define Z_ALT_CHANGED
-
 namespace STORE
 {
   class Card_AbsJoin;
@@ -261,7 +259,6 @@ namespace STORE
     i8      m_iSequence;
     i8      m_iFixedDepth;
     i8      m_iFirstPrint;
-    Card*   m_pLastPrintParent;
 
     Mark    m_xMark1;
     Mark    m_xMark2;

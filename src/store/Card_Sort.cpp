@@ -77,9 +77,6 @@ void Card_Sort::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
         pCI->E.p_term = pCI->E.xTarget.p_term();
         if (pCI->E.p_term->pSymbol()->bHasFacet(SF_EXP_COL)) {
           pCI->E.p_term->vBump_ordCol(SF_EXP_COL);
-#ifdef Z_PART_STREAMKEY
-          pCI->E.p_term->vMark1(MARK_CHANGED);
-#endif
         }
       }
     }

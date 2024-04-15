@@ -119,8 +119,6 @@ Card::Card(eCK eCard, i8 iFixedDepth)
   m_i_Child = C_UNKNOWN;
   m_iSequence = C_UNKNOWN;
 
-  m_pLastPrintParent = nullptr;
-
   md__CardNo = Card::m__iSeqGen++;
   //gapCard[md__CardNo] = this;
   md__FirstDetected  = C_UNKNOWN;
@@ -1461,6 +1459,7 @@ void Card::vPrintRecursive(CardIter* pCI,
                            bool bPrintBelow, i8 iXform, Stz* szXfunc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  UNUSED(pParent);
 
   if (CK_TERM == m_eCard)
     vDebugPoint();
@@ -1483,17 +1482,8 @@ void Card::vPrintRecursive(CardIter* pCI,
 
   CardCtl* pCardCtl = _pCardCtl(pRibbon->pCardCtl());
 
-#ifdef Z_ALT_CHANGED
-  UNUSED(pParent);
   if (bChanged() && bMark1(MARK_BLANK))
     vMark1(MARK_CHANGED);
-#else
-  if (m_pLastPrintParent != pParent) {
-    if (bMark1(MARK_BLANK))
-      vMark1(MARK_CHANGED);
-    m_pLastPrintParent = pParent;
-  }
-#endif
 
   if (pCardCtl->bPrintByKind(m_eCard))
     vPrintCard_byKind(pRibbon, iDepth);

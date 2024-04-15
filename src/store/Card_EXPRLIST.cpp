@@ -48,9 +48,6 @@ void Card_EXPRLIST::vBump_KeyCol_In_rpnCalc(CardIter* pCI)
 
       if (pCI->E.p_term->pSymbol()->bHasFacet(SF_KEY_COL)) {
         pCI->E.p_term->vBump_ordCol(SF_KEY_COL);
-#ifdef Z_PART_STREAMKEY
-        pCI->E.p_term->vMark1(MARK_CHANGED);
-#endif
         continue;
       }
     }
@@ -71,9 +68,6 @@ void Card_EXPRLIST::vBump_expCol_In_rpnCalc(CardIter* pCI)
       if (pCI->E.xTarget.p_term()->pSymbol()->bHasFacet(SF_EXP_COL)) {
         pCI->E.p_term = pCI->E.xTarget.p_term();
         pCI->E.p_term->vBump_ordCol(SF_EXP_COL);
- #ifdef Z_PART_STREAMKEY
-        pCI->E.p_term->vMark1(MARK_CHANGED);
-#endif
         continue;
       }
     }
