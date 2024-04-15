@@ -91,7 +91,7 @@ void Card_CONJSUBROOT::vOntoRpnExpr(String* psRpnExpr, Card_CONJSUBROOT* p_conj)
       break;
 
     case CK_TERM:
-      psRpnExpr->vCatSprint(" %s"_Stz, p_conj->pSymbol()->szFacet_term());
+      psRpnExpr->vCatSprint(" %s"_Stz, p_conj->pSymbol()->szFacet_rpnTerm());
       break;
 
     default:
@@ -193,7 +193,7 @@ void Card_CONJSUBROOT::vOntoRpnExpr(String* psRpnExpr)
             RASSERT(pChild->pSymbol()->bValidType());
           }
         }
-        psRpnExpr->vCatSprint(" %s"_Stz, pChild->pSymbol()->szFacet_term());
+        psRpnExpr->vCatSprint(" %s"_Stz, pChild->pSymbol()->szFacet_rpnTerm());
         break;
       default:
         NEVER_REACH

@@ -117,7 +117,7 @@ namespace STORE
 
     static bool bIs_bound(Facet* aFacet);    //
     static bool bIs_rlnConj(Facet* aFacet);  //
-    static bool bIs_term(Facet* aFacet);     //
+    static bool bIs_rpnTerm(Facet* aFacet);     //
 
     static bool bPossibleNm(Stz* szArg);
 
@@ -162,7 +162,7 @@ namespace STORE
     Stz* szFacet_bound(void);
     Stz* szFacet_rlnConj(void);
     Stz* szFacet_single(void);
-    Stz* szFacet_term(void);
+    Stz* szFacet_rpnTerm(void);
     i8   nFacets(void);
     void vFacets_To_String(String* pString);
 

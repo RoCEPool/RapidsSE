@@ -1188,7 +1188,7 @@ bool Symbol::bIs_rlnConj(Facet* aFacet)
 /*----------------------------------------------------------------------------*/
 /* test facet for term                                                        */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bIs_term(Facet* aFacet)
+bool Symbol::bIs_rpnTerm(Facet* aFacet)
 {
   _static_
 
@@ -1820,14 +1820,17 @@ Stz* Symbol::szFacet_single(void)
 /*----------------------------------------------------------------------------*/
 /* get facet for term                                                         */
 /*----------------------------------------------------------------------------*/
-Stz* Symbol::szFacet_term(void)
+Stz* Symbol::szFacet_rpnTerm(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  RASSERT(1 == nFacets());
-  RASSERT(bIs_term(&xaFacet[0]));
+  for (i8 i_Facet = 0; i_Facet < m_nFacets; i_Facet++) {
+    if (bIs_rpnTerm(&xaFacet[i_Facet])) {
+      return xaFacet[i_Facet].m_sFacet;
+    }
+  }
 
-  return xaFacet[0].m_sFacet;
+  NEVER_REACH
 }
 
 /*----------------------------------------------------------------------------*/
