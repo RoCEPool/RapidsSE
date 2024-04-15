@@ -390,6 +390,37 @@ bool Card_Expr::bHasTerm(CardIter* pCI, Symbol* pSymbol)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get symbol of first/head sub-card                                          */
+/*----------------------------------------------------------------------------*/
+Symbol* Card_Expr::pHead_symbol(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (Card* pCard_head = pPeekChild()) {
+    Symbol* pSym_head = pCard_head->pSymbol();
+    return pSym_head;
+  }
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get symbol of first/head sub-card                                          */
+/*----------------------------------------------------------------------------*/
+Symbol* Card_Expr::pHeadIf_symbol(eSF eFacet)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (Card* pCard_head = pPeekChild()) {
+    Symbol* pSym_head = pCard_head->pSymbol();
+    if (pSym_head->bHasFacet(eFacet))
+      return pSym_head;
+  }
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* induct this arriving expr                                                  */
 /*----------------------------------------------------------------------------*/
 Card_Expr * Card_Expr::pInduct(CardIter* pCI, i8 iExp)

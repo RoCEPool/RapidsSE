@@ -42,6 +42,8 @@ namespace STORE
     Card_Term* pGet_term0(void);
 
     bool bHasTerm(CardIter* pCI, Symbol* pSymbol);
+    Symbol* pHead_symbol(void);
+    Symbol* pHeadIf_symbol(eSF eFacet);
 
     Card_Expr *pInduct(CardIter* pCI, i8 iExp);
     bool bIsCompound(void);
