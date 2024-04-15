@@ -25,6 +25,8 @@ Symbol::Symbol(void)
   vResetFacets();
   vCastReset();
 
+  vChanged(true);
+
   m_pProperties = nullptr;
 
   _checkInitialised_(CN_SYMBOL);
@@ -1296,6 +1298,8 @@ void Symbol::vApplyCast(Cast xCast)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   m_xCast = xCast;
+
+  vChanged(true);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1553,6 +1557,27 @@ Cast Symbol::xCast(void)
 
   return m_xCast;
 }
+
+/*----------------------------------------------------------------------------*/
+/* get changed                                                                */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bChanged(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  return m_bChanged;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set changed                                                                */
+/*----------------------------------------------------------------------------*/
+void Symbol::vChanged(bool bChanged)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  m_bChanged = bChanged;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* get eCT                                                                    */
@@ -3729,6 +3754,8 @@ void Symbol::vFacetCut(i8 i_Facet_cut)
   }
 
   m_nFacets--;
+
+  vChanged(true);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3771,6 +3798,8 @@ void Symbol::vFacetSet(i8 i_Facet, eSF eFacet, Stz* szFacet)
   RASSERT(i_Facet < m_nFacets);
   xaFacet[i_Facet].m_eFacet = eFacet;
   xaFacet[i_Facet].m_sFacet = szFacet;
+
+  vChanged(true);
 }
 
 /*----------------------------------------------------------------------------*/

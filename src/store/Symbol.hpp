@@ -37,6 +37,8 @@ namespace STORE
     Cast  m_xCast;
     TagSet* m_pProperties;
 
+    bool m_bChanged;
+
   protected:
     // must be last
     Footer m_xFooter;
@@ -140,6 +142,8 @@ namespace STORE
     void vApplyFacets(Symbol* pSymbol_arg);
 
     Cast xCast(void);
+    bool bChanged(void);
+    void vChanged(bool bChanged);
     eCT  eColType(void);
     void vCullFacet(eSF eFacet_except);
 
