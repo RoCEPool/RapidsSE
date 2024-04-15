@@ -108,7 +108,7 @@
   start::md_cluster
   start::md_columns
   start::md_indexColumns
-  //start::md_indexes
+  start::md_indexes
   start::md_nodes
   start::md_queries
   start::md_schema

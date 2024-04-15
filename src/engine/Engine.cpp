@@ -1027,8 +1027,8 @@ void Engine::vMetaDataTables(void)
   pStreamDef = AM::pStreamDefFind(C_TDEF_INDEXCOLUMNS);
   gpAttachMap->m_pMetaDataTables->vStreamDef(MD_INDEXCOLUMNS,pStreamDef);
 
-//  pStreamDef = AM::pStreamDefFind(C_TDEF_INDEXES);
-//  gpAttachMap->m_pMetaDataTables->vStreamDef(MD_INDEXES,pStreamDef);
+  pStreamDef = AM::pStreamDefFind(C_TDEF_INDEXES);
+  gpAttachMap->m_pMetaDataTables->vStreamDef(MD_INDEXES,pStreamDef);
 
   pStreamDef = AM::pStreamDefFind(C_TDEF_NODES);
   gpAttachMap->m_pMetaDataTables->vStreamDef(MD_NODES,pStreamDef);
