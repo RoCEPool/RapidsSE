@@ -216,8 +216,16 @@ Card_Expr* Card_EXPRLIST::pFind_expr_Matches(Symbol* pSymbol_arg, Kid* aKid)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   while (aKid->bEach(CK_EXPR)) {
-    if (aKid->p_expr()->pSymbol()->bMatches(pSymbol_arg))
-      return aKid->p_expr();
+    Card_Expr* p_expr = aKid->p_expr();
+
+    if (p_expr->pSymbol()->bMatches(pSymbol_arg))
+      return p_expr;
+
+    if (pSymbol_arg->bHasFacet(SF_TBL_COL) && p_expr->bIsScalarCol()) {
+      Symbol* pSym_tblCol = p_expr->pPeekChild()->pSymbol();
+      if (pSym_tblCol->bMatches(pSymbol_arg))
+        return p_expr;
+    }
   }
 
   return nullptr;

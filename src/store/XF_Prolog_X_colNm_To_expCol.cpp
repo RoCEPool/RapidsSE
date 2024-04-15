@@ -99,6 +99,8 @@ void XF_Prolog_X_colNm_To_expCol::vX_colNm_To_expCol(void)
   auto fb_colNm_To_expCol = [pCI](Card* pCard)
   {
     Card_Term* p_term_colNm = _pCard_Term(pCard);
+
+    // exclusions
     if (! p_term_colNm->pSymbol()->bHasFacet(SF_NMD_COL))
       return C_CONTINUE_RECURSION;
     if ( p_term_colNm->pSymbol()->bHasFacet(SF_TBL_COL))
@@ -107,13 +109,19 @@ void XF_Prolog_X_colNm_To_expCol::vX_colNm_To_expCol(void)
     if (Card_Expr* p_expr_defn =
         pCI->Dic.m_p_expr->pFind_expr_Matches(p_term_colNm->pSymbol())) {
       p_term_colNm->pSymbol()->vApplyCastFacetsPpy(p_expr_defn->pSymbol());
+
+      // terms do not have nmdCol
       p_term_colNm->pSymbol()->vDeleteFacet(SF_NMD_COL);
+
     }
 
+    //
+#ifndef Z_NO_EXPR_TBLCOL
     if (Card_Expr* p_expr_ancestor = (Card_Expr*) pCI->pAncestor(CK_EXPR)) {
       if (p_term_colNm->pSymbol()->bHasFacet(SF_TBL_COL))
         p_expr_ancestor->pSymbol()->vApplyFacet(SF_TBL_COL,p_term_colNm->pSymbol()->szFacet(SF_TBL_COL));
     }
+#endif
 
     return C_CONTINUE_RECURSION;
   };
