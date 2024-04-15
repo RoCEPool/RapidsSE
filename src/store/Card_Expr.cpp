@@ -446,9 +446,11 @@ Card_Expr * Card_Expr::pInduct(CardIter* pCI, i8 iExp)
     pSymbol_expr_inducted->vApplyFacet(SF_SQY_RSL,pSymbol_expr_arriving);
 
 
+#ifndef Z_NO_EXPR_TBLCOL
   if (bIsScalarCol() && pGet_Symbol(0)->bHasFacet(SF_TBL_COL)) {
     pSymbol_expr_inducted->vApplyFacet(SF_TBL_COL,pGet_Symbol(0));
   }
+#endif
 
 //  Card_RpnCalc* p_rpnCalc_inducted = p_rpnCalc_arriving->pInduct(this);
 //  p_expr_inducted->vAppendChild(p_rpnCalc_inducted);

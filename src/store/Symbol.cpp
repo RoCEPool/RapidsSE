@@ -1806,18 +1806,6 @@ Stz* Symbol::szFacet_rlnConj(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get one and only facet                                                     */
-/*----------------------------------------------------------------------------*/
-Stz* Symbol::szFacet_single(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  RASSERT(1 == nFacets());
-
-  return xaFacet[0].m_sFacet;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get facet for term                                                         */
 /*----------------------------------------------------------------------------*/
 Stz* Symbol::szFacet_rpnTerm(void)
