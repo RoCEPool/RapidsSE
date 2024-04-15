@@ -188,10 +188,17 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
     for (Kid xInject(m_pCI->E.p_injectable); xInject.bEach(CK_EXPR); /**/) {
       m_pCI->E.p_expr = xInject.p_expr();
       //m_pCI->G.p_expr->vDump(__func__);
+#ifdef Z_NO_EXPR_TBLCOL
+      RASSERT(m_pCI->E.p_expr->pSymbol()->bHasFacets(SF_EXP_COL,
+                                                     SF_NMD_COL,
+                                                     SF_NONE));
+#else
       RASSERT(m_pCI->E.p_expr->pSymbol()->bHasFacets(SF_EXP_COL,
                                                      SF_NMD_COL,
                                                      SF_TBL_COL,
                                                      SF_NONE));
+#endif
+
       RASSERT(m_pCI->E.p_expr->bIsScalarCol());
       for (m_pCI->vBeginTarget(m_pCI->E.p_expr,CK_TERM); m_pCI->bEachTarget(); /**/) {
         m_pCI->E.p_term = m_pCI->E.xTarget.p_term();
@@ -426,7 +433,8 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
       for (m_pCI->vBeginTarget(m_pCI->E.p_expr,CK_TERM); m_pCI->bEachTarget(); /**/) {
         m_pCI->E.p_term = m_pCI->E.xTarget.p_term();
 
-        if (m_pCI->E.p_injectable->pFind_expr_Matches(m_pCI->E.p_term->pSymbol()))
+        Symbol* pSym_term = m_pCI->E.p_term->pSymbol();
+        if (m_pCI->E.p_injectable->pFind_expr_Matches(pSym_term))
           continue;
 
         m_pCI->E.p_injectable->vDump(__func__);
