@@ -117,6 +117,8 @@ bool CardIter::bLambdaWalk(Card* pCard, eCK eToSubs,
   }
 
   vAncestorPush(pCard);
+  vAncestorCounterReset();
+
   Kid xCard(pCard);
   while (xCard.bEach_opaque()) {
     bool bContinue = bLambdaWalk(xCard.pChild(), eToSubs, bfLambdaFn);
@@ -288,15 +290,14 @@ void CardIter::vAncestorDump(Card* pCard)
            i_Ancestor,
            pCard_ancestor,
            aCK[pCard_ancestor->eCard()],
-           pCard_ancestor->iCounter());
+           iAncestorCounter(i_Ancestor));
   }
 
   vTrace("$$ Ancestor Dump"_Stz);
   if (pCard)
-    vTrace(" %p %s /%lld\n"_Stz,
+    vTrace(" %p %s\n"_Stz,
            pCard,
-           aCK[pCard->eCard()],
-           pCard->iCounter());
+           aCK[pCard->eCard()]);
   else
     vTrace("\n"_Stz);
 
@@ -353,9 +354,21 @@ i8 CardIter::nAncestors(void)
 /*----------------------------------------------------------------------------*/
 /* return counter                                                             */
 /*----------------------------------------------------------------------------*/
+i8 CardIter::iAncestorCounter(i8 i_Ancestor)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+
+  i8 iCounter = m_iaAncestry[i_Ancestor];
+
+  return iCounter;
+}
+
+/*----------------------------------------------------------------------------*/
+/* return counter                                                             */
+/*----------------------------------------------------------------------------*/
 i8 CardIter::iAncestorCounter(Card* pAncestor)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  _precondition_(_MAGIC_,_FOOTER_);
 
   i8 i_Ancestor = CardIter::i_Ancestor(pAncestor);
 
@@ -369,7 +382,7 @@ i8 CardIter::iAncestorCounter(Card* pAncestor)
 /*----------------------------------------------------------------------------*/
 void CardIter::vAncestorCounterInc(Card* pAncestor, i8 iInc)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  _precondition_(_MAGIC_,_FOOTER_);
 
   i8 i_Ancestor = CardIter::i_Ancestor(pAncestor);
 
@@ -379,12 +392,22 @@ void CardIter::vAncestorCounterInc(Card* pAncestor, i8 iInc)
 /*----------------------------------------------------------------------------*/
 /* reset counter                                                              */
 /*----------------------------------------------------------------------------*/
+void CardIter::vAncestorCounterReset(i8 iTo)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+
+  m_iaAncestry[m_nAncestors - 1] = iTo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* reset counter                                                              */
+/*----------------------------------------------------------------------------*/
 void CardIter::vAncestorCounterResetAll(i8 iTo)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  _precondition_(_MAGIC_,_FOOTER_);
 
   for (i8 i_Ancestor = 0; i_Ancestor < C_CARD_ANCESTRY; i_Ancestor++)
-    m_iaAncestry[i_Ancestor] += iTo;
+    m_iaAncestry[i_Ancestor] = iTo;
 }
 
 /*----------------------------------------------------------------------------*/

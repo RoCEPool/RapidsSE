@@ -116,8 +116,10 @@ namespace STORE
     void  vAncestorPush(Card* pCard);
     i8    nAncestors(void);
 
+    i8    iAncestorCounter(i8 i_Ancestor);
     i8    iAncestorCounter(Card* pAncestor);
     void  vAncestorCounterInc(Card* pAncestor, i8 iInc=1);
+    void  vAncestorCounterReset(i8 iTo=0);
     void  vAncestorCounterResetAll(i8 iTo=0);
 
     // todo: merge these two [A294]
