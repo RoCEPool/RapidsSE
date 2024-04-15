@@ -145,7 +145,8 @@ namespace STORE
     bool bChanged(void);
     void vChanged(bool bChanged);
     eCT  eColType(void);
-    void vCullFacet(eSF eFacet_except);
+    void vCullFacet_except(eSF eFacet_except);
+    void vCullFacet_leaving(eSF eFacet_except1, eSF eFacet_except2);
 
     void vDeleteFacet(eSF eFacet);
     void vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn);

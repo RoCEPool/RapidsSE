@@ -1593,7 +1593,7 @@ eCT Symbol::eColType(void)
 /*----------------------------------------------------------------------------*/
 /* cull facet except for given arg                                            */
 /*----------------------------------------------------------------------------*/
-void Symbol::vCullFacet(eSF eFacet_except)
+void Symbol::vCullFacet_except(eSF eFacet_except)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -1604,6 +1604,32 @@ void Symbol::vCullFacet(eSF eFacet_except)
   while (i_Facet < nFacets()) {
     eSF eFacet_this = eFacet(i_Facet);
     if (eFacet_except == eFacet_this) {
+      i_Facet++;
+      continue;
+    }
+
+    vDeleteFacet(eFacet_this);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* cull facet except for given arg                                            */
+/*----------------------------------------------------------------------------*/
+void Symbol::vCullFacet_leaving(eSF eFacet_except1, eSF eFacet_except2)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (! bIs_Col())
+    return;
+
+  i8 i_Facet = 0;
+  while (i_Facet < nFacets()) {
+    eSF eFacet_this = eFacet(i_Facet);
+    if (eFacet_except1 == eFacet_this) {
+      i_Facet++;
+      continue;
+    }
+    if (eFacet_except2 == eFacet_this) {
       i_Facet++;
       continue;
     }
