@@ -364,13 +364,15 @@ i8 CardIter::iAncestorCounter(i8 i_Ancestor)
 /*----------------------------------------------------------------------------*/
 /* return counter                                                             */
 /*----------------------------------------------------------------------------*/
-i8 CardIter::iAncestorCounter(Card* pAncestor)
+i8 CardIter::iAncestorCounterInc(Card* pAncestor, i8 iInc)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
   i8 i_Ancestor = CardIter::i_Ancestor(pAncestor);
 
   i8 iCounter = m_iaAncestry[i_Ancestor];
+
+  m_iaAncestry[i_Ancestor] += iInc;
 
   return iCounter;
 }

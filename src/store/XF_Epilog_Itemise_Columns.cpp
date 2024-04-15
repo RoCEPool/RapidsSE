@@ -64,27 +64,19 @@ void XF_Epilog_Itemise_Columns::vItemise_Columns(void)
 
   m_pCI->vTransform(__FILE__, __func__, XF_EPILOG_ITEMISE_COLUMNS);
 
-  //m_pCI->vAncestorCounterResetAll();
-
-  //Card_As::vItemise_colNm(m_pCI);
   CardIter* pCI = m_pCI;
   auto bfItemise_colNm = [pCI](Card* pCard)
   {
     //pCI->vAncestorDump(pCard);
 
-    if (! pCard->bIsCard(CK_EXPR)) {
-      //pCI->vAncestorCounterReset();
+    if (! pCard->bIsCard(CK_EXPR))
       return C_CONTINUE_RECURSION;
-    }
 
     Card_Expr* p_expr = _pCard_Expr(pCard);
     if (! p_expr->pSymbol()->bHasFacet(SF_NMD_COL))
       return C_CONTINUE_RECURSION;
 
-    //i8 i_Item = pCI->pAncestorParent()->iCounter();
-    i8 i_Ctr  = pCI->iAncestorCounter(pCI->pAncestorParent());
-    //RASSERT(i_Item == i_Ctr);
-    pCI->vAncestorCounterInc(pCI->pAncestorParent());
+    i8 i_Ctr = pCI->iAncestorCounterInc(pCI->pAncestorParent());
     Symbol oSymbol_itemise;
     oSymbol_itemise.vApplyFacet(SF_ITM_COL, i_Ctr, p_expr->pSymbol());
 
@@ -93,27 +85,16 @@ void XF_Epilog_Itemise_Columns::vItemise_Columns(void)
     return C_CONTINUE_RECURSION;
   };
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
   pCI->bLambdaWalk(pCI->E.p_deck, CK_NONE, bfItemise_colNm);
 
-
-
-
-
-
-
-
-
-//  Card_Term::vItemise_colNm(m_pCI);
-  m_pCI->vAncestorCounterResetAll();
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   auto bfItemise_colNm2 = [pCI](Card* pCard)
   {
     UNUSED(pCI);
 
-    if (AM::JOB::bHasTag(C_OPTIMISER_TRACE))
-      vDebugPoint();
+//    if (AM::JOB::bHasTag(C_OPTIMISER_TRACE))
+//      vDebugPoint();
 
     if (!pCard->bIsCard(CK_TERM))
       return C_CONTINUE_RECURSION;
@@ -144,18 +125,14 @@ void XF_Epilog_Itemise_Columns::vItemise_Columns(void)
     if (! (pCI->E.p_expr = _pCard_Expr(pCI->pAncestor(CK_EXPR))))
       return C_CONTINUE_RECURSION;
 
-    //i8 i_Item = pCI->pAncestorParent()->iCounter();
-    i8 i_Ctr  = pCI->iAncestorCounter(pCI->pAncestorParent());
-    //RASSERT(i_Item == i_Ctr);
-    pCI->vAncestorCounterInc(pCI->pAncestorParent());
+    i8 i_Ctr = pCI->iAncestorCounterInc(pCI->pAncestorParent());
     pSymbol_term->vApplyFacet(SF_ITM_COL, i_Ctr);
     return C_CONTINUE_RECURSION;
   };
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
   pCI->bLambdaWalk(pCI->E.p_deck, CK_NONE, bfItemise_colNm2);
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   m_pCI->vEndTransform(__LINE__);
 }
