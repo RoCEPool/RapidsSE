@@ -1483,11 +1483,17 @@ void Card::vPrintRecursive(CardIter* pCI,
 
   CardCtl* pCardCtl = _pCardCtl(pRibbon->pCardCtl());
 
+#ifdef Z_ALT_CHANGED
+  UNUSED(pParent);
+  if (bChanged() && bMark1(MARK_BLANK))
+    vMark1(MARK_CHANGED);
+#else
   if (m_pLastPrintParent != pParent) {
     if (bMark1(MARK_BLANK))
       vMark1(MARK_CHANGED);
     m_pLastPrintParent = pParent;
   }
+#endif
 
   if (pCardCtl->bPrintByKind(m_eCard))
     vPrintCard_byKind(pRibbon, iDepth);
@@ -1496,6 +1502,9 @@ void Card::vPrintRecursive(CardIter* pCI,
 
   if (this->bMark1(MARK_CHANGED) || this->bMark1(MARK_FOUND))
     vMark1(MARK_BLANK);
+
+  vChanged(false);
+
 
   if (pCardCtl->bPrune(m_eCard))
     rbPrune = true;

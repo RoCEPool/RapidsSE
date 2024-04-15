@@ -2478,6 +2478,8 @@ void Symbol::Y_vAll(Symbol* pSymbol_arg)
     m_pProperties = new TagSet;
 
   m_pProperties->vCopy(pSymbol_arg->m_pProperties);
+
+  vChanged(true);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2491,6 +2493,7 @@ void Symbol::Y_vCut(Stz* szPpyNm)
     return;
 
   m_pProperties->vDelete(szPpyNm);
+  vChanged(true);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2673,6 +2676,7 @@ void Symbol::Y_vSet(Stz* szPpyNm)
     m_pProperties = new TagSet;
 
   m_pProperties->vReplace(szPpyNm, "y"_Stz);
+  vChanged(true);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2686,6 +2690,7 @@ void Symbol::Y_vSet(Stz* szPpyNm, i8 iPpy)
     m_pProperties = new TagSet;
 
   m_pProperties->vReplace(szPpyNm, iPpy);
+  vChanged(true);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2699,6 +2704,7 @@ void Symbol::Y_vSet(Stz* szPpyNm, Object* pObject)
     m_pProperties = new TagSet;
 
   m_pProperties->vReplace(szPpyNm, pObject);
+  vChanged(true);
 
 }
 /*----------------------------------------------------------------------------*/
@@ -2715,6 +2721,7 @@ void Symbol::Y_vSet(Stz* szPpyNm, Stz* szPpy)
     m_pProperties = new TagSet;
 
   m_pProperties->vReplace(szPpyNm, szPpy);
+  vChanged(true);
 }
 
 /*----------------------------------------------------------------------------*/

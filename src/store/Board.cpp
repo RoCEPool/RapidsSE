@@ -116,7 +116,7 @@ bool Board::bMark_sqyCall(CardIter* pCI)
     if (! (pCI->Flat.m_p_term_sqyCall = p_conj->pGetTerm_sqyNo(pCI)))
       return C_CONTINUE_RECURSION;
 
-   pCI->Flat.m_p_conj_iqyCall = p_conj;
+    pCI->Flat.m_p_conj_iqyCall = p_conj;
     pCI->Flat.m_p_conj_iqyCall->vMark1(MARK_AT);
     bFoundCall = true;
 
