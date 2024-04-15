@@ -120,8 +120,9 @@ void Card_Constraint::vResolve_colNm_From_colSym(CardIter* pCI)
     szColNm = p_expr_resolved->szFacet(SF_NMD_COL);
 
     p_term->SYM(SF_NMD_COL, szColNm);
-     p_term->vMark1(MARK_CHANGED);
-
+#ifdef Z_PART_STREAMKEY
+    p_term->vMark1(MARK_CHANGED);
+#endif
     return C_CONTINUE_RECURSION;
   };
 

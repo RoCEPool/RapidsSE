@@ -308,7 +308,9 @@ void Card_Term::vUpdate_expCol(CardIter* pCI, Card_Emit* p_Dic_expr, bool bAlt)
 
   if (p_expr_dic) {
     pSym_term->vApplyCastFacets(p_expr_dic->pSymbol());
+#ifdef Z_PART_STREAMKEY
     vMark1(MARK_CHANGED);
+#endif
     //vDump(__func__);
     vDebugPoint();
   }
@@ -333,7 +335,9 @@ void Card_Term::vX_expCol_To_tblCol(CardIter* pCI)
     if (pSymbol_term0->bHasFacet(SF_TBL_COL)) {
       pSymbol_this->vApplyCastFacets(pSymbol_term0);
       pSymbol_this->vDeleteFacet(SF_EXP_COL);
-      vMark1(MARK_CHANGED);
+ #ifdef Z_PART_STREAMKEY
+     vMark1(MARK_CHANGED);
+#endif
 
       if (pCI->E.p_expr && pCI->E.p_expr->bIsScalarCol()) {
         pCI->E.p_expr->pSymbol()->vApplyFacet(SF_TBL_COL, pSymbol_term0->szFacet(SF_TBL_COL));
@@ -400,8 +404,9 @@ void Card_Term::vX_tblCol_To_expCol(CardIter* pCI)
 
     Stz* szExpCol_expr_a = p_expr_a->szFacet(SF_EXP_COL);
     pSymbol_this->vApplyFacet(SF_EXP_COL, szExpCol_expr_a);
+#ifdef Z_PART_STREAMKEY
     this->vMark1(MARK_CHANGED);
-
+#endif
     return;
   }
 
@@ -417,7 +422,9 @@ void Card_Term::vX_tblCol_To_expCol(CardIter* pCI)
   if (Card_Expr *p_expr_scalar_a = pCI->X.m_pExprList_a->pFind_expr_Matches(&xSym_nmdCol)) {
     Stz *szStmCol_expr_a = p_expr_scalar_a->szFacet(SF_EXP_COL);
     pSymbol_this->vApplyFacet(SF_EXP_COL, szStmCol_expr_a);
+ #ifdef Z_PART_STREAMKEY
     this->vMark1(MARK_CHANGED);
+#endif
     return;
   }
 

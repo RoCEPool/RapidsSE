@@ -79,8 +79,9 @@ void Card_IdxColList::vAffix_tblCol(CardIter* pCI)
 
     Card_Expr* p_expr_inj = pCI->E.p_injectable->pFind_expr_Matches(pSym_idxCol);
     pSym_idxCol->vApplyFacet(SF_TBL_COL, p_expr_inj->szFacet(SF_TBL_COL));
+#ifdef Z_PART_STREAMKEY
     p_idxCol->vMark1(MARK_CHANGED);
-
+#endif
   }
 }
 

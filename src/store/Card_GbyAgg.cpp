@@ -140,7 +140,9 @@ void Card_GbyAgg::vInject_foldExpr(CardIter* pCI)
       Card_Term* p_term = pCI->E.xTarget.p_term();
       if (p_term->pSymbol()->bHasFacet(SF_EXP_COL)) {
         p_term->vBump_ordCol(SF_EXP_COL);
+#ifdef Z_ALT_CHANGED
         p_term->vMark1(MARK_CHANGED);
+#endif
        }
     }
   }

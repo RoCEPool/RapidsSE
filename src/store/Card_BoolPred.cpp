@@ -231,7 +231,9 @@ void Card_BoolPred::vBump_expCol(i8 nBumpBy)
 
     if (p_term->pSymbol()->bHasFacet(SF_EXP_COL)) {
       p_term->vBump_ordCol(SF_EXP_COL,nBumpBy);
+#ifdef Z_PART_STREAMKEY
       p_term->vMark1(MARK_CHANGED);
+#endif
     }
 
     return C_CONTINUE_RECURSION;

@@ -284,7 +284,9 @@ void XF_Flatten_24_W_A_C_ro::vConvert_OQ_sqyPrm_Into_expCol(CardIter* pCI,
 
           xConj.pChild()->vApplyCast_x(p_expr_found->xCast());
 
+#ifdef Z_PART_STREAMKEY
           xConj.pChild()->vMark1(MARK_CHANGED);
+#endif
         }
         else
         if (xConj.pChild()->bIsCard(CK_TERM) && xConj.pChild()->pSymbol()->bHasFacet(SF_TBL_COL)) {
@@ -299,7 +301,9 @@ void XF_Flatten_24_W_A_C_ro::vConvert_OQ_sqyPrm_Into_expCol(CardIter* pCI,
           Card_Expr* p_expr_otr = pCI->pBackSearch_expr_For_colNm(pSym_term, pCI->i_Child());
           Stz* szProjectedCol = p_expr_otr->pGet_term(0)->szFacet(SF_TBL_COL);
           xConj.pChild()->pSymbol()->vApplyFacet(SF_TBL_COL, szProjectedCol);  // TODO: hack!!
-          xConj.pChild()->vMark1(MARK_CHANGED);
+ #ifdef Z_PART_STREAMKEY
+         xConj.pChild()->vMark1(MARK_CHANGED);
+#endif
 
           DELETE_CARD(p_term);
         }
@@ -387,8 +391,9 @@ void XF_Flatten_24_W_A_C_ro::vConvert_OQ_sqyNo_Into_expCol(CardIter* pCI,
       p_conj_child->pSymbol()->vApplyFacet(SF_EXP_COL, "$2"_Stz);
       Card_Expr* p_expr_found = pCI->Arriving.m_pEmit->pGet_expr(1);
       p_conj_child->vApplyCast_x(p_expr_found->xCast());
-      p_conj_child->vMark1(MARK_CHANGED);
-
+ #ifdef Z_PART_STREAMKEY
+     p_conj_child->vMark1(MARK_CHANGED);
+#endif
       p_conj_arg->pSymbol()->Y_vSet(P_SqyRslTest);
     }
 

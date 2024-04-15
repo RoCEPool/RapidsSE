@@ -453,7 +453,9 @@ void Card_Table::vSet_Syn(Symbol* pSymbol_tableSyn)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   SYM(pSymbol_tableSyn);
+#ifdef Z_PART_STREAMKEY
   this->vMark1(MARK_CHANGED);
+#endif
 
   Card_TableNm* p_tableNm = pSub_tableNm();
   Table* pTable = Card_Table::pAccess_Table(p_tableNm->szFacet(SF_TBL_NM));
