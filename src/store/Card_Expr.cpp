@@ -712,6 +712,10 @@ void Card_Expr::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
     RASSERT(bIsScalarCol());
   }
 
+#ifdef Z_NO_EXPR_TBLCOL
+  RASSERT(! m_xSymbol.bHasFacet(SF_TBL_COL));
+#endif
+
   Card::vValidate(pCI,iDepth,pParent);
   pCI->vValidateChildren(this,iDepth+1);
   vValidationPassed();
