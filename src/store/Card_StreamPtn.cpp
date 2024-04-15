@@ -43,25 +43,6 @@ Card_StreamPtn::~Card_StreamPtn(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Card_StreamPtn::bContainsKey(Symbol *p_Y_tblCol)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Kid xStreamPtn(this);
-  while (xStreamPtn.bEach(CK_STREAMKEY)) {
-    if (xStreamPtn.p_streamKey()->pSymbol()->bMatches(p_Y_tblCol)) {
-      RASSERT(bHasSymbolRecursive(CK_STREAMKEY,p_Y_tblCol));
-      return true;
-    }
-  }
-
-  RASSERT(! bHasSymbolRecursive(CK_STREAMKEY,p_Y_tblCol));
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 void Card_StreamPtn::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
@@ -71,7 +52,6 @@ void Card_StreamPtn::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   pCI->vValidateChildren(this,iDepth+1);
   vValidationPassed();
 }
-
 
 /*============================================================================*/
 /* end                                                                        */

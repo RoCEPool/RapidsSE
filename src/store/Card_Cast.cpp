@@ -91,7 +91,7 @@ eXK Card_Cast::eStageCast(CardIter* pCI,
     // + stream joining to column which is table partition
 
     // ? prior column is key in stream ptn
-    if (p_streamPtn->bContainsKey(p_Y_tblCol_prior)) {
+   if (p_streamPtn->bHasSymbolRecursive(CK_STREAMKEY,p_Y_tblCol_prior)) {
       // + prior column is a key in stream partition
       //     stream is a unicast mapping to table partitions
       eCast = XK_UNICAST;
