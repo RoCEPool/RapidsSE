@@ -64,7 +64,7 @@ void XF_Epilog_Itemise_Columns::vItemise_Columns(void)
 
   m_pCI->vTransform(__FILE__, __func__, XF_EPILOG_ITEMISE_COLUMNS);
 
-  m_pCI->vAncestorCounterResetAll();
+  //m_pCI->vAncestorCounterResetAll();
 
   //Card_As::vItemise_colNm(m_pCI);
   CardIter* pCI = m_pCI;

@@ -269,7 +269,6 @@ namespace STORE
     i8 md__CardNo;
     i8 md__FirstDetected;
     i8 md__LeakDetected;
-     i8      m_iCounter;
 
   protected:
     // must be last
@@ -309,9 +308,6 @@ namespace STORE
     i8   i_Child(void);
     void v_Child(i8 i_Child);
     Stz* szCoord(void);
-    i8   iCounter();
-    void vCounterInc(i8 iInc=1);
-    void vCounterReset(i8 iTo=0);
 
     eCT  eCTVal(void);
 
