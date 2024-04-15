@@ -334,6 +334,8 @@ void Card::vAppendChild(Card* pChild)
   RASSERT(pChild);
 
   ChildCards::vAppendChild(pChild);
+
+  vChanged(true);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -409,6 +411,8 @@ void Card::vCard(eCK eCard)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   m_eCard = eCard;
+
+  vChanged(true);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -694,6 +698,7 @@ void Card::vEnsureLast(eCK eChild)
     return;
 
   vRotateLast(pChild);
+  vChanged(true);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1626,6 +1631,8 @@ void Card::vReplaceSubDelete(Card* pSub, Card* pWith)
   pParent->vReplaceChild(pSub,pWith);
 
   DELETE_CARD(pSub);
+
+  vChanged(true);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1638,6 +1645,8 @@ void Card::vReplaceSub(Card* pSub, Card* pWith)
   Card* pParent = pFindParentRecursive(pSub);
 
   pParent->vReplaceChild(pSub,pWith);
+
+  vChanged(true);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1649,6 +1658,8 @@ void Card::vRotateFirst(Card* pChild)
 
   vRemoveChild(pChild);
   vPushChild(pChild);
+
+  vChanged(true);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1660,6 +1671,8 @@ void Card::vRotateLast(Card* pChild)
 
   vRemoveChild(pChild);
   vAppendChild(pChild);
+
+  vChanged(true);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1746,6 +1759,8 @@ void Card::vTransferChildren(Card* pFrom)
 
   while (Card* pPoppedChild = pFrom->pPopChild())
     vAppendChild(pPoppedChild);
+
+  vChanged(true);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1757,6 +1772,7 @@ void Card::vTransferChildren(Card* pFrom, eSF eFacet_stopAfter)
 
   while (Card *pPoppedChild = pFrom->pPopChild()) {
     vAppendChild(pPoppedChild);
+    vChanged(true);
 
     if (pPoppedChild->pSymbol()->bHasFacet(eFacet_stopAfter))
       break;
@@ -1792,6 +1808,7 @@ bool Card::bUpdateSymbolRecursive(eCK eSub, Symbol* pSymbol, Symbol* pWith)
       return C_CONTINUE_RECURSION;
 
     pCard->m_xSymbol.vApplyCastFacetsPpy(pWith);
+    pCard->vChanged(true);
 
     bReplaced = true;
 

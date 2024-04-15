@@ -50,6 +50,7 @@ void ChildCards::vAppendChild(Card* pChild)
     vDebugPoint();
 
   vAppend(pChild);
+  pChild->vChanged(true);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -378,6 +379,8 @@ void ChildCards::vInsertChildAfter(Card* pChild, Card* pAfter)
   RASSERT(pAfter);
 
   vInsertAfter(pChild,pAfter);
+
+  pChild->vChanged(true);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -389,6 +392,8 @@ void ChildCards::vInsertChildBefore(Card* pChild, Card* pBefore)
   RASSERT(pBefore);
 
   vInsertBefore(pChild,pBefore);
+
+  pChild->vChanged(true);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -457,6 +462,8 @@ Card* ChildCards::pPopChild(void)
   Card* pChild = pPop();
   RASSERT(pChild);
 
+  pChild->vChanged(true);
+
   return pChild;
 }
 
@@ -472,6 +479,8 @@ Card* ChildCards::pPopChild_tail(void)
   Card* pChild = pGetChild(nChildren-1);
   RASSERT(pChild);
   vRemoveChild(pChild);
+
+  pChild->vChanged(true);
 
   return pChild;
 }
@@ -503,6 +512,8 @@ void ChildCards::vPushChild(Card* pChild)
   RASSERT(pChild);
 
   vPush(pChild);
+
+  pChild->vChanged(true);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -517,6 +528,8 @@ bool ChildCards::bRemoveChild(Card* pChild)
 
   vRemove(pChild);
 
+  pChild->vChanged(true);
+
   return true;
 }
 
@@ -528,6 +541,8 @@ void ChildCards::vRemoveChild(Card* pChild)
   //RASSERT(C_UNKNOWN != iFindChild(pChild));
 
   RASSERT(pChild);
+
+  pChild->vChanged(true);
 
   vRemove(pChild);
 }
@@ -547,6 +562,7 @@ void ChildCards::vRemoveChildLeavingSubs(Card* pChild)
   }
 
   vRemoveChild(pChild);
+  pChild->vChanged(true);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -565,6 +581,7 @@ void ChildCards::vRemoveSub(Card* pSub)
 
     if (pSub_test == pSub) {
       RASSERT(bRemoveChild(pSub_test));
+      pSub_test->vChanged(true);
       break;
     }
     pSub_test->vRemoveSub(pSub);
@@ -581,6 +598,8 @@ void ChildCards::vReplaceChild(Card* pChild, Card* pWith)
   //_precondition_(_ADDRESS_,_FOOTER_);
 
   vReplace(pChild, pWith);
+  pChild->vChanged(true);
+  pWith->vChanged(true);
 }
 
 /*============================================================================*/
