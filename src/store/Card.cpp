@@ -979,6 +979,24 @@ bool Card::bHasSubFacet(eSF eFacet, i8 iDepth)
 }
 
 /*----------------------------------------------------------------------------*/
+/* attempt find of symbolic value                                             */
+/*----------------------------------------------------------------------------*/
+bool Card::bHasSymbolRecursive(eCK eCard, Symbol* pSymbol)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (eCard == m_eCard && bSymbolMatches(pSymbol))
+    return true;
+
+  for (Kid xCard(this); xCard.bEach_opaque(); /**/) {
+    if (xCard.pChild()->bHasSymbolRecursive(eCard, pSymbol))
+      return true;
+  }
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this card the given kind?                                               */
 /*----------------------------------------------------------------------------*/
 bool Card::bIsCard(eCK eCard)

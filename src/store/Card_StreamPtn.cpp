@@ -49,10 +49,13 @@ bool Card_StreamPtn::bContainsKey(Symbol *p_Y_tblCol)
 
   Kid xStreamPtn(this);
   while (xStreamPtn.bEach(CK_STREAMKEY)) {
-    if (xStreamPtn.p_streamKey()->pSymbol()->bMatches(p_Y_tblCol))
+    if (xStreamPtn.p_streamKey()->pSymbol()->bMatches(p_Y_tblCol)) {
+      RASSERT(bHasSymbolRecursive(CK_STREAMKEY,p_Y_tblCol));
       return true;
+    }
   }
 
+  RASSERT(! bHasSymbolRecursive(CK_STREAMKEY,p_Y_tblCol));
   return false;
 }
 

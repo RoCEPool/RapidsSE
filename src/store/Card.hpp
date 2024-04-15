@@ -341,6 +341,7 @@ namespace STORE
     bool bHasFacet(eSF eFacet, Stz* szFacet);
     bool bHasSub(Card* pSubCard);
     bool bHasSubFacet(eSF eFacet, i8 iDepth=0);
+    bool bHasSymbolRecursive(eCK eCard, Symbol* pSymbol);
 
     bool bIsCard(eCK eCard);
     bool bIsMain(void);
