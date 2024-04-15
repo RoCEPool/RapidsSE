@@ -309,6 +309,27 @@ void Step::vMetaDataTableNodes(void)
 {
   ENTRY();
 
+  Table* pTable = _pTable(*m_pLogicUnit->m_xpTable);
+  StreamDef* pStreamDef = pTable->pStreamDef();
+
+  Pds* pPdsRowBuffer = new Pds(pStreamDef, false, BT_DATA);
+
+
+  for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
+    Row* pRow = pPdsRowBuffer->pAllotRow(C_VARGS_BEGIN,
+                                         (*oNode_I)->iNodeId(),
+                                         (*oNode_I)->szIPAddr(),
+                                         (*oNode_I)->iPortNo(),
+                                         0,
+                                         C_VARGS_END);
+    if(! pRow) {
+      ASSERT(0);
+      break;
+    }
+  }
+
+  m_pDataStack->vPushPtr((Object*)pPdsRowBuffer);
+
   EXIT();
 }
 
