@@ -466,11 +466,11 @@ bool Card::bChanged(void)
 /*----------------------------------------------------------------------------*/
 /* set changed                                                                */
 /*----------------------------------------------------------------------------*/
-void Symbol::vChanged(bool bChanged)
+void Card::vChanged(bool bChanged)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card = bChanged;
+  m_bChanged = bChanged;
 }
 
 /*----------------------------------------------------------------------------*/
