@@ -27,6 +27,7 @@ namespace BASE
     void  vCopy(Stz* szArg);
     void  vCatSprint(Stz* szFormat, ...);
     void  vConcat(Stz* szArg);
+    bool  bConcat(Stz* szArg);
     i8    nLength(void);
     void  vReset(void);
     i8    nStackUsage(void);
