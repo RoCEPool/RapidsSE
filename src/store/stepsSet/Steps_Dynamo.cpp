@@ -52,6 +52,7 @@ void Step::vDynamoCompile(void)
   s1M sCmdText;
   b1 bResult = m_pJob->pCmdText()->bRetrieve(sCmdText);
   ASSERT(bResult);
+  UNUSED(bResult);
 
   Stz* szPipelineStmt = sCmdText.szStz();
   //vTraceM("%s\n"_Stz,szPipelineStmt);
