@@ -118,14 +118,6 @@ void XF_Prolog_X_colNm_To_expCol::vX_colNm_To_expCol(void)
       }
     }
 
-    //
-#ifndef Z_NO_EXPR_TBLCOL
-    if (Card_Expr* p_expr_ancestor = (Card_Expr*) pCI->pAncestor(CK_EXPR)) {
-      if (p_term_colNm->pSymbol()->bHasFacet(SF_TBL_COL))
-        p_expr_ancestor->pSymbol()->vApplyFacet(SF_TBL_COL,p_term_colNm->pSymbol()->szFacet(SF_TBL_COL));
-    }
-#endif
-
     return C_CONTINUE_RECURSION;
   };
 

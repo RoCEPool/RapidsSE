@@ -169,9 +169,6 @@ Card_Expr* Card_Expr::pCraft_expr_of_nmdCol(Column *pColumn, i8 iExpCol,
   Stz* szNmdCol = pColumn->szColNm();
   p_expr_new->pSymbol()->vApplyFacet(SF_NMD_COL, szNmdCol);
   p_expr_new->pSymbol()->vApplyFacet(SF_EXP_COL, iExpCol);
-#ifndef Z_NO_EXPR_TBLCOL
-  p_expr_new->pSymbol()->vApplyFacet(SF_TBL_COL, cTblSyn, iTblCol);
-#endif
   p_expr_new->pSymbol()->vApplyCast(xCast);
 
   return p_expr_new;
@@ -456,13 +453,6 @@ Card_Expr * Card_Expr::pInduct(CardIter* pCI, i8 iExp)
 
   if (pSymbol_expr_arriving->bHasFacet(SF_SQY_RSL))
     pSymbol_expr_inducted->vApplyFacet(SF_SQY_RSL,pSymbol_expr_arriving);
-
-
-#ifndef Z_NO_EXPR_TBLCOL
-  if (bIsScalarCol() && pGet_Symbol(0)->bHasFacet(SF_TBL_COL)) {
-    pSymbol_expr_inducted->vApplyFacet(SF_TBL_COL,pGet_Symbol(0));
-  }
-#endif
 
 //  Card_RpnCalc* p_rpnCalc_inducted = p_rpnCalc_arriving->pInduct(this);
 //  p_expr_inducted->vAppendChild(p_rpnCalc_inducted);
