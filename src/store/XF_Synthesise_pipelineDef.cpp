@@ -707,8 +707,12 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
       if (bSym_term_a_Is_tblCol_only && (p_expr_e = p_emit->pFind_expr_Matches(pSym_term_a))) {
         pSym_In_a = pSym_term_a;
       }
+//      else
+//      if ((p_expr_e = p_emit->pFind_expr_Matches(SF_TBL_COL,pSym_expr_a))) {
+//        pSym_In_a = pSym_expr_a;
+//      }
       else
-      if ((p_expr_e = p_emit->pFind_expr_Matches(SF_TBL_COL,pSym_expr_a))) {
+      if ((p_expr_e = p_emit->pFind_expr_Matches(SF_ITM_COL,pSym_expr_a))) {
         pSym_In_a = pSym_expr_a;
       }
       else
