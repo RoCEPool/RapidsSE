@@ -539,12 +539,12 @@ EOF
   status "*** Installing jmeter ***"
   (
     cd /opt
-    JMETER_VER="5.6"
+    JMETER_VER="5.6.3"
     JMETER_NAME="apache-jmeter-${JMETER_VER}"
     JMETER_FILE="${JMETER_NAME}.tgz"
 
     declare -a cmd
-    cmd=("curl" "-L" "--fail" "https://dlcdn.apache.org//jmeter/binaries/${JMETER_FILE}" "-o" "${JMETER_FILE}")
+    cmd=("curl" "-L" "--fail" "https://archive.apache.org/dist/jmeter/binaries/${JMETER_FILE}" "-o" "${JMETER_FILE}")
 
     if retryCommand "${MAX_NETWORK_RETRIES}" "${cmd[@]}"; then
       tar xvzf "${JMETER_FILE}"
