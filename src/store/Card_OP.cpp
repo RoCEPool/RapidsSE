@@ -673,8 +673,6 @@ void Card_OP::vRestate_emit(CardIter* pCI)
     }
   }
 
-#ifndef Z_NO_EXPR_TBLCOL
-
   if (pCI->E.p_emit && pCI->E.p_Op->pSub_key()) {
     if (AM::JOB::bHasTag(C_OPTIMISER_TRACE))
       vDebugPoint();
@@ -699,7 +697,7 @@ void Card_OP::vRestate_emit(CardIter* pCI)
     }
 
   }
-#endif
+
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

@@ -277,6 +277,8 @@ void XF::vTransform(void)
 
   m_pCI->m_pBench->vPhase(m_pCI,OH_SYNTHESISE);                        //
                                                        //
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   m_pCI->vBeginBoard();                            //
   RASSERT(m_pCI->bEachBoard());                        //
                                                        //
