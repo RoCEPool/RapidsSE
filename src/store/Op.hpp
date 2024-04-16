@@ -21,7 +21,7 @@ namespace STORE { class Deck;
 
 namespace STORE
 {
-		const i8 C_MAX_SECONDARY = 10;
+		const i8 C_MAX_SECONDARY = 24;
 
   class Op : public Operand
   {

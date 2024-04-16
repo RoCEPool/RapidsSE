@@ -4,6 +4,9 @@
 
 // OPTIMISED PIPELINE FROM POC3
 
+metricsCtl enable;
+
+/jobMetrics
 /optimise_passthru
 pipeline Query9
   begin
@@ -12,7 +15,7 @@ pipeline Query9
     | pulse once
     | next
 
-  stage S01 on all partitions :
+  stage S01 on all partitions multiple threads 2:
     scan rapidsse public part
     | project "type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY ,
                type VARCHAR ( 55 ) as P_NAME P_NAME"
@@ -29,7 +32,7 @@ pipeline Query9
     | combined 0
     | next broadcast
 
-  stage S03 on all partitions  multiple threads 4:
+  stage S03 on all partitions:
     indexJoin LINEITEM IxL_PARTKEY "bound $I1 P_PARTKEY =="
     | project "type INTEGER ( 19 ) as PS_SUPPKEY PS_SUPPKEY ,
                type DECIMAL ( 19 2 ) as PS_SUPPLYCOST PS_SUPPLYCOST ,
@@ -46,7 +49,7 @@ pipeline Query9
     | combined 0
     | next hashcast
 
-  stage S04 on all partitions :
+  stage S04 on all partitions:
     indexJoin supplier IxS_SUPPKEY "bound $I1 L_SUPPKEY =="
     | project "type INTEGER ( 19 ) as S_NATIONKEY S_NATIONKEY ,
                type INTEGER ( 19 ) as L_ORDERKEY L_ORDERKEY ,
@@ -54,7 +57,7 @@ pipeline Query9
     | combined 0
     | next broadcast
 
-  stage S05 on all partitions  multiple threads 4:
+  stage S05 on all partitions multiple threads 4:
     indexJoin ORDERS IxO_ORDERKEY "bound $I1 L_ORDERKEY =="
     | project "type INTEGER ( 19 ) as L_ORDERKEY L_ORDERKEY ,
                type INTEGER ( 19 ) as S_NATIONKEY S_NATIONKEY ,
@@ -112,6 +115,11 @@ pipeline Query9
     | sink
     | first
   end ;
+
+metricsCtl disable;
+
+sleep 3;
+select stageName , opName, max(maxQs) from se__jobOperators where opName = 'dynamic' group by stageName, opName ;
 
 /*============================================================================*/
 /* end                                                                        */

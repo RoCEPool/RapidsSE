@@ -33,6 +33,7 @@ statementChoice   :
                     | lsidxcolCmd
                     | lsptncolCmd
                     | lstblCmd
+                    | metricsCtlCmd
                     | pipelineCmd
                     | queryCmd    // (select)
                     | setTraceCmd
@@ -223,6 +224,9 @@ lstblCmd          : LSTBL;
 
 // M
 memoryleaksCmd    : MEMORYLEAKS ;
+
+
+metricsCtlCmd     : METRICSCTL value=(ENABLE | DISABLE) ;
 
 // N
 noopCmd           : NOOP | NOP ;
@@ -614,14 +618,14 @@ nonReservedWord   :
                     ANALYSE | ANALYZE | ANIDX | ANTBL | ASC
                   | BIT | BITS | BLOCK | BLOOM | BPA | BTREE | BYE | BYTE | BYTES
                   | CATALOG | CHARS | COMPACT | COMPACTIDX | CONCAT | CONFIG
-                  | DATA | DATE_FORMAT | DAYS | DECODE | DESC | DETAIL | DIGITS | DLOAD | DOCOL
-                  | ECHO | ENCLOSED_BY_LEADING | ENCLOSED_BY_TRAILING |ESCAPE_CHAR | EXIT_TOKEN | EXPLAIN | EXPORT
+                  | DATA | DATE_FORMAT | DAYS | DECODE | DESC | DETAIL | DIGITS | DISABLE | DLOAD | DOCOL
+                  | ECHO | ENABLE | ENCLOSED_BY_LEADING | ENCLOSED_BY_TRAILING |ESCAPE_CHAR | EXIT_TOKEN | EXPLAIN | EXPORT
                   | SQL_FALSE | FEDERATION | FIELD_DELIMITER | FILE | FORCE | FORMAT
                   | HASH | HASHKEY | HOURS
                   | IF | IFNULL | INDEX | INTERVAL_DT | INTERVAL_YM
                   | KEY
                   | LIMIT | LOAD | LOADREPLICATED | LOG | LOOP | LSIDX | LSPTNCOL | LSTBL
-                  | MEMORYLEAKS | MILLIS | MILLISECOND | MILLISECONDS | MINUTES
+                  | MEMORYLEAKS | METRICSCTL | MILLIS | MILLISECOND | MILLISECONDS | MINUTES
                   | MONOTONIC | MONTHS | MS | MULTIPLE
                   | NODE | NODES | NOOP | NOP | NOW
                   | OBJECTS | OFF | OFFSET | ORIGIN
@@ -696,6 +700,7 @@ DELETE                : D E L E T E;
 DESC                  : D E S C;
 DETAIL                : D E T A I L;
 DIGITS                : D I G I T S ;
+DISABLE               : D I S A B L E;
 DISCONNECT            : D I S C O N N E C T;
 DISTINCT              : D I S T I N C T;
 DLOAD                 : D L O A D;
@@ -703,6 +708,7 @@ DOCOL                 : D O C O L;
 DROP                  : D R O P;
 ECHO                  : E C H O;
 ELSE                  : E L S E;
+ENABLE                : E N A B L E;
 ENCLOSED_BY_LEADING   : E N C L O S E D '_' B Y '_' L E A D I N G;
 ENCLOSED_BY_TRAILING  : E N C L O S E D '_' B Y '_' T R A I L I N G;
 END                   : E N D;
@@ -761,6 +767,7 @@ LSPTNCOL              : L S P T N C O L;
 LSTBL                 : L S T B L;
 MAX                   : M A X;
 MEMORYLEAKS           : M E M O R Y L E A K S;
+METRICSCTL            : M E T R I C S C T L;
 MILLIS                : M I L L I S;
 MILLISECOND           : M I L L I S E C O N D;
 MILLISECONDS          : M I L L I S E C O N D S;

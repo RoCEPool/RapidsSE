@@ -225,9 +225,6 @@ Op::~Op(void) noexcept(false)
 		pTask->vState(TS_DELETING);
 		pTask->vDropTaskLock((Stz*)__func__);
 
-		if (pTask->bIsSecondary())
-		  vTrace("Deleting task %p\n"_Stz, pTask);
-
 		m_pSecondaryTasks[iIndex] = nullptr;
 
 		delete pTask;

@@ -273,6 +273,10 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual std::any visitMetricsCtlCmd(sqlParser::MetricsCtlCmdContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual std::any visitNoopCmd(sqlParser::NoopCmdContext *ctx) override {
     return visitChildren(ctx);
   }

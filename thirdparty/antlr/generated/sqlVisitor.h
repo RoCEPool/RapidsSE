@@ -148,6 +148,8 @@ public:
 
     virtual std::any visitMemoryleaksCmd(sqlParser::MemoryleaksCmdContext *context) = 0;
 
+    virtual std::any visitMetricsCtlCmd(sqlParser::MetricsCtlCmdContext *context) = 0;
+
     virtual std::any visitNoopCmd(sqlParser::NoopCmdContext *context) = 0;
 
     virtual std::any visitPipelineCmd(sqlParser::PipelineCmdContext *context) = 0;

@@ -69,6 +69,12 @@ void Step::vPipeinBide(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   else {
+//		if (pOp->nQueuedOperands() > 100) {
+//			vTrace("Stage: %s OP: %s has %lld operands in queue\n"_Stz,
+//						 pOp->szStageName(),
+//						 pOp->szOpNm(),
+//						 pOp->nQueuedOperands());
+//		}
     pOperand = pOp->pPopOoOLeft(this, &bPageIn);
     m_pLogicUnit->vSetPipein(pOperand);
     
