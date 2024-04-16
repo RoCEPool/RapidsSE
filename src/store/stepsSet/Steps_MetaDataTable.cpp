@@ -25,6 +25,9 @@
 
 #include "Stream.hpp"
 #include "Grid.hpp"
+#include "CmdLineArgs.hpp"
+
+extern CmdLineArgs  gxCmdLineArgs;
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -92,6 +95,22 @@ void Step::vMetaDataTableCatalog(void)
 void Step::vMetaDataTableCluster(void)
 {
   ENTRY();
+
+
+  Table* pTable = _pTable(*m_pLogicUnit->m_xpTable);
+  StreamDef* pStreamDef = pTable->pStreamDef();
+
+  Pds* pPdsRowBuffer = new Pds(pStreamDef, false, BT_DATA);
+
+  Row* pRow = pPdsRowBuffer->pAllotRow(C_VARGS_BEGIN,
+                                       gxCmdLineArgs.m_xSysArgs.m_iClusterID,
+                                       C_VARGS_END);
+  if (! pRow)
+  {
+    ASSERT(0);
+  }
+
+  m_pDataStack->vPushPtr((Object*)pPdsRowBuffer);
 
   EXIT();
 }
