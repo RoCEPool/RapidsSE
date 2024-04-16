@@ -24,6 +24,7 @@ success
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 -- Columns are named appropriately
 -- With the AS keyword
+/pipelineName = "ALIAS_1"
 SELECT n_nationkey AS nationkey, n_name AS name FROM ${testName2}_nation;
 rows:
   ['nationkey', 'name']
@@ -66,6 +67,7 @@ success
 -- rows:
 --   ['region', 'nationcount']
 
+/pipelineName = "ALIAS_2"
 SELECT n_regionkey AS region , COUNT(n_nationkey) AS nationcount
 FROM ${testName2}_nation
 GROUP BY region

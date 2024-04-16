@@ -18,8 +18,6 @@
 #include "Ribbon.hpp"
 #include "Symbol.hpp"
 
-//#define Z_NO_RPNCALC
-
 namespace STORE
 {
   class Card_AbsJoin;
@@ -118,8 +116,6 @@ namespace STORE
   class Card_Required;
   class Card_RowCount;
   class Card_RowSize;
-  class Card_RpnCalc;
-  class Card_TermSeq;
 
   class Card_Scan;
   class Card_Section;
@@ -149,6 +145,7 @@ namespace STORE
   class Card_TableSize;
   class Card_TblSyn;
   class Card_Term;
+  class Card_TermSeq;
   class Card_Top;
   class Card_Topology;
 
@@ -163,7 +160,7 @@ namespace STORE
 
 // These would really benefit from being const and being in a namespace
 // or class to avoid polluting the global namespace.
-extern Stz* P_AggOp;
+extern Stz* P_AltFetch;
 extern Stz* P_BreakPt;
 extern Stz* P_BumpedBy;
 extern Stz* P_Cell;
@@ -178,6 +175,7 @@ extern Stz* P_DebugOption;
 extern Stz* P_Direction;
 extern Stz* P_Early;
 extern Stz* P_EmittedCol;
+extern Stz* P_FixedNm;
 extern Stz* P_FixedPos;
 extern Stz* P_FusedProject;
 extern Stz* P_HashOf;
@@ -262,6 +260,7 @@ namespace STORE
 
     eCK     m_eCard;
     i8      m_i_Child;
+    i8      m_iSequence;
     i8      m_iFixedDepth;
 
     Mark    m_xMark1;
@@ -269,11 +268,10 @@ namespace STORE
 
     Symbol  m_xSymbol;
 
-    i8 md__SeqNo;
+    i8 md__CardNo;
     i8 md__FirstDetected;
     i8 md__LeakDetected;
     i8      m_iFirstPrint;
-    eCK     m_eFirst;
     i8      m_nPrintCount;
     i8      m_nFunctionCount;
     bool    m_bAddedCorrectly;
@@ -356,6 +354,8 @@ namespace STORE
     i8    nFunctionCount(void);
 
     bool bHasChildFacet(eSF eFacet);
+    bool bHasFacet(eSF eFacet);
+    bool bHasFacet(eSF eFacet, Stz* szFacet);
     bool bHasSub(Card* pSubCard);
     bool bHasSubFacet(eSF eFacet, i8 iDepth=0);
 
@@ -370,7 +370,7 @@ namespace STORE
     bool bIsPeek(eCK eChild0, eCK eChild1);
     bool bIsPeek(i8 i_Child, eCK eChild);
 
-    bool bLambdaWalk(eCK eToSubs, std::function<bool(Card* pCard)> bfLambdaFn);
+    bool bLambdaWalk(eCK eToSubs, std::function<bool(Card* pCard)> bfLambdaFn, CardIter* pCI=nullptr);
     bool bLambdaWalk_term(std::function<bool(Card_Term* p_term)> bfLambdaFn);
 
     void vMark(Stz* szMark1, Stz* szMark2);
@@ -419,6 +419,8 @@ namespace STORE
     void vReplaceSubDelete(Card* pSub, Card* pWith);
     void vReplaceSub(Card* pSub, Card* pWith);
 
+    i8   iSequence(void);
+    void vSequence(i8 iSequence);
     i8   nSubCards(eCK eSub_arg);
     Symbol* pSymbol(void);
     bool bSymbolMatches(Symbol* pSymbol_arg);
@@ -526,7 +528,6 @@ namespace STORE
     Card_Required*      pSub_required(bool bNotNull=false);
     Card_RowCount*      pSub_rowCount(bool bNotNull=false);
     Card_RowSize*       pSub_rowSize(bool bNotNull=false);
-    Card_RpnCalc*       pSub_rpnCalc(bool bNotNull=false);
     Card_Scan*          pSub_scan(bool bNotNull=false);
     Card_Section*       pSub_section(bool bNotNull=false);
     Card_Spare*         pSub_spare(bool bNotNull=false);

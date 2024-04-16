@@ -310,7 +310,6 @@
 #include "XF_Prolog_Validate_Board.hpp"
 #include "XF_Prolog_X_sqyNm_To_sqyNo.hpp"
 #include "XF_Prolog_X_colNm_To_expCol.hpp"
-#include "XF_Prolog_X_rpnCalc_To_boolPred.hpp"
 #include "XF_Prolog_X_scan_To_from.hpp"
 #include "XF_Synthesise_pipelineDef.hpp"
 #include "XF_Utility_Verify_dic.hpp"
@@ -855,7 +854,6 @@ SizeHeap gxaSizeHeap[]
   {CN_XF_PROLOG_VALIDATE_BOARD,        sizeof(XF_Prolog_Validate_Board),        HT_T_TINY    , FILL },
   {CN_XF_PROLOG_X_SQYNM_TO_SQYNO,      sizeof(XF_Prolog_X_sqyNm_To_sqyNo),      HT_T_TINY    , FILL },
   {CN_XF_PROLOG_X_COLNM_TO_EXPCOL,     sizeof(XF_Prolog_X_colNm_To_expCol),     HT_T_TINY    , FILL },
-  {CN_XF_PROLOG_X_RPNCALC_TO_BOOLPRED, sizeof(XF_Prolog_X_rpnCalc_To_boolPred), HT_T_TINY    , FILL },
   {CN_XF_PROLOG_X_SCAN_TO_FROM,        sizeof(XF_Prolog_X_scan_To_from),        HT_T_TINY    , FILL },
   {CN_XF_SYNTHESISE_CODE,              sizeof(XF_Synthesise_code),              HT_T_TINY    , FILL },
   {CN_XF_SYNTHESISE_PIPELINEDEF,       sizeof(XF_Synthesise_pipelineDef),       HT_T_TINY    , FILL },

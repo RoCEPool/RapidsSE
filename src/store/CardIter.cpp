@@ -360,16 +360,13 @@ Card_Expr* CardIter::pBackSearch_expr_For_col(Symbol* pSym_term_arg, i8 i_Before
       if (!pChild_emit->bIsCard(CK_EXPR))
         continue;
       Card_Expr* p_expr_emit = _pCard_Expr(pChild_emit);
-      Card_RpnCalc* p_rpnCalc = p_expr_emit->pSub_rpnCalc(C_NOT_NULL);
-      if (! p_rpnCalc)
-        continue;
-      if (1 != p_rpnCalc->nChildCards())
+      if (1 != p_expr_emit->nChildCards())
         continue;
 
-      Symbol* pSym_rpnCalc_term0 = p_expr_emit->pGet_term(0)->pSymbol();
-      RASSERT(pSym_rpnCalc_term0->bIs_Col());
+      Symbol* pSym_emit_term0 = p_expr_emit->pGet_term(0)->pSymbol();
+      RASSERT(pSym_emit_term0->bIs_Col());
 
-      if (pSym_rpnCalc_term0->bMatches(pSym_term_arg)) {
+      if (pSym_emit_term0->bMatches(pSym_term_arg)) {
         p_expr_col = p_expr_emit;
         break;
       }
@@ -414,6 +411,16 @@ Card_Expr* CardIter::pBackSearch_expr_For_colNm(Symbol* pSym_term, i8 i_Before)
   }
 
   return p_expr_col;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void CardIter::vBackstepTarget(void)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  E.xTarget.vBackstep();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -504,21 +511,17 @@ void CardIter::vBeginTarget(Card* pPrimary, eCK eTarget)
     E.Iter.eSecondary = CK_NONE;
     E.xTarget.vBegin();
     E.xTarget.vParent(pPrimary);
-
   }
   else
   if (CK_EXPR == ePrimary && CK_TERM == eTarget) {
-    E.Iter.eSecondary = CK_RPNCALC;
+    E.Iter.eSecondary = CK_NONE;
     E.xTarget.vBegin();
-    E.xTarget.vParent(pPrimary->pSub_rpnCalc());
+    E.xTarget.vParent(pPrimary);
 
   }
   else {
     NEVER_REACH
   }
-
-  //vMember(E.Iter.ePrimary, pPrimary);
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1315,7 +1318,6 @@ bool CardIter::bEachTarget(void)
   RASSERT(! E.xTarget.bEnded());
 
   if (CK_EXPR    == E.Iter.ePrimary &&
-      CK_RPNCALC == E.Iter.eSecondary &&
       CK_TERM    == E.Iter.eTarget) {
     while (E.xTarget.bEach_opaque(E.Iter.eTarget)) {
       Card *pTarget = E.xTarget.pChild();
@@ -1654,7 +1656,6 @@ Card* CardIter::pMember(eCK eCard)
     case CK_RLNCONJ:        return E.p_rlnConj;
     case CK_ROWCOUNT:       return E.p_rowCount;
     case CK_ROWSIZE:        return E.p_rowSize;
-    case CK_RPNCALC:        return E.p_rpnCalc;
 
     case CK_o_SCAN:         return E.p_scan;
     case CK_SECTION:        return E.p_section;
@@ -1803,7 +1804,6 @@ void CardIter::vMember(eCK eCard, Card* pCard)
     case CK_RLNCONJ: E.p_rlnConj           = _pCard_RlnConj(pCard);break;
     case CK_ROWCOUNT: E.p_rowCount          = _pCard_RowCount(pCard); break;
     case CK_ROWSIZE: E.p_rowSize           = _pCard_RowSize(pCard); break;
-    case CK_RPNCALC: E.p_rpnCalc           = _pCard_RpnCalc(pCard); break;
 
     case CK_o_SCAN: E.p_scan              = _pCard_Scan(pCard); break;
     case CK_SECTION: E.p_section           = _pCard_Section(pCard); break;
@@ -1862,13 +1862,26 @@ bool CardIter::bMore(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool CardIter::bMoreTarget(void)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  RASSERT(E.xTarget.bWithinRange());
+
+  if (E.xTarget.bMore())
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* create a new card and optionally set member                                */
 /*----------------------------------------------------------------------------*/
 void CardIter::vNewMember(eCK eCard)
 {
   _precondition_(_MAGIC_, _FOOTER_);
-  if (CK_RPNCALC == eCard)
-    vDebugPoint();
 
   Card* pNew = new Card(eCard,C_UNKNOWN);
 
@@ -1881,8 +1894,6 @@ void CardIter::vNewMember(eCK eCard)
 void CardIter::vNewMember(eCK eCard, Symbol xSymbol)
 {
   _precondition_(_MAGIC_, _FOOTER_);
-  if (CK_RPNCALC == eCard)
-    vDebugPoint();
 
   Card* pNew = new Card(eCard,C_UNKNOWN);
 
@@ -2307,7 +2318,6 @@ void CardIter::vResetMembers(void)
   E.p_required         = nullptr;
   E.p_rowCount         = nullptr;
   E.p_rowSize          = nullptr;
-  E.p_rpnCalc          = nullptr;
 
   E.p_scan             = nullptr;
   E.p_section          = nullptr;
@@ -2596,7 +2606,6 @@ void CardIter::vValidateChildren(Card* pCard, i8 iDepth)
       case CK_RLNCONJ:        E.p_rlnConj->vValidate(this, iDepth, pCard);  break;
       case CK_ROWCOUNT:       E.p_rowCount->vValidate(this, iDepth, pCard);  break;
       case CK_ROWSIZE:        E.p_rowSize->vValidate(this, iDepth, pCard);  break;
-      case CK_RPNCALC:        E.p_rpnCalc->vValidate(this, iDepth, pCard);  break;
 
       case CK_o_SCAN:         E.p_scan->vValidate(this, iDepth, pCard);  break;
       case CK_SECTION:        E.p_section->vValidate(this, iDepth, pCard);  break;

@@ -72,10 +72,11 @@ void Card_Sort::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
 //Z_KEY_DIRECTION
   if (pCarryForward->Sort.m_bCorrect_After_Inject) {
     for (pCI->vBeginTarget(pCI->E.p_key,CK_EXPR); pCI->bEachTarget(); /**/) {
-      for (Kid xRpnCalc(pCI->E.p_expr->pSub_rpnCalc()); xRpnCalc.bEach(CK_TERM); /**/) {
-        if (xRpnCalc.p_term()->pSymbol()->bHasFacet(SF_EXP_COL)) {
-          xRpnCalc.p_term()->vBump_ordCol(SF_EXP_COL);
-          xRpnCalc.p_term()->vMark1(MARK_CHANGED);
+      for (pCI->vBeginTarget(pCI->E.xTarget.p_expr(),CK_TERM); pCI->bEachTarget(); /**/) {
+        pCI->E.p_term = pCI->E.xTarget.p_term();
+        if (pCI->E.p_term->pSymbol()->bHasFacet(SF_EXP_COL)) {
+          pCI->E.p_term->vBump_ordCol(SF_EXP_COL);
+          pCI->E.p_term->vMark1(MARK_CHANGED);
         }
       }
     }

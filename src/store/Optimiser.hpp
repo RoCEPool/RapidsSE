@@ -41,7 +41,6 @@ namespace STORE
     ExtendedText* m_pOptStmt;
     ExtendedText* m_pCodeBlock;
 
-
     // must be last
     Footer m_xFooter;
 

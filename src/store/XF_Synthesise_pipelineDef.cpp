@@ -314,6 +314,9 @@ void XF_Synthesise_pipelineDef::vCraftArgDefs(void)
       break;
 
     case CK_o_INFLATE:
+      if (p_OP->pSymbol()->Y_bHas(P_AltFetch))
+        m_pOpDef->m_sAlt = p_OP->pSymbol()->Y_szGet(P_AltFetch);
+
       m_pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_Inflate(p_OP)->pSub_tableNm()->szFacet(SF_TBL_NM)));
       break;
 
@@ -553,13 +556,14 @@ void XF_Synthesise_pipelineDef::vCraftColInj(ColInj* pColInj, Card *pSubCard)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // add colInj descriptor(s) for given injected expr_i
 
-  auto bfAddDescriptors = [pColInj, p_emit] (Card* pCard_expr_i) {
+  CardIter* pCI = m_pCI;
+  auto bfAddDescriptors = [pCI, pColInj, p_emit] (Card* pCard_expr_i) {
 
     // get details of column injected (e.g. $b.1)
     Card_Expr*   p_expr_i = _pCard_Expr(pCard_expr_i);
     i8    i_CrwCol_expr_i = StrLib::iGleanInt(p_expr_i->szFacet(SF_ITM_COL)->azChar());
 
-    Symbol* pSym_tblCol_i = p_expr_i->pFirst_tblCol();
+    Symbol* pSym_tblCol_i = p_expr_i->pFirst_tblCol(pCI);
     Stz*       szTblCol_i = pSym_tblCol_i->szFacet(SF_TBL_COL);
     //pSym_tblCol_i->vDump();
 
@@ -647,7 +651,7 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
 //    p_emit->vDump(__func__, "--EMITTED by SubCard--"_Stz);
 //  }
 
-  if (m_pStageDef->i_Stage() == 1) {
+  if (m_pStageDef->i_Stage() == 3) {
     vDebugPoint();
     if (m_pOpDef->i_Op() == 0)
       vDebugPoint();
@@ -656,10 +660,10 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // add colPpg descriptor(s) for given arriving expr_a
 
-  auto bfAddPropagatedArriving = [this, pColPpg, p_emit](Card *pCard_expr_a) {
-
+  auto bfAddPropagatedArriving = [this, pColPpg, p_emit](Card *pCard_expr_a)
+  {
     // arriving related
-    Card_Expr* p_expr_a = _pCard_Expr(pCard_expr_a);
+    Card_Expr*  p_expr_a = _pCard_Expr(pCard_expr_a);
     Symbol*  pSym_expr_a = p_expr_a->pSymbol();
 
     i8 i_CellIn;
@@ -672,10 +676,15 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
 //    if (AM::JOB::bHasTag(C_OPTIMISER_TRACE))
 //      p_expr_a->vDump(__func__,"--EXPR ARRIVING at SubCard--"_Stz);
 
-    if (m_pStageDef->i_Stage() == 4) {
+    if (m_pStageDef->i_Stage() == 3) {
       vDebugPoint();
-      if (m_pOpDef->i_Op() == 0)
+      if (m_pOpDef->i_Op() == 0) {
         vDebugPoint();
+        if (3 == pColPpg->m_nPropagated) {
+          //p_expr_a->vDump(__func__, "--EXPR ARRIVING at SubCard--"_Stz);
+          vDebugPoint();
+        }
+      }
     }
 
 
@@ -692,6 +701,10 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
         pSym_In_a = pSym_term_a;
       }
       else
+      if ((p_expr_e = p_emit->pFind_expr_Matches(SF_TBL_COL,pSym_expr_a))) {
+        pSym_In_a = pSym_expr_a;
+      }
+      else
       if ((p_expr_e = p_emit->pFind_expr_Matches_ignoring(pSym_expr_a, SF_EXP_COL))) {
         pSym_In_a = pSym_expr_a;
       }
@@ -700,6 +713,17 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
         // not propagated
         //vTrace("--NOT-FOUND expr\n"_Stz);
         return C_CONTINUE_RECURSION;
+      }
+
+      if (m_pStageDef->i_Stage() == 3) {
+        vDebugPoint();
+        if (m_pOpDef->i_Op() == 0) {
+          vDebugPoint();
+          if (3 == pColPpg->m_nPropagated) {
+            //p_expr_e->vDump(__func__, "--EXPR PPG at SubCard--"_Stz);
+            vDebugPoint();
+          }
+        }
       }
 
       i_CellIn  = p_expr_a->pSymbol()->iTo_ordinal(SF_EXP_COL) - 1;
@@ -716,11 +740,13 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
       return C_CONTINUE_RECURSION;
     }
 
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
     else {
       // - computed
 
       //if ((p_expr_e = p_emit->pGet_expr(pSym_expr_a))) {
-      if ((p_expr_e = p_emit->pContains(pSym_expr_a))) {
+      if ((p_expr_e = p_emit->pContains(m_pCI,pSym_expr_a))) {
 
 //      p_emit->vDump(__func__);
 //      p_expr_a->vDump(__func__);

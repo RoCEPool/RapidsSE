@@ -161,6 +161,8 @@ void Card_IndexJoin::vEarlyProject_add_transients(CardIter* pCI)
     vDebugPoint();
   }
 
+  pCI->E.p_term      = pCI->E.p_bound->pGet_idxCol();
+
   vDebugPoint();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

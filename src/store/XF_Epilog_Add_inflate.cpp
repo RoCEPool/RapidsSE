@@ -74,6 +74,11 @@ void XF_Epilog_Add_inflate::vBifurcate_inflate(void)
       if (m_pCI->E.p_scan->pSymbol()->Y_bHas(P_FusedProject))
         m_pCI->E.p_inflate->pSymbol()->Y_vSet(P_FusedProject);
 
+      m_pCI->E.p_table = m_pCI->E.p_scan->pSub_table();
+
+      if (m_pCI->E.p_table->pSymbol()->Y_bHas(P_AltFetch))
+        m_pCI->E.p_inflate->pSymbol()->Y_vSet(P_AltFetch,m_pCI->E.p_table->pSymbol()->Y_szGet(P_AltFetch));
+
       m_pCI->vBurst(m_pCI->E.p_Op);
 
       if (m_pCI->E.p_table)
@@ -87,6 +92,7 @@ void XF_Epilog_Add_inflate::vBifurcate_inflate(void)
 
     }
   }
+
   m_pCI->vEndTransform(__LINE__);
 }
 

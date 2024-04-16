@@ -6,7 +6,6 @@
 
 #include "Card_Level.hpp"
 #include "Card_Emit.hpp"
-#include "Card_RpnCalc.hpp"
 #include "Card_Term.hpp"
 
 #include "CardIter.hpp"
@@ -106,6 +105,13 @@ Card_Emit* Card_Project::pCraft_emit_early(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
+  if (8 == pCI->m_pBench->iBenchNo() && 57 == pCI->m_pBench->nPrintBoard()) {
+    //pCI->E.p_Op->vDump(__func__);
+    //this->vDump(__func__);
+    //pCI->Early.m_pNeeded_later->vDump(__func__);
+    vDebugPoint();
+  }
+
   Card_Emit* p_emit_early = new Card_Emit;
 
 //  pCI->Early.m_pNeeded_later->vDump(__func__);
@@ -113,11 +119,19 @@ Card_Emit* Card_Project::pCraft_emit_early(CardIter* pCI)
 
   for (Kid x_needed(pCI->Early.m_pNeeded_later); x_needed.bEach(CK_EXPR); /**/) {
     Card_Expr* p_expr_needed = x_needed.p_expr();
+    if (8 == pCI->m_pBench->iBenchNo() && 57 == pCI->m_pBench->nPrintBoard()) {
+      //p_expr_needed->vDump(__func__);
+      vDebugPoint();
+    }
 
-    //RASSERT(pCI->Dic.m_p_expr == pCI->Flux.m_pArriving);
+      //RASSERT(pCI->Dic.m_p_expr == pCI->Flux.m_pArriving);
     Card_Expr* p_expr_arriving = pCI->Flux.m_pArriving->pContains(p_expr_needed);
-    if (! p_expr_arriving)
+    if (! p_expr_arriving) {
+      //vTrace("NOT MATCHING\n"_Stz);
       continue;
+    }
+
+    //vTrace("MATCHING\n"_Stz);
 
     Card_Expr* p_expr_clone = p_expr_arriving->pClone();
 
@@ -131,6 +145,11 @@ Card_Emit* Card_Project::pCraft_emit_early(CardIter* pCI)
 
 
   p_emit_early->vRenumberAll_expr();
+
+  if (8 == pCI->m_pBench->iBenchNo() && 57 == pCI->m_pBench->nPrintBoard()) {
+    //p_emit_early->vDump(__func__);
+    vDebugPoint();
+  }
 
   return p_emit_early;
 }
@@ -216,35 +235,6 @@ void Card_Project::vEarlyProject_recurse_needed(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
-/* inject fold expr into this project                                         */
-/*----------------------------------------------------------------------------*/
-void Card_Project::vInject_foldExpr(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  pCI->E.p_expr = new Card_Expr;
-
-  pCI->E.p_expr->pSymbol()->Y_vSet(P_Injected);
-
-  pCI->E.p_expr->pSymbol()->vApplyFacets(pCI->Flat.m_pExpr_fold->pSymbol());
-
-  pCI->E.p_rpnCalc = new Card_RpnCalc;
-  pCI->E.p_expr->vAppendChild(pCI->E.p_rpnCalc);
-  pCI->E.p_expr->vApplyCast_p(pCI->E.p_rpnCalc);
-
-  Symbol x_Symbol_expCol1(SF_EXP_COL, 1);
-  pCI->E.p_term = pCI->Flat.m_pExpr_fold->pSub_term()->pClone(&x_Symbol_expCol1);
-
-  pCI->E.p_rpnCalc->vAppendChild(pCI->E.p_term);
-
-  pCI->E.p_emit = pSub_emit();
-
-  pCI->E.p_emit->vPushChild(pCI->E.p_expr);
-  pCI->E.p_emit->vRenumberAll_expr();
-
-}
-
-/*----------------------------------------------------------------------------*/
 /* is this a compound project?                                                */
 /*----------------------------------------------------------------------------*/
 bool Card_Project::bIsCompound(void)
@@ -260,11 +250,11 @@ bool Card_Project::bIsCompound(void)
 /*----------------------------------------------------------------------------*/
 /* is this a compound project?                                                */
 /*----------------------------------------------------------------------------*/
-bool Card_Project::bIsLiterals(void)
+bool Card_Project::bIsLiterals(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (pSub_emit()->bIsLiterals())
+  if (pSub_emit()->bIsLiterals(pCI))
     return true;
 
   return false;

@@ -43,14 +43,12 @@ void Card_EXPRLIST::vBump_KeyCol_In_rpnCalc(CardIter* pCI)
   Kid xEXPRLIST(this);
   while (xEXPRLIST.bEach(CK_EXPR)) {
 
-    Card_RpnCalc* p_rpnCalc = xEXPRLIST.p_expr()->pSub_rpnCalc(C_NOT_NULL);
+    for (pCI->vBeginTarget(xEXPRLIST.p_expr(),CK_TERM); pCI->bEachTarget(); /**/) {
+      pCI->E.p_term = pCI->E.xTarget.p_term();
 
-    Kid xCI2(p_rpnCalc);
-    while ((xCI2.bEach(CK_TERM))) {
-
-      if (xCI2.p_term()->pSymbol()->bHasFacet(SF_KEY_COL)) {
-        xCI2.p_term()->vBump_ordCol(SF_KEY_COL);
-        xCI2.p_term()->vMark1(MARK_CHANGED);
+      if (pCI->E.p_term->pSymbol()->bHasFacet(SF_KEY_COL)) {
+        pCI->E.p_term->vBump_ordCol(SF_KEY_COL);
+        pCI->E.p_term->vMark1(MARK_CHANGED);
         continue;
       }
     }
@@ -60,20 +58,18 @@ void Card_EXPRLIST::vBump_KeyCol_In_rpnCalc(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_EXPRLIST::vBump_expCol_In_rpnCalc(CardIter* )
+void Card_EXPRLIST::vBump_expCol_In_rpnCalc(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   Kid xEXPRLIST(this);
   while (xEXPRLIST.bEach(CK_EXPR)) {
 
-    Card_RpnCalc* p_rpnCalc = xEXPRLIST.p_expr()->pSub_rpnCalc(C_NOT_NULL);
-
-    Kid xCI2(p_rpnCalc);
-    while (xCI2.bEach(CK_TERM)) {
-      if (xCI2.p_term()->pSymbol()->bHasFacet(SF_EXP_COL)) {
-        xCI2.p_term()->vBump_ordCol(SF_EXP_COL);
-        xCI2.p_term()->vMark1(MARK_CHANGED);
+    for (pCI->vBeginTarget(xEXPRLIST.p_expr(),CK_TERM); pCI->bEachTarget(); /**/) {
+      if (pCI->E.xTarget.p_term()->pSymbol()->bHasFacet(SF_EXP_COL)) {
+        pCI->E.p_term = pCI->E.xTarget.p_term();
+        pCI->E.p_term->vBump_ordCol(SF_EXP_COL);
+        pCI->E.p_term->vMark1(MARK_CHANGED);
         continue;
       }
     }
@@ -83,13 +79,13 @@ void Card_EXPRLIST::vBump_expCol_In_rpnCalc(CardIter* )
 /*----------------------------------------------------------------------------*/
 /* does this expression list contain given term?                              */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Card_EXPRLIST::pContains(Symbol* pSymbol_arg)
+Card_Expr* Card_EXPRLIST::pContains(CardIter* pCI,Symbol* pSymbol_arg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Kid xCI_this(this);
   while (xCI_this.bEach(CK_EXPR))
-    if (xCI_this.p_expr()->bContains(pSymbol_arg))
+    if (xCI_this.p_expr()->bContains(pCI,pSymbol_arg))
       return xCI_this.p_expr();
 
   return nullptr;
@@ -108,6 +104,22 @@ Card_Expr* Card_EXPRLIST::pContains(Card_Expr* p_expr_arg)
       return xCI_this.p_expr();
 
   return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* return term0 of <expr> with term0 matching given $n stream-column          */
+/*----------------------------------------------------------------------------*/
+Card_Expr* Card_EXPRLIST::pDecode_expr(Symbol* pSymbol_expCol)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  RASSERT(pSymbol_expCol->bHasFacet(SF_EXP_COL));
+
+  i8 i_Child  = pSymbol_expCol->iTo_ordinal(SF_EXP_COL) - 1;
+
+  Card_Expr* p_expr_expCol = pGet_expr(i_Child);
+
+  return p_expr_expCol;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -134,13 +146,13 @@ Card_Term* Card_EXPRLIST::pDecode_expr_term0(Symbol* pSymbol_expCol)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_EXPRLIST::vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn)
+void Card_EXPRLIST::vDeleteFacetIf(CardIter* pCI, eSF eFacet, eSF eAlsoFacet, char cTblSyn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Kid xEXPRLIST(this);
   while (xEXPRLIST.bEach(CK_EXPR))
-    xEXPRLIST.p_expr()->vDeleteFacetIf(eFacet, eAlsoFacet, cTblSyn);
+    xEXPRLIST.p_expr()->vDeleteFacetIf(pCI, eFacet, eAlsoFacet, cTblSyn);
 }
 
 /*----------------------------------------------------------------------------*/

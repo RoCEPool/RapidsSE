@@ -5,7 +5,6 @@
 #include "Card_Filter.hpp"
 
 #include "Card_Expr.hpp"
-#include "Card_RpnCalc.hpp"
 #include "Card_BoolPred.hpp"
 #include "Card_RlnConj.hpp"
 #include "Card_Term.hpp"
@@ -75,7 +74,6 @@ void Card_Filter::vIndividuate_filter(CardIter* pCI)
   RASSERT(pCI->E.p_Op->pSub_emit());
 
   pCI->E.p_Op->vRemoveChild(pCI->E.p_filter);
-
 
   pCI->E.p_filter->vEnsure_stream(pCI);
 
@@ -187,7 +185,7 @@ void Card_Filter::vPrint(Ribbon* pRibbon, i8 iDepth)
   s32 sName;
 
   sName.vSprint("%s%lld]filter"_Stz,
-                Stz::szDots(iDepth - 1),
+                Stz::szDots(0 == iDepth ? iDepth : iDepth - 1),
                 m_i_Child);
 
   pRibbon->vSprintSnippet(false,"%c%c%s %llx %lld"_Stz,
@@ -205,7 +203,7 @@ void Card_Filter::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  eValidate_mustEither(CK_BOOLPRED, CK_EXPR, CK_NONE);
+  vValidate_mustHave(CK_BOOLPRED, CK_NONE);
 
   if (iDepth > 2) {
    // pCI->PRINTBOARD_dbg();

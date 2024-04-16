@@ -53,17 +53,9 @@ Card_Where* Card_Where::pNewAssembly(CardIter* pCI)
   Card_Filter* p_filter = new Card_Filter;
   p_where->vAppendChild(p_filter);
 
-  Card_Expr* p_expr = new Card_Expr;
-  p_filter->vAppendChild(p_expr);
-
-  Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
-  p_expr->vAppendChild(p_rpnCalc);
-
   if (pCI) {
     pCI->E.p_where   = p_where;
     pCI->E.p_filter  = p_filter;
-    pCI->E.p_expr    = p_expr;
-    pCI->E.p_rpnCalc = p_rpnCalc;
   }
 
   return p_where;
@@ -130,19 +122,6 @@ void Card_Where::vMoveWhereConjToTableFilter(CardIter* pCI, Stz* szWithMark) {
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* burst <where>/<filter>/<expr>/<rpnCalc>                                    */
-/*----------------------------------------------------------------------------*/
-void Card_Where::vBurstAssembly(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  pCI->E.p_where   = this;
-  pCI->E.p_filter  = pCI->E.p_where->pSub_filter(C_NOT_NULL);
-  pCI->E.p_expr    = pCI->E.p_filter->pSub_expr(C_NOT_NULL);
-  pCI->E.p_rpnCalc = pCI->E.p_expr->pSub_rpnCalc(C_NOT_NULL);
-}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */

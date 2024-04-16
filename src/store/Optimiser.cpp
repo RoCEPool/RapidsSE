@@ -48,10 +48,9 @@ Optimiser::Optimiser(TagSet* p_JobTags)
 
   m_nJoinPermutations = 0;
 
-  for (i8 iIndex = 0; iIndex < C_PERMUTATIONS; iIndex++) {
-    m_sJoinPermutation[iIndex] = "(none)"_Stz;
+  for (i8 i_Index = 0; i_Index < C_PERMUTATIONS; i_Index++) {
+    m_sJoinPermutation[i_Index] = "(none)"_Stz;
   }
-
 
   m_pPipelineDef = nullptr;
 
