@@ -179,6 +179,10 @@ Card_Needed* Card_Emit::pCraftRoot_needed(CardIter* pCI)
         if (p_expr_key->pSymbol()->bHasFacet(SF_TBL_COL)) {
           vDebugPoint();
         }
+        else
+        if (p_expr_key->pHead_symbol()->bHasFacet(SF_TBL_COL)) {
+          vDebugPoint();
+        }
         else {
           pCI->E.p_Op->vDump(__func__);
           p_expr_key->pSymbol()->vDump();
