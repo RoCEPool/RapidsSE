@@ -450,6 +450,47 @@ void Step::vMetaDataTableQueries(void)
 void Step::vMetaDataTableSchema(void)
 {
   ENTRY();
+  Table* pTable = _pTable(*m_pLogicUnit->m_xpTable);
+  StreamDef* pStreamDef = pTable->pStreamDef();
+
+  Pds* pPdsRowBuffer = new Pds(pStreamDef, false, BT_DATA);
+
+  // get current folder
+  i8 iDepth =  m_oDicStack.nItems();
+  Object* pPtrDic =  m_oDicStack.pPick(iDepth - 1);
+
+  // Get table dict
+  Dic* pDic = _pDic(pPtrDic);
+
+  // get the schema name
+  i8 i = 2;
+  while( pDic->eDicKind() != DK_SCHEMA) {
+    pPtrDic = m_oDicStack.pPick(iDepth - i);
+    pDic = _pDic(pPtrDic);
+    i++;
+  }
+
+  s256 sSchemaNm(pDic->szDicNm());
+
+  // get the catalog name
+  while( pDic->eDicKind() != DK_CATALOG) {
+    pPtrDic = m_oDicStack.pPick(iDepth - i);
+    pDic = _pDic(pPtrDic);
+    i++;
+  }
+
+  s256 sCatalogNm(pDic->szDicNm());
+
+  Row* pRow = pPdsRowBuffer->pAllotRow(C_VARGS_BEGIN,
+                                       sCatalogNm.szStz(),
+                                       sSchemaNm.szStz(),
+                                       C_VARGS_END);
+
+  if(!pRow) {
+    ASSERT(0);
+  }
+
+  m_pDataStack->vPushPtr((Object*)pPdsRowBuffer);
 
   EXIT();
 }
