@@ -191,13 +191,11 @@ Card_Expr* Card_EXPRLIST::pFind_expr_Matches(Symbol *pSymbol_arg)
     if (p_expr->pSymbol()->bMatches(pSymbol_arg))
       return p_expr;
 
-#ifdef Z_NO_EXPR_TBLCOL
     if (pSymbol_arg->bHasFacet(SF_TBL_COL) && p_expr->bIsScalarCol()) {
       Symbol* pSym_tblCol = p_expr->pPeekChild()->pSymbol();
       if (pSym_tblCol->bMatches(SF_TBL_COL,pSymbol_arg))
         return p_expr;
     }
-#endif
 
   }
 

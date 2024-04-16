@@ -107,9 +107,7 @@ void Card_Emit::vApplyFacets(CardIter *pCI, Card_Key* p_key)
 
     pSym_expr_emit->vApplyFacets(p_expr_key->pSymbol());
 
-#ifdef Z_NO_EXPR_TBLCOL
     pSym_expr_emit->vDeleteFacet(SF_TBL_COL);
-#endif
   }
 }
 

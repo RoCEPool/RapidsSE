@@ -109,7 +109,6 @@ void XF_Epilog_Cull_facet::vCull_facet(void)
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-#ifdef Z_NO_EXPR_TBLCOL
     if (pSym_term->bHasFacet(SF_ITM_COL))
       pSym_term->vCullFacet_leaving(SF_ITM_COL,SF_TBL_COL);
     else
@@ -118,18 +117,6 @@ void XF_Epilog_Cull_facet::vCull_facet(void)
     else
     if (pSym_term->bHasFacet(SF_EXP_COL))
       pSym_term->vCullFacet_leaving(SF_EXP_COL,SF_TBL_COL);
-#else
-    if (pSym_term->bHasFacet(SF_ITM_COL))
-      pSym_term->vCullFacet_except(SF_ITM_COL);
-    else
-    if (pSym_term->bHasFacet(SF_KEY_COL))
-      pSym_term->vCullFacet_except(SF_KEY_COL);
-    else
-    if (pSym_term->bHasFacet(SF_EXP_COL))
-      pSym_term->vCullFacet_except(SF_EXP_COL);
-
-    RASSERT(1 == pSym_term->nFacets());
-#endif
 
     return true;
   };
