@@ -110,6 +110,7 @@ Card::Card(eCK eCard, i8 iFixedDepth)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
+  m_xSymbol.vCard(this);
   MemLib::vZero(md_Coord, sizeof(md_Coord), CN_CARD);
 
   if (CK_STREAMKEY == eCard)

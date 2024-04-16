@@ -439,24 +439,34 @@ void Card_Term::vX_tblCol_To_expCol(CardIter* pCI)
 void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-  UNUSED(pCI);
   UNUSED(iDepth);
   UNUSED(pParent);
 
   Card::vValidate_noChildren();
 
-  (void)Card::eValidate_parentEither(pCI, CK_t_HSHCOL,// todo: NO!?
+  (void)Card::eValidate_parentEither(pCI,
                                      CK_ANDCONJ,
                                      CK_BOUND,
                                      CK_BOOLPRED,
                                      CK_EXPR,
-                                     CK_RLNCONJ,
                                      CK_s_HASHING,
+                                     CK_t_HSHCOL,// todo: NO!?
+                                     CK_RLNCONJ,
                                      CK_NOTCONJ,
                                      CK_ORCONJ,
                                      CK_NONE);
 
   Symbol* pSym_term = pSymbol();
+  if (pSym_term->bHasFacet(SF_NMD_COL)) {
+    if (! (pParent->bIsCard(CK_BOOLPRED) ||
+           pParent->bIsCard(CK_BOUND)    ||
+           pParent->bIsCard(CK_RLNCONJ))) {
+      pCI->PRINTBOARD_dbg();
+      vDump(__func__);
+      NEVER_REACH
+    }
+  }
+
   if (pSym_term->bIs_Col()) {
     if (pSym_term->bHasFacet(SF_EXP_COL)) {
       vDebugPoint();
@@ -474,7 +484,6 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
       vDebugPoint();
     }
   }
-
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -498,10 +507,6 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
       }
     }
   }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   vValidationPassed();
 }

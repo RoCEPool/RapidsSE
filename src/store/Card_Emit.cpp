@@ -100,14 +100,14 @@ void Card_Emit::vApplyFacets(CardIter *pCI, Card_Key* p_key)
     if (! xEmit.p_expr()->bIsScalarCol())
       continue;
 
-    Symbol* pSym_expr_emit = xEmit.p_expr()->pGet_Symbol(0);
-    Card_Expr* p_expr_key = p_key->pDecode_scalar_expr_Via_symbol(pCI,pSym_expr_emit);
+    Symbol* pSym_term0_emit = xEmit.p_expr()->pGet_Symbol(0);
+    Card_Expr* p_expr_key = p_key->pDecode_scalar_expr_Via_symbol(pCI, pSym_term0_emit);
     if (! p_expr_key)
       continue;
 
-    pSym_expr_emit->vApplyFacets(p_expr_key->pSymbol());
-
-    pSym_expr_emit->vDeleteFacet(SF_TBL_COL);
+//    pSym_term0_emit->vApplyFacets(p_expr_key->pSymbol());
+    pSym_term0_emit->vApplyFacet(SF_KEY_COL,p_expr_key->pSymbol());
+    pSym_term0_emit->vDeleteFacet(SF_TBL_COL);
   }
 }
 

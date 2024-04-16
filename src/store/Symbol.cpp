@@ -22,6 +22,7 @@ Symbol::Symbol(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
+  vCard(nullptr);
   vResetFacets();
   vCastReset();
 
@@ -44,6 +45,7 @@ Symbol::Symbol(eSF eFacet, char cChar, i8 iInt)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
+  vCard(nullptr);
   vResetFacets();
   vCastReset();
   m_pProperties = nullptr;
@@ -1546,6 +1548,26 @@ void Symbol::vApplyFacets(Symbol* pSymbol_arg)
     Facet* aFacet_arg = pSymbol_arg->aFacet(i_Facet_arg);
     vApplyFacet(aFacet_arg->m_eFacet, aFacet_arg->m_sFacet);
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* get card                                                                   */
+/*----------------------------------------------------------------------------*/
+Card* Symbol::pCard(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  return m_pCard;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set card                                                                   */
+/*----------------------------------------------------------------------------*/
+void Symbol::vCard(Card* pCard)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  m_pCard = pCard;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3350,8 +3372,6 @@ void Symbol::vFacet_Nmd_Col(i8 iColNo)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  //RASSERT(! bHasFacets());
-
   vFacetSprint(SF_NMD_COL, "COL%lld"_Stz, iColNo);
 
   RASSERT(bHasFacet(SF_NMD_COL));
@@ -3367,7 +3387,6 @@ void Symbol::vFacet_Nmd_Col(Stz* szColNm)
   vFacetSet(SF_NMD_COL, szColNm);
 
   RASSERT(bHasFacet(SF_NMD_COL));
-  //RASSERT(!bHasFacet(SF_ITM_COL));
 }
 
 /*----------------------------------------------------------------------------*/

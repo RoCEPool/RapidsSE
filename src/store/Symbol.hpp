@@ -25,6 +25,7 @@ namespace STORE
     b8     m_bTypeNullable;
   };
 
+  class Card;
   class CardIter;
 
   class Symbol : public Object
@@ -32,6 +33,7 @@ namespace STORE
   private:
     static const i8 C_FACETS = 6;
 
+    Card* m_pCard;
     i8    m_nFacets;
     Facet xaFacet[C_FACETS];
     Cast  m_xCast;
@@ -141,6 +143,8 @@ namespace STORE
     void vApplyFacet(eSF eFacet, Symbol* pSymbol);
     void vApplyFacets(Symbol* pSymbol_arg);
 
+    Card* pCard(void);
+    void vCard(Card* pCard);
     Cast xCast(void);
     bool bChanged(void);
     void vChanged(bool bChanged);
