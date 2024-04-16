@@ -748,8 +748,15 @@ void Card_Expr::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 
     RASSERT(bIsScalarCol());
   }
+  else {
+    if (! (m_xSymbol.bHasFacet(SF_EXP_COL) || m_xSymbol.bHasFacet(SF_KEY_COL))) {
+      vDump(__func__);
+      vValidationFailed("SF_EXP/KEY_COL Missing : %p"_Stz,this);
+    }
+  }
 
   RASSERT(! m_xSymbol.bHasFacet(SF_TBL_COL));
+
 
   Card::vValidate(pCI,iDepth,pParent);
   pCI->vValidateChildren(this,iDepth+1);
