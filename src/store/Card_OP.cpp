@@ -559,6 +559,8 @@ void Card_OP::vRestate_emit(CardIter* pCI)
       if (pCI->Arriving.m_pEmit) {
         pCI->Dic.m_p_expr = pCI->Arriving.m_pEmit;
         pCI->E.p_key = pCI->E.p_Op->pSub_key();
+        if (pCI->E.p_key)
+          pCI->E.p_key->vApplyCast(pCI,/*??*/pCI->Dic.m_p_expr);
         pCI->E.p_emit->vApplyCast(pCI,/*??*/pCI->Dic.m_p_expr);
         pCI->E.p_key = nullptr;
       }

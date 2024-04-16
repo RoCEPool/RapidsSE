@@ -114,11 +114,8 @@ void XF_Epilog_Type_Cast::vCast(void)
     } // switch
 
     if ((m_pCI->E.p_key = m_pCI->E.p_Op->pSub_key())) {
-      m_pCI->Arriving.m_pEmit->vDump(__func__ );
-      m_pCI->E.p_key->vDump(__func__ );
       m_pCI->E.p_key->vApplyCast(m_pCI,/*??*/m_pCI->Arriving.m_pEmit);
       m_pCI->E.p_key->vRenumberAll_expr(SF_KEY_COL);
-      m_pCI->E.p_key->vDump(__func__ );
       m_pCI->E.p_key = nullptr;
     }
 

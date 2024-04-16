@@ -197,11 +197,23 @@ void Card_Expr::vApplyCast(CardIter* pCI, Card_Emit* p_Dic_expr)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-    for (pCI->vBeginTarget(this,CK_TERM); pCI->bEachTarget(); /**/) {
-      pCI->E.p_term = pCI->E.xTarget.p_term();
+  for (pCI->vBeginTarget(this,CK_TERM); pCI->bEachTarget(); /**/) {
+    pCI->E.p_term = pCI->E.xTarget.p_term();
     pCI->E.p_term->vApplyCast(pCI, /*??*/p_Dic_expr, xCast_last);
   }
-  pCI->E.p_term = nullptr;
+  if (m_xSymbol.xCast().m_xTypeId.eCTVal() == CT_VARCHAR &&
+      xCast_last.m_xTypeId.eCTVal() == CT_VARCHAR) {
+    if (xCast_last.m_nTypeLength)
+      m_xSymbol.vApplyCast(xCast_last);
+  }
+  else
+  if (m_xSymbol.xCast().m_xTypeId.eCTVal() == CT_DECIMAL &&
+      xCast_last.m_xTypeId.eCTVal() == CT_DECIMAL &&
+      xCast_last.m_nTypeLength) {
+    m_xSymbol.vApplyCast(xCast_last);
+  }
+
+    pCI->E.p_term = nullptr;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

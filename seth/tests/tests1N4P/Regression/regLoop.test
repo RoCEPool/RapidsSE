@@ -23,11 +23,8 @@ INCLUDE 'regrLoadData.test';
 
 //------------------------------------------------------------------------------
 
-LOG 'having.test ...';
-INCLUDE 'having.test';
-
-LOG 'aggs-count.test ...';
-INCLUDE 'aggs-count.test';
+LOG 'case.test ...';
+INCLUDE 'case.test';
 
 //------------------------------------------------------------------------------
 
