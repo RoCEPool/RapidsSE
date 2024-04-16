@@ -436,6 +436,15 @@ namespace STORE
     void vPrintProperties(Ribbon* pRibbon, i8 iDepth);
     void vPrintSymbol(Ribbon* pRibbon, i8 iDepth, bool bPrintMarks=false);
 
+    void vFormatAddress(String* pString);
+    void vFormatDots(String* pString, i8 iDepth);
+    void vFormatFacet(String* pString, i8 i_Facet);
+    void vFormatHeader(String* pString, eAL eLevel=AL_NONE);
+    void vFormatMarkers(String* pString);
+    void vFormatName(String* pString, i8 iDepth, bool bJustify_right);
+    void vFormatProperty(String* pString, i8 i_Property, bool bPpyNm);
+    void vFormatType(String* pString);
+
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
   public:

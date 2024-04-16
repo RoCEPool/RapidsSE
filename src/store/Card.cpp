@@ -2518,6 +2518,155 @@ void Card::vPrintSymbol(Ribbon* pRibbon, i8 iDepth, bool bPrintMarks)
   }
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card::vFormatDots(String* pString, i8 iDepth)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  UNUSED(pString);
+
+  pString->vCatSprint("%s%lld]"_Stz,
+                      Stz::szDots(iDepth - 1),
+                      m_i_Child);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card::vFormatFacet(String* pString, i8 i_Facet)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Facet* aFacet = m_xSymbol.aFacet(i_Facet);
+
+  pString->vCatSprint("%18s~%lld"_Stz,
+                      aFacet->m_sFacet.azChar(),
+                      i_Facet);
+}
+
+/*----------------------------------------------------------------------------*/
+/* put header                                                                 */
+/*----------------------------------------------------------------------------*/
+void Card::vFormatHeader(String* pString, eAL eLevel)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  char cLevel = ' ';
+  switch (eLevel) {
+    case AL_PARTITION : cLevel = 'P'; break;
+    case AL_NODE      : cLevel = 'N'; break;
+    case AL_ORIGIN    : cLevel = 'O'; break;
+    default           : cLevel = '?'; break;
+  }
+
+  pString->vCatSprint("==%02lld %c--%10p--"_Stz,
+                      m_i_Child,
+                      cLevel,
+                      ((char *) this) - (char *) AM::SYSARGS::aRegionAddr());
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card::vFormatMarkers(String* pString)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  pString->vCatSprint("%s%s%"_Stz,
+                      szMark1(),
+                      szMark2());
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card::vFormatName(String* pString, i8 iDepth, bool bJustify_right)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  s32 sName(szCardNm());
+  if (0 == iDepth)
+    sName.vToUpper();
+  else
+  if (iDepth >= 2)
+    sName.vToLower();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  if (bJustify_right)
+    pString->vCatSprint("%-18s"_Stz,
+                        sName.szStz());
+  else
+    pString->vCatSprint("%18s"_Stz,
+                        sName.szStz());
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card::vFormatProperty(String* pString, i8 i_Property, bool bPpyNm)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  eTN ePpyTkn = pSymbol()->Y_ePpyTkn(i_Property);
+
+  switch (ePpyTkn) {
+
+    case TN_INTEGER: {
+      Stz* szPpyNm = pSymbol()->Y_szPpyNm(i_Property);
+      i8   iPpyVal = pSymbol()->Y_iGet(i_Property);
+
+      Stz* szDecode = szDecodeEnum(szPpyNm, iPpyVal);
+      if (szDecode)
+        pString->vCatSprint("}%s"_Stz,
+                            szDecode);
+      else
+      if (bPpyNm)
+        pString->vCatSprint("}%s=%lld"_Stz,
+                            szPpyNm,
+                            iPpyVal);
+      else
+        pString->vCatSprint("}%s=%lld"_Stz,
+                            szPpyNm,
+                            iPpyVal);
+      break;
+    }
+
+    case TN_STRING: {
+      Stz* szPpyNm  = pSymbol()->Y_szPpyNm(i_Property);
+      Stz* szPpyVal = pSymbol()->Y_szGet(i_Property);
+
+      if (szPpyVal->bSame("y"_Stz))
+        pString->vCatSprint("}%s"_Stz,
+                            szPpyNm);
+      else
+      if (bPpyNm)
+        pString->vCatSprint("}%s=%s"_Stz,
+                            szPpyNm,
+                            szPpyVal);
+      else
+        pString->vCatSprint("}%s"_Stz, szPpyVal);
+      break;
+    }
+
+    default:
+      break;
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card::vFormatType(String* pString)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  UNUSED(pString);
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
