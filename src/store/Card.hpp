@@ -20,8 +20,6 @@
 
 //#define Z_PART_STREAMKEY
 
-#define Z_NO_TABLEINFO
-
 namespace STORE
 {
   class Card_AbsJoin;
@@ -140,7 +138,6 @@ namespace STORE
   class Card_SubSet;
 
   class Card_Table;
-  class Card_TableInfo;
   class Card_TableList;
   class Card_TableNm;
   class Card_TablePtn;
@@ -531,7 +528,6 @@ namespace STORE
     Card_StreamSet*     pSub_streamSet(bool bNotNull=false);
     Card_SubQuery*      pSub_subQuery(bool bNotNull=false);
     Card_Table*         pSub_table(bool bNotNull=false);
-    Card_TableInfo*     pSub_tableInfo(bool bNotNull=false);
     Card_TableNm*       pSub_tableNm(bool bNotNull=false);
     Card_TablePtn*      pSub_tablePtn(bool bNotNull=false);
     Card_TableSize*     pSub_tableSize(bool bNotNull=false);

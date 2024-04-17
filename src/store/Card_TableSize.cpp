@@ -22,11 +22,7 @@ __vDeleteFunction(Card_TableSize,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_TableSize::Card_TableSize(void)
-#ifdef Z_NO_TABLEINFO
 : Card_symbol(CK_TABLESIZE, 3)
-#else
-: Card_symbol(CK_TABLESIZE, 4)
-#endif
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   

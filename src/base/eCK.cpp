@@ -53,7 +53,6 @@ Stz* aCK[CK_ENUMS]
   /* */ "CK_t_EMIT"_Stz,         // CK_t_EMIT
   /* */ "CK_t_HSHCOL"_Stz,       // CK_t_HSHCOL
   /* */ "CK_t_INDEXLIST"_Stz,    // CK_t_INDEXLIST
-  /* */ "CK_t_TABLEINFO"_Stz,    // CK_t_TABLEINFO
   /* */ "CK_t_TABLENM"_Stz,      // CK_t_TABLENM
 
   /* */ "CK_ADDRESS"_Stz,      // CK_ADDRESS
@@ -193,7 +192,6 @@ Stz* aCK_short[CK_ENUMS]
   /* */ "emit"_Stz,            // CK_t_EMIT
   /* */ "hshCol"_Stz,          // CK_t_HSHCOL
   /* */ "indexList"_Stz,       // CK_t_INDEXLIST
-  /* */ "tableInfo"_Stz,       // CK_t_TABLEINFO
   /* */ "tableNm"_Stz,         // CK_t_TABLENM
 
   /* */ "address"_Stz,         // CK_ADDRESS

@@ -159,7 +159,6 @@ namespace STORE
     Card_SubSet *        p_subSet;
 
     Card_Table *         p_table;
-    Card_TableInfo *     p_tableInfo;
     Card_TableList *     p_tableList;
     Card_TableNm *       p_tableNm;
     Card_TablePtn *      p_tablePtn;

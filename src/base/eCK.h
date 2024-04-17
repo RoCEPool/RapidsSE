@@ -55,7 +55,6 @@ enum eCK : i8 // card kind
   /* */ CK_t_EMIT,
   /* */ CK_t_HSHCOL,
   /* */ CK_t_INDEXLIST,
-  /* */ CK_t_TABLEINFO,
   /* */ CK_t_TABLENM,
 
   /* */ CK_ADDRESS,

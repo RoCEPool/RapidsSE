@@ -132,22 +132,10 @@ void XF_Prolog_Analyse_table::vXF_Analyse_table(Symbol* pSymbol_tableSyn)
     m_pCI->E.p_rowSize   = (new Card_RowSize)   ->SYM(SF_INT_LIT, jRowSize);
     m_pCI->E.p_rowCount  = (new Card_RowCount)  ->SYM(SF_INT_LIT, nRowCount);
 
-#ifdef Z_NO_TABLEINFO
     m_pCI->E.p_table->vAppendChild(m_pCI->E.p_tablePtn);
     m_pCI->E.p_table->vAppendChild(m_pCI->E.p_tableSize);
     m_pCI->E.p_table->vAppendChild(m_pCI->E.p_rowSize);
     m_pCI->E.p_table->vAppendChild(m_pCI->E.p_rowCount);
-#else
-    m_pCI->E.p_tableInfo = new Card_TableInfo;
-
-    m_pCI->E.p_tableInfo->vAppendChild(m_pCI->E.p_tablePtn);
-    m_pCI->E.p_tableInfo->vAppendChild(m_pCI->E.p_tableSize);
-    m_pCI->E.p_tableInfo->vAppendChild(m_pCI->E.p_rowSize);
-    m_pCI->E.p_tableInfo->vAppendChild(m_pCI->E.p_rowCount);
-
-    m_pCI->E.p_table->vAppendChild(m_pCI->E.p_tableInfo);
-
-#endif
   }
 
   m_pCI->vEndTransform(__LINE__);

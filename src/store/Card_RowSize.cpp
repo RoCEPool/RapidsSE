@@ -20,11 +20,7 @@ __vDeleteFunction(Card_RowSize,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_RowSize::Card_RowSize(void)
-#ifdef Z_NO_TABLEINFO
 : Card_symbol(CK_ROWSIZE, 3)
-#else
-: Card_symbol(CK_ROWSIZE, 4)
-#endif
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
