@@ -192,6 +192,7 @@ extern Stz* P_ProjBumped;
 extern Stz* P_SendKind;
 extern Stz* P_Smoothed;
 extern Stz* P_StageTopo;
+extern Stz* P_StreamKey;
 extern Stz* P_SqyCall;
 extern Stz* P_SqyRslTest;
 extern Stz* P_Unproject;
