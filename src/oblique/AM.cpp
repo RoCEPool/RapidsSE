@@ -5037,6 +5037,7 @@ static Stz* aEG[]
   "EG_RU"_Stz,
   
   "EG_SC"_Stz,
+  "EG_SF"_Stz,
   "EG_SI"_Stz,
 
   "EG_TA"_Stz,
@@ -5147,6 +5148,7 @@ Stz* AM::szEnumText(i8 i_EnumGroup, i8 i_Enum)
     case EG_RU: return aRU[i_Enum];
       
     case EG_SC: return aSC[i_Enum];
+    case EG_SF: return aSF[i_Enum];
     case EG_SI: return aSI[i_Enum];
 
     case EG_TA: return aTA[i_Enum];
