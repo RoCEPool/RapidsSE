@@ -10,7 +10,7 @@
 
   STD_BOOTFORK_TAG
   "
-  define table schema (
+  define table md_schema (
     szCatalogName VARCHAR NOT NULL ,
     szSchemaName  VARCHAR NOT NULL
   ) < metaData > = MetaDataTable[].schema ;

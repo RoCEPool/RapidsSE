@@ -10,7 +10,7 @@
 
   STD_BOOTFORK_TAG
   "
-  define table columns (
+  define table md_columns (
     szCatalogName    VARCHAR NOT NULL ,
     szSchemaName     VARCHAR NOT NULL ,
     szTableName      VARCHAR NOT NULL ,

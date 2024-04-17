@@ -10,7 +10,7 @@
 
   STD_BOOTFORK_TAG
   "
-  define table queries (
+  define table md_queries (
     iQueryId          INTEGER NOT NULL ,
     tiTimestamp       TIMESTAMP NOT NULL ,
     szSqlText         VARCHAR NOT NULL ,

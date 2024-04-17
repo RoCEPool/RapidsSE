@@ -10,7 +10,7 @@
 
   STD_BOOTFORK_TAG
   "
-  define table sessions (
+  define table md_sessions (
     iSessionId    INTEGER NOT NULL ,
     bConnect      BOOLEAN NOT NULL ,
     szStatus      VARCHAR NOT NULL
