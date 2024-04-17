@@ -955,7 +955,7 @@ void Card_OP::vRpn_indexJoin(CardIter* pCI, String* psRpnExpr, Card_IndexJoin* p
     psRpnExpr->vCatSprint(" %s"_Stz, p_term->pSymbol()->szFacet_rpnTerm());
   }
 
-  psRpnExpr->vCatSprint(" %s"_Stz, p_bound->pSymbol()->szFacet_bound());
+  psRpnExpr->vCatSprint(" %s"_Stz, p_bound->pSymbol()->szFacet0());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1045,7 +1045,7 @@ void Card_OP::vRpn_indexScan(CardIter* pCI, String* psRpnExpr, Card_IndexScan* p
 
     }
 
-    psRpnExpr->vCatSprint(" %s"_Stz, p_bound->pSymbol()->szFacet_bound());
+    psRpnExpr->vCatSprint(" %s"_Stz, p_bound->pSymbol()->szFacet0());
   }
 }
 
@@ -1113,7 +1113,7 @@ void Card_OP::vRpn_keyExists(CardIter* pCI, String* psRpnExpr, Card_KeyExists* p
       psRpnExpr->vCatSprint(" %s"_Stz, p_term->pSymbol()->szFacet_rpnTerm());
     }
 
-    psRpnExpr->vCatSprint(" %s"_Stz, p_bound->pSymbol()->szFacet_bound());
+    psRpnExpr->vCatSprint(" %s"_Stz, p_bound->pSymbol()->szFacet0());
 
   }
 }
@@ -1198,7 +1198,7 @@ void Card_OP::vRpn_keyNotExists(CardIter* pCI, String* psRpnExpr, Card_KeyNotExi
       psRpnExpr->vCatSprint(" %s"_Stz, p_term->pSymbol()->szFacet_rpnTerm());
     }
 
-    psRpnExpr->vCatSprint(" %s"_Stz, p_bound->pSymbol()->szFacet_bound());
+    psRpnExpr->vCatSprint(" %s"_Stz, p_bound->pSymbol()->szFacet0());
   }
 
 }

@@ -166,8 +166,7 @@ namespace STORE
     i8   i_Facet(eSF eFacet, char cTblSyn);
     Stz* szFacet(eSF eFacet);
     Stz* szFacet(i8 i_Facet);
-    Stz* szFacet_bound(void);
-    Stz* szFacet_rlnConj(void);
+    Stz* szFacet0(void);
     Stz* szFacet_rpnTerm(void);
     i8   nFacets(void);
     void vFacets_To_String(String* pString);

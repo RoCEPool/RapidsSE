@@ -240,7 +240,7 @@ eSF Symbol::eEval_facet(Stz* szArg)
   if (bIs_Stg_Cast(szArg))     return SF_STG_CAST;
   if (bIs_Exp_Col(szArg))      return SF_EXP_COL;
   if (bIs_Str_Fn(szArg))       return SF_STR_FN;
-  if (bIs_Str_Lit(szArg))       return SF_STR_LIT;
+  if (bIs_Str_Lit(szArg))      return SF_STR_LIT;
   if (bIs_Tbl_Col(szArg))      return SF_TBL_COL;
   if (bIs_Then(szArg))         return SF_THEN;
   if (bIs_Type(szArg))         return SF_TYPE;
@@ -498,6 +498,29 @@ bool Symbol::bIs_Enum(Stz* szArg)
 {
   _static_
   UNUSED(szArg);
+
+  char ac0 = szArg->cChar(0); // $
+  char ac1 = szArg->cChar(1); // E
+  char ac2 = szArg->cChar(2); // :
+  char ac3 = szArg->cChar(3); // x
+  char ac4 = szArg->cChar(4); // x
+  char ac5 = szArg->cChar(5); // .
+  char ac6 = szArg->cChar(6); // d
+  char ac7 = szArg->cChar(7); // d
+  char ac8 = szArg->cChar(8); // d
+  char ac9 = szArg->cChar(9); // \0
+
+  if (StrLib::bIsDollar   (ac0) &&
+      'E' == ac2                &&
+      StrLib::bIsSemicolon(ac2) &&
+      StrLib::bIsHex      (ac3) &&
+      StrLib::bIsHex      (ac4) &&
+      StrLib::bIsDot      (ac5) &&
+      StrLib::bIsDigit    (ac6) &&
+      StrLib::bIsDigit    (ac7) &&
+      StrLib::bIsDigit    (ac8) &&
+      StrLib::bIsNull     (ac9))
+    return true;
 
   return false;
 }
@@ -1815,25 +1838,13 @@ Stz* Symbol::szFacet(i8 i_Facet)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get facet for bound                                                        */
+/* get facet[0]      ]                                                        */
 /*----------------------------------------------------------------------------*/
-Stz* Symbol::szFacet_bound(void)
+Stz* Symbol::szFacet0(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  RASSERT(bIs_bound(&xaFacet[0]));
-
-  return xaFacet[0].m_sFacet;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get facet for rlnConj                                                      */
-/*----------------------------------------------------------------------------*/
-Stz* Symbol::szFacet_rlnConj(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  RASSERT(bIs_rlnConj(&xaFacet[0]));
+  RASSERT(1 == nFacets());
 
   return xaFacet[0].m_sFacet;
 }
@@ -3060,7 +3071,7 @@ void Symbol::vFacet_Enum(eEG eGroup, i8 iEnum)
 
   s32 sEnum;
 
-  sEnum.vSprint("$E%lld=%lld"_Stz,eGroup,iEnum);
+  sEnum.vSprint("$E:%02x=%03lld"_Stz,eGroup,iEnum);
 
   vFacetSet(SF_ENUM, sEnum.szStz());
 
