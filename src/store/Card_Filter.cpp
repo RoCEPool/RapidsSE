@@ -173,28 +173,6 @@ bool Card_Filter::bIsEmpty(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Filter::vPrint(Ribbon* pRibbon, i8 iDepth)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  UNUSED(iDepth);
-
-  s32 sName;
-
-  sName.vSprint("%s%lld]filter"_Stz,
-                Stz::szDots(0 == iDepth ? iDepth : iDepth - 1),
-                m_i_Child);
-
-  pRibbon->vSprintSnippet(false,"%c%c%s %llx"_Stz,
-                          cMark1(),
-                          cMark2(),
-                          sName.szStz(),
-                          ((char *) this) - (char *) AM::SYSARGS::aRegionAddr());
-
-}
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 void Card_Filter::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);

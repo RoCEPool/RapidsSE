@@ -2198,13 +2198,35 @@ void Card::vPrintCard_alt(Ribbon* pRibbon, i8 iDepth)
       return;
     }
 
-    case CK_TERM:
-      _pCard_Term(this)->vPrint(pRibbon, iDepth);
-      return;
+    case CK_TERM: {
+      s32 sType_short = szCT_char[eCTVal()];
 
-    case CK_o_FILTER:
-      _pCard_Filter(this)->vPrint(pRibbon, iDepth);
+      for (i8 i_Facet = 0; i_Facet < m_xSymbol.nFacets(); i_Facet++) {
+        Facet *aFacet = m_xSymbol.aFacet(i_Facet);
+
+        pRibbon->vSprintSnippet(true, "%s~%lld%s%lld"_Stz,
+                                aFacet->m_sFacet.azChar(),
+                                i_Facet,
+                                sType_short.szStz(),
+                                m_xSymbol.xCast().m_nTypeLength);
+      }
       return;
+    }
+
+    case CK_o_FILTER: {
+      s32 sName;
+
+      sName.vSprint("%s%lld]filter"_Stz,
+                    Stz::szDots(0 == iDepth ? iDepth : iDepth - 1),
+                    m_i_Child);
+
+      pRibbon->vSprintSnippet(false, "%c%c%s %llx"_Stz,
+                              cMark1(),
+                              cMark2(),
+                              sName.szStz(),
+                              ((char *) this) - (char *) AM::SYSARGS::aRegionAddr());
+      return;
+    }
 
     default:
       vPrintNameSymbol(pRibbon, iDepth);

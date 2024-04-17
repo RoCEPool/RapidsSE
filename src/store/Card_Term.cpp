@@ -247,33 +247,6 @@ Card_Term* Card_Term::pClone(Symbol* pDiffSymbol)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_Term::vPrint(Ribbon* pRibbon, i8 iDepth)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  UNUSED(iDepth);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  s32 sType_short = szCT_char[eCTVal()];
-
-  if (! m_xSymbol.nFacets())
-    return;
-
-  for (i8 i_Facet = 0; i_Facet < m_xSymbol.nFacets(); i_Facet++) {
-    Facet* aFacet = m_xSymbol.aFacet(i_Facet);
-
-    pRibbon->vSprintSnippet(true,"%s~%lld%s%lld"_Stz,
-                            aFacet->m_sFacet.azChar(),
-                            i_Facet,
-                            sType_short.szStz(),
-                            m_xSymbol.xCast().m_nTypeLength);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* delete facet if                                                            */
 /*----------------------------------------------------------------------------*/
 void Card_Term::vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn)
