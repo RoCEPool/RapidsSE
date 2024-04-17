@@ -1488,13 +1488,10 @@ void Card::vPrintRecursive(CardIter* pCI, i8 iDepth, Card* pParent,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  ListExoIter2_t<Card>* pSubCard_I = pNewIter();
-  while (pSubCard_I->bHasNext()) {
-    Card* pSubCard = pSubCard_I->pNext();
-    pSubCard->vPrintRecursive(pCI,iDepth + 1,this,pRibbon);
+  for (Kid xChild(this); xChild.bEach(); /**/) {
+    Card* pChild = xChild.pChild();
+    pChild->vPrintRecursive(pCI,iDepth + 1,this,pRibbon);
   }
-
-  delete pSubCard_I;
 }
 
 /*----------------------------------------------------------------------------*/
