@@ -20,6 +20,8 @@
 
 //#define Z_PART_STREAMKEY
 
+#define Z_NO_TABLEINFO
+
 namespace STORE
 {
   class Card_AbsJoin;

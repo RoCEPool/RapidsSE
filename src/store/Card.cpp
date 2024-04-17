@@ -116,6 +116,11 @@ Card::Card(eCK eCard, i8 iFixedDepth)
   if (CK_STREAMKEY == eCard)
     vDebugPoint();
 
+#ifdef Z_NO_TABLEINFO
+  if (CK_t_TABLEINFO == eCard)
+    vDebugPoint();
+#endif
+
   m_eCard   = eCard;
   m_i_Child = C_UNKNOWN;
   m_iSequence = C_UNKNOWN;
@@ -4042,6 +4047,10 @@ Card_Table* Card::pSub_table(bool bNotNull)
 Card_TableInfo* Card::pSub_tableInfo(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+#ifdef Z_NO_TABLEINFO
+  vDebugPoint();
+#endif
 
   Card_TableInfo* p_tableInfo =
       _pCard_TableInfo(pFindSubCard(CK_t_TABLEINFO));
