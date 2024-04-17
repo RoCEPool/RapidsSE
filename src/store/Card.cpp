@@ -1534,24 +1534,6 @@ void Card::vPrintRecursive(CardIter* pCI,
 }
 
 /*----------------------------------------------------------------------------*/
-/* print card onto given ribbon                                               */
-/*----------------------------------------------------------------------------*/
-void Card::vPrintCard_byCustomNm(Ribbon* pRibbon, i8 iDepth, Stz* szCustomNm)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  CardCtl* pCardCtl = _pCardCtl(pRibbon->pCardCtl());
-
-  if (pCardCtl->bPrintName(m_eCard))
-    vPrintName(pRibbon, iDepth, szCustomNm);
-  if (pCardCtl->bPrintValue(m_eCard))
-    vPrintSymbol(pRibbon, iDepth);
-
-  if (pCardCtl->bPrintProperties(m_eCard))
-    vPrintProperties(pRibbon, iDepth);
-}
-
-/*----------------------------------------------------------------------------*/
 /* renumber subCard's                                                         */
 /*----------------------------------------------------------------------------*/
 void Card::vRenumberRoot(i8 i_Board)
@@ -2242,9 +2224,18 @@ void Card::vPrintCard_alt(Ribbon* pRibbon, i8 iDepth)
       _pCard_Key(this)->vPrint(pRibbon, iDepth);
       return;
 
-    case CK_s_TABLE:
-      _pCard_Table(this)->vPrint(pRibbon, iDepth);
+    case CK_s_TABLE: {
+      s256 sName;
+      sName = aCK_short[m_eCard];
+      if (0 == iDepth)
+        sName.vToUpper();
+
+      if (m_xSymbol.bHasFacets())
+        sName.vCatSprint(" %s"_Stz, pSymbol()->szFacet(SF_TBL_SYN));
+
+      vPrintName(pRibbon, iDepth, sName.szStz());
       return;
+    }
 
     case CK_TERM:
       _pCard_Term(this)->vPrint(pRibbon, iDepth);

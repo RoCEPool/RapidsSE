@@ -383,7 +383,6 @@ namespace STORE
     void vMarksClearRecursive(void);
     void vMarksTestRecursive(void);
 
-    void vPrintCard_byCustomNm(Ribbon* pRibbon, i8 iDepth, Stz* szCustomNm);
     void vPrintRecursive(CardIter* pCI,
                          Ribbon* pRibbon, i8 iDepth, Card* pParent,
                          bool& rbPrune, eAL eLevel,
