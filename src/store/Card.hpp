@@ -426,18 +426,18 @@ namespace STORE
     void vCoord(Card* pParentCard);
 
     void vPrintCard_alt(Ribbon* pRibbon, i8 iDepth);
+    void vPrintFacets(Ribbon* pRibbon, i8 iDepth);
     void vPrintHeader(Ribbon* pRibbon);
     void vPrintName(Ribbon* pRibbon, i8 iDepth, Stz* szCustomName=nullptr);
     void vPrintNameSymbol(Ribbon* pRibbon, i8 iDepth);
     void vPrintProperties(Ribbon* pRibbon, i8 iDepth);
-    void vPrintSymbol(Ribbon* pRibbon, i8 iDepth, bool bPrintMarks=false);
 
     void vFormatAddress(String* pString);
     void vFormatDots(String* pString, i8 iDepth);
     void vFormatEnum(String* pString);
     void vFormatFacet(String* pString, eSF eFacet);
     void vFormatFacet(String* pString, i8 i_Facet);
-    void vFormatHeader(String* pString, eAL eLevel=AL_NONE);
+    void vFormatHeader(String* pString, char cLevel);
     void vFormatMarkers(String* pString);
     void vFormatName(String* pString, i8 iDepth, bool bJustify_right);
     void vFormatProperty(String* pString, i8 i_Property, bool bPpyNm);

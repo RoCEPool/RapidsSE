@@ -2214,6 +2214,27 @@ void Card::vPrintCard_alt(Ribbon* pRibbon, i8 iDepth)
 }
 
 /*----------------------------------------------------------------------------*/
+/* print symbolic value of card                                               */
+/*----------------------------------------------------------------------------*/
+void Card::vPrintFacets(Ribbon* pRibbon, i8 iDepth)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  UNUSED(iDepth);
+
+  if (!m_xSymbol.bHasFacets())
+    return;
+
+  pRibbon->vSprintSnippet(true, "  %s"_Stz, m_xSymbol.szFacet((i8)0));
+
+  if (m_xSymbol.nFacets()) {
+    for (i8 i_Facet = 0; i_Facet < m_xSymbol.nFacets(); i_Facet++) {
+      Facet* aFacet = m_xSymbol.aFacet(i_Facet);
+      pRibbon->vSprintSnippet(true, "%18s~%lld"_Stz, aFacet->m_sFacet.azChar(), i_Facet);
+    }
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* put header                                                                 */
 /*----------------------------------------------------------------------------*/
 void Card::vPrintHeader(Ribbon* pRibbon)
@@ -2232,10 +2253,9 @@ void Card::vPrintHeader(Ribbon* pRibbon)
     default           : cLevel = '?'; break;
   }
 
-  pRibbon->vSprintSnippet(false,"==%02lld %c--%10p--"_Stz,
-                           m_i_Child,
-                           cLevel,
-                           ((char *) this) - (char *) AM::SYSARGS::aRegionAddr());
+  s256 sHeader;
+  vFormatHeader(sHeader.pString(),cLevel);
+  pRibbon->vSprintSnippet(false,"%s"_Stz,sHeader.szStz());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2339,7 +2359,7 @@ void Card::vPrintNameSymbol(Ribbon* pRibbon, i8 iDepth)
   }
   else {
     vPrintName(pRibbon, iDepth);
-    vPrintSymbol(pRibbon, iDepth);
+    vPrintFacets(pRibbon, iDepth);
   }
 }
 
@@ -2368,33 +2388,6 @@ void Card::vPrintProperties(Ribbon* pRibbon, i8 iDepth)
     sProperty.vReset();
     vFormatProperty(sProperty.pString(),i_Property,bPrintPptName);
     pRibbon->vSprintSnippet(true,"%s"_Stz, sProperty.szStz());
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* print symbolic value of card                                               */
-/*----------------------------------------------------------------------------*/
-void Card::vPrintSymbol(Ribbon* pRibbon, i8 iDepth, bool bPrintMarks)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-  UNUSED(iDepth);
-
-  if (!m_xSymbol.bHasFacets())
-    return;
-
-  if (bPrintMarks)
-    pRibbon->vSprintSnippet(true, "%s%s%18s"_Stz,
-                            this->szMark1(),
-                            this->szMark2(),
-                            m_xSymbol.szFacet((i8)0));
-  else
-    pRibbon->vSprintSnippet(true, "  %s"_Stz, m_xSymbol.szFacet((i8)0));
-
-  if (m_xSymbol.nFacets()) {
-    for (i8 i_Facet = 0; i_Facet < m_xSymbol.nFacets(); i_Facet++) {
-      Facet* aFacet = m_xSymbol.aFacet(i_Facet);
-      pRibbon->vSprintSnippet(true, "%18s~%lld"_Stz, aFacet->m_sFacet.azChar(), i_Facet);
-    }
   }
 }
 
@@ -2459,17 +2452,9 @@ void Card::vFormatFacet(String* pString, i8 i_Facet)
 /*----------------------------------------------------------------------------*/
 /* put header                                                                 */
 /*----------------------------------------------------------------------------*/
-void Card::vFormatHeader(String* pString, eAL eLevel)
+void Card::vFormatHeader(String* pString, char cLevel)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  char cLevel = ' ';
-  switch (eLevel) {
-    case AL_PARTITION : cLevel = 'P'; break;
-    case AL_NODE      : cLevel = 'N'; break;
-    case AL_ORIGIN    : cLevel = 'O'; break;
-    default           : cLevel = '?'; break;
-  }
 
   pString->vCatSprint("==%02lld %c--%10p--"_Stz,
                       m_i_Child,
