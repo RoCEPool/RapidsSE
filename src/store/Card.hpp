@@ -20,6 +20,8 @@
 
 //#define Z_PART_STREAMKEY
 
+#define Z_ALT_PRINT
+
 namespace STORE
 {
   class Card_AbsJoin;
@@ -428,6 +430,7 @@ namespace STORE
     void vCoord(void);
     void vCoord(Card* pParentCard);
 
+    void vPrintCard_alt(Ribbon* pRibbon, i8 iDepth);
     void vPrintCard_byKind(Ribbon* pRibbon, i8 iDepth);
     void vPrintChildrenShort(Ribbon* pRibbon, i8 iDepth);
     void vPrintHeader(Ribbon* pRibbon, eAL eLevel=AL_NONE);
@@ -439,6 +442,7 @@ namespace STORE
     void vFormatAddress(String* pString);
     void vFormatDots(String* pString, i8 iDepth);
     void vFormatEnum(String* pString);
+    void vFormatFacet(String* pString, eSF eFacet);
     void vFormatFacet(String* pString, i8 i_Facet);
     void vFormatHeader(String* pString, eAL eLevel=AL_NONE);
     void vFormatMarkers(String* pString);

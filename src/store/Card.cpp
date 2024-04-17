@@ -1491,10 +1491,14 @@ void Card::vPrintRecursive(CardIter* pCI,
   if (bChanged() && bMark1(MARK_BLANK))
     vMark1(MARK_CHANGED);
 
+#ifdef Z_ALT_PRINT
+  vPrintCard_alt(pRibbon, iDepth);
+#else
   if (pCardCtl->bPrintByKind(m_eCard))
     vPrintCard_byKind(pRibbon, iDepth);
   else
     vPrintCard_bySettings(pRibbon, iDepth);
+#endif
 
   if (this->bMark1(MARK_CHANGED) || this->bMark1(MARK_FOUND))
     vMark1(MARK_BLANK);
@@ -2253,6 +2257,42 @@ Stz* Card::szDecodeEnum(Stz* szEnum, i8 iEnum)
 /*----------------------------------------------------------------------------*/
 /* print card onto given ribbon                                               */
 /*----------------------------------------------------------------------------*/
+void Card::vPrintCard_alt(Ribbon* pRibbon, i8 iDepth)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  CardCtl* pCardCtl = _pCardCtl(pRibbon->pCardCtl());
+
+  switch (m_eCard) {
+    case CK_t_EMIT:   _pCard_Emit(this)->vPrint(pRibbon, iDepth);    return;
+    case CK_EXPR:     _pCard_Expr(this)->vPrint(pRibbon, iDepth);    return;
+    case CK_s_KEY:    _pCard_Key(this)->vPrint(pRibbon, iDepth);     return;
+    case CK_s_TABLE:  _pCard_Table(this)->vPrint(pRibbon, iDepth);   return;
+    case CK_TERM:     _pCard_Term(this)->vPrint(pRibbon, iDepth);    return;
+    case CK_o_FILTER: _pCard_Filter(this)->vPrint(pRibbon, iDepth);  return;
+
+    case CK_ANDCONJ:
+    case CK_NOTCONJ:
+    case CK_ORCONJ:
+    case CK_RLNCONJ:
+      vPrintCard_bySettings(pRibbon, iDepth); return;
+
+    default:
+      break;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  if (pCardCtl->bPrintName(m_eCard) && pCardCtl->bPrintValue(m_eCard))
+    vPrintNameSymbol(pRibbon, iDepth);
+
+  if (pCardCtl->bPrintProperties(m_eCard))
+    vPrintProperties(pRibbon, iDepth);
+}
+
+/*----------------------------------------------------------------------------*/
+/* print card onto given ribbon                                               */
+/*----------------------------------------------------------------------------*/
 void Card::vPrintCard_byKind(Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
@@ -2449,6 +2489,8 @@ void Card::vPrintProperties(Ribbon* pRibbon, i8 iDepth)
   if (! m_xSymbol.bHasProperties())
     return;
 
+  s256 sProperty;
+
   CardCtl* pCardCtl = _pCardCtl(pRibbon->pCardCtl());
 
   bool bPrintPptName = pCardCtl->bPrintPptName(m_eCard);
@@ -2457,41 +2499,44 @@ void Card::vPrintProperties(Ribbon* pRibbon, i8 iDepth)
 
   for (i8 i_Property = 0; i_Property < nProperties; i_Property++) {
 
-    eTN eTkn = pSymbol()->Y_ePpyTkn(i_Property);
+//    eTN eTkn = pSymbol()->Y_ePpyTkn(i_Property);
+//
+//    switch (eTkn) {
+//
+//      case TN_INTEGER: {
+//        Stz* szName = pSymbol()->Y_szPpyNm(i_Property);
+//        i8   iPpy = pSymbol()->Y_iGet(i_Property);
+//
+//        Stz* szDecode = szDecodeEnum(szName, iPpy);
+//        if (szDecode)
+//          pRibbon->vSprintSnippet(true,"}%s"_Stz,szDecode);
+//        else
+//        if (bPrintPptName)
+//          pRibbon->vSprintSnippet(true,"}%s=%lld"_Stz, szName, iPpy);
+//        else
+//          pRibbon->vSprintSnippet(true,"}%lld"_Stz, iPpy);
+//        break;
+//      }
+//
+//      case TN_STRING: {
+//        Stz* szName  = pSymbol()->Y_szPpyNm(i_Property);
+//        Stz* szPpy = pSymbol()->Y_szGet(i_Property);
+//        if (szPpy->bSame("y"_Stz))
+//          pRibbon->vSprintSnippet(true,"}%s"_Stz, szName);
+//        else
+//        if (bPrintPptName)
+//          pRibbon->vSprintSnippet(true,"}%s=%s"_Stz, szName, szPpy);
+//        else
+//          pRibbon->vSprintSnippet(true,"}%s"_Stz, szPpy);
+//        break;
+//      }
+//
+//      default:
+//        break;
+//    }
 
-    switch (eTkn) {
-
-      case TN_INTEGER: {
-        Stz* szName = pSymbol()->Y_szPpyNm(i_Property);
-        i8   iPpy = pSymbol()->Y_iGet(i_Property);
-
-        Stz* szDecode = szDecodeEnum(szName, iPpy);
-        if (szDecode)
-          pRibbon->vSprintSnippet(true,"}%s"_Stz,szDecode);
-        else
-        if (bPrintPptName)
-          pRibbon->vSprintSnippet(true,"}%s=%lld"_Stz, szName, iPpy);
-        else
-          pRibbon->vSprintSnippet(true,"}%lld"_Stz, iPpy);
-        break;
-      }
-
-      case TN_STRING: {
-        Stz* szName  = pSymbol()->Y_szPpyNm(i_Property);
-        Stz* szPpy = pSymbol()->Y_szGet(i_Property);
-        if (szPpy->bSame("y"_Stz))
-          pRibbon->vSprintSnippet(true,"}%s"_Stz, szName);
-        else
-        if (bPrintPptName)
-          pRibbon->vSprintSnippet(true,"}%s=%s"_Stz, szName, szPpy);
-        else
-          pRibbon->vSprintSnippet(true,"}%s"_Stz, szPpy);
-        break;
-      }
-
-      default:
-        break;
-    }
+    vFormatProperty(sProperty.pString(),i_Property,bPrintPptName);
+    pRibbon->vSprintSnippet(true,"%s"_Stz, sProperty.szStz());
 
   }
 }
@@ -2552,6 +2597,19 @@ void Card::vFormatEnum(String* pString)
 
   pString->vCatSprint("%s"_Stz,
                       szEnum);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card::vFormatFacet(String* pString, eSF eFacet)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Facet* aFacet = m_xSymbol.aFacet(eFacet);
+
+  pString->vCatSprint("%s"_Stz,
+                      aFacet->m_sFacet.azChar());
 }
 
 /*----------------------------------------------------------------------------*/
