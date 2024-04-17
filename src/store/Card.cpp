@@ -1467,6 +1467,8 @@ void Card::vPrintRecursive(CardIter* pCI,
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   UNUSED(pParent);
 
+  RASSERT(! rbPrune);
+
   if (CK_TERM == m_eCard)
     vDebugPoint();
 
@@ -1547,36 +1549,6 @@ void Card::vPrintCard_byCustomNm(Ribbon* pRibbon, i8 iDepth, Stz* szCustomNm)
 
   if (pCardCtl->bPrintProperties(m_eCard))
     vPrintProperties(pRibbon, iDepth);
-
-  if (pCardCtl->bPrintSubShort(m_eCard))
-    vPrintChildrenShort(pRibbon, iDepth);
-}
-
-/*----------------------------------------------------------------------------*/
-/* print card onto given ribbon                                               */
-/*----------------------------------------------------------------------------*/
-void Card::vPrintCard_bySettings(Ribbon* pRibbon, i8 iDepth)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  CardCtl* pCardCtl = _pCardCtl(pRibbon->pCardCtl());
-
-  if (pCardCtl->bPrintName(m_eCard) && pCardCtl->bPrintValue(m_eCard)) {
-    vPrintNameSymbol(pRibbon, iDepth);
-  }
-  else {
-    bool bPrintName = pCardCtl->bPrintName(m_eCard);
-    if (bPrintName)
-      vPrintName(pRibbon, iDepth);
-    if (pCardCtl->bPrintValue(m_eCard))
-      vPrintSymbol(pRibbon, iDepth, !bPrintName);
-  }
-
-  if (pCardCtl->bPrintProperties(m_eCard))
-    vPrintProperties(pRibbon, iDepth);
-
-  if (pCardCtl->bPrintSubShort(m_eCard))
-    vPrintChildrenShort(pRibbon, iDepth);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2257,56 +2229,35 @@ void Card::vPrintCard_alt(Ribbon* pRibbon, i8 iDepth)
   //CardCtl* pCardCtl = _pCardCtl(pRibbon->pCardCtl());
 
   switch (m_eCard) {
-    case CK_t_EMIT:   _pCard_Emit(this)->vPrint(pRibbon, iDepth);    return;
-    case CK_EXPR:     _pCard_Expr(this)->vPrint(pRibbon, iDepth);    return;
-    case CK_s_KEY:    _pCard_Key(this)->vPrint(pRibbon, iDepth);     return;
-    case CK_s_TABLE:  _pCard_Table(this)->vPrint(pRibbon, iDepth);   return;
-    case CK_TERM:     _pCard_Term(this)->vPrint(pRibbon, iDepth);    return;
-    case CK_o_FILTER: _pCard_Filter(this)->vPrint(pRibbon, iDepth);  return;
 
-    case CK_ANDCONJ:
-    case CK_NOTCONJ:
-    case CK_ORCONJ:
-    case CK_RLNCONJ:
-      vPrintCard_bySettings(pRibbon, iDepth); return;
+    case CK_t_EMIT:
+      _pCard_Emit(this)->vPrint(pRibbon, iDepth);
+      return;
+
+    case CK_EXPR:
+      _pCard_Expr(this)->vPrint(pRibbon, iDepth);
+      return;
+
+    case CK_s_KEY:
+      _pCard_Key(this)->vPrint(pRibbon, iDepth);
+      return;
+
+    case CK_s_TABLE:
+      _pCard_Table(this)->vPrint(pRibbon, iDepth);
+      return;
+
+    case CK_TERM:
+      _pCard_Term(this)->vPrint(pRibbon, iDepth);
+      return;
+
+    case CK_o_FILTER:
+      _pCard_Filter(this)->vPrint(pRibbon, iDepth);
+      return;
 
     default:
       vPrintNameSymbol(pRibbon, iDepth);
       vPrintProperties(pRibbon, iDepth);
       break;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* print compressed children                                                  */
-/*----------------------------------------------------------------------------*/
-void Card::vPrintChildrenShort(Ribbon* pRibbon, i8 iDepth)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-  UNUSED(iDepth);
-
-  i8 nChildren = nChildCards();
-  for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
-    Card* pChild = pGetChild(i_Child);
-
-    i8 nSubs = pChild->nChildCards();
-    if (nSubs == 0) {
-      /*none*/;
-    }
-    else
-    if (nSubs == 1) {
-      Card *pSub_0 = pChild->pGetChild(0);
-      pRibbon->vSprintSnippet(true,"%s"_Stz,
-                              pSub_0->pSymbol()->szFacet((i8)0));
-    }
-    else {
-      Card *pSub_0 = pChild->pGetChild(0);
-      Card *pSub_1 = pChild->pGetChild(1);
-      pRibbon->vSprintSnippet(true, "%s == %s"_Stz,
-                              pSub_0->pSymbol()->szFacet((i8)0),
-                              pSub_1->pSymbol()->szFacet((i8)0));
-    }
-
   }
 }
 
