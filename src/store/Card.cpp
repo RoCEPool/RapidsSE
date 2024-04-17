@@ -113,8 +113,13 @@ Card::Card(eCK eCard, i8 iFixedDepth)
   m_xSymbol.vCard(this);
   MemLib::vZero(md_Coord, sizeof(md_Coord), CN_CARD);
 
+  if (CK_o_SCAN == eCard)
+    vDebugPoint();
+
+#ifdef Z_NO_STREAMKEY
   if (CK_STREAMKEY == eCard)
     vDebugPoint();
+#endif
 
   m_eCard   = eCard;
   m_i_Child = C_UNKNOWN;
@@ -3914,6 +3919,10 @@ Card_Stage* Card::pSub_stage(bool bNotNull)
 Card_StreamHead* Card::pSub_streamHead(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+#ifdef Z_NO_STREAMKEY
+  vDebugPoint();
+#endif
 
   Card_StreamHead* p_streamHead =
       _pCard_StreamHead(pFindSubCard(CK_STREAMHEAD));
