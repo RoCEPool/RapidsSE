@@ -218,6 +218,7 @@ eSF Symbol::eEval_facet(Stz* szArg)
   if (bIs_Cross(szArg))        return SF_CROSS;
   if (bIs_Dcm_Lit(szArg))      return SF_DCM_LIT;
   if (bIs_Direction(szArg))    return SF_DIRECTION;
+  if (bIs_Enum(szArg))         return SF_ENUM;
   if (bIs_Else(szArg))         return SF_ELSE;
   if (bIs_EndIf(szArg))        return SF_ENDIF;
   if (bIs_Flt_Lit(szArg))      return SF_FLT_LIT;
@@ -511,7 +512,7 @@ bool Symbol::bIs_Enum(Stz* szArg)
   char ac9 = szArg->cChar(9); // \0
 
   if (StrLib::bIsDollar   (ac0) &&
-      'E' == ac2                &&
+      'E' == ac1                &&
       StrLib::bIsSemicolon(ac2) &&
       StrLib::bIsHex      (ac3) &&
       StrLib::bIsHex      (ac4) &&
@@ -1484,6 +1485,24 @@ void Symbol::vApplyFacet(eSF eFacet, i8 iInt)
 /*----------------------------------------------------------------------------*/
 /* apply facet                                                                */
 /*----------------------------------------------------------------------------*/
+void Symbol::vApplyFacet(eSF eFacet, eEG eGroup, i8 iEnum)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  switch (eFacet) {
+
+    case SF_ENUM: vFacet_Enum(eGroup,iEnum);  break;
+
+    default: NEVER_REACH;
+  }
+
+  RASSERT(bHasFacets());
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* apply facet                                                                */
+/*----------------------------------------------------------------------------*/
 void Symbol::vApplyFacet(eSF eFacet, Stz* szArg)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
@@ -1506,6 +1525,7 @@ void Symbol::vApplyFacet(eSF eFacet, Stz* szArg)
     case SF_DCM_LIT:     vFacet_Dcm_Lit(szArg);     break;
     case SF_DIRECTION:   vFacet_Direction(szArg);   break;
     case SF_ELSE:        vFacet_Else(szArg);        break;
+    case SF_ENUM:        vFacet_Enum(szArg);        break;
     case SF_ENDIF:       vFacet_EndIf(szArg);       break;
     case SF_EXP_COL:     vFacet_Exp_Col(szArg);     break;
     case SF_FLD_NM:      vFacet_Fld_Nm(szArg);      break;
@@ -2407,6 +2427,7 @@ bool Symbol::bValidate(void)
       case SF_CROSS:       b = bIs_Cross(szFacet);       break;
       case SF_DCM_LIT:     b = bIs_Dcm_Lit(szFacet);     break;
       case SF_DIRECTION:   b = bIs_Direction(szFacet);   break;
+      case SF_ENUM:        b = bIs_Enum(szFacet);        break;
       case SF_EXP_COL:     b = bIs_Exp_Col(szFacet);     break;
       case SF_FLD_NM:      b = bIs_Fld_Nm(szFacet);      break;
       case SF_FLT_LIT:     b = bIs_Flt_Lit(szFacet);     break;
