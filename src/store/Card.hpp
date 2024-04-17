@@ -431,7 +431,6 @@ namespace STORE
     void vCoord(Card* pParentCard);
 
     void vPrintCard_alt(Ribbon* pRibbon, i8 iDepth);
-    void vPrintCard_byKind(Ribbon* pRibbon, i8 iDepth);
     void vPrintChildrenShort(Ribbon* pRibbon, i8 iDepth);
     void vPrintHeader(Ribbon* pRibbon, eAL eLevel=AL_NONE);
     void vPrintName(Ribbon* pRibbon, i8 iDepth, Stz* szCustomName=nullptr);
