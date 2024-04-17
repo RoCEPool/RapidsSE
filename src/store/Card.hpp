@@ -383,8 +383,7 @@ namespace STORE
     void vMarksClearRecursive(void);
     void vMarksTestRecursive(void);
 
-    void vPrintRecursive(CardIter* pCI,
-                         Ribbon* pRibbon, i8 iDepth, Card* pParent);
+    void vPrintRecursive(CardIter* pCI, i8 iDepth, Card* pParent, Ribbon* pRibbon);
 
     void vRenumberRoot(i8 i_Parent);
     void vRenumberRecursive(Card* pParent);

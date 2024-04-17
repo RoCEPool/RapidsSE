@@ -1459,8 +1459,8 @@ void Card::vMarksTestRecursive(void)
 /*----------------------------------------------------------------------------*/
 /* print                                                                      */
 /*----------------------------------------------------------------------------*/
-void Card::vPrintRecursive(CardIter* pCI,
-                           Ribbon* pRibbon, i8 iDepth, Card* pParent)
+void Card::vPrintRecursive(CardIter* pCI, i8 iDepth, Card* pParent,
+                           Ribbon* pRibbon)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   UNUSED(pParent);
@@ -1491,10 +1491,7 @@ void Card::vPrintRecursive(CardIter* pCI,
   ListExoIter2_t<Card>* pSubCard_I = pNewIter();
   while (pSubCard_I->bHasNext()) {
     Card* pSubCard = pSubCard_I->pNext();
-    pSubCard->vPrintRecursive(pCI,
-                              pRibbon,
-                              iDepth + 1,
-                              this);
+    pSubCard->vPrintRecursive(pCI,iDepth + 1,this,pRibbon);
   }
 
   delete pSubCard_I;
