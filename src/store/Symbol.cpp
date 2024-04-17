@@ -492,6 +492,17 @@ bool Symbol::bIs_Else(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is given arg ELSE?                                                         */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Enum(Stz* szArg)
+{
+  _static_
+  UNUSED(szArg);
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is given arg ENDIF                                                         */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_EndIf(Stz* szArg)
@@ -3038,6 +3049,34 @@ void Symbol::vFacet_Else(Stz* szElse)
   vFacetSet(SF_ELSE, szElse);
 
   RASSERT(bHasFacet(SF_ELSE));
+}
+
+//*----------------------------------------------------------------------------*/
+/* set this symbol to enum                                                    */
+/*----------------------------------------------------------------------------*/
+void Symbol::vFacet_Enum(eEG eGroup, i8 iEnum)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  s32 sEnum;
+
+  sEnum.vSprint("$E%lld=%lld"_Stz,eGroup,iEnum);
+
+  vFacetSet(SF_ENUM, sEnum.szStz());
+
+  RASSERT(bHasFacet(SF_ENUM));
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to enum                                                    */
+/*----------------------------------------------------------------------------*/
+void Symbol::vFacet_Enum(Stz* szEnum)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  vFacetSet(SF_ENUM, szEnum);
+
+  RASSERT(bHasFacet(SF_ENUM));
 }
 
 /*----------------------------------------------------------------------------*/

@@ -10,6 +10,8 @@
 #include "eRO.h"
 #include "eSF.h"
 #include "eST.h"
+#include "EnumGroups.h"
+
 
 namespace STORE
 {
@@ -75,6 +77,7 @@ namespace STORE
     static bool bIs_Dcm_Lit(Stz* szArg);         // StrLib::bIsDecimal()
     static bool bIs_Direction(Stz* szArg);       // asc, desc
     static bool bIs_Else(Stz* szArg);            // ELSE
+    static bool bIs_Enum(Stz* szArg);            // $En=n
     static bool bIs_EndIf(Stz* szArg);           // ENDIF
     static bool bIs_Exp_Col(Stz* szArg);         // $n
     static bool bIs_Fld_Nm(Stz* szArg);          // bIsName() but not bIs_Agg_Fn() etc
@@ -252,6 +255,8 @@ namespace STORE
     void vFacet_Dcm_Lit(Stz* szDcmLit);
     void vFacet_Direction(Stz* szDirection);
     void vFacet_Else(Stz* szElse);
+    void vFacet_Enum(eEG eGroup, i8 iEnum);
+    void vFacet_Enum(Stz* szEnum);
     void vFacet_EndIf(Stz* szEndIf);
     void vFacet_Exp_Col(Stz* szExpCol);
     void vFacet_Fld_Nm(Stz* szFldNm);
