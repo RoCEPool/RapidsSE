@@ -1461,13 +1461,11 @@ void Card::vMarksTestRecursive(void)
 /*----------------------------------------------------------------------------*/
 void Card::vPrintRecursive(CardIter* pCI,
                            Ribbon* pRibbon, i8 iDepth, Card* pParent,
-                           bool& rbPrune, eAL eLevel,
-                           bool bPrintBelow, i8 iXform, Stz* szXfunc)
+                           eAL eLevel,
+                           i8 iXform, Stz* szXfunc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   UNUSED(pParent);
-
-  RASSERT(! rbPrune);
 
   if (CK_TERM == m_eCard)
     vDebugPoint();
@@ -1488,8 +1486,6 @@ void Card::vPrintRecursive(CardIter* pCI,
     vPrintHeader(pRibbon,eLevel);
   }
 
-  CardCtl* pCardCtl = _pCardCtl(pRibbon->pCardCtl());
-
   if (bChanged() && bMark1(MARK_BLANK))
     vMark1(MARK_CHANGED);
 
@@ -1501,20 +1497,7 @@ void Card::vPrintRecursive(CardIter* pCI,
   vChanged(false);
 
 
-  if (pCardCtl->bPrune(m_eCard))
-    rbPrune = true;
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  if (rbPrune)
-    return;
-
-  if (! bPrintBelow)
-    bPrintBelow = pCardCtl->bPrintBelow(m_eCard);
-
-  bool bPrintSubCards = pCardCtl->bPrintSubCards(m_eCard);
-  if ( (! bPrintSubCards) && (! bPrintBelow))
-    return;
 
   ListExoIter2_t<Card>* pSubCard_I = pNewIter();
   while (pSubCard_I->bHasNext()) {
@@ -1523,9 +1506,7 @@ void Card::vPrintRecursive(CardIter* pCI,
                               pRibbon,
                               iDepth + 1,
                               this,
-                              rbPrune,
                               eLevel,
-                              bPrintBelow,
                               iXform,
                               szXfunc);
   }

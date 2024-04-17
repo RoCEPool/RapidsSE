@@ -424,7 +424,6 @@ void Board::vPinCards(CardIter* pCI, Ribbon* pRibbon)
       pSubRibbon->vLaneNext();
 
 
-    bool bPrune = false;
     eAL eLevel = AL_NONE;
     Card_Level* p_level = xBI.pChild()->pSub_level();
     if (p_level)
@@ -433,9 +432,7 @@ void Board::vPinCards(CardIter* pCI, Ribbon* pRibbon)
                                   pSubRibbon,
                                   0,
                                   m_pDeck,
-                                  bPrune,
                                   eLevel,
-                                  false,
                                   m_pBench->iXform(),
                                   m_pBench->szXfunc());
   }
