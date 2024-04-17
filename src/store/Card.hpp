@@ -384,8 +384,7 @@ namespace STORE
     void vMarksTestRecursive(void);
 
     void vPrintRecursive(CardIter* pCI,
-                         Ribbon* pRibbon, i8 iDepth, Card* pParent,
-                         eAL eLevel);
+                         Ribbon* pRibbon, i8 iDepth, Card* pParent);
 
     void vRenumberRoot(i8 i_Parent);
     void vRenumberRecursive(Card* pParent);
@@ -428,7 +427,7 @@ namespace STORE
     void vCoord(Card* pParentCard);
 
     void vPrintCard_alt(Ribbon* pRibbon, i8 iDepth);
-    void vPrintHeader(Ribbon* pRibbon, eAL eLevel=AL_NONE);
+    void vPrintHeader(Ribbon* pRibbon);
     void vPrintName(Ribbon* pRibbon, i8 iDepth, Stz* szCustomName=nullptr);
     void vPrintNameSymbol(Ribbon* pRibbon, i8 iDepth);
     void vPrintProperties(Ribbon* pRibbon, i8 iDepth);

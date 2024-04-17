@@ -1460,8 +1460,7 @@ void Card::vMarksTestRecursive(void)
 /* print                                                                      */
 /*----------------------------------------------------------------------------*/
 void Card::vPrintRecursive(CardIter* pCI,
-                           Ribbon* pRibbon, i8 iDepth, Card* pParent,
-                           eAL eLevel)
+                           Ribbon* pRibbon, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   UNUSED(pParent);
@@ -1474,14 +1473,8 @@ void Card::vPrintRecursive(CardIter* pCI,
     m_iSequence = pCI->m_pBench->iSequence_next(m_eCard);
   }
 
-  if (0 == iDepth) {
-    if (   bIsCard(CK_o_AGGREG)
-        || bIsCard(CK_o_PROJECT)) {
-      vDebugPoint();
-    }
-
-    vPrintHeader(pRibbon,eLevel);
-  }
+  if (0 == iDepth)
+    vPrintHeader(pRibbon);
 
   if (bChanged() && bMark1(MARK_BLANK))
     vMark1(MARK_CHANGED);
@@ -1493,7 +1486,6 @@ void Card::vPrintRecursive(CardIter* pCI,
 
   vChanged(false);
 
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   ListExoIter2_t<Card>* pSubCard_I = pNewIter();
@@ -1502,8 +1494,7 @@ void Card::vPrintRecursive(CardIter* pCI,
     pSubCard->vPrintRecursive(pCI,
                               pRibbon,
                               iDepth + 1,
-                              this,
-                              eLevel);
+                              this);
   }
 
   delete pSubCard_I;
@@ -2231,9 +2222,13 @@ void Card::vPrintCard_alt(Ribbon* pRibbon, i8 iDepth)
 /*----------------------------------------------------------------------------*/
 /* put header                                                                 */
 /*----------------------------------------------------------------------------*/
-void Card::vPrintHeader(Ribbon* pRibbon, eAL eLevel)
+void Card::vPrintHeader(Ribbon* pRibbon)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  eAL eLevel = AL_NONE;
+  if (Card_Level* p_level = pSub_level())
+    eLevel = (eAL) p_level->pSymbol()->Y_iGet(P_Level);
 
   char cLevel = ' ';
   switch (eLevel) {
@@ -2376,6 +2371,7 @@ void Card::vPrintProperties(Ribbon* pRibbon, i8 iDepth)
   i8 nProperties = pSymbol()->Y_nPpy();
 
   for (i8 i_Property = 0; i_Property < nProperties; i_Property++) {
+    sProperty.vReset();
     vFormatProperty(sProperty.pString(),i_Property,bPrintPptName);
     pRibbon->vSprintSnippet(true,"%s"_Stz, sProperty.szStz());
   }

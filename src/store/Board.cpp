@@ -423,16 +423,10 @@ void Board::vPinCards(CardIter* pCI, Ribbon* pRibbon)
     else
       pSubRibbon->vLaneNext();
 
-
-    eAL eLevel = AL_NONE;
-    Card_Level* p_level = xBI.pChild()->pSub_level();
-    if (p_level)
-      eLevel = (eAL) p_level->pSymbol()->Y_iGet(P_Level);
     xBI.pChild()->vPrintRecursive(pCI,
                                   pSubRibbon,
                                   0,
-                                  m_pDeck,
-                                  eLevel);
+                                  m_pDeck);
   }
 
   pRibbon->vPinSubRibbon(pRibbon->i_Heat(), 0, pSubRibbon);
