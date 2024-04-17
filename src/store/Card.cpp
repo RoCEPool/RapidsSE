@@ -1461,8 +1461,7 @@ void Card::vMarksTestRecursive(void)
 /*----------------------------------------------------------------------------*/
 void Card::vPrintRecursive(CardIter* pCI,
                            Ribbon* pRibbon, i8 iDepth, Card* pParent,
-                           eAL eLevel,
-                           i8 iXform, Stz* szXfunc)
+                           eAL eLevel)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   UNUSED(pParent);
@@ -1481,8 +1480,6 @@ void Card::vPrintRecursive(CardIter* pCI,
       vDebugPoint();
     }
 
-    if (pRibbon->pCardCtl()->pCardHistory())
-      pRibbon->pCardCtl()->pCardHistory()->vAddImage(this,iXform,szXfunc);
     vPrintHeader(pRibbon,eLevel);
   }
 
@@ -1506,9 +1503,7 @@ void Card::vPrintRecursive(CardIter* pCI,
                               pRibbon,
                               iDepth + 1,
                               this,
-                              eLevel,
-                              iXform,
-                              szXfunc);
+                              eLevel);
   }
 
   delete pSubCard_I;

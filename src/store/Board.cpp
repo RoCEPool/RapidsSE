@@ -432,9 +432,7 @@ void Board::vPinCards(CardIter* pCI, Ribbon* pRibbon)
                                   pSubRibbon,
                                   0,
                                   m_pDeck,
-                                  eLevel,
-                                  m_pBench->iXform(),
-                                  m_pBench->szXfunc());
+                                  eLevel);
   }
 
   pRibbon->vPinSubRibbon(pRibbon->i_Heat(), 0, pSubRibbon);

@@ -385,8 +385,7 @@ namespace STORE
 
     void vPrintRecursive(CardIter* pCI,
                          Ribbon* pRibbon, i8 iDepth, Card* pParent,
-                         eAL eLevel,
-                         i8 iXform, Stz* szXfunc);
+                         eAL eLevel);
 
     void vRenumberRoot(i8 i_Parent);
     void vRenumberRecursive(Card* pParent);
