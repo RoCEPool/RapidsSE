@@ -438,6 +438,7 @@ namespace STORE
 
     void vFormatAddress(String* pString);
     void vFormatDots(String* pString, i8 iDepth);
+    void vFormatEnum(String* pString);
     void vFormatFacet(String* pString, i8 i_Facet);
     void vFormatHeader(String* pString, eAL eLevel=AL_NONE);
     void vFormatMarkers(String* pString);

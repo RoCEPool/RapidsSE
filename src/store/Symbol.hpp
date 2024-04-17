@@ -57,6 +57,8 @@ namespace STORE
 
     ~Symbol(void);
 
+    static i8   iEval_enum(Stz* szArg);
+    static eEG  eEval_enumGroup(Stz* szArg);
     static eRO  eEvalRelnOp(Stz* szArg);
     static eQO  eEvalSubQryOp(Stz* szArg);
     static eSF  eEval_facet(Stz* szArg);

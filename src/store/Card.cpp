@@ -2535,6 +2535,23 @@ void Card::vFormatDots(String* pString, i8 iDepth)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void Card::vFormatEnum(String* pString)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Stz* szGroup_Enum = szFacet(SF_ENUM);
+  eEG eGroup = Symbol::eEval_enumGroup(szGroup_Enum);
+  i8  iEnum  = Symbol::iEval_enum(szGroup_Enum);
+
+  Stz* szEnum = AM::szEnumText(eGroup,iEnum);
+
+  pString->vCatSprint("%s"_Stz,
+                      szEnum);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Card::vFormatFacet(String* pString, i8 i_Facet)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);

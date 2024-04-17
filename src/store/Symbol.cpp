@@ -164,6 +164,55 @@ Symbol::~Symbol(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+i8 Symbol::iEval_enum(Stz* szArg)
+{
+  _static_
+
+  RASSERT(bIs_Enum(szArg));
+
+//  char ac0 = szArg->cChar(0); // $
+//  char ac1 = szArg->cChar(1); // E
+//  char ac2 = szArg->cChar(2); // :
+//  char ac3 = szArg->cChar(3); // x
+//  char ac4 = szArg->cChar(4); // x
+//  char ac5 = szArg->cChar(5); // .
+  char ac6 = szArg->cChar(6); // d
+  char ac7 = szArg->cChar(7); // d
+  char ac8 = szArg->cChar(8); // d
+//  char ac9 = szArg->cChar(9); // \0
+
+  i8 iEnum = 100*ac6 + 10*ac7 + ac8;
+  return iEnum;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+eEG Symbol::eEval_enumGroup(Stz* szArg)
+{
+  _static_
+
+  RASSERT(bIs_Enum(szArg));
+
+//  char ac0 = szArg->cChar(0); // $
+//  char ac1 = szArg->cChar(1); // E
+//  char ac2 = szArg->cChar(2); // :
+  char ac3 = szArg->cChar(3); // x
+  char ac4 = szArg->cChar(4); // x
+//  char ac5 = szArg->cChar(5); // .
+//  char ac6 = szArg->cChar(6); // d
+//  char ac7 = szArg->cChar(7); // d
+//  char ac8 = szArg->cChar(8); // d
+//  char ac9 = szArg->cChar(9); // \0
+
+  eEG eGroup = (eEG)(16*ac3 + ac4);
+
+  return eGroup;
+}
+
+/*----------------------------------------------------------------------------*/
 /* evaluate sub-query op                                                      */
 /*----------------------------------------------------------------------------*/
 eQO Symbol::eEvalSubQryOp(Stz* szArg)
