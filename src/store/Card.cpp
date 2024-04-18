@@ -2173,6 +2173,7 @@ void Card::vPrintCard_alt(Ribbon* pRibbon, i8 iDepth)
   s256 sMarks;
   s256 sName;
   s256 sSupplementary;
+  s256 sType;
 
   switch (m_eCard) {
 
@@ -2268,16 +2269,13 @@ void Card::vPrintCard_alt(Ribbon* pRibbon, i8 iDepth)
 
 
     case CK_TERM: {
-      sSupplementary = szCT_char[eCTVal()];
-
       for (i8 i_Facet = 0; i_Facet < m_xSymbol.nFacets(); i_Facet++) {
         Facet *aFacet = m_xSymbol.aFacet(i_Facet);
 
-        pRibbon->vSprintSnippet(true, "%s~%lld%s%lld"_Stz,
+        vFormatType(sType,i_Facet);
+        pRibbon->vSprintSnippet(true, "%s%s"_Stz,
                                 aFacet->m_sFacet.azChar(),
-                                i_Facet,
-                                sSupplementary.szStz(),
-                                m_xSymbol.xCast().m_nTypeLength);
+                                sType.szStz());
       }
       return;
     }
@@ -2598,8 +2596,6 @@ void Card::vFormatSequence(String* pString)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  UNUSED(pString);
-
   pString->vCatSprint("#%lld"_Stz,
                       m_iSequence);
 }
@@ -2607,11 +2603,14 @@ void Card::vFormatSequence(String* pString)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card::vFormatType(String* pString)
+void Card::vFormatType(String* pString, i8 i_Facet)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  UNUSED(pString);
+  pString->vSprint("~%lld%s%lld"_Stz,
+                   i_Facet,
+                   szCT_char[eCTVal()],
+                   m_xSymbol.xCast().m_nTypeLength);
 }
 
 
