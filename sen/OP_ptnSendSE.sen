@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* OP_ptnSendSE.sen -- Operator send for SE Adaptor                         */
+/* OP_ptnSendSE.sen -- Operator send for SE Adaptor                           */
 /*============================================================================*/
 
-" OP_sendSE.sen" .verbose
+" OP_ptnSendSE.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* send the operand in the PipeIn[] register to ptn tasks                     */

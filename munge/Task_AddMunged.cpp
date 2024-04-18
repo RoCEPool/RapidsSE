@@ -25651,10 +25651,10 @@ void Task::vAddMunged(Task* )
   gszaMungedText[249] =
     "\" munged OP_ptnSendSE.sen \" .verbose \n"
     "/*============================================================================*/\n"
-    "/* OP_ptnSendSE.sen -- Operator send for SE Adaptor                         */\n"
+    "/* OP_ptnSendSE.sen -- Operator send for SE Adaptor                           */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\" OP_sendSE.sen\" .verbose\n"
+    "\" OP_ptnSendSE.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* send the operand in the PipeIn[] register to ptn tasks                     */\n"
