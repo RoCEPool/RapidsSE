@@ -316,7 +316,6 @@
 
 #include "CardUsage.hpp"
 #include "ColMap.hpp"
-#include "CardImage.hpp"
 #include "SketchTkn.hpp"
 #include "ColHsh.hpp"
 #include "ColInj.hpp"
@@ -386,7 +385,6 @@ SizeHeap gxaSizeHeap[]
 
   {CN__C__,                     'C' - ('A' - 1),          HT_INVALID   , FILL },
   {CN_CARD,                     sizeof(Card),             HT_T_SMALL   , FILL },
-  {CN_CARDIMAGE,                sizeof(CardImage),        HT_T_SMALL   , FILL },
   {CN_CARDITER,                 sizeof(CardIter),         HT_T_MEDIUM  , FILL },
   {CN_CARDUSAGE,                sizeof(CardUsage),        HT_T_SMALL   , FILL },
   {CN_CARRYFORWARD,             sizeof(CarryForward),     HT_T_TINY    , FILL },
