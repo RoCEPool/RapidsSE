@@ -280,13 +280,17 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
 
 	m_xDynamicT.m_fp_aExtern_EntBufferNextEntry = nullptr;
 	m_xDynamicT.m_fp_vExtern_EntPayloadCreate = nullptr;
+	m_xDynamicT.m_fp_vExtern_EntWrkReset = nullptr;
 
+	m_xDynamicT.m_fp_aExtern_IndexTreeAllotPayStr = nullptr;
 	m_xDynamicT.m_fp_vExtern_IndexFind = nullptr;
 	m_xDynamicT.m_fp_vExtern_IndexNew = nullptr;
 	m_xDynamicT.m_fp_aExtern_IndexTreeBegin = nullptr;
 	m_xDynamicT.m_fp_aExtern_IndexTreeFindEntryAsc = nullptr;
+	m_xDynamicT.m_fp_aExtern_IndexTreeFindEntryAscDsc = nullptr;
 	m_xDynamicT.m_fp_aExtern_IndexTreeFindInsertGenAsc = nullptr;
-	m_xDynamicT.m_fp_aExtern_IndexTreeInsertEnt = nullptr;
+	m_xDynamicT.m_fp_aExtern_IndexTreeInsertEnt    = nullptr;
+	m_xDynamicT.m_fp_aExtern_IndexTreeInsertEntTop = nullptr;
 
 	m_xDynamicT.m_fp_vExtern_IndexTreePositionGE_gen = nullptr;
 	m_xDynamicT.m_fp_vExtern_IndexTreePositionGT_gen = nullptr;
@@ -298,16 +302,17 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
 	m_xDynamicT.m_fp_vExtern_IndexTreePositionLE_int = nullptr;
 	m_xDynamicT.m_fp_vExtern_IndexTreePositionLT_int = nullptr;
 
-	m_xDynamicT.m_fp_aExtern_PdsRowBufferCellArray = nullptr;
-	m_xDynamicT.m_fp_vExtern_PotAllotRowPds = nullptr;
-	m_xDynamicT.m_fp_vExtern_PotRowStrSize = nullptr;
-	m_xDynamicT.m_fp_vExtern_PotRowPix = nullptr;
+	m_xDynamicT.m_fp_aExtern_PdsFirstRowCellArray  = nullptr;
+	m_xDynamicT.m_fp_aExtern_PdsNextRowCellArray   = nullptr;
+	m_xDynamicT.m_fp_vExtern_PotAllotRowPds   = nullptr;
+	m_xDynamicT.m_fp_vExtern_PotRowStrSize    = nullptr;
+	m_xDynamicT.m_fp_vExtern_PotRowPix        = nullptr;
 
 	m_xDynamicT.m_fp_aExtern_StreamDefNew = nullptr;
 
 	m_xDynamicT.m_fp_vExtern_TubAllotRowPds = nullptr;
-	m_xDynamicT.m_fp_vExtern_TubRowPix = nullptr;
-	m_xDynamicT.m_fp_vExtern_TubRowStrSize = nullptr;
+	m_xDynamicT.m_fp_vExtern_TubRowPix      = nullptr;
+	m_xDynamicT.m_fp_vExtern_TubRowStrSize  = nullptr;
 
   _checkInitialised_(CN_DYNAMIC);
   

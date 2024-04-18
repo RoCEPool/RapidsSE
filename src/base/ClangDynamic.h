@@ -107,24 +107,30 @@ struct Dynamic_T
 
   void* m_aStreamDefOut;
 
-  // ordered aggregates
-//  i8      m_iIndexScan;
-//  i8      m_iHasOrdAggRow;
-//  i8      m_iOrdAggDone;
-
   i8    m_iaPow10[16];
 
 	//
-	// extern function pointers
+	// Extern Function Pointers
 	//
+
+	// EntryBuffer
 	void  (*m_fp_vExtern_EntWrkAppendElementStz)(void*,char*);
 	void* (*m_fp_aExtern_EntBufferNextEntry)(void**,void*);
-	void (*m_fp_vExtern_EntPayloadCreate)(void*,i8);
+	void  (*m_fp_vExtern_EntPayloadCreate)(void*,i8);
+	void  (*m_fp_vExtern_EntWrkReset)(void*);
 
+	// Index
 	void* (*m_fp_vExtern_IndexFind)(void*,char*,char*);
 	void* (*m_fp_vExtern_IndexNew)(void*,i8,void*,bool);
+
+	// IndexTree
+	void* (*m_fp_aExtern_IndexTreeAllotPayStr)(void*,char*);
 	void* (*m_fp_aExtern_IndexTreeBegin)(void*,void**);
+	void* (*m_fp_aExtern_IndexTreeFindEntryAsc)(void*,void*);
+	void* (*m_fp_aExtern_IndexTreeFindEntryAscDsc)(void*,void*);
 	void* (*m_fp_aExtern_IndexTreeFindInsertGenAsc)(void*,i8,bool*);
+	void* (*m_fp_aExtern_IndexTreeInsertEnt)(void*,void*,i8*);
+	void* (*m_fp_aExtern_IndexTreeInsertEntTop)(void*,void*,void**,i8,i8*);
 
 	void  (*m_fp_vExtern_IndexTreePositionGE_gen)(void*);
 	void  (*m_fp_vExtern_IndexTreePositionGT_gen)(void*);
@@ -136,16 +142,17 @@ struct Dynamic_T
 	void  (*m_fp_vExtern_IndexTreePositionLE_int)(void*);
 	void  (*m_fp_vExtern_IndexTreePositionLT_int)(void*);
 
-	void* (*m_fp_aExtern_IndexTreeFindEntryAsc)(void*,void*);
-	void* (*m_fp_aExtern_IndexTreeInsertEnt)(void*,void*,i8*);
-
-	void* (*m_fp_aExtern_PdsRowBufferCellArray)(void*,i8);
+  // Pds
+	void* (*m_fp_aExtern_PdsFirstRowCellArray)(void*,void**);
+	void* (*m_fp_aExtern_PdsNextRowCellArray)(void*,void**);
 	void  (*m_fp_vExtern_PotAllotRowPds)(void*,byte*,i8,char**,i8*);
 	void  (*m_fp_vExtern_PotRowStrSize)(void*,i8);
 	void  (*m_fp_vExtern_PotRowPix)(void*,i8,void*);
 
+	// StreamDef
 	void* (*m_fp_aExtern_StreamDefNew)(i8,void*);
 
+	// Tub
 	void  (*m_fp_vExtern_TubAllotRowPds)(void*,char**,i8*);
 	void  (*m_fp_vExtern_TubRowPix)(void*,i8,void*);
 	void  (*m_fp_vExtern_TubRowStrSize)(void*,i8);

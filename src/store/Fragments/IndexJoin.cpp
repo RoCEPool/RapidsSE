@@ -74,7 +74,7 @@ void vIndexJoinGenKey(Dynamic_T* aDynamicT) {
   else {
 
 #ifdef WITH_CLANG
-    vExtern_EntWrkReset(aDynamicT->m_xIndexInfoJ.m_aEntWrk);
+		aDynamicT->m_fp_vExtern_EntWrkReset(aDynamicT->m_xIndexInfoJ.m_aEntWrk);
 #endif
 
   }

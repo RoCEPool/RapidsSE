@@ -43,26 +43,6 @@ i8 iGbyAggBegin(Dynamic_T* aDynamicT) {
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- vGbyAggFindKey ----------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-// function-vGbyAggFindKey
-void vGbyAggFindKey(Dynamic_T* aDynamicT) {
-
-  void* aEntFound;
-
-  // marker-start
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // find key in payload index
-#ifdef WITH_CLANG
-  aEntFound = aExtern_IndexTreeFindEntry(aDynamicT->m_xIndexInfoPL.m_aIndexTree, aDynamicT->m_xIndexInfoPL.m_aEntKey);
-#endif
-  if ( !aEntFound ) {
-    // marker-end
-  }
-
-}
-
-/*----------------------------------------------------------------------------*/
 /*-- vGbyAggFindKeyAsc -------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-vGbyAggFindKeyAsc
@@ -93,7 +73,7 @@ void vGbyAggFindKeyAsc(Dynamic_T* aDynamicT) {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // find key in payload index
 #ifdef WITH_CLANG
-    aEntFound = aExtern_IndexTreeFindEntryAscDsc(aDynamicT->m_xIndexInfoPL.m_aIndexTree, aDynamicT->m_xIndexInfoPL.m_aEntKey);
+    aEntFound = aDynamicT->m_fp_aExtern_IndexTreeFindEntryAscDsc(aDynamicT->m_xIndexInfoPL.m_aIndexTree, aDynamicT->m_xIndexInfoPL.m_aEntKey);
 #endif
     if (!aEntFound) {
       // marker-end
