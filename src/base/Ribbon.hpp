@@ -52,12 +52,15 @@ namespace BASE
     void vLaneFirst(void);
     void vLaneNext(void);
 
+    void vNewLine(void);
+
     void vPinSubRibbon(i8 i_Line, i8 i_Char, Ribbon* pSubRibbon);
     void vPrintRibbon(Stz* szQueryNm, i8 BenchNo, eOH ePhase, i8 iPrintNo=C_UNKNOWN);
     void vPutData(i8 i_Line, i8 i_Char, Stz* szData);
     void vPutOther(i8 i_Line, i8 i_Char, Stz* szOther);
     void vPutText(i8 i_Line, i8 i_Char, Stz* szText2);
 
+    void vSprint(i8& ri_Char, Stz* szFormat, ...);
     void vSprintNL(Stz* szFormat, ...);
     void vSprintNL(bool bRight, Stz* szFormat, ...);
 
@@ -67,11 +70,15 @@ namespace BASE
 
   private:
     void vAddLine(void);
-    void vInitTabs(i8 i_Start, i8 nEach);
-    void vNewLine(void);
 
-    void vSprintSnippetLeft(va_list args, const char* sFormat);
-    void vSprintSnippetRight(va_list args, const char* sFormat);
+    void vFormatLeft(String* pString, Stz* szFormat, va_list args);
+    void vFormatRight(String* pString, Stz* szFormat, va_list args);
+
+    void vInitTabs(i8 i_Start, i8 nEach);
+
+
+    void vSprintSnippetLeft(va_list args, const char* sFormat, i8 i_Char);
+    void vSprintSnippetRight(va_list args, const char* sFormat, i8 i_Char);
 
     void vSufficientLines(i8 i_Line);
 
