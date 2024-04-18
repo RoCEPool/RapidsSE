@@ -7,7 +7,6 @@
 
 #include "RibbonLine.hpp"
 #include "StzList.hpp"
-#include "CardCtl.hpp"
 #include "eOH.h"
 
 namespace BASE

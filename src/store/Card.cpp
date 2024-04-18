@@ -3,7 +3,6 @@
 /*============================================================================*/
 
 #include "Card.hpp"
-#include "CardCtl.hpp"
 #include "Board.hpp"
 #include "CardIter.hpp"
 #include "Kid.hpp"

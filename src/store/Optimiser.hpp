@@ -6,7 +6,6 @@
 #include "Dissector.hpp"
 
 #include "Bench.hpp"
-#include "CardCtl.hpp"
 #include "PermGen.hpp"
 #include "Error.hpp"
 #include "PipelineDef.hpp"

@@ -209,7 +209,6 @@
 #include "ThreadScratch.hpp"
 #include "PagingMetrics.hpp"
 #include "Action.hpp"
-#include "CardCtl.hpp"
 #include "Vertex.hpp"
 #include "SubCall.hpp"
 #include "SubReturn.hpp"
@@ -388,7 +387,6 @@ SizeHeap gxaSizeHeap[]
 
   {CN__C__,                     'C' - ('A' - 1),          HT_INVALID   , FILL },
   {CN_CARD,                     sizeof(Card),             HT_T_SMALL   , FILL },
-  {CN_CARDCTL,                  sizeof(CardCtl),          HT_T_LARGE   , FILL },
   {CN_CARDHISTORY,              sizeof(CardHistory),      HT_T_SMALL   , FILL },
   {CN_CARDIMAGE,                sizeof(CardImage),        HT_T_SMALL   , FILL },
   {CN_CARDITER,                 sizeof(CardIter),         HT_T_MEDIUM  , FILL },
