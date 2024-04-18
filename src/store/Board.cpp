@@ -414,16 +414,19 @@ void Board::vPinCards(CardIter* pCI, Ribbon* pRibbon)
   i8 nCount = 0;
 
   while (xBI.bEach()) {
+    Card* pChild = xBI.pChild();
+    eCK eChild = pChild->eCard();
 
     if (! nCount++)
       pSubRibbon->vLaneFirst();
     else
-    if (pSubRibbon->i_Char() && pCardCtl->bHeatNext(xBI.pChild()->eCard()))
+    if (pSubRibbon->i_Char() &&
+        (CK_c_STAGE == eChild || CK_SECTION == eChild))
       pSubRibbon->vHeatNext();
     else
       pSubRibbon->vLaneNext();
 
-    xBI.pChild()->vPrintRecursive(pCI,0,m_pDeck,pSubRibbon);
+    pChild->vPrintRecursive(pCI,0,m_pDeck,pSubRibbon);
   }
 
   pRibbon->vPinSubRibbon(pRibbon->i_Heat(), 0, pSubRibbon);
