@@ -43,6 +43,9 @@ Stz::~Stz(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 Stz* Stz::szDots(i8 nDots)
 {
+  if (nDots < 0)
+    return ""_Stz;
+
   switch(nDots) {
     case  0:  return ""_Stz;
     case  1:  return "."_Stz;

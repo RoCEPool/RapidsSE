@@ -2168,22 +2168,27 @@ void Card::vPrintCard_alt(Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  //CardCtl* pCardCtl = _pCardCtl(pRibbon->pCardCtl());
+  s256 sDots;
+  //s256 sFacet;
+  s256 sMarks;
+  s256 sName;
+  s256 sSupplementary;
 
   switch (m_eCard) {
 
-    case CK_t_EMIT: {
-      s32 sName;
+    case CK_t_EMIT:
+    case CK_o_FILTER:
+    case CK_s_KEY: {
+      vFormatMarks(sMarks);
+      vFormatDots(sDots,iDepth);
+      vFormatName(sName,iDepth,false);
+      vFormatSequence(sSupplementary);
 
-      sName.vSprint("%s%lld]emit"_Stz,
-                    Stz::szDots(iDepth - 1),
-                    m_i_Child);
-
-      pRibbon->vSprintSnippet(false,"%c%c%s #%lld"_Stz,
-                              cMark1(),
-                              cMark2(),
+      pRibbon->vSprintSnippet(false,"%s%s%s %s"_Stz,
+                              sMarks.szStz(),
+                              sDots.szStz(),
                               sName.szStz(),
-                              m_iSequence);
+                              sSupplementary.szStz());
       return;
     }
 
@@ -2194,7 +2199,7 @@ void Card::vPrintCard_alt(Ribbon* pRibbon, i8 iDepth)
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // primary facet
 
-      s32 sType_short = szCT_char[eCTVal()];
+      sSupplementary = szCT_char[eCTVal()];
       i8 i_Facet_primary = C_UNKNOWN;
       if (C_UNKNOWN != (i_Facet_primary = pSymbol->i_Facet(SF_KEY_COL))) {
         pRibbon->vSprintSnippet(false, "%c%c%s%lld]%s %s~%lld%s%lld"_Stz,
@@ -2206,7 +2211,7 @@ void Card::vPrintCard_alt(Ribbon* pRibbon, i8 iDepth)
                                 szFacet(SF_KEY_COL),
 
                                 i_Facet_primary,
-                                sType_short.szStz(),
+                                sSupplementary.szStz(),
                                 pSymbol->xCast().m_nTypeLength
         );
 
@@ -2222,7 +2227,7 @@ void Card::vPrintCard_alt(Ribbon* pRibbon, i8 iDepth)
                                 szFacet(SF_EXP_COL),
 
                                 i_Facet_primary,
-                                sType_short.szStz(),
+                                sSupplementary.szStz(),
                                 pSymbol->xCast().m_nTypeLength
         );
       }
@@ -2244,39 +2249,24 @@ void Card::vPrintCard_alt(Ribbon* pRibbon, i8 iDepth)
       return;
     }
 
-    case CK_s_KEY: {
-      s32 sName;
-
-      sName.vSprint("%s%lld]"_Stz,
-                    Stz::szDots(iDepth - 1),
-                    m_i_Child);
-
-      sName.vSprintCat("%s"_Stz,
-                       szCardNm());
-
-      pRibbon->vSprintSnippet(false,"%c%c%s #%lld"_Stz,
-                              cMark1(),
-                              cMark2(),
-                              sName.szStz(),
-                              m_iSequence);
-      return;
-    }
-
     case CK_s_TABLE: {
-      s256 sName;
-      sName = aCK_short[m_eCard];
-      if (0 == iDepth)
-        sName.vToUpper();
+      vFormatMarks(sMarks);
+      vFormatDots(sDots,iDepth);
+      vFormatName(sName,iDepth,false);
 
       if (m_xSymbol.bHasFacets())
-        sName.vCatSprint(" %s"_Stz, pSymbol()->szFacet(SF_TBL_SYN));
+        sSupplementary = pSymbol()->szFacet(SF_TBL_SYN);
 
-      vPrintName(pRibbon, iDepth, sName.szStz());
+      pRibbon->vSprintSnippet(false,"%s%s%s %s"_Stz,
+                              sMarks.szStz(),
+                              sDots.szStz(),
+                              sName.szStz(),
+                              sSupplementary.szStz());
       return;
     }
 
     case CK_TERM: {
-      s32 sType_short = szCT_char[eCTVal()];
+      sSupplementary = szCT_char[eCTVal()];
 
       for (i8 i_Facet = 0; i_Facet < m_xSymbol.nFacets(); i_Facet++) {
         Facet *aFacet = m_xSymbol.aFacet(i_Facet);
@@ -2284,29 +2274,14 @@ void Card::vPrintCard_alt(Ribbon* pRibbon, i8 iDepth)
         pRibbon->vSprintSnippet(true, "%s~%lld%s%lld"_Stz,
                                 aFacet->m_sFacet.azChar(),
                                 i_Facet,
-                                sType_short.szStz(),
+                                sSupplementary.szStz(),
                                 m_xSymbol.xCast().m_nTypeLength);
       }
       return;
     }
 
-    case CK_o_FILTER: {
-      s32 sName;
-
-      sName.vSprint("%s%lld]filter"_Stz,
-                    Stz::szDots(0 == iDepth ? iDepth : iDepth - 1),
-                    m_i_Child);
-
-      pRibbon->vSprintSnippet(false, "%c%c%s %llx"_Stz,
-                              cMark1(),
-                              cMark2(),
-                              sName.szStz(),
-                              ((char *) this) - (char *) AM::SYSARGS::aRegionAddr());
-      return;
-    }
-
     default:
-      vPrintNameSymbol(pRibbon, iDepth);
+      vPrintNameFacet(pRibbon, iDepth);
       vPrintProperties(pRibbon, iDepth);
       break;
   }
@@ -2390,7 +2365,7 @@ void Card::vPrintName(Ribbon* pRibbon, i8 iDepth, Stz* szCustomName)
 /*----------------------------------------------------------------------------*/
 /* print card name and its symbolic value on single line if possible          */
 /*----------------------------------------------------------------------------*/
-void Card::vPrintNameSymbol(Ribbon* pRibbon, i8 iDepth)
+void Card::vPrintNameFacet(Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -2532,7 +2507,7 @@ void Card::vFormatHeader(String* pString, char cLevel)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card::vFormatMarkers(String* pString)
+void Card::vFormatMarks(String* pString)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -2549,19 +2524,21 @@ void Card::vFormatName(String* pString, i8 iDepth, bool bJustify_right)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   s32 sName(szCardNm());
-  if (0 == iDepth)
+  if (0 == iDepth) {
     sName.vToUpper();
+  }
   else
-  if (iDepth >= 2)
+  if (iDepth >= 2) {
     sName.vToLower();
+  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (bJustify_right)
-    pString->vCatSprint("%-18s"_Stz,
+    pString->vCatSprint("%18s"_Stz,
                         sName.szStz());
   else
-    pString->vCatSprint("%18s"_Stz,
+    pString->vCatSprint("%s"_Stz,
                         sName.szStz());
 }
 
@@ -2609,6 +2586,19 @@ void Card::vFormatProperty(String* pString, i8 i_Property)
       break;
   }
 
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card::vFormatSequence(String* pString)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  UNUSED(pString);
+
+  pString->vCatSprint("#%lld"_Stz,
+                      m_iSequence);
 }
 
 /*----------------------------------------------------------------------------*/

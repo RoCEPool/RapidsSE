@@ -429,7 +429,7 @@ namespace STORE
     void vPrintFacets(Ribbon* pRibbon, i8 iDepth);
     void vPrintHeader(Ribbon* pRibbon);
     void vPrintName(Ribbon* pRibbon, i8 iDepth, Stz* szCustomName=nullptr);
-    void vPrintNameSymbol(Ribbon* pRibbon, i8 iDepth);
+    void vPrintNameFacet(Ribbon* pRibbon, i8 iDepth);
     void vPrintProperties(Ribbon* pRibbon, i8 iDepth);
 
     void vFormatAddress(String* pString);
@@ -438,9 +438,10 @@ namespace STORE
     void vFormatFacet(String* pString, eSF eFacet);
     void vFormatFacet(String* pString, i8 i_Facet);
     void vFormatHeader(String* pString, char cLevel);
-    void vFormatMarkers(String* pString);
-    void vFormatName(String* pString, i8 iDepth, bool bJustify_right);
+    void vFormatMarks(String* pString);
+    void vFormatName(String* pString, i8 iDepth, bool bJustify_right=false);
     void vFormatProperty(String* pString, i8 i_Property);
+    void vFormatSequence(String* pString);
     void vFormatType(String* pString);
 
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
