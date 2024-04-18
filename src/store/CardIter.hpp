@@ -22,7 +22,6 @@ namespace STORE
   public:
 
     Bench*      m_pBench;
-    CardCtl*    m_pCardCtl;
     Symbol      m_xSymbol_tableSyn;
 
     i8          m_i_RecursionDepth;

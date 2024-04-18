@@ -26,8 +26,6 @@ namespace STORE
 
     VertexSpec*  m_pUnOptPipeSpec;
 
-    CardCtl*     m_pCardCtl;
-  
     Bench*       m_pBench;
     Dissector*   m_pDissector;
 
@@ -56,8 +54,6 @@ namespace STORE
     bool bApplyTransformations(Error& rxError);
 
     Bench* pBench(void);
-
-    CardCtl* pCardCtl(void);
 
     ExtendedText* pCodeBlock(void);
     void vCodeBlock(ExtendedText* pCodeBlock);

@@ -322,8 +322,6 @@ void Ribbon::vPutData(i8 i_Line, i8 i_Char, Stz* szData)
   _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
 
   vPutText(i_Line, i_Char, szData);
-//  if (m_pCardCtl->pCardHistory())
-//    m_pCardCtl->pCardHistory()->vAddLine(szData);
 }
 
 /*----------------------------------------------------------------------------*/

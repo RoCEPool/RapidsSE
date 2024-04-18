@@ -397,7 +397,7 @@ void Board::vPinCards(CardIter* pCI, Ribbon* pRibbon)
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
   UNUSED(pCI);
-  
+
   if (! m_pDeck->nItems())
     return;
 

@@ -29,7 +29,6 @@ CardIter::CardIter(Bench* pBench)
   _precondition_(_MAGIC_,_FOOTER_);
 
   m_pBench   = pBench;
-  m_pCardCtl = nullptr;
   m_xSymbol_tableSyn.vInit_Tbl_Syn('a');
 
   m_i_RecursionDepth = 0;
@@ -729,12 +728,8 @@ eOA CardIter::eCueUser(String* psPrompt)
 
   TokenVec* pTknVec = nullptr;
 
-  if (m_pCardCtl->bCueDisabled())
-    return OA_CONTINUE_TRANSFORMING;
-
   psPrompt->vConcat(" >> "_Stz);
 
-  m_pCardCtl->vCued(true);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -781,9 +776,6 @@ eOA CardIter::eCueUser(String* psPrompt)
 
   if (OA_INPUT_AGAIN == eOptAct)
     goto L_Input;
-
-  if (OA_DISABLE_CUEING == eOptAct)
-    m_pCardCtl->vCueDisabled(true);
 
   return eOptAct;
 }

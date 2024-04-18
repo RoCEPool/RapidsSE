@@ -37,7 +37,6 @@ Optimiser::Optimiser(TagSet* p_JobTags)
     
   m_p_JobTags      = p_JobTags;
   m_pUnOptPipeSpec = nullptr;
-  m_pCardCtl       = new CardCtl;
 
   m_pBench       = new Bench(this);
   m_pCI  = new CardIter(m_pBench);
@@ -75,11 +74,6 @@ Optimiser::~Optimiser(void) noexcept(false)
 
   //RASSERT(0 == m_pCI->nItems());
 
-  if (m_pCardCtl->pCardHistory())
-    m_pCardCtl->pCardHistory()->vPrintImages(CK_o_GBYAGG, AL_PARTITION);
-
-  delete m_pCardCtl;
-  
   delete m_pBench;
 
   delete m_pDissector;
@@ -157,16 +151,6 @@ Bench* Optimiser::pBench(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
 
   return m_pBench;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get cardCtl                                                                */
-/*----------------------------------------------------------------------------*/
-CardCtl* Optimiser::pCardCtl(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
-
-  return m_pCardCtl;
 }
 
 /*----------------------------------------------------------------------------*/
