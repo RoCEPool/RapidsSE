@@ -2192,6 +2192,22 @@ void Card::vPrintCard_alt(Ribbon* pRibbon, i8 iDepth)
       return;
     }
 
+    case CK_s_TABLE: {
+      vFormatMarks(sMarks);
+      vFormatDots(sDots,iDepth);
+      vFormatName(sName,iDepth,false);
+
+      if (m_xSymbol.bHasFacets())
+        sSupplementary = pSymbol()->szFacet(SF_TBL_SYN);
+
+      pRibbon->vSprintSnippet(false,"%s%s%s %s"_Stz,
+                              sMarks.szStz(),
+                              sDots.szStz(),
+                              sName.szStz(),
+                              sSupplementary.szStz());
+      return;
+    }
+
     case CK_EXPR: {
       Symbol* pSymbol = this->pSymbol();
       i8 nFacets = pSymbol->nFacets();
@@ -2249,21 +2265,6 @@ void Card::vPrintCard_alt(Ribbon* pRibbon, i8 iDepth)
       return;
     }
 
-    case CK_s_TABLE: {
-      vFormatMarks(sMarks);
-      vFormatDots(sDots,iDepth);
-      vFormatName(sName,iDepth,false);
-
-      if (m_xSymbol.bHasFacets())
-        sSupplementary = pSymbol()->szFacet(SF_TBL_SYN);
-
-      pRibbon->vSprintSnippet(false,"%s%s%s %s"_Stz,
-                              sMarks.szStz(),
-                              sDots.szStz(),
-                              sName.szStz(),
-                              sSupplementary.szStz());
-      return;
-    }
 
     case CK_TERM: {
       sSupplementary = szCT_char[eCTVal()];
@@ -2298,13 +2299,14 @@ void Card::vPrintFacets(Ribbon* pRibbon, i8 iDepth)
   if (!m_xSymbol.bHasFacets())
     return;
 
-  pRibbon->vSprintSnippet(true, "  %s"_Stz, m_xSymbol.szFacet((i8)0));
+  pRibbon->vSprintSnippet(true, "%s"_Stz,
+                          m_xSymbol.szFacet((i8) 0));
 
-  if (m_xSymbol.nFacets()) {
-    for (i8 i_Facet = 0; i_Facet < m_xSymbol.nFacets(); i_Facet++) {
-      Facet* aFacet = m_xSymbol.aFacet(i_Facet);
-      pRibbon->vSprintSnippet(true, "%18s~%lld"_Stz, aFacet->m_sFacet.azChar(), i_Facet);
-    }
+  for (i8 i_Facet = 1; i_Facet < m_xSymbol.nFacets(); i_Facet++) {
+    Facet *aFacet = m_xSymbol.aFacet(i_Facet);
+    pRibbon->vSprintSnippet(true, "%18s~%lld"_Stz,
+                            aFacet->m_sFacet.azChar(),
+                            i_Facet);
   }
 }
 
