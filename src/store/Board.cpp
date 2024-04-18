@@ -275,7 +275,7 @@ void Board::vPrintBoard(CardIter* pCI)
 
   Stz* szQueryNm = m_pBench->pOptimiser()->szQueryNm();
 
-  Ribbon* pRibbon = new Ribbon(m_pBench->pOptimiser()->pCardCtl());
+  Ribbon* pRibbon = new Ribbon;
 
   vPinTitle(pRibbon);
 
@@ -397,9 +397,7 @@ void Board::vPinCards(CardIter* pCI, Ribbon* pRibbon)
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
   UNUSED(pCI);
-
-  CardCtl* pCardCtl = m_pBench->pOptimiser()->pCardCtl();
-
+  
   if (! m_pDeck->nItems())
     return;
 
@@ -407,7 +405,7 @@ void Board::vPinCards(CardIter* pCI, Ribbon* pRibbon)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Ribbon* pSubRibbon = new Ribbon(pCardCtl);
+  Ribbon* pSubRibbon = new Ribbon;
 
   Kid xBI(m_pDeck);
 

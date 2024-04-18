@@ -18,8 +18,6 @@ namespace BASE
   {
   private:
 
-    CardCtl* m_pCardCtl;
-
     i8 m_nMaxLanesAcross;  // maximum number of lanes across
 
     i8 m_i_Heat; // current horizontal heat/row
@@ -38,11 +36,10 @@ namespace BASE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Ribbon(CardCtl* pCardCtl, i8 nMaxLanesAcross=C_RIBBON_ACROSS);
+    Ribbon(i8 nMaxLanesAcross=C_RIBBON_ACROSS);
    ~Ribbon(void) noexcept(false);
 
     i8   i_Char(void);
-    CardCtl* pCardCtl(void);
 
     void vDrawH(char cChr, i8 i_Line=C_UNKNOWN);
     void vDrawV(i8 i_Line, i8 i_Char, Stz* szBar);
