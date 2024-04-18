@@ -44,7 +44,6 @@ enum eCN : u2 // Class Number
 
   /* */ CN__C__,
   /* */ CN_CARD,
-  /* */ CN_CARDHISTORY,
   /* */ CN_CARDIMAGE,
   /* */ CN_CARDITER,
   /* */ CN_CARDUSAGE,
