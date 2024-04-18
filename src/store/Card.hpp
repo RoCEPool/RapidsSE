@@ -440,7 +440,7 @@ namespace STORE
     void vFormatHeader(String* pString, char cLevel);
     void vFormatMarkers(String* pString);
     void vFormatName(String* pString, i8 iDepth, bool bJustify_right);
-    void vFormatProperty(String* pString, i8 i_Property, bool bPpyNm);
+    void vFormatProperty(String* pString, i8 i_Property);
     void vFormatType(String* pString);
 
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~

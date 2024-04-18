@@ -2450,17 +2450,11 @@ void Card::vPrintProperties(Ribbon* pRibbon, i8 iDepth)
 
   s256 sProperty;
 
-  CardCtl* pCardCtl = _pCardCtl(pRibbon->pCardCtl());
-
-  bool bPrintPptName = pCardCtl->bPrintPptName(m_eCard);
-  if (! bPrintPptName)
-    vDebugPoint();
-
   i8 nProperties = pSymbol()->Y_nPpy();
 
   for (i8 i_Property = 0; i_Property < nProperties; i_Property++) {
     sProperty.vReset();
-    vFormatProperty(sProperty.pString(),i_Property,bPrintPptName);
+    vFormatProperty(sProperty.pString(),i_Property);
     pRibbon->vSprintSnippet(true,"%s"_Stz, sProperty.szStz());
   }
 }
@@ -2575,7 +2569,7 @@ void Card::vFormatName(String* pString, i8 iDepth, bool bJustify_right)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card::vFormatProperty(String* pString, i8 i_Property, bool bPpyNm)
+void Card::vFormatProperty(String* pString, i8 i_Property)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -2592,11 +2586,6 @@ void Card::vFormatProperty(String* pString, i8 i_Property, bool bPpyNm)
         pString->vCatSprint("}%s"_Stz,
                             szDecode);
       else
-      if (bPpyNm)
-        pString->vCatSprint("}%s=%lld"_Stz,
-                            szPpyNm,
-                            iPpyVal);
-      else
         pString->vCatSprint("}%s=%lld"_Stz,
                             szPpyNm,
                             iPpyVal);
@@ -2611,12 +2600,9 @@ void Card::vFormatProperty(String* pString, i8 i_Property, bool bPpyNm)
         pString->vCatSprint("}%s"_Stz,
                             szPpyNm);
       else
-      if (bPpyNm)
         pString->vCatSprint("}%s=%s"_Stz,
                             szPpyNm,
                             szPpyVal);
-      else
-        pString->vCatSprint("}%s"_Stz, szPpyVal);
       break;
     }
 
