@@ -2169,80 +2169,96 @@ void Card::vPrintCard_alt(Ribbon* pRibbon, i8 iDepth)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   s256 sDots;
+  s256 sFacet;
   s256 sMarks;
   s256 sName;
-  s256 sSupplementary;
+  s256 sSequence;
+  s256 sTblSyn;
   s256 sType;
+
+  //Symbol* pSymbol = this->pSymbol();
+  i8 nFacets = m_xSymbol.nFacets();
+  i8 i_Facet_primary = C_UNKNOWN;
 
   switch (m_eCard) {
 
-    case CK_t_EMIT:
-    case CK_o_FILTER:
-    case CK_s_KEY: {
-      vFormatMarks(sMarks);
-      vFormatDots(sDots,iDepth);
-      vFormatName(sName,iDepth,false);
-      vFormatSequence(sSupplementary);
-
-      pRibbon->vSprintSnippet(false,"%s%s%s %s"_Stz,
-                              sMarks.szStz(),
-                              sDots.szStz(),
-                              sName.szStz(),
-                              sSupplementary.szStz());
-      return;
-    }
-
-    case CK_s_TABLE: {
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    case CK_s_TABLE:
       vFormatMarks(sMarks);
       vFormatDots(sDots,iDepth);
       vFormatName(sName,iDepth,false);
 
       if (m_xSymbol.bHasFacets())
-        sSupplementary = pSymbol()->szFacet(SF_TBL_SYN);
+        sTblSyn = m_xSymbol.szFacet(SF_TBL_SYN);
+
+      pRibbon->vSprintSnippet(false, "%s%s%s %s"_Stz,
+                              sMarks.szStz(),
+                              sDots.szStz(),
+                              sName.szStz(),
+                              sTblSyn.szStz());
+      return;
+
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    case CK_t_EMIT:
+    case CK_o_FILTER:
+    case CK_s_KEY:
+      vFormatMarks(sMarks);
+      vFormatDots(sDots,iDepth);
+      vFormatName(sName,iDepth,false);
+      vFormatSequence(sSequence);
 
       pRibbon->vSprintSnippet(false,"%s%s%s %s"_Stz,
                               sMarks.szStz(),
                               sDots.szStz(),
                               sName.szStz(),
-                              sSupplementary.szStz());
+                              sSequence.szStz());
       return;
-    }
 
-    case CK_EXPR: {
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    case CK_TERM:
+      for (i8 i_Facet = 0; i_Facet < m_xSymbol.nFacets(); i_Facet++) {
+        vFormatFacet(sFacet, i_Facet);
+        vFormatTypeLength(sType, i_Facet);
+        pRibbon->vSprintSnippet(true, "%s%s"_Stz,
+                                sFacet.szStz(),
+                                sType.szStz());
+      }
+      return;
+
+
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    case CK_EXPR:
       vFormatMarks(sMarks);
       vFormatDots(sDots,iDepth);
+      vFormatName(sName,iDepth);
 
-      Symbol* pSymbol = this->pSymbol();
-      i8 nFacets = pSymbol->nFacets();
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // primary facet
 
-      sSupplementary = szCT_char[eCTVal()];
-      i8 i_Facet_primary = C_UNKNOWN;
-      if (C_UNKNOWN != (i_Facet_primary = pSymbol->i_Facet(SF_KEY_COL))) {
+      if (C_UNKNOWN != (i_Facet_primary = m_xSymbol.i_Facet(SF_KEY_COL))) {
+        vFormatTypeLength(sType, i_Facet_primary);
+        vFormatFacet(sFacet,SF_KEY_COL);
+        pRibbon->vSprintSnippet(false, "%s%s%s %s%s"_Stz,
+                                sMarks.szStz(),
+                                sDots.szStz(),
+                                sName.szStz(),
+                                sFacet.szStz(),
+                                sType.szStz());
+      }
+      else
+      if (C_UNKNOWN != (i_Facet_primary = m_xSymbol.i_Facet(SF_EXP_COL))) {
+        vFormatFacet(sFacet,SF_EXP_COL);
         vFormatTypeLength(sType, i_Facet_primary);
         pRibbon->vSprintSnippet(false, "%s%s%s %s%s"_Stz,
                                 sMarks.szStz(),
                                 sDots.szStz(),
-                                szCardNm(),
-                                szFacet(SF_KEY_COL),
+                                sName.szStz(),
+                                sFacet.szStz(),
                                 sType.szStz());
       }
-      else
-      if (C_UNKNOWN != (i_Facet_primary = pSymbol->i_Facet(SF_EXP_COL))) {
-        pRibbon->vSprintSnippet(false, "%c%c%s%lld]%s %s~%lld%s%lld"_Stz,
-                                cMark1(),
-                                cMark2(),
-                                Stz::szDots(iDepth - 1),
-                                m_i_Child,
-                                szCardNm(),
-                                szFacet(SF_EXP_COL),
-
-                                i_Facet_primary,
-                                sSupplementary.szStz(),
-                                pSymbol->xCast().m_nTypeLength
-        );
+      else {
+        NEVER_REACH
       }
 
       vPrintProperties(pRibbon, iDepth);
@@ -2253,28 +2269,14 @@ void Card::vPrintCard_alt(Ribbon* pRibbon, i8 iDepth)
       for (i8 i_Facet_secondary = 0; i_Facet_secondary < nFacets; i_Facet_secondary++) {
         if (i_Facet_secondary == i_Facet_primary)
           continue;
-        Facet* aFacet = pSymbol->aFacet(i_Facet_secondary);
-        pRibbon->vSprintSnippet(true, "<%s~%lld"_Stz,
-                                aFacet->m_sFacet.szStz(),
-                                i_Facet_secondary);
+        vFormatFacet(sFacet,i_Facet_secondary);
+        pRibbon->vSprintSnippet(true, "<%s"_Stz,
+                                sFacet.szStz());
       }
 
       return;
-    }
 
-
-    case CK_TERM: {
-      for (i8 i_Facet = 0; i_Facet < m_xSymbol.nFacets(); i_Facet++) {
-        Facet *aFacet = m_xSymbol.aFacet(i_Facet);
-
-        vFormatTypeLength(sType, i_Facet);
-        pRibbon->vSprintSnippet(true, "%s%s"_Stz,
-                                aFacet->m_sFacet.azChar(),
-                                sType.szStz());
-      }
-      return;
-    }
-
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     default:
       vPrintNameFacet(pRibbon, iDepth);
       vPrintProperties(pRibbon, iDepth);
@@ -2469,11 +2471,10 @@ void Card::vFormatFacet(String* pString, eSF eFacet)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Facet* aFacet = m_xSymbol.aFacet(eFacet);
-
   pString->vCatSprint("%s"_Stz,
-                      aFacet->m_sFacet.azChar());
+                      szFacet(eFacet));
 }
+
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -2484,10 +2485,11 @@ void Card::vFormatFacet(String* pString, i8 i_Facet)
 
   Facet* aFacet = m_xSymbol.aFacet(i_Facet);
 
-  pString->vSprint("%18s~%lld"_Stz,
+  pString->vSprint("%s~%lld"_Stz,
                       aFacet->m_sFacet.azChar(),
                       i_Facet);
 }
+
 
 /*----------------------------------------------------------------------------*/
 /* put header                                                                 */
