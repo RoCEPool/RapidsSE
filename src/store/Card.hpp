@@ -425,12 +425,24 @@ namespace STORE
     void vCoord(void);
     void vCoord(Card* pParentCard);
 
-    void vPrintCard_alt(Ribbon* pRibbon, i8 iDepth);
-    void vPrintFacets(Ribbon* pRibbon, i8 iDepth);
-    void vPrintHeader(Ribbon* pRibbon);
-    void vPrintName(Ribbon* pRibbon, i8 iDepth, Stz* szCustomName=nullptr);
-    void vPrintNameFacet(Ribbon* pRibbon, i8 iDepth);
-    void vPrintProperties(Ribbon* pRibbon, i8 iDepth);
+    void vPrint_card(Ribbon* pRibbon, i8 iDepth);
+    void vPrint_depth0(Ribbon* pRibbon, i8 iDepth);
+    void vPrint_depth1(Ribbon* pRibbon, i8 iDepth);
+    void vPrint_depth2(Ribbon* pRibbon, i8 iDepth);
+    void vPrint_depthN(Ribbon* pRibbon, i8 iDepth);
+    void vPrint_expr(Ribbon* pRibbon, i8 iDepth);
+    void vPrint_table(Ribbon* pRibbon, i8 iDepth);
+    void vPrint_term(Ribbon* pRibbon, i8 iDepth);
+
+    void vCat(Ribbon* pRibbon, Stz* szStr);
+    void vCatBlank(Ribbon* pRibbon);
+    void vCatDots(Ribbon* pRibbon, i8 iDepth);
+    void vCatFacets(Ribbon* pRibbon, i8 iDepth);
+    void vCatHeader(Ribbon* pRibbon);
+    void vCatName(Ribbon* pRibbon, i8 iDepth);
+    void vCatNameFacet(Ribbon* pRibbon, i8 iDepth);
+    void vCatMarks(Ribbon* pRibbon);
+    void vCatProperties(Ribbon* pRibbon, i8 iDepth);
 
     void vFormatAddress(String* pString);
     void vFormatDots(String* pString, i8 iDepth);

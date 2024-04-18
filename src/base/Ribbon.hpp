@@ -58,7 +58,8 @@ namespace BASE
     void vPutOther(i8 i_Line, i8 i_Char, Stz* szOther);
     void vPutText(i8 i_Line, i8 i_Char, Stz* szText2);
 
-    void vSprintSnippet(bool bRight, Stz* szFormat, ...);
+    void vSprintNL(Stz* szFormat, ...);
+    void vSprintNL(bool bRight, Stz* szFormat, ...);
 
     void vTrim(void);
 
@@ -67,6 +68,7 @@ namespace BASE
   private:
     void vAddLine(void);
     void vInitTabs(i8 i_Start, i8 nEach);
+    void vNewLine(void);
 
     void vSprintSnippetLeft(va_list args, const char* sFormat);
     void vSprintSnippetRight(va_list args, const char* sFormat);

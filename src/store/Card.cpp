@@ -1473,12 +1473,12 @@ void Card::vPrintRecursive(CardIter* pCI, i8 iDepth, Card* pParent,
   }
 
   if (0 == iDepth)
-    vPrintHeader(pRibbon);
+    vCatHeader(pRibbon);
 
   if (bChanged() && bMark1(MARK_BLANK))
     vMark1(MARK_CHANGED);
 
-  vPrintCard_alt(pRibbon, iDepth);
+  vPrint_card(pRibbon, iDepth);
 
   if (this->bMark1(MARK_CHANGED) || this->bMark1(MARK_FOUND))
     vMark1(MARK_BLANK);
@@ -2164,130 +2164,236 @@ Stz* Card::szDecodeEnum(Stz* szEnum, i8 iEnum)
 /*----------------------------------------------------------------------------*/
 /* print card onto given ribbon                                               */
 /*----------------------------------------------------------------------------*/
-void Card::vPrintCard_alt(Ribbon* pRibbon, i8 iDepth)
+void Card::vPrint_card(Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (CK_EXPR == m_eCard)     { vPrint_expr(pRibbon, iDepth);  return; }
+  if (CK_TERM == m_eCard)     { vPrint_term(pRibbon, iDepth);  return; }
+  if (CK_s_TABLE == m_eCard)  { vPrint_table(pRibbon, iDepth); return; }
+
+  if (0 == iDepth)  { vPrint_depth0(pRibbon, iDepth); return; }
+  if (1 == iDepth)  { vPrint_depth1(pRibbon, iDepth); return; }
+  if (2 == iDepth)  { vPrint_depth2(pRibbon, iDepth); return; }
+
+  vPrint_depthN(pRibbon, iDepth);
+}
+
+/*----------------------------------------------------------------------------*/
+/* print depth 0                                                              */
+/*----------------------------------------------------------------------------*/
+void Card::vPrint_depth0(Ribbon* pRibbon, i8 iDepth)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  UNUSED(pRibbon);
+  UNUSED(iDepth);
+
+  vCatNameFacet(pRibbon, iDepth);
+  vCatProperties(pRibbon, iDepth);
+}
+
+/*----------------------------------------------------------------------------*/
+/* print depth 1                                                              */
+/*----------------------------------------------------------------------------*/
+void Card::vPrint_depth1(Ribbon* pRibbon, i8 iDepth)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  UNUSED(pRibbon);
+  UNUSED(iDepth);
+
+  s256 sDots;
+  s256 sMarks;
+  s256 sName;
+  s256 sSequence;
+
+  vFormatMarks(sMarks);
+  vFormatDots(sDots,iDepth);
+  vFormatName(sName,iDepth,false);
+  vFormatSequence(sSequence);
+
+  pRibbon->vSprintNL(false, "%s%s%s %s"_Stz,
+                     sMarks.szStz(),
+                     sDots.szStz(),
+                     sName.szStz(),
+                     sSequence.szStz());
+
+  vCatProperties(pRibbon, iDepth);
+}
+
+/*----------------------------------------------------------------------------*/
+/* print depth 2                                                               */
+/*----------------------------------------------------------------------------*/
+void Card::vPrint_depth2(Ribbon* pRibbon, i8 iDepth)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  UNUSED(pRibbon);
+  UNUSED(iDepth);
+
+  vCatNameFacet(pRibbon, iDepth);
+  vCatProperties(pRibbon, iDepth);
+}
+
+/*----------------------------------------------------------------------------*/
+/* print depth n                                                              */
+/*----------------------------------------------------------------------------*/
+void Card::vPrint_depthN(Ribbon* pRibbon, i8 iDepth)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  UNUSED(pRibbon);
+  UNUSED(iDepth);
+
+  vCatNameFacet(pRibbon, iDepth);
+  vCatProperties(pRibbon, iDepth);
+}
+
+/*----------------------------------------------------------------------------*/
+/* print expr                                                                 */
+/*----------------------------------------------------------------------------*/
+void Card::vPrint_expr(Ribbon* pRibbon, i8 iDepth)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  UNUSED(iDepth);
 
   s256 sDots;
   s256 sFacet;
   s256 sMarks;
   s256 sName;
-  s256 sSequence;
-  s256 sTblSyn;
   s256 sType;
 
-  //Symbol* pSymbol = this->pSymbol();
-  i8 nFacets = m_xSymbol.nFacets();
-  i8 i_Facet_primary = C_UNKNOWN;
+  i8 i_Facet_primary;
 
-  switch (m_eCard) {
-
-    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-    case CK_s_TABLE:
-      vFormatMarks(sMarks);
-      vFormatDots(sDots,iDepth);
-      vFormatName(sName,iDepth,false);
-
-      if (m_xSymbol.bHasFacets())
-        sTblSyn = m_xSymbol.szFacet(SF_TBL_SYN);
-
-      pRibbon->vSprintSnippet(false, "%s%s%s %s"_Stz,
-                              sMarks.szStz(),
-                              sDots.szStz(),
-                              sName.szStz(),
-                              sTblSyn.szStz());
-      return;
-
-    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-    case CK_t_EMIT:
-    case CK_o_FILTER:
-    case CK_s_KEY:
-      vFormatMarks(sMarks);
-      vFormatDots(sDots,iDepth);
-      vFormatName(sName,iDepth,false);
-      vFormatSequence(sSequence);
-
-      pRibbon->vSprintSnippet(false,"%s%s%s %s"_Stz,
-                              sMarks.szStz(),
-                              sDots.szStz(),
-                              sName.szStz(),
-                              sSequence.szStz());
-      return;
-
-    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-    case CK_TERM:
-      for (i8 i_Facet = 0; i_Facet < m_xSymbol.nFacets(); i_Facet++) {
-        vFormatFacet(sFacet, i_Facet);
-        vFormatTypeLength(sType, i_Facet);
-        pRibbon->vSprintSnippet(true, "%s%s"_Stz,
-                                sFacet.szStz(),
-                                sType.szStz());
-      }
-      return;
+  vFormatMarks(sMarks);
+  vFormatDots(sDots,iDepth);
+  vFormatName(sName,iDepth);
 
 
-    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-    case CK_EXPR:
-      vFormatMarks(sMarks);
-      vFormatDots(sDots,iDepth);
-      vFormatName(sName,iDepth);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // primary facet
 
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // primary facet
-
-      if (C_UNKNOWN != (i_Facet_primary = m_xSymbol.i_Facet(SF_KEY_COL))) {
-        vFormatTypeLength(sType, i_Facet_primary);
-        vFormatFacet(sFacet,SF_KEY_COL);
-        pRibbon->vSprintSnippet(false, "%s%s%s %s%s"_Stz,
-                                sMarks.szStz(),
-                                sDots.szStz(),
-                                sName.szStz(),
-                                sFacet.szStz(),
-                                sType.szStz());
-      }
-      else
-      if (C_UNKNOWN != (i_Facet_primary = m_xSymbol.i_Facet(SF_EXP_COL))) {
-        vFormatFacet(sFacet,SF_EXP_COL);
-        vFormatTypeLength(sType, i_Facet_primary);
-        pRibbon->vSprintSnippet(false, "%s%s%s %s%s"_Stz,
-                                sMarks.szStz(),
-                                sDots.szStz(),
-                                sName.szStz(),
-                                sFacet.szStz(),
-                                sType.szStz());
-      }
-      else {
-        NEVER_REACH
-      }
-
-      vPrintProperties(pRibbon, iDepth);
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // secondary facets
-
-      for (i8 i_Facet_secondary = 0; i_Facet_secondary < nFacets; i_Facet_secondary++) {
-        if (i_Facet_secondary == i_Facet_primary)
-          continue;
-        vFormatFacet(sFacet,i_Facet_secondary);
-        pRibbon->vSprintSnippet(true, "<%s"_Stz,
-                                sFacet.szStz());
-      }
-
-      return;
-
-    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-    default:
-      vPrintNameFacet(pRibbon, iDepth);
-      vPrintProperties(pRibbon, iDepth);
-      break;
+  if (C_UNKNOWN != (i_Facet_primary = m_xSymbol.i_Facet(SF_KEY_COL))) {
+    vFormatTypeLength(sType, i_Facet_primary);
+    vFormatFacet(sFacet,SF_KEY_COL);
+    pRibbon->vSprintNL(false, "%s%s%s %s%s"_Stz,
+                       sMarks.szStz(),
+                       sDots.szStz(),
+                       sName.szStz(),
+                       sFacet.szStz(),
+                       sType.szStz());
   }
+  else
+  if (C_UNKNOWN != (i_Facet_primary = m_xSymbol.i_Facet(SF_EXP_COL))) {
+    vFormatFacet(sFacet,SF_EXP_COL);
+    vFormatTypeLength(sType, i_Facet_primary);
+    pRibbon->vSprintNL(false, "%s%s%s %s%s"_Stz,
+                       sMarks.szStz(),
+                       sDots.szStz(),
+                       sName.szStz(),
+                       sFacet.szStz(),
+                       sType.szStz());
+  }
+  else {
+    NEVER_REACH
+  }
+
+  vCatProperties(pRibbon, iDepth);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // secondary facets
+
+  i8 nFacets = m_xSymbol.nFacets();
+  for (i8 i_Facet_secondary = 0; i_Facet_secondary < nFacets; i_Facet_secondary++) {
+    if (i_Facet_secondary == i_Facet_primary)
+      continue;
+    vFormatFacet(sFacet,i_Facet_secondary);
+    pRibbon->vSprintNL(true, "<%s"_Stz,
+                       sFacet.szStz());
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* print table                                                                */
+/*----------------------------------------------------------------------------*/
+void Card::vPrint_table(Ribbon* pRibbon, i8 iDepth)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  UNUSED(iDepth);
+
+  s256 sDots;
+  s256 sMarks;
+  s256 sName;
+  s256 sTblSyn;
+
+  vFormatMarks(sMarks);
+  vFormatDots(sDots,iDepth);
+  vFormatName(sName,iDepth,false);
+
+  if (m_xSymbol.bHasFacets())
+    sTblSyn = m_xSymbol.szFacet(SF_TBL_SYN);
+
+  pRibbon->vSprintNL(false, "%s%s%s %s"_Stz,
+                     sMarks.szStz(),
+                     sDots.szStz(),
+                     sName.szStz(),
+                     sTblSyn.szStz());
+}
+
+/*----------------------------------------------------------------------------*/
+/* print term                                                                 */
+/*----------------------------------------------------------------------------*/
+void Card::vPrint_term(Ribbon* pRibbon, i8 iDepth)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  UNUSED(iDepth);
+
+  s256 sFacet;
+  s256 sType;
+
+  for (i8 i_Facet = 0; i_Facet < m_xSymbol.nFacets(); i_Facet++) {
+    vFormatFacet(sFacet, i_Facet);
+    vFormatTypeLength(sType, i_Facet);
+    pRibbon->vSprintNL(true, "%s%s"_Stz,
+                       sFacet.szStz(),
+                       sType.szStz());
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* cat                                                                        */
+/*----------------------------------------------------------------------------*/
+void Card::vCat(Ribbon* pRibbon, Stz* szStr)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  pRibbon->vSprintNL(false, "%s"_Stz, szStr);
+}
+
+/*----------------------------------------------------------------------------*/
+/* cat blank                                                                  */
+/*----------------------------------------------------------------------------*/
+void Card::vCatBlank(Ribbon* pRibbon)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  vCat(pRibbon," "_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* cat dots                                                                   */
+/*----------------------------------------------------------------------------*/
+void Card::vCatDots(Ribbon* pRibbon, i8 iDepth)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  s256 sDots;
+
+  vFormatDots(sDots,iDepth);
+  vCat(pRibbon,sDots);
 }
 
 /*----------------------------------------------------------------------------*/
 /* print symbolic value of card                                               */
 /*----------------------------------------------------------------------------*/
-void Card::vPrintFacets(Ribbon* pRibbon, i8 iDepth)
+void Card::vCatFacets(Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
   UNUSED(iDepth);
@@ -2297,13 +2403,13 @@ void Card::vPrintFacets(Ribbon* pRibbon, i8 iDepth)
 
   s256 sFacet;
 
-  pRibbon->vSprintSnippet(true, "%s"_Stz,
-                          m_xSymbol.szFacet((i8) 0));
+  pRibbon->vSprintNL(true, "%s"_Stz,
+                     m_xSymbol.szFacet((i8) 0));
 
   for (i8 i_Facet = 1; i_Facet < m_xSymbol.nFacets(); i_Facet++) {
     vFormatFacet(sFacet,i_Facet);
-    pRibbon->vSprintSnippet(true, "%s"_Stz,
-                            sFacet.szStz());
+    pRibbon->vSprintNL(true, "%s"_Stz,
+                       sFacet.szStz());
 
   }
 }
@@ -2311,7 +2417,7 @@ void Card::vPrintFacets(Ribbon* pRibbon, i8 iDepth)
 /*----------------------------------------------------------------------------*/
 /* put header                                                                 */
 /*----------------------------------------------------------------------------*/
-void Card::vPrintHeader(Ribbon* pRibbon)
+void Card::vCatHeader(Ribbon* pRibbon)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -2329,13 +2435,13 @@ void Card::vPrintHeader(Ribbon* pRibbon)
 
   s256 sHeader;
   vFormatHeader(sHeader.pString(),cLevel);
-  pRibbon->vSprintSnippet(false,"%s"_Stz,sHeader.szStz());
+  pRibbon->vSprintNL(false, "%s"_Stz, sHeader.szStz());
 }
 
 /*----------------------------------------------------------------------------*/
 /* print                                                                      */
 /*----------------------------------------------------------------------------*/
-void Card::vPrintName(Ribbon* pRibbon, i8 iDepth, Stz* szCustomName)
+void Card::vCatName(Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -2351,21 +2457,17 @@ void Card::vPrintName(Ribbon* pRibbon, i8 iDepth, Stz* szCustomName)
     sName.vSprint("%s%lld]"_Stz,
                   Stz::szDots(iDepth - 1),
                   m_i_Child);
-    if (szCustomName)
-      sName.vSprintCat("%s"_Stz,
-                       szCustomName);
-    else
-      sName.vSprintCat("%s"_Stz,
-                       szCardNm());
+    sName.vSprintCat("%s"_Stz,
+                     szCardNm());
   }
 
-  pRibbon->vSprintSnippet(false,"%c%c%-18s"_Stz, this->cMark1(), this->cMark2(), sName.szStz());
+  pRibbon->vSprintNL(false, "%c%c%-18s"_Stz, this->cMark1(), this->cMark2(), sName.szStz());
 }
 
 /*----------------------------------------------------------------------------*/
 /* print card name and its symbolic value on single line if possible          */
 /*----------------------------------------------------------------------------*/
-void Card::vPrintNameFacet(Ribbon* pRibbon, i8 iDepth)
+void Card::vCatNameFacet(Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -2403,18 +2505,31 @@ void Card::vPrintNameFacet(Ribbon* pRibbon, i8 iDepth)
   }
 
   if (sNameSymbol.nLength() <= 18) {
-    pRibbon->vSprintSnippet(false,"%c%c%-18s"_Stz, this->cMark1(), this->cMark2(), sNameSymbol.szStz());
+    pRibbon->vSprintNL(false, "%c%c%-18s"_Stz, this->cMark1(), this->cMark2(), sNameSymbol.szStz());
   }
   else {
-    vPrintName(pRibbon, iDepth);
-    vPrintFacets(pRibbon, iDepth);
+    vCatName(pRibbon, iDepth);
+    vCatFacets(pRibbon, iDepth);
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* cat marks                                                                  */
+/*----------------------------------------------------------------------------*/
+void Card::vCatMarks(Ribbon* pRibbon)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  s256 sMarks;
+
+  vFormatMarks(sMarks);
+  vCat(pRibbon,sMarks);
 }
 
 /*----------------------------------------------------------------------------*/
 /* print card properties                                                      */
 /*----------------------------------------------------------------------------*/
-void Card::vPrintProperties(Ribbon* pRibbon, i8 iDepth)
+void Card::vCatProperties(Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   UNUSED(iDepth);
@@ -2429,9 +2544,10 @@ void Card::vPrintProperties(Ribbon* pRibbon, i8 iDepth)
   for (i8 i_Property = 0; i_Property < nProperties; i_Property++) {
     sProperty.vReset();
     vFormatProperty(sProperty.pString(),i_Property);
-    pRibbon->vSprintSnippet(true,"%s"_Stz, sProperty.szStz());
+    pRibbon->vSprintNL(true, "%s"_Stz, sProperty.szStz());
   }
 }
+
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
