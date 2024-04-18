@@ -56,8 +56,6 @@ namespace BASE
 
     void vPinSubRibbon(i8 i_Line, i8 i_Char, Ribbon* pSubRibbon);
     void vPrintRibbon(Stz* szQueryNm, i8 BenchNo, eOH ePhase, i8 iPrintNo=C_UNKNOWN);
-    void vPutData(i8 i_Line, i8 i_Char, Stz* szData);
-    void vPutOther(i8 i_Line, i8 i_Char, Stz* szOther);
     void vPutText(i8 i_Line, i8 i_Char, Stz* szText2);
 
     void vSprint(i8& ri_Char, Stz* szFormat, ...);
@@ -71,14 +69,10 @@ namespace BASE
   private:
     void vAddLine(void);
 
-    void vFormatLeft(String* pString, Stz* szFormat, va_list args);
-    void vFormatRight(String* pString, Stz* szFormat, va_list args);
+    void vFormatLeft(String* pString, Stz* szFormat, va_list xArgs);
+    void vFormatRight(String* pString, Stz* szFormat, va_list xArgs);
 
     void vInitTabs(i8 i_Start, i8 nEach);
-
-
-    void vSprintSnippetLeft(va_list args, const char* sFormat, i8 i_Char);
-    void vSprintSnippetRight(va_list args, const char* sFormat, i8 i_Char);
 
     void vSufficientLines(i8 i_Line);
 
