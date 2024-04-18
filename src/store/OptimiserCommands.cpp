@@ -16,11 +16,12 @@ extern OptimiserCatalog gxOptimiserCatalog;
 /*----------------------------------------------------------------------------*/
 bool STORE::bOpt_default(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAct)
 {
+  UNUSED(pOptimiser);
   UNUSED(pTknVec);
 
   reOptAct = OA_REPRINT_BOARD;
 
-  pOptimiser->pCardCtl()->vUseDefault();
+  //pOptimiser->pCardCtl()->vUseDefault();
 
   return true;
 }
@@ -41,12 +42,13 @@ OptimiserFun __Opt_d
 /*----------------------------------------------------------------------------*/
 bool STORE::bOpt_expanded(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAct)
 {
+  UNUSED(pOptimiser);
   UNUSED(pTknVec);
 
   reOptAct = OA_REPRINT_BOARD;
 
   //pOptimiser->pCardCtl()->vUseExpanded();
-  pOptimiser->pCardCtl()->vSetSubsPrintEverything();
+  //pOptimiser->pCardCtl()->vSetSubsPrintEverything();
 
   return true;
 }
@@ -104,11 +106,12 @@ OptimiserFun __Opt_h_1
 /*----------------------------------------------------------------------------*/
 bool STORE::bOpt_longer(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAct)
 {
+  UNUSED(pOptimiser);
   UNUSED(pTknVec);
 
   reOptAct = OA_REPRINT_BOARD;
 
-  pOptimiser->pCardCtl()->vUseLonger();
+  //pOptimiser->pCardCtl()->vUseLonger();
 
   return true;
 }
@@ -204,11 +207,12 @@ OptimiserFun __Opt_r
 /*----------------------------------------------------------------------------*/
 bool STORE::bOpt_shorter(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAct)
 {
+  UNUSED(pOptimiser);
   UNUSED(pTknVec);
 
   reOptAct = OA_REPRINT_BOARD;
 
-  pOptimiser->pCardCtl()->vUseShorter();
+  //pOptimiser->pCardCtl()->vUseShorter();
 
   return true;
 }

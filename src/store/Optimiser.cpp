@@ -131,9 +131,6 @@ bool Optimiser::bApplyTransformations(Error& rxError)
       MY::pJob()->pJobTags()->vDumpSet(true);
     }
 
-    pCardCtl()->vSaveShorter();
-    pCardCtl()->vSaveXhand();
-
     XF::vXF(m_pCI);
 
     bClean = true;
