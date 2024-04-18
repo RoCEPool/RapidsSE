@@ -2209,6 +2209,9 @@ void Card::vPrintCard_alt(Ribbon* pRibbon, i8 iDepth)
     }
 
     case CK_EXPR: {
+      vFormatMarks(sMarks);
+      vFormatDots(sDots,iDepth);
+
       Symbol* pSymbol = this->pSymbol();
       i8 nFacets = pSymbol->nFacets();
 
@@ -2218,11 +2221,9 @@ void Card::vPrintCard_alt(Ribbon* pRibbon, i8 iDepth)
       sSupplementary = szCT_char[eCTVal()];
       i8 i_Facet_primary = C_UNKNOWN;
       if (C_UNKNOWN != (i_Facet_primary = pSymbol->i_Facet(SF_KEY_COL))) {
-        pRibbon->vSprintSnippet(false, "%c%c%s%lld]%s %s~%lld%s%lld"_Stz,
-                                cMark1(),
-                                cMark2(),
-                                Stz::szDots(iDepth - 1),
-                                m_i_Child,
+        pRibbon->vSprintSnippet(false, "%s%s%s %s~%lld%s%lld"_Stz,
+                                sMarks.szStz(),
+                                sDots.szStz(),
                                 szCardNm(),
                                 szFacet(SF_KEY_COL),
 
