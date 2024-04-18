@@ -442,7 +442,7 @@ namespace STORE
     void vFormatName(String* pString, i8 iDepth, bool bJustify_right=false);
     void vFormatProperty(String* pString, i8 i_Property);
     void vFormatSequence(String* pString);
-    void vFormatType(String* pString, i8 i_Facet);
+    void vFormatTypeLength(String* pString, i8 i_Facet);
 
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
