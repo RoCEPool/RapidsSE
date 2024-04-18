@@ -570,68 +570,6 @@ bool Card_Expr::bNeedsBrace(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Expr::vPrint(Ribbon* pRibbon, i8 iDepth)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Symbol* pSymbol = this->pSymbol();
-  i8 nFacets = pSymbol->nFacets();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // primary facet
-
-  s32 sType_short = szCT_char[eCTVal()];
-  i8 i_Facet_primary = C_UNKNOWN;
-  if (C_UNKNOWN != (i_Facet_primary = pSymbol->i_Facet(SF_KEY_COL))) {
-    pRibbon->vSprintSnippet(false, "%c%c%s%lld]%s %s~%lld%s%lld"_Stz,
-                            cMark1(),
-                            cMark2(),
-                            Stz::szDots(iDepth - 1),
-                            m_i_Child,
-                            szCardNm(),
-                            szFacet(SF_KEY_COL),
-
-                            i_Facet_primary,
-                            sType_short.szStz(),
-                            pSymbol->xCast().m_nTypeLength
-    );
-
-  }
-  else
-  if (C_UNKNOWN != (i_Facet_primary = pSymbol->i_Facet(SF_EXP_COL))) {
-    pRibbon->vSprintSnippet(false, "%c%c%s%lld]%s %s~%lld%s%lld"_Stz,
-                            cMark1(),
-                            cMark2(),
-                            Stz::szDots(iDepth - 1),
-                            m_i_Child,
-                            szCardNm(),
-                            szFacet(SF_EXP_COL),
-
-                            i_Facet_primary,
-                            sType_short.szStz(),
-                            pSymbol->xCast().m_nTypeLength
-                            );
-  }
-
-  vPrintProperties(pRibbon, iDepth);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // secondary facets
-
-  for (i8 i_Facet_secondary = 0; i_Facet_secondary < nFacets; i_Facet_secondary++) {
-    if (i_Facet_secondary == i_Facet_primary)
-      continue;
-    Facet* aFacet = pSymbol->aFacet(i_Facet_secondary);
-    pRibbon->vSprintSnippet(true, "<%s~%lld"_Stz,
-                            aFacet->m_sFacet.szStz(),
-                            i_Facet_secondary);
-  }
-
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 bool Card_Expr::bSameAs(Card_Expr* p_expr_arg)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);

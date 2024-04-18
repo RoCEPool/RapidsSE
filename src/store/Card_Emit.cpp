@@ -498,36 +498,6 @@ void Card_Emit::vMapColumns(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Emit::vPrint(Ribbon* pRibbon, i8 iDepth)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  UNUSED(iDepth);
-
-  s32 sName;
-
-//  sName.vSprint("%s%lld]"_Stz,
-//                Stz::szDots(iDepth - 1),
-//                m_i_Child);
-//
-//  sName.vSprintCat("%s"_Stz,
-//                   szCardNm());
-
-  sName.vSprint("%s%lld]emit"_Stz,
-                Stz::szDots(iDepth - 1),
-                m_i_Child);
-
-  pRibbon->vSprintSnippet(false,"%c%c%s #%lld"_Stz,
-                          cMark1(),
-                          cMark2(),
-                          sName.szStz(),
-                          m_iSequence);
-
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 void Card_Emit::vPush_foldExpr_Into_emit(CardIter* pCI, Card_Expr* p_expr_fold)
 {
   _static_

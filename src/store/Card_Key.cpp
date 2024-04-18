@@ -264,32 +264,6 @@ void Card_Key::vMapColumns(CardIter *pCI)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_Key::vPrint(Ribbon* pRibbon, i8 iDepth)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  UNUSED(iDepth);
-
-  s32 sName;
-
-  sName.vSprint("%s%lld]"_Stz,
-                Stz::szDots(iDepth - 1),
-                m_i_Child);
-
-  sName.vSprintCat("%s"_Stz,
-                   szCardNm());
-
-  pRibbon->vSprintSnippet(false,"%c%c%s #%lld"_Stz,
-                          cMark1(),
-                          cMark2(),
-                          sName.szStz(),
-                          m_iSequence);
-
-}
-
-/*----------------------------------------------------------------------------*/
 /* convert key to indexDef                                                    */
 /*----------------------------------------------------------------------------*/
 IndexDef* Card_Key::pTo_IndexDef(CardIter* pCI)

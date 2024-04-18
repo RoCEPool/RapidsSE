@@ -33,7 +33,6 @@ namespace STORE
     bool bIsEqual(CardIter *pCI, Card_Key* p_key_arg);
 
     void vMapColumns(CardIter *pCI);
-    void vPrint(Ribbon* pRibbon, i8 iDepth);
 
     IndexDef* pTo_IndexDef(CardIter* pCI);
 

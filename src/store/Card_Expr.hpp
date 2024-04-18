@@ -54,7 +54,6 @@ namespace STORE
     bool bMatches(Card_Expr* p_expr_arg);
 
     bool bNeedsBrace(CardIter* pCI);
-    void vPrint(Ribbon* pRibbon, i8 iDepth);
 
     bool bSameAs(Card_Expr* pExpr_arg);
 
