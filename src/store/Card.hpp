@@ -439,6 +439,7 @@ namespace STORE
 
     void vCat(i8& ri_Char, Ribbon* pRibbon, Stz* szStr, bool bRight=false);
     void vCatBlank(i8& ri_Char, Ribbon* pRibbon);
+    void vCatBracket(i8& ri_Char, Ribbon* pRibbon);
     void vCatDots(i8& ri_Char, Ribbon* pRibbon, i8 iDepth);
     void vCatFacet(i8& ri_Char, Ribbon* pRibbon, i8 i_Facet, bool bRight=false);
     void vCatName(i8& ri_Char, Ribbon* pRibbon, i8 iDepth);
@@ -451,7 +452,6 @@ namespace STORE
 
     void vFormatDots(String* pString, i8 iDepth);
     void vFormatEnum(String* pString);
-    void vFormatFacet(String* pString, eSF eFacet);
     void vFormatFacet(String* pString, i8 i_Facet);
     void vFormatHeader(String* pString);
     void vFormatMarks(String* pString);
