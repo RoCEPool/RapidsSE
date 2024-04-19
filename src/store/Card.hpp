@@ -433,41 +433,32 @@ namespace STORE
     void vPrint_expr(Ribbon* pRibbon, i8 iDepth);
     void vPrint_table(Ribbon* pRibbon, i8 iDepth);
     void vPrint_term(Ribbon* pRibbon, i8 iDepth);
+    void vPrintFacets(Ribbon* pRibbon, i8 iDepth);
+    void vPrintHeader(Ribbon* pRibbon);
+    void vPrintProperties(Ribbon* pRibbon, i8 iDepth);
 
     void vCat(i8& ri_Char, Ribbon* pRibbon, Stz* szStr);
     void vCatRight(i8& ri_Char, Ribbon* pRibbon, Stz* szStr);
     void vCatBlank(i8& ri_Char, Ribbon* pRibbon);
     void vCatDots(i8& ri_Char, Ribbon* pRibbon, i8 iDepth);
     void vCatFacets(i8& ri_Char, Ribbon* pRibbon, i8 iDepth);
-    void vCatHeader(i8& ri_Char, Ribbon* pRibbon);
     void vCatName(i8& ri_Char, Ribbon* pRibbon, i8 iDepth);
-    void vCatNameFacet(i8& ri_Char, Ribbon* pRibbon, i8 iDepth);
     void vCatMarks(i8& ri_Char, Ribbon* pRibbon);
     void vCatProperties(i8& ri_Char, Ribbon* pRibbon, i8 iDepth);
     void vCatSequence(i8& ri_Char, Ribbon* pRibbon);
+    void vCatTblSyn(i8& ri_Char, Ribbon* pRibbon);
     void vCatText(i8& ri_Char, Ribbon* pRibbon, Stz* szStr);
 
-
-    void vPrint(Ribbon* pRibbon, Stz* szStr);
-    void vPrintBlank(Ribbon* pRibbon);
-    void vPrintDots(Ribbon* pRibbon, i8 iDepth);
-    void vPrintFacets(Ribbon* pRibbon, i8 iDepth);
-    void vPrintHeader(Ribbon* pRibbon);
-    void vPrintName(Ribbon* pRibbon, i8 iDepth);
-    void vPrintNameFacet(Ribbon* pRibbon, i8 iDepth);
-    void vPrintMarks(Ribbon* pRibbon);
-    void vPrintProperties(Ribbon* pRibbon, i8 iDepth);
-
-    void vFormatAddress(String* pString);
     void vFormatDots(String* pString, i8 iDepth);
     void vFormatEnum(String* pString);
     void vFormatFacet(String* pString, eSF eFacet);
     void vFormatFacet(String* pString, i8 i_Facet);
-    void vFormatHeader(String* pString, char cLevel);
+    void vFormatHeader(String* pString);
     void vFormatMarks(String* pString);
     void vFormatName(String* pString, i8 iDepth, bool bJustify_right=false);
     void vFormatProperty(String* pString, i8 i_Property);
     void vFormatSequence(String* pString);
+    void vFormatTblSyn(String* pString);
     void vFormatTypeLength(String* pString, i8 i_Facet);
 
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
