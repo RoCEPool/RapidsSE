@@ -75,7 +75,14 @@ void Step::vMetaDataTableCatalog(void)
                                          C_VARGS_END);
 
     if(! pRow) {
-      ASSERT(0);
+      // Pipe out this full buffer
+      BufferId oBufferId = pPdsRowBuffer->oGetBufferId().m_pvAsAddress;
+      AM::pHashMap()->vDropKeyLock(oBufferId.m_pvAsAddress);
+      Operand* pOperand = _pOperand((Object*)oBufferId.m_pvAsAddress);
+      AM::OP::vPipeToNextOp(m_pOp,pOperand,this);
+
+      // create a new buffer and continue adding rows to it
+      pPdsRowBuffer = new Pds(pStreamDef, false, BT_DATA);
       break;
     }
 
@@ -84,7 +91,13 @@ void Step::vMetaDataTableCatalog(void)
     pCatalogFolderWord = pCatalogFolderWord->pPrevWord();
   }
 
-  m_pDataStack->vPushPtr((Object*)pPdsRowBuffer);
+  if(pPdsRowBuffer->nItems() > 0) {
+    BufferId oBufferId = pPdsRowBuffer->oGetBufferId().m_pvAsAddress;
+    AM::pHashMap()->vDropKeyLock(oBufferId.m_pvAsAddress);
+    Operand* pOperand = _pOperand((Object*)oBufferId.m_pvAsAddress);
+    AM::OP::vPipeToNextOp(m_pOp,pOperand,this);
+  } else
+    delete(pPdsRowBuffer);
 
   EXIT();
 }
@@ -110,7 +123,11 @@ void Step::vMetaDataTableCluster(void)
     ASSERT(0);
   }
 
-  m_pDataStack->vPushPtr((Object*)pPdsRowBuffer);
+  // Pipe out this buffer
+  BufferId oBufferId = pPdsRowBuffer->oGetBufferId().m_pvAsAddress;
+  AM::pHashMap()->vDropKeyLock(oBufferId.m_pvAsAddress);
+  Operand* pOperand = _pOperand((Object*)oBufferId.m_pvAsAddress);
+  AM::OP::vPipeToNextOp(m_pOp,pOperand,this);
 
   EXIT();
 }
@@ -193,17 +210,29 @@ void Step::vMetaDataTableColumns(void)
       i_Col++;
 
       if (!pRow) {
-        ASSERT(0);
+        // Pipe out this full buffer
+        BufferId oBufferId = pPdsRowBuffer->oGetBufferId().m_pvAsAddress;
+        AM::pHashMap()->vDropKeyLock(oBufferId.m_pvAsAddress);
+        Operand* pOperand = _pOperand((Object*)oBufferId.m_pvAsAddress);
+        AM::OP::vPipeToNextOp(m_pOp,pOperand,this);
+
+        // create a new buffer and continue adding rows to it
+        pPdsRowBuffer = new Pds(pStreamDef, false, BT_DATA);
         break;
       }
     }
 
-//    vTrace("%s\n"_Stz, pTableCur->szTableNm());
-
     pTableFolderWord = pTableFolderWord->pPrevWord();
   }
 
-  m_pDataStack->vPushPtr((Object*)pPdsRowBuffer);
+  if(pPdsRowBuffer->nItems() > 0) {
+    BufferId oBufferId = pPdsRowBuffer->oGetBufferId().m_pvAsAddress;
+    AM::pHashMap()->vDropKeyLock(oBufferId.m_pvAsAddress);
+    Operand* pOperand = _pOperand((Object*)oBufferId.m_pvAsAddress);
+    AM::OP::vPipeToNextOp(m_pOp,pOperand,this);
+  } else
+    delete(pPdsRowBuffer);
+
   EXIT();
 }
 
@@ -291,20 +320,31 @@ void Step::vMetaDataTableIndexColumns(void)
           i_Col++;
 
           if (!pRow) {
-            ASSERT(0);
+            // Pipe out this full buffer
+            BufferId oBufferId = pPdsRowBuffer->oGetBufferId().m_pvAsAddress;
+            AM::pHashMap()->vDropKeyLock(oBufferId.m_pvAsAddress);
+            Operand* pOperand = _pOperand((Object*)oBufferId.m_pvAsAddress);
+            AM::OP::vPipeToNextOp(m_pOp,pOperand,this);
+
+            // create a new buffer and continue adding rows to it
+            pPdsRowBuffer = new Pds(pStreamDef, false, BT_DATA);
             break;
           }
         }
         pIndexWord = pIndexWord->pPrevWord();
       }
     }
-
-//    vTrace("%s\n"_Stz, pTableCur->szTableNm());
-
     pTableFolderWord = pTableFolderWord->pPrevWord();
   }
 
-  m_pDataStack->vPushPtr((Object*)pPdsRowBuffer);
+  if(pPdsRowBuffer->nItems() > 0) {
+    BufferId oBufferId = pPdsRowBuffer->oGetBufferId().m_pvAsAddress;
+    AM::pHashMap()->vDropKeyLock(oBufferId.m_pvAsAddress);
+    Operand* pOperand = _pOperand((Object*)oBufferId.m_pvAsAddress);
+    AM::OP::vPipeToNextOp(m_pOp,pOperand,this);
+  } else
+    delete(pPdsRowBuffer);
+
   EXIT();
 }
 
@@ -386,7 +426,14 @@ void Step::vMetaDataTableIndexes(void)
                                     C_VARGS_END);
 
         if(!pRow) {
-          ASSERT(0);
+          // Pipe out this full buffer
+          BufferId oBufferId = pPdsRowBuffer->oGetBufferId().m_pvAsAddress;
+          AM::pHashMap()->vDropKeyLock(oBufferId.m_pvAsAddress);
+          Operand* pOperand = _pOperand((Object*)oBufferId.m_pvAsAddress);
+          AM::OP::vPipeToNextOp(m_pOp,pOperand,this);
+
+          // create a new buffer and continue adding rows to it
+          pPdsRowBuffer = new Pds(pStreamDef, false, BT_DATA);
           break;
         }
         pIndexWord = pIndexWord->pPrevWord();
@@ -398,7 +445,13 @@ void Step::vMetaDataTableIndexes(void)
     pTableFolderWord = pTableFolderWord->pPrevWord();
   }
 
-  m_pDataStack->vPushPtr((Object*)pPdsRowBuffer);
+  if(pPdsRowBuffer->nItems() > 0) {
+    BufferId oBufferId = pPdsRowBuffer->oGetBufferId().m_pvAsAddress;
+    AM::pHashMap()->vDropKeyLock(oBufferId.m_pvAsAddress);
+    Operand* pOperand = _pOperand((Object*)oBufferId.m_pvAsAddress);
+    AM::OP::vPipeToNextOp(m_pOp,pOperand,this);
+  } else
+    delete(pPdsRowBuffer);
 
   EXIT();
 }
@@ -424,12 +477,25 @@ void Step::vMetaDataTableNodes(void)
                                          0,
                                          C_VARGS_END);
     if(! pRow) {
-      ASSERT(0);
+      // Pipe out this full buffer
+      BufferId oBufferId = pPdsRowBuffer->oGetBufferId().m_pvAsAddress;
+      AM::pHashMap()->vDropKeyLock(oBufferId.m_pvAsAddress);
+      Operand* pOperand = _pOperand((Object*)oBufferId.m_pvAsAddress);
+      AM::OP::vPipeToNextOp(m_pOp,pOperand,this);
+
+      // create a new buffer and continue adding rows to it
+      pPdsRowBuffer = new Pds(pStreamDef, false, BT_DATA);
       break;
     }
   }
 
-  m_pDataStack->vPushPtr((Object*)pPdsRowBuffer);
+  if(pPdsRowBuffer->nItems() > 0) {
+    BufferId oBufferId = pPdsRowBuffer->oGetBufferId().m_pvAsAddress;
+    AM::pHashMap()->vDropKeyLock(oBufferId.m_pvAsAddress);
+    Operand* pOperand = _pOperand((Object*)oBufferId.m_pvAsAddress);
+    AM::OP::vPipeToNextOp(m_pOp,pOperand,this);
+  } else
+    delete(pPdsRowBuffer);
 
   EXIT();
 }
@@ -549,16 +615,26 @@ void Step::vMetaDataTableTables(void)
                                          pTableCur->szTableNm(),
                                          C_VARGS_END);
     if(! pRow) {
-      ASSERT(0);
+      // Pipe out this full buffer
+      BufferId oBufferId = pPdsRowBuffer->oGetBufferId().m_pvAsAddress;
+      AM::pHashMap()->vDropKeyLock(oBufferId.m_pvAsAddress);
+      Operand* pOperand = _pOperand((Object*)oBufferId.m_pvAsAddress);
+      AM::OP::vPipeToNextOp(m_pOp,pOperand,this);
+
+      // create a new buffer and continue adding rows to it
+      pPdsRowBuffer = new Pds(pStreamDef, false, BT_DATA);
       break;
     }
-
-//    vTrace("%s\n"_Stz, pTableCur->szTableNm());
-
     pTableFolderWord = pTableFolderWord->pPrevWord();
   }
 
-  m_pDataStack->vPushPtr((Object*)pPdsRowBuffer);
+  if(pPdsRowBuffer->nItems() > 0) {
+    BufferId oBufferId = pPdsRowBuffer->oGetBufferId().m_pvAsAddress;
+    AM::pHashMap()->vDropKeyLock(oBufferId.m_pvAsAddress);
+    Operand* pOperand = _pOperand((Object*)oBufferId.m_pvAsAddress);
+    AM::OP::vPipeToNextOp(m_pOp,pOperand,this);
+  } else
+    delete(pPdsRowBuffer);
 
   EXIT();
 }
