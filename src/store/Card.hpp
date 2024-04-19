@@ -434,15 +434,27 @@ namespace STORE
     void vPrint_table(Ribbon* pRibbon, i8 iDepth);
     void vPrint_term(Ribbon* pRibbon, i8 iDepth);
 
-    void vCat(Ribbon* pRibbon, Stz* szStr);
-    void vCatBlank(Ribbon* pRibbon);
-    void vCatDots(Ribbon* pRibbon, i8 iDepth);
-    void vCatFacets(Ribbon* pRibbon, i8 iDepth);
-    void vCatHeader(Ribbon* pRibbon);
-    void vCatName(Ribbon* pRibbon, i8 iDepth);
-    void vCatNameFacet(Ribbon* pRibbon, i8 iDepth);
-    void vCatMarks(Ribbon* pRibbon);
-    void vCatProperties(Ribbon* pRibbon, i8 iDepth);
+    void vCat(i8& ri_Char, Ribbon* pRibbon, Stz* szStr);
+    void vCatBlank(i8& ri_Char, Ribbon* pRibbon);
+    void vCatDots(i8& ri_Char, Ribbon* pRibbon, i8 iDepth);
+    void vCatFacets(i8& ri_Char, Ribbon* pRibbon, i8 iDepth);
+    void vCatHeader(i8& ri_Char, Ribbon* pRibbon);
+    void vCatName(i8& ri_Char, Ribbon* pRibbon, i8 iDepth);
+    void vCatNameFacet(i8& ri_Char, Ribbon* pRibbon, i8 iDepth);
+    void vCatMarks(i8& ri_Char, Ribbon* pRibbon);
+    void vCatProperties(i8& ri_Char, Ribbon* pRibbon, i8 iDepth);
+    void vCatText(i8& ri_Char, Ribbon* pRibbon, Stz* szStr);
+
+
+    void vPrint(Ribbon* pRibbon, Stz* szStr);
+    void vPrintBlank(Ribbon* pRibbon);
+    void vPrintDots(Ribbon* pRibbon, i8 iDepth);
+    void vPrintFacets(Ribbon* pRibbon, i8 iDepth);
+    void vPrintHeader(Ribbon* pRibbon);
+    void vPrintName(Ribbon* pRibbon, i8 iDepth);
+    void vPrintNameFacet(Ribbon* pRibbon, i8 iDepth);
+    void vPrintMarks(Ribbon* pRibbon);
+    void vPrintProperties(Ribbon* pRibbon, i8 iDepth);
 
     void vFormatAddress(String* pString);
     void vFormatDots(String* pString, i8 iDepth);
