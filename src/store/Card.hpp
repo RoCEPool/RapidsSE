@@ -437,17 +437,17 @@ namespace STORE
     void vPrintHeader(Ribbon* pRibbon);
     void vPrintProperties(Ribbon* pRibbon, i8 iDepth);
 
-    void vCat(i8& ri_Char, Ribbon* pRibbon, Stz* szStr);
-    void vCatRight(i8& ri_Char, Ribbon* pRibbon, Stz* szStr);
+    void vCat(i8& ri_Char, Ribbon* pRibbon, Stz* szStr, bool bRight=false);
     void vCatBlank(i8& ri_Char, Ribbon* pRibbon);
     void vCatDots(i8& ri_Char, Ribbon* pRibbon, i8 iDepth);
-    void vCatFacet(i8& ri_Char, Ribbon* pRibbon, i8 i_Facet);
+    void vCatFacet(i8& ri_Char, Ribbon* pRibbon, i8 i_Facet, bool bRight=false);
     void vCatName(i8& ri_Char, Ribbon* pRibbon, i8 iDepth);
     void vCatMarks(i8& ri_Char, Ribbon* pRibbon);
-    void vCatProperties(i8& ri_Char, Ribbon* pRibbon, i8 iDepth);
+    void vCatProperty(i8& ri_Char, Ribbon* pRibbon, i8 i_Property);
     void vCatSequence(i8& ri_Char, Ribbon* pRibbon);
     void vCatTblSyn(i8& ri_Char, Ribbon* pRibbon);
     void vCatText(i8& ri_Char, Ribbon* pRibbon, Stz* szStr);
+    void vCatTypeLength(i8& ri_Char, Ribbon* pRibbon, i8 i_Facet);
 
     void vFormatDots(String* pString, i8 iDepth);
     void vFormatEnum(String* pString);
