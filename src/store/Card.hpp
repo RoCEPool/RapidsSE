@@ -425,21 +425,21 @@ namespace STORE
     void vCoord(void);
     void vCoord(Card* pParentCard);
 
-    void vPrint_card(Ribbon* pRibbon, i8 iDepth);
-    void vPrint_depth0(Ribbon* pRibbon, i8 iDepth);
-    void vPrint_depth1(Ribbon* pRibbon, i8 iDepth);
-    void vPrint_depth2(Ribbon* pRibbon, i8 iDepth);
-    void vPrint_depthN(Ribbon* pRibbon, i8 iDepth);
-    void vPrint_expr(Ribbon* pRibbon, i8 iDepth);
-    void vPrint_table(Ribbon* pRibbon, i8 iDepth);
-    void vPrint_term(Ribbon* pRibbon, i8 iDepth);
-    void vPrintFacets(Ribbon* pRibbon, i8 iDepth);
-    void vPrintHeader(Ribbon* pRibbon);
-    void vPrintProperties(Ribbon* pRibbon, i8 iDepth);
+    void vPrint_card(CardIter* pCI, Ribbon* pRibbon, i8 iDepth);
+    void vPrint_depth0(CardIter* pCI, Ribbon* pRibbon, i8 iDepth);
+    void vPrint_depth1(CardIter* pCI, Ribbon* pRibbon, i8 iDepth);
+    void vPrint_depth2(CardIter* pCI, Ribbon* pRibbon, i8 iDepth);
+    void vPrint_depthN(CardIter* pCI, Ribbon* pRibbon, i8 iDepth);
+    void vPrint_expr(CardIter* pCI, Ribbon* pRibbon, i8 iDepth);
+    void vPrint_table(CardIter* pCI, Ribbon* pRibbon, i8 iDepth);
+    void vPrint_term(CardIter* pCI, Ribbon* pRibbon, i8 iDepth);
+    void vPrintFacets(CardIter* pCI, Ribbon* pRibbon, i8 iDepth);
+    void vPrintHeader(CardIter* pCI, Ribbon* pRibbon);
+    void vPrintProperties(CardIter* pCI, Ribbon* pRibbon, i8 iDepth);
 
     void vCat(i8& ri_Char, Ribbon* pRibbon, Stz* szStr, bool bRight=false);
     void vCatBlank(i8& ri_Char, Ribbon* pRibbon);
-    void vCatBracket(i8& ri_Char, Ribbon* pRibbon);
+    void vCatBracket(i8& ri_Char, Ribbon* pRibbon, CardIter* pCI);
     void vCatDots(i8& ri_Char, Ribbon* pRibbon, i8 iDepth);
     void vCatFacet(i8& ri_Char, Ribbon* pRibbon, i8 i_Facet, bool bRight=false);
     void vCatName(i8& ri_Char, Ribbon* pRibbon, i8 iDepth);
