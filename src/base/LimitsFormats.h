@@ -99,7 +99,7 @@ static Stz* C_NULL    = "null"_Stz;
 
 static Stz* C_PROCEDURE_CATG = "\\procedure"_Stz;
 
-static Stz* C_SE_PATH = "/tenants/boray/catalogs/rapidsse/schemas/public/tables"_Stz;
+static Stz* C_SE_PATH = "/tenants/boray/catalogs/rapids/schemas/public/tables"_Stz;
 static Stz* C_SE_PATH_ROOT = "/"_Stz;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

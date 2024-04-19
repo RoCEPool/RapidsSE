@@ -249,14 +249,14 @@
 /*----------------------------------------------------------------------------*/
 : table::removeTableAssembly params| sTableNm |
 
-  // path: /tenants/boray/catalogs/rapidsse/schemas/public/tables
+  // path: /tenants/boray/catalogs/rapids/schemas/public/tables
 
   // push to named table folder
   sTableNm Path[].pushNamedTableFolder
 
   // ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++
 
-    // path: /tenants/boray/catalogs/rapidsse/schemas/public/tables/t
+    // path: /tenants/boray/catalogs/rapids/schemas/public/tables/t
 
     // remove the index sub-assembly for this table
     "index::removeIndexesAssembly" find execute
@@ -269,7 +269,7 @@
 
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
-  // path: /tenants/boray/catalogs/rapidsse/schemas/public/tables
+  // path: /tenants/boray/catalogs/rapids/schemas/public/tables
 
   // forget the named table folder
   sTableNm folder::remove
@@ -289,7 +289,7 @@
    *
    */
 
-  // path: /tenants/boray/catalogs/rapidsse/schemas/public/tables
+  // path: /tenants/boray/catalogs/rapids/schemas/public/tables
 
   sTableNm name::isSubFolder assert
 

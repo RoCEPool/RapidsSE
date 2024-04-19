@@ -107,7 +107,7 @@ rows: (*,'explainPlan','
          » column: (Expr = NOT (''abc'' LIKE ''abc'') ; Ordinal Expr = NOT (''abc'' LIKE ''abc''))
 
 -> -> -> -> tableScanOp
-            » table: (rapidsse.public.${testName2}_nation)')
+            » table: (rapids.public.${testName2}_nation)')
 
 
 -- Runtime test '_' matches a single character
@@ -186,7 +186,7 @@ rows: (*,'explainPlan','
          » column: (Expr = ''abc_def'' LIKE ''abc#_def'' ; Ordinal Expr = ''abc_def'' LIKE ''abc#_def'')
 
 -> -> -> -> tableScanOp
-            » table: (rapidsse.public.${testName2}_nation)')
+            » table: (rapids.public.${testName2}_nation)')
 
 
 -- Test that escape cannot be more than one literal character
@@ -205,15 +205,15 @@ failure contains: 'ESCAPE clause can only contain a single character'
 //   » queryText: "SELECT * FROM ${testName2}_likeTest WHERE col1 like ''a_b_c%'' ESCAPE col2"
 //
 //-> -> projectOp
-//      » column: (Alias = COL1 ; Expr = rapidsse.public.${testName2}_likeTest.COL1 ; Ordinal Expr = $1)
-//      » column: (Alias = COL2 ; Expr = rapidsse.public.${testName2}_likeTest.COL2 ; Ordinal Expr = $2)
+//      » column: (Alias = COL1 ; Expr = rapids.public.${testName2}_likeTest.COL1 ; Ordinal Expr = $1)
+//      » column: (Alias = COL2 ; Expr = rapids.public.${testName2}_likeTest.COL2 ; Ordinal Expr = $2)
 //
 //-> -> -> filterOp
-//         » expr: (rapidsse.public.${testName2}_likeTest.col1 LIKE ''a_b_c%'' ESCAPE rapidsse.public.${testName2}_likeTest.col2)
+//         » expr: (rapids.public.${testName2}_likeTest.col1 LIKE ''a_b_c%'' ESCAPE rapids.public.${testName2}_likeTest.col2)
 //         » ordinal expr: ($1 LIKE ''a_b_c%'' ESCAPE $2)
 //
 //-> -> -> -> tableScanOp
-//            » table: (rapidsse.public.${testName2}_likeTest)')
+//            » table: (rapids.public.${testName2}_likeTest)')
 // TODO: Disable when no longer required
 SELECT * FROM ${testName2}_likeTest WHERE col1 like 'a_b_c%' ESCAPE col2;
 failure contains: 'Expression must be a literal: LIKE escape expression'
@@ -245,7 +245,7 @@ failure contains: 'Expression must be a literal: LIKE escape expression'
 //            » column: (Expr = ''#'' ; Ordinal Expr = ''#'')
 //
 //-> -> -> -> -> tableScanOp
-//               » table: (rapidsse.public.${testName2}_nation)
+//               » table: (rapids.public.${testName2}_nation)
 //
 //∆ mainSubquery
 //  » table alias: __subquery0004
@@ -261,7 +261,7 @@ failure contains: 'Expression must be a literal: LIKE escape expression'
 //         » column: (Expr = ''abc_def'' LIKE ''abc#_def'' ESCAPE __subquery0003() ; Ordinal Expr = ''abc_def'' LIKE ''abc#_def'' ESCAPE __subquery0003())
 //
 //-> -> -> -> tableScanOp
-//            » table: (rapidsse.public.${testName2}_nation)')
+//            » table: (rapids.public.${testName2}_nation)')
 // TODO: Disable when no longer required
 EXPLAIN SELECT 'abc_def' LIKE 'abc#_def' ESCAPE (SELECT '#' FROM ${testName2}_nation LIMIT 1) FROM ${testName2}_NATION LIMIT 1;
 failure contains: 'Expression must be a literal: LIKE escape expression'
@@ -316,7 +316,7 @@ rows: (*,'explainPlan','
          » column: (Expr = ''abc'' LIKE ''abc'' ; Ordinal Expr = ''abc'' LIKE ''abc'')
 
 -> -> -> -> tableScanOp
-            » table: (rapidsse.public.${testName2}_nation)')
+            » table: (rapids.public.${testName2}_nation)')
 
 
 -- Explain of LIKE WITH ESCAPE clause in SELECT list
@@ -336,7 +336,7 @@ rows: (*,'explainPlan','
          » column: (Expr = ''abc'' LIKE ''abc'' ESCAPE ''#'' ; Ordinal Expr = ''abc'' LIKE ''abc'' ESCAPE ''#'')
 
 -> -> -> -> tableScanOp
-            » table: (rapidsse.public.${testName2}_nation)')
+            » table: (rapids.public.${testName2}_nation)')
 
 
 -- Explain of LIKE in WHERE clause
@@ -353,14 +353,14 @@ rows: (*,'explainPlan','
       » limit: (1)
 
 -> -> -> projectOp
-         » column: (Expr = rapidsse.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
+         » column: (Expr = rapids.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> -> filterOp
-            » expr: (rapidsse.public.${testName2}_nation.n_name LIKE ''A%'')
+            » expr: (rapids.public.${testName2}_nation.n_name LIKE ''A%'')
             » ordinal expr: ($2 LIKE ''A%'')
 
 -> -> -> -> -> tableScanOp
-               » table: (rapidsse.public.${testName2}_nation)')
+               » table: (rapids.public.${testName2}_nation)')
 
 
 -- Explain of LIKE with ESCAPE in WHERE clause
@@ -377,14 +377,14 @@ rows: (*,'explainPlan','
       » limit: (1)
 
 -> -> -> projectOp
-         » column: (Expr = rapidsse.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
+         » column: (Expr = rapids.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> -> filterOp
-            » expr: (rapidsse.public.${testName2}_nation.n_name LIKE ''A%'' ESCAPE ''#'')
+            » expr: (rapids.public.${testName2}_nation.n_name LIKE ''A%'' ESCAPE ''#'')
             » ordinal expr: ($2 LIKE ''A%'' ESCAPE ''#'')
 
 -> -> -> -> -> tableScanOp
-               » table: (rapidsse.public.${testName2}_nation)')
+               » table: (rapids.public.${testName2}_nation)')
 
 
 

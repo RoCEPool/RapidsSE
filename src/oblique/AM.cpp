@@ -4020,7 +4020,7 @@ Table* AM::pTableFind(Stz* szTableNm)
   else {
     pDicStack = new DicStack;
     
-    if (pDicStack->bTest("rapidsse"_Stz,"public"_Stz,szTableNm))
+    if (pDicStack->bTest("rapids"_Stz,"public"_Stz,szTableNm))
       pTable = pDicStack->pTable();
     
     delete pDicStack;

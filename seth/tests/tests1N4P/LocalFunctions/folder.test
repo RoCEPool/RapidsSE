@@ -13,7 +13,7 @@ failure contains: 'no such folder'
 // present working folder
 pwf;
 rows:
- ('/tables/public/schemas/rapidsse/catalogs/boray/tenants/')
+ ('/tables/public/schemas/rapids/catalogs/boray/tenants/')
 
 // change folder
 cf "..";
@@ -22,7 +22,7 @@ success
 // present working folder
 pwf;
 rows:
-  ('/public/schemas/rapidsse/catalogs/boray/tenants/')
+  ('/public/schemas/rapids/catalogs/boray/tenants/')
 
 // change folder
 cf "tables";
@@ -31,7 +31,7 @@ success
 // present working folder
 pwf;
 rows:
-  ('/tables/public/schemas/rapidsse/catalogs/boray/tenants/')
+  ('/tables/public/schemas/rapids/catalogs/boray/tenants/')
 
 // change folder
 cf "tenants";
@@ -58,7 +58,7 @@ pwf;
 rows:
   ('/catalogs/boray/tenants/')
 
-cf "rapidsse";
+cf "rapids";
 success
 
 // present working folder
@@ -72,7 +72,7 @@ success
 // present working folder
 pwf;
 rows:
-('/schemas/rapidsse/catalogs/boray/tenants/')
+('/schemas/rapids/catalogs/boray/tenants/')
 
 cf "public";
 success
@@ -80,7 +80,7 @@ success
 // present working folder
 pwf;
 rows:
-  ('/public/schemas/rapidsse/catalogs/boray/tenants/')
+  ('/public/schemas/rapids/catalogs/boray/tenants/')
 
 cf "tables";
 success
@@ -88,7 +88,7 @@ success
 // present working folder
 pwf;
 rows:
-  ('/tables/public/schemas/rapidsse/catalogs/boray/tenants/')
+  ('/tables/public/schemas/rapids/catalogs/boray/tenants/')
 
 CLEANUP {
 }

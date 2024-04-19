@@ -83,7 +83,7 @@ begin
     | pulse once
     | stageMarker8561
   stage stageMarker8561 on all partitions :
-    scan rapidsse public customer
+    scan rapids public customer
     | filter 1 " type BOOLEAN  C_MKTSEGMENT 'BUILDING'  ==  "
     | stageMarker8564 broadcast
   stage stageMarker8564 on all partitions :

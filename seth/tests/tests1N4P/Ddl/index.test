@@ -119,7 +119,7 @@ failure contains: 'Table does not exist'
 
 pwf;
 rows:
-  ('/tables/public/schemas/rapidsse/catalogs/boray/tenants/')
+  ('/tables/public/schemas/rapids/catalogs/boray/tenants/')
 
 // check existence of index
 lsidx ${testName2}_T1;
@@ -131,7 +131,7 @@ failure contains: 'invalid index column'
 
 pwf;
 rows:
-  ('/tables/public/schemas/rapidsse/catalogs/boray/tenants/')
+  ('/tables/public/schemas/rapids/catalogs/boray/tenants/')
 
 // check existence of index
 lsidx ${testName2}_T1;

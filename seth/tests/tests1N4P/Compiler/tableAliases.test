@@ -41,7 +41,7 @@ rows: (*,'explainPlan','
 
 -> -> -> tableScanOp
          » alias: (n)
-         » table: (rapidsse.public.${testName2}_nation)'
+         » table: (rapids.public.${testName2}_nation)'
 )
 
 EXPLAIN SELECT n.* FROM ${testName2}_nation n;
@@ -61,7 +61,7 @@ rows: (*,'explainPlan','
 
 -> -> -> tableScanOp
          » alias: (n)
-         » table: (rapidsse.public.${testName2}_nation)'
+         » table: (rapids.public.${testName2}_nation)'
 )
 
 EXPLAIN SELECT n_name FROM ${testName2}_nation n;
@@ -78,7 +78,7 @@ rows: (*,'explainPlan','
 
 -> -> -> tableScanOp
          » alias: (n)
-         » table: (rapidsse.public.${testName2}_nation)'
+         » table: (rapids.public.${testName2}_nation)'
 )
 
 -- Can we fully reference a column name in a SELECT list using a table reference?
@@ -96,7 +96,7 @@ rows: (*,'explainPlan','
 
 -> -> -> tableScanOp
          » alias: (n)
-         » table: (rapidsse.public.${testName2}_nation)'
+         » table: (rapids.public.${testName2}_nation)'
 )
 
 -- Can we fully reference a column name in a WHERE clause using a table reference?
@@ -118,7 +118,7 @@ rows: (*,'explainPlan','
 
 -> -> -> -> tableScanOp
             » alias: (n)
-            » table: (rapidsse.public.${testName2}_nation)'
+            » table: (rapids.public.${testName2}_nation)'
 )
 
 -- Can we fully reference a column name in an ORDER clause using a table reference?
@@ -144,7 +144,7 @@ rows: (*,'explainPlan','
 
 -> -> -> -> -> tableScanOp
                » alias: (n)
-               » table: (rapidsse.public.${testName2}_nation)'
+               » table: (rapids.public.${testName2}_nation)'
 )
 
 
@@ -166,7 +166,7 @@ rows: (*,'explainPlan','
 
 -> -> -> tableScanOp
          » alias: (${testName2}_nation)
-         » table: (rapidsse.public.${testName2}_nation)'
+         » table: (rapids.public.${testName2}_nation)'
 )
 
 -- Qualifying the column name with the alias name, which is the same as the
@@ -185,7 +185,7 @@ rows: (*,'explainPlan','
 
 -> -> -> tableScanOp
          » alias: (${testName2}_nation)
-         » table: (rapidsse.public.${testName2}_nation)'
+         » table: (rapids.public.${testName2}_nation)'
 )
 
 
@@ -202,7 +202,7 @@ EXPLAIN SELECT ${testName2}_nation.* FROM ${testName2}_nation n;
 failure contains: 'Column wildcard does not resolve to any tables in the query'
 
 -- Alias doesn't resolve with a catalog and schema name in the select list
-EXPLAIN SELECT rapidsse.public.n.* FROM ${testName2}_nation n;
+EXPLAIN SELECT rapids.public.n.* FROM ${testName2}_nation n;
 failure contains: 'Column wildcard does not resolve to any tables in the query'
 
 -- Alias doesn't resolve with a schema name in the select list
@@ -210,16 +210,16 @@ EXPLAIN SELECT public.n.* FROM ${testName2}_nation n;
 failure contains: 'Column wildcard does not resolve to any tables in the query'
 
 -- Alias doesn't resolve with a catalog and schema name in the WHERE clause
-EXPLAIN SELECT n.n_name FROM ${testName2}_nation n WHERE rapidsse.public.n.n_nationkey > 0;
-failure contains: 'No such column: rapidsse.public.n.n_nationkey'
+EXPLAIN SELECT n.n_name FROM ${testName2}_nation n WHERE rapids.public.n.n_nationkey > 0;
+failure contains: 'No such column: rapids.public.n.n_nationkey'
 
 -- Alias doesn't resolve with a schema name in the WHERE clause
 EXPLAIN SELECT n.n_name FROM ${testName2}_nation n WHERE public.n.n_nationkey > 0;
 failure contains: 'No such column: public.n.n_nationkey'
 
 -- Alias doesn't resolve with a catalog and schema name in an ORDER clause
-EXPLAIN SELECT n.n_name FROM ${testName2}_nation n ORDER BY rapidsse.public.n.n_nationkey;
-failure contains: 'No such column: rapidsse.public.n.n_nationkey'
+EXPLAIN SELECT n.n_name FROM ${testName2}_nation n ORDER BY rapids.public.n.n_nationkey;
+failure contains: 'No such column: rapids.public.n.n_nationkey'
 
 -- Alias doesn't resolve with a schema name in an ORDER clause
 EXPLAIN SELECT n.n_name FROM ${testName2}_nation n ORDER BY public.n.n_nationkey;
@@ -233,12 +233,12 @@ failure contains: 'No such column: ${testName2}_nation.n_nationkey'
 -- If the alias is the same as the table name then you still can't use
 -- a schema or catalog to qualify that alias. Alias's can't be qualified.
 -- Try this with a column wildcard.
-EXPLAIN SELECT rapidsse.public.${testName2}_nation.* FROM ${testName2}_nation ${testName2}_nation;
+EXPLAIN SELECT rapids.public.${testName2}_nation.* FROM ${testName2}_nation ${testName2}_nation;
 failure contains: 'Column wildcard does not resolve to any tables in the query'
 
 -- Now try this with a column name.
-EXPLAIN SELECT rapidsse.public.${testName2}_nation.n_name FROM ${testName2}_nation ${testName2}_nation;
-failure contains: 'No such column: rapidsse.public.${testName2}_nation.n_name'
+EXPLAIN SELECT rapids.public.${testName2}_nation.n_name FROM ${testName2}_nation ${testName2}_nation;
+failure contains: 'No such column: rapids.public.${testName2}_nation.n_name'
 
 
 -- Cannot have two table aliases that are the same

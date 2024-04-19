@@ -234,7 +234,7 @@ select
 //projectColumns_I lineitem "1";
 //projectColumns_I lineitem "l_discount , 1";
 
-//select l_orderkey from rapidsse.public.lineitem;
+//select l_orderkey from rapids.public.lineitem;
 
 //select L_ORDERKEY + 1 , sum(L_QUANTITY) from lineitem group by l_orderkey + 1;
 

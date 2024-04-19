@@ -30,7 +30,7 @@ select s_name, s_address
 //------------------------------------------------------------------------------
 
 -> -> -> -> -> filterOp
-               » expr: ((rapidsse.public.partsupp.ps_partkey IN __subquery0003()) AND ((CAST(rapidsse.public.partsupp.ps_availqty AS DECIMAL)) > __subquery0005(rapidsse.public.partsupp.ps_partkey, rapidsse.public.partsupp.ps_suppkey)))
+               » expr: ((rapids.public.partsupp.ps_partkey IN __subquery0003()) AND ((CAST(rapids.public.partsupp.ps_availqty AS DECIMAL)) > __subquery0005(rapids.public.partsupp.ps_partkey, rapids.public.partsupp.ps_suppkey)))
                » ordinal expr: (($1 IN __subquery0003()) AND ((CAST($3 AS DECIMAL)) > __subquery0005($1, $2)))
 
 EXPLAIN STAGE TRANSLITERATE

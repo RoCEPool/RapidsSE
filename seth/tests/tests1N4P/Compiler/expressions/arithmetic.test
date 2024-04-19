@@ -37,7 +37,7 @@ rows: (*,'explainPlan','
       » column: (Expr = INTERVAL ''1'' YEAR + INTERVAL ''2'' YEAR ; Ordinal Expr = INTERVAL ''1'' YEAR + INTERVAL ''2'' YEAR) ; type: INTERVAL YEAR
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 // YM interval arithmetic /2 (same type, with negative)
 EXPLAIN WITH_TYPES SELECT INTERVAL '1' YEAR + INTERVAL -'2' YEAR FROM ${testName2}_nation;
@@ -53,7 +53,7 @@ rows: (*,'explainPlan','
       » column: (Expr = INTERVAL ''1'' YEAR + INTERVAL -''2'' YEAR ; Ordinal Expr = INTERVAL ''1'' YEAR + INTERVAL -''2'' YEAR) ; type: INTERVAL YEAR
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
          
 // YM interval arithmetic /3 (mixed types)
 EXPLAIN WITH_TYPES SELECT INTERVAL '1' YEAR + INTERVAL '2' MONTH FROM ${testName2}_nation;
@@ -69,7 +69,7 @@ rows: (*,'explainPlan','
       » column: (Expr = INTERVAL ''1'' YEAR + INTERVAL ''2'' MONTH ; Ordinal Expr = INTERVAL ''1'' YEAR + INTERVAL ''2'' MONTH) ; type: INTERVAL YEAR TO MONTH
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 // DT interval arithmetic of same type /1
 EXPLAIN WITH_TYPES SELECT INTERVAL '1' MINUTE + INTERVAL '2' MINUTE FROM ${testName2}_nation;
@@ -85,7 +85,7 @@ rows: (*,'explainPlan','
       » column: (Expr = INTERVAL ''1'' MINUTE + INTERVAL ''2'' MINUTE ; Ordinal Expr = INTERVAL ''1'' MINUTE + INTERVAL ''2'' MINUTE) ; type: INTERVAL MINUTE
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 // DT interval arithmetic of same type /2
 EXPLAIN WITH_TYPES SELECT INTERVAL '1:2:3' HOUR TO SECOND + INTERVAL '4:5:6' HOUR TO SECOND FROM ${testName2}_nation;
@@ -101,7 +101,7 @@ rows: (*,'explainPlan','
       » column: (Expr = INTERVAL ''1:2:3'' HOUR TO SECOND + INTERVAL ''4:5:6'' HOUR TO SECOND ; Ordinal Expr = INTERVAL ''1:2:3'' HOUR TO SECOND + INTERVAL ''4:5:6'' HOUR TO SECOND) ; type: INTERVAL HOUR TO SECOND
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 // DT interval arithmetic of mixed types /1
 EXPLAIN WITH_TYPES SELECT INTERVAL '1' MINUTE + INTERVAL '2' SECOND FROM ${testName2}_nation;
@@ -117,7 +117,7 @@ rows: (*,'explainPlan','
       » column: (Expr = INTERVAL ''1'' MINUTE + INTERVAL ''2'' SECOND ; Ordinal Expr = INTERVAL ''1'' MINUTE + INTERVAL ''2'' SECOND) ; type: INTERVAL MINUTE TO SECOND
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
          
 // DT interval arithmetic of mixed types /2
 EXPLAIN WITH_TYPES SELECT INTERVAL '1 2' DAY TO HOUR + INTERVAL '3' SECOND FROM ${testName2}_nation;
@@ -133,7 +133,7 @@ rows: (*,'explainPlan','
       » column: (Expr = INTERVAL ''1 2'' DAY TO HOUR + INTERVAL ''3'' SECOND ; Ordinal Expr = INTERVAL ''1 2'' DAY TO HOUR + INTERVAL ''3'' SECOND) ; type: INTERVAL DAY TO SECOND
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 // Cannot mix YM and DT intervals /1
 EXPLAIN WITH_TYPES SELECT INTERVAL '1' YEAR + INTERVAL '2' DAY FROM ${testName2}_nation;
@@ -158,7 +158,7 @@ rows: (*,'explainPlan','
       » column: (Expr = (INTERVAL ''30'' DAY + DATE ''2023-02-16'') + INTERVAL ''10-11'' YEAR TO MONTH ; Ordinal Expr = (INTERVAL ''30'' DAY + DATE ''2023-02-16'') + INTERVAL ''10-11'' YEAR TO MONTH) ; type: TIMESTAMP
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 // Cannot mix YM and DT intervals if the intermediate result is in the wrong order.
 EXPLAIN SELECT INTERVAL '30' DAY + INTERVAL '10-11' YEAR TO MONTH + DATE '2023-02-16' FROM ${testName2}_nation;
@@ -179,7 +179,7 @@ rows: (*,'explainPlan','
       » column: (Expr = INTERVAL ''1-2'' YEAR TO MONTH * 2 ; Ordinal Expr = INTERVAL ''1-2'' YEAR TO MONTH * 2) ; type: INTERVAL YEAR TO MONTH
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 // Interval multiplication /2 (decimal)
 EXPLAIN WITH_TYPES SELECT INTERVAL '1-2' YEAR TO MONTH * 2.0 FROM ${testName2}_nation;
@@ -203,7 +203,7 @@ rows: (*,'explainPlan','
       » column: (Expr = 2 * INTERVAL ''1'' YEAR ; Ordinal Expr = 2 * INTERVAL ''1'' YEAR) ; type: INTERVAL YEAR
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 // Interval multiplication /5 (decimal first)
 EXPLAIN WITH_TYPES SELECT 2.0 * INTERVAL '1' YEAR FROM ${testName2}_nation;
@@ -228,7 +228,7 @@ rows: (*,'explainPlan','
       » column: (Expr = INTERVAL ''1-2'' YEAR TO MONTH / 2 ; Ordinal Expr = INTERVAL ''1-2'' YEAR TO MONTH / 2) ; type: INTERVAL YEAR TO MONTH
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 // Interval division /2 (decimal)
 EXPLAIN WITH_TYPES SELECT INTERVAL '1-2' YEAR TO MONTH / 2.0 FROM ${testName2}_nation;
@@ -257,7 +257,7 @@ rows: (*,'explainPlan','
       » column: (Expr = DATE ''2000-03-31'' - DATE ''2000-02-28'' ; Ordinal Expr = DATE ''2000-03-31'' - DATE ''2000-02-28'') ; type: INTERVAL DAY
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 // Time subtraction
 EXPLAIN WITH_TYPES SELECT TIME '14:30:55' - TIME '04:30:56' FROM ${testName2}_nation;
@@ -273,7 +273,7 @@ rows: (*,'explainPlan','
       » column: (Expr = TIME ''14:30:55'' - TIME ''04:30:56'' ; Ordinal Expr = TIME ''14:30:55'' - TIME ''04:30:56'') ; type: INTERVAL HOUR TO SECOND
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
          
 // Timestamp subtraction
 EXPLAIN WITH_TYPES SELECT TIMESTAMP '2000-03-31 14:30:55' - TIMESTAMP '2000-02-28 04:30:56' FROM ${testName2}_nation;
@@ -289,7 +289,7 @@ rows: (*,'explainPlan','
       » column: (Expr = TIMESTAMP ''2000-03-31 14:30:55'' - TIMESTAMP ''2000-02-28 04:30:56'' ; Ordinal Expr = TIMESTAMP ''2000-03-31 14:30:55'' - TIMESTAMP ''2000-02-28 04:30:56'') ; type: INTERVAL DAY TO SECOND
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 // Cannot subtract dates and times
 EXPLAIN WITH_TYPES SELECT DATE '2000-03-31' - TIME '04:30:56' FROM ${testName2}_nation;
@@ -313,7 +313,7 @@ rows: (*,'explainPlan','
       » column: (Expr = TIMESTAMP ''2000-03-31 00:00:00'' - TIMESTAMP ''2000-02-28 04:30:56'' ; Ordinal Expr = TIMESTAMP ''2000-03-31 00:00:00'' - TIMESTAMP ''2000-02-28 04:30:56'') ; type: INTERVAL DAY TO SECOND
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 // Subtract times and timestamp
 EXPLAIN WITH_TYPES SELECT TIME '14:30:55' - TIMESTAMP '2000-02-28 04:30:56' FROM ${testName2}_nation;
@@ -334,7 +334,7 @@ rows: (*,'explainPlan','
       » column: (Expr = INTERVAL ''1-2'' YEAR TO MONTH + DATE ''2000-02-28'' ; Ordinal Expr = INTERVAL ''1-2'' YEAR TO MONTH + DATE ''2000-02-28'') ; type: DATE
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 // Date + Interval YM
 EXPLAIN WITH_TYPES SELECT DATE '2000-02-28' + INTERVAL '1-2' YEAR TO MONTH FROM ${testName2}_nation;
@@ -350,7 +350,7 @@ rows: (*,'explainPlan','
       » column: (Expr = DATE ''2000-02-28'' + INTERVAL ''1-2'' YEAR TO MONTH ; Ordinal Expr = DATE ''2000-02-28'' + INTERVAL ''1-2'' YEAR TO MONTH) ; type: DATE
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
          
 // Interval DT + date
 EXPLAIN WITH_TYPES SELECT INTERVAL '1' DAY + DATE '2000-02-28' FROM ${testName2}_nation;
@@ -366,7 +366,7 @@ rows: (*,'explainPlan','
       » column: (Expr = INTERVAL ''1'' DAY + DATE ''2000-02-28'' ; Ordinal Expr = INTERVAL ''1'' DAY + DATE ''2000-02-28'') ; type: TIMESTAMP
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 // Date + Interval DT
 EXPLAIN WITH_TYPES SELECT DATE '2000-02-28' + INTERVAL '1' DAY FROM ${testName2}_nation;
@@ -382,7 +382,7 @@ rows: (*,'explainPlan','
       » column: (Expr = DATE ''2000-02-28'' + INTERVAL ''1'' DAY ; Ordinal Expr = DATE ''2000-02-28'' + INTERVAL ''1'' DAY) ; type: TIMESTAMP
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
          
 // Interval DT (with h/m/s) + date
 EXPLAIN WITH_TYPES SELECT INTERVAL '1 2:3:4.5' DAY TO SECOND + DATE '2000-02-28' FROM ${testName2}_nation;
@@ -398,7 +398,7 @@ rows: (*,'explainPlan','
       » column: (Expr = INTERVAL ''1 2:3:4.500000'' DAY TO SECOND + DATE ''2000-02-28'' ; Ordinal Expr = INTERVAL ''1 2:3:4.500000'' DAY TO SECOND + DATE ''2000-02-28'') ; type: TIMESTAMP
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 // Date + Interval DT (with h/m/s)
 EXPLAIN WITH_TYPES SELECT DATE '2000-02-28' + INTERVAL '1 2:3:4.5' DAY TO SECOND FROM ${testName2}_nation;
@@ -414,7 +414,7 @@ rows: (*,'explainPlan','
       » column: (Expr = DATE ''2000-02-28'' + INTERVAL ''1 2:3:4.500000'' DAY TO SECOND ; Ordinal Expr = DATE ''2000-02-28'' + INTERVAL ''1 2:3:4.500000'' DAY TO SECOND) ; type: TIMESTAMP
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 
 
@@ -440,7 +440,7 @@ rows: (*,'explainPlan','
       » column: (Expr = INTERVAL ''1 2'' DAY TO HOUR + TIME ''04:30:56'' ; Ordinal Expr = INTERVAL ''1 2'' DAY TO HOUR + TIME ''04:30:56'') ; type: TIME
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 // Time + Interval Day
 EXPLAIN WITH_TYPES SELECT TIME '04:30:56' + INTERVAL '1 2' DAY TO HOUR FROM ${testName2}_nation;
@@ -456,7 +456,7 @@ rows: (*,'explainPlan','
       » column: (Expr = TIME ''04:30:56'' + INTERVAL ''1 2'' DAY TO HOUR ; Ordinal Expr = TIME ''04:30:56'' + INTERVAL ''1 2'' DAY TO HOUR) ; type: TIME
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 // Interval HMS + time
 EXPLAIN WITH_TYPES SELECT INTERVAL '1:2:3' HOUR TO SECOND + TIME '04:30:56' FROM ${testName2}_nation;
@@ -472,7 +472,7 @@ rows: (*,'explainPlan','
       » column: (Expr = INTERVAL ''1:2:3'' HOUR TO SECOND + TIME ''04:30:56'' ; Ordinal Expr = INTERVAL ''1:2:3'' HOUR TO SECOND + TIME ''04:30:56'') ; type: TIME
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
          
 // Time + Interval HMS
 EXPLAIN WITH_TYPES SELECT TIME '04:30:56' + INTERVAL '1:2:3' HOUR TO SECOND FROM ${testName2}_nation;
@@ -488,7 +488,7 @@ rows: (*,'explainPlan','
       » column: (Expr = TIME ''04:30:56'' + INTERVAL ''1:2:3'' HOUR TO SECOND ; Ordinal Expr = TIME ''04:30:56'' + INTERVAL ''1:2:3'' HOUR TO SECOND) ; type: TIME
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
          
 // Time + Interval HMS (with fractional seconds)
 EXPLAIN WITH_TYPES SELECT TIME '04:30:56' + INTERVAL '1:2:3.456' HOUR TO SECOND FROM ${testName2}_nation;
@@ -504,7 +504,7 @@ rows: (*,'explainPlan','
       » column: (Expr = TIME ''04:30:56'' + INTERVAL ''1:2:3.456000'' HOUR TO SECOND ; Ordinal Expr = TIME ''04:30:56'' + INTERVAL ''1:2:3.456000'' HOUR TO SECOND) ; type: TIME
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 
 // Interval YM + timestamp
@@ -521,7 +521,7 @@ rows: (*,'explainPlan','
       » column: (Expr = INTERVAL ''1-2'' YEAR TO MONTH + TIMESTAMP ''2000-02-28 04:30:56'' ; Ordinal Expr = INTERVAL ''1-2'' YEAR TO MONTH + TIMESTAMP ''2000-02-28 04:30:56'') ; type: TIMESTAMP
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 // Timestamp + Interval YM
 EXPLAIN WITH_TYPES SELECT TIMESTAMP '2000-02-28 04:30:56' + INTERVAL '1-2' YEAR TO MONTH FROM ${testName2}_nation;
@@ -537,7 +537,7 @@ rows: (*,'explainPlan','
       » column: (Expr = TIMESTAMP ''2000-02-28 04:30:56'' + INTERVAL ''1-2'' YEAR TO MONTH ; Ordinal Expr = TIMESTAMP ''2000-02-28 04:30:56'' + INTERVAL ''1-2'' YEAR TO MONTH) ; type: TIMESTAMP
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 // Interval DT + timestamp
 EXPLAIN WITH_TYPES SELECT INTERVAL '1 2:3:4.5' DAY TO SECOND + TIMESTAMP '2000-02-28 04:30:56' FROM ${testName2}_nation;
@@ -553,7 +553,7 @@ rows: (*,'explainPlan','
       » column: (Expr = INTERVAL ''1 2:3:4.500000'' DAY TO SECOND + TIMESTAMP ''2000-02-28 04:30:56'' ; Ordinal Expr = INTERVAL ''1 2:3:4.500000'' DAY TO SECOND + TIMESTAMP ''2000-02-28 04:30:56'') ; type: TIMESTAMP
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 // Timestamp + Interval DT
 EXPLAIN WITH_TYPES SELECT TIMESTAMP '2000-02-28 04:30:56' + INTERVAL '1 2:3:4.5' DAY TO SECOND FROM ${testName2}_nation;
@@ -569,7 +569,7 @@ rows: (*,'explainPlan','
       » column: (Expr = TIMESTAMP ''2000-02-28 04:30:56'' + INTERVAL ''1 2:3:4.500000'' DAY TO SECOND ; Ordinal Expr = TIMESTAMP ''2000-02-28 04:30:56'' + INTERVAL ''1 2:3:4.500000'' DAY TO SECOND) ; type: TIMESTAMP
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 
 // Interval negation /1
@@ -586,7 +586,7 @@ rows: (*,'explainPlan','
       » column: (Expr = -INTERVAL ''1 2:3:4.500000'' DAY TO SECOND ; Ordinal Expr = -INTERVAL ''1 2:3:4.500000'' DAY TO SECOND) ; type: INTERVAL DAY TO SECOND
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 // Interval negation /2
 EXPLAIN WITH_TYPES SELECT -INTERVAL -'1 2:3:4.5' DAY TO SECOND FROM ${testName2}_nation;
@@ -602,7 +602,7 @@ rows: (*,'explainPlan','
       » column: (Expr = -INTERVAL -''1 2:3:4.500000'' DAY TO SECOND ; Ordinal Expr = -INTERVAL -''1 2:3:4.500000'' DAY TO SECOND) ; type: INTERVAL DAY TO SECOND
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 // Interval modulus (single field only) - invalid
 EXPLAIN WITH_TYPES SELECT INTERVAL '10' DAY % 3 FROM ${testName2}_nation;

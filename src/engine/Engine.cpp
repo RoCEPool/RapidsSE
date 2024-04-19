@@ -931,8 +931,8 @@ void Engine::vLoadTables(void)
   RASSERT(pWord->pObject());
 
   pDic = _pDic(pWord->pObject());
-  pSearchWord = new(nullptr) Word("rapidsse"_Stz);
-  pWord = pDic->pFindWord(pSearchWord, "rapidsse"_Stz);
+  pSearchWord = new(nullptr) Word("rapids"_Stz);
+  pWord = pDic->pFindWord(pSearchWord, "rapids"_Stz);
   delete pSearchWord;
   RASSERT(pWord->pObject());
 

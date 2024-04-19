@@ -42,10 +42,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(col1  AS BOOLEAN)      FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col1 AS BOOLEAN) ; Ordinal Expr = CAST($1 AS BOOLEAN)) ; type: BOOLEAN
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col1 AS BOOLEAN) ; Ordinal Expr = CAST($1 AS BOOLEAN)) ; type: BOOLEAN
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT CAST(col1  AS CHAR(10))         FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -57,10 +57,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(col1  AS CHAR(10))         FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col1 AS CHAR) ; Ordinal Expr = CAST($1 AS CHAR)) ; type: CHAR
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col1 AS CHAR) ; Ordinal Expr = CAST($1 AS CHAR)) ; type: CHAR
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT CAST(col1  AS DATE)         FROM ${testName2}_castTest;
 failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
@@ -96,10 +96,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(col1  AS VARCHAR)      FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col1 AS VARCHAR) ; Ordinal Expr = CAST($1 AS VARCHAR)) ; type: VARCHAR
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col1 AS VARCHAR) ; Ordinal Expr = CAST($1 AS VARCHAR)) ; type: VARCHAR
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 
 // *** Cast a INTEGER column ***
@@ -116,10 +116,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(col2  AS CHAR(10))         FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col2 AS CHAR) ; Ordinal Expr = CAST($2 AS CHAR)) ; type: CHAR
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col2 AS CHAR) ; Ordinal Expr = CAST($2 AS CHAR)) ; type: CHAR
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
          
 EXPLAIN with_types SELECT CAST(col2  AS DATE)         FROM ${testName2}_castTest;
 failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
@@ -134,10 +134,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(col2  AS DECIMAL)      FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col2 AS DECIMAL) ; Ordinal Expr = CAST($2 AS DECIMAL)) ; type: DECIMAL
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col2 AS DECIMAL) ; Ordinal Expr = CAST($2 AS DECIMAL)) ; type: DECIMAL
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
          
 EXPLAIN with_types SELECT CAST(col2  AS FLOAT)        FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -149,10 +149,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(col2  AS FLOAT)        FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col2 AS FLOAT) ; Ordinal Expr = CAST($2 AS FLOAT)) ; type: FLOAT
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col2 AS FLOAT) ; Ordinal Expr = CAST($2 AS FLOAT)) ; type: FLOAT
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
          
 EXPLAIN with_types SELECT CAST(col2  AS INTEGER)      FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -164,10 +164,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(col2  AS INTEGER)      FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col2 AS INTEGER) ; Ordinal Expr = CAST($2 AS INTEGER)) ; type: INTEGER
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col2 AS INTEGER) ; Ordinal Expr = CAST($2 AS INTEGER)) ; type: INTEGER
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 // Cannot cast to a multi-field interval
 EXPLAIN with_types SELECT CAST(col2  AS INTERVAL YEAR TO MONTH)  FROM ${testName2}_castTest;
@@ -188,10 +188,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(col2  AS INTERVAL YEAR)  FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col2 AS INTERVAL YEAR) ; Ordinal Expr = CAST($2 AS INTERVAL YEAR)) ; type: INTERVAL YEAR
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col2 AS INTERVAL YEAR) ; Ordinal Expr = CAST($2 AS INTERVAL YEAR)) ; type: INTERVAL YEAR
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT CAST(col2  AS INTERVAL MONTH)  FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -203,10 +203,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(col2  AS INTERVAL MONTH)  FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col2 AS INTERVAL MONTH) ; Ordinal Expr = CAST($2 AS INTERVAL MONTH)) ; type: INTERVAL MONTH
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col2 AS INTERVAL MONTH) ; Ordinal Expr = CAST($2 AS INTERVAL MONTH)) ; type: INTERVAL MONTH
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT CAST(col2  AS INTERVAL DAY)  FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -218,10 +218,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(col2  AS INTERVAL DAY)  FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col2 AS INTERVAL DAY) ; Ordinal Expr = CAST($2 AS INTERVAL DAY)) ; type: INTERVAL DAY
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col2 AS INTERVAL DAY) ; Ordinal Expr = CAST($2 AS INTERVAL DAY)) ; type: INTERVAL DAY
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT CAST(col2  AS INTERVAL HOUR)  FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -233,10 +233,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(col2  AS INTERVAL HOUR)  FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col2 AS INTERVAL HOUR) ; Ordinal Expr = CAST($2 AS INTERVAL HOUR)) ; type: INTERVAL HOUR
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col2 AS INTERVAL HOUR) ; Ordinal Expr = CAST($2 AS INTERVAL HOUR)) ; type: INTERVAL HOUR
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT CAST(col2  AS INTERVAL MINUTE)  FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -248,10 +248,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(col2  AS INTERVAL MINUTE)  FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col2 AS INTERVAL MINUTE) ; Ordinal Expr = CAST($2 AS INTERVAL MINUTE)) ; type: INTERVAL MINUTE
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col2 AS INTERVAL MINUTE) ; Ordinal Expr = CAST($2 AS INTERVAL MINUTE)) ; type: INTERVAL MINUTE
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT CAST(col2  AS INTERVAL SECOND)  FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -263,10 +263,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(col2  AS INTERVAL SECOND)  FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col2 AS INTERVAL SECOND) ; Ordinal Expr = CAST($2 AS INTERVAL SECOND)) ; type: INTERVAL SECOND
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col2 AS INTERVAL SECOND) ; Ordinal Expr = CAST($2 AS INTERVAL SECOND)) ; type: INTERVAL SECOND
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT CAST(col2  AS TIME)         FROM ${testName2}_castTest;
 failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
@@ -284,10 +284,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(col2  AS VARCHAR)      FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col2 AS VARCHAR) ; Ordinal Expr = CAST($2 AS VARCHAR)) ; type: VARCHAR
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col2 AS VARCHAR) ; Ordinal Expr = CAST($2 AS VARCHAR)) ; type: VARCHAR
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 
 // *** Cast a DECIMAL column ***
@@ -304,10 +304,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(col3  AS CHAR(10))         FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col3 AS CHAR) ; Ordinal Expr = CAST($3 AS CHAR)) ; type: CHAR
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col3 AS CHAR) ; Ordinal Expr = CAST($3 AS CHAR)) ; type: CHAR
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
          
 EXPLAIN with_types SELECT CAST(col3  AS DATE)         FROM ${testName2}_castTest;
 failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
@@ -322,10 +322,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(col3  AS DECIMAL)      FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col3 AS DECIMAL) ; Ordinal Expr = CAST($3 AS DECIMAL)) ; type: DECIMAL
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col3 AS DECIMAL) ; Ordinal Expr = CAST($3 AS DECIMAL)) ; type: DECIMAL
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
          
 EXPLAIN with_types SELECT CAST(col3  AS FLOAT)        FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -337,10 +337,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(col3  AS FLOAT)        FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col3 AS FLOAT) ; Ordinal Expr = CAST($3 AS FLOAT)) ; type: FLOAT
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col3 AS FLOAT) ; Ordinal Expr = CAST($3 AS FLOAT)) ; type: FLOAT
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
          
 EXPLAIN with_types SELECT CAST(col3  AS INTEGER)      FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -352,10 +352,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(col3  AS INTEGER)      FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col3 AS INTEGER) ; Ordinal Expr = CAST($3 AS INTEGER)) ; type: INTEGER
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col3 AS INTEGER) ; Ordinal Expr = CAST($3 AS INTEGER)) ; type: INTEGER
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 // Cannot cast to a multi-field interval
 EXPLAIN with_types SELECT CAST(col3  AS INTERVAL YEAR TO MONTH)  FROM ${testName2}_castTest;
@@ -376,10 +376,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(col3  AS INTERVAL YEAR)  FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col3 AS INTERVAL YEAR) ; Ordinal Expr = CAST($3 AS INTERVAL YEAR)) ; type: INTERVAL YEAR
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col3 AS INTERVAL YEAR) ; Ordinal Expr = CAST($3 AS INTERVAL YEAR)) ; type: INTERVAL YEAR
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT CAST(col3  AS INTERVAL MONTH)  FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -391,10 +391,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(col3  AS INTERVAL MONTH)  FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col3 AS INTERVAL MONTH) ; Ordinal Expr = CAST($3 AS INTERVAL MONTH)) ; type: INTERVAL MONTH
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col3 AS INTERVAL MONTH) ; Ordinal Expr = CAST($3 AS INTERVAL MONTH)) ; type: INTERVAL MONTH
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT CAST(col3  AS INTERVAL DAY)  FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -406,10 +406,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(col3  AS INTERVAL DAY)  FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col3 AS INTERVAL DAY) ; Ordinal Expr = CAST($3 AS INTERVAL DAY)) ; type: INTERVAL DAY
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col3 AS INTERVAL DAY) ; Ordinal Expr = CAST($3 AS INTERVAL DAY)) ; type: INTERVAL DAY
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT CAST(col3  AS INTERVAL HOUR)  FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -421,10 +421,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(col3  AS INTERVAL HOUR)  FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col3 AS INTERVAL HOUR) ; Ordinal Expr = CAST($3 AS INTERVAL HOUR)) ; type: INTERVAL HOUR
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col3 AS INTERVAL HOUR) ; Ordinal Expr = CAST($3 AS INTERVAL HOUR)) ; type: INTERVAL HOUR
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT CAST(col3  AS INTERVAL MINUTE)  FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -436,10 +436,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(col3  AS INTERVAL MINUTE)  FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col3 AS INTERVAL MINUTE) ; Ordinal Expr = CAST($3 AS INTERVAL MINUTE)) ; type: INTERVAL MINUTE
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col3 AS INTERVAL MINUTE) ; Ordinal Expr = CAST($3 AS INTERVAL MINUTE)) ; type: INTERVAL MINUTE
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT CAST(col3  AS INTERVAL SECOND)  FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -451,10 +451,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(col3  AS INTERVAL SECOND)  FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col3 AS INTERVAL SECOND) ; Ordinal Expr = CAST($3 AS INTERVAL SECOND)) ; type: INTERVAL SECOND
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col3 AS INTERVAL SECOND) ; Ordinal Expr = CAST($3 AS INTERVAL SECOND)) ; type: INTERVAL SECOND
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT CAST(col3  AS TIME)         FROM ${testName2}_castTest;
 failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
@@ -472,10 +472,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(col3  AS VARCHAR)      FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col3 AS VARCHAR) ; Ordinal Expr = CAST($3 AS VARCHAR)) ; type: VARCHAR
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col3 AS VARCHAR) ; Ordinal Expr = CAST($3 AS VARCHAR)) ; type: VARCHAR
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 
 // *** Cast a FLOAT column ***
@@ -492,10 +492,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(col4  AS CHAR(10))         FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col4 AS CHAR) ; Ordinal Expr = CAST($4 AS CHAR)) ; type: CHAR
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col4 AS CHAR) ; Ordinal Expr = CAST($4 AS CHAR)) ; type: CHAR
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
          
 EXPLAIN with_types SELECT CAST(col4  AS DATE)         FROM ${testName2}_castTest;
 failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
@@ -510,10 +510,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(col4  AS DECIMAL)      FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col4 AS DECIMAL) ; Ordinal Expr = CAST($4 AS DECIMAL)) ; type: DECIMAL
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col4 AS DECIMAL) ; Ordinal Expr = CAST($4 AS DECIMAL)) ; type: DECIMAL
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
          
 EXPLAIN with_types SELECT CAST(col4  AS FLOAT)        FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -525,10 +525,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(col4  AS FLOAT)        FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col4 AS FLOAT) ; Ordinal Expr = CAST($4 AS FLOAT)) ; type: FLOAT
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col4 AS FLOAT) ; Ordinal Expr = CAST($4 AS FLOAT)) ; type: FLOAT
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
          
 EXPLAIN with_types SELECT CAST(col4  AS INTEGER)      FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -540,10 +540,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(col4  AS INTEGER)      FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col4 AS INTEGER) ; Ordinal Expr = CAST($4 AS INTEGER)) ; type: INTEGER
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col4 AS INTEGER) ; Ordinal Expr = CAST($4 AS INTEGER)) ; type: INTEGER
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
          
 // Cannot cast to a multi-field interval
 EXPLAIN with_types SELECT CAST(col4  AS INTERVAL YEAR TO MONTH)  FROM ${testName2}_castTest;
@@ -564,10 +564,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(col4  AS INTERVAL YEAR)  FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col4 AS INTERVAL YEAR) ; Ordinal Expr = CAST($4 AS INTERVAL YEAR)) ; type: INTERVAL YEAR
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col4 AS INTERVAL YEAR) ; Ordinal Expr = CAST($4 AS INTERVAL YEAR)) ; type: INTERVAL YEAR
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT CAST(col4  AS INTERVAL MONTH)  FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -579,10 +579,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(col4  AS INTERVAL MONTH)  FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col4 AS INTERVAL MONTH) ; Ordinal Expr = CAST($4 AS INTERVAL MONTH)) ; type: INTERVAL MONTH
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col4 AS INTERVAL MONTH) ; Ordinal Expr = CAST($4 AS INTERVAL MONTH)) ; type: INTERVAL MONTH
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT CAST(col4  AS INTERVAL DAY)  FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -594,10 +594,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(col4  AS INTERVAL DAY)  FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col4 AS INTERVAL DAY) ; Ordinal Expr = CAST($4 AS INTERVAL DAY)) ; type: INTERVAL DAY
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col4 AS INTERVAL DAY) ; Ordinal Expr = CAST($4 AS INTERVAL DAY)) ; type: INTERVAL DAY
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT CAST(col4  AS INTERVAL HOUR)  FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -609,10 +609,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(col4  AS INTERVAL HOUR)  FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col4 AS INTERVAL HOUR) ; Ordinal Expr = CAST($4 AS INTERVAL HOUR)) ; type: INTERVAL HOUR
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col4 AS INTERVAL HOUR) ; Ordinal Expr = CAST($4 AS INTERVAL HOUR)) ; type: INTERVAL HOUR
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT CAST(col4  AS INTERVAL MINUTE)  FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -624,10 +624,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(col4  AS INTERVAL MINUTE)  FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col4 AS INTERVAL MINUTE) ; Ordinal Expr = CAST($4 AS INTERVAL MINUTE)) ; type: INTERVAL MINUTE
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col4 AS INTERVAL MINUTE) ; Ordinal Expr = CAST($4 AS INTERVAL MINUTE)) ; type: INTERVAL MINUTE
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT CAST(col4  AS INTERVAL SECOND)  FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -639,10 +639,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(col4  AS INTERVAL SECOND)  FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col4 AS INTERVAL SECOND) ; Ordinal Expr = CAST($4 AS INTERVAL SECOND)) ; type: INTERVAL SECOND
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col4 AS INTERVAL SECOND) ; Ordinal Expr = CAST($4 AS INTERVAL SECOND)) ; type: INTERVAL SECOND
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT CAST(col4  AS TIME)         FROM ${testName2}_castTest;
 failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
@@ -660,10 +660,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(col4  AS VARCHAR)      FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col4 AS VARCHAR) ; Ordinal Expr = CAST($4 AS VARCHAR)) ; type: VARCHAR
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col4 AS VARCHAR) ; Ordinal Expr = CAST($4 AS VARCHAR)) ; type: VARCHAR
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 
 // *** Cast a CHAR column ***
@@ -680,10 +680,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(col5  AS CHAR(10))         FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col5 AS CHAR) ; Ordinal Expr = CAST($5 AS CHAR)) ; type: CHAR
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col5 AS CHAR) ; Ordinal Expr = CAST($5 AS CHAR)) ; type: CHAR
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT CAST(col5  AS DATE)         FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -695,10 +695,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(col5  AS DATE)         FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col5 AS DATE) ; Ordinal Expr = CAST($5 AS DATE)) ; type: DATE
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col5 AS DATE) ; Ordinal Expr = CAST($5 AS DATE)) ; type: DATE
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT CAST(col5  AS DECIMAL)      FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -710,10 +710,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(col5  AS DECIMAL)      FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col5 AS DECIMAL) ; Ordinal Expr = CAST($5 AS DECIMAL)) ; type: DECIMAL
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col5 AS DECIMAL) ; Ordinal Expr = CAST($5 AS DECIMAL)) ; type: DECIMAL
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT CAST(col5  AS FLOAT)        FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -725,10 +725,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(col5  AS FLOAT)        FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col5 AS FLOAT) ; Ordinal Expr = CAST($5 AS FLOAT)) ; type: FLOAT
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col5 AS FLOAT) ; Ordinal Expr = CAST($5 AS FLOAT)) ; type: FLOAT
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT CAST(col5  AS INTEGER)      FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -740,10 +740,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(col5  AS INTEGER)      FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col5 AS INTEGER) ; Ordinal Expr = CAST($5 AS INTEGER)) ; type: INTEGER
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col5 AS INTEGER) ; Ordinal Expr = CAST($5 AS INTEGER)) ; type: INTEGER
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT CAST(col5  AS INTERVAL YEAR TO MONTH)  FROM ${testName2}_castTest;
 failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
@@ -764,10 +764,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(col5  AS TIME)         FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col5 AS TIME) ; Ordinal Expr = CAST($5 AS TIME)) ; type: TIME
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col5 AS TIME) ; Ordinal Expr = CAST($5 AS TIME)) ; type: TIME
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT CAST(col5  AS TIMESTAMP)    FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -779,10 +779,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(col5  AS TIMESTAMP)    FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col5 AS TIMESTAMP) ; Ordinal Expr = CAST($5 AS TIMESTAMP)) ; type: TIMESTAMP
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col5 AS TIMESTAMP) ; Ordinal Expr = CAST($5 AS TIMESTAMP)) ; type: TIMESTAMP
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT CAST(col5  AS VARCHAR)      FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -794,10 +794,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(col5  AS VARCHAR)      FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col5 AS VARCHAR) ; Ordinal Expr = CAST($5 AS VARCHAR)) ; type: VARCHAR
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col5 AS VARCHAR) ; Ordinal Expr = CAST($5 AS VARCHAR)) ; type: VARCHAR
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 
          
@@ -815,10 +815,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(col6  AS CHAR(10))         FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col6 AS CHAR) ; Ordinal Expr = CAST($6 AS CHAR)) ; type: CHAR
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col6 AS CHAR) ; Ordinal Expr = CAST($6 AS CHAR)) ; type: CHAR
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
          
 EXPLAIN with_types SELECT CAST(col6  AS DATE)         FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -830,10 +830,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(col6  AS DATE)         FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col6 AS DATE) ; Ordinal Expr = CAST($6 AS DATE)) ; type: DATE
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col6 AS DATE) ; Ordinal Expr = CAST($6 AS DATE)) ; type: DATE
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
          
 EXPLAIN with_types SELECT CAST(col6  AS DECIMAL)      FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -845,10 +845,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(col6  AS DECIMAL)      FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col6 AS DECIMAL) ; Ordinal Expr = CAST($6 AS DECIMAL)) ; type: DECIMAL
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col6 AS DECIMAL) ; Ordinal Expr = CAST($6 AS DECIMAL)) ; type: DECIMAL
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
          
 EXPLAIN with_types SELECT CAST(col6  AS FLOAT)        FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -860,10 +860,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(col6  AS FLOAT)        FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col6 AS FLOAT) ; Ordinal Expr = CAST($6 AS FLOAT)) ; type: FLOAT
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col6 AS FLOAT) ; Ordinal Expr = CAST($6 AS FLOAT)) ; type: FLOAT
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
          
 EXPLAIN with_types SELECT CAST(col6  AS INTEGER)      FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -875,10 +875,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(col6  AS INTEGER)      FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col6 AS INTEGER) ; Ordinal Expr = CAST($6 AS INTEGER)) ; type: INTEGER
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col6 AS INTEGER) ; Ordinal Expr = CAST($6 AS INTEGER)) ; type: INTEGER
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT CAST(col6  AS INTERVAL YEAR TO MONTH)  FROM ${testName2}_castTest;
 failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
@@ -899,10 +899,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(col6  AS TIME)         FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col6 AS TIME) ; Ordinal Expr = CAST($6 AS TIME)) ; type: TIME
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col6 AS TIME) ; Ordinal Expr = CAST($6 AS TIME)) ; type: TIME
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
          
 EXPLAIN with_types SELECT CAST(col6  AS TIMESTAMP)    FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -914,10 +914,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(col6  AS TIMESTAMP)    FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col6 AS TIMESTAMP) ; Ordinal Expr = CAST($6 AS TIMESTAMP)) ; type: TIMESTAMP
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col6 AS TIMESTAMP) ; Ordinal Expr = CAST($6 AS TIMESTAMP)) ; type: TIMESTAMP
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
          
 EXPLAIN with_types SELECT CAST(col6  AS VARCHAR)      FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -929,10 +929,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(col6  AS VARCHAR)      FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col6 AS VARCHAR) ; Ordinal Expr = CAST($6 AS VARCHAR)) ; type: VARCHAR
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col6 AS VARCHAR) ; Ordinal Expr = CAST($6 AS VARCHAR)) ; type: VARCHAR
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 // *** Cast a DATE column ***
 EXPLAIN with_types SELECT CAST(col7  AS BOOLEAN)      FROM ${testName2}_castTest;
@@ -948,10 +948,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(col7  AS CHAR(10))         FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col7 AS CHAR) ; Ordinal Expr = CAST($7 AS CHAR)) ; type: CHAR
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col7 AS CHAR) ; Ordinal Expr = CAST($7 AS CHAR)) ; type: CHAR
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
          
 EXPLAIN with_types SELECT CAST(col7  AS DATE)         FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -963,10 +963,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(col7  AS DATE)         FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col7 AS DATE) ; Ordinal Expr = CAST($7 AS DATE)) ; type: DATE
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col7 AS DATE) ; Ordinal Expr = CAST($7 AS DATE)) ; type: DATE
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
          
 EXPLAIN with_types SELECT CAST(col7  AS DECIMAL)      FROM ${testName2}_castTest;
 failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
@@ -999,10 +999,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(col7  AS TIMESTAMP)    FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col7 AS TIMESTAMP) ; Ordinal Expr = CAST($7 AS TIMESTAMP)) ; type: TIMESTAMP
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col7 AS TIMESTAMP) ; Ordinal Expr = CAST($7 AS TIMESTAMP)) ; type: TIMESTAMP
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
          
 EXPLAIN with_types SELECT CAST(col7  AS VARCHAR)      FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -1014,10 +1014,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(col7  AS VARCHAR)      FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col7 AS VARCHAR) ; Ordinal Expr = CAST($7 AS VARCHAR)) ; type: VARCHAR
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col7 AS VARCHAR) ; Ordinal Expr = CAST($7 AS VARCHAR)) ; type: VARCHAR
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 
 
@@ -1035,10 +1035,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(col8  AS CHAR(10))         FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col8 AS CHAR) ; Ordinal Expr = CAST($8 AS CHAR)) ; type: CHAR
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col8 AS CHAR) ; Ordinal Expr = CAST($8 AS CHAR)) ; type: CHAR
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT CAST(col8  AS DATE)         FROM ${testName2}_castTest;
 failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
@@ -1071,10 +1071,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(col8  AS TIME)         FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col8 AS TIME) ; Ordinal Expr = CAST($8 AS TIME)) ; type: TIME
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col8 AS TIME) ; Ordinal Expr = CAST($8 AS TIME)) ; type: TIME
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT CAST(col8  AS TIMESTAMP)    FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -1086,10 +1086,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(col8  AS TIMESTAMP)    FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col8 AS TIMESTAMP) ; Ordinal Expr = CAST($8 AS TIMESTAMP)) ; type: TIMESTAMP
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col8 AS TIMESTAMP) ; Ordinal Expr = CAST($8 AS TIMESTAMP)) ; type: TIMESTAMP
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT CAST(col8  AS VARCHAR)      FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -1101,10 +1101,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(col8  AS VARCHAR)      FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col8 AS VARCHAR) ; Ordinal Expr = CAST($8 AS VARCHAR)) ; type: VARCHAR
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col8 AS VARCHAR) ; Ordinal Expr = CAST($8 AS VARCHAR)) ; type: VARCHAR
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 
 
@@ -1122,10 +1122,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(col9  AS CHAR(10))         FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col9 AS CHAR) ; Ordinal Expr = CAST($9 AS CHAR)) ; type: CHAR
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col9 AS CHAR) ; Ordinal Expr = CAST($9 AS CHAR)) ; type: CHAR
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT CAST(col9  AS DATE)         FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -1137,10 +1137,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(col9  AS DATE)         FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col9 AS DATE) ; Ordinal Expr = CAST($9 AS DATE)) ; type: DATE
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col9 AS DATE) ; Ordinal Expr = CAST($9 AS DATE)) ; type: DATE
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT CAST(col9  AS DECIMAL)      FROM ${testName2}_castTest;
 failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
@@ -1170,10 +1170,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(col9  AS TIME)         FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col9 AS TIME) ; Ordinal Expr = CAST($9 AS TIME)) ; type: TIME
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col9 AS TIME) ; Ordinal Expr = CAST($9 AS TIME)) ; type: TIME
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT CAST(col9  AS TIMESTAMP)    FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -1185,10 +1185,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(col9  AS TIMESTAMP)    FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col9 AS TIMESTAMP) ; Ordinal Expr = CAST($9 AS TIMESTAMP)) ; type: TIMESTAMP
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col9 AS TIMESTAMP) ; Ordinal Expr = CAST($9 AS TIMESTAMP)) ; type: TIMESTAMP
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT CAST(col9  AS VARCHAR)      FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -1200,10 +1200,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(col9  AS VARCHAR)      FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col9 AS VARCHAR) ; Ordinal Expr = CAST($9 AS VARCHAR)) ; type: VARCHAR
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col9 AS VARCHAR) ; Ordinal Expr = CAST($9 AS VARCHAR)) ; type: VARCHAR
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 
 
@@ -1231,7 +1231,7 @@ rows: (*,'explainPlan','
       » column: (Expr = 2. ; Ordinal Expr = 2.) ; type: DECIMAL
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT CAST(interval '2' year AS FLOAT)        FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -1246,7 +1246,7 @@ rows: (*,'explainPlan','
       » column: (Expr = 2.0000000000e+00 ; Ordinal Expr = 2.0000000000e+00) ; type: FLOAT
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT CAST(interval '2' year AS INTEGER)      FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -1261,7 +1261,7 @@ rows: (*,'explainPlan','
       » column: (Expr = 2 ; Ordinal Expr = 2) ; type: INTEGER
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT CAST(interval '2' year AS INTERVAL YEAR)  FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -1276,7 +1276,7 @@ rows: (*,'explainPlan','
       » column: (Expr = INTERVAL ''2'' YEAR ; Ordinal Expr = INTERVAL ''2'' YEAR) ; type: INTERVAL YEAR
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT CAST(interval '2' year AS INTERVAL MONTH)  FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -1291,7 +1291,7 @@ rows: (*,'explainPlan','
       » column: (Expr = INTERVAL ''24'' MONTH ; Ordinal Expr = INTERVAL ''24'' MONTH) ; type: INTERVAL MONTH
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT CAST(interval '2' year AS INTERVAL YEAR TO MONTH)  FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -1306,7 +1306,7 @@ rows: (*,'explainPlan','
       » column: (Expr = INTERVAL ''2-0'' YEAR TO MONTH ; Ordinal Expr = INTERVAL ''2-0'' YEAR TO MONTH) ; type: INTERVAL YEAR TO MONTH
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT CAST(interval '2' year AS INTERVAL DAY)  FROM ${testName2}_castTest;
 failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
@@ -1372,7 +1372,7 @@ rows: (*,'explainPlan','
       » column: (Expr = 2. ; Ordinal Expr = 2.) ; type: DECIMAL
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 
 EXPLAIN with_types SELECT CAST(interval '2' day AS FLOAT)        FROM ${testName2}_castTest;
@@ -1388,7 +1388,7 @@ rows: (*,'explainPlan','
       » column: (Expr = 2.0000000000e+00 ; Ordinal Expr = 2.0000000000e+00) ; type: FLOAT
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 
 EXPLAIN with_types SELECT CAST(interval '2' day AS INTEGER)      FROM ${testName2}_castTest;
@@ -1404,7 +1404,7 @@ rows: (*,'explainPlan','
       » column: (Expr = 2 ; Ordinal Expr = 2) ; type: INTEGER
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT CAST(interval '2' day AS INTERVAL YEAR)  FROM ${testName2}_castTest;
 failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
@@ -1428,7 +1428,7 @@ rows: (*,'explainPlan','
       » column: (Expr = INTERVAL ''2'' DAY ; Ordinal Expr = INTERVAL ''2'' DAY) ; type: INTERVAL DAY
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT CAST(interval '2' day AS INTERVAL HOUR)  FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -1443,7 +1443,7 @@ rows: (*,'explainPlan','
       » column: (Expr = INTERVAL ''48'' HOUR ; Ordinal Expr = INTERVAL ''48'' HOUR) ; type: INTERVAL HOUR
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT CAST(interval '2' day AS INTERVAL MINUTE)  FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -1458,7 +1458,7 @@ rows: (*,'explainPlan','
       » column: (Expr = INTERVAL ''2880'' MINUTE ; Ordinal Expr = INTERVAL ''2880'' MINUTE) ; type: INTERVAL MINUTE
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT CAST(interval '2' day AS INTERVAL SECOND)  FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -1473,7 +1473,7 @@ rows: (*,'explainPlan','
       » column: (Expr = INTERVAL ''172800'' SECOND ; Ordinal Expr = INTERVAL ''172800'' SECOND) ; type: INTERVAL SECOND
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 
 EXPLAIN with_types SELECT CAST(interval '2' day AS INTERVAL DAY TO HOUR)  FROM ${testName2}_castTest;
@@ -1489,7 +1489,7 @@ rows: (*,'explainPlan','
       » column: (Expr = INTERVAL ''2 0'' DAY TO HOUR ; Ordinal Expr = INTERVAL ''2 0'' DAY TO HOUR) ; type: INTERVAL DAY TO HOUR
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT CAST(interval '2' day AS INTERVAL DAY TO MINUTE)  FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -1504,7 +1504,7 @@ rows: (*,'explainPlan','
       » column: (Expr = INTERVAL ''2 0:0'' DAY TO MINUTE ; Ordinal Expr = INTERVAL ''2 0:0'' DAY TO MINUTE) ; type: INTERVAL DAY TO MINUTE
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT CAST(interval '2' day AS INTERVAL DAY TO SECOND)  FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -1519,7 +1519,7 @@ rows: (*,'explainPlan','
       » column: (Expr = INTERVAL ''2 0:0:0'' DAY TO SECOND ; Ordinal Expr = INTERVAL ''2 0:0:0'' DAY TO SECOND) ; type: INTERVAL DAY TO SECOND
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT CAST(interval '2' day AS INTERVAL HOUR TO MINUTE)  FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -1534,7 +1534,7 @@ rows: (*,'explainPlan','
       » column: (Expr = INTERVAL ''48:0'' HOUR TO MINUTE ; Ordinal Expr = INTERVAL ''48:0'' HOUR TO MINUTE) ; type: INTERVAL HOUR TO MINUTE
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT CAST(interval '2' day AS INTERVAL HOUR TO SECOND)  FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -1549,7 +1549,7 @@ rows: (*,'explainPlan','
       » column: (Expr = INTERVAL ''48:0:0'' HOUR TO SECOND ; Ordinal Expr = INTERVAL ''48:0:0'' HOUR TO SECOND) ; type: INTERVAL HOUR TO SECOND
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT CAST(interval '2' day AS INTERVAL MINUTE TO SECOND)  FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -1564,7 +1564,7 @@ rows: (*,'explainPlan','
       » column: (Expr = INTERVAL ''2880:0'' MINUTE TO SECOND ; Ordinal Expr = INTERVAL ''2880:0'' MINUTE TO SECOND) ; type: INTERVAL MINUTE TO SECOND
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 
 EXPLAIN with_types SELECT CAST(interval '2' day AS TIME)         FROM ${testName2}_castTest;
@@ -1591,7 +1591,7 @@ rows: (*,'explainPlan','
       » column: (Expr = CAST(NULL AS BOOLEAN) ; Ordinal Expr = CAST(NULL AS BOOLEAN)) ; type: BOOLEAN
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 
 EXPLAIN with_types SELECT CAST(NULL  AS CHAR(10))         FROM ${testName2}_castTest;
@@ -1607,7 +1607,7 @@ rows: (*,'explainPlan','
       » column: (Expr = CAST(NULL AS CHAR) ; Ordinal Expr = CAST(NULL AS CHAR)) ; type: CHAR
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 
 EXPLAIN with_types SELECT CAST(NULL  AS DATE)         FROM ${testName2}_castTest;
@@ -1623,7 +1623,7 @@ rows: (*,'explainPlan','
       » column: (Expr = CAST(NULL AS DATE) ; Ordinal Expr = CAST(NULL AS DATE)) ; type: DATE
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 
 EXPLAIN with_types SELECT CAST(NULL  AS DECIMAL)      FROM ${testName2}_castTest;
@@ -1639,7 +1639,7 @@ rows: (*,'explainPlan','
       » column: (Expr = CAST(NULL AS DECIMAL) ; Ordinal Expr = CAST(NULL AS DECIMAL)) ; type: DECIMAL
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 
 EXPLAIN with_types SELECT CAST(NULL  AS FLOAT)        FROM ${testName2}_castTest;
@@ -1655,7 +1655,7 @@ rows: (*,'explainPlan','
       » column: (Expr = CAST(NULL AS FLOAT) ; Ordinal Expr = CAST(NULL AS FLOAT)) ; type: FLOAT
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 
 EXPLAIN with_types SELECT CAST(NULL  AS INTEGER)      FROM ${testName2}_castTest;
@@ -1671,7 +1671,7 @@ rows: (*,'explainPlan','
       » column: (Expr = CAST(NULL AS INTEGER) ; Ordinal Expr = CAST(NULL AS INTEGER)) ; type: INTEGER
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 
 EXPLAIN with_types SELECT CAST(NULL  AS INTERVAL YEAR)  FROM ${testName2}_castTest;
@@ -1687,7 +1687,7 @@ rows: (*,'explainPlan','
       » column: (Expr = CAST(NULL AS INTERVAL YEAR) ; Ordinal Expr = CAST(NULL AS INTERVAL YEAR)) ; type: INTERVAL YEAR
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT CAST(NULL  AS INTERVAL MONTH)  FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -1702,7 +1702,7 @@ rows: (*,'explainPlan','
       » column: (Expr = CAST(NULL AS INTERVAL MONTH) ; Ordinal Expr = CAST(NULL AS INTERVAL MONTH)) ; type: INTERVAL MONTH
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT CAST(NULL  AS INTERVAL YEAR TO MONTH)  FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -1717,7 +1717,7 @@ rows: (*,'explainPlan','
       » column: (Expr = CAST(NULL AS INTERVAL YEAR TO MONTH) ; Ordinal Expr = CAST(NULL AS INTERVAL YEAR TO MONTH)) ; type: INTERVAL YEAR TO MONTH
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT CAST(NULL  AS INTERVAL DAY)  FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -1732,7 +1732,7 @@ rows: (*,'explainPlan','
       » column: (Expr = CAST(NULL AS INTERVAL DAY) ; Ordinal Expr = CAST(NULL AS INTERVAL DAY)) ; type: INTERVAL DAY
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT CAST(NULL  AS INTERVAL HOUR)  FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -1747,7 +1747,7 @@ rows: (*,'explainPlan','
       » column: (Expr = CAST(NULL AS INTERVAL HOUR) ; Ordinal Expr = CAST(NULL AS INTERVAL HOUR)) ; type: INTERVAL HOUR
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT CAST(NULL  AS INTERVAL MINUTE)  FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -1762,7 +1762,7 @@ rows: (*,'explainPlan','
       » column: (Expr = CAST(NULL AS INTERVAL MINUTE) ; Ordinal Expr = CAST(NULL AS INTERVAL MINUTE)) ; type: INTERVAL MINUTE
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT CAST(NULL  AS INTERVAL SECOND)  FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -1777,7 +1777,7 @@ rows: (*,'explainPlan','
       » column: (Expr = CAST(NULL AS INTERVAL SECOND) ; Ordinal Expr = CAST(NULL AS INTERVAL SECOND)) ; type: INTERVAL SECOND
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT CAST(NULL  AS INTERVAL DAY TO HOUR)  FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -1792,7 +1792,7 @@ rows: (*,'explainPlan','
       » column: (Expr = CAST(NULL AS INTERVAL DAY TO HOUR) ; Ordinal Expr = CAST(NULL AS INTERVAL DAY TO HOUR)) ; type: INTERVAL DAY TO HOUR
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT CAST(NULL  AS INTERVAL DAY TO MINUTE)  FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -1807,7 +1807,7 @@ rows: (*,'explainPlan','
       » column: (Expr = CAST(NULL AS INTERVAL DAY TO MINUTE) ; Ordinal Expr = CAST(NULL AS INTERVAL DAY TO MINUTE)) ; type: INTERVAL DAY TO MINUTE
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT CAST(NULL  AS INTERVAL DAY TO SECOND)  FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -1822,7 +1822,7 @@ rows: (*,'explainPlan','
       » column: (Expr = CAST(NULL AS INTERVAL DAY TO SECOND) ; Ordinal Expr = CAST(NULL AS INTERVAL DAY TO SECOND)) ; type: INTERVAL DAY TO SECOND
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT CAST(NULL  AS INTERVAL HOUR TO MINUTE)  FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -1837,7 +1837,7 @@ rows: (*,'explainPlan','
       » column: (Expr = CAST(NULL AS INTERVAL HOUR TO MINUTE) ; Ordinal Expr = CAST(NULL AS INTERVAL HOUR TO MINUTE)) ; type: INTERVAL HOUR TO MINUTE
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT CAST(NULL  AS INTERVAL HOUR TO SECOND)  FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -1852,7 +1852,7 @@ rows: (*,'explainPlan','
       » column: (Expr = CAST(NULL AS INTERVAL HOUR TO SECOND) ; Ordinal Expr = CAST(NULL AS INTERVAL HOUR TO SECOND)) ; type: INTERVAL HOUR TO SECOND
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT CAST(NULL  AS INTERVAL MINUTE TO SECOND)  FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -1867,7 +1867,7 @@ rows: (*,'explainPlan','
       » column: (Expr = CAST(NULL AS INTERVAL MINUTE TO SECOND) ; Ordinal Expr = CAST(NULL AS INTERVAL MINUTE TO SECOND)) ; type: INTERVAL MINUTE TO SECOND
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 
 EXPLAIN with_types SELECT CAST(NULL  AS TIME)         FROM ${testName2}_castTest;
@@ -1883,7 +1883,7 @@ rows: (*,'explainPlan','
       » column: (Expr = CAST(NULL AS TIME) ; Ordinal Expr = CAST(NULL AS TIME)) ; type: TIME
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 
 EXPLAIN with_types SELECT CAST(NULL  AS TIMESTAMP)    FROM ${testName2}_castTest;
@@ -1899,7 +1899,7 @@ rows: (*,'explainPlan','
       » column: (Expr = CAST(NULL AS TIMESTAMP) ; Ordinal Expr = CAST(NULL AS TIMESTAMP)) ; type: TIMESTAMP
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 
 EXPLAIN with_types SELECT CAST(NULL  AS VARCHAR)      FROM ${testName2}_castTest;
@@ -1915,7 +1915,7 @@ rows: (*,'explainPlan','
       » column: (Expr = CAST(NULL AS VARCHAR) ; Ordinal Expr = CAST(NULL AS VARCHAR)) ; type: VARCHAR
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 
 
@@ -1942,10 +1942,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT (BOOLEAN) col1      FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col1 AS BOOLEAN) ; Ordinal Expr = CAST($1 AS BOOLEAN)) ; type: BOOLEAN
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col1 AS BOOLEAN) ; Ordinal Expr = CAST($1 AS BOOLEAN)) ; type: BOOLEAN
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT (CHAR(10)) col1         FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -1957,10 +1957,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT (CHAR(10)) col1         FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col1 AS CHAR) ; Ordinal Expr = CAST($1 AS CHAR)) ; type: CHAR
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col1 AS CHAR) ; Ordinal Expr = CAST($1 AS CHAR)) ; type: CHAR
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT (DATE) col1         FROM ${testName2}_castTest;
 failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
@@ -1996,10 +1996,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT (VARCHAR) col1      FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col1 AS VARCHAR) ; Ordinal Expr = CAST($1 AS VARCHAR)) ; type: VARCHAR
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col1 AS VARCHAR) ; Ordinal Expr = CAST($1 AS VARCHAR)) ; type: VARCHAR
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 
 // *** Cast a INTEGER column ***
@@ -2016,10 +2016,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT (CHAR(10)) col2         FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col2 AS CHAR) ; Ordinal Expr = CAST($2 AS CHAR)) ; type: CHAR
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col2 AS CHAR) ; Ordinal Expr = CAST($2 AS CHAR)) ; type: CHAR
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
          
 EXPLAIN with_types SELECT (DATE) col2         FROM ${testName2}_castTest;
 failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
@@ -2034,10 +2034,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT (DECIMAL) col2      FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col2 AS DECIMAL) ; Ordinal Expr = CAST($2 AS DECIMAL)) ; type: DECIMAL
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col2 AS DECIMAL) ; Ordinal Expr = CAST($2 AS DECIMAL)) ; type: DECIMAL
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
          
 EXPLAIN with_types SELECT (FLOAT) col2        FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -2049,10 +2049,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT (FLOAT) col2        FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col2 AS FLOAT) ; Ordinal Expr = CAST($2 AS FLOAT)) ; type: FLOAT
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col2 AS FLOAT) ; Ordinal Expr = CAST($2 AS FLOAT)) ; type: FLOAT
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
          
 EXPLAIN with_types SELECT (INTEGER) col2      FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -2064,10 +2064,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT (INTEGER) col2      FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col2 AS INTEGER) ; Ordinal Expr = CAST($2 AS INTEGER)) ; type: INTEGER
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col2 AS INTEGER) ; Ordinal Expr = CAST($2 AS INTEGER)) ; type: INTEGER
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 
 EXPLAIN with_types SELECT (INTERVAL YEAR) col2  FROM ${testName2}_castTest;
@@ -2080,10 +2080,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT (INTERVAL YEAR) col2  FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col2 AS INTERVAL YEAR) ; Ordinal Expr = CAST($2 AS INTERVAL YEAR)) ; type: INTERVAL YEAR
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col2 AS INTERVAL YEAR) ; Ordinal Expr = CAST($2 AS INTERVAL YEAR)) ; type: INTERVAL YEAR
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT (INTERVAL MONTH) col2  FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -2095,10 +2095,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT (INTERVAL MONTH) col2  FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col2 AS INTERVAL MONTH) ; Ordinal Expr = CAST($2 AS INTERVAL MONTH)) ; type: INTERVAL MONTH
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col2 AS INTERVAL MONTH) ; Ordinal Expr = CAST($2 AS INTERVAL MONTH)) ; type: INTERVAL MONTH
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT (INTERVAL YEAR TO MONTH) col2  FROM ${testName2}_castTest;
 failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
@@ -2113,10 +2113,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT (INTERVAL DAY) col2  FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col2 AS INTERVAL DAY) ; Ordinal Expr = CAST($2 AS INTERVAL DAY)) ; type: INTERVAL DAY
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col2 AS INTERVAL DAY) ; Ordinal Expr = CAST($2 AS INTERVAL DAY)) ; type: INTERVAL DAY
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT (INTERVAL HOUR) col2  FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -2128,10 +2128,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT (INTERVAL HOUR) col2  FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col2 AS INTERVAL HOUR) ; Ordinal Expr = CAST($2 AS INTERVAL HOUR)) ; type: INTERVAL HOUR
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col2 AS INTERVAL HOUR) ; Ordinal Expr = CAST($2 AS INTERVAL HOUR)) ; type: INTERVAL HOUR
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT (INTERVAL MINUTE) col2  FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -2143,10 +2143,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT (INTERVAL MINUTE) col2  FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col2 AS INTERVAL MINUTE) ; Ordinal Expr = CAST($2 AS INTERVAL MINUTE)) ; type: INTERVAL MINUTE
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col2 AS INTERVAL MINUTE) ; Ordinal Expr = CAST($2 AS INTERVAL MINUTE)) ; type: INTERVAL MINUTE
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT (INTERVAL SECOND) col2  FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -2158,10 +2158,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT (INTERVAL SECOND) col2  FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col2 AS INTERVAL SECOND) ; Ordinal Expr = CAST($2 AS INTERVAL SECOND)) ; type: INTERVAL SECOND
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col2 AS INTERVAL SECOND) ; Ordinal Expr = CAST($2 AS INTERVAL SECOND)) ; type: INTERVAL SECOND
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT (INTERVAL DAY TO HOUR) col2  FROM ${testName2}_castTest;
 failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
@@ -2198,10 +2198,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT (VARCHAR) col2      FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col2 AS VARCHAR) ; Ordinal Expr = CAST($2 AS VARCHAR)) ; type: VARCHAR
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col2 AS VARCHAR) ; Ordinal Expr = CAST($2 AS VARCHAR)) ; type: VARCHAR
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 
 // *** Cast a DECIMAL column ***
@@ -2218,10 +2218,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT (CHAR(10)) col3         FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col3 AS CHAR) ; Ordinal Expr = CAST($3 AS CHAR)) ; type: CHAR
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col3 AS CHAR) ; Ordinal Expr = CAST($3 AS CHAR)) ; type: CHAR
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
          
 EXPLAIN with_types SELECT (DATE) col3         FROM ${testName2}_castTest;
 failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
@@ -2236,10 +2236,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT (DECIMAL) col3      FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col3 AS DECIMAL) ; Ordinal Expr = CAST($3 AS DECIMAL)) ; type: DECIMAL
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col3 AS DECIMAL) ; Ordinal Expr = CAST($3 AS DECIMAL)) ; type: DECIMAL
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
          
 EXPLAIN with_types SELECT (FLOAT) col3        FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -2251,10 +2251,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT (FLOAT) col3        FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col3 AS FLOAT) ; Ordinal Expr = CAST($3 AS FLOAT)) ; type: FLOAT
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col3 AS FLOAT) ; Ordinal Expr = CAST($3 AS FLOAT)) ; type: FLOAT
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
          
 EXPLAIN with_types SELECT (INTEGER) col3      FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -2266,10 +2266,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT (INTEGER) col3      FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col3 AS INTEGER) ; Ordinal Expr = CAST($3 AS INTEGER)) ; type: INTEGER
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col3 AS INTEGER) ; Ordinal Expr = CAST($3 AS INTEGER)) ; type: INTEGER
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT (INTERVAL YEAR) col3  FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -2281,10 +2281,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT (INTERVAL YEAR) col3  FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col3 AS INTERVAL YEAR) ; Ordinal Expr = CAST($3 AS INTERVAL YEAR)) ; type: INTERVAL YEAR
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col3 AS INTERVAL YEAR) ; Ordinal Expr = CAST($3 AS INTERVAL YEAR)) ; type: INTERVAL YEAR
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
          
 EXPLAIN with_types SELECT (INTERVAL MONTH) col3  FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -2296,10 +2296,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT (INTERVAL MONTH) col3  FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col3 AS INTERVAL MONTH) ; Ordinal Expr = CAST($3 AS INTERVAL MONTH)) ; type: INTERVAL MONTH
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col3 AS INTERVAL MONTH) ; Ordinal Expr = CAST($3 AS INTERVAL MONTH)) ; type: INTERVAL MONTH
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT (INTERVAL YEAR TO MONTH) col3  FROM ${testName2}_castTest;
 failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
@@ -2314,10 +2314,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT (INTERVAL DAY) col3  FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col3 AS INTERVAL DAY) ; Ordinal Expr = CAST($3 AS INTERVAL DAY)) ; type: INTERVAL DAY
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col3 AS INTERVAL DAY) ; Ordinal Expr = CAST($3 AS INTERVAL DAY)) ; type: INTERVAL DAY
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
          
 EXPLAIN with_types SELECT (INTERVAL HOUR) col3  FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -2329,10 +2329,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT (INTERVAL HOUR) col3  FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col3 AS INTERVAL HOUR) ; Ordinal Expr = CAST($3 AS INTERVAL HOUR)) ; type: INTERVAL HOUR
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col3 AS INTERVAL HOUR) ; Ordinal Expr = CAST($3 AS INTERVAL HOUR)) ; type: INTERVAL HOUR
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT (INTERVAL MINUTE) col3  FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -2344,10 +2344,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT (INTERVAL MINUTE) col3  FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col3 AS INTERVAL MINUTE) ; Ordinal Expr = CAST($3 AS INTERVAL MINUTE)) ; type: INTERVAL MINUTE
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col3 AS INTERVAL MINUTE) ; Ordinal Expr = CAST($3 AS INTERVAL MINUTE)) ; type: INTERVAL MINUTE
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT (INTERVAL SECOND) col3  FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -2359,10 +2359,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT (INTERVAL SECOND) col3  FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col3 AS INTERVAL SECOND) ; Ordinal Expr = CAST($3 AS INTERVAL SECOND)) ; type: INTERVAL SECOND
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col3 AS INTERVAL SECOND) ; Ordinal Expr = CAST($3 AS INTERVAL SECOND)) ; type: INTERVAL SECOND
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT (INTERVAL DAY TO HOUR) col3  FROM ${testName2}_castTest;
 failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
@@ -2399,10 +2399,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT (VARCHAR) col3      FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col3 AS VARCHAR) ; Ordinal Expr = CAST($3 AS VARCHAR)) ; type: VARCHAR
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col3 AS VARCHAR) ; Ordinal Expr = CAST($3 AS VARCHAR)) ; type: VARCHAR
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 
 // *** Cast a FLOAT column ***
@@ -2419,10 +2419,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT (CHAR(10)) col4         FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col4 AS CHAR) ; Ordinal Expr = CAST($4 AS CHAR)) ; type: CHAR
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col4 AS CHAR) ; Ordinal Expr = CAST($4 AS CHAR)) ; type: CHAR
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
          
 EXPLAIN with_types SELECT (DATE) col4         FROM ${testName2}_castTest;
 failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
@@ -2437,10 +2437,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT (DECIMAL) col4      FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col4 AS DECIMAL) ; Ordinal Expr = CAST($4 AS DECIMAL)) ; type: DECIMAL
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col4 AS DECIMAL) ; Ordinal Expr = CAST($4 AS DECIMAL)) ; type: DECIMAL
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
          
 EXPLAIN with_types SELECT (FLOAT) col4        FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -2452,10 +2452,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT (FLOAT) col4        FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col4 AS FLOAT) ; Ordinal Expr = CAST($4 AS FLOAT)) ; type: FLOAT
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col4 AS FLOAT) ; Ordinal Expr = CAST($4 AS FLOAT)) ; type: FLOAT
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
          
 EXPLAIN with_types SELECT (INTEGER) col4      FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -2467,10 +2467,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT (INTEGER) col4      FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col4 AS INTEGER) ; Ordinal Expr = CAST($4 AS INTEGER)) ; type: INTEGER
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col4 AS INTEGER) ; Ordinal Expr = CAST($4 AS INTEGER)) ; type: INTEGER
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
          
 EXPLAIN with_types SELECT (INTERVAL YEAR) col4  FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -2482,10 +2482,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT (INTERVAL YEAR) col4  FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col4 AS INTERVAL YEAR) ; Ordinal Expr = CAST($4 AS INTERVAL YEAR)) ; type: INTERVAL YEAR
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col4 AS INTERVAL YEAR) ; Ordinal Expr = CAST($4 AS INTERVAL YEAR)) ; type: INTERVAL YEAR
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT (INTERVAL MONTH) col4  FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -2497,10 +2497,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT (INTERVAL MONTH) col4  FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col4 AS INTERVAL MONTH) ; Ordinal Expr = CAST($4 AS INTERVAL MONTH)) ; type: INTERVAL MONTH
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col4 AS INTERVAL MONTH) ; Ordinal Expr = CAST($4 AS INTERVAL MONTH)) ; type: INTERVAL MONTH
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT (INTERVAL YEAR TO MONTH) col4  FROM ${testName2}_castTest;
 failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
@@ -2515,10 +2515,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT (INTERVAL DAY) col4  FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col4 AS INTERVAL DAY) ; Ordinal Expr = CAST($4 AS INTERVAL DAY)) ; type: INTERVAL DAY
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col4 AS INTERVAL DAY) ; Ordinal Expr = CAST($4 AS INTERVAL DAY)) ; type: INTERVAL DAY
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT (INTERVAL HOUR) col4  FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -2530,10 +2530,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT (INTERVAL HOUR) col4  FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col4 AS INTERVAL HOUR) ; Ordinal Expr = CAST($4 AS INTERVAL HOUR)) ; type: INTERVAL HOUR
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col4 AS INTERVAL HOUR) ; Ordinal Expr = CAST($4 AS INTERVAL HOUR)) ; type: INTERVAL HOUR
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT (INTERVAL MINUTE) col4  FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -2545,10 +2545,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT (INTERVAL MINUTE) col4  FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col4 AS INTERVAL MINUTE) ; Ordinal Expr = CAST($4 AS INTERVAL MINUTE)) ; type: INTERVAL MINUTE
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col4 AS INTERVAL MINUTE) ; Ordinal Expr = CAST($4 AS INTERVAL MINUTE)) ; type: INTERVAL MINUTE
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT (INTERVAL SECOND) col4  FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -2560,10 +2560,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT (INTERVAL SECOND) col4  FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col4 AS INTERVAL SECOND) ; Ordinal Expr = CAST($4 AS INTERVAL SECOND)) ; type: INTERVAL SECOND
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col4 AS INTERVAL SECOND) ; Ordinal Expr = CAST($4 AS INTERVAL SECOND)) ; type: INTERVAL SECOND
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT (INTERVAL DAY TO HOUR) col4  FROM ${testName2}_castTest;
 failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
@@ -2599,10 +2599,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT (VARCHAR) col4      FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col4 AS VARCHAR) ; Ordinal Expr = CAST($4 AS VARCHAR)) ; type: VARCHAR
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col4 AS VARCHAR) ; Ordinal Expr = CAST($4 AS VARCHAR)) ; type: VARCHAR
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 
 // *** Cast a CHAR column ***
@@ -2619,10 +2619,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT (CHAR(10)) col5         FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col5 AS CHAR) ; Ordinal Expr = CAST($5 AS CHAR)) ; type: CHAR
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col5 AS CHAR) ; Ordinal Expr = CAST($5 AS CHAR)) ; type: CHAR
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT (DATE) col5         FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -2634,10 +2634,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT (DATE) col5         FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col5 AS DATE) ; Ordinal Expr = CAST($5 AS DATE)) ; type: DATE
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col5 AS DATE) ; Ordinal Expr = CAST($5 AS DATE)) ; type: DATE
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT (DECIMAL) col5      FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -2649,10 +2649,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT (DECIMAL) col5      FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col5 AS DECIMAL) ; Ordinal Expr = CAST($5 AS DECIMAL)) ; type: DECIMAL
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col5 AS DECIMAL) ; Ordinal Expr = CAST($5 AS DECIMAL)) ; type: DECIMAL
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT (FLOAT) col5        FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -2664,10 +2664,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT (FLOAT) col5        FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col5 AS FLOAT) ; Ordinal Expr = CAST($5 AS FLOAT)) ; type: FLOAT
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col5 AS FLOAT) ; Ordinal Expr = CAST($5 AS FLOAT)) ; type: FLOAT
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT (INTEGER) col5      FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -2679,10 +2679,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT (INTEGER) col5      FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col5 AS INTEGER) ; Ordinal Expr = CAST($5 AS INTEGER)) ; type: INTEGER
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col5 AS INTEGER) ; Ordinal Expr = CAST($5 AS INTEGER)) ; type: INTEGER
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT (INTERVAL YEAR) col5  FROM ${testName2}_castTest;
 failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
@@ -2734,10 +2734,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT (TIME) col5         FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col5 AS TIME) ; Ordinal Expr = CAST($5 AS TIME)) ; type: TIME
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col5 AS TIME) ; Ordinal Expr = CAST($5 AS TIME)) ; type: TIME
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT (TIMESTAMP) col5    FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -2749,10 +2749,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT (TIMESTAMP) col5    FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col5 AS TIMESTAMP) ; Ordinal Expr = CAST($5 AS TIMESTAMP)) ; type: TIMESTAMP
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col5 AS TIMESTAMP) ; Ordinal Expr = CAST($5 AS TIMESTAMP)) ; type: TIMESTAMP
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT (VARCHAR) col5      FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -2764,10 +2764,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT (VARCHAR) col5      FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col5 AS VARCHAR) ; Ordinal Expr = CAST($5 AS VARCHAR)) ; type: VARCHAR
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col5 AS VARCHAR) ; Ordinal Expr = CAST($5 AS VARCHAR)) ; type: VARCHAR
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 
          
@@ -2785,10 +2785,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT (CHAR(10)) col6         FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col6 AS CHAR) ; Ordinal Expr = CAST($6 AS CHAR)) ; type: CHAR
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col6 AS CHAR) ; Ordinal Expr = CAST($6 AS CHAR)) ; type: CHAR
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
          
 EXPLAIN with_types SELECT (DATE) col6         FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -2800,10 +2800,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT (DATE) col6         FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col6 AS DATE) ; Ordinal Expr = CAST($6 AS DATE)) ; type: DATE
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col6 AS DATE) ; Ordinal Expr = CAST($6 AS DATE)) ; type: DATE
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
          
 EXPLAIN with_types SELECT (DECIMAL) col6      FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -2815,10 +2815,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT (DECIMAL) col6      FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col6 AS DECIMAL) ; Ordinal Expr = CAST($6 AS DECIMAL)) ; type: DECIMAL
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col6 AS DECIMAL) ; Ordinal Expr = CAST($6 AS DECIMAL)) ; type: DECIMAL
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
          
 EXPLAIN with_types SELECT (FLOAT) col6        FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -2830,10 +2830,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT (FLOAT) col6        FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col6 AS FLOAT) ; Ordinal Expr = CAST($6 AS FLOAT)) ; type: FLOAT
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col6 AS FLOAT) ; Ordinal Expr = CAST($6 AS FLOAT)) ; type: FLOAT
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
          
 EXPLAIN with_types SELECT (INTEGER) col6      FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -2845,10 +2845,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT (INTEGER) col6      FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col6 AS INTEGER) ; Ordinal Expr = CAST($6 AS INTEGER)) ; type: INTEGER
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col6 AS INTEGER) ; Ordinal Expr = CAST($6 AS INTEGER)) ; type: INTEGER
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT (INTERVAL YEAR) col6  FROM ${testName2}_castTest;
 failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
@@ -2900,10 +2900,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT (TIME) col6         FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col6 AS TIME) ; Ordinal Expr = CAST($6 AS TIME)) ; type: TIME
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col6 AS TIME) ; Ordinal Expr = CAST($6 AS TIME)) ; type: TIME
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
          
 EXPLAIN with_types SELECT (TIMESTAMP) col6    FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -2915,10 +2915,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT (TIMESTAMP) col6    FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col6 AS TIMESTAMP) ; Ordinal Expr = CAST($6 AS TIMESTAMP)) ; type: TIMESTAMP
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col6 AS TIMESTAMP) ; Ordinal Expr = CAST($6 AS TIMESTAMP)) ; type: TIMESTAMP
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
          
 EXPLAIN with_types SELECT (VARCHAR) col6      FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -2930,10 +2930,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT (VARCHAR) col6      FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col6 AS VARCHAR) ; Ordinal Expr = CAST($6 AS VARCHAR)) ; type: VARCHAR
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col6 AS VARCHAR) ; Ordinal Expr = CAST($6 AS VARCHAR)) ; type: VARCHAR
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 // *** Cast a DATE column ***
 EXPLAIN with_types SELECT (BOOLEAN) col7      FROM ${testName2}_castTest;
@@ -2949,10 +2949,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT (CHAR(10)) col7         FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col7 AS CHAR) ; Ordinal Expr = CAST($7 AS CHAR)) ; type: CHAR
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col7 AS CHAR) ; Ordinal Expr = CAST($7 AS CHAR)) ; type: CHAR
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
          
 EXPLAIN with_types SELECT (DATE) col7         FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -2964,10 +2964,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT (DATE) col7         FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col7 AS DATE) ; Ordinal Expr = CAST($7 AS DATE)) ; type: DATE
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col7 AS DATE) ; Ordinal Expr = CAST($7 AS DATE)) ; type: DATE
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
          
 EXPLAIN with_types SELECT (DECIMAL) col7      FROM ${testName2}_castTest;
 failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
@@ -3031,10 +3031,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT (TIMESTAMP) col7    FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col7 AS TIMESTAMP) ; Ordinal Expr = CAST($7 AS TIMESTAMP)) ; type: TIMESTAMP
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col7 AS TIMESTAMP) ; Ordinal Expr = CAST($7 AS TIMESTAMP)) ; type: TIMESTAMP
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
          
 EXPLAIN with_types SELECT (VARCHAR) col7      FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -3046,10 +3046,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT (VARCHAR) col7      FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col7 AS VARCHAR) ; Ordinal Expr = CAST($7 AS VARCHAR)) ; type: VARCHAR
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col7 AS VARCHAR) ; Ordinal Expr = CAST($7 AS VARCHAR)) ; type: VARCHAR
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 
 
@@ -3067,10 +3067,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT (CHAR(10)) col8         FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col8 AS CHAR) ; Ordinal Expr = CAST($8 AS CHAR)) ; type: CHAR
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col8 AS CHAR) ; Ordinal Expr = CAST($8 AS CHAR)) ; type: CHAR
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT (DATE) col8         FROM ${testName2}_castTest;
 failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
@@ -3134,10 +3134,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT (TIME) col8         FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col8 AS TIME) ; Ordinal Expr = CAST($8 AS TIME)) ; type: TIME
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col8 AS TIME) ; Ordinal Expr = CAST($8 AS TIME)) ; type: TIME
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT (TIMESTAMP) col8    FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -3149,10 +3149,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT (TIMESTAMP) col8    FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col8 AS TIMESTAMP) ; Ordinal Expr = CAST($8 AS TIMESTAMP)) ; type: TIMESTAMP
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col8 AS TIMESTAMP) ; Ordinal Expr = CAST($8 AS TIMESTAMP)) ; type: TIMESTAMP
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT (VARCHAR) col8      FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -3164,10 +3164,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT (VARCHAR) col8      FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col8 AS VARCHAR) ; Ordinal Expr = CAST($8 AS VARCHAR)) ; type: VARCHAR
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col8 AS VARCHAR) ; Ordinal Expr = CAST($8 AS VARCHAR)) ; type: VARCHAR
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 
 
@@ -3185,10 +3185,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT (CHAR(10)) col9         FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col9 AS CHAR) ; Ordinal Expr = CAST($9 AS CHAR)) ; type: CHAR
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col9 AS CHAR) ; Ordinal Expr = CAST($9 AS CHAR)) ; type: CHAR
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT (DATE) col9         FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -3200,10 +3200,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT (DATE) col9         FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col9 AS DATE) ; Ordinal Expr = CAST($9 AS DATE)) ; type: DATE
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col9 AS DATE) ; Ordinal Expr = CAST($9 AS DATE)) ; type: DATE
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT (DECIMAL) col9      FROM ${testName2}_castTest;
 failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
@@ -3264,10 +3264,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT (TIME) col9         FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col9 AS TIME) ; Ordinal Expr = CAST($9 AS TIME)) ; type: TIME
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col9 AS TIME) ; Ordinal Expr = CAST($9 AS TIME)) ; type: TIME
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT (TIMESTAMP) col9    FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -3279,10 +3279,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT (TIMESTAMP) col9    FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col9 AS TIMESTAMP) ; Ordinal Expr = CAST($9 AS TIMESTAMP)) ; type: TIMESTAMP
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col9 AS TIMESTAMP) ; Ordinal Expr = CAST($9 AS TIMESTAMP)) ; type: TIMESTAMP
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT (VARCHAR) col9      FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -3294,10 +3294,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT (VARCHAR) col9      FROM ${testName2}_castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(rapidsse.public.${testName2}_castTest.col9 AS VARCHAR) ; Ordinal Expr = CAST($9 AS VARCHAR)) ; type: VARCHAR
+      » column: (Expr = CAST(rapids.public.${testName2}_castTest.col9 AS VARCHAR) ; Ordinal Expr = CAST($9 AS VARCHAR)) ; type: VARCHAR
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 
 
@@ -3337,7 +3337,7 @@ rows: (*,'explainPlan','
       » column: (Expr = 1. ; Ordinal Expr = 1.) ; type: DECIMAL
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT (FLOAT) INTERVAL '1-2' YEAR TO MONTH        FROM ${testName2}_castTest;
 failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
@@ -3355,7 +3355,7 @@ rows: (*,'explainPlan','
       » column: (Expr = 1.0000000000e+00 ; Ordinal Expr = 1.0000000000e+00) ; type: FLOAT
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT (INTEGER) INTERVAL '1-2' YEAR TO MONTH      FROM ${testName2}_castTest;
 failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
@@ -3373,7 +3373,7 @@ rows: (*,'explainPlan','
       » column: (Expr = 1 ; Ordinal Expr = 1) ; type: INTEGER
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT (INTERVAL MONTH) INTERVAL '1-2' YEAR TO MONTH  FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -3388,7 +3388,7 @@ rows: (*,'explainPlan','
       » column: (Expr = INTERVAL ''14'' MONTH ; Ordinal Expr = INTERVAL ''14'' MONTH) ; type: INTERVAL MONTH
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT (INTERVAL YEAR TO MONTH) INTERVAL '1' YEAR  FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -3403,7 +3403,7 @@ rows: (*,'explainPlan','
       » column: (Expr = INTERVAL ''1-0'' YEAR TO MONTH ; Ordinal Expr = INTERVAL ''1-0'' YEAR TO MONTH) ; type: INTERVAL YEAR TO MONTH
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT (INTERVAL DAY) INTERVAL '1-2' YEAR TO MONTH  FROM ${testName2}_castTest;
 failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
@@ -3469,7 +3469,7 @@ rows: (*,'explainPlan','
       » column: (Expr = 1. ; Ordinal Expr = 1.) ; type: DECIMAL
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT (FLOAT) INTERVAL '1 2' DAY TO HOUR        FROM ${testName2}_castTest;
 failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
@@ -3487,7 +3487,7 @@ rows: (*,'explainPlan','
       » column: (Expr = 1.0000000000e+00 ; Ordinal Expr = 1.0000000000e+00) ; type: FLOAT
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT (INTEGER) INTERVAL '1 2' DAY TO HOUR      FROM ${testName2}_castTest;
 failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
@@ -3505,7 +3505,7 @@ rows: (*,'explainPlan','
       » column: (Expr = 1 ; Ordinal Expr = 1) ; type: INTEGER
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT (INTERVAL YEAR) INTERVAL '1 2' DAY TO HOUR  FROM ${testName2}_castTest;
 failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
@@ -3526,7 +3526,7 @@ rows: (*,'explainPlan','
       » column: (Expr = INTERVAL ''93600'' SECOND ; Ordinal Expr = INTERVAL ''93600'' SECOND) ; type: INTERVAL SECOND
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT (INTERVAL HOUR TO SECOND) INTERVAL '1' DAY      FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -3541,7 +3541,7 @@ rows: (*,'explainPlan','
       » column: (Expr = INTERVAL ''24:0:0'' HOUR TO SECOND ; Ordinal Expr = INTERVAL ''24:0:0'' HOUR TO SECOND) ; type: INTERVAL HOUR TO SECOND
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT (TIME) INTERVAL '1 2' DAY TO HOUR         FROM ${testName2}_castTest;
 failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
@@ -3578,7 +3578,7 @@ rows: (*,'explainPlan','
       » column: (Expr = CAST(NULL AS BOOLEAN) ; Ordinal Expr = CAST(NULL AS BOOLEAN)) ; type: BOOLEAN
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 
 EXPLAIN with_types SELECT (CHAR(10)) NULL         FROM ${testName2}_castTest;
@@ -3594,7 +3594,7 @@ rows: (*,'explainPlan','
       » column: (Expr = CAST(NULL AS CHAR) ; Ordinal Expr = CAST(NULL AS CHAR)) ; type: CHAR
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 
 EXPLAIN with_types SELECT (DATE) NULL         FROM ${testName2}_castTest;
@@ -3610,7 +3610,7 @@ rows: (*,'explainPlan','
       » column: (Expr = CAST(NULL AS DATE) ; Ordinal Expr = CAST(NULL AS DATE)) ; type: DATE
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 
 EXPLAIN with_types SELECT (DECIMAL) NULL      FROM ${testName2}_castTest;
@@ -3626,7 +3626,7 @@ rows: (*,'explainPlan','
       » column: (Expr = CAST(NULL AS DECIMAL) ; Ordinal Expr = CAST(NULL AS DECIMAL)) ; type: DECIMAL
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 
 EXPLAIN with_types SELECT (FLOAT) NULL        FROM ${testName2}_castTest;
@@ -3642,7 +3642,7 @@ rows: (*,'explainPlan','
       » column: (Expr = CAST(NULL AS FLOAT) ; Ordinal Expr = CAST(NULL AS FLOAT)) ; type: FLOAT
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 
 EXPLAIN with_types SELECT (INTEGER) NULL      FROM ${testName2}_castTest;
@@ -3658,7 +3658,7 @@ rows: (*,'explainPlan','
       » column: (Expr = CAST(NULL AS INTEGER) ; Ordinal Expr = CAST(NULL AS INTEGER)) ; type: INTEGER
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 
 EXPLAIN with_types SELECT (INTERVAL YEAR TO MONTH) NULL  FROM ${testName2}_castTest;
@@ -3674,7 +3674,7 @@ rows: (*,'explainPlan','
       » column: (Expr = CAST(NULL AS INTERVAL YEAR TO MONTH) ; Ordinal Expr = CAST(NULL AS INTERVAL YEAR TO MONTH)) ; type: INTERVAL YEAR TO MONTH
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT (INTERVAL YEAR) NULL  FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -3689,7 +3689,7 @@ rows: (*,'explainPlan','
       » column: (Expr = CAST(NULL AS INTERVAL YEAR) ; Ordinal Expr = CAST(NULL AS INTERVAL YEAR)) ; type: INTERVAL YEAR
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 
 EXPLAIN with_types SELECT (INTERVAL DAY TO HOUR) NULL  FROM ${testName2}_castTest;
@@ -3705,7 +3705,7 @@ rows: (*,'explainPlan','
       » column: (Expr = CAST(NULL AS INTERVAL DAY TO HOUR) ; Ordinal Expr = CAST(NULL AS INTERVAL DAY TO HOUR)) ; type: INTERVAL DAY TO HOUR
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT (INTERVAL DAY) NULL  FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -3720,7 +3720,7 @@ rows: (*,'explainPlan','
       » column: (Expr = CAST(NULL AS INTERVAL DAY) ; Ordinal Expr = CAST(NULL AS INTERVAL DAY)) ; type: INTERVAL DAY
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 EXPLAIN with_types SELECT (TIME) NULL         FROM ${testName2}_castTest;
 rows: (*,'explainPlan','
@@ -3735,7 +3735,7 @@ rows: (*,'explainPlan','
       » column: (Expr = CAST(NULL AS TIME) ; Ordinal Expr = CAST(NULL AS TIME)) ; type: TIME
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 
 EXPLAIN with_types SELECT (TIMESTAMP) NULL    FROM ${testName2}_castTest;
@@ -3751,7 +3751,7 @@ rows: (*,'explainPlan','
       » column: (Expr = CAST(NULL AS TIMESTAMP) ; Ordinal Expr = CAST(NULL AS TIMESTAMP)) ; type: TIMESTAMP
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 
 EXPLAIN with_types SELECT (VARCHAR) NULL      FROM ${testName2}_castTest;
@@ -3767,7 +3767,7 @@ rows: (*,'explainPlan','
       » column: (Expr = CAST(NULL AS VARCHAR) ; Ordinal Expr = CAST(NULL AS VARCHAR)) ; type: VARCHAR
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_castTest)')
+         » table: (rapids.public.${testName2}_castTest)')
 
 
 
@@ -3801,7 +3801,7 @@ rows: (*,'explainPlan','
          » column: (Expr = ''01:02:03'' ; Ordinal Expr = ''01:02:03'') ; type: VARCHAR
 
 -> -> -> -> tableScanOp
-            » table: (rapidsse.public.${testName2}_castTest)')
+            » table: (rapids.public.${testName2}_castTest)')
 
 
 
@@ -3823,7 +3823,7 @@ rows: (*,'explainPlan','
          » column: (Expr = DATE ''2020-11-12'' ; Ordinal Expr = DATE ''2020-11-12'') ; type: DATE
 
 -> -> -> -> tableScanOp
-            » table: (rapidsse.public.${testName2}_castTest)')
+            » table: (rapids.public.${testName2}_castTest)')
 
 
 // Casting a timestamp literal to a time
@@ -3844,7 +3844,7 @@ rows: (*,'explainPlan','
          » column: (Expr = TIME ''11:12:13'' ; Ordinal Expr = TIME ''11:12:13'') ; type: TIME
 
 -> -> -> -> tableScanOp
-            » table: (rapidsse.public.${testName2}_castTest)')
+            » table: (rapids.public.${testName2}_castTest)')
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
