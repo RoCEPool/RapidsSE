@@ -15,7 +15,9 @@ namespace BASE
   class RibbonLine : public Object
   {
   private:
-    
+
+    s32   m_sMargin;
+
     char  m_caText[C_RIBBON_MAX_TEXT];
     
     // must be last
@@ -30,6 +32,9 @@ namespace BASE
 
     void vInsert(i8 i_Char, char cChr);
     void vInsert(i8 i_Char, Stz* szText);
+
+    Stz* szMargin(void);
+    void vMargin(Stz* szMargin);
 
     void vPut(i8 i_Char, char cChr);
     void vPut(i8 i_Char, Stz* szStz);

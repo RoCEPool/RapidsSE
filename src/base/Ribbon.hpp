@@ -17,6 +17,8 @@ namespace BASE
   {
   private:
 
+    s32   m_sMargin;
+
     i8 m_nMaxLanesAcross;  // maximum number of lanes across
 
     i8 m_i_Heat; // current horizontal heat/row
@@ -51,6 +53,9 @@ namespace BASE
 
     void vLaneFirst(void);
     void vLaneNext(void);
+
+    Stz* szMargin(void);
+    void vMargin(Stz* szMargin);
 
     void vNewLine(void);
 

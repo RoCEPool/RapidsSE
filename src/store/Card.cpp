@@ -2169,7 +2169,6 @@ Stz* Card::szDecodeEnum(Stz* szEnum, i8 iEnum)
 void Card::vPrint_card(CardIter* pCI, Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-  UNUSED(pCI);
 
   if (CK_EXPR == m_eCard)     { vPrint_expr(pCI,pRibbon, iDepth);  return; }
   if (CK_TERM == m_eCard)     { vPrint_term(pCI,pRibbon, iDepth);  return; }
@@ -2188,7 +2187,6 @@ void Card::vPrint_card(CardIter* pCI, Ribbon* pRibbon, i8 iDepth)
 void Card::vPrint_depth0(CardIter* pCI, Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-  UNUSED(pCI);
 
   i8 i_Char = C_UNKNOWN;
 
@@ -2202,6 +2200,9 @@ void Card::vPrint_depth0(CardIter* pCI, Ribbon* pRibbon, i8 iDepth)
 
   vPrintFacets(pCI,pRibbon, iDepth);
   vPrintProperties(pCI,pRibbon, iDepth);
+
+  if (CK_c_STAGE == m_eCard)
+    pRibbon->vMargin(szFacet(SF_STG_NM));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2210,7 +2211,6 @@ void Card::vPrint_depth0(CardIter* pCI, Ribbon* pRibbon, i8 iDepth)
 void Card::vPrint_depth1(CardIter* pCI, Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-  UNUSED(pCI);
 
   i8 i_Char = C_UNKNOWN;
 
@@ -2232,7 +2232,6 @@ void Card::vPrint_depth1(CardIter* pCI, Ribbon* pRibbon, i8 iDepth)
 void Card::vPrint_depth2(CardIter* pCI, Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-  UNUSED(pCI);
 
   i8 i_Char = C_UNKNOWN;
 
@@ -2275,7 +2274,6 @@ void Card::vPrint_depthN(CardIter* pCI, Ribbon* pRibbon, i8 iDepth)
 void Card::vPrint_expr(CardIter* pCI, Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-  UNUSED(pCI);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // primary facet
@@ -2329,7 +2327,6 @@ void Card::vPrint_expr(CardIter* pCI, Ribbon* pRibbon, i8 iDepth)
 void Card::vPrint_table(CardIter* pCI, Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-  UNUSED(pCI);
 
   i8 i_Char = C_UNKNOWN;
 
@@ -2348,7 +2345,6 @@ void Card::vPrint_table(CardIter* pCI, Ribbon* pRibbon, i8 iDepth)
 void Card::vPrint_term(CardIter* pCI, Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-  UNUSED(iDepth);
 
   vPrintFacets(pCI,pRibbon,iDepth);
 }

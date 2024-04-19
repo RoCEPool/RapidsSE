@@ -63,20 +63,29 @@ void RibbonLine::vInsert(i8 i_Char, Stz* szStz)
 {
   _precondition_(_MAGIC_,CN_RIBBONLINE,_FOOTER_);
 
-//  i8 nChars = szStz->nLength();
-//
-//  for (i8 i_Stz = 0; i_Stz < nChars; i_Stz++) {
-//    char cChar = szStz->azChar()[i_Stz];
-//
-//    char* psAddr = &m_caText[i_Char + i_Stz];
-//    i8 iBufRemaining = (i8) sizeof(m_caText) - i_Char - i_Stz;
-//
-//    StrLib::vInsertChar(psAddr, iBufRemaining, cChar);
-//  }
-
   char* psAddr = &m_caText[i_Char];
   i8 iBufRemaining = (i8) sizeof(m_caText) - i_Char;
   StrLib::vInsertStrTrimRight(psAddr, iBufRemaining, szStz->azChar());
+}
+
+/*----------------------------------------------------------------------------*/
+/* get margin                                                                 */
+/*----------------------------------------------------------------------------*/
+Stz* RibbonLine::szMargin(void)
+{
+  _precondition_(_MAGIC_,CN_RIBBONLINE,_FOOTER_);
+
+  return m_sMargin;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set margin                                                                 */
+/*----------------------------------------------------------------------------*/
+void RibbonLine::vMargin(Stz* szMargin)
+{
+  _precondition_(_MAGIC_,CN_RIBBONLINE,_FOOTER_);
+
+  m_sMargin= szMargin;
 }
 
 /*----------------------------------------------------------------------------*/
