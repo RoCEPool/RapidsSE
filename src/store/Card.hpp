@@ -441,7 +441,7 @@ namespace STORE
     void vCatRight(i8& ri_Char, Ribbon* pRibbon, Stz* szStr);
     void vCatBlank(i8& ri_Char, Ribbon* pRibbon);
     void vCatDots(i8& ri_Char, Ribbon* pRibbon, i8 iDepth);
-    void vCatFacets(i8& ri_Char, Ribbon* pRibbon, i8 iDepth);
+    void vCatFacet(i8& ri_Char, Ribbon* pRibbon, i8 i_Facet);
     void vCatName(i8& ri_Char, Ribbon* pRibbon, i8 iDepth);
     void vCatMarks(i8& ri_Char, Ribbon* pRibbon);
     void vCatProperties(i8& ri_Char, Ribbon* pRibbon, i8 iDepth);

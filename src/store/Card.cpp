@@ -2357,12 +2357,11 @@ void Card::vPrintFacets(Ribbon* pRibbon, i8 iDepth)
 
   if (!m_xSymbol.bHasFacets())
     return;
-
-  s256 sFacet;
-
+  
   for (i8 i_Facet = 0; i_Facet < m_xSymbol.nFacets(); i_Facet++) {
-    vFormatFacet(sFacet,i_Facet);
-    pRibbon->vSprintNL(true, "%s"_Stz, sFacet.szStz());
+    i8 i_Char = C_UNKNOWN;
+    vCatFacet(i_Char,pRibbon,i_Facet);
+    pRibbon->vNewLine();
   }
 }
 
@@ -2450,21 +2449,14 @@ void Card::vCatDots(i8& ri_Char, Ribbon* pRibbon, i8 iDepth)
 /*----------------------------------------------------------------------------*/
 /* print symbolic value of card                                               */
 /*----------------------------------------------------------------------------*/
-void Card::vCatFacets(i8& ri_Char, Ribbon* pRibbon, i8 iDepth)
+void Card::vCatFacet(i8& ri_Char, Ribbon* pRibbon, i8 i_Facet)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-  UNUSED(iDepth);
-
-  if (!m_xSymbol.bHasFacets())
-    return;
 
   s256 sFacet;
+  vFormatFacet(sFacet,i_Facet);
 
-  for (i8 i_Facet = 0; i_Facet < m_xSymbol.nFacets(); i_Facet++) {
-    vFormatFacet(sFacet,i_Facet);
-    vCatRight(ri_Char, pRibbon,sFacet);
-    pRibbon->vNewLine();
-  }
+  vCatRight(ri_Char,pRibbon,sFacet);
 }
 
 /*----------------------------------------------------------------------------*/
