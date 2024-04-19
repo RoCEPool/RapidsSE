@@ -2403,14 +2403,11 @@ void Card::vCatFacets(Ribbon* pRibbon, i8 iDepth)
 
   s256 sFacet;
 
-  pRibbon->vSprintNL(true, "%s"_Stz,
-                     m_xSymbol.szFacet((i8) 0));
-
-  for (i8 i_Facet = 1; i_Facet < m_xSymbol.nFacets(); i_Facet++) {
+  for (i8 i_Facet = 0; i_Facet < m_xSymbol.nFacets(); i_Facet++) {
     vFormatFacet(sFacet,i_Facet);
-    pRibbon->vSprintNL(true, "%s"_Stz,
-                       sFacet.szStz());
-
+    i8 i_Char = C_UNKNOWN;
+    pRibbon->vSprint(i_Char, "%s"_Stz, sFacet.szStz());
+    pRibbon->vNewLine();
   }
 }
 
@@ -2435,7 +2432,10 @@ void Card::vCatHeader(Ribbon* pRibbon)
 
   s256 sHeader;
   vFormatHeader(sHeader.pString(),cLevel);
-  pRibbon->vSprintNL(false, "%s"_Stz, sHeader.szStz());
+
+  i8 i_Char = C_UNKNOWN;
+  pRibbon->vSprint(i_Char, "%s"_Stz, sHeader.szStz());
+  pRibbon->vNewLine();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2461,7 +2461,13 @@ void Card::vCatName(Ribbon* pRibbon, i8 iDepth)
                      szCardNm());
   }
 
-  pRibbon->vSprintNL(false, "%c%c%-18s"_Stz, this->cMark1(), this->cMark2(), sName.szStz());
+  i8 i_Char = C_UNKNOWN;
+  pRibbon->vSprint(i_Char,
+                   "%c%c%-18s"_Stz,
+                   this->cMark1(),
+                   this->cMark2(),
+                   sName.szStz());
+  pRibbon->vNewLine();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2504,8 +2510,15 @@ void Card::vCatNameFacet(Ribbon* pRibbon, i8 iDepth)
                              sName.szStz());
   }
 
+  i8 i_Char = C_UNKNOWN;
+
   if (sNameSymbol.nLength() <= 18) {
-    pRibbon->vSprintNL(false, "%c%c%-18s"_Stz, this->cMark1(), this->cMark2(), sNameSymbol.szStz());
+    pRibbon->vSprint(i_Char,
+                     "%c%c%-18s"_Stz,
+                     this->cMark1(),
+                     this->cMark2(),
+                     sNameSymbol.szStz());
+    pRibbon->vNewLine();
   }
   else {
     vCatName(pRibbon, iDepth);

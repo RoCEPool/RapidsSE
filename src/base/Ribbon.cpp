@@ -236,13 +236,16 @@ void Ribbon::vSprint(i8& ri_Char, Stz* szFormat, ...)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_RIBBON, _FOOTER_);
 
+  if (C_UNKNOWN == ri_Char)
+    ri_Char = m_i_Char;
+
   s4K sText;
 
   va_list xArgs;
   va_start(xArgs,szFormat);
 
   vFormatLeft(sText,szFormat,xArgs);
-  vPutText(m_i_Line, m_i_Char, sText);
+  vPutText(m_i_Line, ri_Char, sText);
 
   va_end(xArgs);
 
