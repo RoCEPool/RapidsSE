@@ -2170,6 +2170,9 @@ void Card::vPrint_card(CardIter* pCI, Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
+  if (bIsCard(CK_c_STAGE))
+    pRibbon->vMargin(szFacet(SF_STG_NM));
+
   if (CK_EXPR == m_eCard)     { vPrint_expr(pCI,pRibbon, iDepth);  return; }
   if (CK_TERM == m_eCard)     { vPrint_term(pCI,pRibbon, iDepth);  return; }
   if (CK_s_TABLE == m_eCard)  { vPrint_table(pCI,pRibbon, iDepth); return; }
