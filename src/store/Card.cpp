@@ -2185,10 +2185,15 @@ void Card::vPrint_card(Ribbon* pRibbon, i8 iDepth)
 void Card::vPrint_depth0(Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-  UNUSED(pRibbon);
-  UNUSED(iDepth);
 
-  vPrintNameFacet(pRibbon, iDepth);
+  i8 i_Char = C_UNKNOWN;
+  vCatMarks(i_Char,pRibbon);
+  vCatDots(i_Char,pRibbon,iDepth);
+  vCatName(i_Char,pRibbon,iDepth);
+  vCatBlank(i_Char,pRibbon);
+  vCatSequence(i_Char,pRibbon);
+  pRibbon->vNewLine();
+
   vPrintProperties(pRibbon, iDepth);
 }
 
@@ -2216,10 +2221,15 @@ void Card::vPrint_depth1(Ribbon* pRibbon, i8 iDepth)
 void Card::vPrint_depth2(Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-  UNUSED(pRibbon);
-  UNUSED(iDepth);
 
-  vPrintNameFacet(pRibbon, iDepth);
+  i8 i_Char = C_UNKNOWN;
+  vCatMarks(i_Char,pRibbon);
+  vCatDots(i_Char,pRibbon,iDepth);
+  vCatName(i_Char,pRibbon,iDepth);
+  vCatBlank(i_Char,pRibbon);
+  vCatSequence(i_Char,pRibbon);
+  pRibbon->vNewLine();
+
   vPrintProperties(pRibbon, iDepth);
 }
 
@@ -2229,10 +2239,15 @@ void Card::vPrint_depth2(Ribbon* pRibbon, i8 iDepth)
 void Card::vPrint_depthN(Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-  UNUSED(pRibbon);
-  UNUSED(iDepth);
 
-  vPrintNameFacet(pRibbon, iDepth);
+  i8 i_Char = C_UNKNOWN;
+  vCatMarks(i_Char,pRibbon);
+  vCatDots(i_Char,pRibbon,iDepth);
+  vCatName(i_Char,pRibbon,iDepth);
+  vCatBlank(i_Char,pRibbon);
+  vCatSequence(i_Char,pRibbon);
+  pRibbon->vNewLine();
+
   vPrintProperties(pRibbon, iDepth);
 }
 
@@ -2849,12 +2864,13 @@ void Card::vFormatName(String* pString, i8 iDepth, bool bJustify_right)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   s32 sName(szCardNm());
-  if (0 == iDepth) {
+  if (0 == iDepth)
     sName.vToUpper();
-  }
   else
   if (iDepth >= 2) {
-    sName.vToLower();
+    char c = *sName.azChar();
+    if (isupper(c))
+      *sName.azChar() = tolower(c);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
