@@ -10,12 +10,12 @@
 
   STD_BOOTFORK_TAG
   "
-  define table md_queries (
-    iQueryId          INTEGER NOT NULL ,
-    tiTimestamp       TIMESTAMP NOT NULL ,
-    szSqlText         VARCHAR NOT NULL ,
-    szSubmitTimeStamp TIMESTAMP NOT NULL ,
-    szStatus          VARCHAR NOT NULL
+  define table queries (
+    QueryId          INTEGER NOT NULL ,
+    Timestamp       TIMESTAMP NOT NULL ,
+    SqlText         VARCHAR NOT NULL ,
+    SubmitTimeStamp TIMESTAMP NOT NULL ,
+    Status          VARCHAR NOT NULL
   ) < metaData > = MetaDataTable[].queries ;
   "
   nullptr api::forkChild  api:executeCheck

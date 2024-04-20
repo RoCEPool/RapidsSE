@@ -10,8 +10,8 @@
 
   STD_BOOTFORK_TAG
   "
-  define table md_catalog (
-    szCatalogName VARCHAR NOT NULL
+  define table catalog (
+    CatalogName VARCHAR NOT NULL
   ) < metaData > = MetaDataTable[].catalog ;
   "
   nullptr api::forkChild  api:executeCheck

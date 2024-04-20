@@ -10,8 +10,8 @@
 
   STD_BOOTFORK_TAG
   "
-  define table md_cluster (
-    iClusterId   INTEGER NOT NULL
+  define table cluster (
+    ClusterId   INTEGER NOT NULL
   ) < metaData > = MetaDataTable[].cluster ;
   "
   nullptr api::forkChild  api:executeCheck

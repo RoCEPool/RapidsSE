@@ -10,10 +10,10 @@
 
   STD_BOOTFORK_TAG
   "
-  define table md_sessions (
-    iSessionId    INTEGER NOT NULL ,
-    bConnect      BOOLEAN NOT NULL ,
-    szStatus      VARCHAR NOT NULL
+  define table sessions (
+    SessionId    INTEGER NOT NULL ,
+    Connected      BOOLEAN NOT NULL ,
+    Status      VARCHAR NOT NULL
   ) < metaData > = MetaDataTable[].sessions ;
   "
   nullptr api::forkChild  api:executeCheck

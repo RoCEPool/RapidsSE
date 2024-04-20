@@ -1,0 +1,26 @@
+/*============================================================================*/
+/* md_tableIndexes.sen -- Define md_tableIndexes table                        */
+/*============================================================================*/
+
+" md_tableIndexes.sen" .verbose
+
+: start::md_tableIndexes
+
+  // C_TDEF_INDEXES
+
+  STD_BOOTFORK_TAG
+  "
+  define table tableIndexes (
+    szCatalogName VARCHAR NOT NULL ,
+    szSchemaName  VARCHAR NOT NULL ,
+    szTableName   VARCHAR NOT NULL ,
+    szIndexName   VARCHAR NOT NULL
+  ) < metaData > = MetaDataTable[].indexes ;
+  "
+  nullptr api::forkChild  api:executeCheck
+
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

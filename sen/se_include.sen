@@ -187,7 +187,7 @@ cmd::fillOut_allCmds
   "md_cluster.sen"          include
   "md_columns.sen"          include
   "md_indexColumns.sen"     include
-  "md_indexes.sen"          include
+  "md_tableIndexes.sen"     include
   "md_nodes.sen"            include
   "md_queries.sen"          include
   "md_schema.sen"           include

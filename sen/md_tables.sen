@@ -10,8 +10,8 @@
 
   STD_BOOTFORK_TAG
   "
-  define table md_tables (
-    szTableName         VARCHAR NOT NULL
+  define table tables (
+    TableName         VARCHAR NOT NULL
   ) < metaData > = MetaDataTable[].tables ;
   "
   nullptr api::forkChild  api:executeCheck

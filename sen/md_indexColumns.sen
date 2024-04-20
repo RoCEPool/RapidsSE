@@ -10,12 +10,12 @@
 
   STD_BOOTFORK_TAG
   "
-  define table md_indexColumns (
-    szCatalogName VARCHAR NOT NULL ,
-    szSchemaName  VARCHAR NOT NULL ,
-    szTableName   VARCHAR NOT NULL ,
-    szIndexName   VARCHAR NOT NULL ,
-    szColumnName  VARCHAR NOT NULL
+  define table indexColumns (
+    CatalogName VARCHAR NOT NULL ,
+    SchemaName  VARCHAR NOT NULL ,
+    TableName   VARCHAR NOT NULL ,
+    IndexName   VARCHAR NOT NULL ,
+    ColumnName  VARCHAR NOT NULL
   ) < metaData > = MetaDataTable[].indexColumns ;
   "
   nullptr api::forkChild  api:executeCheck
