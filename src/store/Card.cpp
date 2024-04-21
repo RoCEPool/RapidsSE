@@ -2525,7 +2525,7 @@ void Card::vCatTblSyn(i8& ri_Char, Ribbon* pRibbon)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (m_xSymbol.bHasFacets()) {
+  if (m_xSymbol.bHasFacet(SF_TBL_SYN)) {
     s32 sTblSyn;
     vFormatTblSyn(sTblSyn);
     vCatBlank(ri_Char,pRibbon);
