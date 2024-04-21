@@ -364,8 +364,6 @@ Card_Expr* Card_Emit::pGet_expr(i8 i_Element)
 Card_Emit* Card_Emit::pInduct(CardIter* pCI) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-#ifdef Z_EMIT_NUMBERING
-
   RASSERT(pCI->E.p_emit);
 
   for (Kid xEmit(this); xEmit.bEach(CK_EXPR); /**/) {
@@ -383,25 +381,6 @@ Card_Emit* Card_Emit::pInduct(CardIter* pCI) {
   pCI->E.p_emit->vRenumberAll_expr();
 
   return pCI->E.p_emit;
-#else
-  Card_Emit *p_emit_inducted = new Card_Emit;
-
-  for (Kid xEmit(this); xEmit.bEach(CK_EXPR); /**/) {
-    Card_Expr *p_expr_arriving = xEmit.p_expr();
-
-    // exclude not needed expressions
-    if (pCI->E.p_needed)
-      if (! pCI->E.p_needed->bNeeded_expr(p_expr_arriving))
-        continue;
-
-    Card_Expr *p_expr_inducted = p_expr_arriving->pInduct(pCI,xEmit.i_Child()+1);
-    p_emit_inducted->vAppendChild(p_expr_inducted);
-  }
-
-  p_emit_inducted->vRenumberAll_expr();
-
-  return p_emit_inducted;
-#endif
 }
 
 /*----------------------------------------------------------------------------*/

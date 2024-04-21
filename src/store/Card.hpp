@@ -20,8 +20,6 @@
 
 //#define Z_PART_STREAMKEY
 
-#define Z_EMIT_NUMBERING
-
 namespace STORE
 {
   class Card_AbsJoin;
