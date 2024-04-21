@@ -441,7 +441,7 @@ namespace STORE
     void vCatBlank(i8& ri_Char, Ribbon* pRibbon);
     void vCatBracket(i8& ri_Char, Ribbon* pRibbon, CardIter* pCI);
     void vCatDots(i8& ri_Char, Ribbon* pRibbon, i8 iDepth);
-    void vCatFacet(i8& ri_Char, Ribbon* pRibbon, i8 i_Facet, bool bRight=false);
+    void vCatFacet(i8& ri_Char, Ribbon* pRibbon, i8 i_Facet, bool bSecondary, bool bRight=false);
     void vCatName(i8& ri_Char, Ribbon* pRibbon, i8 iDepth);
     void vCatMarks(i8& ri_Char, Ribbon* pRibbon);
     void vCatProperty(i8& ri_Char, Ribbon* pRibbon, i8 i_Property);
@@ -452,10 +452,10 @@ namespace STORE
 
     void vFormatDots(String* pString, i8 iDepth);
     void vFormatEnum(String* pString);
-    void vFormatFacet(String* pString, i8 i_Facet);
+    void vFormatFacet(String* pString, i8 i_Facet, bool bSecondary=false);
     void vFormatHeader(String* pString);
     void vFormatMarks(String* pString);
-    void vFormatName(String* pString, i8 iDepth, bool bJustify_right=false);
+    void vFormatName(String* pString, i8 iDepth, bool bRight=false);
     void vFormatProperty(String* pString, i8 i_Property);
     void vFormatSequence(String* pString);
     void vFormatTblSyn(String* pString);

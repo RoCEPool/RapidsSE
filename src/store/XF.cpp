@@ -297,14 +297,17 @@ void XF::vTransform_passThru(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF, _FOOTER_);
 
+
   m_pCI->vBeginBoard();
   while (m_pCI->bEachBoard()) {
+    m_pCI->E.pBoard->vPhase(OH_PASS_THRU);
     //XF_Prolog_X_sqyNm_To_sqyNo::vConvert_board(m_pCI);
     XF_Prolog_Validate_Board::vValidate(m_pCI);
   }
 
   m_pCI->vBeginBoard();
   while (m_pCI->bEachBoard()) {
+    m_pCI->E.pBoard->vPhase(OH_PASS_THRU);
 
     XF_Prolog_Analyse_table::vXF_Analyse_table_passThru(m_pCI);
     XF_Prolog_Analyse_injectable::vAnalyse_injected_passThru(m_pCI);   //

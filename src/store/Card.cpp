@@ -2287,8 +2287,7 @@ void Card::vPrint_expr(CardIter* pCI, Ribbon* pRibbon, i8 iDepth)
     vCatMarks(i_Char,pRibbon);
     vCatDots(i_Char,pRibbon,iDepth);
     vCatBracket(i_Char,pRibbon,pCI);
-    //vCatName(i_Char,pRibbon,iDepth);
-    vCatFacet(i_Char,pRibbon,i_Facet_primary);
+    vCatFacet(i_Char,pRibbon,i_Facet_primary,false);
     vCatTypeLength(i_Char,pRibbon,i_Facet_primary);
     pRibbon->vNewLine();
   }
@@ -2298,8 +2297,7 @@ void Card::vPrint_expr(CardIter* pCI, Ribbon* pRibbon, i8 iDepth)
     vCatMarks(i_Char,pRibbon);
     vCatDots(i_Char,pRibbon,iDepth);
     vCatBracket(i_Char,pRibbon,pCI);
-    //vCatName(i_Char,pRibbon,iDepth);
-    vCatFacet(i_Char,pRibbon,i_Facet_primary);
+    vCatFacet(i_Char,pRibbon,i_Facet_primary,false);
     vCatTypeLength(i_Char,pRibbon,i_Facet_primary);
     pRibbon->vNewLine();
   }
@@ -2316,12 +2314,13 @@ void Card::vPrint_expr(CardIter* pCI, Ribbon* pRibbon, i8 iDepth)
   for (i8 i_Facet_secondary = 0; i_Facet_secondary < nFacets; i_Facet_secondary++) {
     if (i_Facet_secondary == i_Facet_primary)
       continue;
-    s256 sFacet;
-    vFormatFacet(sFacet,i_Facet_secondary);
+//    s256 sFacet;
+//    vFormatFacet(sFacet,i_Facet_secondary,true);
 
     i8 i_Char = C_UNKNOWN;
-    pRibbon->vSprint(i_Char, "<%s"_Stz,
-                       sFacet.szStz());
+//    pRibbon->vSprint(i_Char, "<%s"_Stz,
+//                       sFacet.szStz());
+    vCatFacet(i_Char,pRibbon,i_Facet_secondary,true,true);
     pRibbon->vNewLine();
   }
 }
@@ -2368,7 +2367,7 @@ void Card::vPrintFacets(CardIter* pCI, Ribbon* pRibbon, i8 iDepth)
 
   for (i8 i_Facet = 0; i_Facet < m_xSymbol.nFacets(); i_Facet++) {
     i8 i_Char = C_UNKNOWN;
-    vCatFacet(i_Char,pRibbon,i_Facet,true);
+    vCatFacet(i_Char,pRibbon,i_Facet,false,true);
     pRibbon->vNewLine();
   }
 }
@@ -2460,12 +2459,13 @@ void Card::vCatDots(i8& ri_Char, Ribbon* pRibbon, i8 iDepth)
 /*----------------------------------------------------------------------------*/
 /* print symbolic value of card                                               */
 /*----------------------------------------------------------------------------*/
-void Card::vCatFacet(i8& ri_Char, Ribbon* pRibbon, i8 i_Facet, bool bRight)
+void Card::vCatFacet(i8& ri_Char, Ribbon* pRibbon, i8 i_Facet,
+                     bool bSecondary, bool bRight)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   s256 sFacet;
-  vFormatFacet(sFacet,i_Facet);
+  vFormatFacet(sFacet,i_Facet,bSecondary);
   vCat(ri_Char,pRibbon,sFacet,bRight);
 }
 
@@ -2588,15 +2588,20 @@ void Card::vFormatEnum(String* pString)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card::vFormatFacet(String* pString, i8 i_Facet)
+void Card::vFormatFacet(String* pString, i8 i_Facet, bool bSecondary)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   Facet* aFacet = m_xSymbol.aFacet(i_Facet);
 
-  pString->vSprint("%s~%lld"_Stz,
-                      aFacet->m_sFacet.azChar(),
-                      i_Facet);
+  if (bSecondary)
+    pString->vSprint("<%s~%lld"_Stz,
+                        aFacet->m_sFacet.azChar(),
+                        i_Facet);
+  else
+    pString->vSprint("%s~%lld"_Stz,
+                     aFacet->m_sFacet.azChar(),
+                     i_Facet);
 }
 
 /*----------------------------------------------------------------------------*/
