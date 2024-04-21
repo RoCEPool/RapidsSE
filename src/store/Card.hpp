@@ -20,7 +20,7 @@
 
 //#define Z_PART_STREAMKEY
 
-#define Z_ALT_PRINT
+#define Z_EMIT_NUMBERING
 
 namespace STORE
 {
