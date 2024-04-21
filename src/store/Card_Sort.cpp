@@ -85,10 +85,13 @@ void Card_Sort::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
 #ifdef Z_EMIT_NUMBERING
 
   if ((pCI->E.p_emit = pCI->E.p_sort->pSub_emit()))
-    pCI->E.p_sort->vDeleteSub(pCI->E.p_emit);
+    pCI->E.p_emit->vDeleteAllChildren();
+  else {
+    pCI->E.p_emit = new Card_Emit;
+    pCI->E.p_sort->vAppendChild(pCI->E.p_emit);
+  }
 
   pCI->E.p_emit =  pCI->Arriving.m_pEmit->pInduct(pCI);
-  pCI->E.p_sort->vAppendChild(pCI->E.p_emit);
 #else
   if ((pCI->E.p_emit = pCI->E.p_sort->pSub_emit()))
     pCI->E.p_sort->vDeleteSub(pCI->E.p_emit);

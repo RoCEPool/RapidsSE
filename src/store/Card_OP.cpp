@@ -589,18 +589,17 @@ void Card_OP::vRestate_emit(CardIter* pCI)
     case CK_o_SCAN:
 #ifdef Z_EMIT_NUMBERING
       if ((pCI->E.p_emit = pCI->E.p_Op->pSub_emit()))
-        pCI->E.p_Op->vDeleteChild(pCI->E.p_emit);
-
-      if (pCI->Arriving.m_pEmit) {
-        pCI->E.p_emit = pCI->Arriving.m_pEmit->pInduct(pCI);
-      }
-      else
+        pCI->E.p_emit->vDeleteAllChildren();
+      else {
         pCI->E.p_emit = new Card_Emit;
+        pCI->E.p_Op->vAppendChild(pCI->E.p_emit);
+      }
+
+      if (pCI->Arriving.m_pEmit)
+        pCI->E.p_emit = pCI->Arriving.m_pEmit->pInduct(pCI);
 
       pCI->E.p_table = pCI->E.p_Op->pSub_table(C_NOT_NULL);
       pCI->E.p_emit->vInject_expr_nmdCol_table(pCI);
-
-      pCI->E.p_Op->vAppendChild(pCI->E.p_emit);
 #else
       if ((pCI->E.p_emit = pCI->E.p_Op->pSub_emit()))
         pCI->E.p_Op->vDeleteChild(pCI->E.p_emit);
@@ -641,10 +640,13 @@ void Card_OP::vRestate_emit(CardIter* pCI)
 #ifdef Z_EMIT_NUMBERING
 
       if ((pCI->E.p_emit = pCI->E.p_Op->pSub_emit()))
-        pCI->E.p_Op->vDeleteChild(pCI->E.p_emit);
+        pCI->E.p_emit->vDeleteAllChildren();
+      else {
+        pCI->E.p_emit = new Card_Emit;
+        pCI->E.p_Op->vAppendChild(pCI->E.p_emit);
+      }
 
       pCI->E.p_emit = pCI->Arriving.m_pEmit->pInduct(pCI);
-      pCI->E.p_Op->vAppendChild(pCI->E.p_emit);
 #else
       if ((pCI->E.p_emit = pCI->E.p_Op->pSub_emit()))
         pCI->E.p_Op->vDeleteChild(pCI->E.p_emit);

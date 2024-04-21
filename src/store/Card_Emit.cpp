@@ -366,7 +366,7 @@ Card_Emit* Card_Emit::pInduct(CardIter* pCI) {
 
 #ifdef Z_EMIT_NUMBERING
 
-  Card_Emit *p_emit_inducted = new Card_Emit;
+  RASSERT(pCI->E.p_emit);
 
   for (Kid xEmit(this); xEmit.bEach(CK_EXPR); /**/) {
     Card_Expr *p_expr_arriving = xEmit.p_expr();
@@ -377,10 +377,12 @@ Card_Emit* Card_Emit::pInduct(CardIter* pCI) {
         continue;
 
     Card_Expr *p_expr_inducted = p_expr_arriving->pInduct(pCI,xEmit.i_Child()+1);
-    p_emit_inducted->vAppendChild(p_expr_inducted);
+    pCI->E.p_emit->vAppendChild(p_expr_inducted);
   }
 
-  p_emit_inducted->vRenumberAll_expr();
+  pCI->E.p_emit->vRenumberAll_expr();
+
+  return pCI->E.p_emit;
 #else
   Card_Emit *p_emit_inducted = new Card_Emit;
 
@@ -398,8 +400,8 @@ Card_Emit* Card_Emit::pInduct(CardIter* pCI) {
 
   p_emit_inducted->vRenumberAll_expr();
 
-#endif
   return p_emit_inducted;
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
