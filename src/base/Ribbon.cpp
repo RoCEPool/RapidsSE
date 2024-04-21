@@ -216,9 +216,14 @@ void Ribbon::vPinSubRibbon(i8 i_Line, i8 i_Char, Ribbon* pSubRibbon)
   i8 nLines = pSubRibbon->nItems();
   for (i8 i_RibbonLine = 0; i_RibbonLine < nLines; i_RibbonLine++) {
     RibbonLine* pSubLine = pSubRibbon->pGet(i_RibbonLine);
-    
-    Stz* szSubText = pSubLine->szText();
-    vPutText(i_Line++,i_Char,szSubText);
+
+    Stz* szSubLineMargin = pSubLine->szMargin();
+    vPutText(i_Line, i_Char, szSubLineMargin);
+
+    Stz* szSubLineText = pSubLine->szText();
+    vPutText(i_Line, i_Char+5, szSubLineText);
+
+    i_Line++;
   }
 }
 
@@ -324,6 +329,9 @@ void Ribbon::vAddLine(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
 
   RibbonLine* pRibbonLine = new RibbonLine;
+
+  pRibbonLine->vMargin(szMargin());
+
   vAppend(pRibbonLine);
 }
 

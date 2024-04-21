@@ -407,12 +407,12 @@ void Board::vPinCards(CardIter* pCI, Ribbon* pRibbon)
 
   Ribbon* pSubRibbon = new Ribbon;
 
-  Kid xBI(m_pDeck);
+  Kid xDeck(m_pDeck);
 
   i8 nCount = 0;
 
-  while (xBI.bEach()) {
-    Card* pChild = xBI.pChild();
+  while (xDeck.bEach()) {
+    Card* pChild = xDeck.pChild();
     eCK eChild = pChild->eCard();
 
     if (! nCount++)

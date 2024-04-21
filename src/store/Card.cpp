@@ -1475,6 +1475,8 @@ void Card::vPrintRecursive(CardIter* pCI, i8 iDepth, Card* pParent,
   if (0 == iDepth)
     vPrintHeader(pCI,pRibbon);
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   if (bChanged() && bMark1(MARK_BLANK))
     vMark1(MARK_CHANGED);
 
@@ -2203,9 +2205,6 @@ void Card::vPrint_depth0(CardIter* pCI, Ribbon* pRibbon, i8 iDepth)
 
   vPrintFacets(pCI,pRibbon, iDepth);
   vPrintProperties(pCI,pRibbon, iDepth);
-
-  if (CK_c_STAGE == m_eCard)
-    pRibbon->vMargin(szFacet(SF_STG_NM));
 }
 
 /*----------------------------------------------------------------------------*/
