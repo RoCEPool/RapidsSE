@@ -2319,8 +2319,11 @@ void Card::vPrint_expr(CardIter* pCI, Ribbon* pRibbon, i8 iDepth)
       continue;
     s256 sFacet;
     vFormatFacet(sFacet,i_Facet_secondary);
-    pRibbon->vSprintNL(true, "<%s"_Stz,
+
+    i8 i_Char = C_UNKNOWN;
+    pRibbon->vSprint(i_Char, "<%s"_Stz,
                        sFacet.szStz());
+    pRibbon->vNewLine();
   }
 }
 

@@ -444,10 +444,12 @@ void Board::vPinTitle(Ribbon* pRibbon)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pRibbon->vSprintNL(false, "PrintBoard: %s/%lld -- %s"_Stz,
+  i8 i_Char = C_UNKNOWN;
+  pRibbon->vSprint(i_Char, "PrintBoard: %s/%lld -- %s"_Stz,
                      aXF[m_pBench->eXform()],
                      m_pBench->nTransformPrint_inc(),
                      aXF_desc[m_pBench->eXform()]);
+  pRibbon->vNewLine();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

@@ -276,52 +276,6 @@ void Ribbon::vSprint(i8& ri_Char, Stz* szFormat, ...)
 }
 
 /*----------------------------------------------------------------------------*/
-/* sprint at current coord                                                    */
-/*----------------------------------------------------------------------------*/
-void Ribbon::vSprintNL(Stz* szFormat, ...)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_RIBBON, _FOOTER_);
-
-  s4K sText;
-
-  va_list xArgs;
-  va_start(xArgs,szFormat);
-
-  vFormatLeft(sText,szFormat,xArgs);
-  vPutText(m_i_Line, m_i_Char, sText);
-
-  va_end(xArgs);
-
-  vNewLine();
-}
-
-/*----------------------------------------------------------------------------*/
-/* sprint at current coord                                                    */
-/*----------------------------------------------------------------------------*/
-void Ribbon::vSprintNL(bool bRight, Stz* szFormat, ...)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_RIBBON, _FOOTER_);
-
-  s4K sText;
-
-  va_list xArgs;
-  va_start(xArgs,szFormat);
-
-  if (bRight) {
-    vFormatRight(sText,szFormat,xArgs);
-    vPutText(m_i_Line, m_i_Char, sText);
-  }
-  else {
-    vFormatLeft(sText,szFormat,xArgs);
-    vPutText(m_i_Line, m_i_Char, sText);
-  }
-
-  va_end(xArgs);
-
-  vNewLine();
-}
-
-/*----------------------------------------------------------------------------*/
 /* trim all the lines                                                         */
 /*----------------------------------------------------------------------------*/
 void Ribbon::vTrim(void)

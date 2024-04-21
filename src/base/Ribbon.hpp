@@ -64,8 +64,6 @@ namespace BASE
     void vPutText(i8 i_Line, i8 i_Char, Stz* szText2);
 
     void vSprint(i8& ri_Char, Stz* szFormat, ...);
-    void vSprintNL(Stz* szFormat, ...);
-    void vSprintNL(bool bRight, Stz* szFormat, ...);
 
     void vTrim(void);
 
