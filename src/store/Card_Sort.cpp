@@ -86,9 +86,10 @@ void Card_Sort::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
   if ((pCI->E.p_emit = pCI->E.p_sort->pSub_emit()))
     pCI->E.p_sort->vDeleteSub(pCI->E.p_emit);
 
-  Card_Emit* p_emit_sort =  pCI->Arriving.m_pEmit->pInduct(pCI);
+  pCI->E.p_emit =  pCI->Arriving.m_pEmit->pInduct(pCI);
+  pCI->E.p_sort->vAppendChild(pCI->E.p_emit);
 
-  for (Kid xEmit_sort(p_emit_sort); xEmit_sort.bEach(); /**/) {
+  for (Kid xEmit_sort(pCI->E.p_emit); xEmit_sort.bEach(); /**/) {
     Card_Expr* p_expr_emit_sort = xEmit_sort.p_expr();
     Card_Expr* p_expr_key = pCI->E.p_key->pDecode_scalar_expr_Via_symbol(pCI,p_expr_emit_sort->pSymbol());
     if (! p_expr_key)
@@ -99,7 +100,6 @@ void Card_Sort::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
 
 
 
-  pCI->E.p_sort->vAppendChild(p_emit_sort);
 
   pCI->vSnapIf_arriving();
 }
