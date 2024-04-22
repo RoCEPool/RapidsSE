@@ -189,7 +189,7 @@ void XF_Synthesise_pipelineDef::vCraftOpDef(void)
 
   RASSERT(m_pStageDef);
 
-  if (m_pCI->E.p_Op->bIsCard(CK_o_ORDAGG))
+  if (m_pCI->E.p_Op->bIsCard(CK_o_PDSROW))
     vDebugPoint();
 
   if (m_pCI->E.p_Op->bEither(CK_o_CAST, CK_c_SEND, CK_NONE))
@@ -245,6 +245,7 @@ void XF_Synthesise_pipelineDef::vCraftArgDefs(void)
     case CK_o_KEYNOTEXISTS: p_OP->vRpn_keyNotExists(m_pCI, sExpr, _pCard_KeyNotExists(p_OP)); break;
     case CK_o_LIMIT:        p_OP->vRpn_limit       (m_pCI, sExpr, _pCard_Limit(p_OP));        break;
     case CK_o_ORDAGG:       p_OP->vRpn_ordAgg      (m_pCI, sExpr, _pCard_OrdAgg(p_OP));       break;
+    case CK_o_PDSROW:       p_OP->vRpn_pdsRow      (m_pCI, sExpr, _pCard_PdsRow(p_OP));      break;
     case CK_o_PROJECT:      p_OP->vRpn_project     (m_pCI, sExpr, _pCard_Project(p_OP));      break;
     case CK_o_SCAN:         p_OP->vRpn_scan        (m_pCI, sExpr, _pCard_Scan(p_OP));         break;
     case CK_o_SORT:         p_OP->vRpn_sort        (m_pCI, sExpr, _pCard_Sort(p_OP));         break;
@@ -343,6 +344,9 @@ void XF_Synthesise_pipelineDef::vCraftArgDefs(void)
 
     case CK_o_ORDAGG:
       m_pOpDef->vAppend(new ArgDef(0, "expr"_Stz, sExpr));
+      break;
+
+    case CK_o_PDSROW:
       break;
 
     case CK_o_PROJECT:

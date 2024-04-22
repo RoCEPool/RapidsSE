@@ -515,6 +515,14 @@ void OpDef::vValidate(void)
     RASSERT(m_pStreamDef_emitted);
   }
   else
+  if (m_sOpNm.bSame("PDSROW"_Stz)) {
+    RASSERT(0 == nArgs());
+
+    RASSERT(m_pStreamDef_arriving);
+    RASSERT(m_pStreamDef_emitted);
+    RASSERT(!m_pColInj);
+  }
+  else
   if (m_sOpNm.bSame("PROJECT"_Stz)) {
     RASSERT(1 == nArgs());
     RASSERT(pArgDef("expr"_Stz));

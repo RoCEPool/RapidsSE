@@ -296,6 +296,7 @@ bool Card::bIsOp(eCK eCard)
     case CK_o_KEYNOTEXISTS:
     case CK_o_LIMIT:
     case CK_o_ORDAGG:
+    case CK_o_PDSROW:
     case CK_o_PROJECT:
     case CK_o_SCAN:
     case CK_o_SORT:
