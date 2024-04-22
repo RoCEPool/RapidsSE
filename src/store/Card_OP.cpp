@@ -541,7 +541,6 @@ void Card_OP::vRestate_emit(CardIter* pCI)
   eCK eCard_OP = pCI->E.p_Op->eCard();
   switch (eCard_OP) {
 
-    case CK_c_COMBINED:
     case CK_c_SEND:
     case CK_c_STAGE:
     case CK_o_CALL:

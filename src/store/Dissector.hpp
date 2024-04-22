@@ -46,7 +46,6 @@ namespace STORE
     Card* pOp_absJoin     (void);
     Card* pOp_aggreg      (void);
     Card* pOp_call        (void);
-    Card* pOp_combined    (void);
     Card* pOp_consume     (void);
     Card* pOp_debug       (void);
     Card* pOp_filter      (void);

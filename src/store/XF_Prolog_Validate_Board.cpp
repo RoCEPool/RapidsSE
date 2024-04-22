@@ -80,7 +80,6 @@ void XF_Prolog_Validate_Board::vValidate(void)
 
       //case CK_o_SCAN: p_scan = m_pCI->G.p_scan; break;
 
-      case CK_c_COMBINED:
       case CK_c_SEND:
         if (! p_OP) {
           Error xError(EC_MISSING_OP,(Stz*)__FILE__,__LINE__);

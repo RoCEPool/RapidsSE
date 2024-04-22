@@ -161,7 +161,6 @@ bool XF_Optimise_Early_projection::bEarly_needed_OP(void)
     case CK_o_AGGREG:
     case CK_o_CALL:
     case CK_o_CAST:
-    case CK_c_COMBINED:
     case CK_o_CORRELATION:
     case CK_o_CROSSJOIN:
     case CK_o_FILTER:
@@ -263,7 +262,6 @@ bool XF_Optimise_Early_projection::bEarly_projection_OP(void)
     case CK_o_AGGREG:
     case CK_o_CALL:
     case CK_o_CAST:
-    case CK_c_COMBINED:
     case CK_o_CORRELATION:
     case CK_o_CROSSJOIN:
     case CK_o_FILTER:

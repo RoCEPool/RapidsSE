@@ -192,7 +192,7 @@ void XF_Synthesise_pipelineDef::vCraftOpDef(void)
   if (m_pCI->E.p_Op->bIsCard(CK_o_ORDAGG))
     vDebugPoint();
 
-  if (m_pCI->E.p_Op->bEither(CK_o_CAST, CK_c_COMBINED, CK_c_SEND, CK_NONE))
+  if (m_pCI->E.p_Op->bEither(CK_o_CAST, CK_c_SEND, CK_NONE))
     return;
 
   if (m_pCI->E.p_Op->bIsCard(CK_o_SCAN)) {
@@ -252,7 +252,6 @@ void XF_Synthesise_pipelineDef::vCraftArgDefs(void)
     case CK_o_WHERE:        p_OP->vRpn_where       (m_pCI, sExpr, _pCard_Where(p_OP));        break;
 
     case CK_o_CAST:
-    case CK_c_COMBINED:
     case CK_c_SEND:
       break;
 

@@ -112,7 +112,7 @@ Card::Card(eCK eCard, i8 iFixedDepth)
   m_xSymbol.vCard(this);
   MemLib::vZero(md_Coord, sizeof(md_Coord), CN_CARD);
 
-  if (CK_c_COMBINED == eCard)
+  if (CK_o_SORT == eCard)
     vDebugPoint();
 
 #ifdef Z_NO_STREAMKEY
@@ -282,7 +282,6 @@ bool Card::bIsOp(eCK eCard)
     case CK_o_AGGREG:
     case CK_o_CALL:
     case CK_o_CAST:
-    case CK_c_COMBINED:
     case CK_o_CORRELATION:
     case CK_o_CROSSJOIN:
     case CK_o_FILTER:

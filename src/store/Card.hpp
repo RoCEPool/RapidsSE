@@ -35,7 +35,6 @@ namespace STORE
   class Card_CallOp;
   class Card_Clause;
   class Card_RlnConj;
-  class Card_Combined;
   class Card_CONJ;
   class Card_Constraint;
   class Card_CorrCols;

@@ -208,7 +208,7 @@ void Dissector::vOp(i8 i_OpSpec)
        if (m_szOpNm->bSame("abstractJoin"_Stz)) pCard = pOp_absJoin     ();
   else if (m_szOpNm->bSame("aggreg"_Stz))       pCard = pOp_aggreg      ();
   else if (m_szOpNm->bSame("call"_Stz))         pCard = pOp_call        ();
-  else if (m_szOpNm->bSame("combined"_Stz))     return;//pCard = pOp_combined    ();
+  else if (m_szOpNm->bSame("combined"_Stz))     return;
   else if (m_szOpNm->bSame("consumeOp"_Stz))    pCard = pOp_consume     ();
   else if (m_szOpNm->bSame("debug"_Stz))        pCard = pOp_debug       ();
   else if (m_szOpNm->bSame("filter"_Stz))       pCard = pOp_filter      ();
@@ -337,20 +337,6 @@ Card* Dissector::pOp_call(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   return p_call;
-}
-
-/*----------------------------------------------------------------------------*/
-/* dissect : combined <iGenerate>                                             */
-/*----------------------------------------------------------------------------*/
-Card* Dissector::pOp_combined(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
-      
-  Card_Combined* p_combine = new Card_Combined;
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  return p_combine;
 }
 
 /*----------------------------------------------------------------------------*/

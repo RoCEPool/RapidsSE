@@ -1646,7 +1646,6 @@ Card* CardIter::pMember(eCK eCard)
     case CK_CALLOP:         return E.p_callOp;
     case CK_o_CAST:         return E.p_cast;
     case CK_CLAUSE:         return E.p_clause;
-    case CK_c_COMBINED:     return E.p_combined;
     case CK_s_CONSTRAINT:   return E.p_constraint;
     case CK_CORRCOLS:       return E.p_corrCols;
     case CK_o_CORRELATION:  return E.p_correlation;
@@ -1790,7 +1789,6 @@ void CardIter::vMember(eCK eCard, Card* pCard)
     case CK_o_CAST: E.p_cast              = _pCard_Cast(pCard); break;
     case CK_CLAUSE: E.p_clause            = _pCard_Clause(pCard); break;
 
-    case CK_c_COMBINED: E.p_combined          = _pCard_Combined(pCard); break;
     case CK_s_CONSTRAINT: E.p_constraint        = _pCard_Constraint(pCard); break;
     case CK_CORRCOLS: E.p_corrCols          = _pCard_CorrCols(pCard); break;
     case CK_o_CORRELATION: E.p_correlation       = _pCard_Correlation(pCard); break;
@@ -2301,7 +2299,6 @@ void CardIter::vResetMembers(void)
   E.p_call             = nullptr;
   E.p_cast             = nullptr;
   E.p_rlnConj          = nullptr;
-  E.p_combined         = nullptr;
   E.p_constraint       = nullptr;
   E.p_corrCols         = nullptr;
   E.p_correlation      = nullptr;
@@ -2617,7 +2614,6 @@ void CardIter::vValidateChildren(Card* pCard, i8 iDepth)
       case CK_CALLOP:         E.p_callOp->vValidate(this, iDepth, pCard);  break;
       case CK_o_CAST:         E.p_cast->vValidate(this, iDepth, pCard);  break;
       case CK_CLAUSE:         E.p_clause->vValidate(this, iDepth, pCard);  break;
-      case CK_c_COMBINED:     E.p_combined->vValidate(this, iDepth, pCard);  break;
       case CK_s_CONSTRAINT:   E.p_constraint->vValidate(this, iDepth, pCard);  break;
       case CK_CORRCOLS:       E.p_corrCols->vValidate(this, iDepth, pCard);  break;
       case CK_o_CORRELATION:  E.p_correlation->vValidate(this, iDepth, pCard);  break;

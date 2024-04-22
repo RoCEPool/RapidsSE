@@ -10,7 +10,6 @@ enum eCK : i8 // card kind
   // main cards
   //  construction cards
   /* */ CK_c_ABSJOIN,
-  /* */ CK_c_COMBINED,
   /* */ CK_c_FLAT,
   /* */ CK_c_FOLD,
   /* */ CK_c_SEND,

@@ -11,7 +11,6 @@ Stz* aCK[CK_ENUMS]
   /* */ "NONE"_Stz,
 
   /* */ "CK_c_ABSJOIN"_Stz,      // CK_c_ABSJOIN
-  /* */ "CK_c_COMBINED"_Stz,     // CK_c_COMBINED
   /* */ "CK_c_FLAT"_Stz,         // CK_c_FLAT
   /* */ "CK_c_FOLD"_Stz,         // CK_c_FOLD
   /* */ "CK_c_SEND"_Stz,         // CK_c_SEND
@@ -150,7 +149,6 @@ Stz* aCK_short[CK_ENUMS]
   /* */ "NONE"_Stz,
 
   /* */ "AbsJoin"_Stz,         // CK_c_ABSJOIN
-  /* */ "Combined"_Stz,        // CK_c_COMBINED
   /* */ "Flat"_Stz,            // CK_c_FLAT
   /* */ "Fold"_Stz,            // CK_c_FOLD
   /* */ "SendSE"_Stz,          // CK_c_SEND

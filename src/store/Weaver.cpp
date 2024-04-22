@@ -308,9 +308,6 @@ void Weaver::vOp(Card* pCard, bool bCommented)
 
   eCK eCard = pCard->eCard();
 
-  if (CK_c_COMBINED == eCard)
-    return;
-
   if (CK_c_SEND == eCard)
     if (! AM::JOB::bHasTag(C_OPTIMISE_PASSTHRU))
       return;

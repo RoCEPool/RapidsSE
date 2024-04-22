@@ -60,7 +60,6 @@ namespace STORE
     Card_CallOp *        p_callOp;
     Card_Cast *          p_cast;
     Card_Clause *        p_clause;
-    Card_Combined *      p_combined;
     Card_Constraint *    p_constraint;
     Card_CorrCols *      p_corrCols;
     Card_Correlation *   p_correlation;

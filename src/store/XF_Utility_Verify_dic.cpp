@@ -100,7 +100,6 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
     case CK_o_AGGREG:
     case CK_o_CALL:
     case CK_o_CAST:
-    case CK_c_COMBINED:
     case CK_o_CORRELATION:
     case CK_o_CROSSJOIN:
     case CK_o_FILTER:

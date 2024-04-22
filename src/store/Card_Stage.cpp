@@ -218,7 +218,7 @@ void Card_Stage::vReinstate_stages_v0(CardIter* pCI)
     if (CK_o_PROJECT == e_main || CK_o_AGGREG == e_main)
       bSawProjectOp = true;
   }
-  
+
   i8 i_End = C_UNKNOWN;
   vAddNext(pCI, p_main, i_End,""_Stz);
 }
