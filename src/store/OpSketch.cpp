@@ -242,7 +242,7 @@ void OpSketch::vCopyColPpg(ColPpg* pColPpg)
 {
 	_precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
 
-	m_pColPpg = new ColPpg(pColPpg->m_nArriving);
+	m_pColPpg = new ColPpg(pColPpg->m_nArriving,__FILE__,__LINE__);
 
 	m_pColPpg->m_nPropagated = pColPpg->m_nPropagated;
 	for (i8 i_Col = 0; i_Col < pColPpg->m_nPropagated; i_Col++) {

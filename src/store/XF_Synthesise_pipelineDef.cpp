@@ -639,7 +639,7 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(void)
 
   //i8 nArriving = m_pCI->G.p_arriving->nChildCards();
   i8 nArriving = m_pCI->Arriving.m_pEmit->nChildCards();
-  ColPpg* pColPpg = new ColPpg(nArriving);
+  ColPpg* pColPpg = new ColPpg(nArriving,__FILE__,__LINE__);
   m_pOpDef->vColPpg(pColPpg);
 
   vCraftColPpg(pColPpg, m_pCI->E.p_Op);
