@@ -89,6 +89,8 @@ void XF_Epilog_Add_inflate::vBifurcate_inflate(void)
       if (m_pCI->E.p_injectable)
         m_pCI->E.p_inflate->vAppendChild(m_pCI->E.p_injectable->pDupCardRecursive());
 
+      m_pCI->vSnapIf_arriving();
+
       continue;
     }
 
@@ -101,12 +103,16 @@ void XF_Epilog_Add_inflate::vBifurcate_inflate(void)
       m_pCI->vBurst(m_pCI->E.p_Op);
 
       if (m_pCI->E.p_emit)
-        m_pCI->E.p_pdsRow->vAppendChild(m_pCI->E.p_emit->pDupCardRecursive());
+        m_pCI->E.p_pdsRow->vAppendChild(m_pCI->Arriving.m_pEmit->pDupCardRecursive());
+
+      m_pCI->vSnapIf_arriving();
 
       (void)m_pCI->bEachOp();
       continue;
     }
 #endif
+
+    m_pCI->vSnapIf_arriving();
   }
 
   m_pCI->vEndTransform(__LINE__);
