@@ -1715,6 +1715,7 @@ Card* CardIter::pMember(eCK eCard)
     case CK_OUTERJOIN:      return E.p_outerJoin;
 
     case CK_PAYLOADCELLS:   return E.p_payloadCells;
+    case CK_o_PDSROW:       return E.p_pdsRow;
     case CK_o_PROJECT:      return E.p_project;
 
     case CK_RELNOP:         return E.p_relnOp;
@@ -1859,6 +1860,7 @@ void CardIter::vMember(eCK eCard, Card* pCard)
     case CK_OUTERJOIN: E.p_outerJoin         = _pCard_OuterJoin(pCard); break;
 
     case CK_PAYLOADCELLS: E.p_payloadCells      = _pCard_PayloadCells(pCard); break;
+    case CK_o_PDSROW: E.p_pdsRow           = _pCard_PdsRow(pCard); break;
     case CK_o_PROJECT: E.p_project           = _pCard_Project(pCard); break;
 
     case CK_RELNOP: E.p_relnOp            = _pCard_RelnOp(pCard); break;
@@ -2370,6 +2372,7 @@ void CardIter::vResetMembers(void)
 
   E.p_payload          = nullptr;
   E.p_payloadCells     = nullptr;
+  E.p_pdsRow           = nullptr;
   E.p_project          = nullptr;
 
   E.p_relnOp           = nullptr;
@@ -2683,6 +2686,7 @@ void CardIter::vValidateChildren(Card* pCard, i8 iDepth)
       case CK_OUTERJOIN:      E.p_outerJoin->vValidate(this, iDepth, pCard);  break;
 
       case CK_PAYLOADCELLS:   E.p_payloadCells->vValidate(this, iDepth, pCard);  break;
+      case CK_o_PDSROW:       E.p_pdsRow->vValidate(this, iDepth, pCard);  break;
       case CK_o_PROJECT:      E.p_project->vValidate(this, iDepth, pCard);  break;
 
       case CK_RELNOP:         E.p_relnOp->vValidate(this, iDepth, pCard);  break;

@@ -103,6 +103,7 @@
 #include "Card_OuterJoin.hpp"
 
 #include "Card_PayloadCells.hpp"
+#include "Card_PdsRow.hpp"
 #include "Card_Project.hpp"
 
 #include "Card_RelnOp.hpp"

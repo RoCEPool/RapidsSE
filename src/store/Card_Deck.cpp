@@ -354,6 +354,7 @@ void Card_Deck::vValidate(CardIter* pCI)
       case CK_OUTERJOIN:    pCI->E.p_outerJoin->vValidate(pCI, 1, this); break;
 
       case CK_PAYLOADCELLS: pCI->E.p_payloadCells->vValidate(pCI, 1, this); break;
+      case CK_o_PDSROW:      pCI->E.p_pdsRow->vValidate(pCI, 1, this); break;
       case CK_o_PROJECT:      pCI->E.p_project->vValidate(pCI, 1, this); break;
 
       case CK_RLNCONJ:      pCI->E.p_rlnConj->vValidate(pCI, 1, this); break;
