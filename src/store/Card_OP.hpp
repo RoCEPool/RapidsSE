@@ -63,6 +63,7 @@ namespace STORE
     void vRpn_keyNotExists_constraint(CardIter* pCI, String* psRpnExpr, Card_KeyNotExists* p_keyNotExists);
     void vRpn_limit       (CardIter* pCI, String* psRpnExpr, Card_Limit*     p_limit);
     void vRpn_ordAgg      (CardIter* pCI, String* psRpnExpr, Card_OrdAgg*    p_ordAgg);
+    void vRpn_pdsRow      (CardIter* pCI, String* psRpnExpr, Card_PdsRow*    p_pdsRow);
     void vRpn_project     (CardIter* pCI, String* psRpnExpr, Card_Project*   p_project);
     void vRpn_scan        (CardIter* pCI, String* psRpnExpr, Card_Scan*      p_scan);
     void vRpn_sort        (CardIter* pCI, String* psRpnExpr, Card_Sort*      p_sort);

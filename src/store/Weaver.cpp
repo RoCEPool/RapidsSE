@@ -329,6 +329,7 @@ void Weaver::vOp(Card* pCard, bool bCommented)
     case CK_o_KEYNOTEXISTS: vArg_keyNotExists (sOpArgs, _pCard_KeyNotExists(pCard)); break;
     case CK_o_LIMIT:        vArg_limit        (sOpArgs, _pCard_Limit(pCard));        break;
     case CK_o_ORDAGG:       vArg_ordAgg       (sOpArgs, _pCard_OrdAgg(pCard));       break;
+    case CK_o_PDSROW:       vArg_pdsRow       (sOpArgs, _pCard_PdsRow(pCard));       break;
     case CK_o_PROJECT:      vArg_project      (sOpArgs, _pCard_Project(pCard));      break;
     case CK_o_SCAN:         vArg_scan         (sOpArgs, _pCard_Scan(pCard));         break;
     case CK_c_SEND:         vArg_send         (sOpArgs, _pCard_Send(pCard));         break;
@@ -681,6 +682,16 @@ void Weaver::vArg_ordAgg(String* psOpArgs, Card_OrdAgg* pCard_OrdAgg)
   pCard_OrdAgg->vRpn_ordAgg(m_pCI, sRpnExpr, pCard_OrdAgg);
 
   psOpArgs->vCatSprint("\"%s \""_Stz, sRpnExpr.szStz());
+}
+
+/*----------------------------------------------------------------------------*/
+/* weave : pdsRow                                                             */
+/*----------------------------------------------------------------------------*/
+void Weaver::vArg_pdsRow(String* psOpArgs, Card_PdsRow* pCard_pdsRow)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
+  UNUSED(psOpArgs);
+  UNUSED(pCard_pdsRow);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -1310,6 +1310,17 @@ void Card_OP::vRpn_ordAgg(CardIter* pCI, String* psRpnExpr, Card_OrdAgg* p_ordAg
 }
 
 /*----------------------------------------------------------------------------*/
+/* produce <expr> for pdsRow                                                  */
+/*----------------------------------------------------------------------------*/
+void Card_OP::vRpn_pdsRow(CardIter* pCI, String* psRpnExpr, Card_PdsRow* p_pdsRow)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  UNUSED(pCI);
+  UNUSED(psRpnExpr);
+  UNUSED(p_pdsRow);
+}
+
+/*----------------------------------------------------------------------------*/
 /* produce <expr> for project op                                              */
 /*----------------------------------------------------------------------------*/
 void Card_OP::vRpn_project(CardIter* pCI, String* psRpnExpr, Card_Project* p_project)
@@ -1595,7 +1606,7 @@ void Card_OP::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 
   RASSERT(1 == iDepth);
 
-  if (eCard() == CK_o_INFLATE)
+  if (eCard() == CK_o_INFLATE || eCard() == CK_o_PDSROW)
     return;
 
   if (pCI->pBoard()->pState()->bHasName(aOH[OH_PROLOG]))
