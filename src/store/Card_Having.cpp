@@ -64,9 +64,9 @@ void Card_Having::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
 
   pCI->E.p_having->pSymbol()->Y_vSet(P_Smoothed);
 
-  bool bBump = ! pCarryForward->Project_postAgg.m_bSeen;
+  bool bBump = ! pCarryForward->Carry.Project_postAgg.m_bSeen;
 
-  if (pCarryForward->Having.m_bCorrect_After_Inject)
+  if (pCarryForward->Carry.Having.m_bCorrect_After_Inject)
     vCorrect_After_Inject(pCI, bBump);
 
   pCI->vSnapIf_arriving();

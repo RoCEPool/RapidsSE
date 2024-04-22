@@ -195,7 +195,7 @@ void Card_GbyAgg::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
 
   pCI->E.p_gbyAgg->pSymbol()->Y_vSet(P_Smoothed);
 
-  if (pCarryForward->GbyAgg.m_bInject_foldExpr) {
+  if (pCarryForward->Carry.GbyAgg.m_bInject_foldExpr) {
     pCI->E.p_gbyAgg->vInject_foldExpr(pCI);
   }
 
