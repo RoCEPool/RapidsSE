@@ -19,12 +19,11 @@ __aFooterFunction(OpDef)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 OpDef::OpDef(i8 i_Op, Card* pCard)
-    : Object(CN_OPDEF)
+    : AbstractDef(CN_OPDEF)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_OPDEF, _FOOTER_);
 
   vOp(i_Op);
-  m_pCard = pCard;
 
   //vOpNm(szOpNm);
 

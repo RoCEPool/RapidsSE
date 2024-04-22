@@ -12,10 +12,15 @@
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-AbstractDef::AbstractDef(eCN eClass)
+AbstractDef::AbstractDef(eCN eClass, const char* azFile, i8 iLine)
     : Object(eClass)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
+
+  if (azFile) {
+    m_sFile = azFile;
+  }
+  m_iLine = iLine;
 
   _postcondition_(_ADDRESS_,_MAGIC_);
 }

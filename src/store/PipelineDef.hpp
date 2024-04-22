@@ -3,12 +3,13 @@
 /*============================================================================*/
 #pragma once
 
+#include "AbstractDef.hpp"
 #include "StageDef.hpp"
 #include "ListExo2_t.hpp"
 
 namespace STORE
 {
-  class PipelineDef : public Object
+  class PipelineDef : public AbstractDef
                     , public ListExo2_t<StageDef>
   {
   public:

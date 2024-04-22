@@ -3,6 +3,7 @@
 /*============================================================================*/
 #pragma once
 
+#include "AbstractDef.hpp"
 #include "OpDef.hpp"
 #include "ListExo2_t.hpp"
 #include "Card_Stage.hpp"
@@ -10,7 +11,7 @@
 
 namespace STORE
 {
-  class StageDef : public Object
+  class StageDef : public AbstractDef
                  , public ListExo2_t<OpDef>
   {
   private:
@@ -28,7 +29,6 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    StageDef(void);
     StageDef(i8 i_Stage, Stz* szStageNm, Card_Stage* p_stage);
     ~StageDef(void) noexcept(false);
 

@@ -18,23 +18,8 @@ __aFooterFunction(StageDef)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-StageDef::StageDef(void)
-    : Object(CN_STAGEDEF)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_STAGEDEF, _FOOTER_);
-
-  m_i_Stage = C_UNKNOWN;
-  m_pCard_Stage = nullptr;
-  m_pCode = nullptr;
-
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_STAGEDEF,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
 StageDef::StageDef(i8 i_Stage, Stz* szStageNm, Card_Stage* p_stage)
-    : Object(CN_STAGEDEF)
+    : AbstractDef(CN_STAGEDEF)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_STAGEDEF, _FOOTER_);
 

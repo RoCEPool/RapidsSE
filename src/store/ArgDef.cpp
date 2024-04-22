@@ -17,7 +17,7 @@ __aFooterFunction(ArgDef)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 ArgDef::ArgDef(i8 i_Arg, Stz* szArgNm, Stz* szArgVal)
-    : Object(CN_ARGDEF)
+    : AbstractDef(CN_ARGDEF)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_ARGDEF, _FOOTER_);
 
