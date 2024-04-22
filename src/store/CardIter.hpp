@@ -199,6 +199,7 @@ namespace STORE
     void  vNewMember(eCK eCard);
     void  vNewMember(eCK eCard, Symbol xSymbol);
 
+    eCK  ePeekNext(void);
     Card* pPeekNext(void);
     Card* pPeekNextIf(eCK eCard);
     Card* pPeekPrev(void);

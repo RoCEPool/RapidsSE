@@ -1966,6 +1966,19 @@ void CardIter::vNewMember(eCK eCard, Symbol xSymbol)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+eCK CardIter::ePeekNext(void)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  if (Card* pNext = pPeekNext())
+    return pNext->eCard();
+
+  return CK_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 Card* CardIter::pPeekNext(void)
 {
   _precondition_(_MAGIC_, _FOOTER_);

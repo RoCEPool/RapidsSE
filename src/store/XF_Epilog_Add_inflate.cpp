@@ -94,26 +94,36 @@ void XF_Epilog_Add_inflate::vBifurcate_inflate(void)
       continue;
     }
 
+    m_pCI->vSnapIf_arriving();
+  }
+
 #ifdef Z_PDSROW
-    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-    if (CK_o_INDEXJOIN == m_pCI->E.e_Op) {
-      m_pCI->E.p_pdsRow = new Card_PdsRow;
-      m_pCI->vInsertBefore(m_pCI->E.p_pdsRow, m_pCI->E.p_indexJoin);
+  m_pCI->vBeginEach();
+  while (m_pCI->bEachOp()) {
 
-      m_pCI->vBurst(m_pCI->E.p_Op);
-
-      if (m_pCI->E.p_emit)
-        m_pCI->E.p_pdsRow->vAppendChild(m_pCI->Arriving.m_pEmit->pDupCardRecursive());
-
+    if (CK_c_STAGE != m_pCI->E.e_Op) {
       m_pCI->vSnapIf_arriving();
-
-      (void)m_pCI->bEachOp();
       continue;
     }
-#endif
+
+    eCK eNext = m_pCI->ePeekNext();
+    if (CK_o_SCAN == eNext ||
+        CK_o_INDEXSCAN == eNext) {
+      m_pCI->vSnapIf_arriving();
+      continue;
+    }
+
+    m_pCI->E.p_pdsRow = new Card_PdsRow;
+    m_pCI->vInsertAfter(m_pCI->E.p_pdsRow, m_pCI->E.p_Op);
+
+    m_pCI->vBurst(m_pCI->E.p_Op);
+
+    if (m_pCI->Arriving.m_pEmit)
+      m_pCI->E.p_pdsRow->vAppendChild(m_pCI->Arriving.m_pEmit->pDupCardRecursive());
 
     m_pCI->vSnapIf_arriving();
   }
+#endif
 
   m_pCI->vEndTransform(__LINE__);
 }
