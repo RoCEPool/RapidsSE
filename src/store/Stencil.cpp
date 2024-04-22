@@ -243,19 +243,21 @@ eEC Stencil::eSynthesise(StageDef *pStageDef)
 		}
 
 		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-		// generate the code for inflateRow before handling the current operator
-		if (!bInflateGenerated) {
+		// generate the code for pdsRow
+		if (pOpDef->szOpNm()->bSame("pdsRow"_Stz)) {
 
 			m_eHandlerKind = HK_PDSROWBUFFER;
 			m_sLabelLoop = "L_AdvanceNextRowT"_Stz;
 
 			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-			pOpSketch = pSketchInflateRow(pStageDef, pOpDef);
+			pOpSketch = pSketchPdsRow(pStageDef, pOpDef);
 			vAppend(pOpSketch);
 
 			bInflateGenerated = true;
 			m_ePreviousStencil = SR_IT;
 		}
+
+    RASSERT(bInflateGenerated);
 
 		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 		// generate the code for the aggregOP
@@ -729,9 +731,9 @@ OpSketch* Stencil::pSketchInflateCrw(StageDef* pStageDef, OpDef* pOpDef) {
 }
 
 /*----------------------------------------------------------------------------*/
-/* sketch inflate of row from rowBuffer                                       */
+/* sketch pdsRowBuffer handler                                                */
 /*----------------------------------------------------------------------------*/
-OpSketch* Stencil::pSketchInflateRow(StageDef* pStageDef, OpDef* pOpDef) {
+OpSketch* Stencil::pSketchPdsRow(StageDef* pStageDef, OpDef* pOpDef) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
 
@@ -742,14 +744,15 @@ OpSketch* Stencil::pSketchInflateRow(StageDef* pStageDef, OpDef* pOpDef) {
 
   i8 i_Op = pOpDef->i_Op();
 
-  // get the streamDefOut
+  // get the streamDefs
+  StreamDef *pStreamDefOut = pOpDef->m_pStreamDef_emitted;
   StreamDef *pStreamDefLft = pOpDef->m_pStreamDef_arriving;
 
   // create a new opSketch for this OP
   pOpSketch = new OpSketch(pStageDef, i_Op, ""_Stz, m_eHandlerKind, SK_INFLATE_ROW, SR_NONE, SR_IT, II_NONE);
 
   // set the streamDef's
-  pOpSketch->vStreamDefs(pStreamDefLft, nullptr, pStreamDefLft);
+  pOpSketch->vStreamDefs(pStreamDefLft, nullptr, pStreamDefOut);
 
   // make the labels
   sLabel.vSprint("L_InflateRowT"_Stz);
