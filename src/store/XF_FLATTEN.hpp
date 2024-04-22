@@ -26,7 +26,7 @@ namespace STORE
     CarryForward* pFold_nc_subQuery(CardIter* pCI, Stz* szFoldNm,
                                     eCK eCardWithSQ, eQO eWhatOp);
 
-    void vSmooth(CardIter* pCI, CarryForward* pCarryForward, bool bEarlyExit=false);
+    void vSmooth(CardIter* pCI);
 
     void vInto_KEYnotEXISTS(CardIter* pCI);
 

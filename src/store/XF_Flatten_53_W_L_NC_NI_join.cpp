@@ -102,7 +102,7 @@ void XF_Flatten_53_W_L_NC_NI_join::vFlatten(void)
 
   m_pCI->Carry.Table.m_bReproject = true;
 
-  vSmooth(m_pCI,nullptr);
+  vSmooth(m_pCI);
 
  // m_pCI->PRINTBOARD_dbg();
 

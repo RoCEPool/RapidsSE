@@ -89,7 +89,7 @@ void XF_Flatten_10_F::vFlatten(void)
   // smoothing
 
   m_pCI->Carry.Table.m_bReproject = true;
-   vSmooth(m_pCI,pCarryForward);
+   vSmooth(m_pCI);
 
   m_pCI->E.p_deck->vMarksClearRecursive();
 

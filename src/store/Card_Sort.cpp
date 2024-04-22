@@ -63,10 +63,9 @@ void Card_Sort::vDerive_streamKey(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* smooth                                                                     */
 /*----------------------------------------------------------------------------*/
-void Card_Sort::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
+void Card_Sort::vSmooth(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-  UNUSED(pCarryForward);
 
   pCI->E.p_key = pCI->E.p_sort->pSub_key();
 

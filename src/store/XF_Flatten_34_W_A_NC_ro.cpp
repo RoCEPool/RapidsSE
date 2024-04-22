@@ -92,7 +92,7 @@ void XF_Flatten_34_W_A_NC_ro::vFlatten(void)
   //RASSERT(m_pCI->bEachOp(CK_o_PROJECT,CK_t_EMIT));
   RASSERT(m_pCI->bEachOp(CK_c_FOLD));
 
-  vSmooth(m_pCI,pCarryForward);
+  vSmooth(m_pCI);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

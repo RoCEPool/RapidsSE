@@ -94,7 +94,7 @@ void XF_Flatten_32_W_A_NC_I::vFlatten(void)
 
   XF_Flatten_Left_subQuery::vRotate_Next(m_pCI);
 
-  vSmooth(m_pCI,pCarryForward);
+  vSmooth(m_pCI);
 
   m_pCI->E.p_deck->vMarksClearRecursive();
 

@@ -170,11 +170,9 @@ void Card_Where::vEarlyProject_recurse_update(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* smooth                                                                     */
 /*----------------------------------------------------------------------------*/
-void Card_Where::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
+void Card_Where::vSmooth(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  UNUSED(pCarryForward);
 
   pCI->E.p_where->pSymbol()->Y_vSet(P_Smoothed);
 

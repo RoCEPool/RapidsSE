@@ -93,7 +93,7 @@ void XF_Flatten_74_H_A_NC_ro::vFlatten(void)
 
   //m_pCI->PRINTBOARD_dbg();
 
-  vSmooth(m_pCI,pCarryForward);
+  vSmooth(m_pCI);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

@@ -18,8 +18,7 @@ namespace STORE
     Card_Project(eCK eCard);
    ~Card_Project(void) noexcept(false);
 
-    static void vUnproject_foldExpr(CardIter* pCI,
-                                    CarryForward* pCarryForward);
+    static void vUnproject_foldExpr(CardIter* pCI);
 
    Card_Emit* pCraft_emit_early(CardIter* pCI);
 
@@ -33,7 +32,7 @@ namespace STORE
     bool bIsCompound(void);
     bool bIsLiterals(CardIter* pCI);
 
-    void vSmooth_postAgg(CardIter* pCI, CarryForward* pCarryForward);
+    void vSmooth_postAgg(CardIter* pCI);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };

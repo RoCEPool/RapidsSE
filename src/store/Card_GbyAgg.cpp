@@ -187,10 +187,9 @@ bool Card_GbyAgg::bMorph_gbyAgg_To_ordAgg(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* smooth                                                                     */
 /*----------------------------------------------------------------------------*/
-void Card_GbyAgg::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
+void Card_GbyAgg::vSmooth(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  UNUSED(pCarryForward);
 
  // pCI->PRINTBOARD_dbg();
 

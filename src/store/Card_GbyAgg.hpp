@@ -27,7 +27,7 @@ namespace STORE
 
     bool bMorph_gbyAgg_To_ordAgg(CardIter* pCI);
 
-    void vSmooth(CardIter* pCI, CarryForward* pCarryForward);
+    void vSmooth(CardIter* pCI);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
