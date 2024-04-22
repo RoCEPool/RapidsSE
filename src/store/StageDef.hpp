@@ -29,7 +29,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    StageDef(i8 i_Stage, Stz* szStageNm, Card_Stage* p_stage);
+    StageDef(i8 i_Stage, Stz* szStageNm, Card_Stage* p_stage, const char* azFile, i8 iLine);
     ~StageDef(void) noexcept(false);
 
     Card_Stage* pCard_Stage(void);

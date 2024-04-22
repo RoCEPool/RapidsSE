@@ -26,7 +26,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    ArgDef(i8 i_Arg, Stz* szArgNm, Stz* szArgVal);
+    ArgDef(i8 i_Arg, Stz* szArgNm, Stz* szArgVal, const char* azFile, i8 iLine);
     ~ArgDef(void) noexcept(false);
 
     i8 i_Arg(void);

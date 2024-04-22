@@ -18,8 +18,8 @@ __aFooterFunction(StageDef)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-StageDef::StageDef(i8 i_Stage, Stz* szStageNm, Card_Stage* p_stage)
-    : AbstractDef(CN_STAGEDEF)
+StageDef::StageDef(i8 i_Stage, Stz* szStageNm, Card_Stage* p_stage, const char* azFile, i8 iLine)
+    : AbstractDef(CN_STAGEDEF,azFile,iLine)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_STAGEDEF, _FOOTER_);
 
@@ -131,13 +131,15 @@ void StageDef::vDump(i8 i_Tab)
 
   Card_Topology* p_topology = m_pCard_Stage->pSub_topology();
 
-  vTrace("%sStageDef: [%lld] %s Code %p (%s)\n"_Stz,
+  vTrace("%sStageDef: [%lld] %s Code %p (%s) %s:%lld\n"_Stz,
          Stz::szTab(i_Tab),
          m_i_Stage,
          m_sStageNm.szStz(),
          szCode(),
 
-         aYG[p_topology->pSymbol()->Y_iGet(P_StageTopo)]
+         aYG[p_topology->pSymbol()->Y_iGet(P_StageTopo),
+         m_sFile.szStz(),
+         m_iLine]
   );
 
   // - - - - - - - - - - - - - - - - - - - - - -

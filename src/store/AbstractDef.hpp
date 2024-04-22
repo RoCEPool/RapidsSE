@@ -17,7 +17,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-     AbstractDef(eCN eClass, const char* azFile=nullptr, i8 iLine=C_UNKNOWN);
+     AbstractDef(eCN eClass, const char* azFile, i8 iLine);
     ~AbstractDef(void) noexcept(false);
 
   };
