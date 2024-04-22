@@ -120,8 +120,6 @@ void XF_FLATTEN::vFold_basic(CardIter* pCI, Stz* szFoldNm, eCK eCardWithSQ)
 /*----------------------------------------------------------------------------*/
 CarryForward* XF_FLATTEN::pFold_from(Stz* szFoldNm, CardIter* pCI)
 {
-  CarryForward* pCarryForward = new CarryForward;
-
   // 1) find W_A_C_ro subquery call in mq:<where>/<boolPred>
 
   RASSERT(pCI->bEachOp(CK_o_CALL));
@@ -167,7 +165,7 @@ CarryForward* XF_FLATTEN::pFold_from(Stz* szFoldNm, CardIter* pCI)
     Board::vDerive_foldProjection_F(pCI);
   }
 
-  return pCarryForward;
+  return nullptr;
 }
 
 
@@ -245,8 +243,6 @@ CarryForward* XF_FLATTEN::pFold_nc_subQuery(CardIter* pCI, Stz* szFoldNm,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  CarryForward* pCarryForward = new CarryForward;
-
   pCI->vBeginEach();
 
   RASSERT(pCI->bEachOp(CK_c_FOLD));
@@ -311,7 +307,7 @@ CarryForward* XF_FLATTEN::pFold_nc_subQuery(CardIter* pCI, Stz* szFoldNm,
 
   // pCI->PRINTBOARD_dbg();
 
-  return pCarryForward;
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
