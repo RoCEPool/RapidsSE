@@ -798,7 +798,7 @@ void XF_Synthesise_pipelineDef::vCraftKeyMap(void)
   if (! m_pCI->E.p_Op->bEither(CK_o_ORDAGG, CK_NONE))
     return;
 
-  m_pOpDef->m_pKeyMap = new KeyMap;
+  m_pOpDef->m_pKeyMap = new KeyMap(__FILE__,__LINE__);
 
 
   m_pCI->E.p_emit = m_pCI->E.p_Op->pSub_emit();
