@@ -290,7 +290,7 @@ void XF_Synthesise_pipelineDef::vCraftArgDefs(void)
       if (m_pStageDef->i_Stage() == 5 && m_pOpDef->i_Op() == 1)
         vDebugPoint();
       m_pOpDef->vAppend(new ArgDef(0, "expr"_Stz, sExpr, __FILE__, __LINE__));
-      m_pOpDef->m_pColHsh = new ColHsh;
+      m_pOpDef->m_pColHsh = new ColHsh(__FILE__,__LINE__);
       m_pOpDef->m_pColHsh->vUpdate(_pCard_Hash(p_OP)->pSub_hashing());
       break;
 

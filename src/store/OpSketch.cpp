@@ -207,7 +207,7 @@ void OpSketch::vCopyColHsh(ColHsh* pColHsh)
 {
 	_precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
 
-	m_pColHsh = new ColHsh;
+	m_pColHsh = new ColHsh(__FILE__,__LINE__);
 
 	m_pColHsh->m_nCols = pColHsh->m_nCols;
 	for (i8 i_Col = 0; i_Col < pColHsh->m_nCols; i_Col++) {

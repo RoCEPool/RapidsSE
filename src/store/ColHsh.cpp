@@ -20,8 +20,8 @@ __aFooterFunction(ColHsh)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-ColHsh::ColHsh(void)
-    : Object(CN_COLHSH)
+ColHsh::ColHsh(const char* azFile, i8 iLine)
+    : AbstractDef(CN_COLHSH,azFile,iLine)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_COLHSH, _FOOTER_);
 
@@ -78,6 +78,7 @@ void ColHsh::vDump(i8 i_Tab)
   _precondition_(_ADDRESS_, _MAGIC_, CN_COLHSH, _FOOTER_);
   UNUSED(i_Tab);
 
+  vTrace("               %s:%lld\n"_Stz,m_sFile.szStz(),m_iLine);
   for (i8 i_Col = 0; i_Col < m_nCols; i_Col++) {
     vTrace("               [%lld] %lld %s %s\n"_Stz,
            i_Col,
