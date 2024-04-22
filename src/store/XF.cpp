@@ -91,11 +91,7 @@ XF::XF(CardIter* pCI)
 XF::~XF(void) noexcept(false)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF, _FOOTER_);
-
-
 }
-
-
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */

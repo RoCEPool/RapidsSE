@@ -112,7 +112,7 @@ Card::Card(eCK eCard, i8 iFixedDepth)
   m_xSymbol.vCard(this);
   MemLib::vZero(md_Coord, sizeof(md_Coord), CN_CARD);
 
-  if (CK_o_SCAN == eCard)
+  if (CK_c_COMBINED == eCard)
     vDebugPoint();
 
 #ifdef Z_NO_STREAMKEY

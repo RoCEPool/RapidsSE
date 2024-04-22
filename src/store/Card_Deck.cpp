@@ -173,8 +173,8 @@ eXK Card_Deck::eAddStageCast_toPrev_cast(CardIter*        pCI,
       p_cast_prev->SYM(SF_STG_CAST,"broadcast"_Stz);
 
       if (p_project_prev && ! p_combined_prev) {
-        Card_Combined *p_combined = new Card_Combined;
-        pCI->vInsertBefore(p_combined, p_cast_prev);
+//        Card_Combined *p_combined = new Card_Combined;
+//        pCI->vInsertBefore(p_combined, p_cast_prev);
       }
 
       break;
@@ -191,8 +191,8 @@ eXK Card_Deck::eAddStageCast_toPrev_cast(CardIter*        pCI,
       }
       else {
         pCI->vInsertBefore(p_hash_prior_new, p_cast_prev);
-        Card_Combined* p_combined = new Card_Combined;
-        pCI->vInsertBefore(p_combined, p_cast_prev);
+//        Card_Combined* p_combined = new Card_Combined;
+//        pCI->vInsertBefore(p_combined, p_cast_prev);
       }
 
       break;

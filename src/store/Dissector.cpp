@@ -208,7 +208,7 @@ void Dissector::vOp(i8 i_OpSpec)
        if (m_szOpNm->bSame("abstractJoin"_Stz)) pCard = pOp_absJoin     ();
   else if (m_szOpNm->bSame("aggreg"_Stz))       pCard = pOp_aggreg      ();
   else if (m_szOpNm->bSame("call"_Stz))         pCard = pOp_call        ();
-  else if (m_szOpNm->bSame("combined"_Stz))     pCard = pOp_combined    ();
+  else if (m_szOpNm->bSame("combined"_Stz))     return;//pCard = pOp_combined    ();
   else if (m_szOpNm->bSame("consumeOp"_Stz))    pCard = pOp_consume     ();
   else if (m_szOpNm->bSame("debug"_Stz))        pCard = pOp_debug       ();
   else if (m_szOpNm->bSame("filter"_Stz))       pCard = pOp_filter      ();

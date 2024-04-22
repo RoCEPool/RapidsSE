@@ -50,6 +50,18 @@ void Card_Stage::vReinstate_stages(CardIter* pCI)
 {
   _static_
 
+
+  vReinstate_stages_v0(pCI);
+//  vReinstate_stages_v1(pCI);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Stage::vReinstate_stages_v0(CardIter* pCI)
+{
+  _static_
+
   i8 nStages = 0;
 
   Card_Stage* p_stage = new Card_Stage;
@@ -161,7 +173,7 @@ void Card_Stage::vReinstate_stages(CardIter* pCI)
     if ((CK_o_PROJECT == e_main)
         && (bSawAggOp || bSawFilterOp || bSawIndexJoinOp || bSawProjectOp || bSawSortOp) ) {
       //if (CK_o_SCAN != e_prev && CK_o_PROJECT != e_prev)
-        vAddCombined(pCI, p_main, i_Main);
+      vAddCombined(pCI, p_main, i_Main);
       vAddNext(pCI, p_main, i_Main,""_Stz);
       vAddStage(pCI, p_main, i_Main, e_level_running,nStages);
       bSawAggOp = false;
@@ -215,7 +227,7 @@ void Card_Stage::vReinstate_stages(CardIter* pCI)
 
       bSawFilterOp = true;
       if (CK_o_FILTER == e_main && ! bSawAggOp)
-       continue;
+        continue;
 
       vAddNext(pCI, p_main, i_Main,""_Stz);
       vAddStage(pCI, p_main, i_Main, e_level_running,nStages);
@@ -268,7 +280,7 @@ void Card_Stage::vReinstate_stages(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Stage::vReinstate_stages_v2(CardIter* pCI)
+void Card_Stage::vReinstate_stages_v1(CardIter* pCI)
 {
   _static_
 
@@ -312,14 +324,19 @@ void Card_Stage::vReinstate_stages_v2(CardIter* pCI)
 void Card_Stage::vAddCombined(CardIter* pCI, Card* p_main, i8& ri_main)
 {
   _static_
-  Card_Combined* p_combined = new Card_Combined;
-  if (C_UNKNOWN == ri_main) {
-    pCI->E.p_deck->vAppendChild(p_combined);
-    return;
-  }
-  pCI->E.p_deck->vInsertChildBefore(p_combined, p_main);
-  ri_main++;
-  RASSERT(pCI->E.p_deck->pGetChild(ri_main) == p_main);
+  UNUSED(pCI);
+  UNUSED(p_main);
+  UNUSED(ri_main);
+  return;
+
+//  Card_Combined* p_combined = new Card_Combined;
+//  if (C_UNKNOWN == ri_main) {
+//    pCI->E.p_deck->vAppendChild(p_combined);
+//    return;
+//  }
+//  pCI->E.p_deck->vInsertChildBefore(p_combined, p_main);
+//  ri_main++;
+//  RASSERT(pCI->E.p_deck->pGetChild(ri_main) == p_main);
 
 }
 
