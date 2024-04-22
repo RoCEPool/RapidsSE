@@ -224,7 +224,7 @@ void OpSketch::vCopyColInj(ColInj* pColsInj)
 {
 	_precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
 
-	m_pColInj = new ColInj(pColsInj->m_nCrwCols);
+	m_pColInj = new ColInj(pColsInj->m_nCrwCols, __FILE__, __LINE__);
 
 	m_pColInj->m_nCols = pColsInj->m_nCols;
 	for (i8 i_Col = 0; i_Col < pColsInj->m_nCols; i_Col++) {

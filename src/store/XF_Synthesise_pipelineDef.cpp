@@ -523,7 +523,7 @@ void XF_Synthesise_pipelineDef::vCraftColInj(void)
   Table* pTable = (Table*)p_table->pSymbol()->Y_pGet(P_Pointer);
   RASSERT(pTable);
   i8 nCrwCols = pTable->pStreamDef()->nColumns();
-  ColInj* pColInj = new ColInj(nCrwCols);
+  ColInj* pColInj = new ColInj(nCrwCols, __FILE__, __LINE__);
   m_pOpDef->vColInj(pColInj);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
