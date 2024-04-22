@@ -83,8 +83,7 @@ void XF_Flatten_74_H_A_NC_ro::vFlatten(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // fold of subQuery
 
-  CarryForward* pCarryForward =
-      pFold_nc_subQuery(m_pCI, "H_A_NC_ro"_Stz, CK_o_HAVING, QO_RELN_OP);
+  vFold_nc_subQuery(m_pCI, "H_A_NC_ro"_Stz, CK_o_HAVING, QO_RELN_OP);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // smoothing of: subQuery | XF_Fold | Table* [Where] GbyAgg_PNO [Project (avg)] Having [Sort]
@@ -98,8 +97,6 @@ void XF_Flatten_74_H_A_NC_ro::vFlatten(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   m_pCI->E.p_deck->vMarksClearRecursive();
-
-  delete pCarryForward;
 
   m_pCI->vEndTransform(__LINE__);
 //vValidateBench();

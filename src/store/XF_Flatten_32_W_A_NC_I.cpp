@@ -86,8 +86,7 @@ void XF_Flatten_32_W_A_NC_I::vFlatten(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // fold of subQuery
 
-  CarryForward* pCarryForward =
-      pFold_nc_subQuery(m_pCI, "W_A_NC_I"_Stz, CK_o_WHERE, QO_IN_OP);
+  vFold_nc_subQuery(m_pCI, "W_A_NC_I"_Stz, CK_o_WHERE, QO_IN_OP);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // smoothing of: subQuery | XF_Fold | Table* [Where] GbyAgg_PNO [Project (avg)] Having
@@ -99,8 +98,6 @@ void XF_Flatten_32_W_A_NC_I::vFlatten(void)
   m_pCI->E.p_deck->vMarksClearRecursive();
 
  // m_pCI->PRINTBOARD_dbg();
-
-  delete pCarryForward;
 
   m_pCI->vEndTransform(__LINE__);
 //vValidateBench();

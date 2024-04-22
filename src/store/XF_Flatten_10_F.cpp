@@ -83,13 +83,13 @@ void XF_Flatten_10_F::vFlatten(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // fold of from
 
-  CarryForward* pCarryForward = pFold_from("From"_Stz,m_pCI);
+  vFold_from("From"_Stz,m_pCI);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // smoothing
 
   m_pCI->Carry.Table.m_bReproject = true;
-   vSmooth(m_pCI);
+  vSmooth(m_pCI);
 
   m_pCI->E.p_deck->vMarksClearRecursive();
 
@@ -107,8 +107,6 @@ void XF_Flatten_10_F::vFlatten(void)
 
   m_pCI->vEndTransform(__LINE__);
 
-
-  delete pCarryForward;
 
   XF_Prolog_Analyse_emit::vAnalyse(m_pCI);
 }
