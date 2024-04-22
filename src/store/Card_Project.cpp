@@ -53,8 +53,9 @@ void Card_Project::vUnproject_foldExpr(CardIter* pCI,
                                        CarryForward* pCarryForward)
 {
   _static_
+  UNUSED(pCarryForward);
 
-  RASSERT(pCarryForward->Carry.Unproject.m_bUnproject_foldExpr);
+  RASSERT(pCI->Carry.Unproject.m_bUnproject_foldExpr);
 
   Card_Project* p_project_unproject = new Card_Project(CK_o_PROJECT);
   pCI->E.p_deck->vAppendChild(p_project_unproject);

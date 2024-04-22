@@ -101,7 +101,7 @@ void XF_Flatten_53_W_L_NC_NI_join::vFlatten(void)
   RASSERT(m_pCI->bEachOp(CK_c_FOLD));
 
   CarryForward* pCarryForward = new CarryForward;
-  pCarryForward->Carry.Table.m_bReproject = true;
+  m_pCI->Carry.Table.m_bReproject = true;
 
   vSmooth(m_pCI,pCarryForward);
 

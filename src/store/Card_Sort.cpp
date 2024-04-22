@@ -71,7 +71,7 @@ void Card_Sort::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
   pCI->E.p_key = pCI->E.p_sort->pSub_key();
 
 //Z_KEY_DIRECTION
-  if (pCarryForward->Carry.Sort.m_bCorrect_After_Inject) {
+  if (pCI->Carry.Sort.m_bCorrect_After_Inject) {
     for (pCI->vBeginTarget(pCI->E.p_key,CK_EXPR); pCI->bEachTarget(); /**/) {
       for (pCI->vBeginTarget(pCI->E.xTarget.p_expr(),CK_TERM); pCI->bEachTarget(); /**/) {
         pCI->E.p_term = pCI->E.xTarget.p_term();

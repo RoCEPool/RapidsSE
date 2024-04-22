@@ -61,12 +61,13 @@ void Card_Having::vSmooth(CardIter* pCI, bool bSawProject)
 void Card_Having::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  UNUSED(pCarryForward);
 
   pCI->E.p_having->pSymbol()->Y_vSet(P_Smoothed);
 
-  bool bBump = ! pCarryForward->Carry.Project_postAgg.m_bSeen;
+  bool bBump = ! pCI->Carry.Project_postAgg.m_bSeen;
 
-  if (pCarryForward->Carry.Having.m_bCorrect_After_Inject)
+  if (pCI->Carry.Having.m_bCorrect_After_Inject)
     vCorrect_After_Inject(pCI, bBump);
 
   pCI->vSnapIf_arriving();

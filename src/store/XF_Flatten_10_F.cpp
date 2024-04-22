@@ -88,7 +88,7 @@ void XF_Flatten_10_F::vFlatten(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // smoothing
 
-  pCarryForward->Carry.Table.m_bReproject = true;
+  m_pCI->Carry.Table.m_bReproject = true;
    vSmooth(m_pCI,pCarryForward);
 
   m_pCI->E.p_deck->vMarksClearRecursive();
