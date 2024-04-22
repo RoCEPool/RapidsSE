@@ -60,7 +60,6 @@ enum eCK : i8 // card kind
   /* */ CK_ADDRESS,
   /* */ CK_ANDCONJ,
 
-  /* */ CK_BOOLPRED,
   /* */ CK_BOUND,
   /* */ CK_BOUNDS,
 
@@ -108,6 +107,7 @@ enum eCK : i8 // card kind
   /* */ CK_OUTERJOIN,
 
   /* */ CK_PAYLOADCELLS,
+  /* */ CK_PREDICATE,
 
   /* */ CK_RELNOP,
   /* */ CK_REQUIRED,

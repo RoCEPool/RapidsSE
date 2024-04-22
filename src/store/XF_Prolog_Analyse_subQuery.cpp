@@ -97,7 +97,7 @@ void XF_Prolog_Analyse_subQuery::vAnalyse_subQuery(void)
     // search for where calls to sub-queries
 
     m_pCI->vBeginEach();
-    while (m_pCI->bEachOp(CK_o_WHERE, CK_BOOLPRED)) {
+    while (m_pCI->bEachOp(CK_o_WHERE, CK_PREDICATE)) {
       vAnalysis_Of_where_boolPred(m_pCI);
     }
 
@@ -105,7 +105,7 @@ void XF_Prolog_Analyse_subQuery::vAnalyse_subQuery(void)
     // search for having calls to sub-queries
 
     m_pCI->vBeginEach();
-    while (m_pCI->bEachOp(CK_o_HAVING, CK_BOOLPRED)) {
+    while (m_pCI->bEachOp(CK_o_HAVING, CK_PREDICATE)) {
       vAnalysis_Of_having_boolPred(m_pCI);
     }
 

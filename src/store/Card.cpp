@@ -2809,7 +2809,7 @@ Card_BoolPred* Card::pSub_boolPred(bool bNotNull)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_BoolPred* p_boolPred =
-      _pCard_BoolPred(pFindSubCard(CK_BOOLPRED));
+      _pCard_BoolPred(pFindSubCard(CK_PREDICATE));
 
   if (bNotNull && !p_boolPred) {
     NEVER_REACH

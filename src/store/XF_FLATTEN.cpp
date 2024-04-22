@@ -38,7 +38,7 @@ void XF_FLATTEN::vFold_basic(CardIter* pCI, Stz* szFoldNm, eCK eCardWithSQ)
 {
   // 1) find H_A_NC_ro subquery call in mq:<having>/<boolPred>/<roPred>
   pCI->vBeginEach_reverse();
-  if (pCI->bEachOp_reverse_foldBreak(eCardWithSQ, CK_BOOLPRED)) {
+  if (pCI->bEachOp_reverse_foldBreak(eCardWithSQ, CK_PREDICATE)) {
     if (!Board::bMark_sqyCall(pCI)) {
       vTrace("DID NOT FIND %s SubQuery call\n"_Stz, szFoldNm);
       NEVER_REACH
@@ -176,7 +176,7 @@ void XF_FLATTEN::vFold_nc_subQuery(CardIter* pCI, Stz* szFoldNm,
   pCI->vBeginEach();
 
   // 1) find H_A_NC_ro subquery call in mq:<having>/<boolPred>/<roPred>
-  if (pCI->bEachOp(eCardWithSQ, CK_BOOLPRED)) {
+  if (pCI->bEachOp(eCardWithSQ, CK_PREDICATE)) {
     if (!Board::bMark_sqyCall(pCI)) {
       vTrace("DID NOT FIND %s SubQuery call\n"_Stz, szFoldNm);
       NEVER_REACH
@@ -501,13 +501,13 @@ void XF_FLATTEN::vInto_KEYnotEXISTS(CardIter* pCI)
 
   pCI->vClearRegisters();
   pCI->vBeginEach();
-  if (pCI->bEachOp(CK_o_WHERE, CK_BOOLPRED)) {
+  if (pCI->bEachOp(CK_o_WHERE, CK_PREDICATE)) {
     (void)pCI->E.p_boolPred->nCullMarked_rlnConj(MARK_AT);
   }
 
   pCI->vClearRegisters();
   pCI->vBeginEach();
-  pCI->vDeleteWhenEmptySub(CK_o_WHERE, CK_BOOLPRED);
+  pCI->vDeleteWhenEmptySub(CK_o_WHERE, CK_PREDICATE);
 
   vDebugPoint();
 

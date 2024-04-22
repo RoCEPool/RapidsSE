@@ -18,7 +18,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE, Card_BoolPred, CK_BOOLPRED)
+__pCastFunction_Card(STORE, Card_BoolPred, CK_PREDICATE)
 __aNewFunction(Card_BoolPred, CN_CARD)
 __vDeleteFunction(Card_BoolPred, CN_CARD)
 
@@ -27,7 +27,7 @@ __vDeleteFunction(Card_BoolPred, CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_BoolPred::Card_BoolPred(void)
-: Card_CONJSUBROOT(CK_BOOLPRED, C_UNKNOWN)
+: Card_CONJSUBROOT(CK_PREDICATE, C_UNKNOWN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
       

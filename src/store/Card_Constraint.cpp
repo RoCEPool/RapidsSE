@@ -144,7 +144,7 @@ void Card_Constraint::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
                                      CK_o_KEYNOTEXISTS,
                                      CK_NONE);
 
-  eValidate_mustEither(CK_BOOLPRED, CK_NONE);
+  eValidate_mustEither(CK_PREDICATE, CK_NONE);
 
   Card::vValidate(pCI,iDepth,pParent);
   pCI->vValidateChildren(this,iDepth+1);

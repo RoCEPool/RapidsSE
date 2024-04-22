@@ -1663,7 +1663,7 @@ Card* CardIter::pMember(eCK eCard)
     case CK_o_AGGREG:       return E.p_aggreg;
     case CK_ANDCONJ:        return E.p_andConj;
 
-    case CK_BOOLPRED:       return E.p_boolPred;
+    case CK_PREDICATE:       return E.p_boolPred;
     case CK_BOUND:          return E.p_bound;
     case CK_BOUNDS:         return E.p_bounds;
 
@@ -1806,7 +1806,7 @@ void CardIter::vMember(eCK eCard, Card* pCard)
     case CK_o_AGGREG: E.p_aggreg            = _pCard_Aggreg(pCard);  break;
     case CK_ANDCONJ: E.p_andConj           = _pCard_AndConj(pCard);break;
 
-    case CK_BOOLPRED: E.p_boolPred          = _pCard_BoolPred(pCard); break;
+    case CK_PREDICATE: E.p_boolPred          = _pCard_BoolPred(pCard); break;
     case CK_BOUND: E.p_bound             = _pCard_Bound(pCard); break;
     case CK_BOUNDS: E.p_bounds            = _pCard_Bounds(pCard); break;
 
@@ -2647,7 +2647,7 @@ void CardIter::vValidateChildren(Card* pCard, i8 iDepth)
       case CK_o_AGGREG:       E.p_aggreg->vValidate(this, iDepth, pCard);  break;
       case CK_ANDCONJ:        E.p_andConj->vValidate(this, iDepth, pCard);  break;
 
-      case CK_BOOLPRED:       E.p_boolPred->vValidate(this, iDepth, pCard);  break;
+      case CK_PREDICATE:       E.p_boolPred->vValidate(this, iDepth, pCard);  break;
       case CK_BOUND:          E.p_bound->vValidate(this, iDepth, pCard);  break;
       case CK_BOUNDS:         E.p_bounds->vValidate(this, iDepth, pCard);  break;
 

@@ -527,7 +527,7 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
 
   pCI->vClearRegisters();
   pCI->vBeginEach();
-  while (pCI->bEachOp(CK_o_FROM, CK_o_FILTER, CK_BOOLPRED)) {
+  while (pCI->bEachOp(CK_o_FROM, CK_o_FILTER, CK_PREDICATE)) {
     if (pCI->E.p_boolPred->bHasSub(pCI->Flat.m_p_conj_crlKey)) {
       pCI->E.p_boolPred->vRemoveSub(pCI->Flat.m_p_conj_crlKey);
       break;
@@ -564,7 +564,7 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // ???
 
-  RASSERT(pCI->bEachOp(CK_o_WHERE, CK_BOOLPRED));
+  RASSERT(pCI->bEachOp(CK_o_WHERE, CK_PREDICATE));
   pCI->E.p_boolPred->vBump_expCol(2);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -607,7 +607,7 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
   //           + b <-  cp          //             %1
 
   RASSERT(pCI->bEachOp(CK_c_FOLD));
-  RASSERT(pCI->bEachOp(CK_o_WHERE, CK_BOOLPRED));
+  RASSERT(pCI->bEachOp(CK_o_WHERE, CK_PREDICATE));
   vMove_OQ_rlnConj_rslTest_To_from_filter(pCI, pCI->E.p_boolPred);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

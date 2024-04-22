@@ -420,7 +420,7 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   (void)Card::eValidate_parentEither(pCI,
                                      CK_ANDCONJ,
                                      CK_BOUND,
-                                     CK_BOOLPRED,
+                                     CK_PREDICATE,
                                      CK_EXPR,
                                      CK_s_HASHING,
                                      CK_t_HSHCOL,// todo: NO!?
@@ -431,8 +431,8 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 
   Symbol* pSym_term = pSymbol();
   if (pSym_term->bHasFacet(SF_NMD_COL)) {
-    if (! (pParent->bIsCard(CK_BOOLPRED) ||
-           pParent->bIsCard(CK_BOUND)    ||
+    if (! (pParent->bIsCard(CK_PREDICATE) ||
+           pParent->bIsCard(CK_BOUND) ||
            pParent->bIsCard(CK_RLNCONJ))) {
       pCI->PRINTBOARD_dbg();
       vDump(__func__);

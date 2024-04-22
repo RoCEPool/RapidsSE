@@ -283,7 +283,7 @@ void Card_Deck::vValidate(CardIter* pCI)
       case CK_o_AGGREG:       pCI->E.p_aggreg->vValidate(pCI, 1, this); break;
       case CK_ANDCONJ:      pCI->E.p_andConj->vValidate(pCI, 1, this); break;
 
-      case CK_BOOLPRED:     pCI->E.p_boolPred->vValidate(pCI, 1, this); break;
+      case CK_PREDICATE:     pCI->E.p_boolPred->vValidate(pCI, 1, this); break;
       case CK_BOUND:        pCI->E.p_bound->vValidate(pCI, 1, this); break;
       case CK_BOUNDS:       pCI->E.p_bounds->vValidate(pCI, 1, this); break;
 

@@ -291,7 +291,7 @@ Card_Filter* Card_OP::pEnsure_filter(void)
     return p_filter;
 
   p_filter = _pCard_Filter(this->pAppendNewCard(CK_o_FILTER));
-  Card_BoolPred* p_boolPred = _pCard_BoolPred(p_filter->pAppendNewCard(CK_BOOLPRED));
+  Card_BoolPred* p_boolPred = _pCard_BoolPred(p_filter->pAppendNewCard(CK_PREDICATE));
   UNUSED(p_boolPred);
 
   return p_filter;
