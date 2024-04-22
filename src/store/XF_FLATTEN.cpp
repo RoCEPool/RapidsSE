@@ -177,8 +177,6 @@ CarryForward* XF_FLATTEN::pFold_from(Stz* szFoldNm, CardIter* pCI)
 CarryForward* XF_FLATTEN::pFold_nc_subQuery(CardIter* pCI, Stz* szFoldNm,
                                             eCK eCardWithSQ, eQO eWhatOp)
 {
-  CarryForward* pCarryForward = new CarryForward;
-
   pCI->vBeginEach();
 
   // 1) find H_A_NC_ro subquery call in mq:<having>/<boolPred>/<roPred>
@@ -247,7 +245,53 @@ CarryForward* XF_FLATTEN::pFold_nc_subQuery(CardIter* pCI, Stz* szFoldNm,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  CarryForward* pCarryForward = new CarryForward;
+
   pCarryForward->vSetSeen(pCI);
+
+  pCI->vBeginEach();
+
+  RASSERT(pCI->bEachOp(CK_c_FOLD));
+  RASSERT(pCI->E.p_Op->bIsCard(CK_c_FOLD));
+
+  // SubQuery
+  if (pCI->pPeekNextIf(CK_SUBQUERY))
+    RASSERT(pCI->pAdvanceChild()->bIsCard(CK_SUBQUERY));
+
+  // From*
+  while (pCI->pPeekNextIf(CK_o_FROM) && pCI->bEachOp(CK_o_FROM)) {
+    pCI->Carry.Table.m_bSeen = true;
+    pCI->Carry.Table.m_nTables++;
+  }
+
+  // [Where]
+  if (pCI->pPeekNextIf(CK_o_WHERE) && pCI->bEachOp(CK_o_WHERE)) {
+    pCI->Carry.Where_preAgg.m_bSeen = true;
+  }
+
+  // Aggreg
+  while (pCI->pPeekNextIf(CK_o_AGGREG) && pCI->bEachOp(CK_o_AGGREG)) {
+    pCI->Carry.GbyAgg.m_bSeen = true;
+  }
+  // GbyAgg
+  while (pCI->pPeekNextIf(CK_o_GBYAGG) && pCI->bEachOp(CK_o_GBYAGG)) {
+    pCI->Carry.GbyAgg.m_bSeen = true;
+  }
+
+  // [project]
+  if (pCI->pPeekNextIf(CK_o_PROJECT) && pCI->bEachOp(CK_o_PROJECT)) {
+    pCI->Carry.Project_postAgg.m_bSeen = true;
+  }
+
+  // Having
+  if (pCI->pPeekNextIf(CK_o_HAVING) && pCI->bEachOp(CK_o_HAVING)) {
+    pCI->Carry.Having.m_bSeen = true;
+  }
+
+  // Sort
+  if (pCI->pPeekNextIf(CK_o_SORT) && pCI->bEachOp(CK_o_SORT)) {
+    pCI->Carry.Sort.m_bSeen = true;
+  }
 
   if (CK_o_HAVING == eCardWithSQ) {
     pCarryForward->Carry.Table.m_bReproject = true;
