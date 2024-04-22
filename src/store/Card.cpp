@@ -3792,6 +3792,24 @@ Card_PayloadCells* Card::pSub_payloadCells(bool bNotNull)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_PdsRow.hpp"
+Card_PdsRow* Card::pSub_pdsRow(bool bNotNull)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_PdsRow* p_pdsRow =
+      _pCard_PdsRow(pFindSubCard(CK_o_PDSROW));
+
+  if (bNotNull && !p_pdsRow) {
+    NEVER_REACH
+  }
+
+  return p_pdsRow;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_Required.hpp"
 Card_Required* Card::pSub_required(bool bNotNull)
 {

@@ -111,6 +111,7 @@ namespace STORE
 
   class Card_Payload;
   class Card_PayloadCells;
+  class Card_PdsRow;
   class Card_Project;
 
   class Card_RelnOp;
@@ -522,6 +523,7 @@ namespace STORE
     Card_OuterColNm*    pSub_outerColNm(bool bNotNull=false);
     Card_OuterJoin*     pSub_outerJoin(bool bNotNull=false);
     Card_PayloadCells*  pSub_payloadCells(bool bNotNull=false);
+    Card_PdsRow*        pSub_pdsRow(bool bNotNull=false);
     Card_RelnOp*        pSub_relnOp(bool bNotNull=false);
     Card_Required*      pSub_required(bool bNotNull=false);
     Card_RowCount*      pSub_rowCount(bool bNotNull=false);
