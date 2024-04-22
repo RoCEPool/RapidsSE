@@ -11,7 +11,6 @@
 #include "XF_Synthesise_code.hpp"
 #include "CardIter.hpp"
 
-#include "CarryForward.hpp"
 #include "Error.hpp"
 
 #include "Weaver.hpp"
