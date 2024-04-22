@@ -33,6 +33,7 @@ enum eCK : i8 // card kind
   /* */ CK_o_KEYNOTEXISTS,
   /* */ CK_o_LIMIT,
   /* */ CK_o_ORDAGG,
+  /* */ CK_o_PDSROW,
   /* */ CK_o_PROJECT,
   /* */ CK_o_SCAN,
   /* */ CK_o_SORT,

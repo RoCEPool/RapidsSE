@@ -33,6 +33,7 @@ Stz* aCK[CK_ENUMS]
   /* */ "CK_o_KEYNOTEXISTS"_Stz, // CK_o_KEYNOTEXISTS
   /* */ "CK_o_LIMIT"_Stz,        // CK_o_LIMIT
   /* */ "CK_o_ORDAGG"_Stz,       // CK_o_ORDAGG
+  /* */ "CK_o_PDSROW"_Stz,       // CK_o_PDSROW
   /* */ "CK_o_PROJECT"_Stz,      // CK_o_PROJECT
   /* */ "CK_o_SCAN"_Stz,         // CK_o_SCAN
   /* */ "CK_o_SORT"_Stz,         // CK_o_SORT
@@ -171,6 +172,7 @@ Stz* aCK_short[CK_ENUMS]
   /* */ "KeyNotExists"_Stz,    // CK_o_KEYNOTEXISTS
   /* */ "Limit"_Stz,           // CK_o_LIMIT
   /* */ "OrdAgg"_Stz,          // CK_o_ORDAGG
+  /* */ "PdsRow"_Stz,          // CK_o_PDS_ROW
   /* */ "Project"_Stz,         // CK_o_PROJECT
   /* */ "Scan"_Stz,            // CK_o_SCAN
   /* */ "Sort"_Stz,            // CK_o_SORT
