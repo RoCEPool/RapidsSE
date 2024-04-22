@@ -20,10 +20,7 @@
 
 //#define Z_PART_STREAMKEY
 
-//#define Z_NO_SMOOTH
-
 #define Z_PDSROW
-#define Z_NO_SMOOTH
 
 namespace STORE
 {
