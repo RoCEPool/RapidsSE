@@ -23,7 +23,7 @@ __vDeleteFunction(Card_StreamKey,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_StreamKey::Card_StreamKey(void)
-: Card_Key(CK_STREAMKEY,4)
+: Card_Key(CK_STREAMKEY,3)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -55,7 +55,8 @@ Card_StreamKey* Card_StreamKey::pTo_streamKey(Card_Key* p_key)
 
   Card_StreamKey* p_streamKey = _pCard_StreamKey(p_key_dupe->pCard(CK_STREAMKEY));
 
-  p_streamKey->vFixedDepth(4);
+  p_streamKey->vFixedDepth(3);
+
   return p_streamKey;
 }
 
@@ -74,7 +75,11 @@ void Card_StreamKey::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   RASSERT(pParent->bIsCard(CK_t_EMIT));
 
 /**Z_KEY_DIRECTION validate*/
+#ifdef Z_PART_STREAMKEY
+  RASSERT(CK_t_EMIT != pParent->eCard())
+#else
   vValidate_mustHave(CK_EXPR,CK_NONE);
+#endif
 
   Card::vValidate(pCI,iDepth,pParent);
   pCI->vValidateChildren(this,iDepth+1);

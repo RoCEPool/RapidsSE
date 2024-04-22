@@ -60,14 +60,12 @@ Card_BoolPred* Card_BoolPred::pTo_boolPred(CardIter* pCI, Card_Expr* p_expr_arg)
 
   p_boolPred_new->xTypeId() = TypeId::xIdOf(CT_BOOLEAN);
 
-  Card_RpnCalc* p_rpnCalc_arg = p_expr_arg->pSub_rpnCalc(C_NOT_NULL);
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // does the expression have a WHEN in it?
 
   Symbol xWhen(SF_WHEN,"WHEN"_Stz);
-  if (p_expr_arg->bHasTerm(pCI, &xWhen)) {
-    p_boolPred_new->vTransferChildren(p_rpnCalc_arg);
+  if (p_expr_arg->bHasTerm(pCI,&xWhen)) {
+    p_boolPred_new->vTransferChildren(p_expr_arg);
     return p_boolPred_new;
   }
 
@@ -82,7 +80,7 @@ Card_BoolPred* Card_BoolPred::pTo_boolPred(CardIter* pCI, Card_Expr* p_expr_arg)
   Card_NotConj* p_notConj = nullptr;
   Card_OrConj*  p_orConj  = nullptr;
 
-  while (Card_Term* p_term_rpn = _pCard_Term(p_rpnCalc_arg->pPopChild())) {
+  while (Card_Term* p_term_rpn = _pCard_Term(p_expr_arg->pPopChild())) {
 
     eTE eTerm_rpn = p_term_rpn->eEvalTerm();
     switch (eTerm_rpn) {
@@ -178,7 +176,6 @@ Card_BoolPred* Card_BoolPred::pTo_boolPred(CardIter* pCI, Card_Expr* p_expr_arg)
   return p_boolPred_new;
 }
 
-
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -234,7 +231,6 @@ void Card_BoolPred::vBump_expCol(i8 nBumpBy)
 
     if (p_term->pSymbol()->bHasFacet(SF_EXP_COL)) {
       p_term->vBump_ordCol(SF_EXP_COL,nBumpBy);
-      p_term->vMark1(MARK_CHANGED);
     }
 
     return C_CONTINUE_RECURSION;
@@ -331,15 +327,24 @@ void Card_BoolPred::vUpdate_expCol(CardIter* pCI, Card_Emit* p_Dic_expr, bool bA
 
   auto bfCorrect = [pCI,bAlt,p_Dic_expr](Card* p_card)
   {
-    if (p_card->pSymbol()->bHasFacet(SF_EXP_COL))
-      _pCard_Term(p_card)->vUpdate_expCol(pCI, p_Dic_expr,bAlt);
+    if (! p_card->pSymbol()->bHasFacet(SF_EXP_COL))
+      return C_CONTINUE_RECURSION;
+
+    if (pCI->bAncestor(CK_RLNCONJ) &&
+        (pCI->pAncestor(CK_RLNCONJ)->pSymbol()->Y_bHas(P_CrlKeyTest) ||
+         pCI->pAncestor(CK_RLNCONJ)->pSymbol()->Y_bHas(P_SqyCall))) {
+      _pCard_Term(p_card)->vUpdate_expCol(pCI, p_Dic_expr, false);
+    }
+    else {
+      _pCard_Term(p_card)->vUpdate_expCol(pCI, p_Dic_expr, bAlt);
+    }
 
     return C_CONTINUE_RECURSION;
   };
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  bool bIgnore = bLambdaWalk(CK_TERM, bfCorrect);
+  bool bIgnore = bLambdaWalk(CK_TERM, bfCorrect, pCI);
   UNUSED(bIgnore);
 }
 
@@ -652,6 +657,58 @@ void Card_BoolPred::vOntoRpnExpr(String* psRpnExpr)
     Card_CONJSUBROOT::vOntoRpnExpr(psRpnExpr,pRoot_conj());
   else
     Card_CONJSUBROOT::vOntoRpnExpr(psRpnExpr);
+}
+
+/*----------------------------------------------------------------------------*/
+/* reduce not                                                                 */
+/*----------------------------------------------------------------------------*/
+void Card_BoolPred::vReduce_not(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  auto bfReduce_not = [pCI](Card_CONJ* p_conj, bool bUpwards)
+  {
+    UNUSED(pCI);
+    if (bUpwards)
+      return C_CONTINUE_RECURSION;
+
+    if (! p_conj->bIsCard(CK_NOTCONJ))
+      return C_CONTINUE_RECURSION;
+
+    //p_conj->vDump(__func__);
+    Card* pChild_hmm_sqyOp = p_conj->pPeekChild();
+
+    if (pChild_hmm_sqyOp->bHasFacet(SF_SQY_OP, "exists"_Stz)) {
+      p_conj->vRemoveChild(pChild_hmm_sqyOp);
+      p_conj->pSymbol()->vResetFacets();
+      p_conj->SYM(SF_SQY_OP,"notExists"_Stz);
+      p_conj->vCard(CK_RLNCONJ);
+      p_conj->vTransferChildren(pChild_hmm_sqyOp);
+      DELETE_CARD(pChild_hmm_sqyOp);
+      //p_conj->vDump(__func__);
+      return C_CONTINUE_RECURSION;
+    }
+
+    if (pChild_hmm_sqyOp->bHasFacet(SF_SQY_OP, "in"_Stz)) {
+      p_conj->vRemoveChild(pChild_hmm_sqyOp);
+      p_conj->pSymbol()->vResetFacets();
+      p_conj->SYM(SF_SQY_OP,"notIn"_Stz);
+      p_conj->vCard(CK_RLNCONJ);
+      p_conj->vTransferChildren(pChild_hmm_sqyOp);
+      DELETE_CARD(pChild_hmm_sqyOp);
+      //p_conj->vDump(__func__);
+      return C_CONTINUE_RECURSION;
+    }
+
+    return C_CONTINUE_RECURSION;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  Card_CONJ* p_conj_root = this->pRoot_conj();
+
+  bool bIgnore = p_conj_root->bLambdaWalk_conj(bfReduce_not);
+  UNUSED(bIgnore);
 }
 
 /*----------------------------------------------------------------------------*/

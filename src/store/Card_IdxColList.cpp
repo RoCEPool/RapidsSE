@@ -78,9 +78,9 @@ void Card_IdxColList::vAffix_tblCol(CardIter* pCI)
     Symbol* pSym_idxCol   = p_idxCol->pSymbol();
 
     Card_Expr* p_expr_inj = pCI->E.p_injectable->pFind_expr_Matches(pSym_idxCol);
-    pSym_idxCol->vApplyFacet(SF_TBL_COL, p_expr_inj->szFacet(SF_TBL_COL));
-    p_idxCol->vMark1(MARK_CHANGED);
-
+    if (Symbol* pSym_head = p_expr_inj->pHeadIf_symbol(SF_TBL_COL)) {
+      pSym_idxCol->vApplyFacet(SF_TBL_COL, pSym_head->szFacet(SF_TBL_COL));
+    }
   }
 }
 

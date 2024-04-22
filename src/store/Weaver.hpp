@@ -82,6 +82,7 @@ namespace STORE
     void vArg_keyNotExists(String* psOpArgs, Card_KeyNotExists* pCard_KeyNotExists);
     void vArg_limit       (String* psOpArgs, Card_Limit*     pCard_Limit);
     void vArg_ordAgg      (String* psOpArgs, Card_OrdAgg*    pCard_OrdAgg);
+    void vArg_pdsRow      (String* psOpArgs, Card_PdsRow*    pCard_pdsRow);
     void vArg_project     (String* psOpArgs, Card_Project*   pCard_Project);
     void vArg_scan        (String* psOpArgs, Card_Scan*      pCard_Scan);
     void vArg_send        (String* psOpArgs, Card_Send*      pCard_send);

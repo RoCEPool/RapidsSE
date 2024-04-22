@@ -36,6 +36,7 @@ namespace STORE
     bool bIsScalarKey(void);
     void vMark_rlnConj_Wrt_table(CardIter* pCI, Stz* szWithMark);
     void vOntoRpnExpr(String* psRpnExpr);
+    void vReduce_not(CardIter* pCI);
     void vRemove_rlnConj(Card_RlnConj *p_rlnConj);
     Card_CONJ* pRoot_conj(void);
      void vX_expCol_To_tblCol(CardIter* pCI);

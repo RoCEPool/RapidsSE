@@ -10,7 +10,6 @@ enum eCK : i8 // card kind
   // main cards
   //  construction cards
   /* */ CK_c_ABSJOIN,
-  /* */ CK_c_COMBINED,
   /* */ CK_c_FLAT,
   /* */ CK_c_FOLD,
   /* */ CK_c_SEND,
@@ -34,6 +33,7 @@ enum eCK : i8 // card kind
   /* */ CK_o_KEYNOTEXISTS,
   /* */ CK_o_LIMIT,
   /* */ CK_o_ORDAGG,
+  /* */ CK_o_PDSROW,
   /* */ CK_o_PROJECT,
   /* */ CK_o_SCAN,
   /* */ CK_o_SORT,
@@ -49,14 +49,12 @@ enum eCK : i8 // card kind
   /* */ CK_s_LEVEL,
   /* */ CK_s_MAPPING,
   /* */ CK_s_NEEDED,
-  /* */ CK_s_STREAM,
   /* */ CK_s_TABLE,
 
   // tertiary cards
   /* */ CK_t_EMIT,
   /* */ CK_t_HSHCOL,
   /* */ CK_t_INDEXLIST,
-  /* */ CK_t_TABLEINFO,
   /* */ CK_t_TABLENM,
 
   /* */ CK_ADDRESS,
@@ -116,7 +114,6 @@ enum eCK : i8 // card kind
   /* */ CK_RLNCONJ,
   /* */ CK_ROWCOUNT,
   /* */ CK_ROWSIZE,
-  /* */ CK_RPNCALC,
 
   /* */ CK_SECTION,
   /* */ CK_SENDKIND,
@@ -132,7 +129,6 @@ enum eCK : i8 // card kind
   /* */ CK_STREAMSET,
   /* */ CK_SUBQUERY,
   /* */ CK_SUBSET,
-  /* */ CK_SYNTHESIS,
 
   /* */ CK_TABLELIST,
   /* */ CK_TABLEPTN,

@@ -376,25 +376,6 @@ void Card_Table::vMorph_table_To_EEop(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Table::vPrint(Ribbon* pRibbon, i8 iDepth)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  s256 sName;
-  sName = aCK_short[m_eCard];
-  if (0 == iDepth)
-    sName.vToUpper();
-
-  if (m_xSymbol.bHasFacets())
-    sName.vCatSprint(" %s"_Stz, pSymbol()->szFacet(SF_TBL_SYN));
-
-  vPrintCard_byCustomNm(pRibbon, iDepth, sName);
-}
-
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 bool Card_Table::bScopeContains_Conj(Card_CONJ* p_conj,
                                      Scope* pScope)
 {
@@ -453,7 +434,6 @@ void Card_Table::vSet_Syn(Symbol* pSymbol_tableSyn)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   SYM(pSymbol_tableSyn);
-  this->vMark1(MARK_CHANGED);
 
   Card_TableNm* p_tableNm = pSub_tableNm();
   Table* pTable = Card_Table::pAccess_Table(p_tableNm->szFacet(SF_TBL_NM));

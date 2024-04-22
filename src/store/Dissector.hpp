@@ -46,7 +46,6 @@ namespace STORE
     Card* pOp_absJoin     (void);
     Card* pOp_aggreg      (void);
     Card* pOp_call        (void);
-    Card* pOp_combined    (void);
     Card* pOp_consume     (void);
     Card* pOp_debug       (void);
     Card* pOp_filter      (void);
@@ -80,8 +79,9 @@ namespace STORE
     Card_HshCol*     pPop_hshCol    (Card_TermSeq* p_termSeq);
     Card_HshColList* pPop_hshColList(Card_TermSeq* p_termSeq);
     Card_Key*        pPop_key       (Card_TermSeq* p_termSeq);
-    Card_RpnCalc*    pPop_rpnCalc   (Card_TermSeq* p_termSeq);
     Card_On*         pPop_on        (Card_TermSeq* p_termSeq);
+
+    Card_TermSeq*    pPop_exprSeq   (Card_TermSeq* p_termSeq);
 
     void             vCheckArgs     (i8 nArgs);
 

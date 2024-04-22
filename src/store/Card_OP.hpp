@@ -30,7 +30,8 @@ namespace STORE
     void vEarlyProject_backstep(CardIter* pCI);
 
     Card_Filter* pEnsure_filter(void);
-    void vEnsure_stream(CardIter* pCI);
+
+    void vFuse_project_Viable(CardIter* pCI);
 
     bool bIsEarlyLeaf(CardIter* pCI);
     bool bIsEarlyRoot(void);
@@ -62,6 +63,7 @@ namespace STORE
     void vRpn_keyNotExists_constraint(CardIter* pCI, String* psRpnExpr, Card_KeyNotExists* p_keyNotExists);
     void vRpn_limit       (CardIter* pCI, String* psRpnExpr, Card_Limit*     p_limit);
     void vRpn_ordAgg      (CardIter* pCI, String* psRpnExpr, Card_OrdAgg*    p_ordAgg);
+    void vRpn_pdsRow      (CardIter* pCI, String* psRpnExpr, Card_PdsRow*    p_pdsRow);
     void vRpn_project     (CardIter* pCI, String* psRpnExpr, Card_Project*   p_project);
     void vRpn_scan        (CardIter* pCI, String* psRpnExpr, Card_Scan*      p_scan);
     void vRpn_sort        (CardIter* pCI, String* psRpnExpr, Card_Sort*      p_sort);
@@ -69,8 +71,8 @@ namespace STORE
     void vRpn_where       (CardIter* pCI, String* psRpnExpr, Card_Where*     p_where);
 
     void vRpn_expr        (CardIter* pCI, String* psRpnExpr, Card_Expr*      p_expr);
-    void vRpn_rpnCalc     (CardIter* pCI, String* psRpnExpr, Card_RpnCalc*   p_rpnCalc);
     void vRpn_term        (CardIter* pCI, String* psRpnExpr, Card_Term*      p_term);
+    void vRpn_termSeq     (CardIter* pCI, String* psRpnExpr, Card_Expr*      p_expr);
 
     Index*     pGetIndex_chosenIndex(void);
     IndexDef*  pCraftIndexDef_key(CardIter* pCI);

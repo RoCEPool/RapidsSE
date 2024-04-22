@@ -24,16 +24,14 @@ namespace STORE
     Card_Emit* pClone(void);
     Card_Needed* pCraftRoot_needed(CardIter* pCI);
     Card_Needed* pCraft_needed_root(CardIter* pCI);
-    void vDelete_streamKey(CardIter* pCI);
     void vDerive_streamKey(CardIter* pCI);
     Card_Expr* pFindExprOfSymbol(CardIter* pCI, Symbol* pSymbol);
     Card_Expr* pGet_expr(i8 i_Element);
-    Card_Emit* pInduct(CardIter* pCI);
+    void vInduct(CardIter* pCI);
     void vInject_expr_nmdCol_table(CardIter* pCI);
     bool bIsCompound(void);
-    bool bIsLiterals(void);
+    bool bIsLiterals(CardIter* pCI);
     void vMapColumns(CardIter* pCI);
-    void vPrint(Ribbon* pRibbon, i8 iDepth);
     void vPush_foldExpr_Into_emit(CardIter* pCI, Card_Expr* p_expr_fold);
 
     Card_Expr* pResolve_expr(Card_Term* p_term);

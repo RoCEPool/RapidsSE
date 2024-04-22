@@ -24,6 +24,8 @@ namespace STORE
     s32  m_sOpNm;
     char md_Coord[256];
 
+    s32  m_sAlt;
+
     Card* m_pCard;
 
     StreamDef* m_pStreamDef_arriving;

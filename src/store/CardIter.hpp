@@ -22,12 +22,21 @@ namespace STORE
   public:
 
     Bench*      m_pBench;
-    CardCtl*    m_pCardCtl;
     Symbol      m_xSymbol_tableSyn;
 
     i8          m_i_RecursionDepth;
 
     EachMembers E;
+
+    struct {
+      Card_Emit *      m_pEmit;
+      Card_StreamKey * m_pStreamKey;
+    } Arriving;
+
+    struct {
+      Card_Emit * m_p_expr;
+      Card_Emit * m_p_key;
+    } Dic;
 
     struct {
       Card_OP*      m_pOP_root;
@@ -36,17 +45,8 @@ namespace STORE
     } Early;
 
     struct {
-      Card_Emit * m_pArriving;
-    } Flux;
-
-    struct {
-      Card_Emit * m_p_expr;
-      Card_Emit * m_p_key;
-    } Dic;
-
-    struct {
       Card_Project * m_pProject;
-      Card_Emit * m_pEmitted;
+      Card_Emit *   m_pEmitted;
     } Next;
 
     struct {
@@ -71,8 +71,8 @@ namespace STORE
     } Flat;
 
     struct {
+      Card_Emit *      m_pEmit;
       Card_StreamKey * m_pStreamKey;
-      Card_Emit *   m_pEmitted;
     } StreamOrder;
 
     struct {
@@ -84,7 +84,8 @@ namespace STORE
 
 
     i8 m_nAncestors;
-    Card* m_apAncestry[C_CARD_ANCESTRY];
+    Card* m_paAncestry[C_CARD_ANCESTRY];
+    i8    m_iaAncestry[C_CARD_ANCESTRY];
 
   protected:
     // must be last
@@ -105,6 +106,7 @@ namespace STORE
     void vAppendNewChild(Card* pParent, eCK eChild, Symbol xSymbol);
 
     bool  bAncestor(eCK eCard);
+    i8    i_Ancestor(Card* pAncestor);
     Card* pAncestor(i8 i_Ancestor);
     Card* pAncestor(eCK eCard, i8* ai_Ancestor= nullptr);
     void  vAncestorDump(Card* pCard = nullptr);
@@ -113,10 +115,18 @@ namespace STORE
     void  vAncestorPush(Card* pCard);
     i8    nAncestors(void);
 
+    i8    iAncestorCounter(i8 i_Ancestor);
+    i8    iAncestorCounter(Card* pAncestor);
+    i8    iAncestorCounterInc(Card* pAncestor, i8 iInc=1);
+    void  vAncestorCounterInc(Card* pAncestor, i8 iInc=1);
+    void  vAncestorCounterReset(i8 iTo=0);
+    void  vAncestorCounterResetAll(i8 iTo=0);
+
     // todo: merge these two [A294]
     Card_Expr* pBackSearch_expr_For_col(Symbol* pSym_term_arg, i8 i_Before);
     Card_Expr* pBackSearch_expr_For_colNm(Symbol* pSym_term, i8 i_Before=C_UNKNOWN);
 
+    void vBackstepTarget(void);
     void vBeginBoard(void);
     void vBeginEach(eCK eOp=CK_NONE);
     void vBeginEach_reverse(void);
@@ -184,10 +194,12 @@ namespace STORE
     Card* pMember(eCK eCard);
     void vMember(eCK eCard, Card* pCard);
     bool bMore(void);
+    bool bMoreTarget(void);
 
     void  vNewMember(eCK eCard);
     void  vNewMember(eCK eCard, Symbol xSymbol);
 
+    eCK  ePeekNext(void);
     Card* pPeekNext(void);
     Card* pPeekNextIf(eCK eCard);
     Card* pPeekPrev(void);
@@ -210,7 +222,9 @@ namespace STORE
     void vResynchOp(Card* pCard);
     bool bRewindOp(void);
 
-    void vSnapArriving(void);
+    void vSnap_arriving(Card_Emit* p_emit, Card_StreamKey * pStreamKey);
+    void vSnapIf_arriving(Card_Emit* p_emit, Card_StreamKey * pStreamKey);
+    void vSnapIf_arriving(bool bSub_emit=true);
 
     i8   i_Target(void);
     void vTransform(const char* azXfile, const char* azFunc, eXF eXform);

@@ -18,7 +18,9 @@
 #include "Ribbon.hpp"
 #include "Symbol.hpp"
 
-//#define Z_NO_RPNCALC
+//#define Z_PART_STREAMKEY
+
+#define Z_PDSROW
 
 namespace STORE
 {
@@ -35,7 +37,6 @@ namespace STORE
   class Card_CallOp;
   class Card_Clause;
   class Card_RlnConj;
-  class Card_Combined;
   class Card_CONJ;
   class Card_Constraint;
   class Card_CorrCols;
@@ -112,14 +113,13 @@ namespace STORE
 
   class Card_Payload;
   class Card_PayloadCells;
+  class Card_PdsRow;
   class Card_Project;
 
   class Card_RelnOp;
   class Card_Required;
   class Card_RowCount;
   class Card_RowSize;
-  class Card_RpnCalc;
-  class Card_TermSeq;
 
   class Card_Scan;
   class Card_Section;
@@ -130,7 +130,6 @@ namespace STORE
   class Card_SqyInfo;
   class Card_SqyNo;
   class Card_Stage;
-  class Card_Stream;
   class Card_StreamHead;
   class Card_StreamJoin;
   class Card_StreamKey;
@@ -139,16 +138,15 @@ namespace STORE
   class Card_StreamSet;
   class Card_SubQuery;
   class Card_SubSet;
-  class Card_Synthesis;
 
   class Card_Table;
-  class Card_TableInfo;
   class Card_TableList;
   class Card_TableNm;
   class Card_TablePtn;
   class Card_TableSize;
   class Card_TblSyn;
   class Card_Term;
+  class Card_TermSeq;
   class Card_Top;
   class Card_Topology;
 
@@ -163,7 +161,7 @@ namespace STORE
 
 // These would really benefit from being const and being in a namespace
 // or class to avoid polluting the global namespace.
-extern Stz* P_AggOp;
+extern Stz* P_AltFetch;
 extern Stz* P_BreakPt;
 extern Stz* P_BumpedBy;
 extern Stz* P_Cell;
@@ -175,9 +173,9 @@ extern Stz* P_CrlKeyDefn;
 extern Stz* P_CrlKeyTerm;
 extern Stz* P_CrlKeyTest;
 extern Stz* P_DebugOption;
-extern Stz* P_Direction;
 extern Stz* P_Early;
 extern Stz* P_EmittedCol;
+extern Stz* P_FixedNm;
 extern Stz* P_FixedPos;
 extern Stz* P_FusedProject;
 extern Stz* P_HashOf;
@@ -190,11 +188,11 @@ extern Stz* P_PrmOdn;
 extern Stz* P_Payload;
 extern Stz* P_Permutation;
 extern Stz* P_Pointer;
-extern Stz* P_ProjBump;
 extern Stz* P_ProjBumped;
 extern Stz* P_SendKind;
 extern Stz* P_Smoothed;
 extern Stz* P_StageTopo;
+extern Stz* P_StreamKey;
 extern Stz* P_SqyCall;
 extern Stz* P_SqyRslTest;
 extern Stz* P_Threads;
@@ -225,13 +223,11 @@ extern Stz* MARK_AT;
 extern Stz* MARK_BLANK;
 extern Stz* MARK_CHANGED;
 extern Stz* MARK_COMPARE;
-extern Stz* MARK_ENUM;
 extern Stz* MARK_DELETED;
 extern Stz* MARK_DUPLICATE;
 extern Stz* MARK_FOUND;
 extern Stz* MARK_NOT;
 extern Stz* MARK_OR;
-extern Stz* MARK_PREDICATE;
 extern Stz* MARK_UNVALID;
 extern Stz* MARK_UP;
 extern Stz* MARK_VALID;
@@ -263,26 +259,20 @@ namespace STORE
 
     eCK     m_eCard;
     i8      m_i_Child;
+    i8      m_iSequence;
     i8      m_iFixedDepth;
+    i8      m_iFirstPrint;
 
     Mark    m_xMark1;
     Mark    m_xMark2;
 
     Symbol  m_xSymbol;
 
-    i8 md__SeqNo;
+    bool    m_bChanged;
+
+    i8 md__CardNo;
     i8 md__FirstDetected;
     i8 md__LeakDetected;
-    i8      m_iFirstPrint;
-    eCK     m_eFirst;
-    i8      m_nPrintCount;
-    i8      m_nFunctionCount;
-    bool    m_bAddedCorrectly;
-    bool    m_bRemovedCorrectly;
-    i8      m_iCounter;
-    Card*   m_pLastPrintParent;
-
-    Card*   m_pParent;
 
   protected:
     // must be last
@@ -298,8 +288,6 @@ namespace STORE
 
     static void vCardLeaks(void);
 
-    static void vConsistencyCheck(Card* p_deck, i8 iTransformNo);
-
     static bool bIsConstruction(eCK eCard);
     static bool bIsMain(eCK eCard);
     static bool bIsOp(eCK eCard);
@@ -310,7 +298,6 @@ namespace STORE
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
-    void vAddedCorrectly(bool bAppended=true);
     bool bAllChildren(eCK eCard);
     void vAppendChild(Card* pChild);
     Card* pAppendNewCard(eCK eCard);
@@ -321,14 +308,12 @@ namespace STORE
     Card* pCard(eCK eCard);
     void vCard(eCK eCard);
     Stz* szCardNm(void);
-    void vCheckCorrectness(void);
     Cast xCast(void);
+    bool bChanged(void);
+    void vChanged(bool bChanged);
     i8   i_Child(void);
     void v_Child(i8 i_Child);
     Stz* szCoord(void);
-    i8   iCounter();
-    void vCounterInc(i8 iInc=1);
-    void vCounterReset(i8 iTo=0);
 
     eCT  eCTVal(void);
 
@@ -340,6 +325,8 @@ namespace STORE
     Card_SubSet* pDupSubCardsRecursive(i8 i_From, i8 i_Till=C_UNKNOWN);
 
     bool  bEither(i8 /*eCK*/ iKind_first, ...);
+    void vEnsureFirst(eCK eChild);
+    void vEnsureLast(eCK eChild);
 
     Stz*  szFacet(eSF eFacet_xchk);
     Card* pFindCardRecursive(eCK eCard);
@@ -354,24 +341,22 @@ namespace STORE
     bool  bFixedDepth(i8 iDepth);
     i8    iFixedDepth(void);
     void  vFixedDepth(i8 iFixedDepth);
-    i8    nFunctionCount(void);
 
     bool bHasChildFacet(eSF eFacet);
+    bool bHasFacet(eSF eFacet);
+    bool bHasFacet(eSF eFacet, Stz* szFacet);
     bool bHasSub(Card* pSubCard);
     bool bHasSubFacet(eSF eFacet, i8 iDepth=0);
+    bool bHasSymbolRecursive(eCK eCard, Symbol* pSymbol);
 
-    void vIncFunctionCount(void);
-//    void  vInsertChildAfter(Card* pChild, Card* pAfter);
-//    void  vInsertChildBefore(Card* pChild, Card* pBefore);
     bool bIsCard(eCK eCard);
-    bool bIsConstruction(void);
     bool bIsMain(void);
     bool bIsOp(void);
     bool bIsPeek(eCK eChild0);
     bool bIsPeek(eCK eChild0, eCK eChild1);
     bool bIsPeek(i8 i_Child, eCK eChild);
 
-    bool bLambdaWalk(eCK eToSubs, std::function<bool(Card* pCard)> bfLambdaFn);
+    bool bLambdaWalk(eCK eToSubs, std::function<bool(Card* pCard)> bfLambdaFn, CardIter* pCI=nullptr);
     bool bLambdaWalk_term(std::function<bool(Card_Term* p_term)> bfLambdaFn);
 
     void vMark(Stz* szMark1, Stz* szMark2);
@@ -399,27 +384,17 @@ namespace STORE
     void vMarksClearRecursive(void);
     void vMarksTestRecursive(void);
 
-    void vOnAdd_child(Card* pParent=nullptr);
-    void vOnAdd_parent(Card* pChild=nullptr);
-    void vOnRemove_child(Card* pParent=nullptr);
-    void vOnRemove_parent(Card* pChild=nullptr);
+    void vPrintRecursive(CardIter* pCI, i8 iDepth, Card* pParent, Ribbon* pRibbon);
 
-    Card* pParent(void);
-    void  vParent(Card* pParent);
-    void vPrintCard_byCustomNm(Ribbon* pRibbon, i8 iDepth, Stz* szCustomNm);
-    void vPrintCard_bySettings(Ribbon* pRibbon, i8 iDepth);
-    void vPrintRecursive(CardIter* pCI,
-                         Ribbon* pRibbon, i8 iDepth, Card* pParent,
-                         bool& rbPrune, eAL eLevel,
-                         bool bPrintBelow, i8 iXform, Stz* szXfunc);
-    void  vPushChild(Card* pChild);
-
-    void vRemovedCorrectly(bool bRemoved=true);
     void vRenumberRoot(i8 i_Parent);
     void vRenumberRecursive(Card* pParent);
     void vReplaceSubDelete(Card* pSub, Card* pWith);
     void vReplaceSub(Card* pSub, Card* pWith);
+    void vRotateFirst(Card* pChild);
+    void vRotateLast(Card* pChild);
 
+    i8   iSequence(void);
+    void vSequence(i8 iSequence);
     i8   nSubCards(eCK eSub_arg);
     Symbol* pSymbol(void);
     bool bSymbolMatches(Symbol* pSymbol_arg);
@@ -451,13 +426,41 @@ namespace STORE
     void vCoord(void);
     void vCoord(Card* pParentCard);
 
-    void vPrintCard_byKind(Ribbon* pRibbon, i8 iDepth);
-    void vPrintChildrenShort(Ribbon* pRibbon, i8 iDepth);
-    void vPrintHeader(Ribbon* pRibbon, eAL eLevel=AL_NONE);
-    void vPrintName(Ribbon* pRibbon, i8 iDepth, Stz* szCustomName=nullptr);
-    void vPrintNameSymbol(Ribbon* pRibbon, i8 iDepth);
-    void vPrintProperties(Ribbon* pRibbon, i8 iDepth);
-    void vPrintSymbol(Ribbon* pRibbon, i8 iDepth, bool bPrintMarks=false);
+    void vPrint_card(CardIter* pCI, Ribbon* pRibbon, i8 iDepth);
+    void vPrint_depth0(CardIter* pCI, Ribbon* pRibbon, i8 iDepth);
+    void vPrint_depth1(CardIter* pCI, Ribbon* pRibbon, i8 iDepth);
+    void vPrint_depth2(CardIter* pCI, Ribbon* pRibbon, i8 iDepth);
+    void vPrint_depthN(CardIter* pCI, Ribbon* pRibbon, i8 iDepth);
+    void vPrint_expr(CardIter* pCI, Ribbon* pRibbon, i8 iDepth);
+    void vPrint_table(CardIter* pCI, Ribbon* pRibbon, i8 iDepth);
+    void vPrint_term(CardIter* pCI, Ribbon* pRibbon, i8 iDepth);
+    void vPrintFacets(CardIter* pCI, Ribbon* pRibbon, i8 iDepth);
+    void vPrintHeader(CardIter* pCI, Ribbon* pRibbon);
+    void vPrintProperties(CardIter* pCI, Ribbon* pRibbon, i8 iDepth);
+
+    void vCat(i8& ri_Char, Ribbon* pRibbon, Stz* szStr, bool bRight=false);
+    void vCatBlank(i8& ri_Char, Ribbon* pRibbon);
+    void vCatBracket(i8& ri_Char, Ribbon* pRibbon, CardIter* pCI);
+    void vCatDots(i8& ri_Char, Ribbon* pRibbon, i8 iDepth);
+    void vCatFacet(i8& ri_Char, Ribbon* pRibbon, i8 i_Facet, bool bSecondary, bool bRight=false);
+    void vCatName(i8& ri_Char, Ribbon* pRibbon, i8 iDepth);
+    void vCatMarks(i8& ri_Char, Ribbon* pRibbon);
+    void vCatProperty(i8& ri_Char, Ribbon* pRibbon, i8 i_Property);
+    void vCatSequence(i8& ri_Char, Ribbon* pRibbon);
+    void vCatTblSyn(i8& ri_Char, Ribbon* pRibbon);
+    void vCatText(i8& ri_Char, Ribbon* pRibbon, Stz* szStr);
+    void vCatTypeLength(i8& ri_Char, Ribbon* pRibbon, i8 i_Facet);
+
+    void vFormatDots(String* pString, i8 iDepth);
+    void vFormatEnum(String* pString);
+    void vFormatFacet(String* pString, i8 i_Facet, bool bSecondary=false);
+    void vFormatHeader(String* pString);
+    void vFormatMarks(String* pString);
+    void vFormatName(String* pString, i8 iDepth, bool bRight=false);
+    void vFormatProperty(String* pString, i8 i_Property);
+    void vFormatSequence(String* pString);
+    void vFormatTblSyn(String* pString);
+    void vFormatTypeLength(String* pString, i8 i_Facet);
 
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
@@ -523,11 +526,11 @@ namespace STORE
     Card_OuterColNm*    pSub_outerColNm(bool bNotNull=false);
     Card_OuterJoin*     pSub_outerJoin(bool bNotNull=false);
     Card_PayloadCells*  pSub_payloadCells(bool bNotNull=false);
+    Card_PdsRow*        pSub_pdsRow(bool bNotNull=false);
     Card_RelnOp*        pSub_relnOp(bool bNotNull=false);
     Card_Required*      pSub_required(bool bNotNull=false);
     Card_RowCount*      pSub_rowCount(bool bNotNull=false);
     Card_RowSize*       pSub_rowSize(bool bNotNull=false);
-    Card_RpnCalc*       pSub_rpnCalc(bool bNotNull=false);
     Card_Scan*          pSub_scan(bool bNotNull=false);
     Card_Section*       pSub_section(bool bNotNull=false);
     Card_Spare*         pSub_spare(bool bNotNull=false);
@@ -535,7 +538,6 @@ namespace STORE
     Card_SqyInfo*       pSub_sqyInfo(bool bNotNull=false);
     Card_SqyNo*         pSub_sqyNo(bool bNotNull=false);
     Card_Stage*         pSub_stage(bool bNotNull=false);
-    Card_Stream*        pSub_stream(bool bNotNull=false);
     Card_StreamHead*    pSub_streamHead(bool bNotNull=false);
     Card_StreamJoin*    pSub_streamJoin(bool bNotNull=false);
     Card_StreamKey*     pSub_streamKey(bool bNotNull=false);
@@ -543,9 +545,7 @@ namespace STORE
     Card_StreamPtn*     pSub_streamPtn(bool bNotNull=false);
     Card_StreamSet*     pSub_streamSet(bool bNotNull=false);
     Card_SubQuery*      pSub_subQuery(bool bNotNull=false);
-    Card_Synthesis*     pSub_synthesis(bool bNotNull=false);
     Card_Table*         pSub_table(bool bNotNull=false);
-    Card_TableInfo*     pSub_tableInfo(bool bNotNull=false);
     Card_TableNm*       pSub_tableNm(bool bNotNull=false);
     Card_TablePtn*      pSub_tablePtn(bool bNotNull=false);
     Card_TableSize*     pSub_tableSize(bool bNotNull=false);

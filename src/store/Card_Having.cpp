@@ -42,18 +42,6 @@ Card_Having::~Card_Having(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* acclimate for injected fold expr                                           */
-/*----------------------------------------------------------------------------*/
-void Card_Having::vAcclimate_foldExpr(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  pCI->E.p_constraint = pSub_constraint();
-
-  pCI->E.p_constraint->vAcclimate_foldExpr(pCI, pCI->Flat.m_pExpr_fold);
-}
-
-/*----------------------------------------------------------------------------*/
 /* smooth                                                                     */
 /*----------------------------------------------------------------------------*/
 void Card_Having::vSmooth(CardIter* pCI, bool bSawProject)
@@ -81,7 +69,7 @@ void Card_Having::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
   if (pCarryForward->Having.m_bCorrect_After_Inject)
     vCorrect_After_Inject(pCI, bBump);
 
-  pCI->Dic.m_p_expr = pCI->Flux.m_pArriving = pSub_emit();
+  pCI->vSnapIf_arriving();
 }
 
 /*----------------------------------------------------------------------------*/

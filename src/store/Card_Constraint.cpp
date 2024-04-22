@@ -5,7 +5,6 @@
 #include "Card_Constraint.hpp"
 
 #include "Card_Expr.hpp"
-#include "Card_RpnCalc.hpp"
 #include "Card_BoolPred.hpp"
 #include "Card_RlnConj.hpp"
 #include "Card_Term.hpp"
@@ -56,68 +55,8 @@ Card_Constraint::~Card_Constraint(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* create new <constraint>/<expr $1>/<rpnCalc>                                */
-/*----------------------------------------------------------------------------*/
-Card_Constraint* Card_Constraint::pNewAssembly(CardIter* pCI)
-{
-  _static_
-
-  Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
-
-  Card_Expr* p_expr = new Card_Expr;
-  p_expr->vAppendChild(p_rpnCalc);
-
-  Card_Constraint* p_constraint = new Card_Constraint;
-  p_constraint->vAppendChild(p_expr);
-
-  if (pCI) {
-    pCI->E.p_constraint = p_constraint;
-    pCI->E.p_expr       = p_expr;
-    pCI->E.p_rpnCalc    = p_rpnCalc;
-  }
-
-  return p_constraint;
-}
-
-/*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* acclimate for injected fold expr                                           */
-/*----------------------------------------------------------------------------*/
-void Card_Constraint::vAcclimate_foldExpr(CardIter* pCI, Card_Expr* p_expr_fold)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  UNUSED(pCI);
-  UNUSED(p_expr_fold);
-
-  vBump_expCol(1);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_Constraint::vBump_expCol(i8 nBumpBy)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (Card_Expr* p_expr = pSub_expr())
-    p_expr->vBump_expCol(nBumpBy);
-
-}
-
-/*----------------------------------------------------------------------------*/
-/* burst <constraint>/<expr $1>/<rpnCalc>                                     */
-/*----------------------------------------------------------------------------*/
-void Card_Constraint::vBurstAssembly(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  pCI->E.p_constraint = this;
-  pCI->E.p_expr       = pCI->E.p_constraint->pSub_expr(C_NOT_NULL);
-  pCI->E.p_rpnCalc    = pCI->E.p_expr->pSub_rpnCalc(C_NOT_NULL);
-}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -141,9 +80,6 @@ void Card_Constraint::vApplyCast(CardIter *pCI, Card_Emit* p_Dic_expr)
 
   if ((pCI->E.p_boolPred = pSub_boolPred()))
     pCI->E.p_boolPred->vApplyCast(pCI,/*??*/p_Dic_expr);
-  else
-  if ((pCI->E.p_expr = pSub_expr()))
-    pCI->E.p_expr->vApplyCast(pCI,/*??*/p_Dic_expr);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -184,8 +120,6 @@ void Card_Constraint::vResolve_colNm_From_colSym(CardIter* pCI)
     szColNm = p_expr_resolved->szFacet(SF_NMD_COL);
 
     p_term->SYM(SF_NMD_COL, szColNm);
-     p_term->vMark1(MARK_CHANGED);
-
     return C_CONTINUE_RECURSION;
   };
 
@@ -210,7 +144,7 @@ void Card_Constraint::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
                                      CK_o_KEYNOTEXISTS,
                                      CK_NONE);
 
-  eValidate_mustEither(CK_BOOLPRED, CK_EXPR, CK_NONE);
+  eValidate_mustEither(CK_BOOLPRED, CK_NONE);
 
   Card::vValidate(pCI,iDepth,pParent);
   pCI->vValidateChildren(this,iDepth+1);

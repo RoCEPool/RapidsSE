@@ -42,20 +42,15 @@ ChildCards::~ChildCards(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* append child card                                                          */
 /*----------------------------------------------------------------------------*/
-void ChildCards::vAppendChild(Card* pChild, Card* pParent)
+void ChildCards::vAppendChild(Card* pChild)
 {
   RASSERT(pChild);
 
   if (m_pCard->bIsCard(CK_s_NEEDED))
     vDebugPoint();
 
-  pChild->vParent(pParent);
-
   vAppend(pChild);
-
-  pChild->vAddedCorrectly();
-
-  pChild->vOnAdd_child();
+  pChild->vChanged(true);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -116,7 +111,16 @@ void ChildCards::vDeleteChild(Card* pChild)
 }
 
 /*----------------------------------------------------------------------------*/
-/* remove and delete given immediate child card (non-recursive)               */
+/* remove and delete given sub                                                */
+/*----------------------------------------------------------------------------*/
+void ChildCards::vDeleteSub(eCK eSub)
+{
+  if (Card* pSub = pFindSubCard(eSub))
+    vDeleteSub(pSub);
+}
+
+/*----------------------------------------------------------------------------*/
+/* remove and delete given sub                                                */
 /*----------------------------------------------------------------------------*/
 void ChildCards::vDeleteSub(Card* pSub)
 {
@@ -135,41 +139,6 @@ void ChildCards::vDiscardHead(void)
   if (Card* pHeadCard = pPopChild()) {
     delete pHeadCard;
   }
-}
-
-/*----------------------------------------------------------------------------*/
-/* ensure card is first                                                       */
-/*----------------------------------------------------------------------------*/
-void ChildCards::vEnsureFirst(eCK eChild)
-{
-  //_precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  i8 i_Child;
-  Card* pChild = pFindChild(eChild,i_Child);
-  if ((! pChild) || 0 == i_Child)
-    return;
-
-  vRotateFirst(pChild);
-}
-
-/*----------------------------------------------------------------------------*/
-/* ensure card is first                                                       */
-/*----------------------------------------------------------------------------*/
-void ChildCards::vEnsureLast(eCK eChild)
-{
-  //_precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card* pChild_last = pPeekChild_tail();
-  if (! pChild_last)
-    return;
-  if (eChild == pChild_last->eCard())
-    return;
-
-  Card* pChild = pFindChild(eChild);
-  if (! pChild)
-    return;
-
-  vRotateLast(pChild);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -409,12 +378,9 @@ void ChildCards::vInsertChildAfter(Card* pChild, Card* pAfter)
   RASSERT(pChild);
   RASSERT(pAfter);
 
-  pChild->vParent(pAfter->pParent());
-
   vInsertAfter(pChild,pAfter);
 
-  pChild->vAddedCorrectly();
-  pChild->vOnAdd_child();
+  pChild->vChanged(true);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -425,12 +391,9 @@ void ChildCards::vInsertChildBefore(Card* pChild, Card* pBefore)
   RASSERT(pChild);
   RASSERT(pBefore);
 
-  pChild->vParent(pBefore->pParent());
-
   vInsertBefore(pChild,pBefore);
 
-  pChild->vAddedCorrectly();
-  pChild->vOnAdd_child();
+  pChild->vChanged(true);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -499,10 +462,7 @@ Card* ChildCards::pPopChild(void)
   Card* pChild = pPop();
   RASSERT(pChild);
 
-  pChild->vParent(nullptr);
-
-  pChild->vRemovedCorrectly();
-  pChild->vOnRemove_child();
+  pChild->vChanged(true);
 
   return pChild;
 }
@@ -519,6 +479,8 @@ Card* ChildCards::pPopChild_tail(void)
   Card* pChild = pGetChild(nChildren-1);
   RASSERT(pChild);
   vRemoveChild(pChild);
+
+  pChild->vChanged(true);
 
   return pChild;
 }
@@ -545,15 +507,13 @@ bool ChildCards::bPopDeleteChildIf(eCK eCard, Symbol xSymbol)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void ChildCards::vPushChild(Card* pChild, Card* pParent)
+void ChildCards::vPushChild(Card* pChild)
 {
   RASSERT(pChild);
 
-  pChild->vParent(pParent);
   vPush(pChild);
 
-  pChild->vAddedCorrectly();
-  pChild->vOnAdd_child();
+  pChild->vChanged(true);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -566,12 +526,9 @@ bool ChildCards::bRemoveChild(Card* pChild)
   if (C_UNKNOWN == iFindChild(pChild))
     return false;
 
-  RASSERT(pChild->pParent() == this);
   vRemove(pChild);
-  pChild->vParent(nullptr);
 
-  pChild->vRemovedCorrectly();
-  pChild->vOnRemove_child();
+  pChild->vChanged(true);
 
   return true;
 }
@@ -585,11 +542,9 @@ void ChildCards::vRemoveChild(Card* pChild)
 
   RASSERT(pChild);
 
-  vRemove(pChild);
-  pChild->vParent(nullptr);
+  pChild->vChanged(true);
 
-  pChild->vRemovedCorrectly();
-  pChild->vOnRemove_child();
+  vRemove(pChild);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -607,6 +562,7 @@ void ChildCards::vRemoveChildLeavingSubs(Card* pChild)
   }
 
   vRemoveChild(pChild);
+  pChild->vChanged(true);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -625,8 +581,7 @@ void ChildCards::vRemoveSub(Card* pSub)
 
     if (pSub_test == pSub) {
       RASSERT(bRemoveChild(pSub_test));
-      pSub_test->vRemovedCorrectly();
-      pSub_test->vOnRemove_child();
+      pSub_test->vChanged(true);
       break;
     }
     pSub_test->vRemoveSub(pSub);
@@ -642,42 +597,9 @@ void ChildCards::vReplaceChild(Card* pChild, Card* pWith)
 {
   //_precondition_(_ADDRESS_,_FOOTER_);
 
-  //RASSERT(pChild->pParent());
-  pWith->vParent(pChild->pParent());
-
   vReplace(pChild, pWith);
-  pChild->vParent(nullptr);
-
-  pWith->vAddedCorrectly();
-  pWith->vOnAdd_child();
-
-  pChild->vRemovedCorrectly();
-  pChild->vOnRemove_child();
-}
-
-/*----------------------------------------------------------------------------*/
-/* remove and push child card                                                 */
-/*----------------------------------------------------------------------------*/
-void ChildCards::vRotateFirst(Card* pChild)
-{
-  //_precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card* pParent = pChild->pParent();
-  vRemoveChild(pChild);
-  vPushChild(pChild,pParent);
-}
-
-/*----------------------------------------------------------------------------*/
-/* remove and append child card                                               */
-/*----------------------------------------------------------------------------*/
-void ChildCards::vRotateLast(Card* pChild)
-{
-  //_precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card* pParent = pChild->pParent();
-
-  vRemoveChild(pChild);
-  vAppendChild(pChild,pParent);
+  pChild->vChanged(true);
+  pWith->vChanged(true);
 }
 
 /*============================================================================*/

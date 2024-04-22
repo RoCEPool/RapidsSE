@@ -209,7 +209,6 @@
 #include "ThreadScratch.hpp"
 #include "PagingMetrics.hpp"
 #include "Action.hpp"
-#include "CardCtl.hpp"
 #include "Vertex.hpp"
 #include "SubCall.hpp"
 #include "SubReturn.hpp"
@@ -251,7 +250,6 @@
 #include "XF.hpp"
 #include "XF_Epilog_Add_hash_cast.hpp"
 #include "XF_Epilog_Add_inflate.hpp"
-#include "XF_Epilog_Append_synthesis.hpp"
 #include "XF_Epilog_Cull_facet.hpp"
 #include "XF_Epilog_Determine_Columns.hpp"
 #include "XF_Epilog_Fuse_project.hpp"
@@ -310,7 +308,6 @@
 #include "XF_Prolog_Validate_Board.hpp"
 #include "XF_Prolog_X_sqyNm_To_sqyNo.hpp"
 #include "XF_Prolog_X_colNm_To_expCol.hpp"
-#include "XF_Prolog_X_rpnCalc_To_boolPred.hpp"
 #include "XF_Prolog_X_scan_To_from.hpp"
 #include "XF_Synthesise_pipelineDef.hpp"
 #include "XF_Utility_Verify_dic.hpp"
@@ -319,8 +316,6 @@
 
 #include "CardUsage.hpp"
 #include "ColMap.hpp"
-#include "CardImage.hpp"
-#include "CardHistory.hpp"
 #include "SketchTkn.hpp"
 #include "ColHsh.hpp"
 #include "ColInj.hpp"
@@ -390,9 +385,6 @@ SizeHeap gxaSizeHeap[]
 
   {CN__C__,                     'C' - ('A' - 1),          HT_INVALID   , FILL },
   {CN_CARD,                     sizeof(Card),             HT_T_SMALL   , FILL },
-  {CN_CARDCTL,                  sizeof(CardCtl),          HT_T_LARGE   , FILL },
-  {CN_CARDHISTORY,              sizeof(CardHistory),      HT_T_SMALL   , FILL },
-  {CN_CARDIMAGE,                sizeof(CardImage),        HT_T_SMALL   , FILL },
   {CN_CARDITER,                 sizeof(CardIter),         HT_T_MEDIUM  , FILL },
   {CN_CARDUSAGE,                sizeof(CardUsage),        HT_T_SMALL   , FILL },
   {CN_CARRYFORWARD,             sizeof(CarryForward),     HT_T_TINY    , FILL },
@@ -794,7 +786,6 @@ SizeHeap gxaSizeHeap[]
   {CN_XF,                                sizeof(XF),                                HT_T_TINY    , FILL },
   {CN_XF_EPILOG_ADD_HASH_CAST,           sizeof(XF_Epilog_Add_hash_cast),           HT_T_TINY    , FILL },
   {CN_XF_EPILOG_ADD_INFLATE,             sizeof(XF_Epilog_Add_inflate),             HT_T_TINY    , FILL },
-  {CN_XF_EPILOG_APPEND_SYNTHESIS,        sizeof(XF_Epilog_Append_synthesis),        HT_T_TINY    , FILL },
   {CN_XF_EPILOG_CULL_FACET,           sizeof(XF_Epilog_Cull_facet),           HT_T_TINY    , FILL },
   {CN_XF_EPILOG_DETERMINE_COLUMNS,    sizeof(XF_Epilog_Determine_Columns),    HT_T_TINY    , FILL },
   {CN_XF_EPILOG_FUSE_PROJECT,         sizeof(XF_Epilog_Fuse_project),         HT_T_TINY    , FILL },
@@ -855,7 +846,6 @@ SizeHeap gxaSizeHeap[]
   {CN_XF_PROLOG_VALIDATE_BOARD,        sizeof(XF_Prolog_Validate_Board),        HT_T_TINY    , FILL },
   {CN_XF_PROLOG_X_SQYNM_TO_SQYNO,      sizeof(XF_Prolog_X_sqyNm_To_sqyNo),      HT_T_TINY    , FILL },
   {CN_XF_PROLOG_X_COLNM_TO_EXPCOL,     sizeof(XF_Prolog_X_colNm_To_expCol),     HT_T_TINY    , FILL },
-  {CN_XF_PROLOG_X_RPNCALC_TO_BOOLPRED, sizeof(XF_Prolog_X_rpnCalc_To_boolPred), HT_T_TINY    , FILL },
   {CN_XF_PROLOG_X_SCAN_TO_FROM,        sizeof(XF_Prolog_X_scan_To_from),        HT_T_TINY    , FILL },
   {CN_XF_SYNTHESISE_CODE,              sizeof(XF_Synthesise_code),              HT_T_TINY    , FILL },
   {CN_XF_SYNTHESISE_PIPELINEDEF,       sizeof(XF_Synthesise_pipelineDef),       HT_T_TINY    , FILL },

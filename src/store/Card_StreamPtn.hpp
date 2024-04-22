@@ -16,11 +16,6 @@ namespace STORE
     Card_StreamPtn(void);
    ~Card_StreamPtn(void) noexcept(false);
 
-    void vAddKey(Symbol* p_Y_tblCol);
-    bool bContainsKey(Symbol* p_Y_tblCol);
-    bool bIsEmpty(void);
-    void vResetKeys(void);
-
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 

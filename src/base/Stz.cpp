@@ -43,6 +43,9 @@ Stz::~Stz(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 Stz* Stz::szDots(i8 nDots)
 {
+  if (nDots < 0)
+    return ""_Stz;
+
   switch(nDots) {
     case  0:  return ""_Stz;
     case  1:  return "."_Stz;
@@ -61,7 +64,8 @@ Stz* Stz::szDots(i8 nDots)
     case 14:  return ".............."_Stz;
     case 15:  return "..............."_Stz;
     case 16:  return "................"_Stz;
-    default:  return "(max-dots)......."_Stz;
+    default:
+      return "(max-dots)......."_Stz;
   }
 }
 

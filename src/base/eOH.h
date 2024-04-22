@@ -14,6 +14,8 @@ enum eOH : i8 // optimisation phase
   /* */ OH_EPILOG,
   /* */ OH_SYNTHESISE,
 
+  /* */ OH_PASS_THRU,
+
   /* */ OH_ENUMS
 };
 

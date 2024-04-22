@@ -22,8 +22,11 @@ Symbol::Symbol(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
+  vCard(nullptr);
   vResetFacets();
   vCastReset();
+
+  vChanged(true);
 
   m_pProperties = nullptr;
 
@@ -42,6 +45,7 @@ Symbol::Symbol(eSF eFacet, char cChar, i8 iInt)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
+  vCard(nullptr);
   vResetFacets();
   vCastReset();
   m_pProperties = nullptr;
@@ -160,6 +164,55 @@ Symbol::~Symbol(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+i8 Symbol::iEval_enum(Stz* szArg)
+{
+  _static_
+
+  RASSERT(bIs_Enum(szArg));
+
+//  char ac0 = szArg->cChar(0); // $
+//  char ac1 = szArg->cChar(1); // E
+//  char ac2 = szArg->cChar(2); // :
+//  char ac3 = szArg->cChar(3); // x
+//  char ac4 = szArg->cChar(4); // x
+//  char ac5 = szArg->cChar(5); // .
+  char ac6 = szArg->cChar(6); // d
+  char ac7 = szArg->cChar(7); // d
+  char ac8 = szArg->cChar(8); // d
+//  char ac9 = szArg->cChar(9); // \0
+
+  i8 iEnum = 100*ac6 + 10*ac7 + ac8;
+  return iEnum;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+eEG Symbol::eEval_enumGroup(Stz* szArg)
+{
+  _static_
+
+  RASSERT(bIs_Enum(szArg));
+
+//  char ac0 = szArg->cChar(0); // $
+//  char ac1 = szArg->cChar(1); // E
+//  char ac2 = szArg->cChar(2); // :
+  char ac3 = szArg->cChar(3); // x
+  char ac4 = szArg->cChar(4); // x
+//  char ac5 = szArg->cChar(5); // .
+//  char ac6 = szArg->cChar(6); // d
+//  char ac7 = szArg->cChar(7); // d
+//  char ac8 = szArg->cChar(8); // d
+//  char ac9 = szArg->cChar(9); // \0
+
+  eEG eGroup = (eEG)(16*ac3 + ac4);
+
+  return eGroup;
+}
+
+/*----------------------------------------------------------------------------*/
 /* evaluate sub-query op                                                      */
 /*----------------------------------------------------------------------------*/
 eQO Symbol::eEvalSubQryOp(Stz* szArg)
@@ -214,6 +267,7 @@ eSF Symbol::eEval_facet(Stz* szArg)
   if (bIs_Cross(szArg))        return SF_CROSS;
   if (bIs_Dcm_Lit(szArg))      return SF_DCM_LIT;
   if (bIs_Direction(szArg))    return SF_DIRECTION;
+  if (bIs_Enum(szArg))         return SF_ENUM;
   if (bIs_Else(szArg))         return SF_ELSE;
   if (bIs_EndIf(szArg))        return SF_ENDIF;
   if (bIs_Flt_Lit(szArg))      return SF_FLT_LIT;
@@ -236,7 +290,7 @@ eSF Symbol::eEval_facet(Stz* szArg)
   if (bIs_Stg_Cast(szArg))     return SF_STG_CAST;
   if (bIs_Exp_Col(szArg))      return SF_EXP_COL;
   if (bIs_Str_Fn(szArg))       return SF_STR_FN;
-  if (bIs_Str_Lit(szArg))       return SF_STR_LIT;
+  if (bIs_Str_Lit(szArg))      return SF_STR_LIT;
   if (bIs_Tbl_Col(szArg))      return SF_TBL_COL;
   if (bIs_Then(szArg))         return SF_THEN;
   if (bIs_Type(szArg))         return SF_TYPE;
@@ -485,6 +539,40 @@ bool Symbol::bIs_Else(Stz* szArg)
     return true;
   else
     return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is given arg ELSE?                                                         */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Enum(Stz* szArg)
+{
+  _static_
+  UNUSED(szArg);
+
+  char ac0 = szArg->cChar(0); // $
+  char ac1 = szArg->cChar(1); // E
+  char ac2 = szArg->cChar(2); // :
+  char ac3 = szArg->cChar(3); // x
+  char ac4 = szArg->cChar(4); // x
+  char ac5 = szArg->cChar(5); // .
+  char ac6 = szArg->cChar(6); // d
+  char ac7 = szArg->cChar(7); // d
+  char ac8 = szArg->cChar(8); // d
+  char ac9 = szArg->cChar(9); // \0
+
+  if (StrLib::bIsDollar   (ac0) &&
+      'E' == ac1                &&
+      StrLib::bIsSemicolon(ac2) &&
+      StrLib::bIsHex      (ac3) &&
+      StrLib::bIsHex      (ac4) &&
+      StrLib::bIsDot      (ac5) &&
+      StrLib::bIsDigit    (ac6) &&
+      StrLib::bIsDigit    (ac7) &&
+      StrLib::bIsDigit    (ac8) &&
+      StrLib::bIsNull     (ac9))
+    return true;
+
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1186,7 +1274,7 @@ bool Symbol::bIs_rlnConj(Facet* aFacet)
 /*----------------------------------------------------------------------------*/
 /* test facet for term                                                        */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bIs_term(Facet* aFacet)
+bool Symbol::bIs_rpnTerm(Facet* aFacet)
 {
   _static_
 
@@ -1296,6 +1384,8 @@ void Symbol::vApplyCast(Cast xCast)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   m_xCast = xCast;
+
+  vChanged(true);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1423,7 +1513,7 @@ void Symbol::vApplyFacet(eSF eFacet, i8 iInt)
 
   switch (eFacet) {
 
-   case SF_EXP_COL:    vFacet_Exp_Col(iInt);    break;
+    case SF_EXP_COL:    vFacet_Exp_Col(iInt);    break;
     case SF_IDX_COL:    vFacet_Idx_Col(iInt);    break;
     case SF_INT_LIT:    vFacet_Int_Lit(iInt);    break;
     case SF_ITM_COL:    vFacet_Itm_Col(iInt);    break;
@@ -1440,6 +1530,24 @@ void Symbol::vApplyFacet(eSF eFacet, i8 iInt)
 
   RASSERT(bHasFacets());
 }
+
+/*----------------------------------------------------------------------------*/
+/* apply facet                                                                */
+/*----------------------------------------------------------------------------*/
+void Symbol::vApplyFacet(eSF eFacet, eEG eGroup, i8 iEnum)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  switch (eFacet) {
+
+    case SF_ENUM: vFacet_Enum(eGroup,iEnum);  break;
+
+    default: NEVER_REACH;
+  }
+
+  RASSERT(bHasFacets());
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* apply facet                                                                */
@@ -1466,6 +1574,7 @@ void Symbol::vApplyFacet(eSF eFacet, Stz* szArg)
     case SF_DCM_LIT:     vFacet_Dcm_Lit(szArg);     break;
     case SF_DIRECTION:   vFacet_Direction(szArg);   break;
     case SF_ELSE:        vFacet_Else(szArg);        break;
+    case SF_ENUM:        vFacet_Enum(szArg);        break;
     case SF_ENDIF:       vFacet_EndIf(szArg);       break;
     case SF_EXP_COL:     vFacet_Exp_Col(szArg);     break;
     case SF_FLD_NM:      vFacet_Fld_Nm(szArg);      break;
@@ -1545,6 +1654,26 @@ void Symbol::vApplyFacets(Symbol* pSymbol_arg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get card                                                                   */
+/*----------------------------------------------------------------------------*/
+Card* Symbol::pCard(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  return m_pCard;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set card                                                                   */
+/*----------------------------------------------------------------------------*/
+void Symbol::vCard(Card* pCard)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  m_pCard = pCard;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get cast                                                                   */
 /*----------------------------------------------------------------------------*/
 Cast Symbol::xCast(void)
@@ -1552,6 +1681,26 @@ Cast Symbol::xCast(void)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   return m_xCast;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get changed                                                                */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bChanged(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  return m_bChanged;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set changed                                                                */
+/*----------------------------------------------------------------------------*/
+void Symbol::vChanged(bool bChanged)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  m_bChanged = bChanged;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1569,7 +1718,7 @@ eCT Symbol::eColType(void)
 /*----------------------------------------------------------------------------*/
 /* cull facet except for given arg                                            */
 /*----------------------------------------------------------------------------*/
-void Symbol::vCullFacet(eSF eFacet_except)
+void Symbol::vCullFacet_except(eSF eFacet_except)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -1580,6 +1729,32 @@ void Symbol::vCullFacet(eSF eFacet_except)
   while (i_Facet < nFacets()) {
     eSF eFacet_this = eFacet(i_Facet);
     if (eFacet_except == eFacet_this) {
+      i_Facet++;
+      continue;
+    }
+
+    vDeleteFacet(eFacet_this);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* cull facet except for given arg                                            */
+/*----------------------------------------------------------------------------*/
+void Symbol::vCullFacet_leaving(eSF eFacet_except1, eSF eFacet_except2)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (! bIs_Col())
+    return;
+
+  i8 i_Facet = 0;
+  while (i_Facet < nFacets()) {
+    eSF eFacet_this = eFacet(i_Facet);
+    if (eFacet_except1 == eFacet_this) {
+      i_Facet++;
+      continue;
+    }
+    if (eFacet_except2 == eFacet_this) {
       i_Facet++;
       continue;
     }
@@ -1732,33 +1907,9 @@ Stz* Symbol::szFacet(i8 i_Facet)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get facet for bound                                                        */
+/* get facet[0]      ]                                                        */
 /*----------------------------------------------------------------------------*/
-Stz* Symbol::szFacet_bound(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  RASSERT(bIs_bound(&xaFacet[0]));
-
-  return xaFacet[0].m_sFacet;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get facet for rlnConj                                                      */
-/*----------------------------------------------------------------------------*/
-Stz* Symbol::szFacet_rlnConj(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  RASSERT(bIs_rlnConj(&xaFacet[0]));
-
-  return xaFacet[0].m_sFacet;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get one and only facet                                                     */
-/*----------------------------------------------------------------------------*/
-Stz* Symbol::szFacet_single(void)
+Stz* Symbol::szFacet0(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -1770,14 +1921,17 @@ Stz* Symbol::szFacet_single(void)
 /*----------------------------------------------------------------------------*/
 /* get facet for term                                                         */
 /*----------------------------------------------------------------------------*/
-Stz* Symbol::szFacet_term(void)
+Stz* Symbol::szFacet_rpnTerm(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  RASSERT(1 == nFacets());
-  RASSERT(bIs_term(&xaFacet[0]));
+  for (i8 i_Facet = 0; i_Facet < m_nFacets; i_Facet++) {
+    if (bIs_rpnTerm(&xaFacet[i_Facet])) {
+      return xaFacet[i_Facet].m_sFacet;
+    }
+  }
 
-  return xaFacet[0].m_sFacet;
+  NEVER_REACH
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2322,6 +2476,7 @@ bool Symbol::bValidate(void)
       case SF_CROSS:       b = bIs_Cross(szFacet);       break;
       case SF_DCM_LIT:     b = bIs_Dcm_Lit(szFacet);     break;
       case SF_DIRECTION:   b = bIs_Direction(szFacet);   break;
+      case SF_ENUM:        b = bIs_Enum(szFacet);        break;
       case SF_EXP_COL:     b = bIs_Exp_Col(szFacet);     break;
       case SF_FLD_NM:      b = bIs_Fld_Nm(szFacet);      break;
       case SF_FLT_LIT:     b = bIs_Flt_Lit(szFacet);     break;
@@ -2454,6 +2609,8 @@ void Symbol::Y_vAll(Symbol* pSymbol_arg)
     m_pProperties = new TagSet;
 
   m_pProperties->vCopy(pSymbol_arg->m_pProperties);
+
+  vChanged(true);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2467,6 +2624,7 @@ void Symbol::Y_vCut(Stz* szPpyNm)
     return;
 
   m_pProperties->vDelete(szPpyNm);
+  vChanged(true);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2649,6 +2807,7 @@ void Symbol::Y_vSet(Stz* szPpyNm)
     m_pProperties = new TagSet;
 
   m_pProperties->vReplace(szPpyNm, "y"_Stz);
+  vChanged(true);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2662,6 +2821,7 @@ void Symbol::Y_vSet(Stz* szPpyNm, i8 iPpy)
     m_pProperties = new TagSet;
 
   m_pProperties->vReplace(szPpyNm, iPpy);
+  vChanged(true);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2675,6 +2835,7 @@ void Symbol::Y_vSet(Stz* szPpyNm, Object* pObject)
     m_pProperties = new TagSet;
 
   m_pProperties->vReplace(szPpyNm, pObject);
+  vChanged(true);
 
 }
 /*----------------------------------------------------------------------------*/
@@ -2691,6 +2852,7 @@ void Symbol::Y_vSet(Stz* szPpyNm, Stz* szPpy)
     m_pProperties = new TagSet;
 
   m_pProperties->vReplace(szPpyNm, szPpy);
+  vChanged(true);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2968,6 +3130,34 @@ void Symbol::vFacet_Else(Stz* szElse)
   vFacetSet(SF_ELSE, szElse);
 
   RASSERT(bHasFacet(SF_ELSE));
+}
+
+//*----------------------------------------------------------------------------*/
+/* set this symbol to enum                                                    */
+/*----------------------------------------------------------------------------*/
+void Symbol::vFacet_Enum(eEG eGroup, i8 iEnum)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  s32 sEnum;
+
+  sEnum.vSprint("$E:%02x=%03lld"_Stz,eGroup,iEnum);
+
+  vFacetSet(SF_ENUM, sEnum.szStz());
+
+  RASSERT(bHasFacet(SF_ENUM));
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to enum                                                    */
+/*----------------------------------------------------------------------------*/
+void Symbol::vFacet_Enum(Stz* szEnum)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  vFacetSet(SF_ENUM, szEnum);
+
+  RASSERT(bHasFacet(SF_ENUM));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3302,8 +3492,6 @@ void Symbol::vFacet_Nmd_Col(i8 iColNo)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  //RASSERT(! bHasFacets());
-
   vFacetSprint(SF_NMD_COL, "COL%lld"_Stz, iColNo);
 
   RASSERT(bHasFacet(SF_NMD_COL));
@@ -3319,7 +3507,6 @@ void Symbol::vFacet_Nmd_Col(Stz* szColNm)
   vFacetSet(SF_NMD_COL, szColNm);
 
   RASSERT(bHasFacet(SF_NMD_COL));
-  //RASSERT(!bHasFacet(SF_ITM_COL));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3729,6 +3916,8 @@ void Symbol::vFacetCut(i8 i_Facet_cut)
   }
 
   m_nFacets--;
+
+  vChanged(true);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3771,6 +3960,8 @@ void Symbol::vFacetSet(i8 i_Facet, eSF eFacet, Stz* szFacet)
   RASSERT(i_Facet < m_nFacets);
   xaFacet[i_Facet].m_eFacet = eFacet;
   xaFacet[i_Facet].m_sFacet = szFacet;
+
+  vChanged(true);
 }
 
 /*----------------------------------------------------------------------------*/

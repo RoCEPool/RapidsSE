@@ -55,7 +55,8 @@ void Card_IndexScan::vDerive_streamKey(CardIter* pCI)
 
   RASSERT(bPeg_Projection(pCI));
   RASSERT(bPeg_Chosen_index(pCI));
-  pCI->E.p_emit->vDelete_streamKey(pCI);
+
+  pCI->E.p_emit->vDeleteSub(CK_STREAMKEY);
 
   // derive new <indexScan>/<projection>/<key>
   pCI->E.p_streamKey = new Card_StreamKey;
@@ -64,7 +65,7 @@ void Card_IndexScan::vDerive_streamKey(CardIter* pCI)
   pCI->E.p_emit->vAppendChild(pCI->E.p_streamKey);
 
   // set running projection for use by next op
-  pCI->StreamOrder.m_pEmitted = pCI->E.p_emit;
+  pCI->StreamOrder.m_pEmit = pCI->E.p_emit;
   pCI->StreamOrder.m_pStreamKey = pCI->E.p_streamKey;
 }
 
@@ -77,7 +78,7 @@ void Card_IndexScan::vEarlyProject_leaf(CardIter* pCI)
 
   pCI->Early.m_pOP_leaf = this;
 
-  pCI->Dic.m_p_expr = pCI->Flux.m_pArriving = pSub_emit();
+  pCI->vSnapIf_arriving();
 
  // pCI->PRINTBOARD_dbg();
 

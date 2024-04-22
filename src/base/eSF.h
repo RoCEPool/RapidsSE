@@ -28,6 +28,7 @@ enum eSF // symbol facet
 
   /* */ SF_ELSE,        // Else                : ELSE
   /* */ SF_ENDIF,       // EndIf               : ENDIF
+  /* */ SF_ENUM,        // Enum                : enum
   /* */ SF_EXP_COL,     // Expr Column No      : $n
 
   /* */ SF_FLD_NM,      // XF_Fold Name           :

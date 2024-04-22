@@ -36,6 +36,10 @@ Bench::Bench(Optimiser* pOptimiser)
   m_nPrintBoard   = 0;
   m_nTransformPrint = 0;
 
+  for (i8 i_Seq = 0; i_Seq < CK_ENUMS; i_Seq++) {
+    m_iaSequence[i_Seq] = 0;
+  }
+
   _checkInitialised_(CN_BENCH);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
@@ -285,6 +289,16 @@ void Bench::vPipelineNm(Stz* szPipelineNm)
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
   m_sPipelineNm = szPipelineNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get next sequence for card kind                                            */
+/*----------------------------------------------------------------------------*/
+i8 Bench::iSequence_next(eCK eCard)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  return m_iaSequence[eCard]++;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -67,6 +67,7 @@ void XF_Epilog_Add_inflate::vBifurcate_inflate(void)
   m_pCI->vBeginEach();
   while (m_pCI->bEachOp()) {
 
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     if (CK_o_SCAN == m_pCI->E.e_Op) {
       m_pCI->E.p_inflate = new Card_Inflate;
       m_pCI->vInsertAfter(m_pCI->E.p_inflate, m_pCI->E.p_scan);
@@ -74,19 +75,56 @@ void XF_Epilog_Add_inflate::vBifurcate_inflate(void)
       if (m_pCI->E.p_scan->pSymbol()->Y_bHas(P_FusedProject))
         m_pCI->E.p_inflate->pSymbol()->Y_vSet(P_FusedProject);
 
+      m_pCI->E.p_table = m_pCI->E.p_scan->pSub_table();
+
+      if (m_pCI->E.p_table->pSymbol()->Y_bHas(P_AltFetch))
+        m_pCI->E.p_inflate->pSymbol()->Y_vSet(P_AltFetch,m_pCI->E.p_table->pSymbol()->Y_szGet(P_AltFetch));
+
       m_pCI->vBurst(m_pCI->E.p_Op);
 
       if (m_pCI->E.p_table)
         m_pCI->E.p_inflate->vAppendChild(m_pCI->E.p_table->pDupCardRecursive());
-      if (m_pCI->E.p_stream)
-        m_pCI->E.p_inflate->vAppendChild(m_pCI->E.p_stream->pDupCardRecursive());
+      if (m_pCI->E.p_emit)
+        m_pCI->E.p_inflate->vAppendChild(m_pCI->E.p_emit->pDupCardRecursive());
       if (m_pCI->E.p_injectable)
         m_pCI->E.p_inflate->vAppendChild(m_pCI->E.p_injectable->pDupCardRecursive());
-      if (m_pCI->E.p_synthesis)
-        m_pCI->E.p_inflate->vAppendChild(m_pCI->E.p_synthesis->pDupCardRecursive());
 
+      m_pCI->vSnapIf_arriving();
+
+      continue;
     }
+
+    m_pCI->vSnapIf_arriving();
   }
+
+#ifdef Z_PDSROW
+  m_pCI->vBeginEach();
+  while (m_pCI->bEachOp()) {
+
+    if (CK_c_STAGE != m_pCI->E.e_Op) {
+      m_pCI->vSnapIf_arriving();
+      continue;
+    }
+
+    eCK eNext = m_pCI->ePeekNext();
+    if (CK_o_SCAN == eNext ||
+        CK_o_INDEXSCAN == eNext) {
+      m_pCI->vSnapIf_arriving();
+      continue;
+    }
+
+    m_pCI->E.p_pdsRow = new Card_PdsRow;
+    m_pCI->vInsertAfter(m_pCI->E.p_pdsRow, m_pCI->E.p_Op);
+
+    m_pCI->vBurst(m_pCI->E.p_Op);
+
+    if (m_pCI->Arriving.m_pEmit)
+      m_pCI->E.p_pdsRow->vAppendChild(m_pCI->Arriving.m_pEmit->pDupCardRecursive());
+
+    m_pCI->vSnapIf_arriving();
+  }
+#endif
+
   m_pCI->vEndTransform(__LINE__);
 }
 

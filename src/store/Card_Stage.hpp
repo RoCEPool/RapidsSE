@@ -20,10 +20,10 @@ namespace STORE
    ~Card_Stage(void) noexcept(false);
 
     static void vReinstate_stages(CardIter* pCI);
-    static void vReinstate_stages_v2(CardIter* pCI);
+    static void vReinstate_stages_v0(CardIter* pCI);
+    static void vReinstate_stages_v1(CardIter* pCI);
 
   private:
-    static void vAddCombined(CardIter* pCI, Card* p_main, i8& ri_main);
     static void vAddNext(CardIter* pCI, Card* p_main, i8& ri_main, Stz* szNextValue);
     static void vAddStage(CardIter* pCI, Card* p_main, i8& ri_main, eAL e_level_running, i8& nStages);
 

@@ -52,7 +52,6 @@ void Card_Deck::vAddStageCasts(CardIter* pCI)
   Card_Project*    p_project_prior    = nullptr;
   Card_Emit* p_arriving = nullptr;
   Card_Cast*       p_cast_prior       = nullptr;
-  Card_Combined*   p_combined_prior   = nullptr;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -71,13 +70,13 @@ void Card_Deck::vAddStageCasts(CardIter* pCI)
 
       if (! p_OP_prev) {
         Card_Table* p_table_first = pCI->E.p_Op->pSub_table();
-        p_streamPtn->vAddKey(p_table_first->pSub_tablePtn()->pSymbol());
+        //p_streamPtn->vAdd_streamKey(p_table_first->pSub_tablePtn()->pSymbol());
+        pCI->vAppendNewChild(p_streamPtn,CK_STREAMKEY,p_table_first->pSub_tablePtn()->pSymbol());
       }
       else {
         eStageCast = pCI->E.p_deck->eAddStageCast_toPrev_cast(pCI,
                                                               p_streamPtn,
                                                               p_project_prior,
-                                                              p_combined_prior,
                                                               p_cast_prior,
                                                               p_arriving,
                                                               (Card_OP*)pCI->E.p_Op);
@@ -89,16 +88,10 @@ void Card_Deck::vAddStageCasts(CardIter* pCI)
 
       p_OP_prev = (Card_OP*)pCI->E.p_Op;
       p_project_prior  = nullptr;
-      p_combined_prior = nullptr;
       p_cast_prior     = nullptr;
     }
     else if (CK_o_PROJECT == pCI->E.e_Op) {
       p_project_prior  = pCI->E.p_project;
-      p_combined_prior = nullptr;
-      p_cast_prior     = nullptr;
-    }
-    else if (CK_c_COMBINED == pCI->E.e_Op) {
-      p_combined_prior = pCI->E.p_combined;
       p_cast_prior     = nullptr;
     }
     else if (CK_o_CAST == pCI->E.e_Op) {
@@ -122,12 +115,13 @@ void Card_Deck::vAddStageCasts(CardIter* pCI)
 eXK Card_Deck::eAddStageCast_toPrev_cast(CardIter*        pCI,
                                          Card_StreamPtn*  p_streamPtn,
                                          Card_Project*    p_project_prev,
-                                         Card_Combined*   p_combined_prev,
                                          Card_Cast*       p_cast_prev,
                                          Card_Emit* p_emitted_prev,
                                          Card_OP*         p_OP_curr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  UNUSED(p_project_prev);
 
   RASSERT(CK_o_INDEXJOIN == p_OP_curr->eCard() ||
           CK_o_INDEXSCAN == p_OP_curr->eCard() ||
@@ -159,7 +153,8 @@ eXK Card_Deck::eAddStageCast_toPrev_cast(CardIter*        pCI,
 
   Symbol* p_Y_tablePtn_join = p_tablePtn_join->pSymbol();
 
-  eXK eStageCast = Card_Cast::eStageCast(p_streamPtn,
+  eXK eStageCast = Card_Cast::eStageCast(pCI,
+                                         p_streamPtn,
                                          p_Y_tblCol_prior,
                                          p_Y_tablePtn_join,
                                          p_Y_idxCol_join);
@@ -170,11 +165,6 @@ eXK Card_Deck::eAddStageCast_toPrev_cast(CardIter*        pCI,
     case XK_BROADCAST:
       p_cast_prev->SYM(SF_STG_CAST,"broadcast"_Stz);
 
-      if (p_project_prev && ! p_combined_prev) {
-        Card_Combined *p_combined = new Card_Combined;
-        pCI->vInsertBefore(p_combined, p_cast_prev);
-      }
-
       break;
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -184,14 +174,7 @@ eXK Card_Deck::eAddStageCast_toPrev_cast(CardIter*        pCI,
       pCI->E.p_expr = pCI->pBackSearch_expr_For_col(p_term_tblCol_hash->pSymbol(), pCI->E.i_Op);
       p_hash_prior_new = Card_Hash::pDerive(pCI->E.p_expr, p_emitted_prev);
 
-      if (p_combined_prev) {
-        pCI->vInsertBefore(p_hash_prior_new, p_combined_prev);
-      }
-      else {
-        pCI->vInsertBefore(p_hash_prior_new, p_cast_prev);
-        Card_Combined* p_combined = new Card_Combined;
-        pCI->vInsertBefore(p_combined, p_cast_prev);
-      }
+      pCI->vInsertBefore(p_hash_prior_new, p_cast_prev);
 
       break;
 
@@ -307,7 +290,6 @@ void Card_Deck::vValidate(CardIter* pCI)
       case CK_o_CALL:         pCI->E.p_call->vValidate(pCI, 1, this); break;
       case CK_o_CAST:         pCI->E.p_cast->vValidate(pCI, 1, this); break;
 
-      case CK_c_COMBINED:     pCI->E.p_combined->vValidate(pCI, 1, this); break;
       case CK_s_CONSTRAINT:   pCI->E.p_constraint->vValidate(pCI, 1, this); break;
       case CK_CORRCOLS:     pCI->E.p_corrCols->vValidate(pCI, 1, this); break;
       case CK_o_CORRELATION:  pCI->E.p_correlation->vValidate(pCI, 1, this); break;
@@ -372,12 +354,12 @@ void Card_Deck::vValidate(CardIter* pCI)
       case CK_OUTERJOIN:    pCI->E.p_outerJoin->vValidate(pCI, 1, this); break;
 
       case CK_PAYLOADCELLS: pCI->E.p_payloadCells->vValidate(pCI, 1, this); break;
+      case CK_o_PDSROW:      pCI->E.p_pdsRow->vValidate(pCI, 1, this); break;
       case CK_o_PROJECT:      pCI->E.p_project->vValidate(pCI, 1, this); break;
 
       case CK_RLNCONJ:      pCI->E.p_rlnConj->vValidate(pCI, 1, this); break;
       case CK_ROWCOUNT:     pCI->E.p_rowCount->vValidate(pCI, 1, this); break;
       case CK_ROWSIZE:      pCI->E.p_rowSize->vValidate(pCI, 1, this); break;
-      case CK_RPNCALC:      pCI->E.p_rpnCalc->vValidate(pCI, 1, this); break;
 
       case CK_o_SCAN:         pCI->E.p_scan->vValidate(pCI, 1, this); break;
       case CK_SECTION:      pCI->E.p_section->vValidate(pCI, 1, this); break;

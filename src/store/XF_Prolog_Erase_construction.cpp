@@ -72,13 +72,6 @@ void XF_Prolog_Erase_construction::vProlog(void)
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Delete All Combined
-  m_pCI->vBeginEach();
-  while (m_pCI->bEachOp(CK_c_COMBINED)) {
-    m_pCI->vRemoveDeleteMain(CK_c_COMBINED);
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Delete All Send
   m_pCI->vClearRegisters();
   m_pCI->vBeginEach();

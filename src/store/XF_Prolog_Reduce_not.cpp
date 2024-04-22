@@ -66,45 +66,8 @@ void XF_Prolog_Reduce_not::vXF_not_Ops(void)
 
   m_pCI->vClearRegisters();
   m_pCI->vBeginEach();
-  while (m_pCI->bEachOp_bySub(CK_RPNCALC)) {
-
-    Kid xRpnCalc(m_pCI->E.p_rpnCalc);
-    while (xRpnCalc.bEach(CK_TERM)) {
-
-      Card_Term* p_term = xRpnCalc.p_term();
-
-      if (! xRpnCalc.bMore())
-        break;
-
-      if (p_term->pSymbol()->bHasFacet("exists"_Stz)) {
-
-        RASSERT(xRpnCalc.bEach(CK_TERM));
-        Card_Term* p_term_next = xRpnCalc.p_term();
-        if (p_term_next->pSymbol()->bHasFacet("not"_Stz)) {
-          xRpnCalc.vBackstep();
-          m_pCI->E.p_rpnCalc->vRemoveChild(p_term_next);
-          p_term->SYM(SF_SQY_OP,"notExists"_Stz);
-          continue;
-        }
-        continue;
-      }
-
-      if (xRpnCalc.p_term()->pSymbol()->bHasFacet("in"_Stz)) {
-
-        RASSERT(xRpnCalc.bEach(CK_TERM));
-        Card_Term* p_term_next = xRpnCalc.p_term();
-        if (p_term_next->pSymbol()->bHasFacet("not"_Stz)) {
-          xRpnCalc.vBackstep();
-          m_pCI->E.p_rpnCalc->vRemoveChild(p_term_next);
-          p_term->SYM(SF_SQY_OP,"notIn"_Stz);
-          DELETE_CARD(p_term_next);
-          continue;
-        }
-        continue;
-      }
-
-    }
-
+  while (m_pCI->bEachOp_bySub(CK_BOOLPRED)) {
+    m_pCI->E.p_boolPred->vReduce_not(m_pCI);
   }
 
   m_pCI->vEndTransform(__LINE__);

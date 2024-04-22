@@ -5,7 +5,6 @@
 #include "Card_Filter.hpp"
 
 #include "Card_Expr.hpp"
-#include "Card_RpnCalc.hpp"
 #include "Card_BoolPred.hpp"
 #include "Card_RlnConj.hpp"
 #include "Card_Term.hpp"
@@ -76,10 +75,7 @@ void Card_Filter::vIndividuate_filter(CardIter* pCI)
 
   pCI->E.p_Op->vRemoveChild(pCI->E.p_filter);
 
-
-  pCI->E.p_filter->vEnsure_stream(pCI);
-
-  pCI->E.p_stream->vAppendChild(pCI->E.p_Op->pSub_emit()->pClone());
+  pCI->E.p_filter->vAppendChild(pCI->E.p_Op->pSub_emit()->pClone());
 
   pCI->E.p_deck->vInsertChildAfter(pCI->E.p_filter, pCI->E.p_Op);
 
@@ -87,7 +83,6 @@ void Card_Filter::vIndividuate_filter(CardIter* pCI)
     pCI->E.p_filter->vPushChild(pCI->E.p_Op->pSub_level()->pDupCardRecursive());
   }
 }
-
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
@@ -178,34 +173,11 @@ bool Card_Filter::bIsEmpty(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Filter::vPrint(Ribbon* pRibbon, i8 iDepth)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  UNUSED(iDepth);
-
-  s32 sName;
-
-  sName.vSprint("%s%lld]filter"_Stz,
-                Stz::szDots(iDepth - 1),
-                m_i_Child);
-
-  pRibbon->vSprintSnippet(false,"%c%c%s %llx %lld"_Stz,
-                          cMark1(),
-                          cMark2(),
-                          sName.szStz(),
-                          ((char *) this) - (char *) AM::SYSARGS::aRegionAddr(),
-                          m_nFunctionCount);
-
-}
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 void Card_Filter::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  eValidate_mustEither(CK_BOOLPRED, CK_EXPR, CK_NONE);
+  vValidate_mustHave(CK_BOOLPRED, CK_NONE);
 
   if (iDepth > 2) {
    // pCI->PRINTBOARD_dbg();
@@ -224,7 +196,7 @@ void Card_Filter::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
                                        CK_NONE);
 
   if (CK_DECK == pParent->eCard()) {
-    vValidate_mustHave(CK_s_LEVEL, CK_s_STREAM, CK_NONE);
+    vValidate_mustHave(CK_s_LEVEL, CK_t_EMIT, CK_NONE);
   }
 
   UNUSED(pParent);

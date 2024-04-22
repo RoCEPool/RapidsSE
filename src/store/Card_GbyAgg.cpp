@@ -49,14 +49,15 @@ void Card_GbyAgg::vDerive_streamKey(CardIter* pCI)
 
   RASSERT(bPeg_Projection(pCI));
   RASSERT(bPeg_Key(pCI));
-  pCI->E.p_emit->vDelete_streamKey(pCI);
+
+  pCI->E.p_emit->vDeleteSub(CK_STREAMKEY);
 
   pCI->StreamOrder.m_pStreamKey = Card_StreamKey::pTo_streamKey(pCI->E.p_key);
   pCI->E.p_emit->vAppendChild(pCI->StreamOrder.m_pStreamKey);
 
 
   // set running projection for use by next op
-  pCI->StreamOrder.m_pEmitted = pCI->E.p_emit;
+  pCI->StreamOrder.m_pEmit = pCI->E.p_emit;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -79,7 +80,7 @@ void Card_GbyAgg::vEarlyProject_root(CardIter* pCI)
   if (pCI->pPeekPrev()->bIsCard(CK_o_PROJECT)) {
 
     pCI->Early.m_pOP_leaf = this;
-    pCI->Dic.m_p_expr = pCI->Flux.m_pArriving = pSub_emit();
+    pCI->vSnapIf_arriving();
 
    // pCI->PRINTBOARD_dbg();
     return;
@@ -134,11 +135,12 @@ void Card_GbyAgg::vInject_foldExpr(CardIter* pCI)
   pCI->E.p_key = pCI->E.p_gbyAgg->pSub_key();
 //Z_KEY_DIRECTION
   for (pCI->vBeginTarget(pCI->E.p_key,CK_EXPR); pCI->bEachTarget(); /**/) {
-    for (Kid xRpnCalc(pCI->E.p_expr->pSub_rpnCalc()); xRpnCalc.bEach(CK_TERM); /**/) {
-      if (xRpnCalc.p_term()->pSymbol()->bHasFacet(SF_EXP_COL)) {
-        xRpnCalc.p_term()->vBump_ordCol(SF_EXP_COL);
-        xRpnCalc.p_term()->vMark1(MARK_CHANGED);
-       }
+    Card_Expr* p_expr = pCI->E.xTarget.p_expr();
+    for (pCI->vBeginTarget(p_expr,CK_TERM); pCI->bEachTarget(); /**/) {
+      Card_Term* p_term = pCI->E.xTarget.p_term();
+      if (p_term->pSymbol()->bHasFacet(SF_EXP_COL)) {
+        p_term->vBump_ordCol(SF_EXP_COL);
+      }
     }
   }
 
@@ -206,7 +208,7 @@ void Card_GbyAgg::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  vValidate_mustHave(CK_s_LEVEL, CK_s_KEY, CK_s_STREAM, CK_NONE);
+  vValidate_mustHave(CK_s_LEVEL, CK_s_KEY, CK_t_EMIT, CK_NONE);
 
   UNUSED(pParent);
   Card::vValidate(pCI,iDepth,pParent);

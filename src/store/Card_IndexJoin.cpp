@@ -52,8 +52,8 @@ void Card_IndexJoin::vDerive_streamKey(CardIter* pCI)
 
   RASSERT(bPeg_Projection(pCI));
   RASSERT(bPeg_Chosen_index(pCI));
-  pCI->E.p_emit->vDelete_streamKey(pCI);
 
+   pCI->E.p_emit->vDeleteSub(CK_STREAMKEY);
 
   if (pCI->StreamOrder.m_pStreamKey) {
     pCI->E.p_streamKey = _pCard_StreamKey(pCI->StreamOrder.m_pStreamKey->pDupCardRecursive());
@@ -68,7 +68,7 @@ void Card_IndexJoin::vDerive_streamKey(CardIter* pCI)
 
 
   // set running projection for use by next op
-  pCI->StreamOrder.m_pEmitted = pCI->E.p_emit;
+  pCI->StreamOrder.m_pEmit = pCI->E.p_emit;
   pCI->StreamOrder.m_pStreamKey  = pCI->E.p_streamKey;
 }
 
@@ -85,7 +85,7 @@ void Card_IndexJoin::vEarlyProject_recurse_add(CardIter* pCI)
       pCI->pPeekPrev()->bIsCard(CK_o_PROJECT)) {
 
     pCI->Early.m_pOP_leaf = this;
-    pCI->Dic.m_p_expr = pCI->Flux.m_pArriving = pSub_emit();
+    pCI->vSnapIf_arriving();
 
    // pCI->PRINTBOARD_dbg();
     return;
@@ -160,6 +160,8 @@ void Card_IndexJoin::vEarlyProject_add_transients(CardIter* pCI)
 
     vDebugPoint();
   }
+
+  pCI->E.p_term      = pCI->E.p_bound->pGet_idxCol();
 
   vDebugPoint();
 

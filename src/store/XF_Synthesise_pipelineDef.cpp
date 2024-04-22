@@ -154,7 +154,7 @@ void XF_Synthesise_pipelineDef::vCraftPipelineDef(void)
       vCraftStageDef();
     else {
       vCraftOpDef();
-      m_pCI->vSnapArriving();
+      m_pCI->vSnapIf_arriving();
     }
   }
 
@@ -189,10 +189,10 @@ void XF_Synthesise_pipelineDef::vCraftOpDef(void)
 
   RASSERT(m_pStageDef);
 
-  if (m_pCI->E.p_Op->bIsCard(CK_o_ORDAGG))
+  if (m_pCI->E.p_Op->bIsCard(CK_o_PDSROW))
     vDebugPoint();
 
-  if (m_pCI->E.p_Op->bEither(CK_o_CAST, CK_c_COMBINED, CK_c_SEND, CK_NONE))
+  if (m_pCI->E.p_Op->bEither(CK_o_CAST, CK_c_SEND, CK_NONE))
     return;
 
   if (m_pCI->E.p_Op->bIsCard(CK_o_SCAN)) {
@@ -245,6 +245,7 @@ void XF_Synthesise_pipelineDef::vCraftArgDefs(void)
     case CK_o_KEYNOTEXISTS: p_OP->vRpn_keyNotExists(m_pCI, sExpr, _pCard_KeyNotExists(p_OP)); break;
     case CK_o_LIMIT:        p_OP->vRpn_limit       (m_pCI, sExpr, _pCard_Limit(p_OP));        break;
     case CK_o_ORDAGG:       p_OP->vRpn_ordAgg      (m_pCI, sExpr, _pCard_OrdAgg(p_OP));       break;
+    case CK_o_PDSROW:       p_OP->vRpn_pdsRow      (m_pCI, sExpr, _pCard_PdsRow(p_OP));      break;
     case CK_o_PROJECT:      p_OP->vRpn_project     (m_pCI, sExpr, _pCard_Project(p_OP));      break;
     case CK_o_SCAN:         p_OP->vRpn_scan        (m_pCI, sExpr, _pCard_Scan(p_OP));         break;
     case CK_o_SORT:         p_OP->vRpn_sort        (m_pCI, sExpr, _pCard_Sort(p_OP));         break;
@@ -252,7 +253,6 @@ void XF_Synthesise_pipelineDef::vCraftArgDefs(void)
     case CK_o_WHERE:        p_OP->vRpn_where       (m_pCI, sExpr, _pCard_Where(p_OP));        break;
 
     case CK_o_CAST:
-    case CK_c_COMBINED:
     case CK_c_SEND:
       break;
 
@@ -314,6 +314,9 @@ void XF_Synthesise_pipelineDef::vCraftArgDefs(void)
       break;
 
     case CK_o_INFLATE:
+      if (p_OP->pSymbol()->Y_bHas(P_AltFetch))
+        m_pOpDef->m_sAlt = p_OP->pSymbol()->Y_szGet(P_AltFetch);
+
       m_pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_Inflate(p_OP)->pSub_tableNm()->szFacet(SF_TBL_NM)));
       break;
 
@@ -341,6 +344,9 @@ void XF_Synthesise_pipelineDef::vCraftArgDefs(void)
 
     case CK_o_ORDAGG:
       m_pOpDef->vAppend(new ArgDef(0, "expr"_Stz, sExpr));
+      break;
+
+    case CK_o_PDSROW:
       break;
 
     case CK_o_PROJECT:
@@ -445,7 +451,7 @@ void XF_Synthesise_pipelineDef::vCraftStreamDefs(void)
 
   if (p_OP->bIsCard(CK_o_INDEXJOIN)) {
     m_pOpDef->m_pStreamDef_arriving =
-        m_pCI->Flux.m_pArriving->pTo_StreamDef(nullptr, nullptr, p_OP);
+        m_pCI->Arriving.m_pEmit->pTo_StreamDef(nullptr, nullptr, p_OP);
   }
   else
 
@@ -455,7 +461,7 @@ void XF_Synthesise_pipelineDef::vCraftStreamDefs(void)
   else
   if (p_OP->bIsCard(CK_o_INDEXJOIN)) {
     m_pOpDef->m_pStreamDef_arriving =
-        m_pCI->Flux.m_pArriving->pTo_StreamDef(nullptr, nullptr, p_OP);
+        m_pCI->Arriving.m_pEmit->pTo_StreamDef(nullptr, nullptr, p_OP);
   }
   else
   if (p_OP->bIsCard(CK_o_INFLATE)) {
@@ -541,6 +547,10 @@ void XF_Synthesise_pipelineDef::vCraftColInj(ColInj* pColInj, Card *pSubCard)
   Card_Injectable* p_injected = pSubCard->pSub_injectable();
   Card_Emit*   p_emit = pSubCard->pSub_emit();
 
+  pColInj->m_sRefer.vSprint("]emit #%lld"_Stz,
+                            //pSubCard->szCardNm(),
+                            p_emit->iSequence());
+
   //p_emit->vDump(__func__);
 
   if (m_pStageDef->i_Stage() == 2) {
@@ -553,13 +563,14 @@ void XF_Synthesise_pipelineDef::vCraftColInj(ColInj* pColInj, Card *pSubCard)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // add colInj descriptor(s) for given injected expr_i
 
-  auto bfAddDescriptors = [pColInj, p_emit] (Card* pCard_expr_i) {
+  CardIter* pCI = m_pCI;
+  auto bfAddDescriptors = [pCI, pColInj, p_emit] (Card* pCard_expr_i) {
 
     // get details of column injected (e.g. $b.1)
     Card_Expr*   p_expr_i = _pCard_Expr(pCard_expr_i);
     i8    i_CrwCol_expr_i = StrLib::iGleanInt(p_expr_i->szFacet(SF_ITM_COL)->azChar());
 
-    Symbol* pSym_tblCol_i = p_expr_i->pFirst_tblCol();
+    Symbol* pSym_tblCol_i = p_expr_i->pFirst_tblCol(pCI);
     Stz*       szTblCol_i = pSym_tblCol_i->szFacet(SF_TBL_COL);
     //pSym_tblCol_i->vDump();
 
@@ -619,13 +630,13 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(void)
   if (! m_pCI->E.p_Op->bEither(CK_o_CROSSJOIN, CK_o_INDEXJOIN, CK_NONE))
     return;
 
-  if (! m_pCI->Flux.m_pArriving)
+  if (! m_pCI->Arriving.m_pEmit)
     return;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   //i8 nArriving = m_pCI->G.p_arriving->nChildCards();
-  i8 nArriving = m_pCI->Flux.m_pArriving->nChildCards();
+  i8 nArriving = m_pCI->Arriving.m_pEmit->nChildCards();
   ColPpg* pColPpg = new ColPpg(nArriving);
   m_pOpDef->vColPpg(pColPpg);
 
@@ -639,15 +650,18 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_PIPELINEDEF, _FOOTER_);
 
-  Card_Emit* p_arriving = m_pCI->Flux.m_pArriving;
+  Card_Emit* p_arriving = m_pCI->Arriving.m_pEmit;
   Card_Emit* p_emit  = pSubCard->pSub_emit();
+
+  pColPpg->m_sRefer.vSprint("]emit #%lld"_Stz,
+                            p_emit->iSequence());
 
 //  if (AM::JOB::bHasTag(C_OPTIMISER_TRACE)) {
 //    p_arriving->vDump(__func__, "--ARRIVING at SubCard--"_Stz);
 //    p_emit->vDump(__func__, "--EMITTED by SubCard--"_Stz);
 //  }
 
-  if (m_pStageDef->i_Stage() == 1) {
+  if (m_pStageDef->i_Stage() == 3) {
     vDebugPoint();
     if (m_pOpDef->i_Op() == 0)
       vDebugPoint();
@@ -656,10 +670,10 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // add colPpg descriptor(s) for given arriving expr_a
 
-  auto bfAddPropagatedArriving = [this, pColPpg, p_emit](Card *pCard_expr_a) {
-
+  auto bfAddPropagatedArriving = [this, pColPpg, p_emit](Card *pCard_expr_a)
+  {
     // arriving related
-    Card_Expr* p_expr_a = _pCard_Expr(pCard_expr_a);
+    Card_Expr*  p_expr_a = _pCard_Expr(pCard_expr_a);
     Symbol*  pSym_expr_a = p_expr_a->pSymbol();
 
     i8 i_CellIn;
@@ -672,10 +686,15 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
 //    if (AM::JOB::bHasTag(C_OPTIMISER_TRACE))
 //      p_expr_a->vDump(__func__,"--EXPR ARRIVING at SubCard--"_Stz);
 
-    if (m_pStageDef->i_Stage() == 4) {
+    if (m_pStageDef->i_Stage() == 3) {
       vDebugPoint();
-      if (m_pOpDef->i_Op() == 0)
+      if (m_pOpDef->i_Op() == 0) {
         vDebugPoint();
+        if (3 == pColPpg->m_nPropagated) {
+          //p_expr_a->vDump(__func__, "--EXPR ARRIVING at SubCard--"_Stz);
+          vDebugPoint();
+        }
+      }
     }
 
 
@@ -691,6 +710,14 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
       if (bSym_term_a_Is_tblCol_only && (p_expr_e = p_emit->pFind_expr_Matches(pSym_term_a))) {
         pSym_In_a = pSym_term_a;
       }
+//      else
+//      if ((p_expr_e = p_emit->pFind_expr_Matches(SF_TBL_COL,pSym_expr_a))) {
+//        pSym_In_a = pSym_expr_a;
+//      }
+      else
+      if ((p_expr_e = p_emit->pFind_expr_Matches(SF_ITM_COL,pSym_expr_a))) {
+        pSym_In_a = pSym_expr_a;
+      }
       else
       if ((p_expr_e = p_emit->pFind_expr_Matches_ignoring(pSym_expr_a, SF_EXP_COL))) {
         pSym_In_a = pSym_expr_a;
@@ -700,6 +727,17 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
         // not propagated
         //vTrace("--NOT-FOUND expr\n"_Stz);
         return C_CONTINUE_RECURSION;
+      }
+
+      if (m_pStageDef->i_Stage() == 3) {
+        vDebugPoint();
+        if (m_pOpDef->i_Op() == 0) {
+          vDebugPoint();
+          if (3 == pColPpg->m_nPropagated) {
+            //p_expr_e->vDump(__func__, "--EXPR PPG at SubCard--"_Stz);
+            vDebugPoint();
+          }
+        }
       }
 
       i_CellIn  = p_expr_a->pSymbol()->iTo_ordinal(SF_EXP_COL) - 1;
@@ -716,11 +754,13 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
       return C_CONTINUE_RECURSION;
     }
 
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
     else {
       // - computed
 
       //if ((p_expr_e = p_emit->pGet_expr(pSym_expr_a))) {
-      if ((p_expr_e = p_emit->pContains(pSym_expr_a))) {
+      if ((p_expr_e = p_emit->pContains(m_pCI,pSym_expr_a))) {
 
 //      p_emit->vDump(__func__);
 //      p_expr_a->vDump(__func__);
@@ -758,7 +798,10 @@ void XF_Synthesise_pipelineDef::vCraftKeyMap(void)
 
   m_pOpDef->m_pKeyMap = new KeyMap;
 
+
   m_pCI->E.p_emit = m_pCI->E.p_Op->pSub_emit();
+  m_pOpDef->m_pKeyMap->m_sRefer.vSprint("]emit #%lld"_Stz,
+                                        m_pCI->E.p_emit->iSequence());
 
 //Z_KEY_DIRECTION
   for (m_pCI->vBeginTarget(m_pCI->E.p_Op->pSub_key(),CK_EXPR); m_pCI->bEachTarget(); /**/) {

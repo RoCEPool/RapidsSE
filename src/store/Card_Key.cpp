@@ -5,7 +5,6 @@
 #include "Card_Key.hpp"
 
 #include "Card_Expr.hpp"
-#include "Card_RpnCalc.hpp"
 #include "Card_HshCol.hpp"
 #include "Card_Term.hpp"
 #include "CardIter.hpp"
@@ -261,32 +260,6 @@ void Card_Key::vMapColumns(CardIter *pCI)
     pCI->vAppendNewChild(pCI->E.p_keyCells, CK_MAP, pCI->E.p_expr->pSymbol());
     pCI->E.p_map->pSymbol()->Y_vSet(P_Cell, ++i_Cell);
   }
-
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_Key::vPrint(Ribbon* pRibbon, i8 iDepth)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  UNUSED(iDepth);
-
-  s32 sName;
-
-  sName.vSprint("%s%lld]"_Stz,
-                Stz::szDots(iDepth - 1),
-                m_i_Child);
-
-  sName.vSprintCat("%s"_Stz,
-                   szCardNm());
-
-  pRibbon->vSprintSnippet(false,"%c%c%s %p"_Stz,
-                          cMark1(),
-                          cMark2(),
-                          sName.szStz(),
-                          ((char *) this) - (char *) AM::SYSARGS::aRegionAddr());
 
 }
 
