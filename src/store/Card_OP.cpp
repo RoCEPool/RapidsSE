@@ -595,7 +595,7 @@ void Card_OP::vRestate_emit(CardIter* pCI)
       }
 
       if (pCI->Arriving.m_pEmit)
-        pCI->E.p_emit = pCI->Arriving.m_pEmit->pInduct(pCI);
+        pCI->Arriving.m_pEmit->vInduct(pCI);
 
       pCI->E.p_table = pCI->E.p_Op->pSub_table(C_NOT_NULL);
       pCI->E.p_emit->vInject_expr_nmdCol_table(pCI);
@@ -629,7 +629,7 @@ void Card_OP::vRestate_emit(CardIter* pCI)
         pCI->E.p_Op->vAppendChild(pCI->E.p_emit);
       }
 
-      pCI->E.p_emit = pCI->Arriving.m_pEmit->pInduct(pCI);
+      pCI->Arriving.m_pEmit->vInduct(pCI);
 
       break;
 

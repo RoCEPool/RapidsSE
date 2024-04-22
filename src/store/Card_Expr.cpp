@@ -454,7 +454,7 @@ Card_Expr * Card_Expr::pInduct(CardIter* pCI, i8 iExp)
   if (pSymbol_expr_arriving->bHasFacet(SF_SQY_RSL))
     pSymbol_expr_inducted->vApplyFacet(SF_SQY_RSL,pSymbol_expr_arriving);
 
-//  Card_RpnCalc* p_rpnCalc_inducted = p_rpnCalc_arriving->pInduct(this);
+//  Card_RpnCalc* p_rpnCalc_inducted = p_rpnCalc_arriving->vInduct(this);
 //  p_expr_inducted->vAppendChild(p_rpnCalc_inducted);
 
 

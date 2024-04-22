@@ -361,7 +361,7 @@ Card_Expr* Card_Emit::pGet_expr(i8 i_Element)
 /*----------------------------------------------------------------------------*/
 /* induct this arriving emit                                                  */
 /*----------------------------------------------------------------------------*/
-Card_Emit* Card_Emit::pInduct(CardIter* pCI) {
+void Card_Emit::vInduct(CardIter* pCI) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   RASSERT(pCI->E.p_emit);
@@ -379,8 +379,6 @@ Card_Emit* Card_Emit::pInduct(CardIter* pCI) {
   }
 
   pCI->E.p_emit->vRenumberAll_expr();
-
-  return pCI->E.p_emit;
 }
 
 /*----------------------------------------------------------------------------*/
