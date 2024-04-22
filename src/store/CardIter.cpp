@@ -695,6 +695,32 @@ void CardIter::vClearRegisters(void)
   E.Iter.eTarget    = CK_NONE;
   E.Iter.eSecondary = CK_NONE;
   E.Iter.eTertiary  = CK_NONE;
+
+  Carry.Table.m_bSeen      = false;
+  Carry.Table.m_nTables    = 0;
+  Carry.Table.m_bReproject = false;
+
+  Carry.Where_preAgg.m_bSeen  = false;
+  Carry.Where_preAgg.m_bMorph_sqlOp_To_EQ = false;
+  Carry.Where_preAgg.bReplace_sqCall_With_result = false;
+
+  Carry.Aggreg.m_bSeen   = false;
+  Carry.Aggreg.m_bMorph_To_gbyAgg = false;
+
+  Carry.GbyAgg.m_bSeen   = false;
+  Carry.GbyAgg.m_bInject_foldExpr = false;
+
+  Carry.Project_postAgg.m_bSeen   = false;
+
+  Carry.Having.m_bSeen                 = false;
+  Carry.Having.m_bCorrect_After_Inject = false;
+
+  Carry.Sort.m_bSeen                 = false;
+  Carry.Sort.m_bCorrect_After_Inject = false;
+
+  Carry.Unproject.m_bSeen               = false;
+  Carry.Unproject.m_bUnproject_foldExpr = false;
+
 }
 
 /*----------------------------------------------------------------------------*/
