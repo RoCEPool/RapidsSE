@@ -165,20 +165,6 @@ Card_Expr* Card_EXPRLIST::pFind_expr(Card_Expr* p_expr_arg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* resolve prior expr of given term (find right-to-left)                      */
-/*----------------------------------------------------------------------------*/
-Card_Expr* Card_EXPRLIST::pFind_expr(Card_Term* p_term)
-{
-  _precondition_( _MAGIC_, _FOOTER_);
-
-  if (p_term->pSymbol()->bHasFacet(SF_EXP_COL) || p_term->pSymbol()->bHasFacet(SF_TBL_COL)) {
-    Card_Expr *p_expr_prior = this->pFind_expr_Matches(p_term->pSymbol());
-    return p_expr_prior;
-  }
-  return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
 /* find <expr> which has same symbol as given $n stream-column                */
 /*----------------------------------------------------------------------------*/
 Card_Expr* Card_EXPRLIST::pFind_expr_Matches(Symbol *pSymbol_arg)

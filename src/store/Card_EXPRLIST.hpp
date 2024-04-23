@@ -29,7 +29,6 @@ namespace STORE
     i8 nExpr(void);
 
     Card_Expr* pFind_expr(Card_Expr* p_expr_arg);
-    Card_Expr* pFind_expr(Card_Term* p_term);
     Card_Expr* pFind_expr_Matches(Symbol* pSymbol_arg);
     Card_Expr* pFind_expr_Matches(Symbol* pSymbol_arg, Kid* aKid);
     Card_Expr* pFind_expr_Matches(eSF eFacet_arg, Symbol* pSymbol_arg);
