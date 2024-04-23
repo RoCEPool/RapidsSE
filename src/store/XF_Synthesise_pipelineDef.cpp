@@ -762,7 +762,7 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
       // - computed
 
       //if ((p_expr_e = p_emit->pGet_expr(pSym_expr_a))) {
-      if ((p_expr_e = p_emit->pContains(m_pCI,pSym_expr_a))) {
+      if ((p_expr_e = p_emit->pFind_term(m_pCI, pSym_expr_a))) {
 
 //      p_emit->vDump(__func__);
 //      p_expr_a->vDump(__func__);

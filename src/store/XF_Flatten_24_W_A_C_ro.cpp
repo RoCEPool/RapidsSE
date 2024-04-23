@@ -218,7 +218,7 @@ void XF_Flatten_24_W_A_C_ro::vEnhance_IQ_emit_project_Add_crlKey(CardIter* pCI)
   RASSERT(CT_NONE != pCI->E.p_key->eCTVal());
 
   pCI->E.p_emit = pCI->E.p_project->pSub_emit();
-  pCI->E.p_emit->vBump_expCol_In_rpnCalc(pCI);// TODO: ,nBumpBy);
+  pCI->E.p_emit->vBump_expCol(pCI);// TODO: ,nBumpBy);
 
 
   // push <project>/_SQCRLKEY_

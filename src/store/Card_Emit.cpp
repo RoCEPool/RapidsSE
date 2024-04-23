@@ -340,22 +340,10 @@ Card_Expr* Card_Emit::pFindExprOfSymbol(CardIter* pCI, Symbol* pSymbol)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   for (Kid xEmit(this); xEmit.bEach(CK_EXPR); /**/)
-    if (xEmit.p_expr()->bHasTerm(pCI,pSymbol))
+    if (xEmit.p_expr()->bFind_term_Matches(pCI, pSymbol))
       return xEmit.p_expr();
 
   return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get a particular expr                                                      */
-/*----------------------------------------------------------------------------*/
-Card_Expr* Card_Emit::pGet_expr(i8 i_Element)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Card_Expr* p_expr = pGet_expr_z(i_Element);
-
-  return p_expr;
 }
 
 /*----------------------------------------------------------------------------*/

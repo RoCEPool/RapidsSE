@@ -803,7 +803,7 @@ void StrLib::vConcat(char* psDst, i8 iDstBufSize, i8 iArg, bool* pbResult)
 }
 
 /*----------------------------------------------------------------------------*/
-/* bContains: test if arg is in substr                                        */
+/* bContains_term: test if arg is in substr                                        */
 /*----------------------------------------------------------------------------*/
 bool StrLib::bContains(const char* psSrc, const char cArg)
 {
@@ -815,7 +815,7 @@ bool StrLib::bContains(const char* psSrc, const char cArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* bContains: test if arg is in substr                                        */
+/* bContains_term: test if arg is in substr                                        */
 /*----------------------------------------------------------------------------*/
 bool StrLib::bContains(const char* psSrc, const char* sArg)
 {

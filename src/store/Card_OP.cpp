@@ -332,7 +332,7 @@ void Card_OP::vFuse_project_Viable(CardIter *pCI)
   pCI->E.p_emit = pCI->E.p_Op->pSub_emit();
   pCI->E.p_table = pCI->E.p_Op->pSub_table();
   char cTblSyn = pCI->E.p_table->pSymbol()->cTblSyn();
-  pCI->E.p_emit->vDeleteFacetIf(pCI,SF_EXP_COL, SF_TBL_COL, cTblSyn);
+  pCI->E.p_emit->vDeleteIf_facet(pCI, SF_EXP_COL, SF_TBL_COL, cTblSyn);
 }
 
 /*----------------------------------------------------------------------------*/

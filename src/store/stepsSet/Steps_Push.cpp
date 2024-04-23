@@ -200,7 +200,7 @@ void Step::vPushStzVal(void)
   
   TypeValueArea* aTypedCell = _aTypeValueArea(& m_aInxPtr->m_xTypedValue);
   
-//  if (aStzVal->szStz()->bContains("/liteOp/_PulseMarker"_Stz)) {
+//  if (aStzVal->szStz()->bContains_term("/liteOp/_PulseMarker"_Stz)) {
 //    vTrace("vPushStzVal: %s"_Stz,aStzVal->szStz());
 //    BASE::vDebugPoint();
 //  }

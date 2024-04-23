@@ -27,11 +27,15 @@ namespace STORE
                                             char cTblSyn, i8 iTblCol);
 
     void vApplyCast(CardIter* pCI, Card_Emit* p_Dic_expr);
+
     Card_Expr* pClone(void);
-    bool bContains(CardIter* pCI, Symbol* pSymbol_arg);
+    bool bContains_term(CardIter* pCI, Symbol* pSymbol_arg);
+
     void vDeleteFacetIf(CardIter* pCI, eSF eFacet, eSF eAlsoFacet, char cTblSyn);
+
     void vEnsure_expr_Has_nmdCol(i8 iExpCol);
 
+    bool bFind_term_Matches(CardIter* pCI, Symbol* pSym_term);
     Symbol* pFirst_colSym(CardIter* pCI);
     Symbol* pFirst_expCol(CardIter* pCI);
     Symbol* pFirst_keyCol(CardIter* pCI);
@@ -41,7 +45,6 @@ namespace STORE
     Card_Term* pGet_term(i8 i_Term);
     Card_Term* pGet_term0(void);
 
-    bool bHasTerm(CardIter* pCI, Symbol* pSymbol);
     Symbol* pHead_symbol(void);
     Symbol* pHeadIf_symbol(eSF eFacet);
 

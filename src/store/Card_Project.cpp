@@ -120,7 +120,7 @@ Card_Emit* Card_Project::pCraft_emit_early(CardIter* pCI)
     }
 
       //RASSERT(pCI->Dic.m_p_expr == pCI->Arriving.m_pEmit);
-    Card_Expr* p_expr_arriving = pCI->Arriving.m_pEmit->pContains(p_expr_needed);
+    Card_Expr* p_expr_arriving = pCI->Arriving.m_pEmit->pFind_expr(p_expr_needed);
     if (! p_expr_arriving) {
       //vTrace("NOT MATCHING\n"_Stz);
       continue;

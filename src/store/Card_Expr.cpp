@@ -71,7 +71,7 @@ void Card_Expr::vAssemble_injCrlRsl(CardIter* pCI)
     pCI->E.p_term->vApplyCast_x(pCI->E.p_key->xCast());
     pCI->E.p_expr->vApplyCast_x(pCI->E.p_key->xCast());
 
-    pCI->E.p_emit->vBump_expCol_In_rpnCalc(pCI);
+    pCI->E.p_emit->vBump_expCol(pCI);
     pCI->E.p_key->pSymbol()->Y_vSet(P_ProjBumped);
   }
 
@@ -231,7 +231,7 @@ Card_Expr* Card_Expr::pClone(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Card_Expr::bContains(CardIter* pCI, Symbol* pSymbol_arg)
+bool Card_Expr::bContains_term(CardIter* pCI, Symbol* pSymbol_arg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -277,6 +277,23 @@ void Card_Expr::vEnsure_expr_Has_nmdCol(i8 iExpCol)
 
   // synthetic column name
   pSym_expr->vApplyFacet(SF_NMD_COL,iExpCol);
+}
+
+/*----------------------------------------------------------------------------*/
+/* does expression have term ?                                                */
+/*----------------------------------------------------------------------------*/
+bool Card_Expr::bFind_term_Matches(CardIter* pCI, Symbol* pSym_term)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  for (pCI->vBeginTarget(this,CK_TERM); pCI->bEachTarget(); /**/) {
+    if (pCI->E.xTarget.p_term()->pSymbol()->bMatches(pSym_term)) {
+      pCI->vEndTarget();
+      return true;
+    }
+  }
+
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -379,23 +396,6 @@ Card_Term* Card_Expr::pGet_term0(void)
   Card_Term* p_term0 = pGet_term(0);
 
   return p_term0;
-}
-
-/*----------------------------------------------------------------------------*/
-/* does expression have term ?                                                */
-/*----------------------------------------------------------------------------*/
-bool Card_Expr::bHasTerm(CardIter* pCI, Symbol* pSymbol)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  for (pCI->vBeginTarget(this,CK_TERM); pCI->bEachTarget(); /**/) {
-    if (pCI->E.xTarget.p_term()->pSymbol()->bMatches(pSymbol)) {
-      pCI->vEndTarget();
-      return true;
-    }
-  }
-
-  return false;
 }
 
 /*----------------------------------------------------------------------------*/

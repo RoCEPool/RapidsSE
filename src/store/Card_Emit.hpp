@@ -26,7 +26,6 @@ namespace STORE
     Card_Needed* pCraft_needed_root(CardIter* pCI);
     void vDerive_streamKey(CardIter* pCI);
     Card_Expr* pFindExprOfSymbol(CardIter* pCI, Symbol* pSymbol);
-    Card_Expr* pGet_expr(i8 i_Element);
     void vInduct(CardIter* pCI);
     void vInject_expr_nmdCol_table(CardIter* pCI);
     bool bIsCompound(void);
