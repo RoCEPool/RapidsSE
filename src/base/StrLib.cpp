@@ -5679,11 +5679,11 @@ i8 StrLib::iToI8(const char cArg)
   else
   if (cArg >= 'A' && cArg <= 'F')
     i = cArg - 'A';
-  else
+  else {
     NEVER_REACH
+  }
 
-    return i;
-
+  return i;
 }
 
 /*----------------------------------------------------------------------------*/
