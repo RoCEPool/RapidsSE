@@ -22,6 +22,8 @@
 
 #define Z_PDSROW
 
+//#define Z_LEVEL_ENUM
+
 namespace STORE
 {
   class Card_AbsJoin;
@@ -442,6 +444,7 @@ namespace STORE
     void vCatBlank(i8& ri_Char, Ribbon* pRibbon);
     void vCatBracket(i8& ri_Char, Ribbon* pRibbon, CardIter* pCI);
     void vCatDots(i8& ri_Char, Ribbon* pRibbon, i8 iDepth);
+    void vCatEnum(i8& ri_Char, Ribbon* pRibbon);
     void vCatFacet(i8& ri_Char, Ribbon* pRibbon, i8 i_Facet, bool bSecondary, bool bRight=false);
     void vCatName(i8& ri_Char, Ribbon* pRibbon, i8 iDepth);
     void vCatMarks(i8& ri_Char, Ribbon* pRibbon);

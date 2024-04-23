@@ -2332,8 +2332,15 @@ void Card::vPrint_expr(CardIter* pCI, Ribbon* pRibbon, i8 iDepth)
 void Card::vPrint_level(CardIter* pCI, Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  UNUSED(pCI);
+  UNUSED(iDepth);
 
+#ifndef Z_LEVEL_ENUM
   vPrint_depth1(pCI,pRibbon, iDepth);
+#else
+  i8 i_Char = C_UNKNOWN;
+  vCatEnum(i_Char,pRibbon);
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2468,6 +2475,19 @@ void Card::vCatDots(i8& ri_Char, Ribbon* pRibbon, i8 iDepth)
 }
 
 /*----------------------------------------------------------------------------*/
+/* cat blank                                                                  */
+/*----------------------------------------------------------------------------*/
+void Card::vCatEnum(i8& ri_Char, Ribbon* pRibbon)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  s256 sEnum;
+  vFormatEnum(sEnum);
+
+  vCat(ri_Char, pRibbon,sEnum);
+}
+
+/*----------------------------------------------------------------------------*/
 /* print symbolic value of card                                               */
 /*----------------------------------------------------------------------------*/
 void Card::vCatFacet(i8& ri_Char, Ribbon* pRibbon, i8 i_Facet,
@@ -2592,8 +2612,7 @@ void Card::vFormatEnum(String* pString)
   i8  iEnum  = Symbol::iEval_enum(szGroup_Enum);
   Stz* szEnum = AM::szEnumText(eGroup,iEnum);
 
-  pString->vCatSprint("%s"_Stz,
-                      szEnum);
+  pString->vCatSprint("%s"_Stz, szEnum);
 }
 
 /*----------------------------------------------------------------------------*/
