@@ -55,7 +55,7 @@ void Card_IdxColList::vAdd_streamKey_exprs(CardIter* pCI)
 
     pCI->E.p_idxCol = _pCard_IdxCol(pGetChild(i_idxCol));
 
-     pCI->E.p_expr = pCI->E.p_emit->pFind_expr_Matches(pCI->E.p_idxCol->pSymbol());
+     pCI->E.p_expr = pCI->E.p_emit->pFind_expr(pCI->E.p_idxCol->pSymbol());
     if (!pCI->E.p_expr)
       continue;
 
@@ -77,7 +77,7 @@ void Card_IdxColList::vAffix_tblCol(CardIter* pCI)
     Card_IdxCol* p_idxCol = xIdxColList.p_idxCol();
     Symbol* pSym_idxCol   = p_idxCol->pSymbol();
 
-    Card_Expr* p_expr_inj = pCI->E.p_injectable->pFind_expr_Matches(pSym_idxCol);
+    Card_Expr* p_expr_inj = pCI->E.p_injectable->pFind_expr(pSym_idxCol);
     if (Symbol* pSym_head = p_expr_inj->pHeadIf_symbol(SF_TBL_COL)) {
       pSym_idxCol->vApplyFacet(SF_TBL_COL, pSym_head->szFacet(SF_TBL_COL));
     }

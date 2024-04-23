@@ -139,7 +139,7 @@ void Card_IndexJoin::vEarlyProject_add_transients(CardIter* pCI)
   //pCI->G.p_term->vDump();
 
 
-  if (!pCI->Early.m_pNeeded_later->pFind_expr_Matches(pCI->E.p_term->pSymbol())) {
+  if (!pCI->Early.m_pNeeded_later->pFind_expr(pCI->E.p_term->pSymbol())) {
 
     if (pCI->E.p_term->pSymbol()->bHasFacet(SF_EXP_COL)) {
       Card_Expr* p_expr_expCol = Card_Expr::pCraft_expr_Of_term(pCI->E.p_term);
@@ -147,7 +147,7 @@ void Card_IndexJoin::vEarlyProject_add_transients(CardIter* pCI)
       pCI->Early.m_pNeeded_later->vRenumberAll_expr();
     }
     else
-    if (Card_Expr* p_expr_defn = pCI->pResolvePrior_expr(pCI->E.p_term)) {
+    if (Card_Expr* p_expr_defn = pCI->pPrior_expr(pCI->E.p_term)) {
       Card_Expr* p_expr_clone = p_expr_defn->pClone();
       //p_expr_clone->vDump(__func__);
       p_expr_clone->pGet_Symbol(0)->vDeleteFacet(SF_EXP_COL);
@@ -172,11 +172,11 @@ void Card_IndexJoin::vEarlyProject_add_transients(CardIter* pCI)
     if (!p_term->pSymbol()->bHasFacet(SF_EXP_COL) && ! p_term->pSymbol()->bHasFacet(SF_TBL_COL))
       return C_CONTINUE_RECURSION;
 
-    if (pCI->Early.m_pNeeded_later->pFind_expr_Matches_ignoring(p_term->pSymbol(), SF_EXP_COL)) {
+    if (pCI->Early.m_pNeeded_later->pFind_expr_ignoring(p_term->pSymbol(), SF_EXP_COL)) {
       return C_CONTINUE_RECURSION;
     }
 
-    if (Card_Expr* p_expr_defn = pCI->pResolvePrior_expr(p_term)) {
+    if (Card_Expr* p_expr_defn = pCI->pPrior_expr(p_term)) {
       //p_expr_defn->vDump();
       Card_Expr* p_expr_clone = p_expr_defn->pClone();
       if (p_expr_clone->pGet_Symbol(0)->nFacets() > 1)

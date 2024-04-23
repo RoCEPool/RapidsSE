@@ -112,7 +112,7 @@ void XF_Epilog_Itemise_Columns::vItemise_Columns(void)
         return C_CONTINUE_RECURSION;
 
       pCI->E.p_emit = pCI->E.p_indexJoin->pSub_emit();
-      pCI->E.p_expr = pCI->E.p_emit->pFind_expr_Matches(pSymbol_term);
+      pCI->E.p_expr = pCI->E.p_emit->pFind_expr(pSymbol_term);
       pSymbol_term->vApplyFacet(SF_ITM_COL, pCI->E.p_expr->szFacet(SF_ITM_COL));
       return C_CONTINUE_RECURSION;
     }

@@ -583,7 +583,7 @@ void XF_Synthesise_pipelineDef::vCraftColInj(ColInj* pColInj, Card *pSubCard)
     Kid xEmit(p_emit);
     for (;;) {
       Card_Expr *p_expr_e =
-          p_emit->pFind_expr_Matches(pSym_tblCol_i, &xEmit);
+          p_emit->pFind_expr(pSym_tblCol_i, &xEmit);
       if (! p_expr_e)
         return C_CONTINUE_RECURSION;
 
@@ -709,19 +709,19 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
         bSym_term_a_Is_tblCol_only = true;
       }
 
-      if (bSym_term_a_Is_tblCol_only && (p_expr_e = p_emit->pFind_expr_Matches(pSym_term_a))) {
+      if (bSym_term_a_Is_tblCol_only && (p_expr_e = p_emit->pFind_expr(pSym_term_a))) {
         pSym_In_a = pSym_term_a;
       }
 //      else
-//      if ((p_expr_e = p_emit->pFind_expr_Matches(SF_TBL_COL,pSym_expr_a))) {
+//      if ((p_expr_e = p_emit->pFind_expr(SF_TBL_COL,pSym_expr_a))) {
 //        pSym_In_a = pSym_expr_a;
 //      }
       else
-      if ((p_expr_e = p_emit->pFind_expr_Matches(SF_ITM_COL,pSym_expr_a))) {
+      if ((p_expr_e = p_emit->pFind_expr(SF_ITM_COL,pSym_expr_a))) {
         pSym_In_a = pSym_expr_a;
       }
       else
-      if ((p_expr_e = p_emit->pFind_expr_Matches_ignoring(pSym_expr_a, SF_EXP_COL))) {
+      if ((p_expr_e = p_emit->pFind_expr_ignoring(pSym_expr_a, SF_EXP_COL))) {
         pSym_In_a = pSym_expr_a;
       }
       else {
@@ -808,7 +808,7 @@ void XF_Synthesise_pipelineDef::vCraftKeyMap(void)
 //Z_KEY_DIRECTION
   for (m_pCI->vBeginTarget(m_pCI->E.p_Op->pSub_key(),CK_EXPR); m_pCI->bEachTarget(); /**/) {
 
-    if ((m_pCI->E.p_expr = m_pCI->E.p_emit->pFind_expr_Matches(m_pCI->E.p_expr->pSymbol()))) {
+    if ((m_pCI->E.p_expr = m_pCI->E.p_emit->pFind_expr(m_pCI->E.p_expr->pSymbol()))) {
 
       i8 i_EmittedCol = m_pCI->E.p_expr->pSymbol()->iTo_ordinal(SF_EXP_COL) - 1;
       i8 i_Cell = m_pCI->E.p_expr->pSymbol()->iTo_ordinal(SF_KEY_COL) - 1;

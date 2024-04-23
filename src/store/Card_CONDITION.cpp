@@ -49,10 +49,10 @@ void Card_CONDITION::vAddTransients(CardIter* pCI)
     if (!p_term->pSymbol()->bHasFacet(SF_EXP_COL) && !p_term->pSymbol()->bHasFacet(SF_TBL_COL))
       return C_CONTINUE_RECURSION;
 
-    if (pCI->Early.m_pNeeded_later->pFind_expr_Matches(p_term->pSymbol()))
+    if (pCI->Early.m_pNeeded_later->pFind_expr(p_term->pSymbol()))
       return C_CONTINUE_RECURSION;
 
-    if (Card_Expr* p_expr_defn = pCI->pResolvePrior_expr(p_term)) {
+    if (Card_Expr* p_expr_defn = pCI->pPrior_expr(p_term)) {
       //p_expr_defn->vDump();
       Card_Expr* p_expr_clone = p_expr_defn->pClone();
       p_expr_clone->pGet_Symbol(0)->vDeleteFacet(SF_EXP_COL);

@@ -17,7 +17,7 @@ namespace STORE
     Card_Emit(void);
    ~Card_Emit(void) noexcept(false);
 
-    static Card_Emit* pResolvePrior_emit(CardIter* pCI);
+    static Card_Emit* pPrior_emit(CardIter* pCI);
 
     Card_Emit* pClone(void);
     Card_Needed* pCraftRoot_needed(CardIter* pCI);
@@ -30,8 +30,7 @@ namespace STORE
 
     void vMapColumns(CardIter* pCI);
 
-    void vPush_foldExpr_Into_emit(CardIter* pCI, Card_Expr* p_expr_fold);
-
+    void vPush_foldExpr(CardIter* pCI, Card_Expr* p_expr_fold);
 
     void vUpdate_expCol(CardIter* pCI, Card_Emit* p_arriving, bool bAlt=false);
 

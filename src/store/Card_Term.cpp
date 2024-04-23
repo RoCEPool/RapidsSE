@@ -143,7 +143,7 @@ void Card_Term::vApplyCast(CardIter* pCI, Card_Emit* p_Dic_expr, Cast& rxCast_la
     if (! pCI->Dic.m_p_expr)
       return;
 
-    Card_Expr* p_expr_matching = p_Dic_expr->pFind_expr_Matches(pSym_term);
+    Card_Expr* p_expr_matching = p_Dic_expr->pFind_expr(pSym_term);
     if (! p_expr_matching)
       p_expr_matching = pCI->E.p_key->pFind_expr_key_Matches(pCI,pSym_term);
 
@@ -159,14 +159,14 @@ void Card_Term::vApplyCast(CardIter* pCI, Card_Emit* p_Dic_expr, Cast& rxCast_la
 
   Card_Expr *p_expr_matched = nullptr;
   if (pSym_term->bHasFacet(SF_KEY_COL) && ! pSym_term->bHasFacet(SF_EXP_COL)) {
-    p_expr_matched = pCI->E.p_key->pFind_expr_Matches(pSym_term);
+    p_expr_matched = pCI->E.p_key->pFind_expr(pSym_term);
   }
   else {
     if (pCI->Dic.m_p_expr)
-      p_expr_matched = pCI->Dic.m_p_expr->pFind_expr_Matches(pSym_term);
+      p_expr_matched = pCI->Dic.m_p_expr->pFind_expr(pSym_term);
     if (! p_expr_matched && pCI->E.p_injectable) {
       vDebugPoint();
-      p_expr_matched = pCI->E.p_injectable->pFind_expr_Matches(pSym_term);
+      p_expr_matched = pCI->E.p_injectable->pFind_expr(pSym_term);
     }
   }
   if (! p_expr_matched)
@@ -275,7 +275,7 @@ void Card_Term::vUpdate_expCol(CardIter* pCI, Card_Emit* p_Dic_expr, bool bAlt)
 
   Card_Expr* p_expr_dic;
   if (bAlt && ! pSym_term->bHasFacet("_CRLKEY_Q1_"_Stz))
-    p_expr_dic = p_Dic_expr->pFind_expr_Matches(pSym_term);
+    p_expr_dic = p_Dic_expr->pFind_expr(pSym_term);
   else
     p_expr_dic = p_Dic_expr->pFind_term(pCI,pSym_term);
 
@@ -361,7 +361,7 @@ void Card_Term::vX_tblCol_To_expCol(CardIter* pCI)
   Symbol xSym_tblCol;
   xSym_tblCol.vApplyFacet(SF_TBL_COL, pSymbol_this->szFacet(SF_TBL_COL));
 
-  if (Card_Expr *p_expr_a = pCI->X.m_pExprList_a->pFind_expr_Matches(&xSym_tblCol)) {
+  if (Card_Expr *p_expr_a = pCI->X.m_pExprList_a->pFind_expr(&xSym_tblCol)) {
 
     Stz* szExpCol_expr_a = p_expr_a->szFacet(SF_EXP_COL);
     pSymbol_this->vApplyFacet(SF_EXP_COL, szExpCol_expr_a);
@@ -378,7 +378,7 @@ void Card_Term::vX_tblCol_To_expCol(CardIter* pCI)
   Symbol xSym_nmdCol;
   xSym_nmdCol.vApplyFacet(SF_NMD_COL, pSymbol_this->szFacet(SF_NMD_COL));
 
-  if (Card_Expr *p_expr_scalar_a = pCI->X.m_pExprList_a->pFind_expr_Matches(&xSym_nmdCol)) {
+  if (Card_Expr *p_expr_scalar_a = pCI->X.m_pExprList_a->pFind_expr(&xSym_nmdCol)) {
     Stz *szStmCol_expr_a = p_expr_scalar_a->szFacet(SF_EXP_COL);
     pSymbol_this->vApplyFacet(SF_EXP_COL, szStmCol_expr_a);
     return;
@@ -386,7 +386,7 @@ void Card_Term::vX_tblCol_To_expCol(CardIter* pCI)
 
 
 //  if (pCI->X.m_pExprList_i) {
-//    if (Card_Expr *p_expr_i = pCI->X.m_pExprList_i->pFind_expr_Matches(&xSym_tblCol)) {
+//    if (Card_Expr *p_expr_i = pCI->X.m_pExprList_i->pFind_expr(&xSym_tblCol)) {
 //
 //      Stz *szExpCol_expr_a = p_expr_i->szFacet(SF_EXP_COL);
 //      pSymbol_this->vApplyFacet(SF_EXP_COL, szExpCol_expr_a);
@@ -401,7 +401,7 @@ void Card_Term::vX_tblCol_To_expCol(CardIter* pCI)
 //  if (!pCI->X.m_pExprList_i)
 //    pCI->PRINTBOARD_dbg();
 //    pSymbol_this->vDump();
-//  RASSERT(pCI->X.m_pExprList_i->pFind_expr_Matches(&xSym_tblCol));
+//  RASSERT(pCI->X.m_pExprList_i->pFind_expr(&xSym_tblCol));
 
   vDebugPoint();
 }

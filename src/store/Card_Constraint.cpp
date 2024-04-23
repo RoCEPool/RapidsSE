@@ -115,7 +115,7 @@ void Card_Constraint::vResolve_colNm_From_colSym(CardIter* pCI)
 
     Symbol* pSymbol = p_term->pSymbol();
     pCI->E.p_injectable = pCI->E.p_Op->pSub_injectable();
-    p_expr_resolved = pCI->E.p_injectable->pFind_expr_Matches(pSymbol);
+    p_expr_resolved = pCI->E.p_injectable->pFind_expr(pSymbol);
 
     szColNm = p_expr_resolved->szFacet(SF_NMD_COL);
 

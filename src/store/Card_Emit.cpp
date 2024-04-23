@@ -51,7 +51,7 @@ Card_Emit::~Card_Emit(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* resolve (right-left) projection prior to main card                         */
 /*----------------------------------------------------------------------------*/
-Card_Emit* Card_Emit::pResolvePrior_emit(CardIter* pCI)
+Card_Emit* Card_Emit::pPrior_emit(CardIter* pCI)
 {
   _static_
 
@@ -123,7 +123,7 @@ Card_Needed* Card_Emit::pCraftRoot_needed(CardIter* pCI)
         Card_Expr *p_expr_key = pCI->E.p_key->pGet_expr(i_Key);
         Symbol *pSym_tblCol = p_expr_key->pFirst_tblCol(pCI);
         //p_needed->vDump(__func__);
-        if (p_needed->pFind_expr_Matches(pSym_tblCol))
+        if (p_needed->pFind_expr(pSym_tblCol))
           continue;
 
         if (p_expr_key->pSymbol()->bHasFacet(SF_EXP_COL)) {
@@ -161,7 +161,7 @@ Card_Needed* Card_Emit::pCraftRoot_needed(CardIter* pCI)
 //        xEmit.p_expr()->pSymbol()->vApplyFacets(pSym_term);
 
       // which we haven't already added
-      if (p_needed->pFind_expr_Matches(pSym_term))
+      if (p_needed->pFind_expr(pSym_term))
         continue;
 
       RASSERT(pSym_term->bHasFacet(SF_EXP_COL) ||
@@ -215,14 +215,14 @@ Card_Needed* Card_Emit::pCraft_needed_root(CardIter* pCI)
         RASSERT(!pSym_term->bHasFacet(SF_NMD_COL));
         RASSERT(!pSym_term->bHasFacet(SF_ITM_COL));
         if (pSym_term->bHasFacet(SF_EXP_COL)) {
-          RASSERT(pCI->E.p_key->pFind_expr_Matches(SF_KEY_COL, pSym_term) ==
-                  pCI->E.p_key->pFind_expr_Matches_ignoring(pSym_term, SF_EXP_COL));
+          RASSERT(pCI->E.p_key->pFind_expr(SF_KEY_COL, pSym_term) ==
+                  pCI->E.p_key->pFind_expr_ignoring(pSym_term, SF_EXP_COL));
           vDebugPoint();
         }
         else
         if (pSym_term->bHasFacet(SF_TBL_COL)) {
-          RASSERT(pCI->E.p_key->pFind_expr_Matches(SF_KEY_COL, pSym_term) ==
-                  pCI->E.p_key->pFind_expr_Matches_ignoring(pSym_term, SF_TBL_COL));
+          RASSERT(pCI->E.p_key->pFind_expr(SF_KEY_COL, pSym_term) ==
+                  pCI->E.p_key->pFind_expr_ignoring(pSym_term, SF_TBL_COL));
           vDebugPoint();
         }
         else {
@@ -285,7 +285,7 @@ void Card_Emit::vDerive_streamKey(CardIter *pCI)
    for (pCI->vBeginTarget(pCI->StreamOrder.m_pStreamKey,CK_EXPR); pCI->bEachTarget(); /**/) {
      Card_Expr* p_expr_runkey = pCI->E.p_expr;
      Card_Term* p_term_runkey = p_expr_runkey->pGet_term(0);
-     Card_Expr* p_expr_prjCol = pFind_expr_Matches(p_term_runkey->pSymbol());
+     Card_Expr* p_expr_prjCol = pFind_expr(p_term_runkey->pSymbol());
      if (p_expr_prjCol && 1 == p_expr_prjCol->nChildCards()) {
        pCI->E.p_streamKey->vAdd_key_expr_BasedOn_expr(pCI, p_expr_prjCol, true, true);
      }
@@ -399,7 +399,7 @@ void Card_Emit::vMapColumns(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Emit::vPush_foldExpr_Into_emit(CardIter* pCI, Card_Expr* p_expr_fold)
+void Card_Emit::vPush_foldExpr(CardIter* pCI, Card_Expr* p_expr_fold)
 {
   _static_
 

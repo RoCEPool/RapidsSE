@@ -2173,6 +2173,35 @@ void CardIter::vPrintBoard(const char* azFunc, const char* azFile, i8 iLineNo, b
 }
 
 /*----------------------------------------------------------------------------*/
+/* resolve prior emit (find right-to-left)                                    */
+/*----------------------------------------------------------------------------*/
+Card_Emit* CardIter::pPrior_emit(void)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  Card_Emit* p_emit = Card_Emit::pPrior_emit(this);
+
+  return p_emit;
+}
+
+/*----------------------------------------------------------------------------*/
+/* resolve prior expr of given term (find right-to-left)                      */
+/*----------------------------------------------------------------------------*/
+Card_Expr* CardIter::pPrior_expr(Card_Term* p_term)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  Card_Emit* p_arriving = pPrior_emit();
+  if (! p_arriving)
+    return nullptr;
+
+  //RASSERT(p_arriving == this->Arriving.m_pEmit);
+
+  Card_Expr* p_expr_resolved = p_arriving->pFind_expr(p_term->pSymbol());
+  return p_expr_resolved;
+}
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void CardIter::vPushChild(Card* pParent, eCK eChild)
@@ -2451,35 +2480,6 @@ void CardIter::vResetMembers(void)
   E.p_where            = nullptr;
 
   E.p_xcard            = nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* resolve prior emit (find right-to-left)                                    */
-/*----------------------------------------------------------------------------*/
-Card_Emit* CardIter::pResolvePrior_emit(void)
-{
-  _precondition_( _MAGIC_, _FOOTER_);
-
-  Card_Emit* p_emit = Card_Emit::pResolvePrior_emit(this);
-
-  return p_emit;
-}
-
-/*----------------------------------------------------------------------------*/
-/* resolve prior expr of given term (find right-to-left)                      */
-/*----------------------------------------------------------------------------*/
-Card_Expr* CardIter::pResolvePrior_expr(Card_Term* p_term)
-{
-  _precondition_( _MAGIC_, _FOOTER_);
-
-  Card_Emit* p_arriving = pResolvePrior_emit();
-  if (! p_arriving)
-    return nullptr;
-
-  //RASSERT(p_arriving == this->Arriving.m_pEmit);
-
-  Card_Expr* p_expr_resolved = p_arriving->pFind_expr_Matches(p_term->pSymbol());
-  return p_expr_resolved;
 }
 
 /*----------------------------------------------------------------------------*/

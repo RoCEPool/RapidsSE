@@ -259,6 +259,8 @@ namespace STORE
     void vPopEach(void);
     bool bPositionAt(eCK eKind_at, i8 /* eCK */ iKind_First, ...);
     void vPrintBoard(const char* azFunc, const char* azFile, i8 iLineNo, bool bForce=false);
+    Card_Emit* pPrior_emit(void);
+    Card_Expr* pPrior_expr(Card_Term* p_term);
     void vPushChild(Card* pParent, eCK eChild);
     void vPushEach(void);
 
@@ -269,8 +271,6 @@ namespace STORE
     void vRecurseEnd(void);
     void vRemoveDeleteMain(eCK eCrossCheck);
     void vResetMembers(void);
-    Card_Emit* pResolvePrior_emit(void);
-    Card_Expr* pResolvePrior_expr(Card_Term* p_term);
     void vResynchOp(void);
     void vResynchOp(Card* pCard);
     bool bRewindOp(void);

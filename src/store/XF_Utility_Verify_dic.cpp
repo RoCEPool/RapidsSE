@@ -425,7 +425,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
         m_pCI->E.p_term = m_pCI->E.xTarget.p_term();
 
         Symbol* pSym_term = m_pCI->E.p_term->pSymbol();
-        if (m_pCI->E.p_injectable->pFind_expr_Matches(pSym_term))
+        if (m_pCI->E.p_injectable->pFind_expr(pSym_term))
           continue;
 
         m_pCI->E.p_injectable->vDump(__func__);
@@ -445,7 +445,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
       for (m_pCI->vBeginTarget(m_pCI->E.p_expr,CK_TERM); m_pCI->bEachTarget(); /**/) {
         m_pCI->E.p_term = m_pCI->E.xTarget.p_term();
 
-        if (m_pCI->Arriving.m_pEmit->pFind_expr_Matches(m_pCI->E.p_term->pSymbol()))
+        if (m_pCI->Arriving.m_pEmit->pFind_expr(m_pCI->E.p_term->pSymbol()))
           continue;
 
         m_pCI->Arriving.m_pEmit->vDump(__func__);
@@ -470,13 +470,13 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
         return C_CONTINUE_RECURSION;
 
       if (pCI->Arriving.m_pEmit) {
-        if (pCI->Arriving.m_pEmit->pFind_expr_Matches(p_term->pSymbol())) {
+        if (pCI->Arriving.m_pEmit->pFind_expr(p_term->pSymbol())) {
           return C_CONTINUE_RECURSION;
         }
       }
 
      if (pCI->E.p_injectable) {
-       if (pCI->E.p_injectable->pFind_expr_Matches(p_term->pSymbol())) {
+       if (pCI->E.p_injectable->pFind_expr(p_term->pSymbol())) {
          return C_CONTINUE_RECURSION;
        }
      }
@@ -505,7 +505,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
       if (! p_term->pSymbol()->bIs_Col())
         return C_CONTINUE_RECURSION;
 
-      if (pCI->E.p_injectable->pFind_expr_Matches(p_term->pSymbol()))
+      if (pCI->E.p_injectable->pFind_expr(p_term->pSymbol()))
         return C_CONTINUE_RECURSION;
 
       pCI->E.p_predicate->vDump(__func__);
@@ -531,7 +531,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
       for (Kid xIdxColList(m_pCI->E.p_idxColList); xIdxColList.bEach(CK_IDXCOL); /**/) {
         m_pCI->E.p_idxCol = xIdxColList.p_idxCol();
 
-        if (m_pCI->E.p_injectable->pFind_expr_Matches(m_pCI->E.p_idxCol->pSymbol()))
+        if (m_pCI->E.p_injectable->pFind_expr(m_pCI->E.p_idxCol->pSymbol()))
           continue;
 
         m_pCI->E.p_index->vDump(__func__);
@@ -551,7 +551,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
           if (! m_pCI->E.p_term->pSymbol()->bIs_Col())
             continue;
           if (m_pCI->Arriving.m_pEmit) {
-            if (m_pCI->Arriving.m_pEmit->pFind_expr_Matches(m_pCI->E.p_term->pSymbol()))
+            if (m_pCI->Arriving.m_pEmit->pFind_expr(m_pCI->E.p_term->pSymbol()))
               continue;
           }
 
@@ -588,12 +588,12 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
           continue;
 
         if (m_pCI->Arriving.m_pEmit) {
-          if (m_pCI->Arriving.m_pEmit->pFind_expr_Matches(m_pCI->E.p_term->pSymbol()))
+          if (m_pCI->Arriving.m_pEmit->pFind_expr(m_pCI->E.p_term->pSymbol()))
             continue;
         }
 
         if (m_pCI->E.p_injectable) {
-          if (m_pCI->E.p_injectable->pFind_expr_Matches(m_pCI->E.p_term->pSymbol()))
+          if (m_pCI->E.p_injectable->pFind_expr(m_pCI->E.p_term->pSymbol()))
             continue;
         }
 
@@ -862,7 +862,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
       for (m_pCI->vBeginTarget(m_pCI->E.p_expr,CK_TERM); m_pCI->bEachTarget(); /**/) {
         m_pCI->E.p_term = m_pCI->E.xTarget.p_term();
 
-        if (Card_Expr* p_expr_f = m_pCI->E.p_injectable->pFind_expr_Matches(m_pCI->E.p_term->pSymbol())) {
+        if (Card_Expr* p_expr_f = m_pCI->E.p_injectable->pFind_expr(m_pCI->E.p_term->pSymbol())) {
           if (p_expr_f->pSymbol()->bSameCast(m_pCI->E.p_term->pSymbol()))
             continue;
         }
@@ -884,7 +884,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
       for (m_pCI->vBeginTarget(m_pCI->E.p_expr,CK_TERM); m_pCI->bEachTarget(); /**/) {
         m_pCI->E.p_term = m_pCI->E.xTarget.p_term();
 
-        if (Card_Expr* p_expr_f = m_pCI->Arriving.m_pEmit->pFind_expr_Matches(m_pCI->E.p_term->pSymbol())) {
+        if (Card_Expr* p_expr_f = m_pCI->Arriving.m_pEmit->pFind_expr(m_pCI->E.p_term->pSymbol())) {
           if (p_expr_f->pSymbol()->bSameCast(m_pCI->E.p_term->pSymbol()))
             continue;
         }
@@ -911,14 +911,14 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
         return C_CONTINUE_RECURSION;
 
       if (pCI->Arriving.m_pEmit) {
-        if (Card_Expr* p_expr_f = pCI->Arriving.m_pEmit->pFind_expr_Matches(p_term->pSymbol())) {
+        if (Card_Expr* p_expr_f = pCI->Arriving.m_pEmit->pFind_expr(p_term->pSymbol())) {
           if (p_expr_f->pSymbol()->bSameCast(p_term->pSymbol()))
             return C_CONTINUE_RECURSION;
         }
       }
 
       if (pCI->E.p_injectable) {
-        if (Card_Expr* p_expr_f = pCI->E.p_injectable->pFind_expr_Matches(p_term->pSymbol())) {
+        if (Card_Expr* p_expr_f = pCI->E.p_injectable->pFind_expr(p_term->pSymbol())) {
           if (p_expr_f->pSymbol()->bSameCast(p_term->pSymbol()))
             return C_CONTINUE_RECURSION;
         }
@@ -950,7 +950,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
       if (! p_term->pSymbol()->bIs_Col())
         return C_CONTINUE_RECURSION;
 
-      if (Card_Expr* p_expr_f = pCI->E.p_injectable->pFind_expr_Matches(p_term->pSymbol()))
+      if (Card_Expr* p_expr_f = pCI->E.p_injectable->pFind_expr(p_term->pSymbol()))
         if (p_expr_f->pSymbol()->bSameCast(p_term->pSymbol()))
           return C_CONTINUE_RECURSION;
 
@@ -977,10 +977,10 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
       for (Kid xIdxColList(m_pCI->E.p_idxColList); xIdxColList.bEach(CK_IDXCOL); /**/) {
         m_pCI->E.p_idxCol = xIdxColList.p_idxCol();
 
-        if (m_pCI->E.p_injectable->pFind_expr_Matches(m_pCI->E.p_idxCol->pSymbol()))
+        if (m_pCI->E.p_injectable->pFind_expr(m_pCI->E.p_idxCol->pSymbol()))
           continue;
 //          todo: idxCol should be cast [304]
-//      if (Card_Expr* p_expr_f = m_pCI->G.p_injectable->pFind_expr_Matches(m_pCI->G.p_idxCol->pSymbol()))
+//      if (Card_Expr* p_expr_f = m_pCI->G.p_injectable->pFind_expr(m_pCI->G.p_idxCol->pSymbol()))
 //          if (p_expr_f->pSymbol()->bSameCast(m_pCI->G.p_idxCol->pSymbol()))
 //            continue;
 
@@ -1002,7 +1002,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
             continue;
 
           if (m_pCI->Arriving.m_pEmit) {
-            if (Card_Expr* p_expr_f = m_pCI->Arriving.m_pEmit->pFind_expr_Matches(m_pCI->E.p_term->pSymbol()))
+            if (Card_Expr* p_expr_f = m_pCI->Arriving.m_pEmit->pFind_expr(m_pCI->E.p_term->pSymbol()))
               if (p_expr_f->pSymbol()->bSameCast(m_pCI->E.p_term->pSymbol()))
               continue;
           }
@@ -1040,7 +1040,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
           continue;
 
         if (m_pCI->Arriving.m_pEmit) {
-          if (Card_Expr* p_expr_f = m_pCI->Arriving.m_pEmit->pFind_expr_Matches(m_pCI->E.p_term->pSymbol())) {
+          if (Card_Expr* p_expr_f = m_pCI->Arriving.m_pEmit->pFind_expr(m_pCI->E.p_term->pSymbol())) {
             if (p_expr_f->pSymbol()->bSameCast(m_pCI->E.p_term->pSymbol())) {
               continue;
             }
@@ -1053,7 +1053,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
         }
 
         if (m_pCI->E.p_injectable) {
-          if (Card_Expr* p_expr_f = m_pCI->E.p_injectable->pFind_expr_Matches(m_pCI->E.p_term->pSymbol())) {
+          if (Card_Expr* p_expr_f = m_pCI->E.p_injectable->pFind_expr(m_pCI->E.p_term->pSymbol())) {
             if (p_expr_f->pSymbol()->bSameCast(m_pCI->E.p_term->pSymbol())) {
               continue;
             }
