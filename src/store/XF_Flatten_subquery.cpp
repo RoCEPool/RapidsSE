@@ -160,7 +160,7 @@ void XF_Flatten_subquery::vFlatten_recurse(Symbol* pSym_sqyNo_inner, i8 iDepth)
 
 
     bFound = false;
-    bool b = m_pCI->E.p_boolPred->bLambdaWalk_term(bLambdaFn);
+    bool b = m_pCI->E.p_predicate->bLambdaWalk_term(bLambdaFn);
     UNUSED(b);
     vDebugPoint();
   } while (bFound);
@@ -189,7 +189,7 @@ void XF_Flatten_subquery::vFlatten_recurse(Symbol* pSym_sqyNo_inner, i8 iDepth)
 
 
     bFound = false;
-    bool b = m_pCI->E.p_boolPred->bLambdaWalk_term(bLambdaFn);
+    bool b = m_pCI->E.p_predicate->bLambdaWalk_term(bLambdaFn);
     UNUSED(b);
     vDebugPoint();
   } while (bFound);

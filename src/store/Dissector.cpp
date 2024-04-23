@@ -395,8 +395,8 @@ Card* Dissector::pOp_filter(void)
   Card_Expr* p_expr = pPop_expr4(p_termSeq);
   p_expr->pSymbol()->vApplyFacet(SF_EXP_COL, (i8)1);
 
-  Card_BoolPred* p_boolPred = Card_BoolPred::pTo_boolPred(m_pCI,p_expr);
-  p_filter->vAppendChild(p_boolPred);
+  Card_Predicate* p_predicate = Card_Predicate::pTo_boolPred(m_pCI, p_expr);
+  p_filter->vAppendChild(p_predicate);
   DELETE_CARD(p_expr);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1284,9 +1284,9 @@ Card_Constraint* Dissector::pPop_constraint(Card_TermSeq* p_termSeq)
   Card_Expr* p_expr = pPop_expr4(p_termSeq);
   p_expr->pSymbol()->vApplyFacet(SF_EXP_COL,(i8)1);
 
-  Card_BoolPred* p_boolPred = Card_BoolPred::pTo_boolPred(m_pCI,p_expr);
+  Card_Predicate* p_predicate = Card_Predicate::pTo_boolPred(m_pCI, p_expr);
   DELETE_CARD(p_expr);
-  p_constraint->vAppendChild(p_boolPred);
+  p_constraint->vAppendChild(p_predicate);
 
   return p_constraint;
 }

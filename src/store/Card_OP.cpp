@@ -291,8 +291,8 @@ Card_Filter* Card_OP::pEnsure_filter(void)
     return p_filter;
 
   p_filter = _pCard_Filter(this->pAppendNewCard(CK_o_FILTER));
-  Card_BoolPred* p_boolPred = _pCard_BoolPred(p_filter->pAppendNewCard(CK_PREDICATE));
-  UNUSED(p_boolPred);
+  Card_Predicate* p_predicate = _pCard_Predicate(p_filter->pAppendNewCard(CK_PREDICATE));
+  UNUSED(p_predicate);
 
   return p_filter;
 }
@@ -600,9 +600,9 @@ void Card_OP::vRestate_emit(CardIter* pCI)
       pCI->E.p_emit->vInject_expr_nmdCol_table(pCI);
 
       if ((pCI->E.p_filter = pCI->E.p_Op->pSub_filter()) &&
-          (pCI->E.p_boolPred = pCI->E.p_filter->pSub_boolPred())) {
+          (pCI->E.p_predicate = pCI->E.p_filter->pSub_predicate())) {
         pCI->Dic.m_p_expr = pCI->Arriving.m_pEmit;
-        pCI->E.p_boolPred->vApplyCast(pCI,/*??*/pCI->Dic.m_p_expr);
+        pCI->E.p_predicate->vApplyCast(pCI,/*??*/pCI->Dic.m_p_expr);
       }
 
       break;
@@ -801,7 +801,7 @@ void Card_OP::vRpn_filter(CardIter* pCI, String* psRpnExpr, Card_Filter* p_filte
 
   psRpnExpr->vCatSprint(" type BOOLEAN"_Stz);
 
-  Card_BoolPred *pCard_CalcBool = p_filter->pSub_boolPred();
+  Card_Predicate *pCard_CalcBool = p_filter->pSub_predicate();
   pCard_CalcBool->vOntoRpnExpr(psRpnExpr);
 }
 
@@ -896,7 +896,7 @@ void Card_OP::vRpn_having(CardIter* pCI, String* psRpnExpr, Card_Having* p_havin
 
   psRpnExpr->vCatSprint(" type BOOLEAN"_Stz);
 
-  Card_BoolPred *pCard_CalcBool = p_having->pSub_boolPred();
+  Card_Predicate *pCard_CalcBool = p_having->pSub_predicate();
   pCard_CalcBool->vOntoRpnExpr(psRpnExpr);
 }
 
@@ -984,7 +984,7 @@ void Card_OP::vRpn_indexJoin_constraint(CardIter* pCI, String* psRpnExpr, Card_I
 
   psRpnExpr->vCatSprint(" type BOOLEAN"_Stz);
 
-  Card_BoolPred *pCard_CalcBool = pCard_constraint->pSub_boolPred();
+  Card_Predicate *pCard_CalcBool = pCard_constraint->pSub_predicate();
   pCard_CalcBool->vOntoRpnExpr(psRpnExpr);
 }
 
@@ -1144,7 +1144,7 @@ void Card_OP::vRpn_keyExists_constraint(CardIter* pCI, String* psRpnExpr, Card_K
 
   psRpnExpr->vCatSprint(" type BOOLEAN"_Stz);
 
-  Card_BoolPred *pCard_CalcBool = p_keyExists->pSub_boolPred();
+  Card_Predicate *pCard_CalcBool = p_keyExists->pSub_predicate();
   pCard_CalcBool->vOntoRpnExpr(psRpnExpr);
 }
 
@@ -1229,7 +1229,7 @@ void Card_OP::vRpn_keyNotExists_constraint(CardIter* pCI, String* psRpnExpr, Car
 
   psRpnExpr->vCatSprint(" type BOOLEAN"_Stz);
 
-  Card_BoolPred *pCard_CalcBool = p_keyNotExists->pSub_boolPred();
+  Card_Predicate *pCard_CalcBool = p_keyNotExists->pSub_predicate();
   pCard_CalcBool->vOntoRpnExpr(psRpnExpr);
 
 }
@@ -1417,7 +1417,7 @@ void Card_OP::vRpn_where(CardIter* pCI, String* psRpnExpr, Card_Where* p_where)
 
   psRpnExpr->vCatSprint(" type BOOLEAN"_Stz);
 
-  Card_BoolPred *pCard_CalcBool = p_where->pSub_boolPred();
+  Card_Predicate *pCard_CalcBool = p_where->pSub_predicate();
   pCard_CalcBool->vOntoRpnExpr(psRpnExpr);
 }
 

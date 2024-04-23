@@ -6,7 +6,7 @@
 
 #include "CardIter.hpp"
 
-#include "Card_BoolPred.hpp"
+#include "Card_Predicate.hpp"
 #include "Card_RlnConj.hpp"
 #include "Card_Deck.hpp"
 #include "Card_Filter.hpp"
@@ -130,8 +130,8 @@ void Card_JoinPredList::vBuildList(Card_Filter*    p_filter,
 
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-  Card_BoolPred* p_boolPred = p_filter->pSub_boolPred();
-  p_boolPred->bLambdaWalk(CK_RLNCONJ, bfConcat);
+  Card_Predicate* p_predicate = p_filter->pSub_predicate();
+  p_predicate->bLambdaWalk(CK_RLNCONJ, bfConcat);
 }
 
 /*----------------------------------------------------------------------------*/

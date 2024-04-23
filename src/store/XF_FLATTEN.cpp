@@ -453,8 +453,8 @@ void XF_FLATTEN::vInto_KEYnotEXISTS(CardIter* pCI)
 
   pCI->E.p_deck->vInsertChildBefore(p_from_exists, pCI->E.p_where);
 
-  pCI->E.p_boolPred = pCI->E.p_where->pSub_boolPred();
-  pCI->E.p_rlnConj  = _pCard_RlnConj(pCI->E.p_boolPred->pFindCard_WithSubFacet(CK_RLNCONJ, SF_SQY_NO));
+  pCI->E.p_predicate = pCI->E.p_where->pSub_predicate();
+  pCI->E.p_rlnConj  = _pCard_RlnConj(pCI->E.p_predicate->pFindCard_WithSubFacet(CK_RLNCONJ, SF_SQY_NO));
 
   if (pCI->E.p_rlnConj->pSymbol()->bHasFacet("in"_Stz) ||
       pCI->E.p_rlnConj->pSymbol()->bHasFacet("exists"_Stz))
@@ -502,7 +502,7 @@ void XF_FLATTEN::vInto_KEYnotEXISTS(CardIter* pCI)
   pCI->vClearRegisters();
   pCI->vBeginEach();
   if (pCI->bEachOp(CK_o_WHERE, CK_PREDICATE)) {
-    (void)pCI->E.p_boolPred->nCullMarked_rlnConj(MARK_AT);
+    (void)pCI->E.p_predicate->nCullMarked_rlnConj(MARK_AT);
   }
 
   pCI->vClearRegisters();

@@ -7,7 +7,7 @@
 #include "Card_IdxColList.hpp"
 #include "Card_IndexList.hpp"
 #include "Card_Filter.hpp"
-#include "Card_BoolPred.hpp"
+#include "Card_Predicate.hpp"
 #include "CardIter.hpp"
 #include "Card_Index.hpp"
 #include "Card_RlnConj.hpp"
@@ -269,9 +269,9 @@ void Card_Table::vDerive_bounds_From_filter(CardIter *pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_BoolPred* p_boolPred = pCI->E.p_filter->pSub_boolPred();
-  RASSERT(1 == p_boolPred->nChildCards());
-  Card_CONJ* p_conj_root = p_boolPred->pRoot_conj();
+  Card_Predicate* p_predicate = pCI->E.p_filter->pSub_predicate();
+  RASSERT(1 == p_predicate->nChildCards());
+  Card_CONJ* p_conj_root = p_predicate->pRoot_conj();
 
   Kid xIndexList(pCI->E.p_indexList);
   while (xIndexList.bEach(CK_INDEX)) {

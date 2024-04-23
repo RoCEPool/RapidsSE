@@ -323,7 +323,7 @@ void Card_Term::vX_tblCol_To_expCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  RASSERT(pCI->E.p_boolPred || pCI->E.p_bound || pCI->E.p_expr || pCI->E.p_hshCol);
+  RASSERT(pCI->E.p_predicate || pCI->E.p_bound || pCI->E.p_expr || pCI->E.p_hshCol);
 
   Symbol* pSymbol_this = this->pSymbol();
 

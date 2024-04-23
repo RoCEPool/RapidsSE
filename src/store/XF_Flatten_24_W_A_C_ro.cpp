@@ -135,8 +135,8 @@ bool XF_Flatten_24_W_A_C_ro::bSnap_IQ_crlKey(CardIter* pCI)
 
   while (pCI->bEachOp(CK_o_FROM, CK_t_EMIT, CK_o_FILTER)) {
 
-    pCI->E.p_boolPred = pCI->E.p_filter->pSub_boolPred();
-    Card_CONJ *p_conj_root = pCI->E.p_boolPred->pRoot_conj();
+    pCI->E.p_predicate = pCI->E.p_filter->pSub_predicate();
+    Card_CONJ *p_conj_root = pCI->E.p_predicate->pRoot_conj();
 
     bool bIgnore = p_conj_root->bLambdaWalk_conj(fbSnap_sqyArg);
     UNUSED(bIgnore);
@@ -250,7 +250,7 @@ void XF_Flatten_24_W_A_C_ro::vEnhance_IQ_emit_project_Add_crlKey(CardIter* pCI)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void XF_Flatten_24_W_A_C_ro::vConvert_OQ_sqyPrm_Into_expCol(CardIter* pCI,
-                                                            Card_BoolPred *p_boolPred)
+                                                            Card_Predicate *p_predicate)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_24_W_A_C_RO, _FOOTER_);
 
@@ -322,7 +322,7 @@ void XF_Flatten_24_W_A_C_ro::vConvert_OQ_sqyPrm_Into_expCol(CardIter* pCI,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Card_CONJ* p_conj_root = static_cast<Card_CONJ*>(p_boolPred->pRoot_conj());
+  Card_CONJ* p_conj_root = static_cast<Card_CONJ*>(p_predicate->pRoot_conj());
 
   vResolve(p_conj_root, vResolve);
 }
@@ -331,7 +331,7 @@ void XF_Flatten_24_W_A_C_ro::vConvert_OQ_sqyPrm_Into_expCol(CardIter* pCI,
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void XF_Flatten_24_W_A_C_ro::vConvert_OQ_sqyNo_Into_expCol(CardIter* pCI,
-                                                           Card_BoolPred *p_boolPred)
+                                                           Card_Predicate *p_predicate)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_24_W_A_C_RO, _FOOTER_);
 
@@ -392,7 +392,7 @@ void XF_Flatten_24_W_A_C_ro::vConvert_OQ_sqyNo_Into_expCol(CardIter* pCI,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Card_CONJ* p_conj_root = static_cast<Card_CONJ*>(p_boolPred->pRoot_conj());
+  Card_CONJ* p_conj_root = static_cast<Card_CONJ*>(p_predicate->pRoot_conj());
 
   vResolve(p_conj_root, vResolve);
 }
@@ -400,11 +400,11 @@ void XF_Flatten_24_W_A_C_ro::vConvert_OQ_sqyNo_Into_expCol(CardIter* pCI,
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Flatten_24_W_A_C_ro::vMove_OQ_rlnConj_rslTest_To_from_filter(CardIter* pCI, Card_BoolPred *p_boolPred)
+void XF_Flatten_24_W_A_C_ro::vMove_OQ_rlnConj_rslTest_To_from_filter(CardIter* pCI, Card_Predicate *p_predicate)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_24_W_A_C_RO, _FOOTER_);
 
-  p_boolPred->vRemove_rlnConj(pCI->Flat.m_p_conj_rslTest);
+  p_predicate->vRemove_rlnConj(pCI->Flat.m_p_conj_rslTest);
 
   //p_rlnConj_sqyRslTest->vDump();
 
@@ -414,7 +414,7 @@ void XF_Flatten_24_W_A_C_ro::vMove_OQ_rlnConj_rslTest_To_from_filter(CardIter* p
 
   pCI->E.p_filter = p_OP->pEnsure_filter();
 
-  pCI->E.p_filter->pSub_boolPred()->vAppend_and_rlnConj(pCI->Flat.m_p_conj_rslTest);
+  pCI->E.p_filter->pSub_predicate()->vAppend_and_rlnConj(pCI->Flat.m_p_conj_rslTest);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -528,8 +528,8 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
   pCI->vClearRegisters();
   pCI->vBeginEach();
   while (pCI->bEachOp(CK_o_FROM, CK_o_FILTER, CK_PREDICATE)) {
-    if (pCI->E.p_boolPred->bHasSub(pCI->Flat.m_p_conj_crlKey)) {
-      pCI->E.p_boolPred->vRemoveSub(pCI->Flat.m_p_conj_crlKey);
+    if (pCI->E.p_predicate->bHasSub(pCI->Flat.m_p_conj_crlKey)) {
+      pCI->E.p_predicate->vRemoveSub(pCI->Flat.m_p_conj_crlKey);
       break;
     }
   }
@@ -565,7 +565,7 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
   // ???
 
   RASSERT(pCI->bEachOp(CK_o_WHERE, CK_PREDICATE));
-  pCI->E.p_boolPred->vBump_expCol(2);
+  pCI->E.p_predicate->vBump_expCol(2);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append correlation key conjunction onto the OQ:<where>/<filter>/<boolPred>
@@ -573,7 +573,7 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
   pCI->Flat.m_p_conj_crlKey->pSymbol()->Y_vCut(P_CrlKeyConj);
   pCI->Flat.m_p_conj_crlKey->pSymbol()->Y_vSet(P_CrlKeyTest);
 
-  pCI->E.p_boolPred->vAppend_and_rlnConj(_pCard_RlnConj(pCI->Flat.m_p_conj_crlKey));
+  pCI->E.p_predicate->vAppend_and_rlnConj(_pCard_RlnConj(pCI->Flat.m_p_conj_crlKey));
 
   //                   v           //  ]filter
   // F A A A P + F F F W A A A     //  .]boolPred
@@ -583,14 +583,14 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
   //           +                   //           $Q1
 
   //pCI->PRINTBOARD_dbg();
-  //pCI->G.p_boolPred->vDump(__func__);
-  vConvert_OQ_sqyPrm_Into_expCol(pCI, pCI->E.p_boolPred);
+  //pCI->G.p_predicate->vDump(__func__);
+  vConvert_OQ_sqyPrm_Into_expCol(pCI, pCI->E.p_predicate);
 
-  //pCI->G.p_boolPred->vDump(__func__);
-  vConvert_OQ_sqyNo_Into_expCol(pCI, pCI->E.p_boolPred);
+  //pCI->G.p_predicate->vDump(__func__);
+  vConvert_OQ_sqyNo_Into_expCol(pCI, pCI->E.p_predicate);
 
   //pCI->PRINTBOARD_dbg();
-  //pCI->G.p_boolPred->vDump(__func__);
+  //pCI->G.p_predicate->vDump(__func__);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // move the correlation predicate to table as a bounds
@@ -608,7 +608,7 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
 
   RASSERT(pCI->bEachOp(CK_c_FOLD));
   RASSERT(pCI->bEachOp(CK_o_WHERE, CK_PREDICATE));
-  vMove_OQ_rlnConj_rslTest_To_from_filter(pCI, pCI->E.p_boolPred);
+  vMove_OQ_rlnConj_rslTest_To_from_filter(pCI, pCI->E.p_predicate);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

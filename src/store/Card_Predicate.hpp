@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_BoolPred.hpp -- Boolean Predicate                                     */
+/* Card_Predicate.hpp -- Boolean Predicate                                    */
 /*============================================================================*/
 #pragma once
 
@@ -8,16 +8,16 @@
 
 namespace STORE
 {
-  class Card_BoolPred : public Card_CONJSUBROOT
+  class Card_Predicate : public Card_CONJSUBROOT
   {  
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_BoolPred(void);
-   ~Card_BoolPred(void) noexcept(false);
+    Card_Predicate(void);
+   ~Card_Predicate(void) noexcept(false);
 
-    static Card_BoolPred* pTo_boolPred(CardIter* pCI, Card_Expr* p_expr_arg);
+    static Card_Predicate* pTo_boolPred(CardIter* pCI, Card_Expr* p_expr_arg);
 
     void vAppend_and_rlnConj(Card_RlnConj *p_rlnConj);
     void vApplyCast(CardIter* pCI, Card_Emit* p_Dic_expr);
@@ -45,7 +45,7 @@ namespace STORE
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 
-  Card_BoolPred* _pCard_BoolPred(void* aAddr);
+  Card_Predicate* _pCard_Predicate(void* aAddr);
 }
 
 /*============================================================================*/

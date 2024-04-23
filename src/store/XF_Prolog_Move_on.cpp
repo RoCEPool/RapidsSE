@@ -101,15 +101,15 @@ void XF_Prolog_Move_on::vXF_Move_on(void)
     Card_Expr* p_expr_tmp = new Card_Expr;
 
     p_expr_tmp->vTransferChildren(m_pCI->E.p_on, SF_RLN_OP);
-    m_pCI->E.p_boolPred = Card_BoolPred::pTo_boolPred(m_pCI, p_expr_tmp);
+    m_pCI->E.p_predicate = Card_Predicate::pTo_boolPred(m_pCI, p_expr_tmp);
 
-    if (m_pCI->E.p_filter->pSub_boolPred() && m_pCI->E.p_filter->pSub_boolPred()->nChildCards()) {
-      m_pCI->E.p_rlnConj = _pCard_RlnConj(m_pCI->E.p_boolPred->pPopChild());
-      m_pCI->E.p_filter->pSub_boolPred()->vAppend_and_rlnConj(m_pCI->E.p_rlnConj);
-      DELETE_CARD(m_pCI->E.p_boolPred);
+    if (m_pCI->E.p_filter->pSub_predicate() && m_pCI->E.p_filter->pSub_predicate()->nChildCards()) {
+      m_pCI->E.p_rlnConj = _pCard_RlnConj(m_pCI->E.p_predicate->pPopChild());
+      m_pCI->E.p_filter->pSub_predicate()->vAppend_and_rlnConj(m_pCI->E.p_rlnConj);
+      DELETE_CARD(m_pCI->E.p_predicate);
     }
     else
-      m_pCI->E.p_filter->vAppendChild(m_pCI->E.p_boolPred);
+      m_pCI->E.p_filter->vAppendChild(m_pCI->E.p_predicate);
 
     DELETE_CARD(p_expr_tmp);
 
@@ -122,8 +122,8 @@ void XF_Prolog_Move_on::vXF_Move_on(void)
       p_expr_tmp->vApplyCast_x(m_pCI->E.p_on->xCast());
       p_expr_tmp->vTransferChildren(m_pCI->E.p_on);
 
-      m_pCI->E.p_boolPred = Card_BoolPred::pTo_boolPred(m_pCI, p_expr_tmp);
-      m_pCI->E.p_constraint->vAppendChild(m_pCI->E.p_boolPred);
+      m_pCI->E.p_predicate = Card_Predicate::pTo_boolPred(m_pCI, p_expr_tmp);
+      m_pCI->E.p_constraint->vAppendChild(m_pCI->E.p_predicate);
       p_scan_over->vAppendChild(m_pCI->E.p_constraint);
 
 //      m_pCI->E.p_constraint->vDump(__func__);

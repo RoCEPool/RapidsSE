@@ -79,7 +79,7 @@ void Card_Having::vCorrect_After_Inject(CardIter* pCI, bool bBump)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  pCI->E.p_boolPred = pSub_boolPred();
+  pCI->E.p_predicate = pSub_predicate();
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -96,7 +96,7 @@ void Card_Having::vCorrect_After_Inject(CardIter* pCI, bool bBump)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (bBump)
-    pCI->E.p_boolPred->bLambdaWalk_term(bLambdaFn_cmp);
+    pCI->E.p_predicate->bLambdaWalk_term(bLambdaFn_cmp);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -124,7 +124,7 @@ void Card_Having::vCorrect_After_Inject(CardIter* pCI, bool bBump)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pCI->E.p_boolPred->bLambdaWalk(CK_RLNCONJ, bLambdaFn_ro);
+  pCI->E.p_predicate->bLambdaWalk(CK_RLNCONJ, bLambdaFn_ro);
 }
 
 /*----------------------------------------------------------------------------*/

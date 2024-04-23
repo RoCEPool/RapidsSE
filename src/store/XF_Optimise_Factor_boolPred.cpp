@@ -76,66 +76,66 @@ bool XF_Optimise_Factor_boolPred::bOptimise(void)
       case CK_o_CROSSJOIN:
         RASSERT(! m_pCI->E.p_Op->pSub_constraint());
         if ((m_pCI->E.p_filter = m_pCI->E.p_Op->pSub_filter())) {
-          if ((m_pCI->E.p_boolPred = m_pCI->E.p_filter->pSub_boolPred()))
-            vFactor_boolPred(m_pCI->E.p_boolPred);
+          if ((m_pCI->E.p_predicate = m_pCI->E.p_filter->pSub_predicate()))
+            vFactor_boolPred(m_pCI->E.p_predicate);
         }
         break;
 
       case CK_o_FILTER:
-        if ((m_pCI->E.p_boolPred = m_pCI->E.p_filter->pSub_boolPred()))
-          vFactor_boolPred(m_pCI->E.p_boolPred);
+        if ((m_pCI->E.p_predicate = m_pCI->E.p_filter->pSub_predicate()))
+          vFactor_boolPred(m_pCI->E.p_predicate);
         break;
 
       case CK_o_FROM:
         if ((m_pCI->E.p_constraint = m_pCI->E.p_Op->pSub_constraint())) {
-          if ((m_pCI->E.p_boolPred = m_pCI->E.p_constraint->pSub_boolPred()))
-            vFactor_boolPred(m_pCI->E.p_boolPred);
+          if ((m_pCI->E.p_predicate = m_pCI->E.p_constraint->pSub_predicate()))
+            vFactor_boolPred(m_pCI->E.p_predicate);
         }
         if ((m_pCI->E.p_filter = m_pCI->E.p_Op->pSub_filter())) {
-          if ((m_pCI->E.p_boolPred = m_pCI->E.p_filter->pSub_boolPred()))
-            vFactor_boolPred(m_pCI->E.p_boolPred);
+          if ((m_pCI->E.p_predicate = m_pCI->E.p_filter->pSub_predicate()))
+            vFactor_boolPred(m_pCI->E.p_predicate);
         }
         break;
 
       case CK_o_HAVING:
         RASSERT(! m_pCI->E.p_Op->pSub_constraint());
         if ((m_pCI->E.p_filter = m_pCI->E.p_Op->pSub_filter())) {
-          if ((m_pCI->E.p_boolPred = m_pCI->E.p_filter->pSub_boolPred()))
-            vFactor_boolPred(m_pCI->E.p_boolPred);
+          if ((m_pCI->E.p_predicate = m_pCI->E.p_filter->pSub_predicate()))
+            vFactor_boolPred(m_pCI->E.p_predicate);
         }
         break;
 
       case CK_o_INDEXJOIN:
         if ((m_pCI->E.p_constraint = m_pCI->E.p_Op->pSub_constraint())) {
-          if ((m_pCI->E.p_boolPred = m_pCI->E.p_constraint->pSub_boolPred()))
-            vFactor_boolPred(m_pCI->E.p_boolPred);
+          if ((m_pCI->E.p_predicate = m_pCI->E.p_constraint->pSub_predicate()))
+            vFactor_boolPred(m_pCI->E.p_predicate);
         }
         if ((m_pCI->E.p_filter = m_pCI->E.p_Op->pSub_filter())) {
-          if ((m_pCI->E.p_boolPred = m_pCI->E.p_filter->pSub_boolPred()))
-            vFactor_boolPred(m_pCI->E.p_boolPred);
+          if ((m_pCI->E.p_predicate = m_pCI->E.p_filter->pSub_predicate()))
+            vFactor_boolPred(m_pCI->E.p_predicate);
         }
         break;
 
       case CK_o_INDEXSCAN:
         RASSERT(! m_pCI->E.p_Op->pSub_constraint());
         if ((m_pCI->E.p_filter = m_pCI->E.p_Op->pSub_filter())) {
-          if ((m_pCI->E.p_boolPred = m_pCI->E.p_filter->pSub_boolPred()))
-            vFactor_boolPred(m_pCI->E.p_boolPred);
+          if ((m_pCI->E.p_predicate = m_pCI->E.p_filter->pSub_predicate()))
+            vFactor_boolPred(m_pCI->E.p_predicate);
         }
         break;
 
       case CK_o_KEYEXISTS:
         if ((m_pCI->E.p_constraint = m_pCI->E.p_Op->pSub_constraint())) {
-          if ((m_pCI->E.p_boolPred = m_pCI->E.p_constraint->pSub_boolPred()))
-            vFactor_boolPred(m_pCI->E.p_boolPred);
+          if ((m_pCI->E.p_predicate = m_pCI->E.p_constraint->pSub_predicate()))
+            vFactor_boolPred(m_pCI->E.p_predicate);
         }
         RASSERT(! m_pCI->E.p_Op->pSub_filter());
         break;
 
       case CK_o_KEYNOTEXISTS:
         if ((m_pCI->E.p_constraint = m_pCI->E.p_Op->pSub_constraint())) {
-          if ((m_pCI->E.p_boolPred = m_pCI->E.p_constraint->pSub_boolPred()))
-            vFactor_boolPred(m_pCI->E.p_boolPred);
+          if ((m_pCI->E.p_predicate = m_pCI->E.p_constraint->pSub_predicate()))
+            vFactor_boolPred(m_pCI->E.p_predicate);
         }
         RASSERT(! m_pCI->E.p_Op->pSub_filter());
         break;
@@ -143,16 +143,16 @@ bool XF_Optimise_Factor_boolPred::bOptimise(void)
       case CK_o_SCAN:
         RASSERT(! m_pCI->E.p_Op->pSub_constraint());
         if ((m_pCI->E.p_filter = m_pCI->E.p_Op->pSub_filter())) {
-          if ((m_pCI->E.p_boolPred = m_pCI->E.p_filter->pSub_boolPred()))
-            vFactor_boolPred(m_pCI->E.p_boolPred);
+          if ((m_pCI->E.p_predicate = m_pCI->E.p_filter->pSub_predicate()))
+            vFactor_boolPred(m_pCI->E.p_predicate);
         }
         break;
 
       case CK_o_WHERE:
         RASSERT(! m_pCI->E.p_Op->pSub_constraint());
         if ((m_pCI->E.p_filter = m_pCI->E.p_Op->pSub_filter())) {
-          if ((m_pCI->E.p_boolPred = m_pCI->E.p_filter->pSub_boolPred()))
-            vFactor_boolPred(m_pCI->E.p_boolPred);
+          if ((m_pCI->E.p_predicate = m_pCI->E.p_filter->pSub_predicate()))
+            vFactor_boolPred(m_pCI->E.p_predicate);
         }
         break;
 
@@ -174,11 +174,11 @@ bool XF_Optimise_Factor_boolPred::bOptimise(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-void XF_Optimise_Factor_boolPred::vFactor_boolPred(Card_BoolPred* p_boolPred)
+void XF_Optimise_Factor_boolPred::vFactor_boolPred(Card_Predicate* p_predicate)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_FACTOR_BOOLPRED, _FOOTER_);
 
-  Card_CONJ *p_conj_root = p_boolPred->pRoot_conj();
+  Card_CONJ *p_conj_root = p_predicate->pRoot_conj();
 
   if (!p_conj_root->bIsCard(CK_ORCONJ))
     return;
@@ -273,10 +273,10 @@ void XF_Optimise_Factor_boolPred::vFactor_boolPred(Card_BoolPred* p_boolPred)
   Card_AndConj* p_andConj_new = new Card_AndConj;
   p_andConj_new->vAppendChild(p_rlnConj_factored);
 
-  Card_OrConj* p_orConj_top = p_boolPred->pPop_orConj();
+  Card_OrConj* p_orConj_top = p_predicate->pPop_orConj();
   p_andConj_new->vAppendChild(p_orConj_top);
 
-  p_boolPred->vAppendChild(p_andConj_new);
+  p_predicate->vAppendChild(p_andConj_new);
 
   //m_pCI->PRINTBOARD_dbg();
 

@@ -153,9 +153,9 @@ void XF_Epilog_Type_Cast::vCast(void)
       if ((m_pCI->E.p_streamKey = m_pCI->E.p_Op->pSub_streamKey()))
         m_pCI->E.p_streamKey->vApplyCast(m_pCI,/*??*/m_pCI->Arriving.m_pEmit);
 
-      if ((m_pCI->E.p_boolPred = m_pCI->E.p_Op->pSub_boolPred())) {
-        //m_pCI->G.p_boolPred->vDump(__func__);
-        m_pCI->E.p_boolPred->vApplyCast(m_pCI,/*??*/m_pCI->Arriving.m_pEmit);
+      if ((m_pCI->E.p_predicate = m_pCI->E.p_Op->pSub_predicate())) {
+        //m_pCI->G.p_predicate->vDump(__func__);
+        m_pCI->E.p_predicate->vApplyCast(m_pCI,/*??*/m_pCI->Arriving.m_pEmit);
       }
 
       if ((m_pCI->E.p_indexList = m_pCI->E.p_Op->pSub_indexList()))

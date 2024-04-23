@@ -4,7 +4,7 @@
 
 #include "Card_Expr.hpp"
 
-#include "Card_BoolPred.hpp"
+#include "Card_Predicate.hpp"
 #include "CardIter.hpp"
 #include "TypeSystem.hpp"
 

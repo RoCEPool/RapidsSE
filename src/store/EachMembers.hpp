@@ -51,7 +51,7 @@ namespace STORE
     Card_Aggreg *        p_aggreg;
     Card_AndConj *       p_andConj;
 
-    Card_BoolPred *      p_boolPred;
+    Card_Predicate *      p_predicate;
     Card_Bound *         p_bound;
     Card_Bounds *        p_bounds;
 

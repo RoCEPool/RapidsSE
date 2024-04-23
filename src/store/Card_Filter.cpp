@@ -5,7 +5,7 @@
 #include "Card_Filter.hpp"
 
 #include "Card_Expr.hpp"
-#include "Card_BoolPred.hpp"
+#include "Card_Predicate.hpp"
 #include "Card_RlnConj.hpp"
 #include "Card_Term.hpp"
 #include "Card_SubSet.hpp"
@@ -95,8 +95,8 @@ void Card_Filter::vUpdate_expCol(CardIter* pCI, Card_Emit* p_Dic_expr, bool bAlt
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (Card_BoolPred* p_boolPred = pSub_boolPred())
-    p_boolPred->vUpdate_expCol(pCI, p_Dic_expr,bAlt);
+  if (Card_Predicate* p_predicate = pSub_predicate())
+    p_predicate->vUpdate_expCol(pCI, p_Dic_expr,bAlt);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -106,8 +106,8 @@ i8 Card_Filter::nCullMarked_rlnConj(Stz* szWithMark)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_BoolPred* p_boolPred = pSub_boolPred();
-  i8 nCulled = p_boolPred->nCullMarked_rlnConj(szWithMark);
+  Card_Predicate* p_predicate = pSub_predicate();
+  i8 nCulled = p_predicate->nCullMarked_rlnConj(szWithMark);
 
   return nCulled;
 }
@@ -161,10 +161,10 @@ bool Card_Filter::bIsEmpty(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_BoolPred* pCard_calcBool =
-      _pCard_BoolPred(this->pFindSubCard(CK_PREDICATE));
+  Card_Predicate* p_predicate =
+      _pCard_Predicate(this->pFindSubCard(CK_PREDICATE));
 
-  if (0 == pCard_calcBool->nChildCards())
+  if (0 == p_predicate->nChildCards())
     return true;
 
   return false;

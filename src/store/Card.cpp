@@ -2803,24 +2803,6 @@ Card_Aggreg* Card::pSub_aggreg(bool bNotNull)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#include "Card_BoolPred.hpp"
-Card_BoolPred* Card::pSub_boolPred(bool bNotNull)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_BoolPred* p_boolPred =
-      _pCard_BoolPred(pFindSubCard(CK_PREDICATE));
-
-  if (bNotNull && !p_boolPred) {
-    NEVER_REACH
-  }
-
-  return p_boolPred;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 #include "Card_Bound.hpp"
 Card_Bound* Card::pSub_bound(bool bNotNull)
 {
@@ -3806,6 +3788,24 @@ Card_PdsRow* Card::pSub_pdsRow(bool bNotNull)
   }
 
   return p_pdsRow;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_Predicate.hpp"
+Card_Predicate* Card::pSub_predicate(bool bNotNull)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Predicate* p_predicate =
+      _pCard_Predicate(pFindSubCard(CK_PREDICATE));
+
+  if (bNotNull && !p_predicate) {
+    NEVER_REACH
+  }
+
+  return p_predicate;
 }
 
 /*----------------------------------------------------------------------------*/
