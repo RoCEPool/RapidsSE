@@ -29,7 +29,6 @@ namespace STORE
     void vApplyCast(CardIter* pCI, Card_Emit* p_Dic_expr);
 
     Card_Expr* pClone(void);
-    bool bContains_term(CardIter* pCI, Symbol* pSymbol_arg);
 
     void vDeleteFacetIf(CardIter* pCI, eSF eFacet, eSF eAlsoFacet, char cTblSyn);
 

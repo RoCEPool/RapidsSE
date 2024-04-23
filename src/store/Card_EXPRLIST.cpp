@@ -251,7 +251,7 @@ Card_Expr* Card_EXPRLIST::pFind_term(CardIter* pCI, Symbol* pSymbol_arg)
 
   Kid xCI_this(this);
   while (xCI_this.bEach(CK_EXPR))
-    if (xCI_this.p_expr()->bContains_term(pCI, pSymbol_arg))
+    if (xCI_this.p_expr()->bFind_term_Matches(pCI, pSymbol_arg))
       return xCI_this.p_expr();
 
   return nullptr;
