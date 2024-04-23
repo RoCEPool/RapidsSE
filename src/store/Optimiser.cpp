@@ -57,9 +57,9 @@ Optimiser::Optimiser(TagSet* p_JobTags)
 
   _checkInitialised_(CN_OPTIMISER);
 
-//  MY::pJob()->pJobTags()->vAppend(C_OPTIMISER_TRACE);
-//  MY::pJob()->pJobTags()->vAppend(C_PIPELINE_DEF);
-//  MY::pJob()->pJobTags()->vAppend(C_WEAVED);
+  MY::pJob()->pJobTags()->vAppend(C_OPTIMISER_TRACE);
+  MY::pJob()->pJobTags()->vAppend(C_PIPELINE_DEF);
+  MY::pJob()->pJobTags()->vAppend(C_WEAVED);
 
 #ifdef Z_PDSROW
 //  MY::pJob()->pJobTags()->vAppend(C_OPTIMISER_TRACE);

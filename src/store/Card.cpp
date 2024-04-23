@@ -2175,8 +2175,9 @@ void Card::vPrint_card(CardIter* pCI, Ribbon* pRibbon, i8 iDepth)
   if (bIsCard(CK_c_STAGE))
     pRibbon->vMargin(szFacet(SF_STG_NM));
 
-  if (CK_EXPR == m_eCard)     { vPrint_expr(pCI,pRibbon, iDepth);  return; }
-  if (CK_TERM == m_eCard)     { vPrint_term(pCI,pRibbon, iDepth);  return; }
+  if (CK_EXPR    == m_eCard)  { vPrint_expr (pCI,pRibbon, iDepth); return; }
+  if (CK_s_LEVEL == m_eCard)  { vPrint_level(pCI,pRibbon, iDepth); return; }
+  if (CK_TERM    == m_eCard)  { vPrint_term (pCI,pRibbon, iDepth); return; }
   if (CK_s_TABLE == m_eCard)  { vPrint_table(pCI,pRibbon, iDepth); return; }
 
   if (0 == iDepth)  { vPrint_depth0(pCI,pRibbon, iDepth); return; }
@@ -2323,6 +2324,16 @@ void Card::vPrint_expr(CardIter* pCI, Ribbon* pRibbon, i8 iDepth)
     vCatFacet(i_Char,pRibbon,i_Facet_secondary,true,true);
     pRibbon->vNewLine();
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* print level                                                                 */
+/*----------------------------------------------------------------------------*/
+void Card::vPrint_level(CardIter* pCI, Ribbon* pRibbon, i8 iDepth)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  vPrint_depth1(pCI,pRibbon, iDepth);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -431,6 +431,7 @@ namespace STORE
     void vPrint_depth2(CardIter* pCI, Ribbon* pRibbon, i8 iDepth);
     void vPrint_depthN(CardIter* pCI, Ribbon* pRibbon, i8 iDepth);
     void vPrint_expr(CardIter* pCI, Ribbon* pRibbon, i8 iDepth);
+    void vPrint_level(CardIter* pCI, Ribbon* pRibbon, i8 iDepth);
     void vPrint_table(CardIter* pCI, Ribbon* pRibbon, i8 iDepth);
     void vPrint_term(CardIter* pCI, Ribbon* pRibbon, i8 iDepth);
     void vPrintFacets(CardIter* pCI, Ribbon* pRibbon, i8 iDepth);
