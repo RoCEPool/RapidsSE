@@ -5074,6 +5074,7 @@ Stz* AM::szEnumText(i8 i_EnumGroup, i8 i_Enum)
     case EG_AA: return aAA[i_Enum];
     case EG_AC: return aAC[i_Enum];
     case EG_AK: return aAK[i_Enum];
+    case EG_AL: return aAL[i_Enum];
     //case EG_AN: return aAN[i_Enum];
     case EG_AT: return aAT[i_Enum];
              

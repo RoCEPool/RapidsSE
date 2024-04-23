@@ -2339,7 +2339,11 @@ void Card::vPrint_level(CardIter* pCI, Ribbon* pRibbon, i8 iDepth)
   vPrint_depth1(pCI,pRibbon, iDepth);
 #else
   i8 i_Char = C_UNKNOWN;
+  vCatMarks(i_Char,pRibbon);
+  vCatDots(i_Char,pRibbon,iDepth);
+  vCatBracket(i_Char,pRibbon,pCI);
   vCatEnum(i_Char,pRibbon);
+  pRibbon->vNewLine();
 #endif
 }
 

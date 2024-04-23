@@ -22,7 +22,7 @@
 
 #define Z_PDSROW
 
-//#define Z_LEVEL_ENUM
+#define Z_LEVEL_ENUM
 
 namespace STORE
 {

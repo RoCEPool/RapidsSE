@@ -13,6 +13,7 @@ enum eEG // enum groups
   EG_AA,
   EG_AC,
   EG_AK,
+  EG_AL,
   EG_AN,
   EG_AT,
 
