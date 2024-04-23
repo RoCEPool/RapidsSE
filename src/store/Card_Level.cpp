@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_Level.cpp -- Aggregate Level                                       */
+/* Card_Level.cpp -- Aggregate Level                                          */
 /*============================================================================*/
 
 #include "Card_Level.hpp"
@@ -23,12 +23,9 @@ Card_Level::Card_Level(eAL eLevel)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-#ifdef Z_LEVEL_ENUM
   pSymbol()->Y_vSet(P_Level, (i8)eLevel);
   pSymbol()->vApplyFacet(SF_ENUM, EG_AL, eLevel);
-#else
-  pSymbol()->Y_vSet(P_Level, (i8)eLevel);
-#endif
+
   _checkInitialised_(CN_CARD);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);

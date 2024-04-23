@@ -2176,7 +2176,7 @@ void Card::vPrint_card(CardIter* pCI, Ribbon* pRibbon, i8 iDepth)
     pRibbon->vMargin(szFacet(SF_STG_NM));
 
   if (CK_EXPR    == m_eCard)  { vPrint_expr (pCI,pRibbon, iDepth); return; }
-  if (CK_s_LEVEL == m_eCard)  { vPrint_level(pCI,pRibbon, iDepth); return; }
+  if (CK_s_LEVEL == m_eCard)  { vPrint_enum (pCI,pRibbon, iDepth); return; }
   if (CK_TERM    == m_eCard)  { vPrint_term (pCI,pRibbon, iDepth); return; }
   if (CK_s_TABLE == m_eCard)  { vPrint_table(pCI,pRibbon, iDepth); return; }
 
@@ -2272,6 +2272,23 @@ void Card::vPrint_depthN(CardIter* pCI, Ribbon* pRibbon, i8 iDepth)
 }
 
 /*----------------------------------------------------------------------------*/
+/* print enum                                                                 */
+/*----------------------------------------------------------------------------*/
+void Card::vPrint_enum(CardIter* pCI, Ribbon* pRibbon, i8 iDepth)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  UNUSED(pCI);
+  UNUSED(iDepth);
+
+  i8 i_Char = C_UNKNOWN;
+  vCatMarks(i_Char,pRibbon);
+  vCatDots(i_Char,pRibbon,iDepth);
+  vCatBracket(i_Char,pRibbon,pCI);
+  vCatEnum(i_Char,pRibbon);
+  pRibbon->vNewLine();
+}
+
+/*----------------------------------------------------------------------------*/
 /* print expr                                                                 */
 /*----------------------------------------------------------------------------*/
 void Card::vPrint_expr(CardIter* pCI, Ribbon* pRibbon, i8 iDepth)
@@ -2324,27 +2341,6 @@ void Card::vPrint_expr(CardIter* pCI, Ribbon* pRibbon, i8 iDepth)
     vCatFacet(i_Char,pRibbon,i_Facet_secondary,true,true);
     pRibbon->vNewLine();
   }
-}
-
-/*----------------------------------------------------------------------------*/
-/* print level                                                                 */
-/*----------------------------------------------------------------------------*/
-void Card::vPrint_level(CardIter* pCI, Ribbon* pRibbon, i8 iDepth)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-  UNUSED(pCI);
-  UNUSED(iDepth);
-
-#ifndef Z_LEVEL_ENUM
-  vPrint_depth1(pCI,pRibbon, iDepth);
-#else
-  i8 i_Char = C_UNKNOWN;
-  vCatMarks(i_Char,pRibbon);
-  vCatDots(i_Char,pRibbon,iDepth);
-  vCatBracket(i_Char,pRibbon,pCI);
-  vCatEnum(i_Char,pRibbon);
-  pRibbon->vNewLine();
-#endif
 }
 
 /*----------------------------------------------------------------------------*/

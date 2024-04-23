@@ -22,7 +22,7 @@
 
 #define Z_PDSROW
 
-#define Z_LEVEL_ENUM
+#define Z_TOPOLOGY_ENUM
 
 namespace STORE
 {
@@ -432,8 +432,8 @@ namespace STORE
     void vPrint_depth1(CardIter* pCI, Ribbon* pRibbon, i8 iDepth);
     void vPrint_depth2(CardIter* pCI, Ribbon* pRibbon, i8 iDepth);
     void vPrint_depthN(CardIter* pCI, Ribbon* pRibbon, i8 iDepth);
+    void vPrint_enum(CardIter* pCI, Ribbon* pRibbon, i8 iDepth);
     void vPrint_expr(CardIter* pCI, Ribbon* pRibbon, i8 iDepth);
-    void vPrint_level(CardIter* pCI, Ribbon* pRibbon, i8 iDepth);
     void vPrint_table(CardIter* pCI, Ribbon* pRibbon, i8 iDepth);
     void vPrint_term(CardIter* pCI, Ribbon* pRibbon, i8 iDepth);
     void vPrintFacets(CardIter* pCI, Ribbon* pRibbon, i8 iDepth);
