@@ -22,6 +22,8 @@
 
 #define Z_PDSROW
 
+#define Z_TOPOLOGY_ENUM
+
 namespace STORE
 {
   class Card_AbsJoin;
@@ -29,7 +31,6 @@ namespace STORE
   class Card_Aggreg;
   class Card_AndConj;
 
-  class Card_BoolPred;
   class Card_Bound;
   class Card_Bounds;
 
@@ -114,6 +115,7 @@ namespace STORE
   class Card_Payload;
   class Card_PayloadCells;
   class Card_PdsRow;
+  class Card_Predicate;
   class Card_Project;
 
   class Card_RelnOp;
@@ -431,6 +433,7 @@ namespace STORE
     void vPrint_depth1(CardIter* pCI, Ribbon* pRibbon, i8 iDepth);
     void vPrint_depth2(CardIter* pCI, Ribbon* pRibbon, i8 iDepth);
     void vPrint_depthN(CardIter* pCI, Ribbon* pRibbon, i8 iDepth);
+    void vPrint_enum(CardIter* pCI, Ribbon* pRibbon, i8 iDepth);
     void vPrint_expr(CardIter* pCI, Ribbon* pRibbon, i8 iDepth);
     void vPrint_table(CardIter* pCI, Ribbon* pRibbon, i8 iDepth);
     void vPrint_term(CardIter* pCI, Ribbon* pRibbon, i8 iDepth);
@@ -442,6 +445,7 @@ namespace STORE
     void vCatBlank(i8& ri_Char, Ribbon* pRibbon);
     void vCatBracket(i8& ri_Char, Ribbon* pRibbon, CardIter* pCI);
     void vCatDots(i8& ri_Char, Ribbon* pRibbon, i8 iDepth);
+    void vCatEnum(i8& ri_Char, Ribbon* pRibbon);
     void vCatFacet(i8& ri_Char, Ribbon* pRibbon, i8 i_Facet, bool bSecondary, bool bRight=false);
     void vCatName(i8& ri_Char, Ribbon* pRibbon, i8 iDepth);
     void vCatMarks(i8& ri_Char, Ribbon* pRibbon);
@@ -471,7 +475,6 @@ namespace STORE
 
     Card_Address*       pSub_address(bool bNotNull=false);
     Card_Aggreg*        pSub_aggreg(bool bNotNull=false);
-    Card_BoolPred*      pSub_boolPred(bool bNotNull=false);
     Card_Bound*         pSub_bound(bool bNotNull=false);
     Card_Bounds*        pSub_bounds(bool bNotNull=false);
     Card_Cast*          pSub_cast(bool bNotNull=false);
@@ -527,6 +530,7 @@ namespace STORE
     Card_OuterJoin*     pSub_outerJoin(bool bNotNull=false);
     Card_PayloadCells*  pSub_payloadCells(bool bNotNull=false);
     Card_PdsRow*        pSub_pdsRow(bool bNotNull=false);
+    Card_Predicate*     pSub_predicate(bool bNotNull=false);
     Card_RelnOp*        pSub_relnOp(bool bNotNull=false);
     Card_Required*      pSub_required(bool bNotNull=false);
     Card_RowCount*      pSub_rowCount(bool bNotNull=false);

@@ -323,7 +323,7 @@ void Card_Term::vX_tblCol_To_expCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  RASSERT(pCI->E.p_boolPred || pCI->E.p_bound || pCI->E.p_expr || pCI->E.p_hshCol);
+  RASSERT(pCI->E.p_predicate || pCI->E.p_bound || pCI->E.p_expr || pCI->E.p_hshCol);
 
   Symbol* pSymbol_this = this->pSymbol();
 
@@ -420,7 +420,7 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   (void)Card::eValidate_parentEither(pCI,
                                      CK_ANDCONJ,
                                      CK_BOUND,
-                                     CK_BOOLPRED,
+                                     CK_PREDICATE,
                                      CK_EXPR,
                                      CK_s_HASHING,
                                      CK_t_HSHCOL,// todo: NO!?
@@ -431,8 +431,8 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 
   Symbol* pSym_term = pSymbol();
   if (pSym_term->bHasFacet(SF_NMD_COL)) {
-    if (! (pParent->bIsCard(CK_BOOLPRED) ||
-           pParent->bIsCard(CK_BOUND)    ||
+    if (! (pParent->bIsCard(CK_PREDICATE) ||
+           pParent->bIsCard(CK_BOUND) ||
            pParent->bIsCard(CK_RLNCONJ))) {
       pCI->PRINTBOARD_dbg();
       vDump(__func__);

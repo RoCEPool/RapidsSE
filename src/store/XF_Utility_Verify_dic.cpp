@@ -284,7 +284,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
 
   if ((m_pCI->E.p_constraint = m_pCI->E.p_Op->pSub_constraint())) {
     //m_pCI->G.p_constraint->vDump(__func__);
-    m_pCI->E.p_boolPred = m_pCI->E.p_constraint->pSub_boolPred(C_NOT_NULL);
+    m_pCI->E.p_predicate = m_pCI->E.p_constraint->pSub_predicate(C_NOT_NULL);
 
     auto bLambdaFn = [](Card_Term* p_term)
     {
@@ -312,7 +312,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
       return C_CONTINUE_RECURSION;
     };
 
-    (void) m_pCI->E.p_boolPred->bLambdaWalk_term(bLambdaFn);
+    (void) m_pCI->E.p_predicate->bLambdaWalk_term(bLambdaFn);
 
     vDebugPoint();
    }
@@ -335,8 +335,8 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
   // facets 2 filter
 
   if ((m_pCI->E.p_filter = m_pCI->E.p_Op->pSub_filter())) {
-    m_pCI->E.p_boolPred = m_pCI->E.p_filter->pSub_boolPred(C_NOT_NULL);
-    //m_pCI->E.p_boolPred->vDump(__func__);
+    m_pCI->E.p_predicate = m_pCI->E.p_filter->pSub_predicate(C_NOT_NULL);
+    //m_pCI->E.p_predicate->vDump(__func__);
 
     //CardIter* pCI = m_pCI;
     auto bLambdaFn = [](Card_Term* p_term)
@@ -365,7 +365,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
       return C_CONTINUE_RECURSION;
     };
 
-    (void) m_pCI->E.p_boolPred->bLambdaWalk_term(bLambdaFn);
+    (void) m_pCI->E.p_predicate->bLambdaWalk_term(bLambdaFn);
 
     vDebugPoint();
   }
@@ -460,8 +460,8 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
 
   if ((m_pCI->E.p_filter = m_pCI->E.p_Op->pSub_filter())) {
 
-    m_pCI->E.p_boolPred = m_pCI->E.p_filter->pSub_boolPred(C_NOT_NULL);
-    //m_pCI->G.p_boolPred->vDump(__func__);
+    m_pCI->E.p_predicate = m_pCI->E.p_filter->pSub_predicate(C_NOT_NULL);
+    //m_pCI->G.p_predicate->vDump(__func__);
 
     CardIter* pCI = m_pCI;
     auto bLambdaFn = [pCI](Card_Term* p_term)
@@ -481,12 +481,12 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
        }
      }
 
-      pCI->E.p_boolPred->vDump(__func__);
+      pCI->E.p_predicate->vDump(__func__);
       p_term->vDump(__func__);
       NEVER_REACH
     };
 
-    (void) m_pCI->E.p_boolPred->bLambdaWalk_term(bLambdaFn);
+    (void) m_pCI->E.p_predicate->bLambdaWalk_term(bLambdaFn);
 
     vDebugPoint();
   }
@@ -497,7 +497,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
   if ((m_pCI->E.p_constraint = m_pCI->E.p_Op->pSub_constraint())) {
     //m_pCI->G.p_constraint->vDump(__func__);
     RASSERT(m_pCI->E.p_injectable);
-    m_pCI->E.p_boolPred = m_pCI->E.p_constraint->pSub_boolPred(C_NOT_NULL);
+    m_pCI->E.p_predicate = m_pCI->E.p_constraint->pSub_predicate(C_NOT_NULL);
 
     CardIter* pCI = m_pCI;
     auto bLambdaFn = [pCI](Card_Term* p_term)
@@ -508,12 +508,12 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
       if (pCI->E.p_injectable->pFind_expr_Matches(p_term->pSymbol()))
         return C_CONTINUE_RECURSION;
 
-      pCI->E.p_boolPred->vDump(__func__);
+      pCI->E.p_predicate->vDump(__func__);
       pCI->E.p_term->vDump(__func__);
       NEVER_REACH
     };
 
-    (void) m_pCI->E.p_boolPred->bLambdaWalk_term(bLambdaFn);
+    (void) m_pCI->E.p_predicate->bLambdaWalk_term(bLambdaFn);
 
     vDebugPoint();
   }
@@ -667,8 +667,8 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
 
   if ((m_pCI->E.p_filter = m_pCI->E.p_Op->pSub_filter())) {
 
-    m_pCI->E.p_boolPred = m_pCI->E.p_filter->pSub_boolPred(C_NOT_NULL);
-    //m_pCI->G.p_boolPred->vDump(__func __);
+    m_pCI->E.p_predicate = m_pCI->E.p_filter->pSub_predicate(C_NOT_NULL);
+    //m_pCI->G.p_predicate->vDump(__func __);
 
     CardIter* pCI = m_pCI;
     auto bLambdaFn = [pCI](Card_Term* p_term)
@@ -692,12 +692,12 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
         return C_CONTINUE_RECURSION;
       }
 
-      pCI->E.p_boolPred->vDump(__func__);
+      pCI->E.p_predicate->vDump(__func__);
       p_term->vDump(__func__);
       NEVER_REACH
     };
 
-    (void) m_pCI->E.p_boolPred->bLambdaWalk_term(bLambdaFn);
+    (void) m_pCI->E.p_predicate->bLambdaWalk_term(bLambdaFn);
 
     vDebugPoint();
   }
@@ -708,7 +708,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
   if ((m_pCI->E.p_constraint = m_pCI->E.p_Op->pSub_constraint())) {
     //m_pCI->G.p_constraint->vDump(__func__);
     RASSERT(m_pCI->E.p_injectable);
-    m_pCI->E.p_boolPred = m_pCI->E.p_constraint->pSub_boolPred(C_NOT_NULL);
+    m_pCI->E.p_predicate = m_pCI->E.p_constraint->pSub_predicate(C_NOT_NULL);
 
     CardIter* pCI = m_pCI;
     auto bLambdaFn = [pCI](Card_Term* p_term)
@@ -732,12 +732,12 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
         return C_CONTINUE_RECURSION;
       }
 
-      pCI->E.p_boolPred->vDump(__func__);
+      pCI->E.p_predicate->vDump(__func__);
       p_term->vDump(__func__);
       NEVER_REACH
     };
 
-    (void) m_pCI->E.p_boolPred->bLambdaWalk_term(bLambdaFn);
+    (void) m_pCI->E.p_predicate->bLambdaWalk_term(bLambdaFn);
 
     vDebugPoint();
   }
@@ -901,8 +901,8 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
 
   if ((m_pCI->E.p_filter = m_pCI->E.p_Op->pSub_filter())) {
 
-    m_pCI->E.p_boolPred = m_pCI->E.p_filter->pSub_boolPred(C_NOT_NULL);
-    //m_pCI->G.p_boolPred->vDump(__func__);
+    m_pCI->E.p_predicate = m_pCI->E.p_filter->pSub_predicate(C_NOT_NULL);
+    //m_pCI->G.p_predicate->vDump(__func__);
 
     CardIter* pCI = m_pCI;
     auto bLambdaFn = [pCI](Card_Term* p_term)
@@ -925,13 +925,13 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
       }
 
       // todo: regLoop : having.test fails [306]
-//      pCI->G.p_boolPred->vDump(__func__);
+//      pCI->G.p_predicate->vDump(__func__);
 //      p_term->vDump(__func__);
 //      NEVER_REACH
       return C_CONTINUE_RECURSION;
     };
 
-    (void) m_pCI->E.p_boolPred->bLambdaWalk_term(bLambdaFn);
+    (void) m_pCI->E.p_predicate->bLambdaWalk_term(bLambdaFn);
 
     vDebugPoint();
   }
@@ -942,7 +942,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
   if ((m_pCI->E.p_constraint = m_pCI->E.p_Op->pSub_constraint())) {
     //m_pCI->G.p_constraint->vDump(__func__);
     RASSERT(m_pCI->E.p_injectable);
-    m_pCI->E.p_boolPred = m_pCI->E.p_constraint->pSub_boolPred(C_NOT_NULL);
+    m_pCI->E.p_predicate = m_pCI->E.p_constraint->pSub_predicate(C_NOT_NULL);
 
     CardIter* pCI = m_pCI;
     auto bLambdaFn = [pCI](Card_Term* p_term)
@@ -954,12 +954,12 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
         if (p_expr_f->pSymbol()->bSameCast(p_term->pSymbol()))
           return C_CONTINUE_RECURSION;
 
-      pCI->E.p_boolPred->vDump(__func__);
+      pCI->E.p_predicate->vDump(__func__);
       pCI->E.p_term->vDump(__func__);
       NEVER_REACH
     };
 
-    (void) m_pCI->E.p_boolPred->bLambdaWalk_term(bLambdaFn);
+    (void) m_pCI->E.p_predicate->bLambdaWalk_term(bLambdaFn);
 
     vDebugPoint();
   }

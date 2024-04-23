@@ -187,7 +187,7 @@ void OpSketch::vCopyColMap(ColMap* pColsMap)
 
   i8 nCols = 0;
 
-  m_pColMap = new ColMap;
+  m_pColMap = new ColMap(__FILE__,__LINE__);
 
   m_pColMap->m_nCols = pColsMap->m_nCols;
   for (i8 i_Col = 0; nCols < pColsMap->m_nCols; i_Col++) {
@@ -207,7 +207,7 @@ void OpSketch::vCopyColHsh(ColHsh* pColHsh)
 {
 	_precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
 
-	m_pColHsh = new ColHsh;
+	m_pColHsh = new ColHsh(__FILE__,__LINE__);
 
 	m_pColHsh->m_nCols = pColHsh->m_nCols;
 	for (i8 i_Col = 0; i_Col < pColHsh->m_nCols; i_Col++) {
@@ -224,7 +224,7 @@ void OpSketch::vCopyColInj(ColInj* pColsInj)
 {
 	_precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
 
-	m_pColInj = new ColInj(pColsInj->m_nCrwCols);
+	m_pColInj = new ColInj(pColsInj->m_nCrwCols, __FILE__, __LINE__);
 
 	m_pColInj->m_nCols = pColsInj->m_nCols;
 	for (i8 i_Col = 0; i_Col < pColsInj->m_nCols; i_Col++) {
@@ -242,7 +242,7 @@ void OpSketch::vCopyColPpg(ColPpg* pColPpg)
 {
 	_precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
 
-	m_pColPpg = new ColPpg(pColPpg->m_nArriving);
+	m_pColPpg = new ColPpg(pColPpg->m_nArriving,__FILE__,__LINE__);
 
 	m_pColPpg->m_nPropagated = pColPpg->m_nPropagated;
 	for (i8 i_Col = 0; i_Col < pColPpg->m_nPropagated; i_Col++) {
@@ -259,7 +259,7 @@ void OpSketch::vCopyKeyMap(KeyMap* pKeyMap)
 {
 	_precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
 
-	m_pKeyMap = new KeyMap;
+	m_pKeyMap = new KeyMap(__FILE__,__LINE__);
 
 	m_pKeyMap->m_nCols = pKeyMap->m_nCols;
 	for (i8 i_Col = 0; i_Col < pKeyMap->m_nCols; i_Col++) {

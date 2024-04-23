@@ -172,18 +172,20 @@ i8 Symbol::iEval_enum(Stz* szArg)
 
   RASSERT(bIs_Enum(szArg));
 
-//  char ac0 = szArg->cChar(0); // $
-//  char ac1 = szArg->cChar(1); // E
-//  char ac2 = szArg->cChar(2); // :
-//  char ac3 = szArg->cChar(3); // x
-//  char ac4 = szArg->cChar(4); // x
-//  char ac5 = szArg->cChar(5); // .
+//char ac0 = szArg->cChar(0); // $
+//char ac1 = szArg->cChar(1); // E
+//char ac2 = szArg->cChar(2); // :
+//char ac3 = szArg->cChar(3); // x
+//char ac4 = szArg->cChar(4); // x
+//char ac5 = szArg->cChar(5); // .
   char ac6 = szArg->cChar(6); // d
   char ac7 = szArg->cChar(7); // d
   char ac8 = szArg->cChar(8); // d
-//  char ac9 = szArg->cChar(9); // \0
+//char ac9 = szArg->cChar(9); // \0
 
-  i8 iEnum = 100*ac6 + 10*ac7 + ac8;
+  i8 iEnum = 100*StrLib::iToI8(ac6) +
+              10*StrLib::iToI8(ac7) +
+                 StrLib::iToI8(ac8);
   return iEnum;
 }
 
@@ -196,18 +198,18 @@ eEG Symbol::eEval_enumGroup(Stz* szArg)
 
   RASSERT(bIs_Enum(szArg));
 
-//  char ac0 = szArg->cChar(0); // $
-//  char ac1 = szArg->cChar(1); // E
-//  char ac2 = szArg->cChar(2); // :
+//char ac0 = szArg->cChar(0); // $
+//char ac1 = szArg->cChar(1); // E
+//char ac2 = szArg->cChar(2); // :
   char ac3 = szArg->cChar(3); // x
   char ac4 = szArg->cChar(4); // x
-//  char ac5 = szArg->cChar(5); // .
-//  char ac6 = szArg->cChar(6); // d
-//  char ac7 = szArg->cChar(7); // d
-//  char ac8 = szArg->cChar(8); // d
-//  char ac9 = szArg->cChar(9); // \0
+//char ac5 = szArg->cChar(5); // .
+//char ac6 = szArg->cChar(6); // d
+//char ac7 = szArg->cChar(7); // d
+//char ac8 = szArg->cChar(8); // d
+//char ac9 = szArg->cChar(9); // \0
 
-  eEG eGroup = (eEG)(16*ac3 + ac4);
+  eEG eGroup = (eEG)(16*(StrLib::iToI8(ac3)) + StrLib::iToI8(ac4));
 
   return eGroup;
 }
@@ -554,22 +556,22 @@ bool Symbol::bIs_Enum(Stz* szArg)
   char ac2 = szArg->cChar(2); // :
   char ac3 = szArg->cChar(3); // x
   char ac4 = szArg->cChar(4); // x
-  char ac5 = szArg->cChar(5); // .
+  char ac5 = szArg->cChar(5); // =
   char ac6 = szArg->cChar(6); // d
   char ac7 = szArg->cChar(7); // d
   char ac8 = szArg->cChar(8); // d
   char ac9 = szArg->cChar(9); // \0
 
-  if (StrLib::bIsDollar   (ac0) &&
-      'E' == ac1                &&
-      StrLib::bIsSemicolon(ac2) &&
-      StrLib::bIsHex      (ac3) &&
-      StrLib::bIsHex      (ac4) &&
-      StrLib::bIsDot      (ac5) &&
-      StrLib::bIsDigit    (ac6) &&
-      StrLib::bIsDigit    (ac7) &&
-      StrLib::bIsDigit    (ac8) &&
-      StrLib::bIsNull     (ac9))
+  if (StrLib::bIsDollar(ac0) &&
+      'E' == ac1             &&
+      StrLib::bIsColon (ac2) &&
+      StrLib::bIsHex   (ac3) &&
+      StrLib::bIsHex   (ac4) &&
+      StrLib::bIsEqual (ac5) &&
+      StrLib::bIsDigit (ac6) &&
+      StrLib::bIsDigit (ac7) &&
+      StrLib::bIsDigit (ac8) &&
+      StrLib::bIsNull  (ac9))
     return true;
 
   return false;

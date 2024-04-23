@@ -93,8 +93,8 @@ void Card_OrConj::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   Card::vValidate_hasChildren();
   Card::eValidate_mustSome(CK_ANDCONJ,CK_NOTCONJ,CK_ORCONJ,CK_RLNCONJ,CK_NONE);
 
-  (void)Card::eValidate_parentEither(pCI,CK_BOOLPRED,
-                                     CK_ANDCONJ,CK_NOTCONJ,CK_ORCONJ,
+  (void)Card::eValidate_parentEither(pCI, CK_PREDICATE,
+                                     CK_ANDCONJ, CK_NOTCONJ, CK_ORCONJ,
                                      CK_NONE);
 
   Kid xRpnCalc(this);

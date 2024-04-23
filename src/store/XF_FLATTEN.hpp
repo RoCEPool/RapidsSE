@@ -21,12 +21,12 @@ namespace STORE
   protected:
     void vFold_basic(CardIter* pCI, Stz* szFoldNm, eCK eCardWithSQ);
 
-    CarryForward* pFold_from(Stz* szFoldNm, CardIter* pCI);
+    void vFold_from(Stz* szFoldNm, CardIter* pCI);
 
-    CarryForward* pFold_nc_subQuery(CardIter* pCI, Stz* szFoldNm,
+    void vFold_nc_subQuery(CardIter* pCI, Stz* szFoldNm,
                                     eCK eCardWithSQ, eQO eWhatOp);
 
-    void vSmooth(CardIter* pCI, CarryForward* pCarryForward, bool bEarlyExit=false);
+    void vSmooth(CardIter* pCI);
 
     void vInto_KEYnotEXISTS(CardIter* pCI);
 

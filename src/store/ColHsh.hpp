@@ -3,12 +3,12 @@
 /*============================================================================*/
 #pragma once
 
-#include "BASE.h"
+#include "AbstractDef.hpp"
 #include "Card_Hashing.hpp"
 
 namespace STORE
 {
-  class ColHsh : public Object
+  class ColHsh : public AbstractDef
   {
     static const i8 C_COLHSH = 128;
 
@@ -32,7 +32,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    ColHsh(void);
+    ColHsh(const char* azFile, i8 iLine);
 
    ~ColHsh(void) noexcept(false);
 

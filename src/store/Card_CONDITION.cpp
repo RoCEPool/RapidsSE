@@ -65,7 +65,7 @@ void Card_CONDITION::vAddTransients(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pSub_boolPred()->bLambdaWalk_term(bLambda);
+  pSub_predicate()->bLambdaWalk_term(bLambda);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -75,8 +75,8 @@ void Card_CONDITION::vX_expCol_To_tblCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if ((pCI->E.p_boolPred = pSub_boolPred()))
-    pCI->E.p_boolPred->vX_expCol_To_tblCol(pCI);
+  if ((pCI->E.p_predicate = pSub_predicate()))
+    pCI->E.p_predicate->vX_expCol_To_tblCol(pCI);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -86,10 +86,10 @@ void Card_CONDITION::vX_tblCol_To_expCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  pCI->E.p_boolPred = nullptr;
-  if ((pCI->E.p_boolPred = pSub_boolPred()))
-    pCI->E.p_boolPred->vX_tblCol_To_expCol(pCI);
-  pCI->E.p_boolPred = nullptr;
+  pCI->E.p_predicate = nullptr;
+  if ((pCI->E.p_predicate = pSub_predicate()))
+    pCI->E.p_predicate->vX_tblCol_To_expCol(pCI);
+  pCI->E.p_predicate = nullptr;
 }
 
 /*============================================================================*/

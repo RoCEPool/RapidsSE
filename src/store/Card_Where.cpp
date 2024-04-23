@@ -70,8 +70,8 @@ void Card_Where::vCullMarked_rlnConj(CardIter* pCI) {
 
   pCI->vBeginEach_reverse();
 
-  while (pCI->bEachOp_reverse_foldBreak(CK_o_WHERE, CK_BOOLPRED)) {
-    (void)pCI->E.p_boolPred->nCullMarked_rlnConj(MARK_AT);
+  while (pCI->bEachOp_reverse_foldBreak(CK_o_WHERE, CK_PREDICATE)) {
+    (void)pCI->E.p_predicate->nCullMarked_rlnConj(MARK_AT);
   }
 }
 
@@ -84,8 +84,8 @@ void Card_Where::vDeleteEmpyWhere(CardIter* pCI) {
 
   pCI->vBeginEach_reverse();
 
-  while (pCI->bEachOp_reverse_foldBreak(CK_o_WHERE, CK_BOOLPRED)) {
-    if (0 == pCI->E.p_boolPred->nChildCards()) {
+  while (pCI->bEachOp_reverse_foldBreak(CK_o_WHERE, CK_PREDICATE)) {
+    if (0 == pCI->E.p_predicate->nChildCards()) {
       pCI->vRemoveDeleteMain(CK_o_WHERE);
     }
   }
@@ -100,8 +100,8 @@ void Card_Where::vMarkWhereConjWrtTable(CardIter* pCI) {
 
   pCI->vBeginEach_reverse();
 
-  while (pCI->bEachOp_reverse_foldBreak(CK_o_WHERE, CK_BOOLPRED)) {
-    pCI->E.p_boolPred->vMark_rlnConj_Wrt_table(pCI, MARK_AT);
+  while (pCI->bEachOp_reverse_foldBreak(CK_o_WHERE, CK_PREDICATE)) {
+    pCI->E.p_predicate->vMark_rlnConj_Wrt_table(pCI, MARK_AT);
   }
 }
 
@@ -114,8 +114,8 @@ void Card_Where::vMoveWhereConjToTableFilter(CardIter* pCI, Stz* szWithMark) {
 
   pCI->vBeginEach_reverse();
 
-  while (pCI->bEachOp_reverse_foldBreak(CK_o_WHERE, CK_BOOLPRED)) {
-    pCI->E.p_boolPred->vCopyMarked_rlnConj_To_table_filter(pCI, szWithMark);
+  while (pCI->bEachOp_reverse_foldBreak(CK_o_WHERE, CK_PREDICATE)) {
+    pCI->E.p_predicate->vCopyMarked_rlnConj_To_table_filter(pCI, szWithMark);
   }
 }
 
@@ -170,17 +170,17 @@ void Card_Where::vEarlyProject_recurse_update(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* smooth                                                                     */
 /*----------------------------------------------------------------------------*/
-void Card_Where::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
+void Card_Where::vSmooth(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   pCI->E.p_where->pSymbol()->Y_vSet(P_Smoothed);
 
-  if (pCarryForward->Where_preAgg.m_bMorph_sqlOp_To_EQ) {
+  if (pCI->Carry.Where_preAgg.m_bMorph_sqlOp_To_EQ) {
     pCI->Flat.m_p_conj_iqyCall->vMorph_sqlOp_To_EQ(pCI);
   }
 
-  if (pCarryForward->Where_preAgg.bReplace_sqCall_With_result) {
+  if (pCI->Carry.Where_preAgg.bReplace_sqCall_With_result) {
 
     // replace sqCall with sqResult
     pCI->Flat.m_p_term_sqyCall->pSymbol()->vDeleteFacet(SF_SQY_NO);
@@ -205,7 +205,7 @@ void Card_Where::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 
   vValidate_mustHave(CK_s_LEVEL, CK_NONE);
 
-  if (!pSub_boolPred())
+  if (!pSub_predicate())
     vDump(__func__);
 
   vValidate_mustHave(CK_o_FILTER, CK_NONE);

@@ -3,11 +3,11 @@
 /*============================================================================*/
 #pragma once
 
-#include "BASE.h"
+#include "AbstractDef.hpp"
 
 namespace STORE
 {
-  class KeyMap : public Object
+  class KeyMap : public AbstractDef
   {
     static const i8 C_KEYMAP = 128;
 
@@ -30,7 +30,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    KeyMap(void);
+    KeyMap(const char* azFile, i8 iLine);
 
    ~KeyMap(void) noexcept(false);
 

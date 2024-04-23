@@ -58,7 +58,6 @@ Stz* aCK[CK_ENUMS]
   /* */ "CK_ADDRESS"_Stz,      // CK_ADDRESS
   /* */ "CK_ANDCONJ"_Stz,      // CK_ANDCONJ
 
-  /* */ "CK_BOOLPRED"_Stz,     // CK_BOOLPRED
   /* */ "CK_BOUND"_Stz,        // CK_BOUND
   /* */ "CK_BOUNDS"_Stz,       // CK_BOUNDS
 
@@ -106,6 +105,7 @@ Stz* aCK[CK_ENUMS]
   /* */ "CK_OUTERJOIN"_Stz,    // CK_OUTERJOIN
 
   /* */ "CK_PAYLOADCELLS"_Stz, // CK_PAYLOADCELLS
+  /* */ "CK_PREDICATE"_Stz,    // CK_PREDICATE
 
   /* */ "CK_RELNOP"_Stz,       // CK_RELNOP
   /* */ "CK_REQUIRED"_Stz,     // CK_REQUIRED
@@ -197,7 +197,7 @@ Stz* aCK_short[CK_ENUMS]
   /* */ "Address"_Stz,         // CK_ADDRESS
   /* */ "AndConj"_Stz,         // CK_ANDCONJ
 
-  /* */ "BoolPred"_Stz,        // CK_BOOLPRED
+  /* */ "BoolPred"_Stz,        // CK_PREDICATE
   /* */ "Bound"_Stz,           // CK_BOUND
   /* */ "Bounds"_Stz,          // CK_BOUNDS
 

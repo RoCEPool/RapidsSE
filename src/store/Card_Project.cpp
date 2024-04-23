@@ -49,12 +49,11 @@ Card_Project::~Card_Project(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Project::vUnproject_foldExpr(CardIter* pCI,
-                                       CarryForward* pCarryForward)
+void Card_Project::vUnproject_foldExpr(CardIter* pCI)
 {
   _static_
 
-  RASSERT(pCarryForward->Unproject.m_bUnproject_foldExpr);
+  RASSERT(pCI->Carry.Unproject.m_bUnproject_foldExpr);
 
   Card_Project* p_project_unproject = new Card_Project(CK_o_PROJECT);
   pCI->E.p_deck->vAppendChild(p_project_unproject);
@@ -306,11 +305,9 @@ void Card_Project::vCraft_needed_root(CardIter *pCI)
 /*----------------------------------------------------------------------------*/
 /* smooth                                                                     */
 /*----------------------------------------------------------------------------*/
-void Card_Project::vSmooth_postAgg(CardIter* pCI, CarryForward* pCarryForward)
+void Card_Project::vSmooth_postAgg(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  UNUSED(pCarryForward);
 
   pCI->E.p_project->pSymbol()->Y_vSet(P_Smoothed);
 

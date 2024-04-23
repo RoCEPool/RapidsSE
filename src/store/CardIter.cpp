@@ -695,6 +695,32 @@ void CardIter::vClearRegisters(void)
   E.Iter.eTarget    = CK_NONE;
   E.Iter.eSecondary = CK_NONE;
   E.Iter.eTertiary  = CK_NONE;
+
+  Carry.Table.m_bSeen      = false;
+  Carry.Table.m_nTables    = 0;
+  Carry.Table.m_bReproject = false;
+
+  Carry.Where_preAgg.m_bSeen  = false;
+  Carry.Where_preAgg.m_bMorph_sqlOp_To_EQ = false;
+  Carry.Where_preAgg.bReplace_sqCall_With_result = false;
+
+  Carry.Aggreg.m_bSeen   = false;
+  Carry.Aggreg.m_bMorph_To_gbyAgg = false;
+
+  Carry.GbyAgg.m_bSeen   = false;
+  Carry.GbyAgg.m_bInject_foldExpr = false;
+
+  Carry.Project_postAgg.m_bSeen   = false;
+
+  Carry.Having.m_bSeen                 = false;
+  Carry.Having.m_bCorrect_After_Inject = false;
+
+  Carry.Sort.m_bSeen                 = false;
+  Carry.Sort.m_bCorrect_After_Inject = false;
+
+  Carry.Unproject.m_bSeen               = false;
+  Carry.Unproject.m_bUnproject_foldExpr = false;
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1637,7 +1663,7 @@ Card* CardIter::pMember(eCK eCard)
     case CK_o_AGGREG:       return E.p_aggreg;
     case CK_ANDCONJ:        return E.p_andConj;
 
-    case CK_BOOLPRED:       return E.p_boolPred;
+    case CK_PREDICATE:       return E.p_predicate;
     case CK_BOUND:          return E.p_bound;
     case CK_BOUNDS:         return E.p_bounds;
 
@@ -1780,7 +1806,7 @@ void CardIter::vMember(eCK eCard, Card* pCard)
     case CK_o_AGGREG: E.p_aggreg            = _pCard_Aggreg(pCard);  break;
     case CK_ANDCONJ: E.p_andConj           = _pCard_AndConj(pCard);break;
 
-    case CK_BOOLPRED: E.p_boolPred          = _pCard_BoolPred(pCard); break;
+    case CK_PREDICATE: E.p_predicate          = _pCard_Predicate(pCard); break;
     case CK_BOUND: E.p_bound             = _pCard_Bound(pCard); break;
     case CK_BOUNDS: E.p_bounds            = _pCard_Bounds(pCard); break;
 
@@ -2307,7 +2333,7 @@ void CardIter::vResetMembers(void)
   E.p_aggreg           = nullptr;
   E.p_andConj          = nullptr;
 
-  E.p_boolPred         = nullptr;
+  E.p_predicate         = nullptr;
   E.p_bound            = nullptr;
   E.p_bounds           = nullptr;
 
@@ -2621,7 +2647,7 @@ void CardIter::vValidateChildren(Card* pCard, i8 iDepth)
       case CK_o_AGGREG:       E.p_aggreg->vValidate(this, iDepth, pCard);  break;
       case CK_ANDCONJ:        E.p_andConj->vValidate(this, iDepth, pCard);  break;
 
-      case CK_BOOLPRED:       E.p_boolPred->vValidate(this, iDepth, pCard);  break;
+      case CK_PREDICATE:       E.p_predicate->vValidate(this, iDepth, pCard);  break;
       case CK_BOUND:          E.p_bound->vValidate(this, iDepth, pCard);  break;
       case CK_BOUNDS:         E.p_bounds->vValidate(this, iDepth, pCard);  break;
 

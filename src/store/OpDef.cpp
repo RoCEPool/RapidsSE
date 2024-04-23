@@ -18,13 +18,12 @@ __aFooterFunction(OpDef)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-OpDef::OpDef(i8 i_Op, Card* pCard)
-    : Object(CN_OPDEF)
+OpDef::OpDef(i8 i_Op, Card* pCard, const char* azFile, i8 iLine)
+    : AbstractDef(CN_OPDEF,azFile,iLine)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_OPDEF, _FOOTER_);
 
   vOp(i_Op);
-  m_pCard = pCard;
 
   //vOpNm(szOpNm);
 
@@ -238,12 +237,14 @@ void OpDef::vDump(i8 i_Tab)
   _precondition_(_ADDRESS_, _MAGIC_, CN_OPDEF, _FOOTER_);
 
   i8 nTab_plus = 4;
-  vTrace("%sOpDef: [%lld] %s %s %s\n"_Stz,
+  vTrace("%sOpDef: [%lld] %s %s %s %s:%lld\n"_Stz,
          Stz::szTab(i_Tab),
          m_i_Op,
          m_sOpNm.szStz(),
          md_Coord,
-         m_sAlt.szStz());
+         m_sAlt.szStz(),
+         m_sFile.szStz(),
+         m_iLine);
 
   i8 nSpaces = 4;
   if (m_pStreamDef_arriving) {

@@ -2176,13 +2176,15 @@ void Card::vPrint_card(CardIter* pCI, Ribbon* pRibbon, i8 iDepth)
   if (bIsCard(CK_c_STAGE))
     pRibbon->vMargin(szFacet(SF_STG_NM));
 
-  if (CK_EXPR == m_eCard)     { vPrint_expr(pCI,pRibbon, iDepth);  return; }
-  if (CK_TERM == m_eCard)     { vPrint_term(pCI,pRibbon, iDepth);  return; }
-  if (CK_s_TABLE == m_eCard)  { vPrint_table(pCI,pRibbon, iDepth); return; }
+  if (CK_EXPR     == m_eCard) { vPrint_expr (pCI,pRibbon, iDepth); return; }
+  if (CK_s_LEVEL  == m_eCard) { vPrint_enum (pCI,pRibbon, iDepth); return; }
+  if (CK_TERM     == m_eCard) { vPrint_term (pCI,pRibbon, iDepth); return; }
+  if (CK_s_TABLE  == m_eCard) { vPrint_table(pCI,pRibbon, iDepth); return; }
+  if (CK_TOPOLOGY == m_eCard) { vPrint_enum (pCI,pRibbon, iDepth); return; }
 
-  if (0 == iDepth)  { vPrint_depth0(pCI,pRibbon, iDepth); return; }
-  if (1 == iDepth)  { vPrint_depth1(pCI,pRibbon, iDepth); return; }
-  if (2 == iDepth)  { vPrint_depth2(pCI,pRibbon, iDepth); return; }
+  if (0 == iDepth) { vPrint_depth0(pCI,pRibbon, iDepth); return; }
+  if (1 == iDepth) { vPrint_depth1(pCI,pRibbon, iDepth); return; }
+  if (2 == iDepth) { vPrint_depth2(pCI,pRibbon, iDepth); return; }
 
   vPrint_depthN(pCI,pRibbon, iDepth);
 }
@@ -2269,6 +2271,23 @@ void Card::vPrint_depthN(CardIter* pCI, Ribbon* pRibbon, i8 iDepth)
 
   vPrintFacets(pCI,pRibbon, iDepth);
   vPrintProperties(pCI,pRibbon, iDepth);
+}
+
+/*----------------------------------------------------------------------------*/
+/* print enum                                                                 */
+/*----------------------------------------------------------------------------*/
+void Card::vPrint_enum(CardIter* pCI, Ribbon* pRibbon, i8 iDepth)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  UNUSED(pCI);
+  UNUSED(iDepth);
+
+  i8 i_Char = C_UNKNOWN;
+  vCatMarks(i_Char,pRibbon);
+  vCatDots(i_Char,pRibbon,iDepth);
+  vCatBracket(i_Char,pRibbon,pCI);
+  vCatEnum(i_Char,pRibbon);
+  pRibbon->vNewLine();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2458,6 +2477,19 @@ void Card::vCatDots(i8& ri_Char, Ribbon* pRibbon, i8 iDepth)
 }
 
 /*----------------------------------------------------------------------------*/
+/* cat blank                                                                  */
+/*----------------------------------------------------------------------------*/
+void Card::vCatEnum(i8& ri_Char, Ribbon* pRibbon)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  s256 sEnum;
+  vFormatEnum(sEnum);
+
+  vCat(ri_Char, pRibbon,sEnum);
+}
+
+/*----------------------------------------------------------------------------*/
 /* print symbolic value of card                                               */
 /*----------------------------------------------------------------------------*/
 void Card::vCatFacet(i8& ri_Char, Ribbon* pRibbon, i8 i_Facet,
@@ -2582,8 +2614,7 @@ void Card::vFormatEnum(String* pString)
   i8  iEnum  = Symbol::iEval_enum(szGroup_Enum);
   Stz* szEnum = AM::szEnumText(eGroup,iEnum);
 
-  pString->vCatSprint("%s"_Stz,
-                      szEnum);
+  pString->vCatSprint("%s"_Stz, szEnum);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2799,24 +2830,6 @@ Card_Aggreg* Card::pSub_aggreg(bool bNotNull)
   }
 
   return p_aggreg;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-#include "Card_BoolPred.hpp"
-Card_BoolPred* Card::pSub_boolPred(bool bNotNull)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_BoolPred* p_boolPred =
-      _pCard_BoolPred(pFindSubCard(CK_BOOLPRED));
-
-  if (bNotNull && !p_boolPred) {
-    NEVER_REACH
-  }
-
-  return p_boolPred;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3807,6 +3820,24 @@ Card_PdsRow* Card::pSub_pdsRow(bool bNotNull)
   }
 
   return p_pdsRow;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_Predicate.hpp"
+Card_Predicate* Card::pSub_predicate(bool bNotNull)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Predicate* p_predicate =
+      _pCard_Predicate(pFindSubCard(CK_PREDICATE));
+
+  if (bNotNull && !p_predicate) {
+    NEVER_REACH
+  }
+
+  return p_predicate;
 }
 
 /*----------------------------------------------------------------------------*/

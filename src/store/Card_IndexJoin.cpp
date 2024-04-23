@@ -191,8 +191,8 @@ void Card_IndexJoin::vEarlyProject_add_transients(CardIter* pCI)
   if (! (pCI->E.p_filter = pSub_filter()))
     return;
 
-  if ((pCI->E.p_boolPred = pCI->E.p_filter->pSub_boolPred()))
-    pCI->E.p_boolPred->bLambdaWalk_term(bLambda);
+  if ((pCI->E.p_predicate = pCI->E.p_filter->pSub_predicate()))
+    pCI->E.p_predicate->bLambdaWalk_term(bLambda);
 
 }
 /*----------------------------------------------------------------------------*/

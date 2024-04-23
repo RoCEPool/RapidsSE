@@ -78,8 +78,7 @@ void XF_Flatten_34_W_A_NC_ro::vFlatten(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // fold of subQuery
 
-  CarryForward* pCarryForward =
-      pFold_nc_subQuery(m_pCI, "W_A_NC_ro"_Stz, CK_o_WHERE, QO_RELN_OP);
+  vFold_nc_subQuery(m_pCI, "W_A_NC_ro"_Stz, CK_o_WHERE, QO_RELN_OP);
 
  // m_pCI->PRINTBOARD_dbg();
 
@@ -92,15 +91,13 @@ void XF_Flatten_34_W_A_NC_ro::vFlatten(void)
   //RASSERT(m_pCI->bEachOp(CK_o_PROJECT,CK_t_EMIT));
   RASSERT(m_pCI->bEachOp(CK_c_FOLD));
 
-  vSmooth(m_pCI,pCarryForward);
+  vSmooth(m_pCI);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   m_pCI->E.p_deck->vMarksClearRecursive();
 
  // m_pCI->PRINTBOARD_dbg();
-
-  delete pCarryForward;
 
   m_pCI->vEndTransform(__LINE__);
 //vValidateBench();

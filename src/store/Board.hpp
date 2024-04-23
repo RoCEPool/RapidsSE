@@ -9,8 +9,6 @@
 #include "eXF.h"
 #include "eOH.h"
 
-#include "CarryForward.hpp"
-
 #include "Card.hpp"
 
 #include "Card_AbsJoin.hpp"
@@ -19,7 +17,7 @@
 #include "Card_Aggreg.hpp"
 #include "Card_AndConj.hpp"
 
-#include "Card_BoolPred.hpp"
+#include "Card_Predicate.hpp"
 #include "Card_Bound.hpp"
 #include "Card_Bounds.hpp"
 

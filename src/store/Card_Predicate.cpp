@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* Card_BoolPred.cpp -- Boolean Predicate                                     */
+/* Card_Predicate.cpp -- Boolean Predicate                                     */
 /*============================================================================*/
 
-#include "Card_BoolPred.hpp"
+#include "Card_Predicate.hpp"
 
 #include "Card_CONJ.hpp"
 #include "Card_RlnConj.hpp"
@@ -18,16 +18,16 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE, Card_BoolPred, CK_BOOLPRED)
-__aNewFunction(Card_BoolPred, CN_CARD)
-__vDeleteFunction(Card_BoolPred, CN_CARD)
+__pCastFunction_Card(STORE, Card_Predicate, CK_PREDICATE)
+__aNewFunction(Card_Predicate, CN_CARD)
+__vDeleteFunction(Card_Predicate, CN_CARD)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_BoolPred::Card_BoolPred(void)
-: Card_CONJSUBROOT(CK_BOOLPRED, C_UNKNOWN)
+Card_Predicate::Card_Predicate(void)
+: Card_CONJSUBROOT(CK_PREDICATE, C_UNKNOWN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
       
@@ -39,7 +39,7 @@ Card_BoolPred::Card_BoolPred(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_BoolPred::~Card_BoolPred(void) noexcept(false)
+Card_Predicate::~Card_Predicate(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
@@ -52,21 +52,21 @@ Card_BoolPred::~Card_BoolPred(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* convert <expr>/<rpnCalc> to <boolPred>                                     */
 /*----------------------------------------------------------------------------*/
-Card_BoolPred* Card_BoolPred::pTo_boolPred(CardIter* pCI, Card_Expr* p_expr_arg)
+Card_Predicate* Card_Predicate::pTo_boolPred(CardIter* pCI, Card_Expr* p_expr_arg)
 {
   _static_
 
-  Card_BoolPred* p_boolPred_new = new Card_BoolPred;
+  Card_Predicate* p_predicate_new = new Card_Predicate;
 
-  p_boolPred_new->xTypeId() = TypeId::xIdOf(CT_BOOLEAN);
+  p_predicate_new->xTypeId() = TypeId::xIdOf(CT_BOOLEAN);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // does the expression have a WHEN in it?
 
   Symbol xWhen(SF_WHEN,"WHEN"_Stz);
   if (p_expr_arg->bHasTerm(pCI,&xWhen)) {
-    p_boolPred_new->vTransferChildren(p_expr_arg);
-    return p_boolPred_new;
+    p_predicate_new->vTransferChildren(p_expr_arg);
+    return p_predicate_new;
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -86,57 +86,57 @@ Card_BoolPred* Card_BoolPred::pTo_boolPred(CardIter* pCI, Card_Expr* p_expr_arg)
     switch (eTerm_rpn) {
 
       case TE_AND:
-        if (p_boolPred_new->bIsPeek(CK_NOTCONJ, CK_ANDCONJ)) {
+        if (p_predicate_new->bIsPeek(CK_NOTCONJ, CK_ANDCONJ)) {
           DELETE_CARD(p_term_rpn);
-          p_notConj = _pCard_NotConj(p_boolPred_new->pPopChild());
-          p_andConj = _pCard_AndConj(p_boolPred_new->pPopChild());
+          p_notConj = _pCard_NotConj(p_predicate_new->pPopChild());
+          p_andConj = _pCard_AndConj(p_predicate_new->pPopChild());
           p_andConj->vAppendChild(p_notConj);
-          p_boolPred_new->vPushChild(p_andConj);
+          p_predicate_new->vPushChild(p_andConj);
         }
         else
-        if (p_boolPred_new->bIsPeek(1, CK_ANDCONJ)) {
+        if (p_predicate_new->bIsPeek(1, CK_ANDCONJ)) {
           DELETE_CARD(p_term_rpn);
-          p_child_0 = p_boolPred_new->pPopChild();
-          p_andConj = _pCard_AndConj(p_boolPred_new->pPopChild());
+          p_child_0 = p_predicate_new->pPopChild();
+          p_andConj = _pCard_AndConj(p_predicate_new->pPopChild());
           p_andConj->vAppendChild(p_child_0);
-          p_boolPred_new->vPushChild(p_andConj);
+          p_predicate_new->vPushChild(p_andConj);
         }
         else {
           p_andConj = _pCard_AndConj(p_term_rpn->pCard(CK_ANDCONJ));
-          p_andConj->vPushChild(p_boolPred_new->pPopChild());
-          p_andConj->vPushChild(p_boolPred_new->pPopChild());
-          p_boolPred_new->vPushChild(p_andConj);
+          p_andConj->vPushChild(p_predicate_new->pPopChild());
+          p_andConj->vPushChild(p_predicate_new->pPopChild());
+          p_predicate_new->vPushChild(p_andConj);
         }
         break;
 
       case TE_OR:
-        if (p_boolPred_new->bIsPeek(CK_NOTCONJ, CK_ORCONJ)) {
+        if (p_predicate_new->bIsPeek(CK_NOTCONJ, CK_ORCONJ)) {
           DELETE_CARD(p_term_rpn);
-          p_notConj = _pCard_NotConj(p_boolPred_new->pPopChild());
-          p_orConj  = _pCard_OrConj(p_boolPred_new->pPopChild());
+          p_notConj = _pCard_NotConj(p_predicate_new->pPopChild());
+          p_orConj  = _pCard_OrConj(p_predicate_new->pPopChild());
           p_orConj->vAppendChild(p_notConj);
-          p_boolPred_new->vPushChild(p_orConj);
+          p_predicate_new->vPushChild(p_orConj);
         }
         else
-        if (p_boolPred_new->bIsPeek(1, CK_ORCONJ)) {
+        if (p_predicate_new->bIsPeek(1, CK_ORCONJ)) {
           DELETE_CARD(p_term_rpn);
-          p_child_0 = p_boolPred_new->pPopChild();
-          p_orConj  = _pCard_OrConj(p_boolPred_new->pPopChild());
+          p_child_0 = p_predicate_new->pPopChild();
+          p_orConj  = _pCard_OrConj(p_predicate_new->pPopChild());
           p_orConj->vAppendChild(p_child_0);
-          p_boolPred_new->vPushChild(p_orConj);
+          p_predicate_new->vPushChild(p_orConj);
         }
         else {
           p_orConj = _pCard_OrConj(p_term_rpn->pCard(CK_ORCONJ));
-          p_orConj->vAppendChild(p_boolPred_new->pPopChild());
-          p_orConj->vAppendChild(p_boolPred_new->pPopChild());
-          p_boolPred_new->vPushChild(p_orConj);
+          p_orConj->vAppendChild(p_predicate_new->pPopChild());
+          p_orConj->vAppendChild(p_predicate_new->pPopChild());
+          p_predicate_new->vPushChild(p_orConj);
         }
         break;
 
       case TE_NOT:
         p_notConj = _pCard_NotConj(p_term_rpn->pCard(CK_NOTCONJ));
-        p_notConj->vAppend(p_boolPred_new->pPopChild());
-        p_boolPred_new->vPushChild(p_notConj);
+        p_notConj->vAppend(p_predicate_new->pPopChild());
+        p_predicate_new->vPushChild(p_notConj);
         break;
 
       case TE_RELNOP:
@@ -146,13 +146,13 @@ Card_BoolPred* Card_BoolPred::pTo_boolPred(CardIter* pCI, Card_Expr* p_expr_arg)
       case TE_NOTIN:
         p_rlnConj = _pCard_RlnConj(p_term_rpn->pCard(CK_RLNCONJ));
         p_rlnConj->vTransferChildren(pStack_term);
-        p_boolPred_new->vPushChild(p_rlnConj);
+        p_predicate_new->vPushChild(p_rlnConj);
         break;
 
       case TE_BOOLFN:
         p_rlnConj = _pCard_RlnConj(p_term_rpn->pCard(CK_RLNCONJ));
         p_rlnConj->vTransferChildren(pStack_term);
-        p_boolPred_new->vPushChild(p_rlnConj);
+        p_predicate_new->vPushChild(p_rlnConj);
         break;
 
       case TE_OTHER:
@@ -173,7 +173,7 @@ Card_BoolPred* Card_BoolPred::pTo_boolPred(CardIter* pCI, Card_Expr* p_expr_arg)
   RASSERT(0 == pStack_term->nChildCards());
   DELETE_CARD(pStack_term);
 
-  return p_boolPred_new;
+  return p_predicate_new;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -183,7 +183,7 @@ Card_BoolPred* Card_BoolPred::pTo_boolPred(CardIter* pCI, Card_Expr* p_expr_arg)
 /*----------------------------------------------------------------------------*/
 /* add given rlnConj to this boolPred                                         */
 /*----------------------------------------------------------------------------*/
-void Card_BoolPred::vAppend_and_rlnConj(Card_RlnConj *p_rlnConj)
+void Card_Predicate::vAppend_and_rlnConj(Card_RlnConj *p_rlnConj)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -211,7 +211,7 @@ void Card_BoolPred::vAppend_and_rlnConj(Card_RlnConj *p_rlnConj)
 /*----------------------------------------------------------------------------*/
 /* bump any expCol by given amount                                            */
 /*----------------------------------------------------------------------------*/
-void Card_BoolPred::vBump_expCol(i8 nBumpBy)
+void Card_Predicate::vBump_expCol(i8 nBumpBy)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -245,7 +245,7 @@ void Card_BoolPred::vBump_expCol(i8 nBumpBy)
 /*----------------------------------------------------------------------------*/
 /* does this boolPred contain given symbol?                                   */
 /*----------------------------------------------------------------------------*/
-bool Card_BoolPred::bContains(Symbol* pGivenSymbol)
+bool Card_Predicate::bContains(Symbol* pGivenSymbol)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -283,7 +283,7 @@ bool Card_BoolPred::bContains(Symbol* pGivenSymbol)
 /*----------------------------------------------------------------------------*/
 /* copy any marked rlnCon to its <OP/filter>                                  */
 /*----------------------------------------------------------------------------*/
-void Card_BoolPred::vCopyMarked_rlnConj_To_table_filter(CardIter* pCI, Stz* szWithMark)
+void Card_Predicate::vCopyMarked_rlnConj_To_table_filter(CardIter* pCI, Stz* szWithMark)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -305,7 +305,7 @@ void Card_BoolPred::vCopyMarked_rlnConj_To_table_filter(CardIter* pCI, Stz* szWi
       continue;
 
     pCI->E.p_filter = ((Card_OP *) pMainCard)->pEnsure_filter();
-    pCI->E.p_filter->pSub_boolPred()->vAppend_and_rlnConj(p_rlnConj->pClone());
+    pCI->E.p_filter->pSub_predicate()->vAppend_and_rlnConj(p_rlnConj->pClone());
 
     pCI->E.p_filter->vMark1(p_table->cMark1());
     pCI->E.p_filter->vMark2(p_table->cMark2());
@@ -319,7 +319,7 @@ void Card_BoolPred::vCopyMarked_rlnConj_To_table_filter(CardIter* pCI, Stz* szWi
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_BoolPred::vUpdate_expCol(CardIter* pCI, Card_Emit* p_Dic_expr, bool bAlt)
+void Card_Predicate::vUpdate_expCol(CardIter* pCI, Card_Emit* p_Dic_expr, bool bAlt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -351,7 +351,7 @@ void Card_BoolPred::vUpdate_expCol(CardIter* pCI, Card_Emit* p_Dic_expr, bool bA
 /*----------------------------------------------------------------------------*/
 /* calculate number of conjunctions with given mark                           */
 /*----------------------------------------------------------------------------*/
-i8 Card_BoolPred::nCullMarked_rlnConj(Stz* szWithMark)
+i8 Card_Predicate::nCullMarked_rlnConj(Stz* szWithMark)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -381,7 +381,7 @@ i8 Card_BoolPred::nCullMarked_rlnConj(Stz* szWithMark)
 /*----------------------------------------------------------------------------*/
 /* remove given conjunction                                                     */
 /*----------------------------------------------------------------------------*/
-bool Card_BoolPred::bCullMarked_rlnConj(Card_CONJ* p_conj, Stz* szWithMark)
+bool Card_Predicate::bCullMarked_rlnConj(Card_CONJ* p_conj, Stz* szWithMark)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -414,7 +414,7 @@ bool Card_BoolPred::bCullMarked_rlnConj(Card_CONJ* p_conj, Stz* szWithMark)
 /*----------------------------------------------------------------------------*/
 /* delete facet if                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_BoolPred::vDeleteFacetIf(eSF eFacet, eSF eIfFacet, char cTblSyn)
+void Card_Predicate::vDeleteFacetIf(eSF eFacet, eSF eIfFacet, char cTblSyn)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -436,7 +436,7 @@ void Card_BoolPred::vDeleteFacetIf(eSF eFacet, eSF eIfFacet, char cTblSyn)
 /*----------------------------------------------------------------------------*/
 /* ensure all terms have a type                                               */
 /*----------------------------------------------------------------------------*/
-void Card_BoolPred::vApplyCast(CardIter* pCI, Card_Emit* p_Dic_expr)
+void Card_Predicate::vApplyCast(CardIter* pCI, Card_Emit* p_Dic_expr)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -461,7 +461,7 @@ void Card_BoolPred::vApplyCast(CardIter* pCI, Card_Emit* p_Dic_expr)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Card_BoolPred::bHas_term(Symbol* pWithSymbol)
+bool Card_Predicate::bHas_term(Symbol* pWithSymbol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -489,7 +489,7 @@ bool Card_BoolPred::bHas_term(Symbol* pWithSymbol)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Card_BoolPred::bIsBraced(void)
+bool Card_Predicate::bIsBraced(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -512,7 +512,7 @@ bool Card_BoolPred::bIsBraced(void)
 /*----------------------------------------------------------------------------*/
 /* is this a compound boolPred                                                */
 /*----------------------------------------------------------------------------*/
-bool Card_BoolPred::bIsCompound(void)
+bool Card_Predicate::bIsCompound(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -525,7 +525,7 @@ bool Card_BoolPred::bIsCompound(void)
 /*----------------------------------------------------------------------------*/
 /* is this a compound boolPred                                                */
 /*----------------------------------------------------------------------------*/
-bool Card_BoolPred::bIsLiterals(void)
+bool Card_Predicate::bIsLiterals(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -555,7 +555,7 @@ bool Card_BoolPred::bIsLiterals(void)
 /*----------------------------------------------------------------------------*/
 /* is this boolPred a simple expression of a column                           */
 /*----------------------------------------------------------------------------*/
-bool Card_BoolPred::bIsScalarCol(void) {
+bool Card_Predicate::bIsScalarCol(void) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   if (nChildCards() > 1)
@@ -575,7 +575,7 @@ bool Card_BoolPred::bIsScalarCol(void) {
 /*----------------------------------------------------------------------------*/
 /* is this boolPred a simple expression of a key                              */
 /*----------------------------------------------------------------------------*/
-bool Card_BoolPred::bIsScalarKey(void) {
+bool Card_Predicate::bIsScalarKey(void) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   if (nChildCards() > 1)
@@ -595,7 +595,7 @@ bool Card_BoolPred::bIsScalarKey(void) {
 /*----------------------------------------------------------------------------*/
 /* inspect <boolPred> and mark any <conj> which could be moved                */
 /*----------------------------------------------------------------------------*/
-void Card_BoolPred::vMark_rlnConj_Wrt_table(CardIter* pCI, Stz* szWithMark)
+void Card_Predicate::vMark_rlnConj_Wrt_table(CardIter* pCI, Stz* szWithMark)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -646,7 +646,7 @@ void Card_BoolPred::vMark_rlnConj_Wrt_table(CardIter* pCI, Stz* szWithMark)
 /*----------------------------------------------------------------------------*/
 /* append <rpnExpr> for <boolPred>                                            */
 /*----------------------------------------------------------------------------*/
-void Card_BoolPred::vOntoRpnExpr(String* psRpnExpr)
+void Card_Predicate::vOntoRpnExpr(String* psRpnExpr)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -662,7 +662,7 @@ void Card_BoolPred::vOntoRpnExpr(String* psRpnExpr)
 /*----------------------------------------------------------------------------*/
 /* reduce not                                                                 */
 /*----------------------------------------------------------------------------*/
-void Card_BoolPred::vReduce_not(CardIter* pCI)
+void Card_Predicate::vReduce_not(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -714,7 +714,7 @@ void Card_BoolPred::vReduce_not(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* remove given rlnConj from this boolPred                                    */
 /*----------------------------------------------------------------------------*/
-void Card_BoolPred::vRemove_rlnConj(Card_RlnConj *p_rlnConj)
+void Card_Predicate::vRemove_rlnConj(Card_RlnConj *p_rlnConj)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -743,7 +743,7 @@ void Card_BoolPred::vRemove_rlnConj(Card_RlnConj *p_rlnConj)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_CONJ* Card_BoolPred::pRoot_conj(void)
+Card_CONJ* Card_Predicate::pRoot_conj(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -758,7 +758,7 @@ Card_CONJ* Card_BoolPred::pRoot_conj(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_BoolPred::vX_expCol_To_tblCol(CardIter* pCI)
+void Card_Predicate::vX_expCol_To_tblCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -796,7 +796,7 @@ void Card_BoolPred::vX_expCol_To_tblCol(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* convert tblCol to stmCol                                                   */
 /*----------------------------------------------------------------------------*/
-void Card_BoolPred::vX_tblCol_To_expCol(CardIter* pCI)
+void Card_Predicate::vX_tblCol_To_expCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -833,7 +833,7 @@ void Card_BoolPred::vX_tblCol_To_expCol(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_BoolPred::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
+void Card_Predicate::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
