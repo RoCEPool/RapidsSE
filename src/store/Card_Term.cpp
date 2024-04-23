@@ -277,7 +277,7 @@ void Card_Term::vUpdate_expCol(CardIter* pCI, Card_Emit* p_Dic_expr, bool bAlt)
   if (bAlt && ! pSym_term->bHasFacet("_CRLKEY_Q1_"_Stz))
     p_expr_dic = p_Dic_expr->pFind_expr_Matches(pSym_term);
   else
-    p_expr_dic = p_Dic_expr->pFindExprOfSymbol(pCI,pSym_term);
+    p_expr_dic = p_Dic_expr->pFind_term(pCI,pSym_term);
 
   if (p_expr_dic) {
     pSym_term->vApplyCastFacets(p_expr_dic->pSymbol());

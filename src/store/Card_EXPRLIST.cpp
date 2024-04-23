@@ -75,21 +75,6 @@ void Card_EXPRLIST::vBump_keyCol(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
-/* does this expression list contain given term?                              */
-/*----------------------------------------------------------------------------*/
-Card_Expr* Card_EXPRLIST::pFind_term(CardIter* pCI, Symbol* pSymbol_arg)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Kid xCI_this(this);
-  while (xCI_this.bEach(CK_EXPR))
-    if (xCI_this.p_expr()->bContains_term(pCI, pSymbol_arg))
-      return xCI_this.p_expr();
-
-  return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Card_EXPRLIST::vDeleteIf_facet(CardIter* pCI, eSF eFacet, eSF eAlsoFacet, char cTblSyn)
@@ -214,6 +199,21 @@ Card_Expr* Card_EXPRLIST::pFind_expr_Matches_ignoring(Symbol *pSymbol_arg, eSF e
     if (xEXPRLIST.p_expr()->pSymbol()->bMatches_ignoring(pSymbol_arg, eFacet_ignore))
       return xEXPRLIST.p_expr();
   }
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* does this expression list contain given term?                              */
+/*----------------------------------------------------------------------------*/
+Card_Expr* Card_EXPRLIST::pFind_term(CardIter* pCI, Symbol* pSymbol_arg)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Kid xCI_this(this);
+  while (xCI_this.bEach(CK_EXPR))
+    if (xCI_this.p_expr()->bContains_term(pCI, pSymbol_arg))
+      return xCI_this.p_expr();
 
   return nullptr;
 }
