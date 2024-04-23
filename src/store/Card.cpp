@@ -2175,14 +2175,15 @@ void Card::vPrint_card(CardIter* pCI, Ribbon* pRibbon, i8 iDepth)
   if (bIsCard(CK_c_STAGE))
     pRibbon->vMargin(szFacet(SF_STG_NM));
 
-  if (CK_EXPR    == m_eCard)  { vPrint_expr (pCI,pRibbon, iDepth); return; }
-  if (CK_s_LEVEL == m_eCard)  { vPrint_enum (pCI,pRibbon, iDepth); return; }
-  if (CK_TERM    == m_eCard)  { vPrint_term (pCI,pRibbon, iDepth); return; }
-  if (CK_s_TABLE == m_eCard)  { vPrint_table(pCI,pRibbon, iDepth); return; }
+  if (CK_EXPR     == m_eCard) { vPrint_expr (pCI,pRibbon, iDepth); return; }
+  if (CK_s_LEVEL  == m_eCard) { vPrint_enum (pCI,pRibbon, iDepth); return; }
+  if (CK_TERM     == m_eCard) { vPrint_term (pCI,pRibbon, iDepth); return; }
+  if (CK_s_TABLE  == m_eCard) { vPrint_table(pCI,pRibbon, iDepth); return; }
+  if (CK_TOPOLOGY == m_eCard) { vPrint_enum (pCI,pRibbon, iDepth); return; }
 
-  if (0 == iDepth)  { vPrint_depth0(pCI,pRibbon, iDepth); return; }
-  if (1 == iDepth)  { vPrint_depth1(pCI,pRibbon, iDepth); return; }
-  if (2 == iDepth)  { vPrint_depth2(pCI,pRibbon, iDepth); return; }
+  if (0 == iDepth) { vPrint_depth0(pCI,pRibbon, iDepth); return; }
+  if (1 == iDepth) { vPrint_depth1(pCI,pRibbon, iDepth); return; }
+  if (2 == iDepth) { vPrint_depth2(pCI,pRibbon, iDepth); return; }
 
   vPrint_depthN(pCI,pRibbon, iDepth);
 }
