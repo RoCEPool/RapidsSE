@@ -76,8 +76,8 @@ void XF_Epilog_Fuse_project::vFuse_project(void)
 
     // test for viable next <project>
     if (! m_pCI->Next.m_pProject ||
-        m_pCI->Next.m_pProject->bIsCompound() ||
-        m_pCI->Next.m_pProject->bIsLiterals(m_pCI)) {
+        m_pCI->Next.m_pProject->pSub_emit()->bIsCompound() ||
+        m_pCI->Next.m_pProject->pSub_emit()->bIsLiterals(m_pCI)) {
 
       goto L_UPDATE_PRIOR_EMITTED;
     }

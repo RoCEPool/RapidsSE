@@ -29,9 +29,6 @@ namespace STORE
     void vEarlyProject_root(CardIter* pCI);
     void vCraft_needed_root(CardIter* pCI);
 
-    bool bIsCompound(void);
-    bool bIsLiterals(CardIter* pCI);
-
     void vSmooth_postAgg(CardIter* pCI);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
