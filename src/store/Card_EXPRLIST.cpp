@@ -35,6 +35,45 @@ Card_EXPRLIST::~Card_EXPRLIST(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void Card_EXPRLIST::vApplyCast(CardIter *pCI, Card_Emit* p_Dic_expr)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  pCI->E.p_key = pCI->E.p_Op->pSub_key();
+
+  for (Kid xEmit(this); xEmit.bEach(CK_EXPR); /**/) {
+    pCI->E.p_expr = xEmit.p_expr();
+    pCI->E.p_expr->vApplyCast(pCI,/*??*/p_Dic_expr);
+  }
+
+  pCI->E.p_expr = nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* apply facets from given key                                                */
+/*----------------------------------------------------------------------------*/
+void Card_EXPRLIST::vApplyFacets(CardIter *pCI, Card_Key* p_key)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  for (Kid xEmit(this); xEmit.bEach(CK_EXPR); /**/) {
+    if (! xEmit.p_expr()->bIsScalarCol())
+      continue;
+
+    Symbol* pSym_term0_emit = xEmit.p_expr()->pGet_Symbol(0);
+    Card_Expr* p_expr_key = p_key->pDecode_scalar_expr_Via_symbol(pCI, pSym_term0_emit);
+    if (! p_expr_key)
+      continue;
+
+//    pSym_term0_emit->vApplyFacets(p_expr_key->pSymbol());
+    pSym_term0_emit->vApplyFacet(SF_KEY_COL,p_expr_key->pSymbol());
+    pSym_term0_emit->vDeleteFacet(SF_TBL_COL);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Card_EXPRLIST::vBump_expCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
@@ -122,6 +161,20 @@ Card_Expr* Card_EXPRLIST::pFind_expr(Card_Expr* p_expr_arg)
     if (xCI_this.p_expr()->bMatches(p_expr_arg))
       return xCI_this.p_expr();
 
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* resolve prior expr of given term (find right-to-left)                      */
+/*----------------------------------------------------------------------------*/
+Card_Expr* Card_EXPRLIST::pFind_expr(Card_Term* p_term)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  if (p_term->pSymbol()->bHasFacet(SF_EXP_COL) || p_term->pSymbol()->bHasFacet(SF_TBL_COL)) {
+    Card_Expr *p_expr_prior = this->pFind_expr_Matches(p_term->pSymbol());
+    return p_expr_prior;
+  }
   return nullptr;
 }
 
@@ -265,6 +318,38 @@ Card_Expr* Card_EXPRLIST::pGet_expr(Symbol* pSymbol_expCol)
   Card_Expr* p_expr_expCol = pGet_expr(i_Child);
 
   return p_expr_expCol;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this a compound projection?                                             */
+/*----------------------------------------------------------------------------*/
+bool Card_EXPRLIST::bIsCompound(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  for (Kid xEmit(this); xEmit.bEach(CK_EXPR); /**/)
+    if (xEmit.p_expr()->bIsCompound())
+      return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this a literals projection?                                             */
+/*----------------------------------------------------------------------------*/
+bool Card_EXPRLIST::bIsLiterals(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  bool bLiterals = true;
+
+  for (Kid xEmit(this); xEmit.bEach(CK_EXPR); /**/)
+    if (! xEmit.p_expr()->bIsLiterals(pCI)) {
+      bLiterals = false;
+      break;
+    }
+
+  return bLiterals;
 }
 
 /*----------------------------------------------------------------------------*/

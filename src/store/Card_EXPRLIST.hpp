@@ -17,6 +17,9 @@ namespace STORE
     Card_EXPRLIST(eCK eCard, i8 iFixedDepth);
    ~Card_EXPRLIST(void) noexcept(false);
 
+    void vApplyCast(CardIter* pCI, Card_Emit* p_Dic_expr);
+    void vApplyFacets(CardIter* pCI, Card_Key* p_key);
+
     void vBump_expCol(CardIter* pCI);
     void vBump_keyCol(CardIter* pCI);
 
@@ -26,6 +29,7 @@ namespace STORE
     i8 nExpr(void);
 
     Card_Expr* pFind_expr(Card_Expr* p_expr_arg);
+    Card_Expr* pFind_expr(Card_Term* p_term);
     Card_Expr* pFind_expr_Matches(Symbol* pSymbol_arg);
     Card_Expr* pFind_expr_Matches(Symbol* pSymbol_arg, Kid* aKid);
     Card_Expr* pFind_expr_Matches(eSF eFacet_arg, Symbol* pSymbol_arg);
@@ -35,6 +39,9 @@ namespace STORE
 
     Card_Expr* pGet_expr(i8 i_Expr);
     Card_Expr* pGet_expr(Symbol* pSymbol_expCol);
+
+    bool bIsCompound(void);
+    bool bIsLiterals(CardIter* pCI);
 
     void vRenumberAll_expr(eSF eFacet=SF_EXP_COL);
 

@@ -2478,7 +2478,7 @@ Card_Expr* CardIter::pResolvePrior_expr(Card_Term* p_term)
 
   //RASSERT(p_arriving == this->Arriving.m_pEmit);
 
-  Card_Expr* p_expr_resolved = p_arriving->pResolve_expr(p_term);
+  Card_Expr* p_expr_resolved = p_arriving->pFind_expr(p_term);
   return p_expr_resolved;
 }
 
