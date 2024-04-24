@@ -22,7 +22,6 @@ namespace STORE
 
     void vAdd_key_expr_BasedOn_expr(CardIter *pCI, Card_Expr* p_expr, bool bAsc, bool bAppend);
 
-    Card_Expr* pDecode_scalar_expr_Via_symbol(CardIter *pCI, Symbol* pSymbol);
     Stz* szDirection(i8 i_Element);
     Card_Expr* pFind_expr_key_Matches(CardIter *pCI, Symbol *pSymbol_arg);
     Card_Expr* pFind_expr_key_Matches(CardIter *pCI, eSF eFacet_arg, Symbol* pSymbol_arg);

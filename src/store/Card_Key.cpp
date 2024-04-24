@@ -111,24 +111,6 @@ void Card_Key::vAdd_key_expr_BasedOn_expr(CardIter *pCI, Card_Expr* p_expr, bool
 }
 
 /*----------------------------------------------------------------------------*/
-/* find expression which expresses the given symbol                           */
-/*----------------------------------------------------------------------------*/
-Card_Expr* Card_Key::pDecode_scalar_expr_Via_symbol(CardIter *pCI, Symbol* pSymbol)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  UNUSED(pCI);
-
-//Z_KEY_DIRECTION
-  for (pCI->vBeginTarget(CK_s_KEY,CK_EXPR); pCI->bEachTarget(); /**/) {
-    Symbol* pSym_term0 = pCI->E.p_expr->pGet_Symbol(0);
-    if (pSym_term0->bMatches(pSymbol))
-      return _pCard_Expr(pCI->pEndTarget());
-  }
-
-  return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
 /* return direction string of key element                                     */
 /*----------------------------------------------------------------------------*/
 Stz* Card_Key::szDirection(i8 i_Element)

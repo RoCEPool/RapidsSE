@@ -32,9 +32,11 @@ namespace STORE
     Card_Expr* pFind_expr(Symbol* pSymbol_arg);
     Card_Expr* pFind_expr(Symbol* pSymbol_arg, Kid* aKid);
     Card_Expr* pFind_expr(eSF eFacet_arg, Symbol* pSymbol_arg);
+    Card_Expr* pFind_expr(CardIter *pCI, Symbol* pSymbol);
     Card_Expr* pFind_expr_ignoring(Symbol* pSymbol_arg, eSF eFacet_ignore);
     Card_Expr* pFind_term(CardIter* pCI, Symbol* pSymbol_arg);
     Card_Term* pFind_term0_Of_expr(Symbol* pSymbol_expCol);
+
 
     Card_Expr* pGet_expr(i8 i_Expr);
     Card_Expr* pGet_expr(Symbol* pSymbol_expCol);

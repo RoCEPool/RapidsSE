@@ -61,7 +61,7 @@ void Card_EXPRLIST::vApplyFacets(CardIter *pCI, Card_Key* p_key)
       continue;
 
     Symbol* pSym_term0_emit = xEmit.p_expr()->pGet_Symbol(0);
-    Card_Expr* p_expr_key = p_key->pDecode_scalar_expr_Via_symbol(pCI, pSym_term0_emit);
+    Card_Expr* p_expr_key = p_key->pFind_expr(pCI, pSym_term0_emit);
     if (! p_expr_key)
       continue;
 
@@ -222,6 +222,25 @@ Card_Expr* Card_EXPRLIST::pFind_expr(Symbol* pSymbol_arg, Kid* aKid)
       if (pSym_tblCol->bMatches(pSymbol_arg))
         return p_expr;
     }
+  }
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find expression which expresses the given symbol                           */
+/*----------------------------------------------------------------------------*/
+Card_Expr* Card_EXPRLIST::pFind_expr(CardIter *pCI, Symbol* pSymbol)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  UNUSED(pCI);
+
+//Z_KEY_DIRECTION
+  Kid xCI_this(this);
+  while (xCI_this.bEach(CK_EXPR)) {
+    Symbol* pSym_term0 = xCI_this.p_expr()->pGet_Symbol(0);
+    if (pSym_term0->bMatches(pSymbol))
+      return xCI_this.p_expr();
   }
 
   return nullptr;
