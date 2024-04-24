@@ -40,6 +40,7 @@ namespace STORE
     Card_Expr* pGet_expr(Symbol* pSymbol_expCol);
 
     bool bIsCompound(void);
+    bool bIsEqual(CardIter *pCI, Card_EXPRLIST* p_EXPRLIST);
     bool bIsLiterals(CardIter* pCI);
 
     void vRenumberAll_expr(eSF eFacet=SF_EXP_COL);

@@ -321,6 +321,37 @@ bool Card_EXPRLIST::bIsCompound(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* test if this key equal to given arg                                        */
+/*----------------------------------------------------------------------------*/
+bool Card_EXPRLIST::bIsEqual(CardIter *pCI, Card_EXPRLIST* p_key_arg)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  UNUSED(pCI);
+  i8 nExpr = this->nChildCards();
+  if (nExpr != p_key_arg->nChildCards())
+    return false;
+
+  //Z_KEY_DIRECTION
+  for (pCI->vBeginTarget(this,CK_EXPR); pCI->bEachTarget(); /**/) {
+
+    Card_Expr *p_expr_arg = p_key_arg->pGet_expr(pCI->E.xTarget.i_Child());
+
+    if (! pCI->E.p_expr->bSameAs(p_expr_arg)) {
+      pCI->vEndTarget();
+      return false;
+    }
+
+    if (! Symbol::bSame(pCI->E.p_expr->pSymbol()->aFacet(SF_DIRECTION),
+                        p_expr_arg->pSymbol()->aFacet(SF_DIRECTION))) {
+      pCI->vEndTarget();
+      return false;
+    }
+  }
+
+  return true;
+}
+/*----------------------------------------------------------------------------*/
 /* is this a literals projection?                                             */
 /*----------------------------------------------------------------------------*/
 bool Card_EXPRLIST::bIsLiterals(CardIter* pCI)
