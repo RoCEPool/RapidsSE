@@ -141,18 +141,6 @@ Stz* Card_Key::szDirection(i8 i_Element)
 }
 
 /*----------------------------------------------------------------------------*/
-/* return number of key elements                                              */
-/*----------------------------------------------------------------------------*/
-i8 Card_Key::nElements(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  i8 nElements = nChildCards();
-
-  return nElements;
-}
-
-/*----------------------------------------------------------------------------*/
 /* find <expr> which has same symbol as given $n stream-column                */
 /*----------------------------------------------------------------------------*/
 Card_Expr* Card_Key::pFind_expr_key_Matches(CardIter *pCI, Symbol *pSymbol_arg)
