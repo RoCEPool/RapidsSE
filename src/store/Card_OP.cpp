@@ -554,7 +554,7 @@ void Card_OP::vRestate_emit(CardIter* pCI)
     case CK_o_GBYAGG:
     case CK_o_ORDAGG:
       pCI->E.p_emit = pCI->E.p_Op->pSub_emit(C_NOT_NULL);
-      pCI->E.p_emit->vEnsure_expr_Has_nmdCol();
+      pCI->E.p_emit->vEnsureAll_expr_Have_nmdCol();
       if (pCI->Arriving.m_pEmit) {
         pCI->Dic.m_p_expr = pCI->Arriving.m_pEmit;
         pCI->E.p_key = pCI->E.p_Op->pSub_key();
@@ -571,7 +571,7 @@ void Card_OP::vRestate_emit(CardIter* pCI)
       }
 
       pCI->E.p_emit = pCI->E.p_Op->pSub_emit(C_NOT_NULL);
-      pCI->E.p_emit->vEnsure_expr_Has_nmdCol();
+      pCI->E.p_emit->vEnsureAll_expr_Have_nmdCol();
       if (pCI->Arriving.m_pEmit) {
         pCI->Dic.m_p_expr = pCI->Arriving.m_pEmit;
         pCI->E.p_emit->vApplyCast(pCI,/*??*/pCI->Dic.m_p_expr);

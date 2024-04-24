@@ -25,7 +25,7 @@ namespace STORE
 
     void vDeleteIf_facet(CardIter* pCI, eSF eFacet, eSF eAlsoFacet, char cTblSyn);
 
-    void vEnsure_expr_Has_nmdCol(void);
+    void vEnsureAll_expr_Have_nmdCol(void);
     i8 nExpr(void);
 
     Card_Expr* pFind_expr(Card_Expr* p_expr_arg);

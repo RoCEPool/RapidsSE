@@ -231,7 +231,7 @@ Card_Expr* Card_Expr::pClone(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Expr::vDeleteFacetIf(CardIter* pCI, eSF eFacet, eSF eAlsoFacet, char cTblSyn)
+void Card_Expr::vDeleteIf_facet(CardIter* pCI, eSF eFacet, eSF eAlsoFacet, char cTblSyn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -242,7 +242,7 @@ void Card_Expr::vDeleteFacetIf(CardIter* pCI, eSF eFacet, eSF eAlsoFacet, char c
 /*----------------------------------------------------------------------------*/
 /* ensure expression has a SF_NMD_COL                                         */
 /*----------------------------------------------------------------------------*/
-void Card_Expr::vEnsure_expr_Has_nmdCol(i8 iExpCol)
+void Card_Expr::vEnsure_nmdCol(i8 iExpCol)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -554,18 +554,18 @@ bool Card_Expr::bNeedsBrace(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Card_Expr::bSameAs(Card_Expr* p_expr_arg)
+bool Card_Expr::bEqualTo(Card_Expr* pExpr_arg)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   i8 nChildren = nChildCards();
 
-  if (nChildren != p_expr_arg->nChildCards())
+  if (nChildren != pExpr_arg->nChildCards())
     return false;
 
   for (i8 i_Child = 0; i_Child != nChildren; i_Child++) {
     Card_Term* p_term_this = pGet_term(i_Child);
-    Card_Term* p_term_arg = p_expr_arg->pGet_term(i_Child);
+    Card_Term* p_term_arg = pExpr_arg->pGet_term(i_Child);
 
     if (p_term_this->bSymbolMatches(p_term_arg))
       continue;

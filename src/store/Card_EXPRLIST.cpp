@@ -122,19 +122,19 @@ void Card_EXPRLIST::vDeleteIf_facet(CardIter* pCI, eSF eFacet, eSF eAlsoFacet, c
 
   Kid xEXPRLIST(this);
   while (xEXPRLIST.bEach(CK_EXPR))
-    xEXPRLIST.p_expr()->vDeleteFacetIf(pCI, eFacet, eAlsoFacet, cTblSyn);
+    xEXPRLIST.p_expr()->vDeleteIf_facet(pCI, eFacet, eAlsoFacet, cTblSyn);
 }
 
 /*----------------------------------------------------------------------------*/
 /* ensure each expression has a SF_NMD_COL                                    */
 /*----------------------------------------------------------------------------*/
-void Card_EXPRLIST::vEnsure_expr_Has_nmdCol(void)
+void Card_EXPRLIST::vEnsureAll_expr_Have_nmdCol(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Kid xEXPRLIST(this);
   while (xEXPRLIST.bEach(CK_EXPR))
-    xEXPRLIST.p_expr()->vEnsure_expr_Has_nmdCol(xEXPRLIST.i_Child());
+    xEXPRLIST.p_expr()->vEnsure_nmdCol(xEXPRLIST.i_Child());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -391,7 +391,7 @@ bool Card_EXPRLIST::bIsEqual(CardIter *pCI, Card_EXPRLIST* p_key_arg)
 
     Card_Expr *p_expr_arg = p_key_arg->pGet_expr(pCI->E.xTarget.i_Child());
 
-    if (! pCI->E.p_expr->bSameAs(p_expr_arg)) {
+    if (!pCI->E.p_expr->bEqualTo(p_expr_arg)) {
       pCI->vEndTarget();
       return false;
     }

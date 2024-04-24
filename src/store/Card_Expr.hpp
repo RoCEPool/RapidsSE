@@ -30,9 +30,10 @@ namespace STORE
 
     Card_Expr* pClone(void);
 
-    void vDeleteFacetIf(CardIter* pCI, eSF eFacet, eSF eAlsoFacet, char cTblSyn);
+    void vDeleteIf_facet(CardIter* pCI, eSF eFacet, eSF eAlsoFacet, char cTblSyn);
 
-    void vEnsure_expr_Has_nmdCol(i8 iExpCol);
+    void vEnsure_nmdCol(i8 iExpCol);
+    bool bEqualTo(Card_Expr* pExpr_arg);
 
     bool bFind_term(CardIter* pCI, Symbol* pSym_term);
     Symbol* pFirst_colSym(CardIter* pCI);
@@ -56,8 +57,6 @@ namespace STORE
     bool bMatches(Card_Expr* p_expr_arg);
 
     bool bNeedsBrace(CardIter* pCI);
-
-    bool bSameAs(Card_Expr* pExpr_arg);
 
     void vUpdate_expCol(CardIter* pCI, Card_Emit* p_arriving);
 
