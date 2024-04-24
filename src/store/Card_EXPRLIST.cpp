@@ -35,7 +35,7 @@ Card_EXPRLIST::~Card_EXPRLIST(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_EXPRLIST::vApplyCast(CardIter *pCI, Card_Emit* p_Dic_expr)
+void Card_EXPRLIST::vApplyCast(CardIter *pCI, Card_EXPRLIST* p_Dic_expr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -52,7 +52,7 @@ void Card_EXPRLIST::vApplyCast(CardIter *pCI, Card_Emit* p_Dic_expr)
 /*----------------------------------------------------------------------------*/
 /* apply facets from given key                                                */
 /*----------------------------------------------------------------------------*/
-void Card_EXPRLIST::vApplyFacets(CardIter *pCI, Card_Key* p_key)
+void Card_EXPRLIST::vApplyFacets(CardIter *pCI, Card_EXPRLIST* p_key)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -377,19 +377,19 @@ bool Card_EXPRLIST::bIsCompound(void)
 /*----------------------------------------------------------------------------*/
 /* test if this key equal to given arg                                        */
 /*----------------------------------------------------------------------------*/
-bool Card_EXPRLIST::bIsEqual(CardIter *pCI, Card_EXPRLIST* p_key_arg)
+bool Card_EXPRLIST::bEqualTo(CardIter *pCI, Card_EXPRLIST* p_EXPRLIST)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   UNUSED(pCI);
   i8 nExpr = this->nChildCards();
-  if (nExpr != p_key_arg->nChildCards())
+  if (nExpr != p_EXPRLIST->nChildCards())
     return false;
 
   //Z_KEY_DIRECTION
   for (pCI->vBeginTarget(this,CK_EXPR); pCI->bEachTarget(); /**/) {
 
-    Card_Expr *p_expr_arg = p_key_arg->pGet_expr(pCI->E.xTarget.i_Child());
+    Card_Expr *p_expr_arg = p_EXPRLIST->pGet_expr(pCI->E.xTarget.i_Child());
 
     if (!pCI->E.p_expr->bEqualTo(p_expr_arg)) {
       pCI->vEndTarget();

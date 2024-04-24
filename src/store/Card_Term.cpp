@@ -49,7 +49,7 @@ Card_Term::~Card_Term(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* ensure all terms have a type                                               */
 /*----------------------------------------------------------------------------*/
-void Card_Term::vApplyCast(CardIter* pCI, Card_Emit* p_Dic_expr, Cast& rxCast_last)
+void Card_Term::vApplyCast(CardIter* pCI, Card_EXPRLIST* p_Dic_expr, Cast& rxCast_last)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
   UNUSED(p_Dic_expr);

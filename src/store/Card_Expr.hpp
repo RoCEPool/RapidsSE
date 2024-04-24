@@ -26,7 +26,7 @@ namespace STORE
     static Card_Expr* pCraft_expr_of_nmdCol(Column *pColumn, i8 iExpCol,
                                             char cTblSyn, i8 iTblCol);
 
-    void vApplyCast(CardIter* pCI, Card_Emit* p_Dic_expr);
+    void vApplyCast(CardIter* pCI, Card_EXPRLIST* p_Dic_expr);
 
     Card_Expr* pClone(void);
 

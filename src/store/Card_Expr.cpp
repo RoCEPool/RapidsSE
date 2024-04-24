@@ -182,7 +182,7 @@ Card_Expr* Card_Expr::pCraft_expr_of_nmdCol(Column *pColumn, i8 iExpCol,
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Expr::vApplyCast(CardIter* pCI, Card_Emit* p_Dic_expr)
+void Card_Expr::vApplyCast(CardIter* pCI, Card_EXPRLIST* p_Dic_expr)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 

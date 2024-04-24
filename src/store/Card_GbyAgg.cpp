@@ -174,7 +174,7 @@ bool Card_GbyAgg::bMorph_gbyAgg_To_ordAgg(CardIter* pCI)
 
   pCI->E.p_key = pSub_key();
 
-  if (! pCI->E.p_key->bIsEqual(pCI,pCI->StreamOrder.m_pStreamKey))
+  if (!pCI->E.p_key->bEqualTo(pCI, pCI->StreamOrder.m_pStreamKey))
     return false;
 
   vCard(CK_o_ORDAGG);
