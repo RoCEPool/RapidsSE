@@ -174,20 +174,6 @@ Card_Expr* Card_Key::pFind_expr_key_Matches(CardIter *pCI, eSF eFacet_arg, Symbo
 }
 
 /*----------------------------------------------------------------------------*/
-/* get a particular direction/expr                                            */
-/*----------------------------------------------------------------------------*/
-Card_Expr* Card_Key::pGet_expr(i8 i_Element)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-/**Z_KEY_DIRECTION get expr*/
-
-  Card_Expr* p_expr = _pCard_Expr(pGetChild(i_Element));
-
-  return p_expr;
-}
-
-/*----------------------------------------------------------------------------*/
 /* test if this key equal to given arg                                        */
 /*----------------------------------------------------------------------------*/
 bool Card_Key::bIsEqual(CardIter *pCI, Card_Key* p_key_arg)
