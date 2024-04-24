@@ -36,6 +36,8 @@ namespace STORE
     Card_Expr* pFind_expr_ignoring(Symbol* pSymbol_arg, eSF eFacet_ignore);
     Card_Expr* pFind_term(CardIter* pCI, Symbol* pSymbol_arg);
     Card_Term* pFind_term0_Of_expr(Symbol* pSymbol_expCol);
+    Card_Expr* pFind_expr_key_Matches(CardIter *pCI, Symbol *pSymbol_arg);
+    Card_Expr* pFind_expr_key_Matches(CardIter *pCI, eSF eFacet_arg, Symbol* pSymbol_arg);
 
 
     Card_Expr* pGet_expr(i8 i_Expr);

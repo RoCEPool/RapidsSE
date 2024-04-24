@@ -298,6 +298,41 @@ Card_Term* Card_EXPRLIST::pFind_term0_Of_expr(Symbol* pSymbol_expCol)
 }
 
 /*----------------------------------------------------------------------------*/
+/* find <expr> which has same symbol as given $n stream-column                */
+/*----------------------------------------------------------------------------*/
+Card_Expr* Card_EXPRLIST::pFind_expr_key_Matches(CardIter *pCI, Symbol *pSymbol_arg)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  //Z_KEY_DIRECTION
+  for (pCI->vBeginTarget(this,CK_EXPR); pCI->bEachTarget(); /**/) {
+    if (pCI->E.p_expr->pSymbol()->bMatches(pSymbol_arg))
+      return _pCard_Expr(pCI->pEndTarget());
+  }
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find <expr> which has same symbol as given $n stream-column                */
+/*----------------------------------------------------------------------------*/
+Card_Expr* Card_EXPRLIST::pFind_expr_key_Matches(CardIter *pCI, eSF eFacet_arg, Symbol* pSymbol_arg)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  //Z_KEY_DIRECTION
+  for (pCI->vBeginTarget(this,CK_EXPR); pCI->bEachTarget(); /**/) {
+    if (pCI->E.p_expr->pSymbol()->bMatches(eFacet_arg, pSymbol_arg))
+      return _pCard_Expr(pCI->pEndTarget());
+  }
+
+  return nullptr;
+}
+
+
+
+
+/*----------------------------------------------------------------------------*/
 /* get a particular expr                                                      */
 /*----------------------------------------------------------------------------*/
 Card_Expr* Card_EXPRLIST::pGet_expr(i8 i_Expr)

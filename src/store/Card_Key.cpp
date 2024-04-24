@@ -113,46 +113,13 @@ void Card_Key::vAdd_key_expr_BasedOn_expr(CardIter *pCI, Card_Expr* p_expr, bool
 /*----------------------------------------------------------------------------*/
 /* return direction string of key element                                     */
 /*----------------------------------------------------------------------------*/
-Stz* Card_Key::szDirection(i8 i_Element)
+Stz* Card_Key::szDirection(i8 i_Expr)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_Expr* p_expr = pGet_expr(i_Element);
+  Card_Expr* p_expr = pGet_expr(i_Expr);
 
   return p_expr->szFacet(SF_DIRECTION);
-}
-
-/*----------------------------------------------------------------------------*/
-/* find <expr> which has same symbol as given $n stream-column                */
-/*----------------------------------------------------------------------------*/
-Card_Expr* Card_Key::pFind_expr_key_Matches(CardIter *pCI, Symbol *pSymbol_arg)
-
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  //Z_KEY_DIRECTION
-  for (pCI->vBeginTarget(this,CK_EXPR); pCI->bEachTarget(); /**/) {
-    if (pCI->E.p_expr->pSymbol()->bMatches(pSymbol_arg))
-      return _pCard_Expr(pCI->pEndTarget());
-  }
-
-  return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* find <expr> which has same symbol as given $n stream-column                */
-/*----------------------------------------------------------------------------*/
-Card_Expr* Card_Key::pFind_expr_key_Matches(CardIter *pCI, eSF eFacet_arg, Symbol* pSymbol_arg)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  //Z_KEY_DIRECTION
-  for (pCI->vBeginTarget(this,CK_EXPR); pCI->bEachTarget(); /**/) {
-    if (pCI->E.p_expr->pSymbol()->bMatches(eFacet_arg, pSymbol_arg))
-      return _pCard_Expr(pCI->pEndTarget());
-  }
-
-  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

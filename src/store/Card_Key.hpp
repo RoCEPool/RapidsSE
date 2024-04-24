@@ -22,9 +22,7 @@ namespace STORE
 
     void vAdd_key_expr_BasedOn_expr(CardIter *pCI, Card_Expr* p_expr, bool bAsc, bool bAppend);
 
-    Stz* szDirection(i8 i_Element);
-    Card_Expr* pFind_expr_key_Matches(CardIter *pCI, Symbol *pSymbol_arg);
-    Card_Expr* pFind_expr_key_Matches(CardIter *pCI, eSF eFacet_arg, Symbol* pSymbol_arg);
+    Stz* szDirection(i8 i_Expr);
 
     void vMapColumns(CardIter *pCI);
 
