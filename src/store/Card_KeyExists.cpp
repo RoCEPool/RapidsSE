@@ -143,7 +143,7 @@ void Card_KeyExists::vEarlyProject_add_transients(CardIter* pCI)
 
     //pCI->Early.m_pNeeded_later->vDump();
 
-    if (Card_Expr* p_expr_defn = pCI->pPrior_expr(pCI->E.p_term)) {
+    if (Card_Expr* p_expr_defn = pCI->pPrior_expr(pCI->E.p_term->pSymbol())) {
       //p_expr_defn->vDump();
       Card_Expr* p_expr_clone = p_expr_defn->pClone();
       pCI->Early.m_pNeeded_later->vAppendChild(p_expr_clone);

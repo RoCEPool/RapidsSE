@@ -260,7 +260,7 @@ namespace STORE
     bool bPositionAt(eCK eKind_at, i8 /* eCK */ iKind_First, ...);
     void vPrintBoard(const char* azFunc, const char* azFile, i8 iLineNo, bool bForce=false);
     Card_Emit* pPrior_emit(void);
-    Card_Expr* pPrior_expr(Card_Term* p_term);
+    Card_Expr* pPrior_expr(Symbol* pSymbol_arg);
     void vPushChild(Card* pParent, eCK eChild);
     void vPushEach(void);
 

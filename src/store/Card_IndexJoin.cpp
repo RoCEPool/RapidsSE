@@ -147,7 +147,7 @@ void Card_IndexJoin::vEarlyProject_add_transients(CardIter* pCI)
       pCI->Early.m_pNeeded_later->vRenumberAll_expr();
     }
     else
-    if (Card_Expr* p_expr_defn = pCI->pPrior_expr(pCI->E.p_term)) {
+    if (Card_Expr* p_expr_defn = pCI->pPrior_expr(pCI->E.p_term->pSymbol())) {
       Card_Expr* p_expr_clone = p_expr_defn->pClone();
       //p_expr_clone->vDump(__func__);
       p_expr_clone->pGet_Symbol(0)->vDeleteFacet(SF_EXP_COL);
@@ -176,7 +176,7 @@ void Card_IndexJoin::vEarlyProject_add_transients(CardIter* pCI)
       return C_CONTINUE_RECURSION;
     }
 
-    if (Card_Expr* p_expr_defn = pCI->pPrior_expr(p_term)) {
+    if (Card_Expr* p_expr_defn = pCI->pPrior_expr(p_term->pSymbol())) {
       //p_expr_defn->vDump();
       Card_Expr* p_expr_clone = p_expr_defn->pClone();
       if (p_expr_clone->pGet_Symbol(0)->nFacets() > 1)

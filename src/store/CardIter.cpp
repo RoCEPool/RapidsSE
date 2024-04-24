@@ -2187,7 +2187,7 @@ Card_Emit* CardIter::pPrior_emit(void)
 /*----------------------------------------------------------------------------*/
 /* resolve prior expr of given term (find right-to-left)                      */
 /*----------------------------------------------------------------------------*/
-Card_Expr* CardIter::pPrior_expr(Card_Term* p_term)
+Card_Expr* CardIter::pPrior_expr(Symbol* pSymbol_arg)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
@@ -2197,7 +2197,7 @@ Card_Expr* CardIter::pPrior_expr(Card_Term* p_term)
 
   //RASSERT(p_arriving == this->Arriving.m_pEmit);
 
-  Card_Expr* p_expr_resolved = p_arriving->pFind_expr(p_term->pSymbol());
+  Card_Expr* p_expr_resolved = p_arriving->pFind_expr(pSymbol_arg);
   return p_expr_resolved;
 }
 
