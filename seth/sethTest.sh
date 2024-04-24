@@ -5,12 +5,17 @@ DIR=$(dirname "$0")
 ROOT_DIR="${DIR}/.."
 CLASSPATH="${DIR}/bin:${DIR}/bin/*:${ROOT_DIR}/shell/*"
 
+JAVA_ARGS=("-Djava.net.preferIPv4Stack=true" "-Djava.net.preferIPv6Addresses=false")
+JAVA_ARGS+=("-cp" "${CLASSPATH}")
+
 # Additional arguments for SETH. Enable as required.
 #SETH_ARGS=("--clean" "--logtests")   # log all test executions to a file
 SETH_ARGS=("--clean" "--logsteps")   # log executions of all steps within each test to a file.
 
 # Connection details for RapidsSE wireline protocol
-HOST="localhost"
+# We use 127.0.0.1 over localhost because localhost could be resolved
+# as an IPv6 address on some machines. Using 127.0.0.1 forces IPv4.
+HOST="127.0.0.1"
 PORT="9123"
 
 # The SE JDBC URL that tells the JDBC driver how to connect to SE.
@@ -28,4 +33,4 @@ if [ "$#" -eq 0 ]; then
 fi
 
 # Run the SE Test Harness
-java -cp ${CLASSPATH} com.rapidsdata.seth.Seth -u "${URL}" "${SETH_ARGS[@]}"  "$@"
+java "${JAVA_ARGS[@]}" com.rapidsdata.seth.Seth -u "${URL}" "${SETH_ARGS[@]}"  "$@"

@@ -22,7 +22,8 @@ namespace WLP
 
     i8 iMsgSize()     {
       i8 iVal = ntohl(m_uMsgSize);
-      return iVal; }
+      return iVal;
+    }
     i8 iMsgType()     { return (i8) m_uMsgType; }
 
     void vMsgSize(u4 uMsgSize)  { m_uMsgSize = htonl(uMsgSize); }

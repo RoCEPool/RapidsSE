@@ -1126,7 +1126,26 @@ void AdaptorWL::vDeserialiseMsg(i8 iMessageType)
 
   // Set the current message type and decode the message
   m_iCurrentMsgType = eMsgType;
-  i8 iBytesRead = m_pCurrentMsg->read(m_pProtocol.get());
+  i8 iBytesRead;
+
+  try {
+    iBytesRead = m_pCurrentMsg->read(m_pProtocol.get());
+
+  } catch (apache::thrift::transport::TTransportException& e) {
+    // Respond to the client with an error, and set the m_eProtocolError
+    // which will cause the socket to be closed.
+    std::string sMsgType = to_string(eMsgType);
+    eEC eErrCode = EC_WL_PROTOCOL_ERROR;
+    vSerialiseErrorResponse(eErrCode,
+                            "Error: %s; %s: Unable to decode wireline message of type %s: %s"_Stz,
+                            aEC2[eErrCode],
+                            aErrorMsg[eErrCode],
+                            sMsgType.c_str(),
+                            e.what());
+
+    vDisconnectClient(eErrCode);
+    return;
+  }
 
   if (iBytesRead == 0) {
     // Respond to the client with an error, and set the m_eProtocolError
@@ -1140,6 +1159,7 @@ void AdaptorWL::vDeserialiseMsg(i8 iMessageType)
                             sMsgType.c_str());
 
     vDisconnectClient(eErrCode);
+    return;
   }
 
   vTraceComponent(TC_WLP, "Decoded a wireline message of type: %s\n"_Stz, to_string(eMsgType).c_str());
