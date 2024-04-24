@@ -174,38 +174,6 @@ Card_Expr* Card_Key::pFind_expr_key_Matches(CardIter *pCI, eSF eFacet_arg, Symbo
 }
 
 /*----------------------------------------------------------------------------*/
-/* test if this key equal to given arg                                        */
-/*----------------------------------------------------------------------------*/
-bool Card_Key::bIsEqual(CardIter *pCI, Card_Key* p_key_arg)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  UNUSED(pCI);
-  i8 nExpr = this->nChildCards();
-  if (nExpr != p_key_arg->nChildCards())
-    return false;
-
-  //Z_KEY_DIRECTION
-  for (pCI->vBeginTarget(this,CK_EXPR); pCI->bEachTarget(); /**/) {
-
-    Card_Expr *p_expr_arg = p_key_arg->pGet_expr(pCI->E.xTarget.i_Child());
-
-    if (! pCI->E.p_expr->bSameAs(p_expr_arg)) {
-      pCI->vEndTarget();
-      return false;
-    }
-
-    if (! Symbol::bSame(pCI->E.p_expr->pSymbol()->aFacet(SF_DIRECTION),
-                        p_expr_arg->pSymbol()->aFacet(SF_DIRECTION))) {
-      pCI->vEndTarget();
-      return false;
-    }
-  }
-
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* map the columns of this key                                                */
 /*----------------------------------------------------------------------------*/
 void Card_Key::vMapColumns(CardIter *pCI)
