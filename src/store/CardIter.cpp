@@ -1745,7 +1745,6 @@ Card* CardIter::pMember(eCK eCard)
     case CK_o_PROJECT:      return E.p_project;
 
     case CK_RELNOP:         return E.p_relnOp;
-    case CK_REQUIRED:       return E.p_required;
     case CK_RLNCONJ:        return E.p_rlnConj;
     case CK_ROWCOUNT:       return E.p_rowCount;
     case CK_ROWSIZE:        return E.p_rowSize;
@@ -1890,7 +1889,6 @@ void CardIter::vMember(eCK eCard, Card* pCard)
     case CK_o_PROJECT: E.p_project           = _pCard_Project(pCard); break;
 
     case CK_RELNOP: E.p_relnOp            = _pCard_RelnOp(pCard); break;
-    case CK_REQUIRED: E.p_required          = _pCard_Required(pCard); break;
     case CK_RLNCONJ: E.p_rlnConj           = _pCard_RlnConj(pCard);break;
     case CK_ROWCOUNT: E.p_rowCount          = _pCard_RowCount(pCard); break;
     case CK_ROWSIZE: E.p_rowSize           = _pCard_RowSize(pCard); break;
@@ -2729,7 +2727,6 @@ void CardIter::vValidateChildren(Card* pCard, i8 iDepth)
       case CK_o_PROJECT:      E.p_project->vValidate(this, iDepth, pCard);  break;
 
       case CK_RELNOP:         E.p_relnOp->vValidate(this, iDepth, pCard);  break;
-      case CK_REQUIRED:       E.p_required->vValidate(this, iDepth, pCard);  break;
       case CK_RLNCONJ:        E.p_rlnConj->vValidate(this, iDepth, pCard);  break;
       case CK_ROWCOUNT:       E.p_rowCount->vValidate(this, iDepth, pCard);  break;
       case CK_ROWSIZE:        E.p_rowSize->vValidate(this, iDepth, pCard);  break;

@@ -110,7 +110,6 @@ enum eCK : i8 // card kind
   /* */ CK_PREDICATE,
 
   /* */ CK_RELNOP,
-  /* */ CK_REQUIRED,
   /* */ CK_RLNCONJ,
   /* */ CK_ROWCOUNT,
   /* */ CK_ROWSIZE,

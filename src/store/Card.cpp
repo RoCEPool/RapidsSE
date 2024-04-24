@@ -113,7 +113,7 @@ Card::Card(eCK eCard, i8 iFixedDepth)
   m_xSymbol.vCard(this);
   MemLib::vZero(md_Coord, sizeof(md_Coord), CN_CARD);
 
-  if (CK_o_SORT == eCard)
+  if (CK_o_SCAN == eCard)
     vDebugPoint();
 
 #ifdef Z_NO_STREAMKEY
@@ -3838,24 +3838,6 @@ Card_Predicate* Card::pSub_predicate(bool bNotNull)
   }
 
   return p_predicate;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-#include "Card_Required.hpp"
-Card_Required* Card::pSub_required(bool bNotNull)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_Required* p_required =
-      _pCard_Required(pFindSubCard(CK_REQUIRED));
-
-  if (bNotNull && !p_required) {
-    NEVER_REACH
-  }
-
-  return p_required;
 }
 
 /*----------------------------------------------------------------------------*/

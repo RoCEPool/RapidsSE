@@ -108,7 +108,6 @@ Stz* aCK[CK_ENUMS]
   /* */ "CK_PREDICATE"_Stz,    // CK_PREDICATE
 
   /* */ "CK_RELNOP"_Stz,       // CK_RELNOP
-  /* */ "CK_REQUIRED"_Stz,     // CK_REQUIRED
   /* */ "CK_RLNCONJ"_Stz,      // CK_RLNCONJ
   /* */ "CK_ROWCOUNT"_Stz,     // CK_ROWCOUNT
   /* */ "CK_ROWSIZE"_Stz,      // CK_ROWSIZE
@@ -247,7 +246,6 @@ Stz* aCK_short[CK_ENUMS]
   /* */ "PayloadCells"_Stz,    // CK_PAYLOADCELLS
 
   /* */ "RelnOp"_Stz,          // CK_RELNOP
-  /* */ "Required"_Stz,        // CK_REQUIRED
   /* */ "RlnConj"_Stz,         // CK_RLNCONJ
   /* */ "RowCount"_Stz,        // CK_ROWCOUNT
   /* */ "RowSize"_Stz,         // CK_ROWSIZE
