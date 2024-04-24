@@ -111,21 +111,6 @@ void Card_Key::vAdd_key_expr_BasedOn_expr(CardIter *pCI, Card_Expr* p_expr, bool
 }
 
 /*----------------------------------------------------------------------------*/
-/* ensure cast info                                                           */
-/*----------------------------------------------------------------------------*/
-void Card_Key::vApplyCast(CardIter *pCI, Card_Emit* p_Dic_expr)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-//Z_KEY_DIRECTION
-  for (pCI->vBeginTarget(this,CK_EXPR); pCI->bEachTarget(); /**/) {
-    pCI->E.p_expr->vApplyCast(pCI,/*??*/p_Dic_expr);
-  }
-
-  pCI->E.p_expr = nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
 /* find expression which expresses the given symbol                           */
 /*----------------------------------------------------------------------------*/
 Card_Expr* Card_Key::pDecode_scalar_expr_Via_symbol(CardIter *pCI, Symbol* pSymbol)

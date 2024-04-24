@@ -21,7 +21,7 @@ namespace STORE
     static void vAssemble_injCrlKey(CardIter* pCI);
 
     void vAdd_key_expr_BasedOn_expr(CardIter *pCI, Card_Expr* p_expr, bool bAsc, bool bAppend);
-    void vApplyCast(CardIter *pCI, Card_Emit* p_Dic_expr);
+
     Card_Expr* pDecode_scalar_expr_Via_symbol(CardIter *pCI, Symbol* pSymbol);
     Stz* szDirection(i8 i_Element);
     i8 nElements(void);
