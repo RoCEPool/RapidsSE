@@ -3263,18 +3263,6 @@ void AM::TASK::vTriggerBidingPageIn(Task* pTaskBiding, Task* pTriggeringTask)
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
 /*----------------------------------------------------------------------------*/
-/* dedicated thread vector                                                    */
-/*----------------------------------------------------------------------------*/
-ThreadVec* AM::THREAD::pDedicatedThreadVec(void)
-{
-  _static_
-  
-  ThreadVec* pThreadVec = AM::pSchedule()->pDedicatedThreadVec();
-  
-  return pThreadVec;
-}
-
-/*----------------------------------------------------------------------------*/
 /* delete thread                                                              */
 /*----------------------------------------------------------------------------*/
 void AM::THREAD::vDeleteThread(Thread* pThread)

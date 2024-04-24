@@ -179,6 +179,7 @@
 #include "SN_Tsp.hpp"
 #include "SN_Vch.hpp"
 
+#include "ThreadList.hpp"
 #include "ToLglPtnCrw.hpp"
 #include "ToLglPtnRow.hpp"
 #include "TraceLock.hpp"
@@ -749,6 +750,7 @@ SizeHeap gxaSizeHeap[]
   { CN_TEXTTINY,                 sizeof(TextTiny),           HT_T_TINY    ,FILL },
   { CN_THING,                    sizeof(Thing),              HT_T_TINY    ,FILL },
   { CN_THREAD,                   sizeof(Thread),             HT_T_TINY    ,FILL },
+  { CN_THREADLIST,               sizeof(ThreadList),         HT_T_TINY    ,FILL },
   { CN_THREADQUEUE,              sizeof(ThreadQueue),        HT_T_TINY    ,FILL },
   { CN_THREADSCRATCH,            sizeof(ThreadScratch),      HT_T_TINY    ,FILL },
   { CN_THREADVEC,                sizeof(ThreadVec),          HT_T_MEDIUM  ,FILL },

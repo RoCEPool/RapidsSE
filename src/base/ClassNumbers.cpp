@@ -423,6 +423,7 @@ Stz* BASE::aCN[CN_ENUMS+1]
     /* */ "TEXTTINY"_Stz,             // CN_TEXTTINY,
     /* */ "THING"_Stz,                // CN_THING
     /* */ "THREAD"_Stz,               // CN_THREAD
+    /* */ "THREADLIST"_Stz,           // CN_THREADLIST
     /* */ "THREADQUEUE"_Stz,          // CN_THREADQUEUE
     /* */ "THREADSCRATCH"_Stz,        // CN_THREADSCRATCH
     /* */ "THREADVEC"_Stz,            // CN_THREADVEC

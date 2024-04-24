@@ -404,6 +404,7 @@ enum eCN : u2 // Class Number
   /* */ CN_TEXTTINY,
   /* */ CN_THING,
   /* */ CN_THREAD,
+  /* */ CN_THREADLIST,
   /* */ CN_THREADQUEUE,
   /* */ CN_THREADSCRATCH,
   /* */ CN_THREADVEC,

@@ -671,7 +671,6 @@ namespace OBLIQUE
     class THREAD
     {
     public:
-      static ThreadVec* pDedicatedThreadVec(void);
       static void vDeleteThread(Thread* pThread);
       static ThreadVec* pGeneralThreadVec(void);
       static Thread* pNewThread(void);    

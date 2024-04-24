@@ -6,6 +6,7 @@
 
 #include "PsxThd.hpp"
 #include "SP_Ivd.hpp"
+#include "ThreadList.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -55,7 +56,7 @@ Schedule::Schedule(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // threads
   
-  m_pDedicatedThreadVec = new ThreadVec;
+  m_pDedicatedThreadList = new ThreadList;
   m_pGeneralThreadVec   = new ThreadVec;
   
   m_pIdleThreadQueue    = new ThreadQueue;
@@ -159,53 +160,55 @@ void Schedule::vThreadsReport(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  pSchedule->m_pDedicatedThreadVec->vGrabLock();
+  pSchedule->m_pDedicatedThreadList->vGrabLock();
   
-  nThreads = pSchedule->m_pDedicatedThreadVec->nItems();
+  nThreads = pSchedule->m_pDedicatedThreadList->nItems();
     
   vTrace("====================================\n"_Stz);
   vTrace("Dedicated Threads: %lld\n"_Stz,nThreads);
   if (nThreads)
     vTrace("------------------------------------\n"_Stz);
 
-  for (i8 i_Thread = 0; i_Thread < nThreads; i_Thread++) {
-    
-    Thread* pThread = pSchedule->m_pDedicatedThreadVec->pGet(i_Thread);
-    
+  i8 i_Thread = 0;
+  auto fVisitor = [&i_Thread](Thread* pThread) {
+    i8 iUserTime, iSystemTime, iPercentageUsage, iSleepSsec;
+
     pThread->pPsxThd()->bGetCpu(iUserTime,iSystemTime,
-                                 iPercentageUsage,iSleepSsec);
-    
+                                iPercentageUsage,iSleepSsec);
+
     vTrace("  [%02lld] "
            "%p %2lld %s"
            " base %p size %lldB"
            " user %12lld system %12lld usage %02lld%% sleep %02llds"
            " %11s"
            " assigned %lld\n"_Stz
-           
-           ,i_Thread
-           
-           ,pThread
-           ,pThread->iThreadNo()
-           ,pThread->szThreadNm()
 
-           ,pThread->pPsxThd()->m_aStackBase
-           ,pThread->pPsxThd()->m_iStackSize
-           
-           ,iUserTime
-           ,iSystemTime
-           ,iPercentageUsage
-           ,iSleepSsec
-           
-           ,aHS[pThread->eThreadState()]
-           
-           ,pThread->nAssignedTasks()
-           );
-  }
+        ,i_Thread
+
+        ,pThread
+        ,pThread->iThreadNo()
+        ,pThread->szThreadNm()
+
+        ,pThread->pPsxThd()->m_aStackBase
+        ,pThread->pPsxThd()->m_iStackSize
+
+        ,iUserTime
+        ,iSystemTime
+        ,iPercentageUsage
+        ,iSleepSsec
+
+        ,aHS[pThread->eThreadState()]
+
+        ,pThread->nAssignedTasks()
+    );
+  };
+
+  pSchedule->m_pDedicatedThreadList->vIterate(fVisitor);
   
   vTrace("====================================\n"_Stz);
   vTrace("\n"_Stz);
 
-  pSchedule->m_pDedicatedThreadVec->vDropLock();
+  pSchedule->m_pDedicatedThreadList->vDropLock();
 }
 
 
@@ -643,9 +646,7 @@ void Schedule::vAddDedicatedThread(Thread* pThread)
   
   RASSERT(HS_IDLE == pThread->eThreadState());
   
-  m_pDedicatedThreadVec->vGrabLock();
-  m_pDedicatedThreadVec->vAppend(pThread);
-  m_pDedicatedThreadVec->vDropLock();
+  m_pDedicatedThreadList->vInsert(pThread);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -703,9 +704,7 @@ void Schedule::vRemoveDedicatedThread(Thread* pThread)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCHEDULE,_FOOTER_);
   
-  m_pDedicatedThreadVec->vGrabLock();
-  m_pDedicatedThreadVec->vRemove(pThread);
-  m_pDedicatedThreadVec->vDropLock();
+  m_pDedicatedThreadList->vRemove(pThread);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -718,16 +717,6 @@ void Schedule::vRemoveGeneralThread(Thread* pThread)
   m_pGeneralThreadVec->vGrabLock();
   m_pGeneralThreadVec->vRemove(pThread);
   m_pGeneralThreadVec->vDropLock();
-}
-
-/*----------------------------------------------------------------------------*/
-/* return dedicated thread vector                                             */
-/*----------------------------------------------------------------------------*/
-ThreadVec* Schedule::pDedicatedThreadVec(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SCHEDULE,_FOOTER_);
-  
-  return m_pDedicatedThreadVec;
 }
 
 /*----------------------------------------------------------------------------*/
