@@ -266,7 +266,7 @@ void Card_Expr::vEnsure_expr_Has_nmdCol(i8 iExpCol)
 /*----------------------------------------------------------------------------*/
 /* does expression have term ?                                                */
 /*----------------------------------------------------------------------------*/
-bool Card_Expr::bFind_term_Matches(CardIter* pCI, Symbol* pSym_term)
+bool Card_Expr::bFind_term(CardIter* pCI, Symbol* pSym_term)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 

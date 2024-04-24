@@ -34,7 +34,7 @@ namespace STORE
 
     void vEnsure_expr_Has_nmdCol(i8 iExpCol);
 
-    bool bFind_term_Matches(CardIter* pCI, Symbol* pSym_term);
+    bool bFind_term(CardIter* pCI, Symbol* pSym_term);
     Symbol* pFirst_colSym(CardIter* pCI);
     Symbol* pFirst_expCol(CardIter* pCI);
     Symbol* pFirst_keyCol(CardIter* pCI);

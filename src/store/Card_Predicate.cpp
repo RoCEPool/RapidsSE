@@ -64,7 +64,7 @@ Card_Predicate* Card_Predicate::pTo_boolPred(CardIter* pCI, Card_Expr* p_expr_ar
   // does the expression have a WHEN in it?
 
   Symbol xWhen(SF_WHEN,"WHEN"_Stz);
-  if (p_expr_arg->bFind_term_Matches(pCI, &xWhen)) {
+  if (p_expr_arg->bFind_term(pCI, &xWhen)) {
     p_predicate_new->vTransferChildren(p_expr_arg);
     return p_predicate_new;
   }
