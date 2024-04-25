@@ -31,6 +31,9 @@ namespace STORE {
 		static void vReplaceColumnPrior(String* sLine, Column* pColumnPrior);
 		static void vReplaceColumnTo(String* sLine, Column* pColumn);
     static bool bReplaceIndexInfo(String* sLine, String* sReplacedLine, OpSketch *pOpSketch);
+    static bool bReplaceCurrentDupOp(String* sLine, String* sReplacedLine, OpSketch *pOpSketch);
+    static bool bReplaceCurrentOp(String* sLine, String* sReplacedLine, OpSketch *pOpSketch);
+    static bool bReplacePrevOp(String* sLine, String* sReplacedLine, OpSketch *pOpSketch);
     static void vReplaceIndexPosition(String* sLine, OpSketch *pOpSketch);
     static void vReplaceInsertEnt(String* sLine, OpSketch* pOpSketch);
     static void vReplaceKeyKind(String* sLine, OpSketch *pOpSketch);
@@ -38,6 +41,7 @@ namespace STORE {
     static void vReplaceOperatorName(String* sLine, OpSketch *pOpSketch);
     static void vReplaceIndexColumn(String* sLine, i8 iIndexColumn);
     static void vReplacePayloadBytes(String* sLine, OpSketch *pOpSketch);
+    static bool bReplacePrevDupOp(String* sLine, String* sReplacedLine, OpSketch* pOpSketch);
     static void vReplaceStructTo(String* sLine, OpSketch *pOpSketch);
     static void vReplaceStructFrom(String* sLine, OpSketch *pOpSketch);
     static void vReplaceReturnToLabel(String* sLine, Stz* sReturnToLabel);

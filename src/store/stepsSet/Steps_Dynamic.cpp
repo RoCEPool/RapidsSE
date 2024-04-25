@@ -110,7 +110,7 @@ void Step::vDynamicExecute(void)
 
       Pds *pPdsRowBuffer = _pPds(pDataBuffer);
 
-      aDynamicT->m_xRowInfoIT.m_aPdsRowBuffer = pPdsRowBuffer;
+      aDynamicT->m_xRowInfoIT[0].m_aPdsRowBuffer = pPdsRowBuffer;
       //aDynamicT->m_xRowInfoIT.m_acStrArea = (char*)pPdsRowBuffer->szStzAllot_begin(); // ALKA TO COME BACK
       aDynamicT->m_nRows       = pPdsRowBuffer->nItems();
     }
@@ -135,13 +135,13 @@ void Step::vDynamicExecute(void)
 
   // EOS marker handler done ?
   if ( afFun ==  m_pLogicUnit->m_afEosHandler ) {
-    IndexTree* pIndexTree = _pIndexTree(aDynamicT->m_xIndexInfoPL.m_aIndexTree);
+    IndexTree* pIndexTree = _pIndexTree(aDynamicT->m_xIndexInfoPL[0].m_aIndexTree);
     delete pIndexTree;
-    aDynamicT->m_xIndexInfoPL.m_aIndexTree = nullptr;
+    aDynamicT->m_xIndexInfoPL[0].m_aIndexTree = nullptr;
 
-    IndexDef* pIndexDef = _pIndexDef(aDynamicT->m_xIndexInfoPL.m_aIndexDef);
+    IndexDef* pIndexDef = _pIndexDef(aDynamicT->m_xIndexInfoPL[0].m_aIndexDef);
     delete pIndexDef;
-    aDynamicT->m_xIndexInfoPL.m_aIndexDef = nullptr;
+    aDynamicT->m_xIndexInfoPL[0].m_aIndexDef = nullptr;
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

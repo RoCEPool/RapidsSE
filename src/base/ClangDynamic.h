@@ -41,6 +41,8 @@ struct IndexInfo {
   struct Ent_int* m_aEntInt;
 };
 
+const i8 C_MAX_DUP_OPS = 4;
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // CODE SYNTH V2
 struct Dynamic_T
@@ -68,42 +70,43 @@ struct Dynamic_T
   i8 m_iHeadSize;
   enum eSI           m_eStrInflateRule;
   struct HeadLine_T* m_aHeadLine0;
-  struct RowInfo     m_xRowInfoIT;
+
+  struct RowInfo     m_xRowInfoIT[C_MAX_DUP_OPS];
 
   // inflate J (SR_IJ)
-  struct RowInfo m_xRowInfoIJ;
+  struct RowInfo m_xRowInfoIJ[C_MAX_DUP_OPS];
 
   // Project payload (SR_PL)
-  struct RowInfo m_xRowInfoPL;
+  struct RowInfo m_xRowInfoPL[C_MAX_DUP_OPS];
 
   // project T (SR_PT)
-  struct RowInfo m_xRowInfoPT;
+  struct RowInfo m_xRowInfoPT[C_MAX_DUP_OPS];
 
   // join T & J (SR_TJ)
-  struct RowInfo m_xRowInfoTJ;
+  struct RowInfo m_xRowInfoTJ[C_MAX_DUP_OPS];
 
   // aggregate T (SR_AT)
-  struct RowInfo m_xRowInfoAT;
+  struct RowInfo m_xRowInfoAT[C_MAX_DUP_OPS];
 
   // Tub Output (SR_TO)
   void*  m_pTub;
-  struct RowInfo m_xRowInfoTO;
+  struct RowInfo m_xRowInfoTO[C_MAX_DUP_OPS];
 
   // Pot Ouput (SR_PO)
   bool  m_bGeneratePot;
   void* m_pPot;
-  struct RowInfo m_xRowInfoPO;
+  struct RowInfo m_xRowInfoPO[C_MAX_DUP_OPS];
 
   // index scan T
-  struct IndexInfo m_xIndexInfoT;
+  struct IndexInfo m_xIndexInfoT[C_MAX_DUP_OPS];
 
   // index join with J
   i8 m_iJoinedRows;
-  struct IndexInfo m_xIndexInfoJ;
+  struct IndexInfo m_xIndexInfoJ[C_MAX_DUP_OPS];
 
   // payload (gby/srt/top)
   i8* m_aiPayload;
-  struct IndexInfo m_xIndexInfoPL;
+  struct IndexInfo m_xIndexInfoPL[C_MAX_DUP_OPS];
 
   void* m_aStreamDefOut;
 

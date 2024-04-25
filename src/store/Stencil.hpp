@@ -23,11 +23,14 @@ static const i8 C_MAX_OPS_PER_STAGE = 32;
 
     eHK          m_eHandlerKind;
     eSR          m_ePreviousStencil;
+    i8           m_iPrevDupOpNo;
     s256         m_sLabelLoop;
+
+    i8           m_iOpSketchCount[SK_ENUMS];
 
     // must be last
     Footer m_xFooter;
-  
+
   public:
     void* operator new(size_t);
     void  operator delete(void*);
@@ -48,7 +51,7 @@ static const i8 C_MAX_OPS_PER_STAGE = 32;
 
     OpSketch* pSketchAggreg    (StageDef* pStageDef, OpDef* pOpDef);
     OpSketch* pSketchAntiJoin  (StageDef* pStageDef, OpDef* pOpDef);
-    OpSketch* pSketchEos       (StageDef* pStageDef);
+    OpSketch* pSketchEos       (StageDef* pStageDef, OpSketch* pLastOpSketch);
     OpSketch* pSketchFilter    (StageDef* pStageDef, OpDef* pOpDef);
     OpSketch* pSketchGbyAgg    (StageDef* pStageDef, OpDef* pOpDef);
     OpSketch* pSketchIndexJoin (StageDef* pStageDef, OpDef* pOpDef);

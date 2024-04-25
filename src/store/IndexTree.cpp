@@ -125,13 +125,13 @@ extern "C" void* aExtern_IndexTreeFindInsertGenAsc(void* aDynamic, i8 nPayloadBy
 	Dynamic_T* pDynamicT = (Dynamic_T*)aDynamic;
 
 	// get the IndexTree
-	IndexTree* pIndexTree = (IndexTree*)pDynamicT->m_xIndexInfoPL.m_aIndexTree;
+	IndexTree* pIndexTree = (IndexTree*)pDynamicT->m_xIndexInfoPL[0].m_aIndexTree;
 
 	// get the key
-	Key* aKey = (Key*)pDynamicT->m_xIndexInfoPL.m_aEntKey;
+	Key* aKey = (Key*)pDynamicT->m_xIndexInfoPL[0].m_aEntKey;
 
 	// get the ent
-	Ent* pEntInt = (Ent*)pDynamicT->m_xIndexInfoPL.m_aEntInt;
+	Ent* pEntInt = (Ent*)pDynamicT->m_xIndexInfoPL[0].m_aEntInt;
 
 	// find and insert entry
 	Ent* pEntInserted =  pIndexTree->aFindInsertEntryAscGen(aKey, pEntInt, nPayloadBytes, pbInsertedEntry, &pDynamicT->m_iErrorCode);
@@ -190,7 +190,7 @@ extern "C" void* aExtern_IndexTreeNew(void* aIndexDef, i8* aiKeyKind) {
 extern "C" void vExtern_IndexNew(void* aDynamic, i8 nNumCols, ColumnInfo* pColumnInfo, bool bPayload) {
 
 	Dynamic_T* pDynamicT = (Dynamic_T*)aDynamic;
-	EntWrk* pEntWrk = (EntWrk*)pDynamicT->m_xIndexInfoPL.m_aEntWrk;
+	EntWrk* pEntWrk = (EntWrk*)pDynamicT->m_xIndexInfoPL[0].m_aEntWrk;
 
 	IndexDef* pIndexDef = new IndexDef;
 
@@ -203,13 +203,13 @@ extern "C" void vExtern_IndexNew(void* aDynamic, i8 nNumCols, ColumnInfo* pColum
 			pIndexDef->vHasDescending(true);
 	}
 
-	pDynamicT->m_xIndexInfoPL.m_aIndexDef = pIndexDef;
+	pDynamicT->m_xIndexInfoPL[0].m_aIndexDef = pIndexDef;
 
   IndexTree* pIndexTree = new IndexTree(nullptr, pIndexDef, C_UNKNOWN);
 
 	EntWrk::vEntKind(pEntWrk, bPayload, pIndexDef->eKeyKind());
 
-	pDynamicT->m_xIndexInfoPL.m_aIndexTree = pIndexTree;
+	pDynamicT->m_xIndexInfoPL[0].m_aIndexTree = pIndexTree;
 }
 
 extern "C" void vExtern_IndexFind(void* aIndexInfo, char* aTableName, char* aIndexName) {

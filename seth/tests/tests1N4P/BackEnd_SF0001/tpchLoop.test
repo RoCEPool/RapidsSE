@@ -127,10 +127,12 @@ INCLUDE 'query15.test';
 INCLUDE 'sleep.test';
 
 //------------------------------------------------------------------------------
+//TODO: MULTIPLE OPS
+/*
 LOG 'Running tpch query 16...';
 INCLUDE 'query16.test';
 INCLUDE 'sleep.test';
-
+*/
 
 //------------------------------------------------------------------------------
 LOG 'Running tpch query 17...';

@@ -22,17 +22,26 @@
 // function-vFilterBegin
 void vFilterBegin(Dynamic_T* aDynamicT) {
 
+  i8 PREV_DUP_OP;
+  i8 PREV_OP_NO;
+
   char* szStrArea;
-  struct __STRUCT_FROM__* p__STRUCT_FROM__;
-	RowInfo __ROW_INFO_FROM__;
+  struct __STRUCT_FROM___PREV_OP* p__STRUCT_FROM___PREV_OP;
+	RowInfo __ROW_INFO_FROM__[C_MAX_DUP_OPS];
 
   __L_LABEL_LOOP__:
 
   // marker-start
+
+  struct __STRUCT_TO___CURRENT_OP* p__STRUCT_TO___CURRENT_OP;
+
 __L_LABEL__:
 
-	p__STRUCT_FROM__ = (struct __STRUCT_FROM__*)__ROW_INFO_FROM__.m_aRowCellArray;
-	szStrArea = __ROW_INFO_FROM__.m_acStrArea;
+	p__STRUCT_FROM___PREV_OP = (struct __STRUCT_FROM___PREV_OP*)__ROW_INFO_FROM__[PREV_DUP_OP].m_aRowCellArray;
+	szStrArea = __ROW_INFO_FROM__[PREV_DUP_OP].m_acStrArea;
+
+  p__STRUCT_TO___CURRENT_OP = (struct __STRUCT_TO___CURRENT_OP*)p__STRUCT_FROM___PREV_OP;
+  szStrArea = __ROW_INFO_FROM__[PREV_DUP_OP].m_acStrArea;
 
   if ( ! aDynamicT->m_bProcessRow ) {
     aDynamicT->m_bProcessRow = true;

@@ -2313,7 +2313,7 @@ i8 Op::nTmpIndexSize(void)
   if (! aDynamicT)
     return -7;
 
-  IndexTree* pIndexTree = _pIndexTree(aDynamicT->m_xIndexInfoT.m_aIndexTree);
+  IndexTree* pIndexTree = _pIndexTree(aDynamicT->m_xIndexInfoT[0].m_aIndexTree);
   if (! pIndexTree)
     return -6;
   

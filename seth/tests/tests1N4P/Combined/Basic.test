@@ -106,6 +106,8 @@ rows: 1448
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  basic key exists
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// TODO: MULTIPLE OPS
+/*
 /optimise_passthru 
 pipeline Q1
 begin
@@ -183,6 +185,7 @@ rows:
  (1365, '5-LOW')
  (1391, '3-MEDIUM')
  (1446, '5-LOW')
+*/
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  basic index scan

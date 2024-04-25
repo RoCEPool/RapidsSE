@@ -3,6 +3,9 @@
 /*============================================================================*/
 
 /optimise_passthru
+/pipeline_def
+/keepCodeFile
+/weaved
 pipeline Query7
 begin
    stage S00 on origin :
@@ -12,30 +15,18 @@ begin
 
    stage S01 on all partitions :
      scan nation
+     // inflate
      | project "type INTEGER ( 19 ) as N_NATIONKEY N_NATIONKEY ,
                 type VARCHAR ( 0 ) as N2_N_NAME N_NAME"
-     | filter "type BOOLEAN N2_N_NAME 'FRANCE' == N2_N_NAME 'GERMANY' == OR"
-     | project "type INTEGER ( 19 ) as N_NATIONKEY N_NATIONKEY ,
-                type VARCHAR ( 0 ) as N2_N_NAME N2_N_NAME"
-     | combined 0
-     | next
-
-   stage S02 on all partitions :
-     indexJoin customer IxC_NATIONKEY "BOUND $I1 N_NATIONKEY =="
+     | indexJoin customer IxC_NATIONKEY "BOUND $I1 N_NATIONKEY =="
      | project "type INTEGER ( 19 ) as C_CUSTKEY C_CUSTKEY ,
                 type VARCHAR ( 0 ) as N2_N_NAME N2_N_NAME"
+     | indexJoin orders IxO_CUSTKEY "BOUND $I1 C_CUSTKEY =="
      | combined 0
      | next
 
-   stage S03 on all partitions  multiple threads 4:
-     indexJoin orders IxO_CUSTKEY "BOUND $I1 C_CUSTKEY =="
-     | project "type integer ( 19 ) as O_ORDERKEY O_ORDERKEY ,
-                type VARCHAR ( 0 ) as N2_N_NAME N2_N_NAME"
-     | hash "type INTEGER ( 19 ) O_ORDERKEY"
-     | combined 0
-     | next hashcast
-
-   stage S04 on all partitions  multiple threads 4:
+   stage S04 on all partitions:
+     // PdsRow
      indexJoin LineItem IxL_ORDERKEY "BOUND $I1 O_ORDERKEY =="
      | project "type INTEGER ( 19 ) as L_SUPPKEY L_SUPPKEY ,
                 type VARCHAR ( 0 ) as N2_N_NAME N2_N_NAME ,
@@ -77,7 +68,7 @@ begin
                       type DECIMAL ( 19  2 ) AS REVENUE ) VOLUME sum  "
      | combined 0
      | next
-
+/*
    stage S08 on all nodes :
     gbyAgg " GroupBy type VARCHAR ( 0 ) as N1_N_NAME N1_N_NAME ,
                      type VARCHAR ( 0 ) as N2_N_NAME N2_N_NAME ,
@@ -101,7 +92,7 @@ begin
                       type DECIMAL ( 19  2 ) AS REVENUE ) REVENUE sum  "
      | combined 0
      | next
-
+*/
    stage S10 on origin :
      output
      | sink

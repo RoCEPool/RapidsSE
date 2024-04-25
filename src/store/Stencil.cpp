@@ -43,8 +43,14 @@ Stencil::Stencil(void)
   m_pOpSource    = nullptr;
   m_eHandlerKind = HK_NONE;
   m_ePreviousStencil  = SR_NONE;
+  m_iPrevDupOpNo = C_UNKNOWN;
   m_sLabelLoop   = ""_Stz;
-  
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // initialize the OpSketch count
+  for (i8 iIndex = 0; iIndex < SK_ENUMS; iIndex++)
+    m_iOpSketchCount[iIndex]= 0;
+
   try {
     m_pOpSource    = new CombinedSrc;
   }
@@ -205,6 +211,9 @@ eEC Stencil::eSynthesise(StageDef *pStageDef)
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 	// for each operator in the stageDef
+
+  m_iPrevDupOpNo = C_UNKNOWN;
+
 	for (i8 i_Op = 0; i_Op < pStageDef->nItems(); i_Op++) {
 
 		// get the opDef
@@ -224,6 +233,8 @@ eEC Stencil::eSynthesise(StageDef *pStageDef)
 
 			bInflateGenerated = true;
 			m_ePreviousStencil = SR_IT;
+      m_iPrevDupOpNo = pOpSketch->m_iDupOpNo;
+
 			continue;
 		}
 
@@ -239,6 +250,7 @@ eEC Stencil::eSynthesise(StageDef *pStageDef)
 
 			bInflateGenerated = true;
 			m_ePreviousStencil = SR_IT;
+      m_iPrevDupOpNo = pOpSketch->m_iDupOpNo;
 			continue;
 		}
 
@@ -255,6 +267,7 @@ eEC Stencil::eSynthesise(StageDef *pStageDef)
 
 			bInflateGenerated = true;
 			m_ePreviousStencil = SR_IT;
+      m_iPrevDupOpNo = pOpSketch->m_iDupOpNo;
 		}
 
     RASSERT(bInflateGenerated);
@@ -269,10 +282,11 @@ eEC Stencil::eSynthesise(StageDef *pStageDef)
 
 			m_ePreviousStencil = SR_AT;
 			m_eHandlerKind = HK_EOS;
+      m_iPrevDupOpNo = pOpSketch->m_iDupOpNo;
 
 			OpSketch *pAggOpSketch = pOpSketch;
 
-			pOpSketch = pSketchEos(pStageDef);
+			pOpSketch = pSketchEos(pStageDef, pAggOpSketch);
 			vAppend(pOpSketch);
 
 			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -280,6 +294,7 @@ eEC Stencil::eSynthesise(StageDef *pStageDef)
 			vAppend(pOpSketch);
 
 			bGeneratePotTub = false;
+      m_iPrevDupOpNo = pOpSketch->m_iDupOpNo;
 			continue;
 		}
 
@@ -290,6 +305,9 @@ eEC Stencil::eSynthesise(StageDef *pStageDef)
 			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 			pOpSketch = pSketchFilter(pStageDef, pOpDef);
 			vAppend(pOpSketch);
+
+      m_iPrevDupOpNo = pOpSketch->m_iDupOpNo;
+
 			continue;
 		}
 
@@ -303,10 +321,11 @@ eEC Stencil::eSynthesise(StageDef *pStageDef)
 
 			m_ePreviousStencil = SR_PL;
 			m_eHandlerKind = HK_EOS;
+      m_iPrevDupOpNo = pOpSketch->m_iDupOpNo;
 
 			OpSketch *pGbyAggOpSketch = pOpSketch;
 
-			pOpSketch = pSketchEos(pStageDef);
+			pOpSketch = pSketchEos(pStageDef, pGbyAggOpSketch);
 			vAppend(pOpSketch);
 
 			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -315,6 +334,7 @@ eEC Stencil::eSynthesise(StageDef *pStageDef)
 
 			bGeneratePotTub = false;
 			bPayload = true;
+      m_iPrevDupOpNo = pOpSketch->m_iDupOpNo;
 			continue;
 		}
 
@@ -334,9 +354,11 @@ eEC Stencil::eSynthesise(StageDef *pStageDef)
 			pOpSketch = pSketchIndexJoin(pStageDef, pOpDef);
 			vAppend(pOpSketch);
 
-			m_sLabelLoop = "L_AdvanceNextRowJ"_Stz;
+			//m_sLabelLoop = "L_AdvanceNextRowJ"_Stz;
+      StrLib::vSprint(m_sLabelLoop, sizeof(m_sLabelLoop), nullptr, "L_AdvanceNextRowJ_%lld"_Stz, pOpSketch->m_iOperatorNo);
 
-			m_ePreviousStencil = SR_TJ;
+      m_ePreviousStencil = SR_TJ;
+      m_iPrevDupOpNo = pOpSketch->m_iDupOpNo;
 			continue;
 		}
 
@@ -352,6 +374,9 @@ eEC Stencil::eSynthesise(StageDef *pStageDef)
 			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 			pOpSketch = pSketchLimit(pStageDef, pOpDef);
 			vAppend(pOpSketch);
+
+      m_iPrevDupOpNo = pOpSketch->m_iDupOpNo;
+
 			continue;
 		}
 
@@ -364,6 +389,7 @@ eEC Stencil::eSynthesise(StageDef *pStageDef)
 			vAppend(pOpSketch);
 
 			m_ePreviousStencil = SR_AT;
+      m_iPrevDupOpNo = pOpSketch->m_iDupOpNo;
 			continue;
 		}
 
@@ -384,7 +410,7 @@ eEC Stencil::eSynthesise(StageDef *pStageDef)
 				// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 				// sketch EOS handler function
 				m_eHandlerKind = HK_EOS;
-				OpSketch* pEosOpSketch = pSketchEos(pStageDef);
+				OpSketch* pEosOpSketch = pSketchEos(pStageDef, pOpSketch);
 				vAppend(pEosOpSketch);
 
 				bGeneratePotTub = false;
@@ -396,6 +422,7 @@ eEC Stencil::eSynthesise(StageDef *pStageDef)
 			vAppend(pOpSketch);
 
 			m_ePreviousStencil = SR_PT;
+      m_iPrevDupOpNo = pOpSketch->m_iDupOpNo;
 			continue;
 		}
 
@@ -406,6 +433,7 @@ eEC Stencil::eSynthesise(StageDef *pStageDef)
 			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 			pOpSketch = pSketchSemiJoin(pStageDef, pOpDef);
 			vAppend(pOpSketch);
+      m_iPrevDupOpNo = pOpSketch->m_iDupOpNo;
 
 			continue;
 		}
@@ -417,6 +445,7 @@ eEC Stencil::eSynthesise(StageDef *pStageDef)
 			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 			pOpSketch = pSketchAntiJoin(pStageDef, pOpDef);
 			vAppend(pOpSketch);
+      m_iPrevDupOpNo = pOpSketch->m_iDupOpNo;
 
 			continue;
 		}
@@ -431,15 +460,17 @@ eEC Stencil::eSynthesise(StageDef *pStageDef)
 
 			m_ePreviousStencil = SR_PL;
 			m_eHandlerKind = HK_EOS;
+      m_iPrevDupOpNo = pOpSketch->m_iDupOpNo;
 
 			OpSketch *pSortOpSketch = pOpSketch;
 
-			pOpSketch = pSketchEos(pStageDef);
+			pOpSketch = pSketchEos(pStageDef, pSortOpSketch);
 			vAppend(pOpSketch);
 
 			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 			pOpSketch = pSketchPotTub(pSortOpSketch, bGeneratePot, pHashOpDef, sLimitExpr);
 			vAppend(pOpSketch);
+      m_iPrevDupOpNo = pOpSketch->m_iDupOpNo;
 
 			bGeneratePotTub = false;
 			bPayload = true;
@@ -456,11 +487,13 @@ eEC Stencil::eSynthesise(StageDef *pStageDef)
 
 			m_ePreviousStencil = SR_PL;
 			m_eHandlerKind = HK_EOS;
+      m_iPrevDupOpNo = pOpSketch->m_iDupOpNo;
 
 			OpSketch *pTopOpSketch = pOpSketch;
 
-			pOpSketch = pSketchEos(pStageDef);
+			pOpSketch = pSketchEos(pStageDef, pTopOpSketch);
 			vAppend(pOpSketch);
+      m_iPrevDupOpNo = pOpSketch->m_iDupOpNo;
 
 			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 			pOpSketch = pSketchPotTub(pTopOpSketch, bGeneratePot, pHashOpDef, sLimitExpr);
@@ -468,11 +501,12 @@ eEC Stencil::eSynthesise(StageDef *pStageDef)
 
 			bGeneratePotTub = false;
 			bPayload = true;
+      m_iPrevDupOpNo = pOpSketch->m_iDupOpNo;
 			continue;
 		}
-
 	}
 
+  // save the last opSketch
 	OpSketch* pLastOpSketch = pOpSketch;
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -487,7 +521,7 @@ eEC Stencil::eSynthesise(StageDef *pStageDef)
 		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 		// sketch EOS handler function
 		m_eHandlerKind = HK_EOS;
-		pOpSketch = pSketchEos(pStageDef);
+		pOpSketch = pSketchEos(pStageDef, pOpSketch);
 		vAppend(pOpSketch);
 	}
 
@@ -571,9 +605,13 @@ OpSketch* Stencil::pSketchIndexJoin(StageDef* pStageDef, OpDef* pOpDef)
 	  (pColPpg ? pColPpg->m_nPropagated : 0)
 	);
 
+  // get the sketchCount of same Op
+  i8 iOpSketchCount = m_iOpSketchCount[SK_INDEXJOIN]++;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the code for the join
-  pOpSketch = new OpSketch(pStageDef, i_Op, sJoinExpr, m_eHandlerKind, SK_INDEXJOIN, m_ePreviousStencil, SR_TJ, II_JJ);
+  pOpSketch = new OpSketch(pStageDef, sJoinExpr, m_eHandlerKind, SK_INDEXJOIN, m_ePreviousStencil, SR_TJ, II_JJ);
+  pOpSketch->vSetOpNos(i_Op, iOpSketchCount, m_iPrevDupOpNo);
 
   sLabel.vSprint("L_%s_%d"_Stz, pOpDef->szOpNm(), i_Op);
   vGetNextLabel(sLabelNext, pStageDef, i_Op, "L_AddRowToTubPot"_Stz);
@@ -587,7 +625,11 @@ OpSketch* Stencil::pSketchIndexJoin(StageDef* pStageDef, OpDef* pOpDef)
 
   // set the labels in the opSketch
   sLabelOuterLoop = m_sLabelLoop;
-  pOpSketch->vSetLabels(sLabel, sLabelNext, "L_AdvanceNextRowJ"_Stz, sLabelOuterLoop);
+
+  s32 sLabelTemp;
+  StrLib::vSprint(sLabelTemp, sizeof(sLabelTemp), nullptr, "L_AdvanceNextRowJ_%lld"_Stz, pOpSketch->m_iOperatorNo);
+
+  pOpSketch->vSetLabels(sLabel, sLabelNext, sLabelTemp, sLabelOuterLoop);
 
 	// copy the colPpg
 	if (pColPpg)
@@ -657,8 +699,12 @@ OpSketch* Stencil::pSketchIndexScan(StageDef* pStageDef, OpDef* pOpDef)
   // get the index
   Index* pIndex = pOpDef->m_pIndex_indexScan;
 
+  // get the sketchCount of same Op
+  i8 iOpSketchCount = m_iOpSketchCount[SK_INDEXSCAN]++;
+
   // create a new opSketch for this OP
-  pOpSketch = new OpSketch(pStageDef, i_Op,sIndexScanExpr, m_eHandlerKind, SK_INDEXSCAN, SR_NONE, SR_IT, II_ST);
+  pOpSketch = new OpSketch(pStageDef, sIndexScanExpr, m_eHandlerKind, SK_INDEXSCAN, SR_NONE, SR_IT, II_ST);
+  pOpSketch->vSetOpNos(i_Op, iOpSketchCount, m_iPrevDupOpNo);
 
   // set the streamDef's
   pOpSketch->vStreamDefs(pStreamDefLft, nullptr, pStreamDefOut);
@@ -710,8 +756,12 @@ OpSketch* Stencil::pSketchInflateCrw(StageDef* pStageDef, OpDef* pOpDef) {
 	// get the colInj
 	ColInj* pColInj = pOpDef->m_pColInj;
 
+  // get the sketchCount of same Op
+  i8 iOpSketchCount = m_iOpSketchCount[SK_INFLATE_CRW]++;
+
   // create a new opSketch for this OP
-  pOpSketch = new OpSketch(pStageDef, i_Op, ""_Stz, m_eHandlerKind, SK_INFLATE_CRW, SR_NONE, SR_IT, II_NONE);
+  pOpSketch = new OpSketch(pStageDef, ""_Stz, m_eHandlerKind, SK_INFLATE_CRW, SR_NONE, SR_IT, II_NONE);
+  pOpSketch->vSetOpNos(i_Op, iOpSketchCount, m_iPrevDupOpNo);
 
   // set the streamDef's
   pOpSketch->vStreamDefs(pStreamDefLft, nullptr, pStreamDefOut);
@@ -748,8 +798,12 @@ OpSketch* Stencil::pSketchPdsRow(StageDef* pStageDef, OpDef* pOpDef) {
   StreamDef *pStreamDefOut = pOpDef->m_pStreamDef_emitted;
   StreamDef *pStreamDefLft = pOpDef->m_pStreamDef_arriving;
 
+  // get the sketchCount of same Op
+  i8 iOpSketchCount = m_iOpSketchCount[SK_INFLATE_ROW]++;
+
   // create a new opSketch for this OP
-  pOpSketch = new OpSketch(pStageDef, i_Op, ""_Stz, m_eHandlerKind, SK_INFLATE_ROW, SR_NONE, SR_IT, II_NONE);
+  pOpSketch = new OpSketch(pStageDef, ""_Stz, m_eHandlerKind, SK_INFLATE_ROW, SR_NONE, SR_IT, II_NONE);
+  pOpSketch->vSetOpNos(i_Op, iOpSketchCount, m_iPrevDupOpNo);
 
   // set the streamDef's
   pOpSketch->vStreamDefs(pStreamDefLft, nullptr, pStreamDefOut);
@@ -767,15 +821,20 @@ OpSketch* Stencil::pSketchPdsRow(StageDef* pStageDef, OpDef* pOpDef) {
 /*----------------------------------------------------------------------------*/
 /* sketch eos                                                                 */
 /*----------------------------------------------------------------------------*/
-OpSketch* Stencil::pSketchEos(StageDef* pStageDef) {
+OpSketch* Stencil::pSketchEos(StageDef* pStageDef, OpSketch* pLastOpSketch) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
 
   s4K sLabel;
   s4K sLabelNext;
 
+  // get the sketchCount of same Op
+  i8 iOpSketchCount = m_iOpSketchCount[SK_EOS]++;
+  i8 i_Op = pLastOpSketch->m_iOperatorNo + 1;
+
   // create a new opSketch
-  OpSketch* pOpSketch = new OpSketch(pStageDef, C_UNKNOWN, ""_Stz, m_eHandlerKind, SK_EOS, m_ePreviousStencil, SR_NONE, II_NONE);
+  OpSketch* pOpSketch = new OpSketch(pStageDef, ""_Stz, m_eHandlerKind, SK_EOS, m_ePreviousStencil, SR_NONE, II_NONE);
+  pOpSketch->vSetOpNos(i_Op, iOpSketchCount, m_iPrevDupOpNo);
 
   sLabel = ""_Stz;
   sLabelNext = ""_Stz;
@@ -805,8 +864,12 @@ OpSketch* Stencil::pSketchFilter(StageDef* pStageDef, OpDef* pOpDef) {
   StreamDef *pStreamDefLft = pOpDef->m_pStreamDef_arriving;
   StreamDef *pStreamDefOut = pOpDef->m_pStreamDef_arriving;
 
+  // get the sketchCount of same Op
+  i8 iOpSketchCount = m_iOpSketchCount[SK_FILTER]++;
+
   // create a new opSketch for this OP
-  OpSketch *pOpSketch = new OpSketch(pStageDef, i_Op, sFilterExpr, m_eHandlerKind, SK_FILTER, m_ePreviousStencil, SR_NONE, II_NONE);
+  OpSketch *pOpSketch = new OpSketch(pStageDef, sFilterExpr, m_eHandlerKind, SK_FILTER, m_ePreviousStencil, m_ePreviousStencil, II_NONE);
+  pOpSketch->vSetOpNos(i_Op, iOpSketchCount, m_iPrevDupOpNo);
 
   // set the streamDef's
   pOpSketch->vStreamDefs(pStreamDefLft, nullptr, pStreamDefOut);
@@ -851,9 +914,13 @@ OpSketch* Stencil::pSketchSemiJoin(StageDef* pStageDef, OpDef* pOpDef) {
   // get the index
   Index *pIndex = pOpDef->m_pIndex_indexSemi;
 
+  // get the sketchCount of same Op
+  i8 iOpSketchCount = m_iOpSketchCount[SK_SEMIJOIN]++;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the code for the semi-join
-  pOpSketch = new OpSketch(pStageDef, i_Op, sJoinExpr, m_eHandlerKind, SK_SEMIJOIN, m_ePreviousStencil, SR_IJ, II_JJ);
+  pOpSketch = new OpSketch(pStageDef, sJoinExpr, m_eHandlerKind, SK_SEMIJOIN, m_ePreviousStencil, SR_IJ, II_JJ);
+  pOpSketch->vSetOpNos(i_Op, iOpSketchCount, m_iPrevDupOpNo);
 
   // set the streamDefRht
   // pOpSketch->vStreamDefRht(pStreamDefRht);
@@ -905,9 +972,13 @@ OpSketch* Stencil::pSketchLimit(StageDef* pStageDef, OpDef* pOpDef) {
   StreamDef *pStreamDefOut = pOpDef->m_pStreamDef_arriving;
   RASSERT(pStreamDefOut);
 
+  // get the sketchCount of same Op
+  i8 iOpSketchCount = m_iOpSketchCount[SK_LIMIT]++;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create a new opSketch for this OP
-  OpSketch *pOpSketch = new OpSketch(pStageDef, i_Op, sLimitExpr, m_eHandlerKind, SK_LIMIT, m_ePreviousStencil, SR_NONE, II_NONE);
+  OpSketch *pOpSketch = new OpSketch(pStageDef, sLimitExpr, m_eHandlerKind, SK_LIMIT, m_ePreviousStencil, m_ePreviousStencil, II_NONE);
+  pOpSketch->vSetOpNos(i_Op, iOpSketchCount, m_iPrevDupOpNo);
 
   // set the streamDef's
   pOpSketch->vStreamDefs(pStreamDefLft, nullptr, pStreamDefOut);
@@ -944,8 +1015,12 @@ OpSketch* Stencil::pSketchOrdAgg(StageDef* pStageDef, OpDef* pOpDef) {
   StreamDef *pStreamDefLft = pOpDef->m_pStreamDef_arriving;
   StreamDef *pStreamDefOut = pOpDef->m_pStreamDef_emitted;
 
+  // get the sketchCount of same Op
+  i8 iOpSketchCount = m_iOpSketchCount[SK_ORDAGG]++;
+
   // create a new opSketch for this OP
-  OpSketch *pOpSketch = new OpSketch(pStageDef, i_Op, sOrdAggExpr, m_eHandlerKind, SK_ORDAGG, m_ePreviousStencil, SR_AT, II_NONE);
+  OpSketch *pOpSketch = new OpSketch(pStageDef, sOrdAggExpr, m_eHandlerKind, SK_ORDAGG, m_ePreviousStencil, SR_AT, II_NONE);
+  pOpSketch->vSetOpNos(i_Op, iOpSketchCount, m_iPrevDupOpNo);
 
   // set the streamDef's
   pOpSketch->vStreamDefs(pStreamDefLft, nullptr, pStreamDefOut);
@@ -1000,8 +1075,12 @@ OpSketch* Stencil::pSketchAggreg(StageDef* pStageDef, OpDef* pOpDef)
   StreamDef *pStreamDefLft = pOpDef->m_pStreamDef_arriving;
   StreamDef *pStreamDefOut = pOpDef->m_pStreamDef_emitted;
 
+  // get the sketchCount of same Op
+  i8 iOpSketchCount = m_iOpSketchCount[SK_AGGREG]++;
+
   // create a new opSketch for this OP
-  OpSketch *pOpSketch = new OpSketch(pStageDef, i_Op, sAggregExpr, m_eHandlerKind, SK_AGGREG, m_ePreviousStencil, SR_AT, II_NONE);
+  OpSketch *pOpSketch = new OpSketch(pStageDef, sAggregExpr, m_eHandlerKind, SK_AGGREG, m_ePreviousStencil, SR_AT, II_NONE);
+  pOpSketch->vSetOpNos(i_Op, iOpSketchCount, m_iPrevDupOpNo);
 
   // set the streamDef's
   pOpSketch->vStreamDefs(pStreamDefLft, nullptr, pStreamDefOut);
@@ -1045,9 +1124,13 @@ OpSketch* Stencil::pSketchAntiJoin(StageDef* pStageDef, OpDef* pOpDef) {
   // get the index
   Index *pIndex = pOpDef->m_pIndex_indexSemi;
 
+  // get the sketchCount of same Op
+  i8 iOpSketchCount = m_iOpSketchCount[SK_ANTIJOIN]++;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the code for the semi-join
-  pOpSketch = new OpSketch(pStageDef, i_Op, sJoinExpr, m_eHandlerKind, SK_ANTIJOIN, m_ePreviousStencil, SR_IJ, II_JJ);
+  pOpSketch = new OpSketch(pStageDef, sJoinExpr, m_eHandlerKind, SK_ANTIJOIN, m_ePreviousStencil, SR_IJ, II_JJ);
+  pOpSketch->vSetOpNos(i_Op, iOpSketchCount, m_iPrevDupOpNo);
 
   // set the streamDefRht
   Table* pTable = pIndex->pTable();
@@ -1060,7 +1143,10 @@ OpSketch* Stencil::pSketchAntiJoin(StageDef* pStageDef, OpDef* pOpDef) {
   vGetNextLabel(sLabelNext, pStageDef, i_Op, "L_AddRowToTubPot"_Stz);
 
   // set the labels in the opSketch
-  pOpSketch->vSetLabels(sLabel, sLabelNext, "L_AdvanceNextRowJ"_Stz, m_sLabelLoop);
+  s32 sLabelTemp;
+  StrLib::vSprint(sLabelTemp, sizeof(sLabelTemp), nullptr, "L_AdvanceNextRowJ_%lld"_Stz, pOpSketch->m_iOperatorNo);
+
+  pOpSketch->vSetLabels(sLabel, sLabelNext, sLabelTemp, m_sLabelLoop);
 
   // set the indexDef
   pOpSketch->vTable(pTable);
@@ -1094,8 +1180,12 @@ OpSketch* Stencil::pSketchProject(StageDef* pStageDef, OpDef* pOpDef)
   StreamDef *pStreamDefLft = pOpDef->m_pStreamDef_arriving;
   StreamDef *pStreamDefOut = pOpDef->m_pStreamDef_emitted;
 
+  // get the sketchCount of same Op
+  i8 iOpSketchCount = m_iOpSketchCount[SK_PROJECT]++;
+
   // create a new opSketch for this OP
-  OpSketch *pOpSketch = new OpSketch(pStageDef, i_Op, sProjectExpr, m_eHandlerKind, SK_PROJECT, m_ePreviousStencil, SR_PT, II_NONE);
+  OpSketch *pOpSketch = new OpSketch(pStageDef, sProjectExpr, m_eHandlerKind, SK_PROJECT, m_ePreviousStencil, SR_PT, II_NONE);
+  pOpSketch->vSetOpNos(i_Op, iOpSketchCount, m_iPrevDupOpNo);
 
   // set the streamDef's
   pOpSketch->vStreamDefs(pStreamDefLft, nullptr, pStreamDefOut);
@@ -1132,15 +1222,28 @@ OpSketch* Stencil::pSketchPrjPotTub(StageDef* pStageDef, OpDef* pOpDef, bool bGe
 	StreamDef *pStreamDefLft = pOpDef->m_pStreamDef_arriving;
 	StreamDef *pStreamDefOut = pOpDef->m_pStreamDef_emitted;
 
-	// create a new opSketch
+  i8 iOpSketchCount;
+
+  // create a new opSketch
 	if (bGeneratePot) {
-		pOpSketch = new OpSketch(pStageDef, i_Op, sProjectExpr, m_eHandlerKind, SK_PRJPOT, m_ePreviousStencil, SR_PO,  II_NONE);
+
+    // get the sketchCount of same Op
+    iOpSketchCount = m_iOpSketchCount[SK_PRJPOT]++;
+
+		pOpSketch = new OpSketch(pStageDef, sProjectExpr, m_eHandlerKind, SK_PRJPOT, m_ePreviousStencil, SR_PO,  II_NONE);
+    pOpSketch->vSetOpNos(i_Op, iOpSketchCount, m_iPrevDupOpNo);
 		pOpSketch->vLimitExpr(sLimitExpr);
 	}
 	else {
-		pOpSketch = new OpSketch(pStageDef, i_Op, sProjectExpr, m_eHandlerKind, SK_PRJTUB, m_ePreviousStencil, SR_TO,  II_NONE);
+
+    // get the sketchCount of same Op
+    iOpSketchCount = m_iOpSketchCount[SK_PRJTUB]++;
+
+		pOpSketch = new OpSketch(pStageDef, sProjectExpr, m_eHandlerKind, SK_PRJTUB, m_ePreviousStencil, SR_TO,  II_NONE);
 		pOpSketch->vLimitExpr(sLimitExpr);
 	}
+
+  pOpSketch->vSetOpNos(i_Op, iOpSketchCount, m_iPrevDupOpNo);
 
 	// set the streamDef's
 	pOpSketch->vStreamDefs(pStreamDefLft, nullptr, pStreamDefOut);
@@ -1191,8 +1294,12 @@ OpSketch* Stencil::pSketchGbyAgg(StageDef* pStageDef, OpDef* pOpDef)
   StreamDef *pStreamDefLft = pOpDef->m_pStreamDef_arriving;
   StreamDef *pStreamDefOut = pOpDef->m_pStreamDef_emitted;
 
+  // get the sketchCount of same Op
+  i8 iOpSketchCount = m_iOpSketchCount[SK_GBYAGG]++;
+
   // create a new opSketch for this OP
-  OpSketch *pOpSketch = new OpSketch(pStageDef, i_Op, sGbyAggExpr, m_eHandlerKind, SK_GBYAGG, m_ePreviousStencil, SR_NONE, II_PL);
+  OpSketch *pOpSketch = new OpSketch(pStageDef, sGbyAggExpr, m_eHandlerKind, SK_GBYAGG, m_ePreviousStencil, SR_NONE, II_PL);
+  pOpSketch->vSetOpNos(i_Op, iOpSketchCount, m_iPrevDupOpNo);
 
   // set the streamDef's
   pOpSketch->vStreamDefs(pStreamDefLft, nullptr, pStreamDefOut);
@@ -1242,8 +1349,12 @@ OpSketch* Stencil::pSketchSort(StageDef* pStageDef, OpDef* pOpDef)
   StreamDef *pStreamDefLft = pOpDef->m_pStreamDef_arriving;
   StreamDef *pStreamDefOut = pOpDef->m_pStreamDef_emitted;
 
+  // get the sketchCount of same Op
+  i8 iOpSketchCount = m_iOpSketchCount[SK_SORT]++;
+
   // create a new opSketch for this OP
-  OpSketch *pOpSketch = new OpSketch(pStageDef, i_Op, sSortExpr, m_eHandlerKind, SK_SORT, m_ePreviousStencil, SR_NONE,  II_PL);
+  OpSketch *pOpSketch = new OpSketch(pStageDef, sSortExpr, m_eHandlerKind, SK_SORT, m_ePreviousStencil, SR_NONE,  II_PL);
+  pOpSketch->vSetOpNos(i_Op, iOpSketchCount, m_iPrevDupOpNo);
 
   // set the streamDef's
   pOpSketch->vStreamDefs(pStreamDefLft, nullptr, pStreamDefOut);
@@ -1284,8 +1395,13 @@ OpSketch* Stencil::pSketchStreamDef(OpSketch* pLastOp) {
   StreamDef *pStreamDefOut = pLastOp->m_pStreamDefOut;
   RASSERT(pStreamDefOut);
 
+  // get the sketchCount of same Op
+  i8 iOpSketchCount = m_iOpSketchCount[SK_STREAMDEF]++;
+  i8 i_Op = pLastOp->m_iOperatorNo + 1;
+
   // create a new opSketch
-  OpSketch* pOpSketch = new OpSketch(nullptr, C_UNKNOWN, ""_Stz, m_eHandlerKind, SK_STREAMDEF, SR_NONE,  SR_NONE, II_NONE);
+  OpSketch* pOpSketch = new OpSketch(nullptr, ""_Stz, m_eHandlerKind, SK_STREAMDEF, SR_NONE,  SR_NONE, II_NONE);
+  pOpSketch->vSetOpNos(i_Op, iOpSketchCount, m_iPrevDupOpNo);
 
   // set the streamDef's
   pOpSketch->vStreamDefs(pStreamDefOut, nullptr, pStreamDefOut);
@@ -1318,8 +1434,12 @@ OpSketch* Stencil::pSketchTop(StageDef* pStageDef, OpDef* pOpDef)
   // get the columns required
   ColMap* pColsMap = pOpDef->m_pColMap_top;
 
+  // get the sketchCount of same Op
+  i8 iOpSketchCount = m_iOpSketchCount[SK_TOP]++;
+
   // create a new opSketch for this OP
-  OpSketch *pOpSketch = new OpSketch(pStageDef, i_Op, sTopExpr, m_eHandlerKind, SK_TOP, m_ePreviousStencil, SR_NONE,  II_PL);
+  OpSketch *pOpSketch = new OpSketch(pStageDef, sTopExpr, m_eHandlerKind, SK_TOP, m_ePreviousStencil, SR_NONE,  II_PL);
+  pOpSketch->vSetOpNos(i_Op, iOpSketchCount, m_iPrevDupOpNo);
 
   // set the streamDef's
   pOpSketch->vStreamDefs(pStreamDefLft, nullptr, pStreamDefOut);
@@ -1364,15 +1484,28 @@ OpSketch* Stencil::pSketchPotTub(OpSketch* pLastOp, bool bGeneratePot, OpDef* pH
   StreamDef *pStreamDefOut = pLastOp->m_pStreamDefOut;
   RASSERT(pStreamDefOut);
 
+  i8 iOpSketchCount;
+  i8 i_Op = pLastOp->m_iOperatorNo + 1;
+
   // create a new opSketch
   if (bGeneratePot) {
-    pOpSketch = new OpSketch(nullptr, C_UNKNOWN, ""_Stz, m_eHandlerKind, SK_POT, m_ePreviousStencil, SR_PO,  II_PL);
+
+    // get the sketchCount of same Op
+    iOpSketchCount = m_iOpSketchCount[SK_POT]++;
+
+    pOpSketch = new OpSketch(nullptr, ""_Stz, m_eHandlerKind, SK_POT, m_ePreviousStencil, SR_PO,  II_PL);
     pOpSketch->vLimitExpr(sLimitExpr);
   }
   else {
-    pOpSketch = new OpSketch(nullptr, C_UNKNOWN, ""_Stz, m_eHandlerKind, SK_TUB, m_ePreviousStencil, SR_TO,  II_PL);
+
+    // get the sketchCount of same Op
+    iOpSketchCount = m_iOpSketchCount[SK_TUB]++;
+
+    pOpSketch = new OpSketch(nullptr, ""_Stz, m_eHandlerKind, SK_TUB, m_ePreviousStencil, SR_TO,  II_PL);
     pOpSketch->vLimitExpr(sLimitExpr);
   }
+
+  pOpSketch->vSetOpNos(i_Op, iOpSketchCount, m_iPrevDupOpNo);
 
   // set the streamDef's
   pOpSketch->vStreamDefs(pStreamDefOut, nullptr, pStreamDefOut);

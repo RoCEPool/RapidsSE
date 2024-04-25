@@ -113,6 +113,19 @@ bool CodeSynthUtils::bExtract(File* pFile, OpSketch* pOpSketch, Stz* szFunMkr,
 
         vReplaceInsertEnt(sLine, pOpSketch);
 
+        // cater to multiple replaces of IndexInfo
+        if (bReplaceCurrentDupOp(sLine, sReplacedLine, pOpSketch))
+          sLine = sReplacedLine;
+
+        if (bReplaceCurrentOp(sLine, sReplacedLine, pOpSketch))
+          sLine = sReplacedLine;
+
+        if (bReplacePrevOp(sLine, sReplacedLine, pOpSketch))
+          sLine = sReplacedLine;
+
+        if (bReplacePrevDupOp(sLine, sReplacedLine, pOpSketch))
+          sLine = sReplacedLine;
+
         vReplaceTubPot(sLine, pOpSketch);
 
         // cater to multiple replaces of IndexInfo
@@ -222,6 +235,16 @@ bool CodeSynthUtils::bExtract(File* pFile, OpSketch* pOpSketch, Stz* szFunMkr,
 				vReplaceStructTo(sLine, pOpSketch);
 				vReplaceStructFrom(sLine, pOpSketch);
 
+        // cater to multiple replaces of IndexInfo
+        if (bReplaceCurrentDupOp(sLine, sReplacedLine, pOpSketch))
+          sLine = sReplacedLine;
+
+        if (bReplacePrevOp(sLine, sReplacedLine, pOpSketch))
+          sLine = sReplacedLine;
+
+        if (bReplacePrevDupOp(sLine, sReplacedLine, pOpSketch))
+          sLine = sReplacedLine;
+
 				vReplaceColumnsInflated(sLine, pOpSketch);
 				vReplaceColumnsToInflate(sLine, pOpSketch);
 				vReplaceNumColumns(sLine, pOpSketch);
@@ -271,6 +294,7 @@ bool CodeSynthUtils::bExtractInflate(File* pFile, OpSketch* pOpSketch, Column* p
   _static_
 
   s4K sLine;
+  s4K sReplacedLine;
   bool bFoundFunc = false;
   bool bFoundStart = false;
 
@@ -316,6 +340,16 @@ bool CodeSynthUtils::bExtractInflate(File* pFile, OpSketch* pOpSketch, Column* p
 
 				vReplaceStructTo(sLine, pOpSketch);
 
+        // cater to multiple replaces of IndexInfo
+        if (bReplaceCurrentDupOp(sLine, sReplacedLine, pOpSketch))
+          sLine = sReplacedLine;
+
+        if (bReplacePrevOp(sLine, sReplacedLine, pOpSketch))
+          sLine = sReplacedLine;
+
+        if (bReplacePrevDupOp(sLine, sReplacedLine, pOpSketch))
+          sLine = sReplacedLine;
+
 				if (pColumn) {
 					vReplaceUnionType(sLine, pColumn);
 					vReplaceColumnTo(sLine, pColumn);
@@ -342,6 +376,7 @@ bool CodeSynthUtils::bExtractInflate(File* pFile, OpSketch* pOpSketch, Column* p
 	_static_
 
 	s4K sLine;
+  s4K sReplacedLine;
 	bool bFoundFunc = false;
 	bool bFoundStart = false;
 
@@ -387,6 +422,16 @@ bool CodeSynthUtils::bExtractInflate(File* pFile, OpSketch* pOpSketch, Column* p
 
 				vReplaceStructTo(sLine, pOpSketch);
 
+        // cater to multiple replaces of IndexInfo
+        if (bReplaceCurrentDupOp(sLine, sReplacedLine, pOpSketch))
+          sLine = sReplacedLine;
+
+        if (bReplacePrevOp(sLine, sReplacedLine, pOpSketch))
+          sLine = sReplacedLine;
+
+        if (bReplacePrevDupOp(sLine, sReplacedLine, pOpSketch))
+          sLine = sReplacedLine;
+
 				if (pColumn) {
 					//vReplaceUnionType(sLine, pColumn);
 					vReplaceColumnTo(sLine, pColumn);
@@ -413,6 +458,7 @@ bool CodeSynthUtils::bExtractInflate(File* pFile, OpSketch* pOpSketch, Column* p
 	_static_
 
 	s4K sLine;
+  s4K sReplacedLine;
 	bool bFoundFunc = false;
 	bool bFoundStart = false;
 
@@ -455,6 +501,16 @@ bool CodeSynthUtils::bExtractInflate(File* pFile, OpSketch* pOpSketch, Column* p
 			if (bFoundStart) {
 
 				vReplaceStructTo(sLine, pOpSketch);
+
+        // cater to multiple replaces of IndexInfo
+        if (bReplaceCurrentDupOp(sLine, sReplacedLine, pOpSketch))
+          sLine = sReplacedLine;
+
+        if (bReplacePrevOp(sLine, sReplacedLine, pOpSketch))
+          sLine = sReplacedLine;
+
+        if (bReplacePrevDupOp(sLine, sReplacedLine, pOpSketch))
+          sLine = sReplacedLine;
 
 				if (pColumn) {
 					vReplaceColumnTo(sLine, pColumn);
@@ -643,16 +699,22 @@ void CodeSynthUtils::vReplaceInsertEnt(String* sLine, OpSketch* pOpSketch) {
     if (pOpSketch->m_eSketchKind == SK_GBYAGG ||
         pOpSketch->m_eSketchKind == SK_SORT) {
       bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(), "__EXTERN_INSERTENT__()",
-         "aDynamicT->m_fp_aExtern_IndexTreeInsertEnt(aDynamicT->m_xIndexInfoPL.m_aIndexTree, aDynamicT->m_xIndexInfoPL.m_aEntInt, &aDynamicT->m_iErrorCode);");
+         "aDynamicT->m_fp_aExtern_IndexTreeInsertEnt(aDynamicT->m_xIndexInfoPL[CURRENT_DUP_OP].m_aIndexTree, aDynamicT->m_xIndexInfoPL[CURRENT_DUP_OP].m_aEntInt, &aDynamicT->m_iErrorCode)");
       RASSERT(bResult);
     }
     else {
       RASSERT(pOpSketch->m_eSketchKind == SK_TOP);
 
       bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(), "__EXTERN_INSERTENT__()",
-        "aDynamicT->m_fp_aExtern_IndexTreeInsertEntTop(aDynamicT->m_xIndexInfoPL.m_aIndexTree, aDynamicT->m_xIndexInfoPL.m_aEntInt, "
-           "&aDynamicT->m_xIndexInfoPL.m_aEntBottom, __TOP_COUNT__, &aDynamicT->m_iErrorCode)");
+        "aDynamicT->m_fp_aExtern_IndexTreeInsertEntTop(aDynamicT->m_xIndexInfoPL[CURRENT_DUP_OP].m_aIndexTree, aDynamicT->m_xIndexInfoPL[CURRENT_DUP_OP].m_aEntInt, "
+           "&aDynamicT->m_xIndexInfoPL[CURRENT_DUP_OP].m_aEntBottom, __TOP_COUNT__, &aDynamicT->m_iErrorCode)");
       RASSERT(bResult);
+
+//      s32 sDupOpNo;
+//      RASSERT(pOpSketch->m_iDupOpNo != C_UNKNOWN);
+//      StrLib::vSprint(sDupOpNo, sizeof(sDupOpNo), nullptr, "%lld"_Stz, pOpSketch->m_iDupOpNo);
+//      bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(), sLine->azStr(), "CURRENT_DUP_OP", sDupOpNo.azChar());
+//      RASSERT(bResult);
 
       bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(), "__TOP_COUNT__",pOpSketch->m_sLimitExpr.azChar());
       RASSERT(bResult);
@@ -865,6 +927,7 @@ bool CodeSynthUtils::bReplaceIndexInfo(String* sLine, String* sReplacedLine, OpS
   }
 
   if (StrLib::bContains(sLine->azStr(), "__INDEX_INFO__")) {
+
     switch(pOpSketch->m_eIndexInfo) {
       case II_ST:
         bResult = StrLib::bReplace(sReplacedLine->azStr(), sReplacedLine->nAreaBytes(),
@@ -881,6 +944,8 @@ bool CodeSynthUtils::bReplaceIndexInfo(String* sLine, String* sReplacedLine, OpS
       default:
         RASSERT(0);
     }
+
+
     return true;
   }
 
@@ -1001,23 +1066,119 @@ void CodeSynthUtils::vReplaceReturnToLabel(String* sLine, Stz* sReturnToLabel)
 /*----------------------------------------------------------------------------*/
 /* Extract code for function from file                                        */
 /*----------------------------------------------------------------------------*/
-void CodeSynthUtils::vReplaceStructTo(String* sLine, OpSketch* pOpSketch)
+bool CodeSynthUtils::bReplaceCurrentDupOp(String* sLine, String* sReplacedLine, OpSketch* pOpSketch)
 {
   _static_
 
+  if (StrLib::bContains(sLine->azStr(), "CURRENT_DUP_OP")) {
+    s32 sOperatorNo;
+    RASSERT(pOpSketch->m_iDupOpNo != C_UNKNOWN);
+    StrLib::vSprint(sOperatorNo, sizeof(sOperatorNo), nullptr, "%lld"_Stz, pOpSketch->m_iDupOpNo);
+    bool bResult = StrLib::bReplace(sReplacedLine->azStr(), sReplacedLine->nAreaBytes(),
+                                    sLine->azStr(), "CURRENT_DUP_OP", sOperatorNo.azChar());
+    RASSERT(bResult);
+    return true;
+  }
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Extract code for function from file                                        */
+/*----------------------------------------------------------------------------*/
+bool CodeSynthUtils::bReplaceCurrentOp(String* sLine, String* sReplacedLine, OpSketch* pOpSketch)
+{
+  _static_
+
+  if (StrLib::bContains(sLine->azStr(), "CURRENT_OP")) {
+    s32 sOperatorNo;
+    RASSERT(pOpSketch->m_iOperatorNo != C_UNKNOWN);
+    StrLib::vSprint(sOperatorNo, sizeof(sOperatorNo), nullptr, "%lld"_Stz, pOpSketch->m_iOperatorNo);
+    bool bResult = StrLib::bReplace(sReplacedLine->azStr(), sReplacedLine->nAreaBytes(),
+                                    sLine->azStr(), "CURRENT_OP", sOperatorNo.azChar());
+    RASSERT(bResult);
+    return true;
+  }
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Extract code for function from file                                        */
+/*----------------------------------------------------------------------------*/
+bool CodeSynthUtils::bReplacePrevDupOp(String* sLine, String* sReplacedLine, OpSketch* pOpSketch)
+{
+  _static_
+
+  if (StrLib::bContains(sLine->azStr(), "PREV_DUP_OP")) {
+    s32 sOperatorNo;
+    RASSERT(pOpSketch->m_iPrevDupOpNo != C_UNKNOWN);
+    StrLib::vSprint(sOperatorNo, sizeof(sOperatorNo), nullptr, "%lld"_Stz, pOpSketch->m_iPrevDupOpNo);
+    bool bResult = StrLib::bReplace(sReplacedLine->azStr(), sReplacedLine->nAreaBytes(),
+                                    sLine->azStr(), "PREV_DUP_OP", sOperatorNo.azChar());
+    RASSERT(bResult);
+    return true;
+  }
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Extract code for function from file                                        */
+/*----------------------------------------------------------------------------*/
+bool CodeSynthUtils::bReplacePrevOp(String* sLine, String* sReplacedLine, OpSketch* pOpSketch)
+{
+  _static_
+
+  if (StrLib::bContains(sLine->azStr(), "PREV_OP")) {
+    s32 sOperatorNo;
+    RASSERT(pOpSketch->m_iOperatorNo > 0);
+    StrLib::vSprint(sOperatorNo, sizeof(sOperatorNo), nullptr, "%lld"_Stz, pOpSketch->m_iOperatorNo - 1);
+    bool bResult = StrLib::bReplace(sReplacedLine->azStr(), sReplacedLine->nAreaBytes(),
+                                    sLine->azStr(), "PREV_OP", sOperatorNo.azChar());
+    RASSERT(bResult);
+    return true;
+  }
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Extract code for function from file                                        */
+/*----------------------------------------------------------------------------*/
+void CodeSynthUtils::vReplaceStructTo(String* sLine, OpSketch* pOpSketch)
+{
+  _static_
+	bool bResult;
+
   if (StrLib::bContains(sLine->azStr(), "p__STRUCT_TO__")) {
     RASSERT( pOpSketch->m_eStencilTo != SR_NONE );
-    bool bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(),
+    bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(),
                                     "__STRUCT_TO__", (char*)aSR[pOpSketch->m_eStencilTo]);
     RASSERT(bResult);
+
+		RASSERT(StrLib::bContains(sLine->azStr(), "CURRENT_OP"));
+		s32 sOperatorNo;
+    RASSERT(pOpSketch->m_iOperatorNo != C_UNKNOWN);
+		StrLib::vSprint(sOperatorNo, sizeof(sOperatorNo), nullptr, "%lld"_Stz, pOpSketch->m_iOperatorNo);
+		bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(),
+																		"CURRENT_OP", sOperatorNo.azChar());
+		RASSERT(bResult);
   }
 
   if (StrLib::bContains(sLine->azStr(), "__STRUCT_TO__")) {
-    RASSERT( pOpSketch->m_eStencilTo != SR_NONE );
-    bool bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(),
-                                    "__STRUCT_TO__", (char*)aSR[pOpSketch->m_eStencilTo]);
-    RASSERT(bResult);
-  }
+		RASSERT(pOpSketch->m_eStencilTo != SR_NONE);
+		bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(),
+																		"__STRUCT_TO__", (char *) aSR[pOpSketch->m_eStencilTo]);
+		RASSERT(bResult);
+		RASSERT(StrLib::bContains(sLine->azStr(), "CURRENT_OP"));
+    RASSERT(pOpSketch->m_iOperatorNo != C_UNKNOWN);
+		s32 sOperatorNo;
+		StrLib::vSprint(sOperatorNo, sizeof(sOperatorNo), nullptr, "%lld"_Stz, pOpSketch->m_iOperatorNo);
+	  bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(),
+																	"CURRENT_OP", sOperatorNo.azChar());
+	  RASSERT(bResult);
+	}
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1032,12 +1193,26 @@ void CodeSynthUtils::vReplaceStructFrom(String* sLine, OpSketch* pOpSketch)
     bool bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(),
                                     "__STRUCT_FROM__", (char*)aSR[pOpSketch->m_eStencilFrom]);
     RASSERT(bResult);
+    RASSERT(StrLib::bContains(sLine->azStr(), "PREV_OP"));
+    s32 sOperatorNo;
+    RASSERT(pOpSketch->m_iOperatorNo != C_UNKNOWN);
+    StrLib::vSprint(sOperatorNo, sizeof(sOperatorNo), nullptr, "%lld"_Stz, pOpSketch->m_iOperatorNo - 1);
+    bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(),
+                               "PREV_OP", sOperatorNo.azChar());
+    RASSERT(bResult);
   }
 
   if (StrLib::bContains(sLine->azStr(), "__STRUCT_FROM__")) {
     RASSERT( pOpSketch->m_eStencilFrom != SR_NONE );
     bool bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(),
                                     "__STRUCT_FROM__", (char*)aSR[pOpSketch->m_eStencilFrom]);
+    RASSERT(bResult);
+    RASSERT(StrLib::bContains(sLine->azStr(), "PREV_OP"));
+    s32 sOperatorNo;
+    RASSERT(pOpSketch->m_iOperatorNo != C_UNKNOWN);
+    StrLib::vSprint(sOperatorNo, sizeof(sOperatorNo), nullptr, "%lld"_Stz, pOpSketch->m_iOperatorNo - 1);
+    bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(),
+                               "PREV_OP", sOperatorNo.azChar());
     RASSERT(bResult);
   }
 
@@ -1232,6 +1407,7 @@ bool CodeSynthUtils::bReplaceRowInfoFrom(String* sLine, String* sReplacedLine, O
   _static_
 
   bool bResult;
+  s256 sRowInfo;
 
   if (StrLib::bContains(sLine->azStr(), "__ROW_INFO_FROM__")) {
     RASSERT( pOpSketch->m_eStencilFrom != SR_NONE );
@@ -1293,6 +1469,7 @@ bool CodeSynthUtils::bReplaceRowInfoTo(String* sLine, String* sReplacedLine, OpS
   _static_
 
   bool bResult;
+  s256 sRowInfo;
 
   if (StrLib::bContains(sLine->azStr(), "__ROW_INFO_TO__")) {
     RASSERT( pOpSketch->m_eStencilTo != SR_NONE );

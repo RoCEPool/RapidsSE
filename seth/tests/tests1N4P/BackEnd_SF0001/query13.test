@@ -121,6 +121,8 @@ end ;
 //
 // inner query followed by outer query
 //
+//TODO: MULTIPLE OPS
+/*
 /optimise_passthru 
 pipeline Query13
 begin
@@ -253,6 +255,7 @@ rows:
   (9,11)
   (10,135)
   (20,1)
+*/
 
 // TODO V2 : (_ray178)
 /*

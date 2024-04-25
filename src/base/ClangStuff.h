@@ -78,7 +78,7 @@ extern void* aExtern_PotAllotRowPds(void* pPot, i8 iKeyHash, char** aazStrArea, 
 extern i8    iExtern_StrLibWordFlipBack(char* psDst, i8 iDstBufSize, char* psSrc) __attribute__((weak_import));
 extern i8    iExtern_StrLibWordFlipSize(char* psSrc) __attribute__((weak_import));
 
-extern void vExtern_TubCreate(void* pDynamic, i8 nCols, void* pColumnInfo);
+//extern void vExtern_TubCreate(void* pDynamic, i8 nCols, void* pColumnInfo);
 
  */
 /*============================================================================*/
