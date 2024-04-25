@@ -592,6 +592,25 @@ void Step::vMetaDataTableTables(void)
   Dic* pDic = _pDic(pPtrDic);
   Word* pTableFolderWord = pDic->pLastWord();
 
+  // get the schema name
+  i8 i = 2;
+  while( pDic->eDicKind() != DK_SCHEMA) {
+    pPtrDic = m_oDicStack.pPick(iDepth - i);
+    pDic = _pDic(pPtrDic);
+    i++;
+  }
+
+  s256 sSchemaNm(pDic->szDicNm());
+
+  // get the catalog name
+  while( pDic->eDicKind() != DK_CATALOG) {
+    pPtrDic = m_oDicStack.pPick(iDepth - i);
+    pDic = _pDic(pPtrDic);
+    i++;
+  }
+
+  s256 sCatalogNm(pDic->szDicNm());
+
   // iterate dic table
 
   while(pTableFolderWord) {
@@ -612,6 +631,8 @@ void Step::vMetaDataTableTables(void)
     }
 
     Row* pRow = pPdsRowBuffer->pAllotRow(C_VARGS_BEGIN,
+                                         sCatalogNm.szStz(),
+                                         sSchemaNm.szStz(),
                                          pTableCur->szTableNm(),
                                          C_VARGS_END);
     if(! pRow) {

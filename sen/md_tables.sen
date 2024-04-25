@@ -11,7 +11,9 @@
   STD_BOOTFORK_TAG
   "
   define table tables (
-    TableName         VARCHAR NOT NULL
+    catalogName   VARCHAR NOT NULL ,
+    schemaName    VARCHAR NOT NULL ,
+    tableName     VARCHAR NOT NULL
   ) < metaData > = MetaDataTable[].tables ;
   "
   nullptr api::forkChild  api:executeCheck
