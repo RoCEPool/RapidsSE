@@ -202,10 +202,14 @@ void Step::vMetaDataTableColumns(void)
                                            sCatalogNm.szStz(),
                                            sSchemaNm.szStz(),
                                            pTableCur->szTableNm(),
-                                           pColumn->eColumnType(),
+                                           pColumn->iColumnNo(),
+                                           pColumn->szColNm(),
+                                           (i8)pColumn->eColumnType(),
+                                           aCT[pColumn->eColumnType()],
                                            pColumn->iColumnScale(),
                                            pColumn->iColumnLength(),
                                            pColumn->bIsNullable(),
+                                           (i8)pColumn->bIsPtnKey(),
                                            C_VARGS_END);
       i_Col++;
 

@@ -14,10 +14,14 @@
     CatalogName    VARCHAR NOT NULL ,
     SchemaName     VARCHAR NOT NULL ,
     TableName      VARCHAR NOT NULL ,
-    Type            INTEGER NOT NULL ,
-    Scale           INTEGER NOT NULL ,
-    Length       INTEGER NOT NULL ,
-    Nullable        BOOLEAN NOT NULL
+    ColumnNumber   INTEGER NOT NULL ,
+    Name           VARCHAR NOT NULL ,
+    EnumType       INTEGER NOT NULL ,
+    Type           VARCHAR NOT NULL ,
+    Scale          INTEGER NOT NULL ,
+    Length         INTEGER NOT NULL ,
+    Nullable       BOOLEAN NOT NULL ,
+    IsPartitionKey BOOLEAN NOT NULL
   ) < metaData > = MetaDataTable[].columns ;
   "
   nullptr api::forkChild  api:executeCheck
