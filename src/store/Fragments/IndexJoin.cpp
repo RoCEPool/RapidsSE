@@ -488,8 +488,10 @@ i8 iIndexJoinConstraint(Dynamic_T* aDynamicT) {
   bool bFilterResult;
 	char* szStrArea;
 
+  i8 CURRENT_DUP_OP;
+
   IndexInfo __INDEX_INFO__;
-  RowInfo __ROW_INFO_TO__;
+  RowInfo __ROW_INFO_TO__[C_MAX_DUP_OPS];
 
   i8 __CONSTRAINTSTACK__;
 
@@ -508,7 +510,7 @@ i8 iIndexJoinConstraint(Dynamic_T* aDynamicT) {
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // join constraint
-	szStrArea = __ROW_INFO_TO__.m_acStrArea;
+	szStrArea = __ROW_INFO_TO__[CURRENT_DUP_OP].m_acStrArea;
 
   __CONSTRAINTSTACK__;
 
@@ -529,7 +531,7 @@ i8 iIndexJoinConstraint(Dynamic_T* aDynamicT) {
 
   __L_LABEL_LOOP__:
 
-  __ROW_INFO_TO__.m_acStrArea = __ROW_INFO_TO__.m_acStrAreaSav;
+  __ROW_INFO_TO__[CURRENT_DUP_OP].m_acStrArea = __ROW_INFO_TO__[CURRENT_DUP_OP].m_acStrAreaSav;
 
   // check if last row was a leftOuter
   if ( bLeftOuterRow ) {
