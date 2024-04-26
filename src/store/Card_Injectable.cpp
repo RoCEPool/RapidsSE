@@ -11,7 +11,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE, Card_Injectable, CK_s_INJECTABLE)
+__pCastFunction_Card(STORE, Card_Injectable, CK_c_INJECTABLE)
 __aNewFunction(Card_Injectable, CN_CARD)
 __vDeleteFunction(Card_Injectable, CN_CARD)
 
@@ -21,7 +21,7 @@ __vDeleteFunction(Card_Injectable, CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Injectable::Card_Injectable(void)
-: Card_EXPRLIST(CK_s_INJECTABLE, 2)
+: Card_EXPRLIST(CK_c_INJECTABLE, 2)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
           

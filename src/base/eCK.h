@@ -7,8 +7,6 @@ enum eCK : i8 // card kind
 {
   /* */ CK_NONE=0,
 
-  // main cards
-
   //  operator cards
   /* */ CK_o_ABSJOIN,
   /* */ CK_o_AGGREG,
@@ -39,20 +37,21 @@ enum eCK : i8 // card kind
   /* */ CK_o_TOP,
   /* */ CK_o_WHERE,
 
-  // secondary cards
-  /* */ CK_s_CONSTRAINT,
-  /* */ CK_s_EMIT,
-  /* */ CK_s_HASHING,
-  /* */ CK_s_HSHCOLLIST,
-  /* */ CK_s_INJECTABLE,
-  /* */ CK_s_KEY,
-  /* */ CK_s_LEVEL,
-  /* */ CK_s_MAPPING,
-  /* */ CK_s_NEEDED,
-  /* */ CK_s_TABLE,
+  // component cards
+  /* */ CK_c_CONSTRAINT,
+  /* */ CK_c_EMIT,
+  /* */ CK_c_HASHING,
+  /* */ CK_c_HSHCOLLIST,
+  /* */ CK_c_INJECTABLE,
+  /* */ CK_c_KEY,
+  /* */ CK_c_LEVEL,
+  /* */ CK_c_MAPPING,
+  /* */ CK_c_NEEDED,
+  /* */ CK_c_NEEDEDv2,
+  /* */ CK_c_STREAMKEY,
+  /* */ CK_c_TABLE,
 
   // tertiary cards
-
   /* */ CK_ADDRESS,
   /* */ CK_ANDCONJ,
 
@@ -121,7 +120,6 @@ enum eCK : i8 // card kind
   /* */ CK_SQYNO,
   /* */ CK_STREAMHEAD,
   /* */ CK_STREAMJOIN,
-  /* */ CK_STREAMKEY,
   /* */ CK_STREAMPER,
   /* */ CK_STREAMPTN,
   /* */ CK_STREAMSET,

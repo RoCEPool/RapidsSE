@@ -365,7 +365,7 @@ void Weaver::vOp(Card* pCard, bool bCommented)
     case CK_o_SCAN:         vArg_scan         (sOpArgs, _pCard_Scan(pCard));         break;
     case CK_o_SEND:         vArg_send         (sOpArgs, _pCard_Send(pCard));         break;
     case CK_o_SORT:         vArg_sort         (sOpArgs, _pCard_Sort(pCard));         break;
-    case CK_s_TABLE:        vArg_table        (sOpArgs, _pCard_Table(pCard));        break;
+    case CK_c_TABLE:        vArg_table        (sOpArgs, _pCard_Table(pCard));        break;
     case CK_o_TOP:          vArg_top          (sOpArgs, _pCard_Top(pCard));          break;
     case CK_o_WHERE:        vArg_where        (sOpArgs, _pCard_Where(pCard));        break;
 
@@ -380,7 +380,7 @@ void Weaver::vOp(Card* pCard, bool bCommented)
   else if (CK_o_CROSSJOIN == eCard) sOpNm = "indexJoin"_Stz;
   else if (CK_o_HAVING == eCard) sOpNm = "filter"_Stz;
   else if (CK_o_SEND == eCard) sOpNm = "next"_Stz;
-  else if (CK_s_TABLE == eCard) sOpNm = "scan"_Stz;
+  else if (CK_c_TABLE == eCard) sOpNm = "scan"_Stz;
   else if (CK_o_WHERE == eCard) sOpNm = "filter"_Stz;
   else                             sOpNm = aCK_short[eCard];
 
@@ -1000,7 +1000,7 @@ void Weaver::vWeaveOptStmt(Board* pBoard)
         break;
 
       bool bCommented = true;
-      if (xDeck.pChild()->bEither(CK_o_SCAN, CK_s_TABLE, CK_NONE))
+      if (xDeck.pChild()->bEither(CK_o_SCAN, CK_c_TABLE, CK_NONE))
         bCommented = false;
 
       vOp(xDeck.pChild(), bCommented);

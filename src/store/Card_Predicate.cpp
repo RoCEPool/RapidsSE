@@ -838,7 +838,7 @@ void Card_Predicate::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   (void)Card::eValidate_parentEither(pCI,
-                                     CK_s_CONSTRAINT,
+                                     CK_c_CONSTRAINT,
                                      CK_o_FILTER,
                                      CK_NONE);
 

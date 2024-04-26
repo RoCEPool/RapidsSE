@@ -88,7 +88,7 @@ void XF_Flatten_34_W_A_NC_ro::vFlatten(void)
   // XF_Fold | Table* Where GbyAgg_P GbyAgg_N GbyAgg_O
 
   m_pCI->vBeginEach();
-  //RASSERT(m_pCI->bEachOp(CK_o_PROJECT,CK_s_EMIT));
+  //RASSERT(m_pCI->bEachOp(CK_o_PROJECT,CK_c_EMIT));
   RASSERT(m_pCI->bEachOp(CK_o_FOLD));
 
   vSmooth(m_pCI);

@@ -69,7 +69,7 @@ Card_TableList* Card_TableList::pExtractList(Card_Deck* p_deck)
     xDeck.vBegin();
   }
 
-  while (xDeck.bEach(CK_o_FROM, CK_s_TABLE)) {
+  while (xDeck.bEach(CK_o_FROM, CK_c_TABLE)) {
 
     Card_Table* p_table = _pCard_Table(xDeck.pSub1());
 
@@ -126,7 +126,7 @@ Card_Table* Card_TableList::pFind(char cTblSyn)
   i8 nChildren = nChildCards();
   for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
     Card* pChildCard = pGetChild(i_Child);
-    if (CK_s_TABLE != pChildCard->eCard())
+    if (CK_c_TABLE != pChildCard->eCard())
       continue;
 
     Card_Table* p_table = _pCard_Table(pChildCard);

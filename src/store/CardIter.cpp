@@ -575,14 +575,14 @@ void CardIter::vBeginTarget(Card* pPrimary, eCK eTarget)
   E.Iter.ePrimary = ePrimary;
   E.Iter.eTarget  = eTarget;
 
-  if (CK_s_KEY == ePrimary && CK_EXPR == eTarget) {
+  if (CK_c_KEY == ePrimary && CK_EXPR == eTarget) {
     E.Iter.eSecondary = CK_NONE;
     E.xTarget.vBegin();
     E.xTarget.vParent(pPrimary);
 
   }
   else
-  if (CK_STREAMKEY == ePrimary && CK_EXPR == eTarget) {
+  if (CK_c_STREAMKEY == ePrimary && CK_EXPR == eTarget) {
     E.Iter.eSecondary = CK_NONE;
     E.xTarget.vBegin();
     E.xTarget.vParent(pPrimary);
@@ -1539,9 +1539,9 @@ void CardIter::vEndTransform(i8 iLineNo)
       E.pBoard->pState()->vInsert(aXF[m_pBench->eXform()]);
 
     for (Kid xDeck(E.p_deck); xDeck.bEach(); /**/) {
-      xDeck.pChild()->vEnsureFirst(CK_s_LEVEL);
-      xDeck.pChild()->vEnsureLast(CK_s_CONSTRAINT);
-      xDeck.pChild()->vEnsureLast(CK_s_NEEDED);
+      xDeck.pChild()->vEnsureFirst(CK_c_LEVEL);
+      xDeck.pChild()->vEnsureLast(CK_c_CONSTRAINT);
+      xDeck.pChild()->vEnsureLast(CK_c_NEEDED);
     }
 
     vPrintBoard(m_pBench->szXfunc()->azChar(),
@@ -1672,7 +1672,7 @@ Card* CardIter::pMember(eCK eCard)
     case CK_CALLOP:         return E.p_callOp;
     case CK_o_CAST:         return E.p_cast;
     case CK_CLAUSE:         return E.p_clause;
-    case CK_s_CONSTRAINT:   return E.p_constraint;
+    case CK_c_CONSTRAINT:   return E.p_constraint;
     case CK_CORRCOLS:       return E.p_corrCols;
     case CK_o_CORRELATION:  return E.p_correlation;
     case CK_COSTJOINING:    return E.p_costJoining;
@@ -1685,7 +1685,7 @@ Card* CardIter::pMember(eCK eCard)
     case CK_DECISION:       return E.p_decision;
     case CK_DISPOSITION:    return E.p_disposition;
 
-    case CK_s_EMIT:         return E.p_emit;
+    case CK_c_EMIT:         return E.p_emit;
     case CK_EXPR:           return E.p_expr;
 
     case CK_o_FILTER:       return E.p_filter;
@@ -1698,10 +1698,10 @@ Card* CardIter::pMember(eCK eCard)
     case CK_o_GBYAGG:       return E.p_gbyAgg;
 
     case CK_o_HASH:         return E.p_hash;
-    case CK_s_HASHING:      return E.p_hashing;
+    case CK_c_HASHING:      return E.p_hashing;
     case CK_o_HAVING:       return E.p_having;
     case CK_HSHCOL:       return E.p_hshCol;
-    case CK_s_HSHCOLLIST:   return E.p_hshColList;
+    case CK_c_HSHCOLLIST:   return E.p_hshColList;
 
     case CK_IDXCOL:         return E.p_idxCol;
     case CK_IDXCOLLIST:     return E.p_idxColList;
@@ -1711,7 +1711,7 @@ Card* CardIter::pMember(eCK eCard)
     case CK_INDEXNM:        return E.p_indexNm;
     case CK_o_INDEXSCAN:    return E.p_indexScan;
     case CK_o_INFLATE:      return E.p_inflate;
-    case CK_s_INJECTABLE:   return E.p_injectable;
+    case CK_c_INJECTABLE:   return E.p_injectable;
 
     case CK_JOINCAST:       return E.p_joinCast;
     case CK_JOINESTIMATE:   return E.p_joinEstimate;
@@ -1719,18 +1719,18 @@ Card* CardIter::pMember(eCK eCard)
     case CK_JOINORDERING:   return E.p_joinOrdering;
     case CK_JOINPREDLIST:   return E.p_joinPredList;
 
-    case CK_s_KEY:          return E.p_key;
+    case CK_c_KEY:          return E.p_key;
     case CK_KEYCELLS:       return E.p_keyCells;
     case CK_o_KEYEXISTS:    return E.p_keyExists;
     case CK_o_KEYNOTEXISTS: return E.p_keyNotExists;
 
-    case CK_s_LEVEL:        return E.p_level;
+    case CK_c_LEVEL:        return E.p_level;
     case CK_o_LIMIT:        return E.p_limit;
 
     case CK_MAP:            return E.p_map;
-    case CK_s_MAPPING:      return E.p_mapping;
+    case CK_c_MAPPING:      return E.p_mapping;
 
-    case CK_s_NEEDED:       return E.p_needed;
+    case CK_c_NEEDED:       return E.p_needed;
     case CK_NOTE:           return E.p_note;
     case CK_NOTCONJ:        return E.p_notConj;
 
@@ -1760,14 +1760,14 @@ Card* CardIter::pMember(eCK eCard)
     case CK_o_STAGE:        return E.p_stage;
     case CK_STREAMHEAD:     return E.p_streamHead;
     case CK_STREAMJOIN:     return E.p_streamJoin;
-    case CK_STREAMKEY:      return E.p_streamKey;
+    case CK_c_STREAMKEY:      return E.p_streamKey;
     case CK_STREAMPER:      return E.p_streamPer;
     case CK_STREAMPTN:      return E.p_streamPtn;
     case CK_STREAMSET:      return E.p_streamSet;
     case CK_SUBQUERY:       return E.p_subQuery;
     case CK_SUBSET:         return E.p_subSet;
 
-    case CK_s_TABLE:        return E.p_table;
+    case CK_c_TABLE:        return E.p_table;
     case CK_TABLELIST:      return E.p_tableList;
     case CK_TABLENM:      return E.p_tableNm;
     case CK_TABLEPTN:       return E.p_tablePtn;
@@ -1815,7 +1815,7 @@ void CardIter::vMember(eCK eCard, Card* pCard)
     case CK_o_CAST: E.p_cast              = _pCard_Cast(pCard); break;
     case CK_CLAUSE: E.p_clause            = _pCard_Clause(pCard); break;
 
-    case CK_s_CONSTRAINT: E.p_constraint        = _pCard_Constraint(pCard); break;
+    case CK_c_CONSTRAINT: E.p_constraint        = _pCard_Constraint(pCard); break;
     case CK_CORRCOLS: E.p_corrCols          = _pCard_CorrCols(pCard); break;
     case CK_o_CORRELATION: E.p_correlation       = _pCard_Correlation(pCard); break;
     case CK_COSTJOINING: E.p_costJoining       = _pCard_CostJoining(pCard); break;
@@ -1829,7 +1829,7 @@ void CardIter::vMember(eCK eCard, Card* pCard)
     case CK_DECISION: E.p_decision          = _pCard_Decision(pCard); break;
     case CK_DISPOSITION: E.p_disposition       = _pCard_Disposition(pCard); break;
 
-    case CK_s_EMIT: E.p_emit              = _pCard_Emit(pCard); break;
+    case CK_c_EMIT: E.p_emit              = _pCard_Emit(pCard); break;
     case CK_EXPR: E.p_expr              = _pCard_Expr(pCard); break;
 
     case CK_o_FILTER: E.p_filter            = _pCard_Filter(pCard); break;
@@ -1842,10 +1842,10 @@ void CardIter::vMember(eCK eCard, Card* pCard)
     case CK_o_GBYAGG: E.p_gbyAgg            = _pCard_GbyAgg(pCard); break;
 
     case CK_o_HASH: E.p_hash              = _pCard_Hash(pCard); break;
-    case CK_s_HASHING: E.p_hashing           = _pCard_Hashing(pCard); break;
+    case CK_c_HASHING: E.p_hashing           = _pCard_Hashing(pCard); break;
     case CK_o_HAVING: E.p_having            = _pCard_Having(pCard); break;
     case CK_HSHCOL: E.p_hshCol            = _pCard_HshCol(pCard); break;
-    case CK_s_HSHCOLLIST: E.p_hshColList        = _pCard_HshColList(pCard); break;
+    case CK_c_HSHCOLLIST: E.p_hshColList        = _pCard_HshColList(pCard); break;
 
     case CK_IDXCOL: E.p_idxCol            = _pCard_IdxCol(pCard); break;
     case CK_IDXCOLLIST: E.p_idxColList        = _pCard_IdxColList(pCard); break;
@@ -1854,7 +1854,7 @@ void CardIter::vMember(eCK eCard, Card* pCard)
     case CK_INDEXLIST: E.p_indexList         = _pCard_IndexList(pCard); break;
     case CK_INDEXNM: E.p_indexNm           = _pCard_IndexNm(pCard); break;
     case CK_o_INDEXSCAN: E.p_indexScan         = _pCard_IndexScan(pCard); break;
-    case CK_s_INJECTABLE: E.p_injectable        = _pCard_Injectable(pCard); break;
+    case CK_c_INJECTABLE: E.p_injectable        = _pCard_Injectable(pCard); break;
     case CK_o_INFLATE: E.p_inflate           = _pCard_Inflate(pCard); break;
 
     case CK_JOINCAST: E.p_joinCast          = _pCard_JoinCast(pCard); break;
@@ -1863,18 +1863,18 @@ void CardIter::vMember(eCK eCard, Card* pCard)
     case CK_JOINORDERING: E.p_joinOrdering      = _pCard_JoinOrdering(pCard); break;
     case CK_JOINPREDLIST: E.p_joinPredList      = _pCard_JoinPredList(pCard); break;
 
-    case CK_s_KEY: E.p_key               = _pCard_Key(pCard); break;
+    case CK_c_KEY: E.p_key               = _pCard_Key(pCard); break;
     case CK_KEYCELLS: E.p_keyCells          = _pCard_KeyCells(pCard); break;
     case CK_o_KEYEXISTS: E.p_keyExists         = _pCard_KeyExists(pCard); break;
     case CK_o_KEYNOTEXISTS:E.p_keyNotExists      = _pCard_KeyNotExists(pCard); break;
 
-    case CK_s_LEVEL: E.p_level             = _pCard_Level(pCard); break;
+    case CK_c_LEVEL: E.p_level             = _pCard_Level(pCard); break;
     case CK_o_LIMIT: E.p_limit             = _pCard_Limit(pCard); break;
 
     case CK_MAP: E.p_map               = _pCard_Map(pCard); break;
-    case CK_s_MAPPING: E.p_mapping           = _pCard_Mapping(pCard); break;
+    case CK_c_MAPPING: E.p_mapping           = _pCard_Mapping(pCard); break;
 
-    case CK_s_NEEDED: E.p_needed            = _pCard_Needed(pCard); break;
+    case CK_c_NEEDED: E.p_needed            = _pCard_Needed(pCard); break;
     case CK_NOTE: E.p_note              = _pCard_Note(pCard); break;
     case CK_NOTCONJ: E.p_notConj           = _pCard_NotConj(pCard);break;
 
@@ -1904,14 +1904,14 @@ void CardIter::vMember(eCK eCard, Card* pCard)
     case CK_o_STAGE: E.p_stage             = _pCard_Stage(pCard); break;
     case CK_STREAMHEAD: E.p_streamHead        = _pCard_StreamHead(pCard); break;
     case CK_STREAMJOIN: E.p_streamJoin        = _pCard_StreamJoin(pCard); break;
-    case CK_STREAMKEY: E.p_streamKey         = _pCard_StreamKey(pCard); break;
+    case CK_c_STREAMKEY: E.p_streamKey         = _pCard_StreamKey(pCard); break;
     case CK_STREAMPER: E.p_streamPer         = _pCard_StreamPer(pCard); break;
     case CK_STREAMPTN: E.p_streamPtn         = _pCard_StreamPtn(pCard); break;
     case CK_STREAMSET: E.p_streamSet         = _pCard_StreamSet(pCard); break;
     case CK_SUBQUERY: E.p_subQuery          = _pCard_SubQuery(pCard); break;
     case CK_SUBSET: E.p_subSet            = _pCard_SubSet(pCard); break;
 
-    case CK_s_TABLE: E.p_table             = _pCard_Table(pCard); break;
+    case CK_c_TABLE: E.p_table             = _pCard_Table(pCard); break;
     case CK_TABLELIST: E.p_tableList         = _pCard_TableList(pCard); break;
     case CK_TABLENM: E.p_tableNm           = _pCard_TableNm(pCard); break;
     case CK_TABLEPTN: E.p_tablePtn          = _pCard_TablePtn(pCard); break;
@@ -2654,7 +2654,7 @@ void CardIter::vValidateChildren(Card* pCard, i8 iDepth)
       case CK_CALLOP:         E.p_callOp->vValidate(this, iDepth, pCard);  break;
       case CK_o_CAST:         E.p_cast->vValidate(this, iDepth, pCard);  break;
       case CK_CLAUSE:         E.p_clause->vValidate(this, iDepth, pCard);  break;
-      case CK_s_CONSTRAINT:   E.p_constraint->vValidate(this, iDepth, pCard);  break;
+      case CK_c_CONSTRAINT:   E.p_constraint->vValidate(this, iDepth, pCard);  break;
       case CK_CORRCOLS:       E.p_corrCols->vValidate(this, iDepth, pCard);  break;
       case CK_o_CORRELATION:  E.p_correlation->vValidate(this, iDepth, pCard);  break;
       case CK_COSTJOINING:    E.p_costJoining->vValidate(this, iDepth, pCard);  break;
@@ -2667,7 +2667,7 @@ void CardIter::vValidateChildren(Card* pCard, i8 iDepth)
       case CK_DECISION:       E.p_decision->vValidate(this, iDepth, pCard);  break;
       case CK_DISPOSITION:    E.p_disposition->vValidate(this, iDepth, pCard);  break;
 
-      case CK_s_EMIT:         E.p_emit->vValidate(this, iDepth, pCard);  break;
+      case CK_c_EMIT:         E.p_emit->vValidate(this, iDepth, pCard);  break;
       case CK_EXPR:           E.p_expr->vValidate(this, iDepth, pCard);  break;
 
       case CK_o_FILTER:       E.p_filter->vValidate(this, iDepth, pCard);  break;
@@ -2680,10 +2680,10 @@ void CardIter::vValidateChildren(Card* pCard, i8 iDepth)
       case CK_o_GBYAGG:       E.p_gbyAgg->vValidate(this, iDepth, pCard);  break;
 
       case CK_o_HASH:         E.p_hash->vValidate(this, iDepth, pCard);  break;
-      case CK_s_HASHING:      E.p_hashing->vValidate(this, iDepth, pCard);  break;
+      case CK_c_HASHING:      E.p_hashing->vValidate(this, iDepth, pCard);  break;
       case CK_o_HAVING:       E.p_having->vValidate(this, iDepth, pCard);  break;
       case CK_HSHCOL:       E.p_hshCol->vValidate(this, iDepth, pCard);  break;
-      case CK_s_HSHCOLLIST:   E.p_hshColList->vValidate(this, iDepth, pCard);  break;
+      case CK_c_HSHCOLLIST:   E.p_hshColList->vValidate(this, iDepth, pCard);  break;
 
       case CK_IDXCOL:         E.p_idxCol->vValidate(this, iDepth, pCard);  break;
       case CK_IDXCOLLIST:     E.p_idxColList->vValidate(this, iDepth, pCard);  break;
@@ -2693,7 +2693,7 @@ void CardIter::vValidateChildren(Card* pCard, i8 iDepth)
       case CK_INDEXNM:        E.p_indexNm->vValidate(this, iDepth, pCard);  break;
       case CK_o_INDEXSCAN:    E.p_indexScan->vValidate(this, iDepth, pCard);  break;
       case CK_o_INFLATE:      E.p_inflate->vValidate(this, iDepth, pCard);  break;
-      case CK_s_INJECTABLE:   E.p_injectable->vValidate(this, iDepth, pCard);  break;
+      case CK_c_INJECTABLE:   E.p_injectable->vValidate(this, iDepth, pCard);  break;
 
       case CK_JOINCAST:       E.p_joinCast->vValidate(this, iDepth, pCard);  break;
       case CK_JOINESTIMATE:   E.p_joinEstimate->vValidate(this, iDepth, pCard);  break;
@@ -2701,18 +2701,18 @@ void CardIter::vValidateChildren(Card* pCard, i8 iDepth)
       case CK_JOINORDERING:   E.p_joinOrdering->vValidate(this, iDepth, pCard);  break;
       case CK_JOINPREDLIST:   E.p_joinPredList->vValidate(this, iDepth, pCard);  break;
 
-      case CK_s_KEY:          E.p_key->vValidate(this, iDepth, pCard);  break;
+      case CK_c_KEY:          E.p_key->vValidate(this, iDepth, pCard);  break;
       case CK_KEYCELLS:       E.p_keyCells->vValidate(this, iDepth, pCard);  break;
       case CK_o_KEYEXISTS:    E.p_keyExists->vValidate(this, iDepth, pCard);  break;
       case CK_o_KEYNOTEXISTS: E.p_keyNotExists->vValidate(this, iDepth, pCard);  break;
 
-      case CK_s_LEVEL:        E.p_level->vValidate(this, iDepth, pCard);  break;
+      case CK_c_LEVEL:        E.p_level->vValidate(this, iDepth, pCard);  break;
       case CK_o_LIMIT:        E.p_limit->vValidate(this, iDepth, pCard);  break;
 
       case CK_MAP:            E.p_map->vValidate(this, iDepth, pCard);  break;
-      case CK_s_MAPPING:      E.p_mapping->vValidate(this, iDepth, pCard);  break;
+      case CK_c_MAPPING:      E.p_mapping->vValidate(this, iDepth, pCard);  break;
 
-      case CK_s_NEEDED:       E.p_needed->vValidate(this, iDepth, pCard);  break;
+      case CK_c_NEEDED:       E.p_needed->vValidate(this, iDepth, pCard);  break;
       case CK_NOTE:           E.p_note->vValidate(this, iDepth, pCard);  break;
       case CK_NOTCONJ:        E.p_notConj->vValidate(this, iDepth, pCard);  break;
 
@@ -2742,14 +2742,14 @@ void CardIter::vValidateChildren(Card* pCard, i8 iDepth)
       case CK_o_STAGE:        E.p_stage->vValidate(this, iDepth, pCard);  break;
       case CK_STREAMHEAD:     E.p_streamHead->vValidate(this, iDepth, pCard);  break;
       case CK_STREAMJOIN:     E.p_streamJoin->vValidate(this, iDepth, pCard);  break;
-      case CK_STREAMKEY:      E.p_streamKey->vValidate(this, iDepth, pCard);  break;
+      case CK_c_STREAMKEY:      E.p_streamKey->vValidate(this, iDepth, pCard);  break;
       case CK_STREAMPER:      E.p_streamPer->vValidate(this, iDepth, pCard);  break;
       case CK_STREAMPTN:      E.p_streamPtn->vValidate(this, iDepth, pCard);  break;
       case CK_STREAMSET:      E.p_streamSet->vValidate(this, iDepth, pCard);  break;
       case CK_SUBQUERY:       E.p_subQuery->vValidate(this, iDepth, pCard);  break;
       case CK_SUBSET:         E.p_subSet->vValidate(this, iDepth, pCard);  break;
 
-      case CK_s_TABLE:        E.p_table->vValidate(this, iDepth, pCard);  break;
+      case CK_c_TABLE:        E.p_table->vValidate(this, iDepth, pCard);  break;
       case CK_TABLELIST:      E.p_tableList->vValidate(this, iDepth, pCard);  break;
       case CK_TABLENM:      E.p_tableNm->vValidate(this, iDepth, pCard);  break;
       case CK_TABLEPTN:       E.p_tablePtn->vValidate(this, iDepth, pCard);  break;

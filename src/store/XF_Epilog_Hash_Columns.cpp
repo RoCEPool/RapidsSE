@@ -87,7 +87,7 @@ void XF_Epilog_Hash_Columns::vHash_Columns(void)
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (CK_o_HASH == m_pCI->E.e_Op) {
-      m_pCI->vAppendNewChild(m_pCI->E.p_hash, CK_s_HASHING);
+      m_pCI->vAppendNewChild(m_pCI->E.p_hash, CK_c_HASHING);
 
       Kid xHshColList(m_pCI->E.p_hash->pSub_hshColList());
       while (xHshColList.bEach()) {
@@ -173,7 +173,7 @@ void XF_Epilog_Hash_Columns::vHash_Columns(void)
 //
 //    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //    if (CK_o_HASH == m_pCI->G.e_Op) {
-//      m_pCI->vAppendNewChild(m_pCI->G.p_hash,CK_s_HASHING);
+//      m_pCI->vAppendNewChild(m_pCI->G.p_hash,CK_c_HASHING);
 //
 //      if (m_pCI->G.p_project) {
 //        m_pCI->G.p_hshCol = m_pCI->G.p_hash->pSub_hshCol();

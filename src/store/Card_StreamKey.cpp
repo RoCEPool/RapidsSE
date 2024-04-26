@@ -14,7 +14,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_StreamKey,CK_STREAMKEY)
+__pCastFunction_Card(STORE, Card_StreamKey, CK_c_STREAMKEY)
 __aNewFunction(Card_StreamKey,CN_CARD)
 __vDeleteFunction(Card_StreamKey,CN_CARD)
 
@@ -23,7 +23,7 @@ __vDeleteFunction(Card_StreamKey,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_StreamKey::Card_StreamKey(void)
-: Card_Key(CK_STREAMKEY,3)
+: Card_Key(CK_c_STREAMKEY, 3)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -53,7 +53,7 @@ Card_StreamKey* Card_StreamKey::pTo_streamKey(Card_Key* p_key)
 
   Card_Key* p_key_dupe = _pCard_Key(p_key->pDupCardRecursive());
 
-  Card_StreamKey* p_streamKey = _pCard_StreamKey(p_key_dupe->pCard(CK_STREAMKEY));
+  Card_StreamKey* p_streamKey = _pCard_StreamKey(p_key_dupe->pCard(CK_c_STREAMKEY));
 
   p_streamKey->vFixedDepth(3);
 
@@ -72,11 +72,11 @@ void Card_StreamKey::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  RASSERT(pParent->bIsCard(CK_s_EMIT));
+  RASSERT(pParent->bIsCard(CK_c_EMIT));
 
 /**Z_KEY_DIRECTION validate*/
 #ifdef Z_PART_STREAMKEY
-  RASSERT(CK_s_EMIT != pParent->eCard())
+  RASSERT(CK_c_EMIT != pParent->eCard())
 #else
   vValidate_mustHave(CK_EXPR,CK_NONE);
 #endif

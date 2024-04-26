@@ -136,28 +136,28 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
   // aspects 1 injectable
 
   if ((m_pCI->E.p_injectable = m_pCI->E.p_Op->pSub_injectable())) {
-    RASSERT(m_pCI->E.p_Op->nSubCards(CK_s_INJECTABLE) == 1);
+    RASSERT(m_pCI->E.p_Op->nSubCards(CK_c_INJECTABLE) == 1);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // aspects 1 key
 
   if ((m_pCI->E.p_key = m_pCI->E.p_Op->pSub_key())) {
-    RASSERT(m_pCI->E.p_Op->nSubCards(CK_s_KEY) == 1);
+    RASSERT(m_pCI->E.p_Op->nSubCards(CK_c_KEY) == 1);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // aspects 1 constraint
 
   if ((m_pCI->E.p_constraint = m_pCI->E.p_Op->pSub_constraint())) {
-    RASSERT(m_pCI->E.p_Op->nSubCards(CK_s_CONSTRAINT) == 1);
+    RASSERT(m_pCI->E.p_Op->nSubCards(CK_c_CONSTRAINT) == 1);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // aspects 1 hshColList
 
   if ((m_pCI->E.p_hshColList = m_pCI->E.p_Op->pSub_hshColList())) {
-    RASSERT(m_pCI->E.p_Op->nSubCards(CK_s_HSHCOLLIST) == 1);
+    RASSERT(m_pCI->E.p_Op->nSubCards(CK_c_HSHCOLLIST) == 1);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -171,7 +171,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
   // aspects 1 emit
 
   if ((m_pCI->E.p_emit = m_pCI->E.p_Op->pSub_emit())) {
-    RASSERT(m_pCI->E.p_Op->nSubCards(CK_s_EMIT) == 1);
+    RASSERT(m_pCI->E.p_Op->nSubCards(CK_c_EMIT) == 1);
   }
 
   vDebugPoint();

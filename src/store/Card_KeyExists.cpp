@@ -59,7 +59,7 @@ void Card_KeyExists::vMorph_from_To_keyExists(CardIter *pCI)
   pCI->E.p_index->pSub_bound()->pSymbol()->Y_vSet(P_ChosenBound);
 
   pCI->E.p_filter = pCI->E.p_keyExists->pSub_filter();
-  pCI->E.p_filter->vCard(CK_s_CONSTRAINT);
+  pCI->E.p_filter->vCard(CK_c_CONSTRAINT);
 }
 
 
@@ -168,7 +168,7 @@ void Card_KeyExists::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   UNUSED(pParent);
 
   if (1 == iDepth) {
-    vValidate_mustHave(CK_s_LEVEL, CK_s_TABLE, CK_s_CONSTRAINT, CK_NONE);
+    vValidate_mustHave(CK_c_LEVEL, CK_c_TABLE, CK_c_CONSTRAINT, CK_NONE);
     RASSERT(pFindPpyRecursive(P_ChosenIndex, CK_INDEX));
     RASSERT(pSub_bound());
   }

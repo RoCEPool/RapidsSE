@@ -71,7 +71,7 @@ void Card_Deck::vAddStageCasts(CardIter* pCI)
       if (! p_OP_prev) {
         Card_Table* p_table_first = pCI->E.p_Op->pSub_table();
         //p_streamPtn->vAdd_streamKey(p_table_first->pSub_tablePtn()->pSymbol());
-        pCI->vAppendNewChild(p_streamPtn,CK_STREAMKEY,p_table_first->pSub_tablePtn()->pSymbol());
+        pCI->vAppendNewChild(p_streamPtn, CK_c_STREAMKEY, p_table_first->pSub_tablePtn()->pSymbol());
       }
       else {
         eStageCast = pCI->E.p_deck->eAddStageCast_toPrev_cast(pCI,
@@ -290,7 +290,7 @@ void Card_Deck::vValidate(CardIter* pCI)
       case CK_o_CALL:         pCI->E.p_call->vValidate(pCI, 1, this); break;
       case CK_o_CAST:         pCI->E.p_cast->vValidate(pCI, 1, this); break;
 
-      case CK_s_CONSTRAINT:   pCI->E.p_constraint->vValidate(pCI, 1, this); break;
+      case CK_c_CONSTRAINT:   pCI->E.p_constraint->vValidate(pCI, 1, this); break;
       case CK_CORRCOLS:     pCI->E.p_corrCols->vValidate(pCI, 1, this); break;
       case CK_o_CORRELATION:  pCI->E.p_correlation->vValidate(pCI, 1, this); break;
       case CK_COSTJOINING:  pCI->E.p_costJoining->vValidate(pCI, 1, this); break;
@@ -300,7 +300,7 @@ void Card_Deck::vValidate(CardIter* pCI)
       case CK_COUNT:        pCI->E.p_count->vValidate(pCI, 1, this); break;
       case CK_o_CROSSJOIN:    pCI->E.p_crossJoin->vValidate(pCI, 1, this); break;
 
-      case CK_s_EMIT:         pCI->E.p_emit->vValidate(pCI, 1, this); break;
+      case CK_c_EMIT:         pCI->E.p_emit->vValidate(pCI, 1, this); break;
       case CK_EXPR:         pCI->E.p_expr->vValidate(pCI, 1, this); break;
 
       case CK_o_FILTER:       pCI->E.p_filter->vValidate(pCI, 1, this); break;
@@ -324,7 +324,7 @@ void Card_Deck::vValidate(CardIter* pCI)
       case CK_INDEXNM:      pCI->E.p_indexNm->vValidate(pCI, 1, this); break;
       case CK_o_INDEXSCAN:    pCI->E.p_indexScan->vValidate(pCI, 1, this); break;
       case CK_o_INFLATE:      pCI->E.p_inflate->vValidate(pCI, 1, this); break;
-      case CK_s_INJECTABLE:     pCI->E.p_injectable->vValidate(pCI, 1, this); break;
+      case CK_c_INJECTABLE:     pCI->E.p_injectable->vValidate(pCI, 1, this); break;
 
       case CK_JOINCAST:     pCI->E.p_joinCast->vValidate(pCI, 1, this); break;
       case CK_JOINESTIMATE: pCI->E.p_joinEstimate->vValidate(pCI, 1, this); break;
@@ -332,18 +332,18 @@ void Card_Deck::vValidate(CardIter* pCI)
       case CK_JOINORDERING: pCI->E.p_joinOrdering->vValidate(pCI, 1, this); break;
       case CK_JOINPREDLIST: pCI->E.p_joinPredList->vValidate(pCI, 1, this); break;
 
-      case CK_s_KEY:          pCI->E.p_key->vValidate(pCI, 1, this); break;
+      case CK_c_KEY:          pCI->E.p_key->vValidate(pCI, 1, this); break;
       case CK_KEYCELLS:     pCI->E.p_keyCells->vValidate(pCI, 1, this); break;
       case CK_o_KEYEXISTS:    pCI->E.p_keyExists->vValidate(pCI, 1, this); break;
       case CK_o_KEYNOTEXISTS: pCI->E.p_keyNotExists->vValidate(pCI, 1, this); break;
 
-      case CK_s_LEVEL:        pCI->E.p_level->vValidate(pCI, 1, this); break;
+      case CK_c_LEVEL:        pCI->E.p_level->vValidate(pCI, 1, this); break;
       case CK_o_LIMIT:        pCI->E.p_limit->vValidate(pCI, 1, this); break;
 
       case CK_MAP:          pCI->E.p_map->vValidate(pCI, 1, this); break;
-      case CK_s_MAPPING:      pCI->E.p_mapping->vValidate(pCI, 1, this); break;
+      case CK_c_MAPPING:      pCI->E.p_mapping->vValidate(pCI, 1, this); break;
 
-      case CK_s_NEEDED:       pCI->E.p_needed->vValidate(pCI, 1, this); break;
+      case CK_c_NEEDED:       pCI->E.p_needed->vValidate(pCI, 1, this); break;
       case CK_NOTE:         pCI->E.p_note->vValidate(pCI, 1, this); break;
       case CK_NOTCONJ:      pCI->E.p_notConj->vValidate(pCI, 1, this); break;
 
@@ -368,14 +368,14 @@ void Card_Deck::vValidate(CardIter* pCI)
       case CK_o_STAGE:        pCI->E.p_stage->vValidate(pCI, 1, this); break;
       case CK_STREAMHEAD:   pCI->E.p_streamHead->vValidate(pCI, 1, this); break;
       case CK_STREAMJOIN:   pCI->E.p_streamJoin->vValidate(pCI, 1, this); break;
-      case CK_STREAMKEY:    pCI->E.p_streamKey->vValidate(pCI, 1, this); break;
+      case CK_c_STREAMKEY:    pCI->E.p_streamKey->vValidate(pCI, 1, this); break;
       case CK_STREAMPER:    pCI->E.p_streamPer->vValidate(pCI, 1, this); break;
       case CK_STREAMPTN:    pCI->E.p_streamPtn->vValidate(pCI, 1, this); break;
       case CK_STREAMSET:    pCI->E.p_streamSet->vValidate(pCI, 1, this); break;
       case CK_SUBQUERY:     pCI->E.p_subQuery->vValidate(pCI, 1, this); break;
       case CK_SUBSET:       pCI->E.p_subSet->vValidate(pCI, 1, this); break;
 
-      case CK_s_TABLE:        pCI->E.p_table->vValidate(pCI, 1, this); break;
+      case CK_c_TABLE:        pCI->E.p_table->vValidate(pCI, 1, this); break;
       case CK_TABLELIST:    pCI->E.p_tableList->vValidate(pCI, 1, this); break;
       case CK_TABLENM:      pCI->E.p_tableNm->vValidate(pCI, 1, this); break;
       case CK_TABLEPTN:     pCI->E.p_tablePtn->vValidate(pCI, 1, this); break;

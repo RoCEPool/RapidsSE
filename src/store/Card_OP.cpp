@@ -451,7 +451,7 @@ void Card_OP::vMapColumns(CardIter *pCI)
   pCI->E.p_key = pSub_key();
   pCI->E.p_emit = pSub_emit();
 
-  pCI->vAppendNewChild(pCI->E.p_Op, CK_s_MAPPING);
+  pCI->vAppendNewChild(pCI->E.p_Op, CK_c_MAPPING);
   pCI->vAppendNewChild(pCI->E.p_mapping, CK_KEYCELLS);
   pCI->vAppendNewChild(pCI->E.p_mapping, CK_PAYLOADCELLS);
 
@@ -728,7 +728,7 @@ void Card_OP::vRpn_aggreg(CardIter* pCI, String* psRpnExpr, Card_Aggreg* p_aggre
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   Card_Emit* pCard_Projection =
-      _pCard_Emit(p_aggreg->pFindSubCard(CK_s_EMIT));
+      _pCard_Emit(p_aggreg->pFindSubCard(CK_c_EMIT));
 
   if (! pCard_Projection)
     return;
@@ -840,7 +840,7 @@ void Card_OP::vRpn_gbyAgg(CardIter* pCI, String* psRpnExpr, Card_GbyAgg* p_gbyAg
 
 
   Card_Emit* pCard_Projection =
-      _pCard_Emit(p_gbyAgg->pFindSubCard(CK_s_EMIT));
+      _pCard_Emit(p_gbyAgg->pFindSubCard(CK_c_EMIT));
 
   if (! pCard_Projection)
     return;
@@ -1256,7 +1256,7 @@ void Card_OP::vRpn_ordAgg(CardIter* pCI, String* psRpnExpr, Card_OrdAgg* p_ordAg
   i8 nSubCards;
 
   Card_Key* pCard_Key =
-      _pCard_Key(p_ordAgg->pFindSubCard(CK_s_KEY));
+      _pCard_Key(p_ordAgg->pFindSubCard(CK_c_KEY));
 
   if (! pCard_Key)
     return;
@@ -1281,7 +1281,7 @@ void Card_OP::vRpn_ordAgg(CardIter* pCI, String* psRpnExpr, Card_OrdAgg* p_ordAg
 
 
   Card_Emit* pCard_Emit =
-      _pCard_Emit(p_ordAgg->pFindSubCard(CK_s_EMIT));
+      _pCard_Emit(p_ordAgg->pFindSubCard(CK_c_EMIT));
 
   if (! pCard_Emit)
     return;
@@ -1329,7 +1329,7 @@ void Card_OP::vRpn_project(CardIter* pCI, String* psRpnExpr, Card_Project* p_pro
   UNUSED(pCI);
 
   Card_Emit* pCard_Emit =
-      _pCard_Emit(p_project->pFindSubCard(CK_s_EMIT));
+      _pCard_Emit(p_project->pFindSubCard(CK_c_EMIT));
 
   i8 nSubCards = pCard_Emit->nItems();
   for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
@@ -1610,7 +1610,7 @@ void Card_OP::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
     return;
 
   if (pCI->pBoard()->pState()->bHasName(aOH[OH_PROLOG]))
-    vValidate_mustHave(CK_s_LEVEL, CK_NONE);
+    vValidate_mustHave(CK_c_LEVEL, CK_NONE);
 }
 
 /*============================================================================*/

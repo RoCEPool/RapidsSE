@@ -235,7 +235,7 @@ void Card_IndexList::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  (void)Card::eValidate_parentEither(pCI, CK_s_TABLE, CK_NONE);
+  (void)Card::eValidate_parentEither(pCI, CK_c_TABLE, CK_NONE);
 
   // todo: why can indexList be empty? [295]
   vValidate_mayHave(CK_INDEX,CK_NONE);

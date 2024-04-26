@@ -23,7 +23,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE, Card_Table, CK_s_TABLE)
+__pCastFunction_Card(STORE, Card_Table, CK_c_TABLE)
 __aNewFunction(Card_Table, CN_CARD)
 __vDeleteFunction(Card_Table, CN_CARD)
 
@@ -32,7 +32,7 @@ __vDeleteFunction(Card_Table, CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Table::Card_Table(void)
-: Card_symbol(CK_s_TABLE, 2)
+: Card_symbol(CK_c_TABLE, 2)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
@@ -89,7 +89,7 @@ void Card_Table::vAffixTableColOrd(CardIter* pCI) {
 
   _static_
 
-  while (pCI->bEachOp(CK_o_FROM, CK_s_TABLE, CK_s_INJECTABLE, CK_INDEXLIST)) {
+  while (pCI->bEachOp(CK_o_FROM, CK_c_TABLE, CK_c_INJECTABLE, CK_INDEXLIST)) {
 
     Kid xIndexList(pCI->E.p_indexList);
     while (xIndexList.bEach(CK_INDEX)) {
@@ -108,7 +108,7 @@ void Card_Table::vAffixTableSyn_passThru(CardIter* pCI, Symbol* pSymbol_tableSyn
   _static_
 
   pCI->vBeginEach();
-  while (pCI->bEachOp_bySub(CK_s_TABLE))  {
+  while (pCI->bEachOp_bySub(CK_c_TABLE))  {
     pCI->E.p_table->vSet_Syn(pSymbol_tableSyn);
   }
 }
@@ -121,13 +121,13 @@ void Card_Table::vAppendIndexList(CardIter* pCI) {
   _static_
 
   pCI->vBeginEach();
-  while (pCI->bEachOp(CK_o_FROM, CK_s_TABLE)) {
+  while (pCI->bEachOp(CK_o_FROM, CK_c_TABLE)) {
     pCI->E.p_tableNm = pCI->E.p_table->pSub_tableNm();
     Table* pTable = Card_Table::pAccess_Table(pCI->E.p_tableNm->szFacet(SF_TBL_NM));
 
     pCI->E.p_indexList = Card_IndexList::pDerive(pTable);
 
-    pCI->vAppendChild(CK_s_TABLE, pCI->E.p_indexList);
+    pCI->vAppendChild(CK_c_TABLE, pCI->E.p_indexList);
   }
 }
 
@@ -139,11 +139,11 @@ void Card_Table::vDeriveBoundsFromFilter(CardIter* pCI) {
   _static_
 
   pCI->vBeginEach();
-  while (pCI->bEachOp(CK_o_FROM, CK_s_TABLE, CK_INDEXLIST))
+  while (pCI->bEachOp(CK_o_FROM, CK_c_TABLE, CK_INDEXLIST))
     pCI->E.p_indexList->vDeleteAll_bounds();
 
   pCI->vBeginEach();
-  while (pCI->bEachOp(CK_o_FROM, CK_s_TABLE, CK_o_FILTER, CK_INDEXLIST))
+  while (pCI->bEachOp(CK_o_FROM, CK_c_TABLE, CK_o_FILTER, CK_INDEXLIST))
     pCI->E.p_table->vDerive_bounds_From_filter(pCI);
 }
 
@@ -173,7 +173,7 @@ i8 Card_Table::nTables(CardIter* pCI)
   i8 nTables = 0;
 
   pCI->vBeginEach();
-  while (pCI->bEachOp(CK_o_FROM, CK_s_TABLE))
+  while (pCI->bEachOp(CK_o_FROM, CK_c_TABLE))
     nTables++;
 
   return nTables;

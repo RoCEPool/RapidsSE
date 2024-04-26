@@ -95,7 +95,7 @@ void Card_StreamPer::vEstStreamCost(CardIter* pCI,
       nFilterPred_prev = p_filtPredList->nFiltersFor(cTblSyn_head);
 
       //p_streamPtn->vAdd_streamKey(p_tableList->pGetTablePtn(cTblSyn_head)->pSymbol());
-      pCI->vAppendNewChild(p_streamPtn,CK_STREAMKEY,p_tableList->pGetTablePtn(cTblSyn_head)->pSymbol());
+      pCI->vAppendNewChild(p_streamPtn, CK_c_STREAMKEY, p_tableList->pGetTablePtn(cTblSyn_head)->pSymbol());
       continue;
     }
 

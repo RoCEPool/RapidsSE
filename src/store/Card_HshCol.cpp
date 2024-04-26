@@ -69,7 +69,7 @@ void Card_HshCol::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   RASSERT(! pSymbol()->nFacets());
 
   (void)Card::eValidate_parentEither(pCI,
-                                     CK_s_HSHCOLLIST,
+                                     CK_c_HSHCOLLIST,
                                      CK_NONE);
 
   vValidate_mustHave(CK_TERM,CK_NONE);

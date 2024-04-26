@@ -53,7 +53,7 @@ void Card_IndexJoin::vDerive_streamKey(CardIter* pCI)
   RASSERT(bPeg_Projection(pCI));
   RASSERT(bPeg_Chosen_index(pCI));
 
-   pCI->E.p_emit->vDeleteSub(CK_STREAMKEY);
+   pCI->E.p_emit->vDeleteSub(CK_c_STREAMKEY);
 
   if (pCI->StreamOrder.m_pStreamKey) {
     pCI->E.p_streamKey = _pCard_StreamKey(pCI->StreamOrder.m_pStreamKey->pDupCardRecursive());
@@ -285,7 +285,7 @@ void Card_IndexJoin::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  vValidate_mustHave(CK_s_LEVEL, CK_s_TABLE, CK_NONE);
+  vValidate_mustHave(CK_c_LEVEL, CK_c_TABLE, CK_NONE);
 
   RASSERT(pSub_table()->pSub_indexList());
 

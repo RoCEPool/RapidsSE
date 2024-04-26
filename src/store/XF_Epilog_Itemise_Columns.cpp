@@ -106,7 +106,7 @@ void XF_Epilog_Itemise_Columns::vItemise_Columns(void)
     Symbol *pSymbol_term = p_term->pSymbol();
 
     if ((pCI->E.p_indexJoin = _pCard_IndexJoin(pCI->pAncestor(CK_o_INDEXJOIN))) &&
-        (pCI->E.p_constraint = _pCard_Constraint(pCI->pAncestor(CK_s_CONSTRAINT)))) {
+        (pCI->E.p_constraint = _pCard_Constraint(pCI->pAncestor(CK_c_CONSTRAINT)))) {
 
       if (!pSymbol_term->bHasFacet(SF_NMD_COL))
         return C_CONTINUE_RECURSION;
