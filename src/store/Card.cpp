@@ -243,11 +243,11 @@ bool Card::bIsConstruction(eCK eCard)
 
   switch (eCard) {
 
-    case CK_c_ABSJOIN:
-    case CK_c_FLAT:
-    case CK_c_FOLD:
-    case CK_c_SEND:
-    case CK_c_STAGE:
+    case CK_o_ABSJOIN:
+    case CK_o_FLAT:
+    case CK_o_FOLD:
+    case CK_o_SEND:
+    case CK_o_STAGE:
       return true;
 
     default:
@@ -2173,7 +2173,7 @@ void Card::vPrint_card(CardIter* pCI, Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (bIsCard(CK_c_STAGE))
+  if (bIsCard(CK_o_STAGE))
     pRibbon->vMargin(szFacet(SF_STG_NM));
 
   if (CK_EXPR     == m_eCard) { vPrint_expr (pCI,pRibbon, iDepth); return; }
@@ -3147,7 +3147,7 @@ Card_Emit* Card::pSub_emit(bool bNotNull)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Emit* p_emit =
-      _pCard_Emit(pFindSubCard(CK_t_EMIT));
+      _pCard_Emit(pFindSubCard(CK_s_EMIT));
 
   if (bNotNull && !p_emit) {
     NEVER_REACH
@@ -3237,7 +3237,7 @@ Card_Flat* Card::pSub_flat(bool bNotNull)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Flat* p_flat =
-      _pCard_Flat(pFindSubCard(CK_c_FOLD));
+      _pCard_Flat(pFindSubCard(CK_o_FOLD));
 
   if (bNotNull && !p_flat) {
     NEVER_REACH
@@ -3255,7 +3255,7 @@ Card_Fold* Card::pSub_fold(bool bNotNull)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Fold* p_fold =
-      _pCard_Fold(pFindSubCard(CK_c_FOLD));
+      _pCard_Fold(pFindSubCard(CK_o_FOLD));
 
   if (bNotNull && !p_fold) {
     NEVER_REACH
@@ -3327,7 +3327,7 @@ Card_HshCol* Card::pSub_hshCol(bool bNotNull)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_HshCol* p_hshCol =
-      _pCard_HshCol(pFindSubCard(CK_t_HSHCOL));
+      _pCard_HshCol(pFindSubCard(CK_HSHCOL));
 
   if (bNotNull && !p_hshCol) {
     NEVER_REACH
@@ -3435,7 +3435,7 @@ Card_IndexList* Card::pSub_indexList(bool bNotNull)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_IndexList* p_indexList =
-      _pCard_IndexList(pFindSubCard(CK_t_INDEXLIST));
+      _pCard_IndexList(pFindSubCard(CK_INDEXLIST));
 
   if (bNotNull && !p_indexList) {
     NEVER_REACH
@@ -4050,7 +4050,7 @@ Card_StreamKey* Card::pSub_streamKey(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  //RASSERT(CK_t_EMIT != m_eCard);
+  //RASSERT(CK_s_EMIT != m_eCard);
 
   Card_StreamKey* p_streamKey =
       _pCard_StreamKey(pFindSubCard(CK_STREAMKEY));
@@ -4143,7 +4143,7 @@ Card_TableNm* Card::pSub_tableNm(bool bNotNull)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_TableNm* p_tableNm =
-      _pCard_TableNm(pFindSubCard(CK_t_TABLENM));
+      _pCard_TableNm(pFindSubCard(CK_TABLENM));
 
   if (bNotNull && !p_tableNm) {
     NEVER_REACH

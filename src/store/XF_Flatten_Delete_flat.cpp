@@ -65,7 +65,7 @@ void XF_Flatten_Delete_flat::vXF_Delete_flat(void)
   m_pCI->vTransform(__FILE__, __func__, XF_FLATTEN_DELETE_FLAT);
 
   m_pCI->vBeginEach();
-  while (m_pCI->bEachOp(CK_c_FLAT))
+  while (m_pCI->bEachOp(CK_o_FLAT))
     m_pCI->E.p_deck->vDeleteChild(m_pCI->E.p_flat);
 
   m_pCI->vEndTransform(__LINE__);

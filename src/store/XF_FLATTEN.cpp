@@ -91,7 +91,7 @@ void XF_FLATTEN::vFold_basic(CardIter* pCI, Stz* szFoldNm, eCK eCardWithSQ)
   while (pCI->bEachOp()) {
 
     pCI->vSnapIf_arriving();
-    if (pCI->pPeekNextIf(CK_c_FOLD))
+    if (pCI->pPeekNextIf(CK_o_FOLD))
       break;
   }
 
@@ -100,7 +100,7 @@ void XF_FLATTEN::vFold_basic(CardIter* pCI, Stz* szFoldNm, eCK eCardWithSQ)
   // 7) derive the fold (SQ result) expr
   pCI->Flat.m_pExpr_fold = nullptr;
   pCI->vBeginEach();
-  if (pCI->bEachOp(CK_c_FOLD)) {
+  if (pCI->bEachOp(CK_o_FOLD)) {
     pCI->Flat.m_i_fold = pCI->E.i_Op;
     pCI->E.p_fold->vDerive_emit_fold(pCI, pBoard_inner->pSubQuery());
     pCI->Flat.m_pExpr_fold = pCI->E.p_expr;
@@ -160,7 +160,7 @@ void XF_FLATTEN::vFold_from(Stz* szFoldNm, CardIter* pCI)
   // 7) derive the fold (SQ result) expr
   pCI->vClearRegisters();
   pCI->vBeginEach();
-  if (pCI->bEachOp(CK_c_FOLD)) {
+  if (pCI->bEachOp(CK_o_FOLD)) {
     pCI->Flat.m_i_fold = pCI->E.i_Op;
     Board::vDerive_foldProjection_F(pCI);
   }
@@ -221,7 +221,7 @@ void XF_FLATTEN::vFold_nc_subQuery(CardIter* pCI, Stz* szFoldNm,
 
     pCI->vSnapIf_arriving();
 
-    if (pCI->pPeekNextIf(CK_c_FOLD))
+    if (pCI->pPeekNextIf(CK_o_FOLD))
       break;
   }
 
@@ -231,7 +231,7 @@ void XF_FLATTEN::vFold_nc_subQuery(CardIter* pCI, Stz* szFoldNm,
   // 7) derive the fold (SQ result) expr
   pCI->Flat.m_pExpr_fold = nullptr;
   pCI->vBeginEach();
-  if (pCI->bEachOp(CK_c_FOLD)) {
+  if (pCI->bEachOp(CK_o_FOLD)) {
     pCI->Flat.m_i_fold = pCI->E.i_Op;
     pCI->E.p_fold->vDerive_emit_fold(pCI, pSubQuery_save);
     pCI->Flat.m_pExpr_fold = pCI->E.p_expr;
@@ -243,8 +243,8 @@ void XF_FLATTEN::vFold_nc_subQuery(CardIter* pCI, Stz* szFoldNm,
 
   pCI->vBeginEach();
 
-  RASSERT(pCI->bEachOp(CK_c_FOLD));
-  RASSERT(pCI->E.p_Op->bIsCard(CK_c_FOLD));
+  RASSERT(pCI->bEachOp(CK_o_FOLD));
+  RASSERT(pCI->E.p_Op->bIsCard(CK_o_FOLD));
 
   // SubQuery
   if (pCI->pPeekNextIf(CK_SUBQUERY))
@@ -315,8 +315,8 @@ void XF_FLATTEN::vSmooth(CardIter* pCI)
   //pCI->PRINTBOARD_dbg();
 
   pCI->vBeginEach();
-  RASSERT(pCI->bEachOp(CK_c_FOLD));
-  RASSERT(pCI->E.p_Op->bIsCard(CK_c_FOLD));
+  RASSERT(pCI->bEachOp(CK_o_FOLD));
+  RASSERT(pCI->E.p_Op->bIsCard(CK_o_FOLD));
   //RASSERT(pCI->m_pExpr_fold);
 
   if(pCI->pPeekNextIf(CK_SUBQUERY))

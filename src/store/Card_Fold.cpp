@@ -9,7 +9,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE, Card_Fold, CK_c_FOLD)
+__pCastFunction_Card(STORE, Card_Fold, CK_o_FOLD)
 __aNewFunction(Card_Fold,CN_CARD)
 __vDeleteFunction(Card_Fold,CN_CARD)
 
@@ -18,7 +18,7 @@ __vDeleteFunction(Card_Fold,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Fold::Card_Fold(void)
-: Card_CONSTRUCTION(CK_c_FOLD, 1)
+: Card_CONSTRUCTION(CK_o_FOLD, 1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -65,8 +65,8 @@ void Card_Fold::vMorph_to_flat(CardIter* pCI)
   _static_
 
   pCI->vBeginEach();
-  while (pCI->bEachOp(CK_c_FOLD))
-    pCI->E.p_fold->vCard(CK_c_FLAT);
+  while (pCI->bEachOp(CK_o_FOLD))
+    pCI->E.p_fold->vCard(CK_o_FLAT);
 }
 
 
@@ -98,7 +98,7 @@ void Card_Fold::vDerive_emit_fold(CardIter *pCI, SubQuery *pSubQuery_leftmost)
 
   Card_Expr* p_expr_result = pCI->Dic.m_p_expr->pGet_expr((i8) 0);
 
-  pCI->vAppendNewChild(pCI->E.p_fold, CK_t_EMIT);
+  pCI->vAppendNewChild(pCI->E.p_fold, CK_s_EMIT);
   pCI->vAppendNewChild(pCI->E.p_emit, CK_EXPR);
 
   pCI->vAppendNewChild(pCI->E.p_expr, CK_TERM, Symbol(SF_EXP_COL, "$1"_Stz));

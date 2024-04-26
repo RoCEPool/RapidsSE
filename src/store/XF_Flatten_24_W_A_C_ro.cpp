@@ -133,7 +133,7 @@ bool XF_Flatten_24_W_A_C_ro::bSnap_IQ_crlKey(CardIter* pCI)
   pCI->vClearRegisters();
   pCI->vBeginEach();
 
-  while (pCI->bEachOp(CK_o_FROM, CK_t_EMIT, CK_o_FILTER)) {
+  while (pCI->bEachOp(CK_o_FROM, CK_s_EMIT, CK_o_FILTER)) {
 
     pCI->E.p_predicate = pCI->E.p_filter->pSub_predicate();
     Card_CONJ *p_conj_root = pCI->E.p_predicate->pRoot_conj();
@@ -428,13 +428,13 @@ void XF_Flatten_24_W_A_C_ro::vRestate_emit_fold(CardIter* pCI)
 
   while (pCI->bEachOp()) {
 
-    if (CK_c_FOLD == pCI->E.e_Op)
+    if (CK_o_FOLD == pCI->E.e_Op)
       break;
 
     pCI->vSnapIf_arriving();
   }
 
-  RASSERT(CK_c_FOLD == pCI->E.e_Op);
+  RASSERT(CK_o_FOLD == pCI->E.e_Op);
 
   pCI->E.p_fold->vAppendChild(pCI->Arriving.m_pEmit->pDupCardRecursive());
 }
@@ -503,7 +503,7 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
   // fold fold fold fold fold fold fold fold fold fold fold fold fold fold fold
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
 
-  RASSERT(pCI->bEachOp(CK_c_FOLD));
+  RASSERT(pCI->bEachOp(CK_o_FOLD));
 
   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
   // outerQuery outerQuery outerQuery outerQuery outerQuery outerQuery outerQuery
@@ -547,7 +547,7 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
   // fold fold fold fold fold fold fold fold fold fold fold fold fold fold fold
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
 
-  RASSERT(pCI->bEachOp(CK_c_FOLD));
+  RASSERT(pCI->bEachOp(CK_o_FOLD));
 
   // todo: this is messy and unclear
 
@@ -559,7 +559,7 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
   pCI->vForwards(true);
 
   pCI->vSnapIf_arriving();
-  RASSERT(pCI->bEachOp(CK_c_FOLD));
+  RASSERT(pCI->bEachOp(CK_o_FOLD));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // ???
@@ -606,7 +606,7 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
   // f         +       bc          //           $d.2  ((pCI->m_pTerm_corrArg))
   //           + b <-  cp          //             %1
 
-  RASSERT(pCI->bEachOp(CK_c_FOLD));
+  RASSERT(pCI->bEachOp(CK_o_FOLD));
   RASSERT(pCI->bEachOp(CK_o_WHERE, CK_PREDICATE));
   vMove_OQ_rlnConj_rslTest_To_from_filter(pCI, pCI->E.p_predicate);
 
@@ -614,7 +614,7 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
 
 //  pCI->vClearRegisters();
   pCI->vBeginEach();
-//  if (pCI->bEachOp(CK_c_FOLD)) {
+//  if (pCI->bEachOp(CK_o_FOLD)) {
 //    if (pCI->bEachOp(CK_o_WHERE)) {
 //      // TODO:
 //      // R_vUTE_Unproject_foldExpr_After_where();

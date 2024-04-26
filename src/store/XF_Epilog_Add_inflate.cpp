@@ -101,7 +101,7 @@ void XF_Epilog_Add_inflate::vBifurcate_inflate(void)
   m_pCI->vBeginEach();
   while (m_pCI->bEachOp()) {
 
-    if (CK_c_STAGE != m_pCI->E.e_Op) {
+    if (CK_o_STAGE != m_pCI->E.e_Op) {
       m_pCI->vSnapIf_arriving();
       continue;
     }

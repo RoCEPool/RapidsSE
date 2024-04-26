@@ -67,24 +67,24 @@ void XF_Prolog_Erase_construction::vProlog(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Delete All AbsJoin
   m_pCI->vBeginEach();
-  while (m_pCI->bEachOp(CK_c_ABSJOIN)) {
-    m_pCI->vRemoveDeleteMain(CK_c_ABSJOIN);
+  while (m_pCI->bEachOp(CK_o_ABSJOIN)) {
+    m_pCI->vRemoveDeleteMain(CK_o_ABSJOIN);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Delete All Send
   m_pCI->vClearRegisters();
   m_pCI->vBeginEach();
-  while (m_pCI->bEachOp(CK_c_SEND)) {
-    m_pCI->vRemoveDeleteMain(CK_c_SEND);
+  while (m_pCI->bEachOp(CK_o_SEND)) {
+    m_pCI->vRemoveDeleteMain(CK_o_SEND);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Delete All Stage
   m_pCI->vClearRegisters();
   m_pCI->vBeginEach();
-  while (m_pCI->bEachOp(CK_c_STAGE)) {
-    m_pCI->vRemoveDeleteMain(CK_c_STAGE);
+  while (m_pCI->bEachOp(CK_o_STAGE)) {
+    m_pCI->vRemoveDeleteMain(CK_o_STAGE);
   }
 
   m_pCI->vEndTransform(__LINE__);

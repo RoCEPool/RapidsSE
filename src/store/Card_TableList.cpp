@@ -61,7 +61,7 @@ Card_TableList* Card_TableList::pExtractList(Card_Deck* p_deck)
   xDeck.vEnded();
   xDeck.vBegin_reverse();
 
-  if (xDeck.bEach_reverse(CK_c_FOLD)) {
+  if (xDeck.bEach_reverse(CK_o_FOLD)) {
     xDeck.vForwards(true);
   }
   else {

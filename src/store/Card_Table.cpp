@@ -89,7 +89,7 @@ void Card_Table::vAffixTableColOrd(CardIter* pCI) {
 
   _static_
 
-  while (pCI->bEachOp(CK_o_FROM, CK_s_TABLE, CK_s_INJECTABLE, CK_t_INDEXLIST)) {
+  while (pCI->bEachOp(CK_o_FROM, CK_s_TABLE, CK_s_INJECTABLE, CK_INDEXLIST)) {
 
     Kid xIndexList(pCI->E.p_indexList);
     while (xIndexList.bEach(CK_INDEX)) {
@@ -139,11 +139,11 @@ void Card_Table::vDeriveBoundsFromFilter(CardIter* pCI) {
   _static_
 
   pCI->vBeginEach();
-  while (pCI->bEachOp(CK_o_FROM, CK_s_TABLE, CK_t_INDEXLIST))
+  while (pCI->bEachOp(CK_o_FROM, CK_s_TABLE, CK_INDEXLIST))
     pCI->E.p_indexList->vDeleteAll_bounds();
 
   pCI->vBeginEach();
-  while (pCI->bEachOp(CK_o_FROM, CK_s_TABLE, CK_o_FILTER, CK_t_INDEXLIST))
+  while (pCI->bEachOp(CK_o_FROM, CK_s_TABLE, CK_o_FILTER, CK_INDEXLIST))
     pCI->E.p_table->vDerive_bounds_From_filter(pCI);
 }
 
@@ -465,7 +465,7 @@ void Card_Table::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
           ||
           pSymbol()->bHasFacet(SF_TBL_SYN_rep));
 
-  vValidate_mustHave(CK_t_TABLENM,CK_NONE);
+  vValidate_mustHave(CK_TABLENM, CK_NONE);
 
   Card::vValidate(pCI,iDepth,pParent);
   pCI->vValidateChildren(this,iDepth+1);

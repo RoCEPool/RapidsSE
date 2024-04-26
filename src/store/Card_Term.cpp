@@ -423,7 +423,7 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
                                      CK_PREDICATE,
                                      CK_EXPR,
                                      CK_s_HASHING,
-                                     CK_t_HSHCOL,// todo: NO!?
+                                     CK_HSHCOL,// todo: NO!?
                                      CK_RLNCONJ,
                                      CK_NOTCONJ,
                                      CK_ORCONJ,

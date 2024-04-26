@@ -96,7 +96,7 @@ void XF_Flatten_10_F::vFlatten(void)
   // todo: discuss with Alka
   m_pCI->vClearRegisters();
   m_pCI->vBeginEach();
-  if (m_pCI->bEachOp(CK_c_FOLD)) {
+  if (m_pCI->bEachOp(CK_o_FOLD)) {
     if (m_pCI->bEachOp(CK_o_WHERE)) {
       Card_Level* p_level_where = m_pCI->E.p_where->pSub_level();
       if (m_pCI->bEachOp(CK_o_PROJECT, CK_s_LEVEL)) {

@@ -58,7 +58,7 @@ Card_JoinPredList* Card_JoinPredList::pExtractList(Card_Deck* p_deck)
   Card_JoinPredList* p_joinPredList = new Card_JoinPredList;
 
   Kid xJoinPredList(p_deck);
-  while (xJoinPredList.bEach(CK_o_FROM, CK_s_TABLE, CK_t_INDEXLIST, CK_o_FILTER)) {
+  while (xJoinPredList.bEach(CK_o_FROM, CK_s_TABLE, CK_INDEXLIST, CK_o_FILTER)) {
 
     p_joinPredList->vBuildList(_pCard_Filter(xJoinPredList.pSub3()),
                                _pCard_IndexList(xJoinPredList.pSub2()));

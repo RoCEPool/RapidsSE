@@ -164,14 +164,14 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
   // aspects 1 indexList
 
   if ((m_pCI->E.p_indexList = m_pCI->E.p_Op->pSub_indexList())) {
-    RASSERT(m_pCI->E.p_Op->nSubCards(CK_t_INDEXLIST) == 1);
+    RASSERT(m_pCI->E.p_Op->nSubCards(CK_INDEXLIST) == 1);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // aspects 1 emit
 
   if ((m_pCI->E.p_emit = m_pCI->E.p_Op->pSub_emit())) {
-    RASSERT(m_pCI->E.p_Op->nSubCards(CK_t_EMIT) == 1);
+    RASSERT(m_pCI->E.p_Op->nSubCards(CK_s_EMIT) == 1);
   }
 
   vDebugPoint();
@@ -323,7 +323,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
   if ((m_pCI->E.p_hshColList = m_pCI->E.p_Op->pSub_hshColList())) {
     NEVER_REACH // todo: why? [297]
     m_pCI->E.p_hshColList->vDump(__func__);
-    for (Kid xHshColList(m_pCI->E.p_hshColList); xHshColList.bEach(CK_t_HSHCOL); /**/) {
+    for (Kid xHshColList(m_pCI->E.p_hshColList); xHshColList.bEach(CK_HSHCOL); /**/) {
       m_pCI->E.p_hshCol = xHshColList.p_hshCol();
 
     }

@@ -213,7 +213,7 @@ i8 Card_Deck::i_Fold(void)
   i8 nChildren = nChildCards();
   for (i8 i_Main = nChildren - 1; i_Main >= 0; i_Main--) {
     Card *pMain = pGetChild(i_Main);
-    if (pMain->bIsCard(CK_c_FOLD))
+    if (pMain->bIsCard(CK_o_FOLD))
       return i_Main;
   }
 
@@ -230,7 +230,7 @@ Card_Fold* Card_Deck::p_fold(void)
   i8 nChildren = nChildCards();
   for (i8 i_Main = nChildren - 1; i_Main >= 0; i_Main--) {
     Card *pMain = pGetChild(i_Main);
-    if (pMain->bIsCard(CK_c_FOLD))
+    if (pMain->bIsCard(CK_o_FOLD))
       return _pCard_Fold(pMain);
   }
 
@@ -279,7 +279,7 @@ void Card_Deck::vValidate(CardIter* pCI)
 
     switch (eChild) {
 
-      case CK_c_ABSJOIN:      pCI->E.p_absJoin->vValidate(pCI, 1, this); break;
+      case CK_o_ABSJOIN:      pCI->E.p_absJoin->vValidate(pCI, 1, this); break;
       case CK_o_AGGREG:       pCI->E.p_aggreg->vValidate(pCI, 1, this); break;
       case CK_ANDCONJ:      pCI->E.p_andConj->vValidate(pCI, 1, this); break;
 
@@ -300,27 +300,27 @@ void Card_Deck::vValidate(CardIter* pCI)
       case CK_COUNT:        pCI->E.p_count->vValidate(pCI, 1, this); break;
       case CK_o_CROSSJOIN:    pCI->E.p_crossJoin->vValidate(pCI, 1, this); break;
 
-      case CK_t_EMIT:         pCI->E.p_emit->vValidate(pCI, 1, this); break;
+      case CK_s_EMIT:         pCI->E.p_emit->vValidate(pCI, 1, this); break;
       case CK_EXPR:         pCI->E.p_expr->vValidate(pCI, 1, this); break;
 
       case CK_o_FILTER:       pCI->E.p_filter->vValidate(pCI, 1, this); break;
       case CK_FILTPRED:     pCI->E.p_filtPred->vValidate(pCI, 1, this); break;
       case CK_FILTPREDLIST: pCI->E.p_filtPredList->vValidate(pCI, 1, this); break;
-      case CK_c_FLAT:         pCI->E.p_flat->vValidate(pCI, 1, this); break;
-      case CK_c_FOLD:         pCI->E.p_fold->vValidate(pCI, 1, this); break;
+      case CK_o_FLAT:         pCI->E.p_flat->vValidate(pCI, 1, this); break;
+      case CK_o_FOLD:         pCI->E.p_fold->vValidate(pCI, 1, this); break;
       case CK_o_FROM:         pCI->E.p_from->vValidate(pCI, 1, this); break;
 
       case CK_o_GBYAGG:       pCI->E.p_gbyAgg->vValidate(pCI, 1, this); break;
 
       case CK_o_HASH:         pCI->E.p_hash->vValidate(pCI, 1, this); break;
       case CK_o_HAVING:       pCI->E.p_having->vValidate(pCI, 1, this); break;
-      case CK_t_HSHCOL:       pCI->E.p_hshCol->vValidate(pCI, 1, this); break;
+      case CK_HSHCOL:       pCI->E.p_hshCol->vValidate(pCI, 1, this); break;
 
       case CK_IDXCOL:       pCI->E.p_idxCol->vValidate(pCI, 1, this); break;
       case CK_IDXCOLLIST:   pCI->E.p_idxColList->vValidate(pCI, 1, this); break;
       case CK_INDEX:        pCI->E.p_index->vValidate(pCI, 1, this); break;
       case CK_o_INDEXJOIN:    pCI->E.p_indexJoin->vValidate(pCI, 1, this); break;
-      case CK_t_INDEXLIST:    pCI->E.p_indexList->vValidate(pCI, 1, this); break;
+      case CK_INDEXLIST:    pCI->E.p_indexList->vValidate(pCI, 1, this); break;
       case CK_INDEXNM:      pCI->E.p_indexNm->vValidate(pCI, 1, this); break;
       case CK_o_INDEXSCAN:    pCI->E.p_indexScan->vValidate(pCI, 1, this); break;
       case CK_o_INFLATE:      pCI->E.p_inflate->vValidate(pCI, 1, this); break;
@@ -363,9 +363,9 @@ void Card_Deck::vValidate(CardIter* pCI)
 
       case CK_o_SCAN:         pCI->E.p_scan->vValidate(pCI, 1, this); break;
       case CK_SECTION:      pCI->E.p_section->vValidate(pCI, 1, this); break;
-      case CK_c_SEND:         pCI->E.p_send->vValidate(pCI, 1, this); break;
+      case CK_o_SEND:         pCI->E.p_send->vValidate(pCI, 1, this); break;
       case CK_o_SORT:         pCI->E.p_sort->vValidate(pCI, 1, this); break;
-      case CK_c_STAGE:        pCI->E.p_stage->vValidate(pCI, 1, this); break;
+      case CK_o_STAGE:        pCI->E.p_stage->vValidate(pCI, 1, this); break;
       case CK_STREAMHEAD:   pCI->E.p_streamHead->vValidate(pCI, 1, this); break;
       case CK_STREAMJOIN:   pCI->E.p_streamJoin->vValidate(pCI, 1, this); break;
       case CK_STREAMKEY:    pCI->E.p_streamKey->vValidate(pCI, 1, this); break;
@@ -377,7 +377,7 @@ void Card_Deck::vValidate(CardIter* pCI)
 
       case CK_s_TABLE:        pCI->E.p_table->vValidate(pCI, 1, this); break;
       case CK_TABLELIST:    pCI->E.p_tableList->vValidate(pCI, 1, this); break;
-      case CK_t_TABLENM:      pCI->E.p_tableNm->vValidate(pCI, 1, this); break;
+      case CK_TABLENM:      pCI->E.p_tableNm->vValidate(pCI, 1, this); break;
       case CK_TABLEPTN:     pCI->E.p_tablePtn->vValidate(pCI, 1, this); break;
       case CK_TABLESIZE:    pCI->E.p_tableSize->vValidate(pCI, 1, this); break;
       case CK_TERM:         pCI->E.p_term->vValidate(pCI, 1, this); break;

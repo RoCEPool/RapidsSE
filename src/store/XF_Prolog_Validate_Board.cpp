@@ -80,14 +80,14 @@ void XF_Prolog_Validate_Board::vValidate(void)
 
       //case CK_o_SCAN: p_scan = m_pCI->G.p_scan; break;
 
-      case CK_c_SEND:
+      case CK_o_SEND:
         if (! p_OP) {
           Error xError(EC_MISSING_OP,(Stz*)__FILE__,__LINE__);
           throw xError;
         }
         break;
 
-      case CK_c_STAGE:
+      case CK_o_STAGE:
         //p_scan = nullptr;
         //p_OP   = nullptr;
         break;

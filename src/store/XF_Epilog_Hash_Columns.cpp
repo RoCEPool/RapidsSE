@@ -68,7 +68,7 @@ void XF_Epilog_Hash_Columns::vHash_Columns(void)
   while (m_pCI->bEachOp()) {
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (CK_c_STAGE == m_pCI->E.e_Op) {
+    if (CK_o_STAGE == m_pCI->E.e_Op) {
       m_pCI->vResetMembers();
       continue;
     }
@@ -154,7 +154,7 @@ void XF_Epilog_Hash_Columns::vHash_Columns(void)
 //  while (m_pCI->bEachOp()) {
 //
 //    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//    if (CK_c_STAGE == m_pCI->G.e_Op) {
+//    if (CK_o_STAGE == m_pCI->G.e_Op) {
 //      m_pCI->vResetMembers();
 //      continue;
 //    }

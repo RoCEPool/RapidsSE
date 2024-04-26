@@ -71,7 +71,7 @@ void XF_Prolog_Move_on::vXF_Move_on(void)
   Card_Scan* p_scan_over = nullptr;
 
   m_pCI->vBeginEach_reverse();
-  while (m_pCI->bEachOp_reverse(CK_c_ABSJOIN, CK_ON)) {
+  while (m_pCI->bEachOp_reverse(CK_o_ABSJOIN, CK_ON)) {
 
     // ignore
     if (! m_pCI->E.p_on->nChildCards())

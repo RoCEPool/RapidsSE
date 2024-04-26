@@ -208,7 +208,7 @@ void Card_GbyAgg::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  vValidate_mustHave(CK_s_LEVEL, CK_s_KEY, CK_t_EMIT, CK_NONE);
+  vValidate_mustHave(CK_s_LEVEL, CK_s_KEY, CK_s_EMIT, CK_NONE);
 
   UNUSED(pParent);
   Card::vValidate(pCI,iDepth,pParent);

@@ -274,7 +274,7 @@ void Card_Index::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   vValidate_mustHave(CK_INDEXNM,CK_NONE);
   vValidate_mayHave(CK_BOUNDS,CK_IDXCOLLIST,CK_INDEXNM,CK_NONE);
 
-  (void)Card::eValidate_parentEither(pCI, CK_t_INDEXLIST, CK_NONE);
+  (void)Card::eValidate_parentEither(pCI, CK_INDEXLIST, CK_NONE);
 
   if (pSymbol()->Y_bHas(P_ChosenIndex)) {
     RASSERT(pFindPpyRecursive(P_ChosenBound, CK_BOUND));

@@ -541,8 +541,8 @@ void Card_OP::vRestate_emit(CardIter* pCI)
   eCK eCard_OP = pCI->E.p_Op->eCard();
   switch (eCard_OP) {
 
-    case CK_c_SEND:
-    case CK_c_STAGE:
+    case CK_o_SEND:
+    case CK_o_STAGE:
     case CK_o_CALL:
     case CK_o_CORRELATION:
       RASSERT(! pCI->E.p_Op->pSub_emit());
@@ -728,7 +728,7 @@ void Card_OP::vRpn_aggreg(CardIter* pCI, String* psRpnExpr, Card_Aggreg* p_aggre
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   Card_Emit* pCard_Projection =
-      _pCard_Emit(p_aggreg->pFindSubCard(CK_t_EMIT));
+      _pCard_Emit(p_aggreg->pFindSubCard(CK_s_EMIT));
 
   if (! pCard_Projection)
     return;
@@ -840,7 +840,7 @@ void Card_OP::vRpn_gbyAgg(CardIter* pCI, String* psRpnExpr, Card_GbyAgg* p_gbyAg
 
 
   Card_Emit* pCard_Projection =
-      _pCard_Emit(p_gbyAgg->pFindSubCard(CK_t_EMIT));
+      _pCard_Emit(p_gbyAgg->pFindSubCard(CK_s_EMIT));
 
   if (! pCard_Projection)
     return;
@@ -1281,7 +1281,7 @@ void Card_OP::vRpn_ordAgg(CardIter* pCI, String* psRpnExpr, Card_OrdAgg* p_ordAg
 
 
   Card_Emit* pCard_Emit =
-      _pCard_Emit(p_ordAgg->pFindSubCard(CK_t_EMIT));
+      _pCard_Emit(p_ordAgg->pFindSubCard(CK_s_EMIT));
 
   if (! pCard_Emit)
     return;
@@ -1329,7 +1329,7 @@ void Card_OP::vRpn_project(CardIter* pCI, String* psRpnExpr, Card_Project* p_pro
   UNUSED(pCI);
 
   Card_Emit* pCard_Emit =
-      _pCard_Emit(p_project->pFindSubCard(CK_t_EMIT));
+      _pCard_Emit(p_project->pFindSubCard(CK_s_EMIT));
 
   i8 nSubCards = pCard_Emit->nItems();
   for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {

@@ -13,7 +13,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE, Card_Stage, CK_c_STAGE)
+__pCastFunction_Card(STORE, Card_Stage, CK_o_STAGE)
 __aNewFunction(Card_Stage,CN_CARD)
 __vDeleteFunction(Card_Stage,CN_CARD)
 
@@ -22,7 +22,7 @@ __vDeleteFunction(Card_Stage,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Stage::Card_Stage(void)
-: Card_CONSTRUCTION(CK_c_STAGE, 1)
+: Card_CONSTRUCTION(CK_o_STAGE, 1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
@@ -80,12 +80,12 @@ void Card_Stage::vReinstate_stages_v0(CardIter* pCI)
 
   pCI->vClearRegisters();
   pCI->vBeginEach();
-  while (pCI->bEachOp(CK_c_FOLD))
-    pCI->vRemoveDeleteMain(CK_c_FOLD);
+  while (pCI->bEachOp(CK_o_FOLD))
+    pCI->vRemoveDeleteMain(CK_o_FOLD);
   pCI->vClearRegisters();
   pCI->vBeginEach();
-  while (pCI->bEachOp(CK_c_FLAT))
-    pCI->vRemoveDeleteMain(CK_c_FLAT);
+  while (pCI->bEachOp(CK_o_FLAT))
+    pCI->vRemoveDeleteMain(CK_o_FLAT);
 
   Card* p_main = p_stage;
   eCK   e_main = p_main->eCard();
