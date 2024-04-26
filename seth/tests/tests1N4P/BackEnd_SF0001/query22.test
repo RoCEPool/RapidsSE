@@ -140,8 +140,6 @@ end ;
 */
 
 // NOTE: CHANGED KEY NOT EXISTS to KEY EXISTS for SF0001 data
-// TODO: MULTIPLE OPS
-/*
 /optimise_passthru 
 pipeline Query22
 begin
@@ -222,7 +220,6 @@ rows:
  ('29',4,36059.01)
  ('30',2,17528.46)
  ('31',2,18611.84)
-*/
 
 CLEANUP {
 }

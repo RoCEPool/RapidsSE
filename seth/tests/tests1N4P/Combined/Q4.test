@@ -47,8 +47,6 @@ success
 load ${testName2}_Orders "../TPCH/SF_0001/orders.tbl";
 success
 
-// TODO: MULTIPLE OPS
-/*
 /optimise_passthru 
 pipeline Q4
 begin
@@ -107,7 +105,6 @@ rows:
  ('3-MEDIUM',13)
  ('4-NOT SPECIFIED',8)
  ('5-LOW',12)
-*/
 
 //------------------------------------------------------------------------------
 // creates orders partitioned on custkey
@@ -129,8 +126,6 @@ success
 load ${testName2}_Orders "../TPCH/SF_0001/orders.tbl";
 success
 
-// TODO: MULTIPLE OPS
-/*
 /optimise_passthru
 pipeline Q4
 begin
@@ -189,7 +184,6 @@ rows:
  ('3-MEDIUM',13)
  ('4-NOT SPECIFIED',8)
  ('5-LOW',12)
-*/
 
 //------------------------------------------------------------------------------
 // drop the tables

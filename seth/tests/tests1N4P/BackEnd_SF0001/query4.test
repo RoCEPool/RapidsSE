@@ -83,8 +83,6 @@ begin
 end ;
 */
 
-// TODO: MULTIPLE OPS
-/*
 /optimise_passthru 
 pipeline Query4
 begin
@@ -142,7 +140,6 @@ rows:
  ('3-MEDIUM',13)
  ('4-NOT SPECIFIED',8)
  ('5-LOW',12)
-*/
 
 //ORDERS PARTITIONED ON O_ORDERKEY
 //SF10:

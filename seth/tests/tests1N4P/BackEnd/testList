@@ -2,5 +2,4 @@
 //indexScan.test
 //unionAll.test
 query6.test
-// TODO: MULTIPLE OPS
-//keyExists.test
+keyExists.test
