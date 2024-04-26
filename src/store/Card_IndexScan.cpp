@@ -62,8 +62,11 @@ void Card_IndexScan::vDerive_streamKey(CardIter* pCI)
   pCI->E.p_streamKey = new Card_StreamKey;
   pCI->E.p_index->vAdd_streamKey_exprs(pCI);
 
+#ifdef Z_PART_STREAMKEY
+  pCI->E.p_Op->vAppendChild(pCI->E.p_streamKey);
+#else
   pCI->E.p_emit->vAppendChild(pCI->E.p_streamKey);
-
+#endif
   // set running projection for use by next op
   pCI->StreamOrder.m_pEmit = pCI->E.p_emit;
   pCI->StreamOrder.m_pStreamKey = pCI->E.p_streamKey;
