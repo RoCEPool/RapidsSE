@@ -63,8 +63,6 @@ select 100.00 * sum(case when p_type like 'PROMO%' then l_extendedprice*(1-l_dis
 
 */
 
-// TODO: MULTIPLE OPS
-/*
 /optimise_passthru 
 pipeline Query14
 begin
@@ -163,7 +161,6 @@ begin
 end ;
 rows:
   (19.25)
-*/
 
 CLEANUP {
 }

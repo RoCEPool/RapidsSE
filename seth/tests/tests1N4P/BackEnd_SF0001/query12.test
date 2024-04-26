@@ -310,8 +310,6 @@ pipeline unamed
   ('MAIL',4,6)
   ('SHIP',5,10)
 
-// TODO: MULTIPLE OPS
-/*
 /optimise_passthru 
 pipeline unamed
  begin
@@ -428,7 +426,6 @@ pipeline unamed
 rows:
   ('MAIL',4,6)
   ('SHIP',5,10)
-*/
 
 MemoryLeaks;
 rows: 0
