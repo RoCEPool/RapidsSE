@@ -8,20 +8,17 @@ enum eCK : i8 // card kind
   /* */ CK_NONE=0,
 
   // main cards
-  //  construction cards
-  /* */ CK_c_ABSJOIN,
-  /* */ CK_c_FLAT,
-  /* */ CK_c_FOLD,
-  /* */ CK_c_SEND,
-  /* */ CK_c_STAGE,
 
   //  operator cards
+  /* */ CK_c_ABSJOIN,
   /* */ CK_o_AGGREG,
   /* */ CK_o_CALL,
   /* */ CK_o_CAST,
   /* */ CK_o_CORRELATION,
   /* */ CK_o_CROSSJOIN,
   /* */ CK_o_FILTER,
+  /* */ CK_c_FLAT,
+  /* */ CK_c_FOLD,
   /* */ CK_o_FROM,
   /* */ CK_o_GBYAGG,
   /* */ CK_o_HASH,
@@ -36,12 +33,15 @@ enum eCK : i8 // card kind
   /* */ CK_o_PDSROW,
   /* */ CK_o_PROJECT,
   /* */ CK_o_SCAN,
+  /* */ CK_c_SEND,
   /* */ CK_o_SORT,
+  /* */ CK_c_STAGE,
   /* */ CK_o_TOP,
   /* */ CK_o_WHERE,
 
   // secondary cards
   /* */ CK_s_CONSTRAINT,
+  /* */ CK_t_EMIT,
   /* */ CK_s_HASHING,
   /* */ CK_s_HSHCOLLIST,
   /* */ CK_s_INJECTABLE,
@@ -52,10 +52,6 @@ enum eCK : i8 // card kind
   /* */ CK_s_TABLE,
 
   // tertiary cards
-  /* */ CK_t_EMIT,
-  /* */ CK_t_HSHCOL,
-  /* */ CK_t_INDEXLIST,
-  /* */ CK_t_TABLENM,
 
   /* */ CK_ADDRESS,
   /* */ CK_ANDCONJ,
@@ -76,16 +72,19 @@ enum eCK : i8 // card kind
   /* */ CK_DEBUG,
   /* */ CK_DECISION,
   /* */ CK_DECK,
-   /* */ CK_DISPOSITION,
+  /* */ CK_DISPOSITION,
 
   /* */ CK_EXPR,
 
   /* */ CK_FILTPRED,
   /* */ CK_FILTPREDLIST,
 
+  /* */ CK_t_HSHCOL,
+
   /* */ CK_IDXCOL,
   /* */ CK_IDXCOLLIST,
   /* */ CK_INDEX,
+  /* */ CK_t_INDEXLIST,
   /* */ CK_INDEXNM,
 
   /* */ CK_JOINCAST,
@@ -130,6 +129,7 @@ enum eCK : i8 // card kind
   /* */ CK_SUBSET,
 
   /* */ CK_TABLELIST,
+  /* */ CK_t_TABLENM,
   /* */ CK_TABLEPTN,
   /* */ CK_TABLESIZE,
   /* */ CK_TBLSYN,
