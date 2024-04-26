@@ -5,6 +5,7 @@
 
 #include "XF_TRANSFORM.hpp"
 
+//#define Z_EARLY_PROJECTION_v2
 
 namespace STORE
 {

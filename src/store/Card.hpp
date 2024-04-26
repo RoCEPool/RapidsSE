@@ -20,10 +20,6 @@
 
 //#define Z_PART_STREAMKEY
 
-#define Z_PDSROW
-
-#define Z_TOPOLOGY_ENUM
-
 namespace STORE
 {
   class Card_AbsJoin;

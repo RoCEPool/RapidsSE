@@ -97,7 +97,6 @@ void XF_Epilog_Add_inflate::vBifurcate_inflate(void)
     m_pCI->vSnapIf_arriving();
   }
 
-#ifdef Z_PDSROW
   m_pCI->vBeginEach();
   while (m_pCI->bEachOp()) {
 
@@ -123,7 +122,6 @@ void XF_Epilog_Add_inflate::vBifurcate_inflate(void)
 
     m_pCI->vSnapIf_arriving();
   }
-#endif
 
   m_pCI->vEndTransform(__LINE__);
 }
