@@ -274,10 +274,7 @@ echo "192.168.0.5 ci.rapidsdata.com" >>/etc/hosts
 # Setting IGMP to v2 instead of v3 (for multicast) for all network devices
 status "Setting IGMP to v2"
 
-{
-  echo
-  echo "# Enable Multicast on AWS"
-} >>/etc/sysctl.conf
+echo "net.ipv4.ip_local_port_range = 20000 65500" >>/etc/sysctl.conf
 
 # Get a list of all network devices
 mapfile -t netDevices < <(ip -o -4 addr | awk '{print $2}')
