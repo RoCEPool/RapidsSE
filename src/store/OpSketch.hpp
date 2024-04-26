@@ -46,6 +46,7 @@ namespace STORE
 
     i8 m_iOperatorNo;
     i8 m_iDupOpNo;
+    i8 m_iPrevOpNo;
 		i8 m_iPrevDupOpNo;
 
     eSK  m_eSketchKind;
@@ -143,7 +144,7 @@ namespace STORE
     void vLimitExpr(Stz* sLimitExpr);
     void vPayloadBytes(i8 nPayloadBytes);
     void vSetLabels(Stz* sLabel, Stz* sLabelNext, Stz* sLabelLoop, Stz* sLabelOuterLoop = ""_Stz);
-		void vSetOpNos(i8 iOperatorNo, i8 iOpSketchCount, i8 iPrevDupOp);
+		void vSetOpNos(i8 iOperatorNo, i8 iOpSketchCount, i8 iPrevOpNo, i8 iPrevDupOp);
     void vStreamDefs(StreamDef* pStreamDefLft, StreamDef* pStreamDefRht, StreamDef* pStreamDefOut);
     eSK  eSketchKind(void);
     void vTopCount(i8 iTopCount);

@@ -241,7 +241,7 @@ void CombinedSrc::vSynthesizeCode(Stencil* pStencil, bool bFirstStage, bool bLas
         // operator begin
         vAppendCodeFragment(pOpSketch, "vOperatorStub"_Stz);
 
-        vAppendStencilTo(pOpSketch);
+        //vAppendStencilTo(pOpSketch);
         vAppendCodeFragment(pOpSketch, "vFilterBegin"_Stz, pOperatorFile);
         vGenerateExprCode(pOpSketch->m_pExprStack, "  "_Stz);
         vAppendCodeFragment(pOpSketch, "vExprCheck"_Stz);

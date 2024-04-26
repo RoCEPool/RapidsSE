@@ -33,15 +33,15 @@ void vFilterBegin(Dynamic_T* aDynamicT) {
 
   // marker-start
 
-  struct __STRUCT_TO___CURRENT_OP* p__STRUCT_TO___CURRENT_OP;
+  //struct __STRUCT_TO___CURRENT_OP* p__STRUCT_TO___CURRENT_OP;
 
 __L_LABEL__:
 
 	p__STRUCT_FROM___PREV_OP = (struct __STRUCT_FROM___PREV_OP*)__ROW_INFO_FROM__[PREV_DUP_OP].m_aRowCellArray;
 	szStrArea = __ROW_INFO_FROM__[PREV_DUP_OP].m_acStrArea;
 
-  p__STRUCT_TO___CURRENT_OP = (struct __STRUCT_TO___CURRENT_OP*)p__STRUCT_FROM___PREV_OP;
-  szStrArea = __ROW_INFO_FROM__[PREV_DUP_OP].m_acStrArea;
+  //p__STRUCT_TO___CURRENT_OP = (struct __STRUCT_TO___CURRENT_OP*)p__STRUCT_FROM___PREV_OP;
+  //szStrArea = __ROW_INFO_FROM__[PREV_DUP_OP].m_acStrArea;
 
   if ( ! aDynamicT->m_bProcessRow ) {
     aDynamicT->m_bProcessRow = true;

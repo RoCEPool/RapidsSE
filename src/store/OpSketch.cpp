@@ -68,6 +68,7 @@ OpSketch::OpSketch(StageDef* pStageDef, Stz* sExprStr, eHK eHandlerKind, eSK eSk
 
   m_iOperatorNo  = C_UNKNOWN;
   m_iDupOpNo     = C_UNKNOWN;
+  m_iPrevOpNo    = C_UNKNOWN;
   m_iPrevDupOpNo = C_UNKNOWN;
 
   m_eSketchKind  = eSketchKind;
@@ -1333,11 +1334,12 @@ void OpSketch::vSetLabels(Stz* sLabel, Stz* sLabelNext, Stz* sLabelLoop, Stz* sL
 /*----------------------------------------------------------------------------*/
 /* set the op no's                                                            */
 /*----------------------------------------------------------------------------*/
-void OpSketch::vSetOpNos(i8 iOperatorNo, i8 iOpSketchCount, i8 iPrevDupOp) {
+void OpSketch::vSetOpNos(i8 iOperatorNo, i8 iOpSketchCount, i8 iPrevOpNo, i8 iPrevDupOp) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_OPSKETCH, _FOOTER_);
 
   m_iOperatorNo  = iOperatorNo;
   m_iDupOpNo     = iOpSketchCount;
+  m_iPrevOpNo    = iPrevOpNo;
   m_iPrevDupOpNo = iPrevDupOp;
 
 }
@@ -2052,7 +2054,7 @@ void OpSketch::vPushOrdCol(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePr
   sColumn = pColumn->szColNm();
   StrLib::vToUpper(sColumn.azChar(), sColumn.nAreaBytes());
 
-  sPush.vSprint("_PSH_COL(p%s_%lld->%s.m_iAsI8)"_Stz, xStencilRow[m_eStencilFrom], m_iOperatorNo-1, sColumn.azChar());
+  sPush.vSprint("_PSH_COL(p%s_%lld->%s.m_iAsI8)"_Stz, xStencilRow[m_eStencilFrom], m_iPrevOpNo, sColumn.azChar());
   pExprStack->vPushStz(sPush);
 
   if (pExprStack == m_pGbyStack) {
@@ -2081,7 +2083,7 @@ void OpSketch::vPushOrdCol(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePr
 
   // if column nullable generate null check expressions
   if ( ! bConstaint && pColumn->bIsNullable() ) {
-    sPush.vSprint("_PSH_COL(p%s_%lld->%s.m_iAsI8)"_Stz, xStencilRow[m_eStencilFrom], m_iOperatorNo-1, sColumn.azChar());
+    sPush.vSprint("_PSH_COL(p%s_%lld->%s.m_iAsI8)"_Stz, xStencilRow[m_eStencilFrom], m_iPrevOpNo, sColumn.azChar());
     m_pNullStack->vPushStz(sPush);
     sPush.vSprint("_ISNULL(aDynamicT->m_iErrorCode)"_Stz);
     m_pNullStack->vPushStz(sPush);

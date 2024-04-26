@@ -1132,8 +1132,8 @@ bool CodeSynthUtils::bReplacePrevOp(String* sLine, String* sReplacedLine, OpSket
 
   if (StrLib::bContains(sLine->azStr(), "PREV_OP")) {
     s32 sOperatorNo;
-    RASSERT(pOpSketch->m_iOperatorNo > 0);
-    StrLib::vSprint(sOperatorNo, sizeof(sOperatorNo), nullptr, "%lld"_Stz, pOpSketch->m_iOperatorNo - 1);
+    RASSERT(pOpSketch->m_iPrevOpNo > 0);
+    StrLib::vSprint(sOperatorNo, sizeof(sOperatorNo), nullptr, "%lld"_Stz, pOpSketch->m_iPrevOpNo);
     bool bResult = StrLib::bReplace(sReplacedLine->azStr(), sReplacedLine->nAreaBytes(),
                                     sLine->azStr(), "PREV_OP", sOperatorNo.azChar());
     RASSERT(bResult);
@@ -1196,7 +1196,7 @@ void CodeSynthUtils::vReplaceStructFrom(String* sLine, OpSketch* pOpSketch)
     RASSERT(StrLib::bContains(sLine->azStr(), "PREV_OP"));
     s32 sOperatorNo;
     RASSERT(pOpSketch->m_iOperatorNo != C_UNKNOWN);
-    StrLib::vSprint(sOperatorNo, sizeof(sOperatorNo), nullptr, "%lld"_Stz, pOpSketch->m_iOperatorNo - 1);
+    StrLib::vSprint(sOperatorNo, sizeof(sOperatorNo), nullptr, "%lld"_Stz, pOpSketch->m_iPrevOpNo);
     bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(),
                                "PREV_OP", sOperatorNo.azChar());
     RASSERT(bResult);
@@ -1210,7 +1210,7 @@ void CodeSynthUtils::vReplaceStructFrom(String* sLine, OpSketch* pOpSketch)
     RASSERT(StrLib::bContains(sLine->azStr(), "PREV_OP"));
     s32 sOperatorNo;
     RASSERT(pOpSketch->m_iOperatorNo != C_UNKNOWN);
-    StrLib::vSprint(sOperatorNo, sizeof(sOperatorNo), nullptr, "%lld"_Stz, pOpSketch->m_iOperatorNo - 1);
+    StrLib::vSprint(sOperatorNo, sizeof(sOperatorNo), nullptr, "%lld"_Stz, pOpSketch->m_iPrevOpNo);
     bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(),
                                "PREV_OP", sOperatorNo.azChar());
     RASSERT(bResult);

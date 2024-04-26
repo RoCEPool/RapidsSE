@@ -2,7 +2,37 @@
 /* _alka                                                                      */
 /*============================================================================*/
 
-trackMemory;
-_lineitem;
-drop table lineitem;
-MemoryLeaks;
+file _lineitem;
+load lineitem "../DATA/TPCH/lineitem10.csv";
+
+/keepCodeFile
+/optimise_passthru
+pipeline Query6
+begin
+ stage stageA on origin :
+   start | pulse once | stageB
+
+  stage stageB on all partitions :
+    scan lineitem
+    | filter "type boolean $11 DATE '1994-01-01' >= $11 DATE '1995-01-01' < and "
+    | next
+
+  stage x on all partitions :
+    filter "type boolean $7 0.06 0.01 - >= $7 0.06 0.01  +  <= $5 26.0 < and and"
+    | aggreg " type decimal ( 19  2 ) as partitionRevenue ) $6 $7 * sum"
+    | combined 0
+    | stageC
+
+  stage stageC on origin :
+    aggreg " type decimal ( 19  2 ) as revenue ) $1 sum "
+    | combined 0
+    | next
+
+  stage stageLast on origin :
+    output | sink | stageA
+end ;
+
+/*
+rows:
+  (2377.22)
+  */
