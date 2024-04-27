@@ -41,7 +41,7 @@ struct IndexInfo {
   struct Ent_int* m_aEntInt;
 };
 
-const i8 C_MAX_DUP_OPS = 4;
+const i8 C_MAX_DUP_OPS = 6;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // CODE SYNTH V2

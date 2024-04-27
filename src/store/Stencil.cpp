@@ -899,7 +899,7 @@ OpSketch* Stencil::pSketchFilter(StageDef* pStageDef, OpDef* pOpDef, OpSketch* p
     }
     else {
       m_iPrevOpNo = pLastOpSketch->m_iOperatorNo;
-      m_iPrevDupOpNo = pLastOpSketch->m_iPrevDupOpNo;
+      m_iPrevDupOpNo = pLastOpSketch->m_iDupOpNo;
     }
   }
   else
