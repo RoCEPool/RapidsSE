@@ -551,7 +551,6 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
 
   // todo: this is messy and unclear
 
-  pCI->vForwards(false);
   while (pCI->bEachOp_reverse()) {
     if (pCI->E.p_Op->pSub_emit())
       break;

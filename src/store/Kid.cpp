@@ -318,6 +318,7 @@ bool Kid::bEach_reverse(void)
     return true;
   }
 
+  m_bForwards = true;
   return false;
 }
 

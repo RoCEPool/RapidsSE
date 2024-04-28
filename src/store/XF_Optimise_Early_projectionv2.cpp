@@ -55,8 +55,6 @@ void XF_Optimise_Early_projectionv2::vOptimise(CardIter* pCI)
   b1 = pXF_Early_projection->bEarly_needed_loop();
   b1 = pXF_Early_projection->bEarly_projection_loop();
 
-  b1 = pXF_Early_projection->bOptimise();
-
   pXF_Early_projection->vOptimised(b1);
 
   delete pXF_Early_projection;
@@ -66,58 +64,6 @@ void XF_Optimise_Early_projectionv2::vOptimise(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*-- public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool XF_Optimise_Early_projectionv2::bOptimise(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_EARLY_PROJECTION, _FOOTER_);
-
-  bool bOptRun = false;
-
-  if (AM::JOB::bHasTag(C_OPTIMISER_EP_DISABLE))
-    return bOptRun;
-
-  m_pCI->vTransform(__FILE__, __func__, XF_OPTIMISE_EARLY_PROJECTION);
-
-  RASSERT(nullptr == m_pCI->Early.m_pNeeded_later);
-
-  m_pCI->vForwards(false);
-  m_pCI->vBeginEach_reverse();
-
-  for (;;) {
-
-    m_pCI->Early.m_pOP_root = nullptr;
-    m_pCI->Early.m_pOP_leaf = nullptr;
-
-    bool bEarlyRoot = false;
-
-    while (m_pCI->bEachOp_reverse()) {
-      if (Card_OP::bIsOp(m_pCI->E.p_Op) && ((Card_OP*)m_pCI->E.p_Op)->bIsEarlyRoot()) {
-        bEarlyRoot = true;
-        break;
-      }
-    }
-    if (! bEarlyRoot)
-      break;
-
-    ((Card_OP*)m_pCI->E.p_Op)->vEarlyProject_root(m_pCI);
-
-    if (m_pCI->Early.m_pNeeded_later) {
-      DELETE_CARD(m_pCI->Early.m_pNeeded_later);
-    }
-
-    bOptRun = true;
-
-
-    m_pCI->vResynchOp(m_pCI->Early.m_pOP_leaf);
-  }
-
-  m_pCI->vEndTransform(__LINE__);
-
-  return bOptRun;
-}
 
 /*----------------------------------------------------------------------------*/
 /* loop thru operators / early projection                                     */
@@ -132,7 +78,6 @@ bool XF_Optimise_Early_projectionv2::bEarly_needed_loop(void)
 
   RASSERT(nullptr == m_pCI->Early.m_pNeeded_later);
 
-  m_pCI->vForwards(false);
   m_pCI->vBeginEach_reverse();
 
   while (m_pCI->bEachOp_reverse()) {

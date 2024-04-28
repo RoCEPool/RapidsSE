@@ -22,16 +22,13 @@ namespace STORE
 
     static void vOptimise(CardIter* pCI);
 
-    bool bOptimise(void);
-
+  private:
     bool bEarly_needed_loop(void);
     bool bEarly_needed_OP(void);
 
     bool bEarly_projection_loop(void);
     bool bEarly_projection_OP(void);
 
-
-  private:
     Footer* aFooter(void);
 
   };
