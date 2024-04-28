@@ -303,6 +303,13 @@ bool Card::bIsOp(eCK eCard)
     case CK_o_SORT:
     case CK_o_TOP:
     case CK_o_WHERE:
+
+    case CK_o_ABSJOIN:
+    case CK_o_FLAT:
+    case CK_o_FOLD:
+    case CK_o_SEND:
+    case CK_o_STAGE:
+
       return true;
 
     default:

@@ -640,6 +640,9 @@ void Card_OP::vRestate_emit(CardIter* pCI)
       NEVER_REACH
       break;
 
+    case CK_o_FOLD:
+      return;
+
     default:
       pCI->E.p_Op->vDump(__func__);
       NEVER_REACH
