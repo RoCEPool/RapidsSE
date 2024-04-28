@@ -535,22 +535,6 @@ void CardIter::vBeginEach_tail(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void CardIter::vBeginMember(eCK eSub_Of_Op)
-{
-  _precondition_(_MAGIC_, _FOOTER_);
-
-  vPushEach();
-
-  Card* pSub_Of_Op = E.p_Op->pFindSubCard(eSub_Of_Op);
-  vMember(eSub_Of_Op, pSub_Of_Op);
-
-  E.xTarget.vBegin();
-  E.xTarget.vParent(pSub_Of_Op);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 void CardIter::vBeginTarget(eCK ePrimary, eCK eTarget)
 {
   _precondition_(_MAGIC_, _FOOTER_);
@@ -806,21 +790,6 @@ eOA CardIter::eCueUser(String* psPrompt)
 }
 
 /*----------------------------------------------------------------------------*/
-/* delete given member; clear-if registers; update M member to null           */
-/*----------------------------------------------------------------------------*/
-void CardIter::vDeleteMember(Card* pMember)
-{
-  _precondition_(_MAGIC_, _FOOTER_);
-
-  eCK eMember = pMember->eCard();
-
-  vClearRegistersIf(pMember);
-  vMember(eMember, nullptr);
-
-  DELETE_CARD(pMember);
-}
-
-/*----------------------------------------------------------------------------*/
 /* delete main when given sub is empty                                        */
 /*----------------------------------------------------------------------------*/
 void CardIter::vDeleteWhenEmptySub(eCK eOp, eCK eSub)
@@ -904,54 +873,6 @@ Board* CardIter::pEachBoard(i8& ri_Board)
   vUseCard(E.pBoard->pDeck());
 
   return E.pBoard;
-}
-
-/*----------------------------------------------------------------------------*/
-/* conditionally step main register to next main and update M member          */
-/*----------------------------------------------------------------------------*/
-bool CardIter::bEachMember(void)
-{
-  _precondition_( _MAGIC_, _FOOTER_);
-
-  RASSERT(E.xTarget.bBegun());
-  RASSERT(! E.xTarget.bEnded());
-
-  while (E.xTarget.bEach()) {
-    vMember(E.xTarget.eChild(), E.xTarget.pChild());
-    return true;
-  }
-
-  E.xTarget.vEnded();
-
-  vPopEach();
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* conditionally step main register to next main and update M member          */
-/*----------------------------------------------------------------------------*/
-bool CardIter::bEachMember(eCK eMember2, eCK eMember3)
-{
-  _precondition_( _MAGIC_, _FOOTER_);
-
-  RASSERT(E.xTarget.bBegun());
-  RASSERT(! E.xTarget.bEnded());
-
-  while (E.xTarget.bEach(eMember2)) {
-    vMember(E.xTarget.eChild(), E.xTarget.pChild());
-
-    Card* pSub_Of_Member = E.xTarget.pChild()->pFindSubCard(eMember3);
-    vMember(eMember3, pSub_Of_Member);
-
-    return true;
-  }
-
-  E.xTarget.vEnded();
-
-  vPopEach();
-
-  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1171,8 +1092,6 @@ bool CardIter::bEachOp_reverse(eCK eOp)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  RASSERT(!bForwards());
-
   RASSERT(E.xEachOp.bBegun());
   RASSERT(! E.xEachOp.bEnded());
 
@@ -1201,8 +1120,6 @@ bool CardIter::bEachOp_reverse(eCK eOp)
 bool CardIter::bEachOp_reverse_foldBreak(eCK eOp)
 {
   _precondition_( _MAGIC_, _FOOTER_);
-
-  RASSERT(!bForwards());
 
   RASSERT(E.xEachOp.bBegun());
   RASSERT(! E.xEachOp.bEnded());
@@ -1446,40 +1363,6 @@ bool CardIter::bEachTarget(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* end member                                                                 */
-/*----------------------------------------------------------------------------*/
-Card* CardIter::pEndMember(eCK eMember)
-{
-  _precondition_( _MAGIC_, _FOOTER_);
-
-  Card* pEnd = pMember(eMember);
-
-  RASSERT(E.xTarget.bBegun());
-  RASSERT(! E.xTarget.bEnded());
-
-  E.xTarget.vEnded();
-
-  vPopEach();
-
-  return pEnd;
-}
-
-/*----------------------------------------------------------------------------*/
-/* end member                                                                 */
-/*----------------------------------------------------------------------------*/
-void CardIter::vEndMember(void)
-{
-  _precondition_( _MAGIC_, _FOOTER_);
-
-  RASSERT(E.xTarget.bBegun());
-  RASSERT(! E.xTarget.bEnded());
-
-  E.xTarget.vEnded();
-
-  vPopEach();
-}
-
-/*----------------------------------------------------------------------------*/
 /* end of phase                                                               */
 /*----------------------------------------------------------------------------*/
 void CardIter::vEndPhase(void)
@@ -1592,26 +1475,6 @@ void CardIter::vFocusOnOp(void)
 
   E.e_Op = E.p_Op->eCard();
   E.i_Op = this->i_Child();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool CardIter::bForwards(void)
-{
-  _precondition_( _MAGIC_, _FOOTER_);
-
-  return E.xEachOp.bForwards();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void CardIter::vForwards(bool bForward)
-{
-  _precondition_( _MAGIC_, _FOOTER_);
-
-  E.xEachOp.vForwards(bForward);
 }
 
 /*----------------------------------------------------------------------------*/

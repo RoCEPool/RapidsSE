@@ -183,7 +183,6 @@ namespace STORE
     void vBeginBoard(void);
     void vBeginEach(eCK eOp=CK_NONE);
     void vBeginEach_tail(void);
-    void vBeginMember(eCK eSub_Of_Op);
     void vBeginTarget(eCK ePrimary, eCK eTarget);
     void vBeginTarget(Card* pPrimary, eCK eTarget);
     Board* pBoard(void);
@@ -197,7 +196,6 @@ namespace STORE
     void vClearRegistersIf(Card* pCard);
     eOA  eCueUser(String* psPrompt);
 
-    void vDeleteMember(Card* pMember);
     void vDeleteWhenEmptySub(eCK eOp, eCK eSub);
     void vDontDescend(bool bDontDescend);
 
@@ -205,8 +203,6 @@ namespace STORE
     Board* pEachBoard(void);
     Board* pEachBoard(i8& ri_Board);
 
-    bool bEachMember(void);
-    bool bEachMember(eCK eMember2, eCK eMember3);
     bool bEachOp(void);
     bool bEachOp(eCK eOp);
     bool bEachOp_break(eCK eOp, eCK eBreak= CK_o_FOLD);
@@ -227,8 +223,6 @@ namespace STORE
 
     bool bEachTarget(void);
 
-    Card* pEndMember(eCK eMember);
-    void vEndMember(void);
     void vEndPhase(void);
     Card* pEndTarget(void);
     void  vEndTarget(void);
@@ -236,8 +230,6 @@ namespace STORE
 
     Card_OP* pFind_from_By_tblSyn(Symbol* pSym_tblSyn, i8 i_Before);
     void vFocusOnOp(void);
-    bool bForwards(void);
-    void vForwards(bool bForward);
 
     void vInsertAfter(Card* pCard, Card* pAfter);
     void vInsertBefore(Card* pCard, Card* pBefore);
