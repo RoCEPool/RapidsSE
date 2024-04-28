@@ -263,8 +263,8 @@ namespace STORE
     void vRecurseEnd(void);
     void vRemoveDeleteMain(eCK eCrossCheck);
     void vResetMembers(void);
-    void vResynchOp(void);
-    void vResynchOp(Card* pCard);
+    void vRepositionOp(void);
+    void vRepositionOp(Card_OP* p_Op);
     bool bRewindOp(void);
 
     void vSnap_arriving(Card_Emit* p_emit, Card_StreamKey * pStreamKey);

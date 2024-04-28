@@ -106,7 +106,7 @@ void Card_IndexJoin::vEarlyProject_recurse_add(CardIter* pCI)
   // insert new empty early project (has only needed) before this indexJoin
   Card_Project* p_project_early = pCI->Early.m_pNeeded_later->pNew_project_early(pCI);
   pCI->vInsertBefore(p_project_early, this);
-  pCI->vResynchOp();
+  pCI->vRepositionOp();
 
   Card_OP::vEarlyProject_backstep(pCI);
 
@@ -225,7 +225,7 @@ void Card_IndexJoin::vEarlyProject_root(CardIter* pCI)
   // insert empty early projection (has only needed) before this ordAgg
   Card_Project* p_project_early = pCI->Early.m_pNeeded_later->pNew_project_early(pCI);
   pCI->vInsertBefore(p_project_early, this);
-  pCI->vResynchOp();
+  pCI->vRepositionOp();
 
   Card_OP::vEarlyProject_backstep(pCI);
 

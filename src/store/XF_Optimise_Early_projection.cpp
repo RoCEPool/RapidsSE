@@ -110,7 +110,7 @@ bool XF_Optimise_Early_projection::bOptimise(void)
     bOptRun = true;
 
 
-    m_pCI->vResynchOp(m_pCI->Early.m_pOP_leaf);
+    m_pCI->vRepositionOp(m_pCI->Early.m_pOP_leaf);
   }
 
   m_pCI->vEndTransform(__LINE__);

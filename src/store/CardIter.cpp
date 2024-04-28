@@ -2361,7 +2361,7 @@ bool CardIter::bRewindOp(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void CardIter::vResynchOp(void)
+void CardIter::vRepositionOp(void)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
@@ -2372,12 +2372,12 @@ void CardIter::vResynchOp(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void CardIter::vResynchOp(Card* pCard)
+void CardIter::vRepositionOp(Card_OP* p_Op)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  E.p_Op = pCard;
-  vResynchOp();
+  E.p_Op = p_Op;
+  vRepositionOp();
 }
 
 /*----------------------------------------------------------------------------*/
