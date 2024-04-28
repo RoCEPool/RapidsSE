@@ -288,10 +288,6 @@ namespace STORE
 
     static void vCardLeaks(void);
 
-    static bool bIsConstruction(eCK eCard);
-    static bool bIsMain(eCK eCard);
-    static bool bIsOp(eCK eCard);
-
     static eYG  e_aggLevel_To_stageTopo(eAL eLevel);
 
     static eAL  e_stageTopo_To_aggLevel(eYG eStageTopo);
@@ -350,7 +346,6 @@ namespace STORE
     bool bHasSymbolRecursive(eCK eCard, Symbol* pSymbol);
 
     bool bIsCard(eCK eCard);
-    bool bIsMain(void);
     bool bIsOp(void);
     bool bIsPeek(eCK eChild0);
     bool bIsPeek(eCK eChild0, eCK eChild1);

@@ -886,7 +886,7 @@ bool CardIter::bEachOp(void)
   RASSERT(! E.xEachOp.bEnded());
 
   while (E.xEachOp.bEach()) {
-    if (E.xEachOp.bParentIs(CK_DECK) && ! E.xEachOp.pChild()->bIsMain())
+    if (E.xEachOp.bParentIs(CK_DECK) && ! E.xEachOp.pChild()->bIsOp())
       continue;
 
     E.p_Op = E.xEachOp.pChild();
@@ -911,7 +911,7 @@ bool CardIter::bEachOp(eCK eOp)
   RASSERT(E.xEachOp.bBegun());
   RASSERT(! E.xEachOp.bEnded());
 
-  RASSERT(Card_OP::bIsMain(eOp));
+  RASSERT(Card_OP::bIsOp(eOp));
 
   E.p_Op = nullptr;
 
@@ -941,7 +941,7 @@ bool CardIter::bEachOp_break(eCK eOp, eCK eBreak)
   RASSERT(E.xEachOp.bBegun());
   RASSERT(! E.xEachOp.bEnded());
 
-  RASSERT(Card_OP::bIsMain(eOp));
+  RASSERT(Card_OP::bIsOp(eOp));
 
   E.p_Op = nullptr;
 
@@ -972,7 +972,7 @@ bool CardIter::bEachOp(eCK eOp, eCK eSub)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  RASSERT(! Card_OP::bIsMain(eSub) || CK_o_FILTER == eSub);
+  RASSERT(! Card_OP::bIsOp(eSub) || CK_o_FILTER == eSub);
 
   while (bEachOp(eOp)) {
     if (! (E.p_Sub = E.p_Op->pFindSubCard(eSub)))
@@ -1014,7 +1014,7 @@ bool CardIter::bEachOp(eCK eOp, eCK eSub1, eCK eSub2)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  RASSERT(! Card_OP::bIsMain(eSub2) || CK_o_FILTER == eSub2);
+  RASSERT(! Card_OP::bIsOp(eSub2) || CK_o_FILTER == eSub2);
 
   while (bEachOp(eOp, eSub1)) {
     if (! (E.p_Sub2 = E.p_Op->pFindSubCard(eSub2)))
@@ -1039,7 +1039,7 @@ bool CardIter::bEachOp(eCK eOp, eCK eSub1, eCK eSub2, eCK eSub3)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  RASSERT(! Card_OP::bIsMain(eSub3));
+  RASSERT(! Card_OP::bIsOp(eSub3));
 
   while (bEachOp(eOp, eSub1, eSub2)) {
     if (! (E.p_Sub3 = E.p_Op->pFindSubCard(eSub3)))
@@ -1071,7 +1071,7 @@ bool CardIter::bEachOp_reverse(void)
   E.p_Op = nullptr;
 
   while (E.xEachOp.bEach_reverse()) {
-    if (E.xEachOp.bParentIs(CK_DECK) && ! E.xEachOp.pChild()->bIsMain())
+    if (E.xEachOp.bParentIs(CK_DECK) && ! E.xEachOp.pChild()->bIsOp())
       continue;
 
     E.p_Op = E.xEachOp.pChild();
@@ -1095,7 +1095,7 @@ bool CardIter::bEachOp_reverse(eCK eOp)
   RASSERT(E.xEachOp.bBegun());
   RASSERT(! E.xEachOp.bEnded());
 
-  RASSERT(Card_OP::bIsMain(eOp));
+  RASSERT(Card_OP::bIsOp(eOp));
 
   E.p_Op = nullptr;
 
@@ -1124,7 +1124,7 @@ bool CardIter::bEachOp_reverse_foldBreak(eCK eOp)
   RASSERT(E.xEachOp.bBegun());
   RASSERT(! E.xEachOp.bEnded());
 
-  RASSERT(Card_OP::bIsMain(eOp));
+  RASSERT(Card_OP::bIsOp(eOp));
 
   E.p_Op = nullptr;
 
@@ -1154,7 +1154,7 @@ bool CardIter::bEachOp_reverse(eCK eOp, eCK eSub)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  RASSERT(! Card_OP::bIsMain(eSub));
+  RASSERT(! Card_OP::bIsOp(eSub));
 
   while (bEachOp_reverse(eOp)) {
     if (! (E.p_Sub = E.p_Op->pFindSubCard(eSub)))
@@ -1182,7 +1182,7 @@ bool CardIter::bEachOp_reverse_foldBreak(eCK eOp, eCK eSub)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  RASSERT(! Card_OP::bIsMain(eSub) || CK_o_FILTER == eSub);
+  RASSERT(! Card_OP::bIsOp(eSub) || CK_o_FILTER == eSub);
 
   while (bEachOp_reverse_foldBreak(eOp)) {
     if (! (E.p_Sub = E.p_Op->pFindSubCard(eSub)))
@@ -1211,7 +1211,7 @@ bool CardIter::bEachOp_bySub(eCK eSub)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  RASSERT(! Card_OP::bIsMain(eSub));
+  RASSERT(! Card_OP::bIsOp(eSub));
 
   while (bEachOp()) {
     if (! (E.p_Sub = E.p_Op->pFindSubCard(eSub)))
@@ -1238,8 +1238,8 @@ bool CardIter::bEachOp_by2Sub(eCK eSub1, eCK eSub2)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  RASSERT(! Card_OP::bIsMain(eSub1));
-  RASSERT(! Card_OP::bIsMain(eSub2));
+  RASSERT(! Card_OP::bIsOp(eSub1));
+  RASSERT(! Card_OP::bIsOp(eSub2));
 
   while (bEachOp()) {
     if (! (E.p_Sub = E.p_Op->pFindSubCard(eSub1)))
@@ -1272,9 +1272,9 @@ bool CardIter::bEachOp_by3Sub(eCK eSub1, eCK eSub2, eCK eSub3)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  RASSERT(! Card_OP::bIsMain(eSub1));
-  RASSERT(! Card_OP::bIsMain(eSub2));
-  RASSERT(! Card_OP::bIsMain(eSub3));
+  RASSERT(! Card_OP::bIsOp(eSub1));
+  RASSERT(! Card_OP::bIsOp(eSub2));
+  RASSERT(! Card_OP::bIsOp(eSub3));
 
   while (bEachOp()) {
     if (! (E.p_Sub = E.p_Op->pFindSubCard(eSub1)))
