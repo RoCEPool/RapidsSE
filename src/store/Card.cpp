@@ -200,40 +200,6 @@ void Card::vCardLeaks(void)
 //  }
 }
 
-/*----------------------------------------------------------------------------*/
-/* convert eAL to eYG                                                         */
-/*----------------------------------------------------------------------------*/
-eYG Card::e_aggLevel_To_stageTopo(eAL eLevel)
-{
-  _static_
-
-  switch (eLevel) {
-    case AL_PARTITION : return YG_ALL_PARTITIONS;
-    case AL_NODE      : return YG_ALL_NODES;
-    case AL_ORIGIN    : return YG_ORIGIN_NODE;
-    default           : return YG_ALL_PARTITIONS;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* convert eYG to eAL                                                         */
-/*----------------------------------------------------------------------------*/
-eAL Card::e_stageTopo_To_aggLevel(eYG eStageTopo)
-{
-  _static_
-
-  eAL eLevel;
-
-  switch (eStageTopo) {
-    case YG_ALL_PARTITIONS : eLevel = AL_PARTITION; break;
-    case YG_ALL_NODES      : eLevel = AL_NODE;      break;
-    case YG_ORIGIN_NODE    : eLevel = AL_ORIGIN;    break;
-    default                : eLevel = AL_NONE;      break;
-  }
-
-  return eLevel;
-}
-
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/

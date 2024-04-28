@@ -288,10 +288,6 @@ namespace STORE
 
     static void vCardLeaks(void);
 
-    static eYG  e_aggLevel_To_stageTopo(eAL eLevel);
-
-    static eAL  e_stageTopo_To_aggLevel(eYG eStageTopo);
-
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
     bool bAllChildren(eCK eCard);

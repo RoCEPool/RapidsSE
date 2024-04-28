@@ -39,6 +39,40 @@ Card_Level::~Card_Level(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
+/*----------------------------------------------------------------------------*/
+/* convert eAL to eYG                                                         */
+/*----------------------------------------------------------------------------*/
+eYG Card_Level::e_aggLevel_To_stageTopo(eAL eLevel)
+{
+  _static_
+
+  switch (eLevel) {
+    case AL_PARTITION : return YG_ALL_PARTITIONS;
+    case AL_NODE      : return YG_ALL_NODES;
+    case AL_ORIGIN    : return YG_ORIGIN_NODE;
+    default           : return YG_ALL_PARTITIONS;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert eYG to eAL                                                         */
+/*----------------------------------------------------------------------------*/
+eAL Card_Level::e_stageTopo_To_aggLevel(eYG eStageTopo)
+{
+  _static_
+
+  eAL eLevel;
+
+  switch (eStageTopo) {
+    case YG_ALL_PARTITIONS : eLevel = AL_PARTITION; break;
+    case YG_ALL_NODES      : eLevel = AL_NODE;      break;
+    case YG_ORIGIN_NODE    : eLevel = AL_ORIGIN;    break;
+    default                : eLevel = AL_NONE;      break;
+  }
+
+  return eLevel;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
