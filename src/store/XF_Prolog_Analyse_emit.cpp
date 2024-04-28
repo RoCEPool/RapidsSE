@@ -64,10 +64,17 @@ void XF_Prolog_Analyse_emit::vXF_Analyse(void)
 
   m_pCI->vTransform(__FILE__, __func__, XF_PROLOG_ANALYSE_EMIT);
 
+  m_pCI->vBeginEach();
   m_pCI->vSnap_arriving(nullptr,nullptr);
 
-  for (m_pCI->vBeginEach(); m_pCI->bEachOp(); /**/)
+  while (m_pCI->bEachOp()) {
+
+    if (! m_pCI->E.p_Op->bIsOp())
+      continue;
+
     ((Card_OP*)m_pCI->E.p_Op)->vRestate_emit(m_pCI);
+
+  } // while (m_pCI->bEachOp())
 
    m_pCI->vEndTransform(__LINE__);
 }
