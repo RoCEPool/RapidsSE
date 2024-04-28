@@ -555,7 +555,6 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
     if (pCI->E.p_Op->pSub_emit())
       break;
   }
-  pCI->vForwards(true);
 
   pCI->vSnapIf_arriving();
   RASSERT(pCI->bEachOp(CK_o_FOLD));

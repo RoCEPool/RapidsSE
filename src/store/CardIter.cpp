@@ -1144,8 +1144,6 @@ bool CardIter::bEachOp_reverse(void)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  vForwards(false);
-
   RASSERT(E.xEachOp.bBegun());
   RASSERT(! E.xEachOp.bEnded());
 

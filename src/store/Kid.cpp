@@ -76,6 +76,9 @@ void Kid::vBackstep(void)
   if (m_bForwards) {
     m_i_Child--;
   }
+  else {
+    vDebugPoint();
+  }
 
   vChildUpdate();
 }
@@ -309,7 +312,7 @@ bool Kid::bEach_reverse(void)
   _nonProper_
 
   RASSERT(m_bBegun);
-  RASSERT(! m_bForwards);
+  vForwards(false);
 
   m_i_Child--;
   vChildUpdate();
