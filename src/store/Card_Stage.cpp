@@ -241,7 +241,7 @@ void Card_Stage::vReinstate_stages_v1(CardIter* pCI)
 
     Card_OP* p_card_OP = (Card_OP*)(pCI->E.p_deck->pGetChild(i_Main));
 
-    RASSERT(Card_OP::bIsOp(p_card_OP));
+    RASSERT(Card::bIsOp(p_card_OP->eCard()));
 
     if (pStager->bAddNext(p_card_OP))
       vAddNext(pCI, p_card_OP, i_Main, ""_Stz);

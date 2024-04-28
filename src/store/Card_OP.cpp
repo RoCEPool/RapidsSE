@@ -40,41 +40,6 @@ Card_OP::~Card_OP(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool Card_OP::bIsOp(Card* pCard)
-{
-  _static_
-
-  eCK eCard = pCard->eCard();
-
-  switch (eCard) {
-
-    case CK_o_AGGREG:
-    case CK_o_CROSSJOIN:
-    case CK_o_FILTER:
-    case CK_o_GBYAGG:
-    case CK_o_HAVING:
-    case CK_o_INDEXJOIN:
-    case CK_o_INDEXSCAN:
-    case CK_o_KEYEXISTS:
-    case CK_o_KEYNOTEXISTS:
-    case CK_o_LIMIT:
-    case CK_o_ORDAGG:
-    case CK_o_PROJECT:
-    case CK_o_WHERE:
-    case CK_o_SCAN:
-    case CK_o_SORT:
-    case CK_o_TOP:
-      return true;
-
-    default:
-      return false;
-  }
-
-}
-
-/*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -639,6 +604,9 @@ void Card_OP::vRestate_emit(CardIter* pCI)
       pCI->E.p_Op->vDump(__func__);
       NEVER_REACH
       break;
+
+    case CK_o_FOLD:
+      return;
 
     default:
       pCI->E.p_Op->vDump(__func__);

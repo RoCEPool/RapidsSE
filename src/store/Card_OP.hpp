@@ -16,8 +16,6 @@ namespace STORE
     Card_OP(eCK eCard, i8 iFixedDepth);
    ~Card_OP(void) noexcept(false);
 
-    static bool bIsOp(Card* pCard);
-
     void vAnalyse_injectable(CardIter* pCI);
     void vApply_lambdaFn_ToAll_term(CardIter* pCI,
                                     std::function<bool(Card* pCard)> bfLambdaFn);
