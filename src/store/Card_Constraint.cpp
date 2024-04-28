@@ -137,14 +137,14 @@ void Card_Constraint::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
   UNUSED(pParent);
 
-  (void)Card::eValidate_parentEither(pCI,
+  (void)Card::eValidate_parent_either(pCI,
                                      CK_o_FROM,
                                      CK_o_INDEXJOIN,
                                      CK_o_KEYEXISTS,
                                      CK_o_KEYNOTEXISTS,
                                      CK_NONE);
 
-  eValidate_mustEither(CK_PREDICATE, CK_NONE);
+  vValidate_child_mustEither(CK_PREDICATE, CK_NONE);
 
   Card::vValidate(pCI,iDepth,pParent);
   pCI->vValidateChildren(this,iDepth+1);

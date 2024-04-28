@@ -1610,7 +1610,7 @@ void Card_OP::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
     return;
 
   if (pCI->pBoard()->pState()->bHasName(aOH[OH_PROLOG]))
-    vValidate_mustHave(CK_c_LEVEL, CK_NONE);
+    vValidate_child_mustBe(CK_c_LEVEL, CK_NONE);
 }
 
 /*============================================================================*/

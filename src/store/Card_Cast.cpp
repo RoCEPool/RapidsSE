@@ -146,7 +146,7 @@ void Card_Cast::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  vValidate_notHave(CK_c_LEVEL, CK_NONE);
+  vValidate_child_notBe(CK_c_LEVEL, CK_NONE);
 
   Card::vValidate(pCI,iDepth,pParent);
   pCI->vValidateChildren(this,iDepth+1);

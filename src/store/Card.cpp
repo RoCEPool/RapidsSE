@@ -1789,21 +1789,9 @@ void Card::vValidate_hasChildren(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* validate this card has child cards                                         */
+/* validate set of child cards                                                */
 /*----------------------------------------------------------------------------*/
-void Card::vValidate_hasType(void)
-{
-  if (!pSymbol()->bValidType()) {
-    vDump(__func__);
-    NEVER_REACH
-  }
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* validate set of child cards                                                 */
-/*----------------------------------------------------------------------------*/
-void Card::vValidate_mayHave(i8 /*eCK*/ iCard_first, ...)
+void Card::vValidate_child_mayBe(i8 /*eCK*/ iCard_first, ...)
 {
   // The first parameter before the varargs (...) must not undergo default
   // argument promotion. This will occur if the enum type is smaller than
@@ -1850,7 +1838,7 @@ void Card::vValidate_mayHave(i8 /*eCK*/ iCard_first, ...)
 /*----------------------------------------------------------------------------*/
 /* validate set of child cards                                                */
 /*----------------------------------------------------------------------------*/
-void Card::vValidate_mustHave(i8 /*eCK*/ iCard_first, ...)
+void Card::vValidate_child_mustBe(i8 /*eCK*/ iCard_first, ...)
 {
   // The first parameter before the varargs (...) must not undergo default
   // argument promotion. This will occur if the enum type is smaller than
@@ -1878,7 +1866,7 @@ void Card::vValidate_mustHave(i8 /*eCK*/ iCard_first, ...)
     }
 
     if (! bMustHave) {
-      vValidationFailed("vValidate_mustHave: missing %lld %lls"_Stz,(i8)eCard_mustHave,aCK[eCard_mustHave]);
+      vValidationFailed("vValidate_child_mustBe: missing %lld %lls"_Stz,(i8)eCard_mustHave,aCK[eCard_mustHave]);
     }
 
     eCard_mustHave = (eCK)va_arg(xArgs, i8);
@@ -1892,7 +1880,7 @@ void Card::vValidate_mustHave(i8 /*eCK*/ iCard_first, ...)
 /*----------------------------------------------------------------------------*/
 /* validate set of child cards                                                */
 /*----------------------------------------------------------------------------*/
-eCK Card::eValidate_mustEither(i8 /*eCK*/ iCard_first, ...)
+eCK Card::vValidate_child_mustEither(i8 /*eCK*/ iCard_first, ...)
 {
   // The first parameter before the varargs (...) must not undergo default
   // argument promotion. This will occur if the enum type is smaller than
@@ -1938,7 +1926,7 @@ eCK Card::eValidate_mustEither(i8 /*eCK*/ iCard_first, ...)
 /*----------------------------------------------------------------------------*/
 /* validate set of child cards                                                */
 /*----------------------------------------------------------------------------*/
-eCK Card::eValidate_mustSome(i8 /*eCK*/ iCard_first, ...)
+eCK Card::eValidate_child_mustSome(i8 /*eCK*/ iCard_first, ...)
 {
   // The first parameter before the varargs (...) must not undergo default
   // argument promotion. This will occur if the enum type is smaller than
@@ -1982,20 +1970,9 @@ eCK Card::eValidate_mustSome(i8 /*eCK*/ iCard_first, ...)
 }
 
 /*----------------------------------------------------------------------------*/
-/* validate no child cards                                                    */
-/*----------------------------------------------------------------------------*/
-void Card::vValidate_noChildren(void)
-{
-  if (nChildCards()) {
-    vDump(__func__,"CARD FAILED: NOCHILDREN"_Stz);
-    NEVER_REACH
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* validate set of child cards                                                */
 /*----------------------------------------------------------------------------*/
-void Card::vValidate_notHave(i8 /*eCK*/ iCard, ...)
+void Card::vValidate_child_notBe(i8 /*eCK*/ iCard, ...)
 {
   // The first parameter before the varargs (...) must not undergo default
   // argument promotion. This will occur if the enum type is smaller than
@@ -2035,9 +2012,31 @@ void Card::vValidate_notHave(i8 /*eCK*/ iCard, ...)
 }
 
 /*----------------------------------------------------------------------------*/
+/* validate no child cards                                                    */
+/*----------------------------------------------------------------------------*/
+void Card::vValidate_hasNoChildren(void)
+{
+  if (nChildCards()) {
+    vDump(__func__,"CARD FAILED: NOCHILDREN"_Stz);
+    NEVER_REACH
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* validate this card has child cards                                         */
+/*----------------------------------------------------------------------------*/
+void Card::vValidate_hasType(void)
+{
+  if (!pSymbol()->bValidType()) {
+    vDump(__func__);
+    NEVER_REACH
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* validate set of child cards                                                */
 /*----------------------------------------------------------------------------*/
-eCK Card::eValidate_parentEither(CardIter* pCI, i8 /*eCK*/ iCard_first, ...)
+eCK Card::eValidate_parent_either(CardIter* pCI, i8 /*eCK*/ iCard_first, ...)
 {
   // The first parameter before the varargs (...) must not undergo default
   // argument promotion. This will occur if the enum type is smaller than
@@ -2079,7 +2078,7 @@ eCK Card::eValidate_parentEither(CardIter* pCI, i8 /*eCK*/ iCard_first, ...)
 /*----------------------------------------------------------------------------*/
 /* validate set of child cards                                                */
 /*----------------------------------------------------------------------------*/
-void Card::vValidate_parentMust(CardIter* pCI, eCK eParent)
+void Card::eValidate_parent_mustBe(CardIter* pCI, eCK eParent)
 {
 
   if (! pCI->bAncestor(eParent)) {
@@ -2092,7 +2091,7 @@ void Card::vValidate_parentMust(CardIter* pCI, eCK eParent)
 /*----------------------------------------------------------------------------*/
 /* validate set of child cards                                                */
 /*----------------------------------------------------------------------------*/
-void Card::vValidate_parentNot(CardIter* pCI, eCK eParent_not)
+void Card::vValidate_parent_notBe(CardIter* pCI, eCK eParent_not)
 {
 
   if (pCI->bAncestor(eParent_not)) {

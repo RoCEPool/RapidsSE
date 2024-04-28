@@ -647,7 +647,7 @@ void Card_Expr::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   }
 
 /**Z_KEY_DIRECTION validation*/
-  (void)Card::eValidate_parentEither(pCI,
+  (void)Card::eValidate_parent_either(pCI,
                                      CK_c_CONSTRAINT,
                                      CK_c_EMIT,
                                      CK_c_KEY,
@@ -659,7 +659,7 @@ void Card_Expr::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
                                      CK_c_STREAMKEY,
                                      CK_NONE);
 
-  vValidate_mustHave(CK_TERM, CK_NONE);
+  vValidate_child_mustBe(CK_TERM, CK_NONE);
 
   if (pCI->bAncestor(CK_c_KEY)) {
     //vDump(__func__);

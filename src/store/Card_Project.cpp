@@ -301,7 +301,7 @@ void Card_Project::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
   UNUSED(pParent);
 
-  vValidate_mustHave(CK_c_LEVEL, CK_c_EMIT, CK_NONE);
+  vValidate_child_mustBe(CK_c_LEVEL, CK_c_EMIT, CK_NONE);
 
   Card::vValidate(pCI,iDepth,pParent);
   Card_OP::vValidate(pCI,iDepth,pParent);

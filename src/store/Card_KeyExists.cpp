@@ -168,7 +168,7 @@ void Card_KeyExists::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   UNUSED(pParent);
 
   if (1 == iDepth) {
-    vValidate_mustHave(CK_c_LEVEL, CK_c_TABLE, CK_c_CONSTRAINT, CK_NONE);
+    vValidate_child_mustBe(CK_c_LEVEL, CK_c_TABLE, CK_c_CONSTRAINT, CK_NONE);
     RASSERT(pFindPpyRecursive(P_ChosenIndex, CK_INDEX));
     RASSERT(pSub_bound());
   }

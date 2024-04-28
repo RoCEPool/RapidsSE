@@ -113,7 +113,7 @@ void Card_Sort::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
   UNUSED(pParent);
 
-  vValidate_mustHave(CK_c_LEVEL, CK_c_KEY, CK_c_EMIT, CK_NONE);
+  vValidate_child_mustBe(CK_c_LEVEL, CK_c_KEY, CK_c_EMIT, CK_NONE);
 
   UNUSED(pParent);
   Card::vValidate(pCI,iDepth,pParent);

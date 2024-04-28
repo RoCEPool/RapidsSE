@@ -415,9 +415,9 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   UNUSED(iDepth);
   UNUSED(pParent);
 
-  Card::vValidate_noChildren();
+  Card::vValidate_hasNoChildren();
 
-  (void)Card::eValidate_parentEither(pCI,
+  (void)Card::eValidate_parent_either(pCI,
                                      CK_ANDCONJ,
                                      CK_BOUND,
                                      CK_PREDICATE,

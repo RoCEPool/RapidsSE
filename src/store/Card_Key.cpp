@@ -188,14 +188,14 @@ void Card_Key::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  (void)Card::eValidate_parentEither(pCI,
+  (void)Card::eValidate_parent_either(pCI,
                                      CK_o_GBYAGG,
                                      CK_o_INDEXJOIN,
                                      CK_o_SORT,
                                      CK_NONE);
 
 /**Z_KEY_DIRECTION validation*/
-  vValidate_mustHave(CK_EXPR,CK_NONE);
+  vValidate_child_mustBe(CK_EXPR,CK_NONE);
 
   Card::vValidate(pCI,iDepth,pParent);
   pCI->vValidateChildren(this,iDepth+1);

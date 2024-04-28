@@ -203,12 +203,12 @@ void Card_Where::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  vValidate_mustHave(CK_c_LEVEL, CK_NONE);
+  vValidate_child_mustBe(CK_c_LEVEL, CK_NONE);
 
   if (!pSub_predicate())
     vDump(__func__);
 
-  vValidate_mustHave(CK_o_FILTER, CK_NONE);
+  vValidate_child_mustBe(CK_o_FILTER, CK_NONE);
 
   UNUSED(pParent);
   Card::vValidate(pCI,iDepth,pParent);

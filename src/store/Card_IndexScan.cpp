@@ -96,7 +96,7 @@ void Card_IndexScan::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
   UNUSED(pParent);
 
-  vValidate_mustHave(CK_c_LEVEL, CK_c_TABLE, CK_NONE);
+  vValidate_child_mustBe(CK_c_LEVEL, CK_c_TABLE, CK_NONE);
   RASSERT(pFindPpyRecursive(P_ChosenIndex,CK_INDEX));
 
   UNUSED(pParent);

@@ -313,7 +313,7 @@ void Card_Stage::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  vValidate_notHave(CK_c_LEVEL, CK_NONE);
+  vValidate_child_notBe(CK_c_LEVEL, CK_NONE);
 
   RASSERT(m_xSymbol.bSingleFaceted() && m_xSymbol.bHasFacet(SF_STG_NM));
 

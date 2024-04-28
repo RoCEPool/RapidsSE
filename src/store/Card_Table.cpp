@@ -450,7 +450,7 @@ void Card_Table::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  (void)Card::eValidate_parentEither(pCI,
+  (void)Card::eValidate_parent_either(pCI,
                                      CK_o_CROSSJOIN,
                                      CK_o_FROM,
                                      CK_o_INDEXJOIN,
@@ -465,7 +465,7 @@ void Card_Table::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
           ||
           pSymbol()->bHasFacet(SF_TBL_SYN_rep));
 
-  vValidate_mustHave(CK_TABLENM, CK_NONE);
+  vValidate_child_mustBe(CK_TABLENM, CK_NONE);
 
   Card::vValidate(pCI,iDepth,pParent);
   pCI->vValidateChildren(this,iDepth+1);

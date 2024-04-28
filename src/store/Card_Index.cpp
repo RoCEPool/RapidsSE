@@ -271,10 +271,10 @@ void Card_Index::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  vValidate_mustHave(CK_INDEXNM,CK_NONE);
-  vValidate_mayHave(CK_BOUNDS,CK_IDXCOLLIST,CK_INDEXNM,CK_NONE);
+  vValidate_child_mustBe(CK_INDEXNM,CK_NONE);
+  vValidate_child_mayBe(CK_BOUNDS,CK_IDXCOLLIST,CK_INDEXNM,CK_NONE);
 
-  (void)Card::eValidate_parentEither(pCI, CK_INDEXLIST, CK_NONE);
+  (void)Card::eValidate_parent_either(pCI, CK_INDEXLIST, CK_NONE);
 
   if (pSymbol()->Y_bHas(P_ChosenIndex)) {
     RASSERT(pFindPpyRecursive(P_ChosenBound, CK_BOUND));

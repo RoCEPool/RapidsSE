@@ -177,7 +177,7 @@ void Card_Filter::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  vValidate_mustHave(CK_PREDICATE, CK_NONE);
+  vValidate_child_mustBe(CK_PREDICATE, CK_NONE);
 
   if (iDepth > 2) {
    // pCI->PRINTBOARD_dbg();
@@ -185,7 +185,7 @@ void Card_Filter::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   }
 
   if (iDepth > 1)
-    (void)Card::eValidate_parentEither(pCI,
+    (void)Card::eValidate_parent_either(pCI,
                                        CK_o_CROSSJOIN,
                                        CK_o_FROM,
                                        CK_o_HAVING,
@@ -196,7 +196,7 @@ void Card_Filter::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
                                        CK_NONE);
 
   if (CK_DECK == pParent->eCard()) {
-    vValidate_mustHave(CK_c_LEVEL, CK_c_EMIT, CK_NONE);
+    vValidate_child_mustBe(CK_c_LEVEL, CK_c_EMIT, CK_NONE);
   }
 
   UNUSED(pParent);

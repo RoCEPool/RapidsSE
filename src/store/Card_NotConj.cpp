@@ -87,9 +87,9 @@ void Card_NotConj::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   UNUSED(pParent);
 
   Card::vValidate_hasChildren();
-  Card::eValidate_mustSome(CK_ANDCONJ,CK_NOTCONJ,CK_ORCONJ,CK_RLNCONJ,CK_NONE);
+  Card::eValidate_child_mustSome(CK_ANDCONJ,CK_NOTCONJ,CK_ORCONJ,CK_RLNCONJ,CK_NONE);
 
-  (void)Card::eValidate_parentEither(pCI, CK_PREDICATE,
+  (void)Card::eValidate_parent_either(pCI, CK_PREDICATE,
                                      CK_ANDCONJ, CK_NOTCONJ, CK_ORCONJ,
                                      CK_NONE);
 
