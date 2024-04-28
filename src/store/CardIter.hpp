@@ -182,7 +182,7 @@ namespace STORE
     void vBackstepTarget(void);
     void vBeginBoard(void);
     void vBeginEach(eCK eOp=CK_NONE);
-    void vBeginEach_reverse(void);
+    void vBeginEach_tail(void);
     void vBeginMember(eCK eSub_Of_Op);
     void vBeginTarget(eCK ePrimary, eCK eTarget);
     void vBeginTarget(Card* pPrimary, eCK eTarget);

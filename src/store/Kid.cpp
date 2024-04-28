@@ -99,7 +99,7 @@ void Kid::vBegin(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Kid::vBegin_reverse(void)
+void Kid::vBegin_tail(void)
 {
   _nonProper_
 
@@ -175,7 +175,7 @@ bool Kid::bEach(void)
   _nonProper_
 
   RASSERT(m_bBegun);
-  RASSERT(m_bForwards);
+  vForwards(true);
 
   m_i_Child++;
   vChildUpdate();
@@ -244,7 +244,6 @@ bool Kid::bEach_opaque(eCK eChild)
 bool Kid::bEach(eCK eChild, eCK eSub1)
 {
   _nonProper_
-
 
   while (bEach()) {
     if (this->eChild() == eChild) {
@@ -510,7 +509,7 @@ void Kid::vReposition(Card* pChild)
         break;
   }
   else {
-    vBegin_reverse();
+    vBegin_tail();
     while (bEach_reverse())
       if (pChild == m_pChild)
         break;

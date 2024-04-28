@@ -141,7 +141,7 @@ void XF_Flatten_subquery::vFlatten_recurse(Symbol* pSym_sqyNo_inner, i8 iDepth)
   bool bFound;
 
   do {
-    m_pCI->vBeginEach_reverse();
+    m_pCI->vBeginEach_tail();
     if (!m_pCI->bEachOp_reverse_foldBreak(CK_o_WHERE, CK_PREDICATE))
       break;
 
@@ -169,7 +169,7 @@ void XF_Flatten_subquery::vFlatten_recurse(Symbol* pSym_sqyNo_inner, i8 iDepth)
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
   do {
-    m_pCI->vBeginEach_reverse();
+    m_pCI->vBeginEach_tail();
 
     if (!m_pCI->bEachOp_reverse_foldBreak(CK_o_HAVING, CK_PREDICATE))
       break;

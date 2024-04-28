@@ -78,7 +78,7 @@ bool XF_Optimise_Early_projectionv2::bEarly_needed_loop(void)
 
   RASSERT(nullptr == m_pCI->Early.m_pNeeded_later);
 
-  m_pCI->vBeginEach_reverse();
+  m_pCI->vBeginEach_tail();
 
   while (m_pCI->bEachOp_reverse()) {
     bOptRun = bEarly_needed_OP();

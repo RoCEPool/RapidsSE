@@ -525,11 +525,11 @@ void CardIter::vBeginEach(eCK eOp)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void CardIter::vBeginEach_reverse(void)
+void CardIter::vBeginEach_tail(void)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  E.xEachOp.vBegin_reverse();
+  E.xEachOp.vBegin_tail();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2252,8 +2252,7 @@ void CardIter::vRecurseBegin(Card* pCard)
   vUseCard(pCard);
   vDontDescend(false);
 
-  E.xEachOp.vForwards(true);
-
+  //E.xEachOp.vForwards(true);
 }
 
 /*----------------------------------------------------------------------------*/

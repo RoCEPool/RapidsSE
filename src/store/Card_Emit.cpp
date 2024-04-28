@@ -57,7 +57,7 @@ Card_Emit* Card_Emit::pPrior_emit(CardIter* pCI)
 
   Kid xDeck(pCI->E.p_deck);
 
-  xDeck.vBegin_reverse();
+  xDeck.vBegin_tail();
   xDeck.vReposition(pCI->E.i_Op);
 
   while (xDeck.bEach_reverse()) {

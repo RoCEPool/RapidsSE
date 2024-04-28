@@ -37,7 +37,7 @@ XF_FLATTEN::~XF_FLATTEN(void) noexcept(false)
 void XF_FLATTEN::vFold_basic(CardIter* pCI, Stz* szFoldNm, eCK eCardWithSQ)
 {
   // 1) find H_A_NC_ro subquery call in mq:<having>/<boolPred>/<roPred>
-  pCI->vBeginEach_reverse();
+  pCI->vBeginEach_tail();
   if (pCI->bEachOp_reverse_foldBreak(eCardWithSQ, CK_PREDICATE)) {
     if (!Board::bMark_sqyCall(pCI)) {
       vTrace("DID NOT FIND %s SubQuery call\n"_Stz, szFoldNm);
@@ -441,13 +441,13 @@ void XF_FLATTEN::vInto_KEYnotEXISTS(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pCI->vBeginEach_reverse();
+  pCI->vBeginEach_tail();
   RASSERT(pCI->bEachOp_reverse_foldBreak(CK_o_WHERE));
 
   RASSERT(pCI->bEachOp_reverse_foldBreak(CK_o_FROM));
   Card_Emit* p_emitted_table = pCI->E.p_from->pSub_emit();
 
-  pCI->vBeginEach_reverse();
+  pCI->vBeginEach_tail();
   RASSERT(pCI->bEachOp_reverse_foldBreak(CK_o_WHERE));
 
 

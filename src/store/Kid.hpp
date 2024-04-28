@@ -35,7 +35,7 @@ namespace STORE
 
     void vBackstep(void);
     void vBegin(void);
-    void vBegin_reverse(void);
+    void vBegin_tail(void);
     bool bBegun(void);
 
     eCK  eChild(void);
