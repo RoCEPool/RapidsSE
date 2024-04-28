@@ -62,9 +62,9 @@ Optimiser::Optimiser(TagSet* p_JobTags)
 //  MY::pJob()->pJobTags()->vAppend(C_WEAVED);
 
 #ifdef Z_PART_STREAMKEY
-  MY::pJob()->pJobTags()->vAppend(C_OPTIMISER_TRACE);
-  MY::pJob()->pJobTags()->vAppend(C_PIPELINE_DEF);
-  MY::pJob()->pJobTags()->vAppend(C_WEAVED);
+//  MY::pJob()->pJobTags()->vAppend(C_OPTIMISER_TRACE);
+//  MY::pJob()->pJobTags()->vAppend(C_PIPELINE_DEF);
+//  MY::pJob()->pJobTags()->vAppend(C_WEAVED);
 #endif
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);

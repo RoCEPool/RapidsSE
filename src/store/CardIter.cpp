@@ -280,24 +280,23 @@ void CardIter::vAncestorDump(Card* pCard)
   _precondition_(_MAGIC_,_FOOTER_);
 
   vTrace("^^ Ancestor Dump\n"_Stz);
-
   for (i8 i_Ancestor = 0; i_Ancestor < m_nAncestors; i_Ancestor++) {
     Card* pCard_ancestor = m_paAncestry[i_Ancestor];
-    vTrace("  [%lld] %p %s /%lld\n"_Stz,
+    vTrace("  [%lld] %p %s /%lld %s\n"_Stz,
            i_Ancestor,
            pCard_ancestor,
            aCK[pCard_ancestor->eCard()],
-           iAncestorCounter(i_Ancestor));
+           iAncestorCounter(i_Ancestor),
+           pCard_ancestor->szCoord());
   }
-
   vTrace("$$ Ancestor Dump"_Stz);
+
   if (pCard)
     vTrace(" %p %s\n"_Stz,
            pCard,
            aCK[pCard->eCard()]);
   else
     vTrace("\n"_Stz);
-
 }
 
 /*----------------------------------------------------------------------------*/

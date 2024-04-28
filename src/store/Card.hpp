@@ -18,7 +18,7 @@
 #include "Ribbon.hpp"
 #include "Symbol.hpp"
 
-//#define Z_PART_STREAMKEY
+#define Z_PART_STREAMKEY
 
 namespace STORE
 {
@@ -416,6 +416,7 @@ namespace STORE
     void vValidate_notHave(i8 /*eCK*/ iCard, ...);
     eCK  eValidate_parentEither(CardIter* pCI, i8 /*eCK*/ iCard_first, ...);
     void vValidate_parentMust(CardIter* pCI, eCK eParent);
+    void vValidate_parentNot(CardIter* pCI, eCK eParent_not);
 
     void vValidationFailed(Stz* szFormat, ...);
     void vValidationPassed(void);

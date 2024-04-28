@@ -337,6 +337,9 @@ void Card::vAppendChild(Card* pChild)
 {
   RASSERT(pChild);
 
+  if (CK_c_EMIT == eCard() && CK_c_STREAMKEY == pChild->eCard())
+    NEVER_REACH
+
   ChildCards::vAppendChild(pChild);
 
   vChanged(true);
@@ -2079,11 +2082,23 @@ eCK Card::eValidate_parentEither(CardIter* pCI, i8 /*eCK*/ iCard_first, ...)
 void Card::vValidate_parentMust(CardIter* pCI, eCK eParent)
 {
 
-  if (CK_NONE == pCI->bAncestor(eParent)) {
+  if (! pCI->bAncestor(eParent)) {
     pCI->vAncestorDump(this);
     vValidationFailed("%s"_Stz,__func__);
   }
 
+}
+
+/*----------------------------------------------------------------------------*/
+/* validate set of child cards                                                */
+/*----------------------------------------------------------------------------*/
+void Card::vValidate_parentNot(CardIter* pCI, eCK eParent_not)
+{
+
+  if (pCI->bAncestor(eParent_not)) {
+    pCI->vAncestorDump(this);
+    vValidationFailed("%s"_Stz,__func__);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
