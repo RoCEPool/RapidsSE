@@ -94,7 +94,6 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
   // phase 1 : aspects
   //===========================================================================
 
-  RASSERT(m_pCI->E.p_Op->bIsOp());
   switch (m_pCI->E.e_Op) {
 
     case CK_o_AGGREG:

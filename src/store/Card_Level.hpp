@@ -16,8 +16,8 @@ namespace STORE
     Card_Level(eAL eLevel);
    ~Card_Level(void) noexcept(false);
 
-    static eYG  e_aggLevel_To_stageTopo(eAL eLevel);
-    static eAL  e_stageTopo_To_aggLevel(eYG eStageTopo);
+    static eYG e_aggLevel_To_stageTopo(eAL eLevel);
+    static eAL e_stageTopo_To_aggLevel(eYG eStageTopo);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };

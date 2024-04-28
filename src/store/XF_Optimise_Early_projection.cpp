@@ -154,7 +154,6 @@ bool XF_Optimise_Early_projection::bEarly_needed_OP(void)
 
   bool bOptRun = false;
 
-  RASSERT(m_pCI->E.p_Op->bIsOp());
   switch (m_pCI->E.e_Op) {
 
     case CK_o_AGGREG:
@@ -255,7 +254,6 @@ bool XF_Optimise_Early_projection::bEarly_projection_OP(void)
 
   bool bOptRun = false;
 
-  RASSERT(m_pCI->E.p_Op->bIsOp());
   switch (m_pCI->E.e_Op) {
 
     case CK_o_AGGREG:
