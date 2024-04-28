@@ -37,19 +37,19 @@ enum eCK : i8 // card kind
   /* */ CK_o_TOP,
   /* */ CK_o_WHERE,
 
-  // component cards
-  /* */ CK_c_CONSTRAINT,
-  /* */ CK_c_EMIT,
-  /* */ CK_c_HASHING,
-  /* */ CK_c_HSHCOLLIST,
-  /* */ CK_c_INJECTABLE,
-  /* */ CK_c_KEY,
-  /* */ CK_c_LEVEL,
-  /* */ CK_c_MAPPING,
-  /* */ CK_c_NEEDED,
-  /* */ CK_c_NEEDEDv2,
-  /* */ CK_c_STREAMKEY,
-  /* */ CK_c_TABLE,
+  // card parts
+  /* */ CK_p_CONSTRAINT,
+  /* */ CK_p_EMIT,
+  /* */ CK_p_HASHING,
+  /* */ CK_p_HSHCOLLIST,
+  /* */ CK_p_INJECTABLE,
+  /* */ CK_p_KEY,
+  /* */ CK_p_LEVEL,
+  /* */ CK_p_MAPPING,
+  /* */ CK_p_NEEDED,
+  /* */ CK_p_NEEDEDv2,
+  /* */ CK_p_STREAMKEY,
+  /* */ CK_p_TABLE,
 
   // tertiary cards
   /* */ CK_ADDRESS,

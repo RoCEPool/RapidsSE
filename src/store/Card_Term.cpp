@@ -422,7 +422,7 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
                                      CK_BOUND,
                                      CK_PREDICATE,
                                      CK_EXPR,
-                                     CK_c_HASHING,
+                                     CK_p_HASHING,
                                      CK_HSHCOL,// todo: NO!?
                                      CK_RLNCONJ,
                                      CK_NOTCONJ,
@@ -461,7 +461,7 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (pCI->E.pBoard->pState()->bHasName(aXF[XF_EPILOG_TYPE_CAST])) {
-    if (m_xSymbol.bIs_Col() && ! pCI->bAncestor(CK_c_NEEDED)) {
+    if (m_xSymbol.bIs_Col() && ! pCI->bAncestor(CK_p_NEEDED)) {
       if (!m_xSymbol.bValidType()) {
          vMark("?"_Stz,"t"_Stz);
          pCI->pAncestorParent()->vMark("?"_Stz,"t"_Stz);

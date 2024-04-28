@@ -648,20 +648,20 @@ void Card_Expr::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 
 /**Z_KEY_DIRECTION validation*/
   (void)Card::eValidate_parent_either(pCI,
-                                     CK_c_CONSTRAINT,
-                                     CK_c_EMIT,
-                                     CK_c_KEY,
+                                     CK_p_CONSTRAINT,
+                                     CK_p_EMIT,
+                                     CK_p_KEY,
 
                                      CK_o_FLAT,
                                      CK_o_FOLD,
-                                     CK_c_INJECTABLE,
-                                     CK_c_NEEDED,
-                                     CK_c_STREAMKEY,
+                                     CK_p_INJECTABLE,
+                                     CK_p_NEEDED,
+                                     CK_p_STREAMKEY,
                                      CK_NONE);
 
   vValidate_child_mustBe(CK_TERM, CK_NONE);
 
-  if (pCI->bAncestor(CK_c_KEY)) {
+  if (pCI->bAncestor(CK_p_KEY)) {
     //vDump(__func__);
     if (! m_xSymbol.bHasFacet(SF_KEY_COL) || ! m_xSymbol.bValidate()) {
       vDump(__func__);

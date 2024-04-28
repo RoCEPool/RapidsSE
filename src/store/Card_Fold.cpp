@@ -98,7 +98,7 @@ void Card_Fold::vDerive_emit_fold(CardIter *pCI, SubQuery *pSubQuery_leftmost)
 
   Card_Expr* p_expr_result = pCI->Dic.m_p_expr->pGet_expr((i8) 0);
 
-  pCI->vAppendNewChild(pCI->E.p_fold, CK_c_EMIT);
+  pCI->vAppendNewChild(pCI->E.p_fold, CK_p_EMIT);
   pCI->vAppendNewChild(pCI->E.p_emit, CK_EXPR);
 
   pCI->vAppendNewChild(pCI->E.p_expr, CK_TERM, Symbol(SF_EXP_COL, "$1"_Stz));

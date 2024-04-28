@@ -50,7 +50,7 @@ void Card_From::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  vValidate_child_mustBe(CK_c_TABLE, CK_NONE);
+  vValidate_child_mustBe(CK_p_TABLE, CK_NONE);
 
   Card::vValidate(pCI,iDepth,pParent);
 

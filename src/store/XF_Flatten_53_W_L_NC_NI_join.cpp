@@ -97,7 +97,7 @@ void XF_Flatten_53_W_L_NC_NI_join::vFlatten(void)
 
   m_pCI->vClearRegisters();
   m_pCI->vBeginEach();
-  //RASSERT(m_pCI->bEachOp(CK_o_PROJECT,CK_c_EMIT));
+  //RASSERT(m_pCI->bEachOp(CK_o_PROJECT,CK_p_EMIT));
   RASSERT(m_pCI->bEachOp(CK_o_FOLD));
 
   m_pCI->Carry.Table.m_bReproject = true;

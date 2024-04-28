@@ -135,7 +135,7 @@ void Card_Having::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
   UNUSED(pParent);
 
-  vValidate_child_mustBe(CK_c_LEVEL, CK_NONE);
+  vValidate_child_mustBe(CK_p_LEVEL, CK_NONE);
   Card::vValidate(pCI,iDepth,pParent);
   pCI->vValidateChildren(this,iDepth+1);
   vValidationPassed();

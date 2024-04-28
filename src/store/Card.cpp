@@ -117,7 +117,7 @@ Card::Card(eCK eCard, i8 iFixedDepth)
     vDebugPoint();
 
 #ifdef Z_PART_STREAMKEY
-  if (CK_c_STREAMKEY == eCard)
+  if (CK_p_STREAMKEY == eCard)
     vDebugPoint();
 #endif
 
@@ -337,7 +337,7 @@ void Card::vAppendChild(Card* pChild)
 {
   RASSERT(pChild);
 
-  if (CK_c_EMIT == eCard() && CK_c_STREAMKEY == pChild->eCard())
+  if (CK_p_EMIT == eCard() && CK_p_STREAMKEY == pChild->eCard())
     NEVER_REACH
 
   ChildCards::vAppendChild(pChild);
@@ -401,7 +401,7 @@ Card* Card::pCard(eCK eCard)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
 #ifdef Z_PART_STREAMKEY
-  if (CK_c_STREAMKEY == eCard)
+  if (CK_p_STREAMKEY == eCard)
     vDebugPoint();
 #endif
 
@@ -418,7 +418,7 @@ void Card::vCard(eCK eCard)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
 #ifdef Z_PART_STREAMKEY
-  if (CK_c_STREAMKEY == eCard)
+  if (CK_p_STREAMKEY == eCard)
     vDebugPoint();
 #endif
 
@@ -2196,9 +2196,9 @@ void Card::vPrint_card(CardIter* pCI, Ribbon* pRibbon, i8 iDepth)
     pRibbon->vMargin(szFacet(SF_STG_NM));
 
   if (CK_EXPR     == m_eCard) { vPrint_expr (pCI,pRibbon, iDepth); return; }
-  if (CK_c_LEVEL == m_eCard) { vPrint_enum (pCI, pRibbon, iDepth); return; }
+  if (CK_p_LEVEL == m_eCard) { vPrint_enum (pCI, pRibbon, iDepth); return; }
   if (CK_TERM     == m_eCard) { vPrint_term (pCI,pRibbon, iDepth); return; }
-  if (CK_c_TABLE == m_eCard) { vPrint_table(pCI, pRibbon, iDepth); return; }
+  if (CK_p_TABLE == m_eCard) { vPrint_table(pCI, pRibbon, iDepth); return; }
   if (CK_TOPOLOGY == m_eCard) { vPrint_enum (pCI,pRibbon, iDepth); return; }
 
   if (0 == iDepth) { vPrint_depth0(pCI,pRibbon, iDepth); return; }
@@ -2477,7 +2477,7 @@ void Card::vCatBracket(i8& ri_Char, Ribbon* pRibbon, CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (pCI->bAncestor(CK_c_MAPPING) || pCI->bAncestor(CK_c_STREAMKEY))
+  if (pCI->bAncestor(CK_p_MAPPING) || pCI->bAncestor(CK_p_STREAMKEY))
     vCat(ri_Char, pRibbon,")"_Stz);
   else
     vCat(ri_Char, pRibbon,"]"_Stz);
@@ -2986,7 +2986,7 @@ Card_Constraint* Card::pSub_constraint(bool bNotNull)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Constraint* p_constraint =
-      _pCard_Constraint(pFindSubCard(CK_c_CONSTRAINT));
+      _pCard_Constraint(pFindSubCard(CK_p_CONSTRAINT));
 
   if (bNotNull && !p_constraint) {
     NEVER_REACH
@@ -3166,7 +3166,7 @@ Card_Emit* Card::pSub_emit(bool bNotNull)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Emit* p_emit =
-      _pCard_Emit(pFindSubCard(CK_c_EMIT));
+      _pCard_Emit(pFindSubCard(CK_p_EMIT));
 
   if (bNotNull && !p_emit) {
     NEVER_REACH
@@ -3328,7 +3328,7 @@ Card_Hashing* Card::pSub_hashing(bool bNotNull)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Hashing* p_hashing =
-      _pCard_Hashing(pFindSubCard(CK_c_HASHING));
+      _pCard_Hashing(pFindSubCard(CK_p_HASHING));
 
   if (bNotNull && !p_hashing) {
     NEVER_REACH
@@ -3364,7 +3364,7 @@ Card_HshColList* Card::pSub_hshColList(bool bNotNull)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_HshColList* p_hshColList =
-      _pCard_HshColList(pFindSubCard(CK_c_HSHCOLLIST));
+      _pCard_HshColList(pFindSubCard(CK_p_HSHCOLLIST));
 
   if (bNotNull && !p_hshColList) {
     NEVER_REACH
@@ -3490,7 +3490,7 @@ Card_Injectable* Card::pSub_injectable(bool bNotNull)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Injectable* p_injected =
-      _pCard_Injectable(pFindSubCard(CK_c_INJECTABLE));
+      _pCard_Injectable(pFindSubCard(CK_p_INJECTABLE));
 
   if (bNotNull && !p_injected) {
     NEVER_REACH
@@ -3544,7 +3544,7 @@ Card_Key* Card::pSub_key(bool bNotNull)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Key* p_key =
-      _pCard_Key(pFindSubCard(CK_c_KEY));
+      _pCard_Key(pFindSubCard(CK_p_KEY));
 
   if (bNotNull && !p_key) {
     NEVER_REACH
@@ -3652,7 +3652,7 @@ Card_Level* Card::pSub_level(bool bNotNull)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Level* p_level =
-      _pCard_Level(pFindSubCard(CK_c_LEVEL));
+      _pCard_Level(pFindSubCard(CK_p_LEVEL));
 
   if (bNotNull && !p_level) {
     NEVER_REACH
@@ -3688,7 +3688,7 @@ Card_Mapping* Card::pSub_mapping(bool bNotNull)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Mapping* p_mapping =
-      _pCard_Mapping(pFindSubCard(CK_c_MAPPING));
+      _pCard_Mapping(pFindSubCard(CK_p_MAPPING));
 
   if (bNotNull && !p_mapping) {
     NEVER_REACH
@@ -3706,7 +3706,7 @@ Card_Needed* Card::pSub_needed(bool bNotNull)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Needed* p_needed =
-      _pCard_Needed(pFindSubCard(CK_c_NEEDED));
+      _pCard_Needed(pFindSubCard(CK_p_NEEDED));
 
   if (bNotNull && !p_needed) {
     NEVER_REACH
@@ -4069,10 +4069,10 @@ Card_StreamKey* Card::pSub_streamKey(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  //RASSERT(CK_c_EMIT != m_eCard);
+  //RASSERT(CK_p_EMIT != m_eCard);
 
   Card_StreamKey* p_streamKey =
-      _pCard_StreamKey(pFindSubCard(CK_c_STREAMKEY));
+      _pCard_StreamKey(pFindSubCard(CK_p_STREAMKEY));
 
   if (bNotNull && !p_streamKey) {
     NEVER_REACH
@@ -4144,7 +4144,7 @@ Card_Table* Card::pSub_table(bool bNotNull)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Table* p_table =
-      _pCard_Table(pFindSubCard(CK_c_TABLE));
+      _pCard_Table(pFindSubCard(CK_p_TABLE));
 
   if (bNotNull && !p_table) {
     NEVER_REACH

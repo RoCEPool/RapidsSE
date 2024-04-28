@@ -207,7 +207,7 @@ void Card_JoinOrdering::vReorder(Card_Deck* pDeck)
 
     i8 i_Table = C_UNKNOWN;
     Card_From* p_from =
-        _pCard_From(pDeck->pFindChildWithSub(CK_o_FROM, CK_c_TABLE, szTblSyn, i_Table));
+        _pCard_From(pDeck->pFindChildWithSub(CK_o_FROM, CK_p_TABLE, szTblSyn, i_Table));
 
     pDeck->vRemoveChild(p_from);
 

@@ -14,7 +14,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE, Card_Emit, CK_c_EMIT)
+__pCastFunction_Card(STORE, Card_Emit, CK_p_EMIT)
 __aNewFunction(Card_Emit, CN_CARD)
 __vDeleteFunction(Card_Emit, CN_CARD)
 
@@ -24,7 +24,7 @@ __vDeleteFunction(Card_Emit, CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Emit::Card_Emit(void)
-: Card_EXPRLIST(CK_c_EMIT, 2)
+: Card_EXPRLIST(CK_p_EMIT, 2)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
           
@@ -440,7 +440,7 @@ void Card_Emit::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
     pCI->PRINTBOARD_dbg();
 
   vValidate_child_mustBe(CK_EXPR,CK_NONE);
-  vValidate_child_notBe(CK_c_KEY, CK_NONE);
+  vValidate_child_notBe(CK_p_KEY, CK_NONE);
 
   Card::vValidate(pCI,iDepth,pParent);
   pCI->vValidateChildren(this,iDepth+1);

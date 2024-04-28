@@ -10,7 +10,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE, Card_Level, CK_c_LEVEL)
+__pCastFunction_Card(STORE, Card_Level, CK_p_LEVEL)
 __aNewFunction(Card_Level, CN_CARD)
 __vDeleteFunction(Card_Level, CN_CARD)
 
@@ -19,7 +19,7 @@ __vDeleteFunction(Card_Level, CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Level::Card_Level(eAL eLevel)
-: Card_symbol(CK_c_LEVEL, 2)
+: Card_symbol(CK_p_LEVEL, 2)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

@@ -133,7 +133,7 @@ bool XF_Flatten_24_W_A_C_ro::bSnap_IQ_crlKey(CardIter* pCI)
   pCI->vClearRegisters();
   pCI->vBeginEach();
 
-  while (pCI->bEachOp(CK_o_FROM, CK_c_EMIT, CK_o_FILTER)) {
+  while (pCI->bEachOp(CK_o_FROM, CK_p_EMIT, CK_o_FILTER)) {
 
     pCI->E.p_predicate = pCI->E.p_filter->pSub_predicate();
     Card_CONJ *p_conj_root = pCI->E.p_predicate->pRoot_conj();

@@ -48,7 +48,7 @@ void Card_Top::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
   UNUSED(pParent);
 
-  vValidate_child_mustBe(CK_c_LEVEL, CK_COUNT, CK_NONE);
+  vValidate_child_mustBe(CK_p_LEVEL, CK_COUNT, CK_NONE);
 
   RASSERT(pSymbol()->bHasFacet(SF_INT_LIT));
 

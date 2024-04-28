@@ -56,7 +56,7 @@ void Card_IndexScan::vDerive_streamKey(CardIter* pCI)
   RASSERT(bPeg_Projection(pCI));
   RASSERT(bPeg_Chosen_index(pCI));
 
-  pCI->E.p_emit->vDeleteSub(CK_c_STREAMKEY);
+  pCI->E.p_emit->vDeleteSub(CK_p_STREAMKEY);
 
   // derive new <indexScan>/<projection>/<key>
   pCI->E.p_streamKey = new Card_StreamKey;
@@ -96,7 +96,7 @@ void Card_IndexScan::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
   UNUSED(pParent);
 
-  vValidate_child_mustBe(CK_c_LEVEL, CK_c_TABLE, CK_NONE);
+  vValidate_child_mustBe(CK_p_LEVEL, CK_p_TABLE, CK_NONE);
   RASSERT(pFindPpyRecursive(P_ChosenIndex,CK_INDEX));
 
   UNUSED(pParent);

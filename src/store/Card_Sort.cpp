@@ -50,11 +50,11 @@ void Card_Sort::vDerive_streamKey(CardIter* pCI)
   RASSERT(bPeg_Key(pCI));
 
 #ifdef Z_PART_STREAMKEY
-  vDeleteSub(CK_c_STREAMKEY);
+  vDeleteSub(CK_p_STREAMKEY);
   pCI->E.p_streamKey = pCI->StreamOrder.m_pStreamKey = Card_StreamKey::pTo_streamKey(pCI->E.p_key);
   vAppendChild(pCI->StreamOrder.m_pStreamKey);
 #else
-  pCI->E.p_emit->vDeleteSub(CK_c_STREAMKEY);
+  pCI->E.p_emit->vDeleteSub(CK_p_STREAMKEY);
   pCI->E.p_streamKey = pCI->StreamOrder.m_pStreamKey = Card_StreamKey::pTo_streamKey(pCI->E.p_key);
   pCI->E.p_emit->vAppendChild(pCI->StreamOrder.m_pStreamKey);
 #endif
@@ -113,7 +113,7 @@ void Card_Sort::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
   UNUSED(pParent);
 
-  vValidate_child_mustBe(CK_c_LEVEL, CK_c_KEY, CK_c_EMIT, CK_NONE);
+  vValidate_child_mustBe(CK_p_LEVEL, CK_p_KEY, CK_p_EMIT, CK_NONE);
 
   UNUSED(pParent);
   Card::vValidate(pCI,iDepth,pParent);

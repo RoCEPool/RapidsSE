@@ -320,14 +320,14 @@ void XF::vTransform_passThru(void)
 
     m_pCI->vTransform(__FILE__, __func__, XF_PASSTHRU_ADJUST_SORT);
     m_pCI->vBeginEach();
-    while (m_pCI->bEachOp(CK_o_SORT, CK_c_KEY, CK_c_EMIT)) {
+    while (m_pCI->bEachOp(CK_o_SORT, CK_p_KEY, CK_p_EMIT)) {
       m_pCI->E.p_emit->vApplyFacets(m_pCI,m_pCI->E.p_key);
     }
     m_pCI->vEndTransform(__LINE__);
 
     m_pCI->vTransform(__FILE__, __func__, XF_PASSTHRU_ADJUST_TOP);
     m_pCI->vBeginEach();
-    while (m_pCI->bEachOp(CK_o_TOP, CK_c_KEY, CK_c_EMIT)) {
+    while (m_pCI->bEachOp(CK_o_TOP, CK_p_KEY, CK_p_EMIT)) {
       m_pCI->E.p_emit->vApplyFacets(m_pCI,m_pCI->E.p_key);
     }
     m_pCI->vEndTransform(__LINE__);

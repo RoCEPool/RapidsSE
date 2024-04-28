@@ -159,7 +159,7 @@ void Card_Project::vDerive_streamKey(CardIter* pCI)
   // snap onto <project>/<projection>, delete existing <project>/<projection>/<key>
   RASSERT(bPeg_Projection(pCI));
 
-  pCI->E.p_emit->vDeleteSub(CK_c_STREAMKEY);
+  pCI->E.p_emit->vDeleteSub(CK_p_STREAMKEY);
 
   // derive new <project>/<projection>/<key>
   pCI->E.p_streamKey = new Card_StreamKey;
@@ -301,7 +301,7 @@ void Card_Project::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
   UNUSED(pParent);
 
-  vValidate_child_mustBe(CK_c_LEVEL, CK_c_EMIT, CK_NONE);
+  vValidate_child_mustBe(CK_p_LEVEL, CK_p_EMIT, CK_NONE);
 
   Card::vValidate(pCI,iDepth,pParent);
   Card_OP::vValidate(pCI,iDepth,pParent);

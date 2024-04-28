@@ -39,18 +39,18 @@ Stz* aCK[CK_ENUMS]
   /* */ "CK_o_TOP"_Stz,          // CK_o_TOP
   /* */ "CK_o_WHERE"_Stz,        // CK_o_WHERE
 
-  /* */ "CK_c_CONSTRAINT"_Stz,   // CK_c_CONSTRAINT
-  /* */ "CK_c_EMIT"_Stz,         // CK_c_EMIT
-  /* */ "CK_c_HASHING"_Stz,      // CK_c_HASHING
-  /* */ "CK_c_HSHCOLLIST"_Stz,   // CK_c_HSHCOLLIST
-  /* */ "CK_c_INJECTABLE"_Stz,   // CK_c_INJECTABLE
-  /* */ "CK_c_KEY"_Stz,          // CK_c_KEY
-  /* */ "CK_c_LEVEL"_Stz,        // CK_c_LEVEL
-  /* */ "CK_c_MAPPING"_Stz,      // CK_c_MAPPING
-  /* */ "CK_c_NEEDED"_Stz,       // CK_c_NEEDED
-  /* */ "CK_c_NEEDEDv2"_Stz,     // CK_c_NEEDEDv2
-  /* */ "CK_c_STREAMKEY"_Stz,    // CK_c_STREAMKEY
-  /* */ "CK_c_TABLE"_Stz,        // CK_c_TABLE
+  /* */ "CK_p_CONSTRAINT"_Stz,   // CK_p_CONSTRAINT
+  /* */ "CK_p_EMIT"_Stz,         // CK_p_EMIT
+  /* */ "CK_p_HASHING"_Stz,      // CK_p_HASHING
+  /* */ "CK_p_HSHCOLLIST"_Stz,   // CK_p_HSHCOLLIST
+  /* */ "CK_p_INJECTABLE"_Stz,   // CK_p_INJECTABLE
+  /* */ "CK_p_KEY"_Stz,          // CK_p_KEY
+  /* */ "CK_p_LEVEL"_Stz,        // CK_p_LEVEL
+  /* */ "CK_p_MAPPING"_Stz,      // CK_p_MAPPING
+  /* */ "CK_p_NEEDED"_Stz,       // CK_p_NEEDED
+  /* */ "CK_p_NEEDEDv2"_Stz,     // CK_p_NEEDEDv2
+  /* */ "CK_p_STREAMKEY"_Stz,    // CK_p_STREAMKEY
+  /* */ "CK_p_TABLE"_Stz,        // CK_p_TABLE
 
   /* */ "CK_ADDRESS"_Stz,      // CK_ADDRESS
   /* */ "CK_ANDCONJ"_Stz,      // CK_ANDCONJ
@@ -177,18 +177,18 @@ Stz* aCK_short[CK_ENUMS]
   /* */ "Top"_Stz,             // CK_o_TOP
   /* */ "Where"_Stz,           // CK_o_WHERE
 
-  /* */ "Constraint"_Stz,      // CK_c_CONSTRAINT
-  /* */ "Emit"_Stz,            // CK_c_EMIT
-  /* */ "Hashing"_Stz,         // CK_c_HASHING
-  /* */ "HshColList"_Stz,      // CK_c_HSHCOLLIST
-  /* */ "Injectable"_Stz,      // CK_c_INJECTABLE
-  /* */ "Key"_Stz,             // CK_c_KEY
-  /* */ "Level"_Stz,           // CK_c_LEVEL
-  /* */ "Mapping"_Stz,         // CK_c_MAPPING
-  /* */ "Needed"_Stz,          // CK_c_NEEDED
-  /* */ "Neededv2"_Stz,        // CK_c_NEEDEDv2
-  /* */ "StreamKey"_Stz,       // CK_c_STREAMKEY
-  /* */ "Table"_Stz,           // CK_c_TABLE
+  /* */ "Constraint"_Stz,      // CK_p_CONSTRAINT
+  /* */ "Emit"_Stz,            // CK_p_EMIT
+  /* */ "Hashing"_Stz,         // CK_p_HASHING
+  /* */ "HshColList"_Stz,      // CK_p_HSHCOLLIST
+  /* */ "Injectable"_Stz,      // CK_p_INJECTABLE
+  /* */ "Key"_Stz,             // CK_p_KEY
+  /* */ "Level"_Stz,           // CK_p_LEVEL
+  /* */ "Mapping"_Stz,         // CK_p_MAPPING
+  /* */ "Needed"_Stz,          // CK_p_NEEDED
+  /* */ "Neededv2"_Stz,        // CK_p_NEEDEDv2
+  /* */ "StreamKey"_Stz,       // CK_p_STREAMKEY
+  /* */ "Table"_Stz,           // CK_p_TABLE
 
   /* */ "Address"_Stz,         // CK_ADDRESS
   /* */ "AndConj"_Stz,         // CK_ANDCONJ

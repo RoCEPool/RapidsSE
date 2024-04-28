@@ -9,7 +9,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE, Card_Mapping, CK_c_MAPPING)
+__pCastFunction_Card(STORE, Card_Mapping, CK_p_MAPPING)
 __aNewFunction(Card_Mapping,CN_CARD)
 __vDeleteFunction(Card_Mapping,CN_CARD)
 
@@ -18,7 +18,7 @@ __vDeleteFunction(Card_Mapping,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Mapping::Card_Mapping(void)
-: Card_symbol(CK_c_MAPPING, 2)
+: Card_symbol(CK_p_MAPPING, 2)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
