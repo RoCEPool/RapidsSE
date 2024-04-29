@@ -502,6 +502,7 @@ void Step::vMetaDataTableNodes(void)
   if(pPdsRowBuffer->nItems() > 0) {
     BufferId oBufferId = pPdsRowBuffer->oGetBufferId().m_pvAsAddress;
     AM::pHashMap()->vDropKeyLock(oBufferId.m_pvAsAddress);
+    vTrace("%p %lld\n"_Stz, oBufferId.m_pvAsAddress, AM::pHashMap()->bIsLocked(oBufferId.m_pvAsAddress));
     Operand* pOperand = _pOperand((Object*)oBufferId.m_pvAsAddress);
     AM::OP::vPipeToNextOp(m_pOp,pOperand,this);
   } else
@@ -596,6 +597,7 @@ void Step::vMetaDataTableTables(void)
   ENTRY();
 
   Table* pTable = _pTable(*m_pLogicUnit->m_xpTable);
+  /*
   StreamDef* pStreamDef = pTable->pStreamDef();
 
   Pds* pPdsRowBuffer = new Pds(pStreamDef, false, BT_DATA);
@@ -672,6 +674,22 @@ void Step::vMetaDataTableTables(void)
     AM::OP::vPipeToNextOp(m_pOp,pOperand,this);
   } else
     delete(pPdsRowBuffer);
+*/
+
+  TablePtn* pTablePtn = pTable->pTablePtn(0);
+
+  BufferId oRootBufferId = pTablePtn->oRootBufferId();
+  Pds* pRootPds = _pPds(AM::pHashMap()->pValueAt(oRootBufferId.m_pvAsAddress));
+  PdsCursor* pCursor = new PdsCursor(pRootPds);
+  while(! pCursor->bIsCurrNull()) {
+    SkipListBlock* pSLBlock = pCursor->m_pCurrentBlock;
+    BufferId oBufferId = pTablePtn->oExtractBufferId((Object*)pSLBlock->aItem());
+    vTrace("%p %lld\n"_Stz, oBufferId.m_pvAsAddress, AM::pHashMap()->bIsLocked(oBufferId.m_pvAsAddress));
+    Operand* pOperand = _pOperand((Object*)oBufferId.m_pvAsAddress);
+    AM::OP::vPipeToNextOp(m_pOp,pOperand,this);
+    pCursor->vNext();
+  }
+  delete pCursor;
 
   EXIT();
 }
@@ -708,6 +726,7 @@ void Step::vMetaDataTableTablesInsert(void)
   bool bAppend = false;
   if(pPdsRootBuffer->nItems() == 0) {
     pPdsRowBuffer = new Pds(pStreamDef, false, BT_DATA);
+    vTrace("Locked? %lld\n"_Stz, AM::pHashMap()->bIsLocked(pPdsRowBuffer->oGetBufferId().m_pvAsAddress));
     bAppend = true;
   } else {
     i8 iSearchKey = C_INT_MAX;
@@ -716,11 +735,12 @@ void Step::vMetaDataTableTablesInsert(void)
       // If the block is not null, extract the keys and values
       PdsBufferIdItem* pBufferIdStruct = (PdsBufferIdItem*) pHead->aItem();
 
-      HashMapEntry* pEntry = AM::pHashMap()->pEntryAt(pBufferIdStruct->oBufferId.m_pvAsAddress);
+      HashMapEntry* pEntry = AM::pHashMap()->pEntryAt(pBufferIdStruct->oBufferId.m_pvAsAddress, true);
 
       pPdsRowBuffer = _pPds(pEntry->m_pValObject);
     } else {
       pPdsRowBuffer = new Pds(pStreamDef, false, BT_DATA);
+      vTrace("Locked? %lld\n"_Stz, AM::pHashMap()->bIsLocked(pPdsRowBuffer->oGetBufferId().m_pvAsAddress));
       bAppend = true;
     }
   }
@@ -738,6 +758,8 @@ void Step::vMetaDataTableTablesInsert(void)
   if(bAppend) {
     i8 nRows = 0;
     pTablePtn->vAppendBuffer(pPdsRowBuffer, nRows);
+  } else {
+    AM::pHashMap()->vDropKeyLock(pPdsRowBuffer->oGetBufferId().m_pvAsAddress);
   }
 
   EXIT();

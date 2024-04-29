@@ -93,12 +93,27 @@ void CrwTablePtn::vAnalyze(i8& nBuffers, i8& nRows, i8& jSumRowBytes)
 #else
     HashMapEntry* pEntry = pHashMap->pEntryAt(pBufferIdStruct->oBufferId.m_pvAsAddress);
 
-    CrwBuffer* pCrwBuffer = _pCrwBuffer(pEntry->m_pValObject);
-    nBuffers++;
+    DataBuffer* pDataBuffer = _pDataBuffer(pEntry->m_pValObject);
+    eCN eClass = pDataBuffer->eGetClassNo();
+    switch(eClass) {
+      case CN_PDS: {
+        Pds* pPds = _pPds(pDataBuffer);
+        nBuffers++;
 
-    //pCrwBuffer->vShow();
-    nRows += (pCrwBuffer->nRows());
-    jSumRowBytes += pCrwBuffer->nAllotedBytes();
+        nRows += (pPds->nItems());
+        jSumRowBytes += pPds->m_xWsp.nUsedBytes();
+        break;
+      }
+      default: {
+        CrwBuffer* pCrwBuffer = _pCrwBuffer(pEntry->m_pValObject);
+        nBuffers++;
+
+        //pCrwBuffer->vShow();
+        nRows += (pCrwBuffer->nRows());
+        jSumRowBytes += pCrwBuffer->nAllotedBytes();
+        break;
+      }
+    }
 
     pEntry->vDropLock();
 #endif
@@ -172,6 +187,10 @@ void CrwTablePtn::vAppendBuffer(Pds* pPds)
     delete pPds;
     return;
   }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // mark crwBuffer as permanent
+  pPds->vIsPermanent(true);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Append a new Skip List Block to the PDS
