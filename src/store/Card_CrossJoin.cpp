@@ -82,12 +82,6 @@ void Card_CrossJoin::vEarlyProject_recurse_update(CardIter* pCI)
 {
    _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  // save the current projection needed
-  //   we can restore to this save if projection needed get extended
-  Card_Needed* p_needed_save = pCI->Early.m_pNeeded_later->pClone();
-
- // pCI->PRINTBOARD_dbg();
-
   XF_Optimise_Early_projection::vEarlyProject_backstep(pCI);
 
   pCI->E.p_Op = this;
@@ -96,15 +90,6 @@ void Card_CrossJoin::vEarlyProject_recurse_update(CardIter* pCI)
   /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
 
 
- // pCI->PRINTBOARD_dbg();
-
-  pCI->E.p_Op->vRestate_emit(pCI);
-
-  // pCI->PRINTBOARD_dbg();
-
-  // restore needed
-  delete pCI->Early.m_pNeeded_later;
-  pCI->Early.m_pNeeded_later = p_needed_save;
 }
 
 /*----------------------------------------------------------------------------*/

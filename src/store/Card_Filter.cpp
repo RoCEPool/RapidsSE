@@ -133,10 +133,6 @@ void Card_Filter::vEarlyProject_recurse_update(CardIter* pCI)
 
  // pCI->PRINTBOARD_dbg();
 
-  // save the current projection needed
-  //   we can restore to this save if projection needed get extended
-  Card_Needed* p_needed_save = pCI->Early.m_pNeeded_later->pClone();
-
   // check for additional/temporary transients
   vEarlyProject_add_transients(pCI);
 
@@ -144,15 +140,6 @@ void Card_Filter::vEarlyProject_recurse_update(CardIter* pCI)
 
   /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
 
- // pCI->PRINTBOARD_dbg();
-
-  pCI->E.p_Op->vRestate_emit(pCI);
-
-  //pCI->PRINTBOARD_dbg();
-
-  // restore needed
-  delete pCI->Early.m_pNeeded_later;
-  pCI->Early.m_pNeeded_later = p_needed_save;
 }
 
 /*----------------------------------------------------------------------------*/

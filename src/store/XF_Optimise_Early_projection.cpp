@@ -185,6 +185,8 @@ void XF_Optimise_Early_projection::vEarlyProject_backstep(CardIter* pCI)
   if (!pCI->bEachOp_reverse())
     return;
 
+  Card_Needed* p_needed_save;
+
   // which card did we arrive at?
   switch (pCI->E.e_Op) {
 
@@ -204,13 +206,30 @@ void XF_Optimise_Early_projection::vEarlyProject_backstep(CardIter* pCI)
 
     case CK_o_CROSSJOIN:
       pCI->vPushEach();
+      p_needed_save = pCI->Early.m_pNeeded_later->pClone();
       pCI->E.p_crossJoin->vEarlyProject_recurse_update(pCI);
+      pCI->E.p_Op->vRestate_emit(pCI);
+
+      delete pCI->Early.m_pNeeded_later;
+      pCI->Early.m_pNeeded_later = p_needed_save;
+
       pCI->vPopEach();
       break;
 
     case CK_o_FILTER:
       pCI->vPushEach();
+      p_needed_save = pCI->Early.m_pNeeded_later->pClone();
       pCI->E.p_filter->vEarlyProject_recurse_update(pCI);
+      // pCI->PRINTBOARD_dbg();
+
+      pCI->E.p_Op->vRestate_emit(pCI);
+
+      //pCI->PRINTBOARD_dbg();
+
+      // restore needed
+      delete pCI->Early.m_pNeeded_later;
+      pCI->Early.m_pNeeded_later = p_needed_save;
+
       pCI->vPopEach();
       break;
 
@@ -257,7 +276,13 @@ void XF_Optimise_Early_projection::vEarlyProject_backstep(CardIter* pCI)
 
     case CK_o_WHERE:
       pCI->vPushEach();
+      p_needed_save = pCI->Early.m_pNeeded_later->pClone();
       pCI->E.p_where->vEarlyProject_recurse_update(pCI);
+      pCI->E.p_Op = pCI->E.p_where;
+      pCI->E.p_Op->vRestate_emit(pCI);
+      delete pCI->Early.m_pNeeded_later;
+      pCI->Early.m_pNeeded_later = p_needed_save;
+
       pCI->vPopEach();
       break;
 
