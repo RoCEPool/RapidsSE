@@ -82,22 +82,6 @@ void Card_IndexJoin::vEarlyProject_recurse_add(CardIter* pCI)
 
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (pCI->pPeekPrev()->bIsCard(CK_o_GBYAGG) ||
-      pCI->pPeekPrev()->bIsCard(CK_o_PROJECT)) {
-
-    pCI->Early.m_pOP_leaf = this;
-    pCI->vSnapIf_arriving();
-
-   // pCI->PRINTBOARD_dbg();
-    return;
-
-
-  }
-
-  // save the current projection needed
-  //   we can restore to this save if projection needed get extended
-  Card_Needed* p_needed_save = pCI->Early.m_pNeeded_later->pClone();
-
   // check for additional/temporary transients
   vEarlyProject_add_transients(pCI);
 
@@ -109,16 +93,6 @@ void Card_IndexJoin::vEarlyProject_recurse_add(CardIter* pCI)
   XF_Optimise_Early_projection::vEarlyProject_backstep(pCI);
 
   /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
-
-  pCI->E.p_table = pSub_table();
-  pCI->E.p_Op = pCI->E.p_indexJoin;
-  pCI->E.p_indexJoin->vRestate_emit(pCI);
-
-  //pCI->PRINTBOARD_dbg();
-
-  // restore needed
-  delete pCI->Early.m_pNeeded_later;
-  pCI->Early.m_pNeeded_later = p_needed_save;
 }
 
 /*----------------------------------------------------------------------------*/

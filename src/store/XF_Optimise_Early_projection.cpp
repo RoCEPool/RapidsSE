@@ -190,20 +190,18 @@ void XF_Optimise_Early_projection::vEarlyProject_backstep(CardIter* pCI)
   // which card did we arrive at?
   switch (pCI->E.e_Op) {
 
-    // -- -- -- -- -- -- --
-    // don't go any further
 
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     case CK_o_GBYAGG:
       pCI->Early.m_pOP_leaf = pCI->E.p_Op;
       break;
 
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     case CK_o_ORDAGG:
       pCI->Early.m_pOP_leaf = pCI->E.p_Op;
       break;
 
-      // -- -- -- -- -- -- --
-      // recurse into...
-
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     case CK_o_CROSSJOIN:
       pCI->vPushEach();
       p_needed_save = pCI->Early.m_pNeeded_later->pClone();
@@ -216,6 +214,7 @@ void XF_Optimise_Early_projection::vEarlyProject_backstep(CardIter* pCI)
       pCI->vPopEach();
       break;
 
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     case CK_o_FILTER:
       pCI->vPushEach();
       p_needed_save = pCI->Early.m_pNeeded_later->pClone();
@@ -233,30 +232,51 @@ void XF_Optimise_Early_projection::vEarlyProject_backstep(CardIter* pCI)
       pCI->vPopEach();
       break;
 
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     case CK_o_INDEXJOIN:
+      if (pCI->pPeekPrev()->bIsCard(CK_o_GBYAGG) ||
+          pCI->pPeekPrev()->bIsCard(CK_o_PROJECT)) {
+        pCI->Early.m_pOP_leaf = pCI->E.p_Op;
+        pCI->vSnapIf_arriving();
+        break;
+      }
+
       pCI->vPushEach();
+      p_needed_save = pCI->Early.m_pNeeded_later->pClone();
       pCI->E.p_indexJoin->vEarlyProject_recurse_add(pCI);
+
+      pCI->E.p_table = pCI->E.p_indexJoin->pSub_table();
+      pCI->E.p_Op = pCI->E.p_indexJoin;
+      pCI->E.p_indexJoin->vRestate_emit(pCI);
+
+      delete pCI->Early.m_pNeeded_later;
+      pCI->Early.m_pNeeded_later = p_needed_save;
+
       pCI->vPopEach();
       break;
 
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     case CK_o_INDEXSCAN:
       pCI->vPushEach();
       pCI->E.p_indexScan->vEarlyProject_leaf(pCI);
       pCI->vPopEach();
       break;
 
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     case CK_o_KEYEXISTS:
       pCI->vPushEach();
       pCI->E.p_keyExists->vEarlyProject_recurse_add(pCI);
       pCI->vPopEach();
       break;
 
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     case CK_o_KEYNOTEXISTS:
       pCI->vPushEach();
       pCI->E.p_keyNotExists->vEarlyProject_recurse_add(pCI);
       pCI->vPopEach();
       break;
 
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     case CK_o_PROJECT:
       if (pCI->E.p_project->pSub_needed()) {
         pCI->vPushEach();
@@ -268,12 +288,14 @@ void XF_Optimise_Early_projection::vEarlyProject_backstep(CardIter* pCI)
       }
       break;
 
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     case CK_o_SCAN:
       pCI->vPushEach();
       pCI->E.p_scan->vEarlyProject_leaf(pCI);
       pCI->vPopEach();
       break;
 
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     case CK_o_WHERE:
       pCI->vPushEach();
       p_needed_save = pCI->Early.m_pNeeded_later->pClone();
@@ -286,9 +308,7 @@ void XF_Optimise_Early_projection::vEarlyProject_backstep(CardIter* pCI)
       pCI->vPopEach();
       break;
 
-      // -- -- -- -- -- -- --
-      // missing??
-
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     default:
       pCI->E.p_Op->vDump(__func__);
       NEVER_REACH
