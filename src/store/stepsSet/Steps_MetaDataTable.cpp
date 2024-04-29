@@ -556,11 +556,17 @@ void Step::vMetaDataTableSchema(void)
                                        sSchemaNm.szStz(),
                                        C_VARGS_END);
 
-  if(!pRow) {
+  if(! pRow) {
     ASSERT(0);
   }
 
-  m_pDataStack->vPushPtr((Object*)pPdsRowBuffer);
+  if(pPdsRowBuffer->nItems() > 0) {
+    BufferId oBufferId = pPdsRowBuffer->oGetBufferId().m_pvAsAddress;
+    AM::pHashMap()->vDropKeyLock(oBufferId.m_pvAsAddress);
+    Operand* pOperand = _pOperand((Object*)oBufferId.m_pvAsAddress);
+    AM::OP::vPipeToNextOp(m_pOp,pOperand,this);
+  } else
+    delete(pPdsRowBuffer);
 
   EXIT();
 }
