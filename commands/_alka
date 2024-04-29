@@ -2,37 +2,58 @@
 /* _alka                                                                      */
 /*============================================================================*/
 
-file _lineitem;
-load lineitem "../DATA/TPCH/lineitem10.csv";
+// create the tables
+create table TABLE1 (
+  pcol1   INTEGER NOT NULL,
+  tcol1   INTEGER NOT NULL,
+  cola1   INTEGER,
+  colb1   VARCHAR(20),
+  colc1   TIMESTAMP,
+  cold1   FLOAT,
+  cole1   DECIMAL(15, 2),
+  colf1   INTEGER,
+  colg1   INTEGER,
+  ucol    INTEGER,
+  ucolvc  VARCHAR(5)
+);
 
+create index TABLE1_PCOL1 on table1(pcol1);
+create index TABLE1_COLA1 on table1(cola1);
+create index TABLE1_COLB1 on table1(colb1);
+create index TABLE1_UCOL on table1(ucol);
+create index TABLE1_UCOLVC on table1(ucolvc);
+
+load TABLE1 "../DATA/Load/tbl1data.csv" ;
+
+/weaved
 /keepCodeFile
-/optimise_passthru
-pipeline Query6
-begin
- stage stageA on origin :
-   start | pulse once | stageB
-
-  stage stageB on all partitions :
-    scan lineitem
-    | filter "type boolean $11 DATE '1994-01-01' >= $11 DATE '1995-01-01' < and "
-    | next
-
-  stage x on all partitions :
-    filter "type boolean $7 0.06 0.01 - >= $7 0.06 0.01  +  <= $5 26.0 < and and"
-    | aggreg " type decimal ( 19  2 ) as partitionRevenue ) $6 $7 * sum"
-    | combined 0
-    | stageC
-
-  stage stageC on origin :
-    aggreg " type decimal ( 19  2 ) as revenue ) $1 sum "
-    | combined 0
-    | next
-
-  stage stageLast on origin :
-    output | sink | stageA
-end ;
-
+select sum(cola1) as ColA, avg(ucol), colb1, ucolvc from table1 group by colb1, ucolvc having avg(ucol) < 200 order by colb1, ColA;
 /*
-rows:
-  (2377.22)
+ordered rows:
+  (62, 128.00, 'BLACK', 'ttt')
+  (243, 132.00, 'ORANGE', 'nnn')
+  (201, 122.00, 'PINK', 'vvv')
+  (457, 109.00, 'PURPLE', 'www')
+  (213, 93.00, 'RED', 'ccc')
+  (402, 172.00, 'TEAL', 'ccc')
+  (46, 106.00, 'aqua', 'nnn')
+  (74, 101.00, 'aqua', 'bbb')
+  (5, 123.00, 'black', 'iii')
+  (124, 144.00, 'black', 'mmm')
+  (235, 158.00, 'black', 'bbb')
+  (336, 40.00, 'blue', 'ppp')
+  (303, 62.00, 'gold', 'ccc')
+  (222, 62.00, 'green', 'yyy')
+  (415, 30.00, 'green', 'uuu')
+  (260, 81.00, 'grey', 'lll')
+  (380, 129.00, 'maroon', 'xxx')
+  (141, 31.00, 'orange', 'aaa')
+  (467, 57.00, 'orange', 'kkk')
+  (26, 86.00, 'peach', 'ooo')
+  (215, 140.00, 'purple', 'rrr')
+  (154, 178.00, 'violet', 'ddd')
   */
+
+  type DECIMAL ( 19 2 ) as C1_COL1
+  $5 casttype DECIMAL ( 19 2 ) casttype DECIMAL ( 19 2 ) CAST
+  $4 casttype DECIMAL ( 19 2 ) casttype DECIMAL ( 19 2 ) CAST /
