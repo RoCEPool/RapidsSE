@@ -149,50 +149,6 @@ void Card_OP::vCull_filter_IfEmpty(Card_Filter* p_filter)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_OP::vEarlyProject_root(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  switch (pCI->E.e_Op) {
-
-    // -- -- -- -- -- -- --
-    case CK_o_AGGREG:
-      pCI->E.p_aggreg->vEarlyProject_root(pCI);
-      break;
-
-    case CK_o_GBYAGG:
-      pCI->E.p_gbyAgg->vEarlyProject_root(pCI);
-      break;
-
-    case CK_o_ORDAGG:
-      pCI->E.p_ordAgg->vEarlyProject_root(pCI);
-      break;
-
-    // -- -- -- -- -- -- --
-    case CK_o_PROJECT:
-      pCI->E.p_project->vEarlyProject_root(pCI);
-      break;
-
-    case CK_o_INDEXJOIN:
-      pCI->E.p_indexJoin->vEarlyProject_root(pCI);
-      break;
-
-    // -- -- -- -- -- -- --
-    case CK_o_CROSSJOIN:
-    case CK_o_INDEXSCAN:
-    case CK_o_LIMIT:
-    case CK_o_SCAN:
-    case CK_o_TOP:
-      break;
-
-    default:
-      NEVER_REACH;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 void Card_OP::vEarlyProject_backstep(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);

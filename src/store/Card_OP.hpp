@@ -26,7 +26,6 @@ namespace STORE
 
     void vCull_filter_IfEmpty(Card_Filter* p_filter);
 
-    void vEarlyProject_root(CardIter* pCI);
     void vEarlyProject_backstep(CardIter* pCI);
 
     Card_Filter* pEnsure_filter(void);
