@@ -106,17 +106,6 @@ bool Card_GbyAgg::bEarlyProject_root(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
-/* craft needed                                                               */
-/*----------------------------------------------------------------------------*/
-void Card_GbyAgg::vCraft_needed_root(CardIter *pCI)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  pCI->Early.m_pNeeded_later = pCI->E.p_emit->pCraft_needed_root(pCI);
-  DELETE_CARD(pCI->Early.m_pNeeded_later);
-}
-
-/*----------------------------------------------------------------------------*/
 /* inject sub-query result into this gbyAgg                                   */
 /*----------------------------------------------------------------------------*/
 void Card_GbyAgg::vInject_foldExpr(CardIter* pCI)
