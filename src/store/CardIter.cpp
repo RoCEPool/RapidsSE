@@ -889,7 +889,7 @@ bool CardIter::bEachOp(void)
     if (E.xEachOp.bParentIs(CK_DECK) && ! E.xEachOp.pChild()->bIsOp())
       continue;
 
-    E.p_Op = E.xEachOp.pChild();
+    E.p_Op = E.xEachOp.p_op();
     vFocusOnOp();
     vMember(E.p_Op->eCard(), E.p_Op);
     return true;
@@ -920,7 +920,7 @@ bool CardIter::bEachOp(eCK eOp)
     if (E.xEachOp.pChild()->eCard() != eOp)
       continue;
 
-    E.p_Op = E.xEachOp.pChild();
+    E.p_Op = E.xEachOp.p_op();
     vFocusOnOp();
     vMember(E.p_Op->eCard(), E.p_Op);
     return true;
@@ -953,7 +953,7 @@ bool CardIter::bEachOp_break(eCK eOp, eCK eBreak)
     if (E.xEachOp.pChild()->eCard() != eOp)
       continue;
 
-    E.p_Op = E.xEachOp.pChild();
+    E.p_Op = E.xEachOp.p_op();
     vFocusOnOp();
     vMember(E.p_Op->eCard(), E.p_Op);
     return true;
@@ -1074,7 +1074,7 @@ bool CardIter::bEachOp_reverse(void)
     if (E.xEachOp.bParentIs(CK_DECK) && ! E.xEachOp.pChild()->bIsOp())
       continue;
 
-    E.p_Op = E.xEachOp.pChild();
+    E.p_Op = E.xEachOp.p_op();
     vFocusOnOp();
     vMember(E.p_Op->eCard(), E.p_Op);
     return true;
@@ -1103,7 +1103,7 @@ bool CardIter::bEachOp_reverse(eCK eOp)
     if (E.xEachOp.pChild()->eCard() != eOp)
       continue;
 
-    E.p_Op = E.xEachOp.pChild();
+    E.p_Op = E.xEachOp.p_op();
     vFocusOnOp();
     vMember(E.p_Op->eCard(), E.p_Op);
     return true;
@@ -1136,7 +1136,7 @@ bool CardIter::bEachOp_reverse_foldBreak(eCK eOp)
     if (E.xEachOp.pChild()->eCard() != eOp)
       continue;
 
-    E.p_Op = E.xEachOp.pChild();
+    E.p_Op = E.xEachOp.p_op();
     vFocusOnOp();
     vMember(E.p_Op->eCard(), E.p_Op);
     return true;
@@ -1973,7 +1973,7 @@ bool CardIter::bPositionAt(eCK eKind_at, i8 /* eCK */  iKind_First, ...)
 
   if (pCard_found) {
     vChild(pCard_found);
-    E.p_Op = E.xEachOp.pChild();
+    E.p_Op = E.xEachOp.p_op();
     vFocusOnOp();
     return true;
   }
@@ -2348,7 +2348,7 @@ bool CardIter::bRewindOp(void)
 
   E.xEachOp.vBackstep();
 
-  if ((E.p_Op = E.xEachOp.pChild())) {
+  if ((E.p_Op = E.xEachOp.p_op())) {
     vFocusOnOp();
     vMember(E.e_Op, E.p_Op);
     return true;

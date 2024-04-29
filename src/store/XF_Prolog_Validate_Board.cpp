@@ -93,7 +93,7 @@ void XF_Prolog_Validate_Board::vValidate(void)
         break;
 
       default:
-        if (m_pCI->E.p_Op->bIsOp())
+        if (m_pCI->E.p_Op->Card::bIsOp())
           p_OP = m_pCI->E.p_Op;
         break;
     }

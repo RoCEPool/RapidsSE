@@ -472,7 +472,7 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
 
   bool bSnapped = bSnap_IQ_crlKey(pCI);
   RASSERT(bSnapped);
-  pCI->PRINTBOARD_dbg();
+  //pCI->PRINTBOARD_dbg();
 //  pCI->Flat.m_p_expr_crlKey->vDump(__func__);
 //  pCI->Flat.m_p_conj_crlKey->vDump(__func__);
 //  pCI->Flat.m_p_term_crlKey->vDump(__func__);
@@ -484,7 +484,7 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
   //   thereby producing ordered subQuery stream
 
   vPromote_IQ_aggreg_To_gbyAgg_crlKey(pCI);
-  pCI->PRINTBOARD_dbg();
+  //pCI->PRINTBOARD_dbg();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // add correlation key to IQ:[<project>/<emit>/<crlKey>]

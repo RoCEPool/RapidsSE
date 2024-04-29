@@ -36,7 +36,7 @@ namespace STORE
     // - - - - - - - - - - - - -
 
     char   md_Coord[256];
-    Card * p_Op;
+    Card_OP * p_Op;
     eCK    e_Op;
     i8     i_Op;
 
