@@ -42,9 +42,6 @@ void vAssignHash(Dynamic_T* aDynamicT) {
 	iMixLen = sizeof(i8);
 	aMixVal = (byte*)&iMixVal;
 
-//#ifdef WITH_CLANG
-//  vExtern_RunningHash(&iKeyHash, (byte*)&iMixVal, sizeof(i8));
-//#endif
 	// marker-end
 }
 
@@ -72,10 +69,6 @@ void vAssignVchHash(Dynamic_T* aDynamicT) {
 	iMixLen = strlen(szMixVal);
 	aMixVal = (byte*)szMixVal;
 
-//#ifdef WITH_CLANG
-//	vExtern_RunningHash(&iKeyHash, (byte*)szMixVal, strlen(szMixVal));
-//	printf("Running hash of %s %lld: %lld\n", szMixVal, iMixLen, iKeyHash);
-//#endif
 	// marker-end
 }
 
@@ -494,10 +487,8 @@ i8 iPotTubContinue(Dynamic_T* aDynamicT) {
 
   // allocate a row from the tub
 #ifdef WITH_CLANG
-	//__ROW_INFO_TO__[CURRENT_DUP_OP].m_aRowCellArray = (byte*)__EXTERN_ALLOTROW__();
-
 	__EXTERN_ALLOTROW__();
-	__ROW_INFO_TO__[CURRENT_DUP_OP].m_nStringAreaSize = sizeof(__ROW_INFO_TO__.m_cStringArea);
+	__ROW_INFO_TO__[CURRENT_DUP_OP].m_nStringAreaSize = sizeof(__ROW_INFO_TO__[CURRENT_DUP_OP].m_cStringArea);
 #endif
 
   // check for error
@@ -539,7 +530,6 @@ i8 iPotTubContinue_pds(Dynamic_T* aDynamicT) {
 
 	// allocate a row from the tub
 #ifdef WITH_CLANG
-  //__ROW_INFO_TO__[CURRENT_DUP_OP].m_aRowCellArray = (byte*)__EXTERN_ALLOTROW__();
 	__EXTERN_ALLOTROW__();
 #endif
 
@@ -615,9 +605,8 @@ i8 iEosPotTubBody(Dynamic_T* aDynamicT) {
 
   // allocate a row from the tub
 #ifdef WITH_CLANG
-  //aDynamicT->m_xRowInfoTO.m_aRowCellArray = (byte*)__EXTERN_ALLOTROW__();
 	__EXTERN_ALLOTROW__();
-	__ROW_INFO_TO__.m_nStringAreaSize = sizeof(__ROW_INFO_TO__.m_cStringArea);
+	__ROW_INFO_TO__[CURRENT_DUP_OP].m_nStringAreaSize = sizeof(__ROW_INFO_TO__[CURRENT_DUP_OP].m_cStringArea);
 #endif
   if (aDynamicT->m_iErrorCode != (i8) EC_NONE) {
     return 0;
@@ -687,9 +676,8 @@ i8 iEosPLPotTub(Dynamic_T* aDynamicT) {
 	  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // allocate a row from the tub/pot
 #ifdef WITH_CLANG
-    //__ROW_INFO_TO__[CURRENT_DUP_OP].m_aRowCellArray = (byte*)
 		__EXTERN_ALLOTROW__();
-	  __ROW_INFO_TO__.m_nStringAreaSize = sizeof(__ROW_INFO_TO__.m_cStringArea);
+	  __ROW_INFO_TO__[CURRENT_DUP_OP].m_nStringAreaSize = sizeof(__ROW_INFO_TO__[CURRENT_DUP_OP].m_cStringArea);
 #endif
     // check for error
     if (aDynamicT->m_iErrorCode != (i8) EC_NONE) {
@@ -718,7 +706,6 @@ i8 iEosPLPotTub_pds(Dynamic_T* aDynamicT) {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // allocate a row from the tub/pot
 #ifdef WITH_CLANG
-  //__ROW_INFO_TO__[CURRENT_DUP_OP].m_aRowCellArray = (byte*)
 	__EXTERN_ALLOTROW__();
 #endif
   // check for error
