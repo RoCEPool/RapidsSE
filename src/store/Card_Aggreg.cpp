@@ -80,10 +80,6 @@ bool Card_Aggreg::bEarlyProject_root(CardIter* pCI)
   pCI->vInsertBefore(p_project_early, this);
   pCI->vRepositionOp();
 
-  Card_OP::vEarlyProject_backstep(pCI);
-
-  /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
-
  return true;
 }
 

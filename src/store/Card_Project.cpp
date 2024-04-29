@@ -252,13 +252,6 @@ bool Card_Project::bEarlyProject_root(CardIter* pCI)
 //  pCI->vRepositionOp();
   vAppendChild(pCI->Early.m_pNeeded_later->pDupCardRecursive());
 
-  Card_OP::vEarlyProject_backstep(pCI);
-
-  pCI->E.p_Op = this;
-  pCI->E.e_Op = CK_o_PROJECT;
-
-  /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
-
   return true;
 }
 

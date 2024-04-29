@@ -5,6 +5,7 @@
 #include "XF_Optimise_Early_projection.hpp"
 #include "eOT.h"
 
+#include "Card_OP.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -103,6 +104,8 @@ bool XF_Optimise_Early_projection::bOptimise(void)
       // -- -- -- -- -- -- --
       case CK_o_AGGREG:
         if (m_pCI->E.p_aggreg->bEarlyProject_root(m_pCI)) {
+          m_pCI->E.p_aggreg->Card_OP::vEarlyProject_backstep(m_pCI);
+
           RASSERT(m_pCI->Early.m_pOP_leaf);
           m_pCI->E.p_aggreg->vRestate_emit(m_pCI);
         }
@@ -113,6 +116,8 @@ bool XF_Optimise_Early_projection::bOptimise(void)
 
       case CK_o_GBYAGG:
         if (m_pCI->E.p_gbyAgg->bEarlyProject_root(m_pCI)) {
+          m_pCI->E.p_gbyAgg->Card_OP::vEarlyProject_backstep(m_pCI);
+
           RASSERT(m_pCI->Early.m_pOP_leaf);
           m_pCI->E.p_gbyAgg->vRestate_emit(m_pCI);
         }
@@ -123,6 +128,8 @@ bool XF_Optimise_Early_projection::bOptimise(void)
 
       case CK_o_ORDAGG:
         if (m_pCI->E.p_ordAgg->bEarlyProject_root(m_pCI)) {
+          m_pCI->E.p_ordAgg->Card_OP::vEarlyProject_backstep(m_pCI);
+
           RASSERT(m_pCI->Early.m_pOP_leaf);
           m_pCI->E.p_ordAgg->vRestate_emit(m_pCI);
         }
@@ -134,6 +141,11 @@ bool XF_Optimise_Early_projection::bOptimise(void)
         // -- -- -- -- -- -- --
       case CK_o_PROJECT:
         if (m_pCI->E.p_project->bEarlyProject_root(m_pCI)) {
+          m_pCI->E.p_project->Card_OP::vEarlyProject_backstep(m_pCI);
+
+          m_pCI->E.p_Op = m_pCI->E.p_project;
+          m_pCI->E.e_Op = CK_o_PROJECT;
+
           RASSERT(m_pCI->Early.m_pOP_leaf);
           RASSERT(! m_pCI->E.p_project->pSymbol()->Y_bHas(P_Early));
           m_pCI->E.p_Op->vRestate_emit(m_pCI);
@@ -145,6 +157,8 @@ bool XF_Optimise_Early_projection::bOptimise(void)
 
       case CK_o_INDEXJOIN:
         if (m_pCI->E.p_indexJoin->bEarlyProject_root(m_pCI)) {
+          m_pCI->E.p_indexJoin->Card_OP::vEarlyProject_backstep(m_pCI);
+
           RASSERT(m_pCI->Early.m_pOP_leaf);
           m_pCI->E.p_indexJoin->vRestate_emit(m_pCI);
         }
