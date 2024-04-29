@@ -123,25 +123,6 @@ void Card_Filter::vEarlyProject_add_transients(CardIter* pCI)
   vAddTransients(pCI);
 }
 
-
-/*----------------------------------------------------------------------------*/
-/* early project                                                              */
-/*----------------------------------------------------------------------------*/
-void Card_Filter::vEarlyProject_recurse_update(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
- // pCI->PRINTBOARD_dbg();
-
-  // check for additional/temporary transients
-  vEarlyProject_add_transients(pCI);
-
-  XF_Optimise_Early_projection::vEarlyProject_backstep(pCI);
-
-  /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
-
-}
-
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
