@@ -172,11 +172,7 @@ void Card_Project::vDerive_streamKey(CardIter* pCI)
     return;
   }
 
-#ifdef Z_PART_STREAMKEY
   pCI->E.p_Op->vAppendChild(pCI->E.p_streamKey);
-#else
-  pCI->E.p_emit->vAppendChild(pCI->E.p_streamKey);
-#endif
 
   // set running projection for use by next op
   pCI->StreamOrder.m_pEmit = pCI->E.p_emit;

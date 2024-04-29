@@ -93,8 +93,7 @@ bool XF_Optimise_Early_projection::bOptimise(void)
     bool bEarlyRoot = false;
 
     while (m_pCI->bEachOp_reverse()) {
-      if (Card_OP::bIsOp(m_pCI->E.p_Op->eCard()) &&
-          m_pCI->E.p_Op->bIsEarlyRoot()) {
+      if (m_pCI->E.p_Op->bIsEarlyRoot()) {
         bEarlyRoot = true;
         break;
       }

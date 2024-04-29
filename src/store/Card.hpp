@@ -18,8 +18,6 @@
 #include "Ribbon.hpp"
 #include "Symbol.hpp"
 
-#define Z_PART_STREAMKEY
-
 //#define Z_NEEDEDv2
 
 namespace STORE

@@ -49,15 +49,9 @@ void Card_Sort::vDerive_streamKey(CardIter* pCI)
   RASSERT(bPeg_Projection(pCI));
   RASSERT(bPeg_Key(pCI));
 
-#ifdef Z_PART_STREAMKEY
   vDeleteSub(CK_p_STREAMKEY);
   pCI->E.p_streamKey = pCI->StreamOrder.m_pStreamKey = Card_StreamKey::pTo_streamKey(pCI->E.p_key);
   vAppendChild(pCI->StreamOrder.m_pStreamKey);
-#else
-  pCI->E.p_emit->vDeleteSub(CK_p_STREAMKEY);
-  pCI->E.p_streamKey = pCI->StreamOrder.m_pStreamKey = Card_StreamKey::pTo_streamKey(pCI->E.p_key);
-  pCI->E.p_emit->vAppendChild(pCI->StreamOrder.m_pStreamKey);
-#endif
 
   // set running emit for use by next op
   pCI->StreamOrder.m_pEmit = pCI->E.p_emit;

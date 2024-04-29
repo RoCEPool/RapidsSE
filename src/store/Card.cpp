@@ -116,11 +116,6 @@ Card::Card(eCK eCard, i8 iFixedDepth)
   if (CK_o_SCAN == eCard)
     vDebugPoint();
 
-#ifdef Z_PART_STREAMKEY
-  if (CK_p_STREAMKEY == eCard)
-    vDebugPoint();
-#endif
-
   m_eCard   = eCard;
   m_i_Child = C_UNKNOWN;
   m_iSequence = C_UNKNOWN;
@@ -290,11 +285,6 @@ Card* Card::pCard(eCK eCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-#ifdef Z_PART_STREAMKEY
-  if (CK_p_STREAMKEY == eCard)
-    vDebugPoint();
-#endif
-
   m_eCard = eCard;
 
   return this;
@@ -306,11 +296,6 @@ Card* Card::pCard(eCK eCard)
 void Card::vCard(eCK eCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-#ifdef Z_PART_STREAMKEY
-  if (CK_p_STREAMKEY == eCard)
-    vDebugPoint();
-#endif
 
   m_eCard = eCard;
 
