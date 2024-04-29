@@ -183,38 +183,6 @@ void Card_Project::vDerive_streamKey(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* early project                                                              */
 /*----------------------------------------------------------------------------*/
-void Card_Project::vEarlyProject_given_leaf(CardIter* pCI)
-{
-  //vDump(0,(Stz*)__func__);
-
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  pCI->Early.m_pOP_leaf = this;
-
- // pCI->PRINTBOARD_dbg();
-
-  vDebugPoint();
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* early project                                                              */
-/*----------------------------------------------------------------------------*/
-void Card_Project::vEarlyProject_recurse_needed(CardIter* pCI)
-{
-  //vDump(0,(Stz*)__func__);
-
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  XF_Optimise_Early_projection::vEarlyProject_backstep(pCI);
-
-  /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
-
-}
-
-/*----------------------------------------------------------------------------*/
-/* early project                                                              */
-/*----------------------------------------------------------------------------*/
 bool Card_Project::bEarlyProject_root(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);

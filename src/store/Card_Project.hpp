@@ -24,8 +24,6 @@ namespace STORE
 
     void vDerive_streamKey(CardIter* pCI);
 
-    void vEarlyProject_given_leaf(CardIter* pCI);
-    void vEarlyProject_recurse_needed(CardIter* pCI);
     bool bEarlyProject_root(CardIter* pCI);
 
     void vSmooth_postAgg(CardIter* pCI);
