@@ -24,8 +24,8 @@ namespace STORE
 
     bool bOptimise(void);
 
-    bool bEarly_needed_loop(void);
-    bool bEarly_needed_OP(void);
+    void vEarly_needed_loop(void);
+    void vEarly_needed_OP(void);
 
     bool bEarly_projection_loop(void);
     bool bEarly_projection_OP(void);
