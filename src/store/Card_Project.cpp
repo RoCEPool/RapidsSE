@@ -210,21 +210,6 @@ void Card_Project::vEarlyProject_recurse_needed(CardIter* pCI)
 
   /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
 
-  RASSERT(pCI->Early.m_pOP_leaf);
-  RASSERT(pCI->E.p_project->pSymbol()->Y_bHas(P_Early));
-
-  if (! (pCI->E.p_needed = pSub_needed()))
-    return;
-
-  pCI->E.p_emit = pCraft_emit_early(pCI);
-
-  vAppendChild(pCI->E.p_emit);
-
-  pCI->vSnapIf_arriving(false);
-
- // pCI->PRINTBOARD_dbg();
-
-  vDebugPoint();
 }
 
 /*----------------------------------------------------------------------------*/

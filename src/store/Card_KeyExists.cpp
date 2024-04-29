@@ -77,21 +77,7 @@ void Card_KeyExists::vEarlyProject_recurse_add(CardIter* pCI)
 
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (pCI->pPeekPrev()->bIsCard(CK_o_PROJECT)) {
-
-    pCI->Early.m_pOP_leaf = this;
-    pCI->vSnapIf_arriving();
-
-   // pCI->PRINTBOARD_dbg();
-    return;
-
-  }
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  // save the current projection needed
-  //   we can restore to this save if projection needed get extended
-  Card_Needed* p_needed_save = pCI->Early.m_pNeeded_later->pClone();
 
   // check for additional/temporary transients
   vEarlyProject_add_transients(pCI);
@@ -105,13 +91,6 @@ void Card_KeyExists::vEarlyProject_recurse_add(CardIter* pCI)
 
   /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
 
-
-  pCI->E.p_Op = pCI->E.p_keyExists;
-  pCI->E.p_keyExists->vRestate_emit(pCI);
-
-  // restore needed
-  delete pCI->Early.m_pNeeded_later;
-  pCI->Early.m_pNeeded_later = p_needed_save;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -260,15 +260,43 @@ void XF_Optimise_Early_projection::vEarlyProject_backstep(CardIter* pCI)
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     case CK_o_KEYEXISTS:
+      if (pCI->pPeekPrev()->bIsCard(CK_o_PROJECT)) {
+        pCI->Early.m_pOP_leaf = pCI->E.p_Op;
+        pCI->vSnapIf_arriving();
+        break;
+      }
+
       pCI->vPushEach();
+      p_needed_save = pCI->Early.m_pNeeded_later->pClone();
       pCI->E.p_keyExists->vEarlyProject_recurse_add(pCI);
+
+      pCI->E.p_Op = pCI->E.p_keyExists;
+      pCI->E.p_keyExists->vRestate_emit(pCI);
+
+      // restore needed
+      delete pCI->Early.m_pNeeded_later;
+      pCI->Early.m_pNeeded_later = p_needed_save;
+
       pCI->vPopEach();
       break;
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     case CK_o_KEYNOTEXISTS:
+      if (pCI->pPeekPrev()->bIsCard(CK_o_PROJECT)) {
+        pCI->Early.m_pOP_leaf = pCI->E.p_Op;
+        pCI->vSnapIf_arriving();
+        break;
+      }
+
       pCI->vPushEach();
+      p_needed_save = pCI->Early.m_pNeeded_later->pClone();
       pCI->E.p_keyNotExists->vEarlyProject_recurse_add(pCI);
+      pCI->E.p_Op = pCI->E.p_keyNotExists;
+      pCI->E.p_keyNotExists->vRestate_emit(pCI);
+
+      delete pCI->Early.m_pNeeded_later;
+      pCI->Early.m_pNeeded_later = p_needed_save;
+
       pCI->vPopEach();
       break;
 
@@ -277,6 +305,18 @@ void XF_Optimise_Early_projection::vEarlyProject_backstep(CardIter* pCI)
       if (pCI->E.p_project->pSub_needed()) {
         pCI->vPushEach();
         pCI->E.p_project->vEarlyProject_recurse_needed(pCI);
+        RASSERT(pCI->Early.m_pOP_leaf);
+        RASSERT(pCI->E.p_project->pSymbol()->Y_bHas(P_Early));
+
+        if (! (pCI->E.p_needed = pCI->E.p_project->pSub_needed()))
+          return;
+
+        pCI->E.p_emit = pCI->E.p_project->pCraft_emit_early(pCI);
+
+        pCI->E.p_project->vAppendChild(pCI->E.p_emit);
+
+        pCI->vSnapIf_arriving(false);
+
         pCI->vPopEach();
       }
       else {
@@ -287,7 +327,8 @@ void XF_Optimise_Early_projection::vEarlyProject_backstep(CardIter* pCI)
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     case CK_o_SCAN:
       pCI->vPushEach();
-      pCI->E.p_scan->vEarlyProject_leaf(pCI);
+      pCI->Early.m_pOP_leaf = pCI->E.p_Op;
+      pCI->vSnapIf_arriving();
       pCI->vPopEach();
       break;
 
