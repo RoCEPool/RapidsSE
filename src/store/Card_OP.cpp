@@ -40,6 +40,108 @@ Card_OP::~Card_OP(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_OP::vEarlyProject_backstep(CardIter* pCI)
+{
+  _static_
+
+  RASSERT(pCI->Early.m_pNeeded_later);
+
+  //Card_OP* p_OP_leaf_maybe = pCI->G.p_Op;
+
+  if (!pCI->bEachOp_reverse())
+    return;
+
+  // which card did we arrive at?
+  switch (pCI->E.e_Op) {
+
+    // -- -- -- -- -- -- --
+    // don't go any further
+
+    case CK_o_GBYAGG:
+      pCI->Early.m_pOP_leaf = pCI->E.p_Op;
+      break;
+
+    case CK_o_ORDAGG:
+      pCI->Early.m_pOP_leaf = pCI->E.p_Op;
+      break;
+
+      // -- -- -- -- -- -- --
+      // recurse into...
+
+    case CK_o_CROSSJOIN:
+      pCI->vPushEach();
+      pCI->E.p_crossJoin->vEarlyProject_recurse_update(pCI);
+      pCI->vPopEach();
+      break;
+
+    case CK_o_FILTER:
+      pCI->vPushEach();
+      pCI->E.p_filter->vEarlyProject_recurse_update(pCI);
+      pCI->vPopEach();
+      break;
+
+    case CK_o_INDEXJOIN:
+      pCI->vPushEach();
+      pCI->E.p_indexJoin->vEarlyProject_recurse_add(pCI);
+      pCI->vPopEach();
+      break;
+
+    case CK_o_INDEXSCAN:
+      pCI->vPushEach();
+      pCI->E.p_indexScan->vEarlyProject_leaf(pCI);
+      pCI->vPopEach();
+      break;
+
+    case CK_o_KEYEXISTS:
+      pCI->vPushEach();
+      pCI->E.p_keyExists->vEarlyProject_recurse_add(pCI);
+      pCI->vPopEach();
+      break;
+
+    case CK_o_KEYNOTEXISTS:
+      pCI->vPushEach();
+      pCI->E.p_keyNotExists->vEarlyProject_recurse_add(pCI);
+      pCI->vPopEach();
+      break;
+
+    case CK_o_PROJECT:
+      if (pCI->E.p_project->pSub_needed()) {
+        pCI->vPushEach();
+        pCI->E.p_project->vEarlyProject_recurse_needed(pCI);
+        pCI->vPopEach();
+      }
+      else {
+        pCI->E.p_project->vEarlyProject_given_leaf(pCI);
+      }
+      break;
+
+    case CK_o_SCAN:
+      pCI->vPushEach();
+      pCI->E.p_scan->vEarlyProject_leaf(pCI);
+      pCI->vPopEach();
+      break;
+
+    case CK_o_WHERE:
+      pCI->vPushEach();
+      pCI->E.p_where->vEarlyProject_recurse_update(pCI);
+      pCI->vPopEach();
+      break;
+
+      // -- -- -- -- -- -- --
+      // missing??
+
+    default:
+      pCI->E.p_Op->vDump(__func__);
+      NEVER_REACH
+  }
+
+  RASSERT(pCI->Early.m_pOP_leaf);
+  vDebugPoint();
+}
+
+/*----------------------------------------------------------------------------*/
 /* test if eCard is a op                                                      */
 /*----------------------------------------------------------------------------*/
 bool Card_OP::bIsOp(eCK eCard)
@@ -144,107 +246,6 @@ void Card_OP::vCull_filter_IfEmpty(Card_Filter* p_filter)
 
   this->vRemoveChild(p_filter);
   DELETE_CARD(p_filter);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_OP::vEarlyProject_backstep(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  RASSERT(pCI->Early.m_pNeeded_later);
-
-  //Card_OP* p_OP_leaf_maybe = pCI->G.p_Op;
-
-  if (!pCI->bEachOp_reverse())
-    return;
-
-  // which card did we arrive at?
-  switch (pCI->E.e_Op) {
-
-    // -- -- -- -- -- -- --
-    // don't go any further
-
-    case CK_o_GBYAGG:
-      pCI->Early.m_pOP_leaf = pCI->E.p_Op;
-      break;
-
-    case CK_o_ORDAGG:
-      pCI->Early.m_pOP_leaf = pCI->E.p_Op;
-      break;
-
-    // -- -- -- -- -- -- --
-    // recurse into...
-
-    case CK_o_CROSSJOIN:
-      pCI->vPushEach();
-      pCI->E.p_crossJoin->vEarlyProject_recurse_update(pCI);
-      pCI->vPopEach();
-      break;
-
-    case CK_o_FILTER:
-      pCI->vPushEach();
-      pCI->E.p_filter->vEarlyProject_recurse_update(pCI);
-      pCI->vPopEach();
-      break;
-
-    case CK_o_INDEXJOIN:
-      pCI->vPushEach();
-      pCI->E.p_indexJoin->vEarlyProject_recurse_add(pCI);
-      pCI->vPopEach();
-      break;
-
-    case CK_o_INDEXSCAN:
-      pCI->vPushEach();
-      pCI->E.p_indexScan->vEarlyProject_leaf(pCI);
-      pCI->vPopEach();
-      break;
-
-    case CK_o_KEYEXISTS:
-      pCI->vPushEach();
-      pCI->E.p_keyExists->vEarlyProject_recurse_add(pCI);
-      pCI->vPopEach();
-      break;
-
-    case CK_o_KEYNOTEXISTS:
-      pCI->vPushEach();
-      pCI->E.p_keyNotExists->vEarlyProject_recurse_add(pCI);
-      pCI->vPopEach();
-      break;
-
-    case CK_o_PROJECT:
-      if (pCI->E.p_project->pSub_needed()) {
-        pCI->vPushEach();
-        pCI->E.p_project->vEarlyProject_recurse_needed(pCI);
-        pCI->vPopEach();
-      }
-      else {
-        pCI->E.p_project->vEarlyProject_given_leaf(pCI);
-      }
-      break;
-
-    case CK_o_SCAN:
-      pCI->vPushEach();
-      pCI->E.p_scan->vEarlyProject_leaf(pCI);
-      pCI->vPopEach();
-      break;
-
-    case CK_o_WHERE:
-      pCI->vPushEach();
-      pCI->E.p_where->vEarlyProject_recurse_update(pCI);
-      pCI->vPopEach();
-      break;
-
-    // -- -- -- -- -- -- --
-    // missing??
-
-    default:
-      pCI->E.p_Op->vDump(__func__);
-      NEVER_REACH
-  }
-
-  vDebugPoint();
 }
 
 /*----------------------------------------------------------------------------*/
