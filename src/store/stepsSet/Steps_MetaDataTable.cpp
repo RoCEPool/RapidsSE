@@ -26,8 +26,10 @@
 #include "Stream.hpp"
 #include "Grid.hpp"
 #include "CmdLineArgs.hpp"
+#include "AttachMap.hpp"
 
 extern CmdLineArgs  gxCmdLineArgs;
+extern AttachMap*   gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -43,7 +45,11 @@ void Step::vAddSteps_MetaDataTable(void)
   vAddStep("MetaDataTable[].queries"_Stz,       &Step::vMetaDataTableQueries);
   vAddStep("MetaDataTable[].schema"_Stz,        &Step::vMetaDataTableSchema);
   vAddStep("MetaDataTable[].sessions"_Stz,      &Step::vMetaDataTableSessions);
-  vAddStep("MetaDataTable[].tables"_Stz,         &Step::vMetaDataTableTables);
+  vAddStep("MetaDataTable[].tables"_Stz,        &Step::vMetaDataTableTables);
+
+
+  vAddStep("MetaDataTable[].insertTables"_Stz,  &Step::vMetaDataTableTablesInsert);
+  vAddStep("MetaDataTable[].setAM"_Stz,  &Step::vMetaDataTableSetAM);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -666,6 +672,88 @@ void Step::vMetaDataTableTables(void)
     AM::OP::vPipeToNextOp(m_pOp,pOperand,this);
   } else
     delete(pPdsRowBuffer);
+
+  EXIT();
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* MetaDataTable[].insertTables --                                            */
+/*----------------------------------------------------------------------------*/
+void Step::vMetaDataTableTablesInsert(void)
+{
+  ENTRY();
+
+  typedef struct {
+    i8 iKey;
+    BufferId oBufferId;
+  } PdsBufferIdItem;
+
+  s256 szTableNm;
+  m_pDataStack->vPopStr(szTableNm,__func__);
+
+  Table* pTable = AM::pMetaDataTableOfTables();
+  if(!pTable) {
+    EXIT();
+    return;
+  }
+  StreamDef* pStreamDef = pTable->pStreamDef();
+  TablePtn* pTablePtn = pTable->pTablePtn(0);
+  Pds* pPdsRootBuffer = _pPds(
+                      AM::pHashMap()->pValueAt(
+                          pTablePtn->oRootBufferId().m_pvAsAddress, true
+                          ));
+
+  Pds* pPdsRowBuffer = nullptr;
+  bool bAppend = false;
+  if(pPdsRootBuffer->nItems() == 0) {
+    pPdsRowBuffer = new Pds(pStreamDef, false, BT_DATA);
+    bAppend = true;
+  } else {
+    i8 iSearchKey = C_INT_MAX;
+    SkipListBlock* pHead =pPdsRootBuffer->pFindLessThan((void*) &iSearchKey);
+    if(pHead != nullptr) {
+      // If the block is not null, extract the keys and values
+      PdsBufferIdItem* pBufferIdStruct = (PdsBufferIdItem*) pHead->aItem();
+
+      HashMapEntry* pEntry = AM::pHashMap()->pEntryAt(pBufferIdStruct->oBufferId.m_pvAsAddress);
+
+      pPdsRowBuffer = _pPds(pEntry->m_pValObject);
+    } else {
+      pPdsRowBuffer = new Pds(pStreamDef, false, BT_DATA);
+      bAppend = true;
+    }
+  }
+
+  Row* pRow = pPdsRowBuffer->pAllotRow(C_VARGS_BEGIN,
+                                       "rapids"_Stz,
+                                       "public"_Stz,
+                                       szTableNm.szStz(),
+                                       C_VARGS_END);
+
+  if(!pRow) {
+    ASSERT(0);
+  }
+
+  if(bAppend) {
+    i8 nRows = 0;
+    pTablePtn->vAppendBuffer(pPdsRowBuffer, nRows);
+  }
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* MetaDataTable[].setAM --                                                   */
+/*----------------------------------------------------------------------------*/
+void Step::vMetaDataTableSetAM(void)
+{
+  ENTRY();
+
+  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__ ));
+
+  if(pTable->bIsMetaDataTable())
+    AM::ATTACHMAP::vMetaDataTables(pTable);
 
   EXIT();
 }

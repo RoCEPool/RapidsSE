@@ -254,6 +254,7 @@ namespace OBLIQUE
       static i8 iCmdNoNext(void);
       static void vSysMetricsAdd(SysMetrics* pSysMetrics);
       static SysMetrics* pSysMetricsChain(void);
+      static void vMetaDataTables(Table* pTable);
     };
 
     class DIC
@@ -777,6 +778,7 @@ namespace OBLIQUE
     static i8   nLvlLevels(void);
     static i8   iLvlRatio(void);
     static bool bMetadata(void);
+    static Table* pMetaDataTableOfTables(void);
   
     static i8   iNextEpoch(void);
     static i8   iNextTxId(void);

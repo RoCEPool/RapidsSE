@@ -109,6 +109,8 @@ AttachMap::AttachMap(bool bNoFree)
   Step::vAddStep("rootConstant"_Stz,nullptr);
   AM::vRootConstant(m_pDicRoot->pFindWord("rootConstant"_Stz));
   AM::pConstantRoot()->vCategoryEnum(WC_ROOTCONSTANT);
+
+  m_mdTables = nullptr;
   
 
   _checkInitialised_(CN_ATTACHMAP);

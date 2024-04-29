@@ -1193,6 +1193,8 @@ void vJobIdLastJobIdFetch(void);
   void vMetaDataTableSchema(void);
   void vMetaDataTableSessions(void);
   void vMetaDataTableTables(void);
+  void vMetaDataTableTablesInsert(void);
+  void vMetaDataTableSetAM(void);
 
   // ErrorMarker[]
   void vErrorMarkerDelete(void);

@@ -73,6 +73,12 @@ Table::Table(Stz* szTableNm, eTT eKind)
   
   m_sTableNm = szTableNm;
   m_eKind    = eKind;
+  m_eMetaDataKind = MD_NONE;
+  if(m_eKind == TT_METADATA) {
+    if(szTableNm->bSame("tableOfTables"_Stz)) {
+      m_eMetaDataKind = MD_TABLES;
+    }
+  }
   m_sTableStep = "";
   
   m_oLocation.vSet();
@@ -185,7 +191,10 @@ Table* Table::pFindTable(DicStack* pDicStack, Stz* szTableNm)
   Word* pTableDicWord = pDic->pFindWord(szTableNm);
   if (! pTableDicWord )
     return nullptr;
-  
+
+  if(pTableDicWord->eCategoryEnum() == WC_TABLE)
+    return nullptr;
+
   Dic* pTableDic = _pDic(pTableDicWord->pObject());
   
   Word* pTableWord = pTableDic->pFindWord(szTableNm);
@@ -641,6 +650,17 @@ EntBuffer* Table::pRootBuffer(i8 i_TablePtn, i8 i_Index)
   EntBuffer* pRootBuffer = pIdxTree->pRootBuffer();
   
   return pRootBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get root buffer of given index                                             */
+/*----------------------------------------------------------------------------*/
+eMD Table::eMetaDataKind(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+
+  ASSERT(m_eKind == TT_METADATA);
+  return m_eMetaDataKind;
 }
 
 /*----------------------------------------------------------------------------*/

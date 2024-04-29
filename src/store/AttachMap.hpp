@@ -112,6 +112,8 @@ namespace STORE
     JobId         m_tWakerDemonJobId;
     JobId         m_tSuperDemonJobId;
 
+    Table*        m_mdTables;
+
     // must be last
     Footer m_xFooter;
     

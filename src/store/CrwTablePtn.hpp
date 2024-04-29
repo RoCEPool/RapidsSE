@@ -35,6 +35,7 @@ namespace STORE
 
     void vAnalyze(i8& nBuffers, i8& nRows, i8& jSumRowBytes);
     void vAppendBuffer(CrwBuffer* pCrwBuffer);
+    void vAppendBuffer(Pds* pPds);
     i8   nBuffers(void);
     void vCleanup(void);
     void vDropAllPagingLocks(void);

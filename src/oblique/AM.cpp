@@ -173,6 +173,25 @@ SysMetrics* AM::ATTACHMAP::pSysMetricsChain(void)
   return pSysMetricsChain;
 }
 
+/*----------------------------------------------------------------------------*/
+/* get sys metrics chain from attach map                                      */
+/*----------------------------------------------------------------------------*/
+void AM::ATTACHMAP::vMetaDataTables(Table* pTable)
+{
+  _static_
+
+  eMD eMetaDataKind = pTable->eMetaDataKind();
+  switch(eMetaDataKind) {
+    case MD_TABLES: {
+      gpAttachMap->m_mdTables = pTable;
+      break;
+    }
+    default: {
+      break;
+    }
+  }
+}
+
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*                                   DIC                                      */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
@@ -3704,6 +3723,7 @@ i8   AM::iResidentSize(void)  { return Process::iResidentSize();  };
 
 bool AM::bProgress(void)      { return gpAttachMap->m_xSysArgs.m_bProgress;              }
 bool AM::bMetadata(void)      { return gpAttachMap->m_xSysArgs.m_bMetadata;          }
+Table* AM::pMetaDataTableOfTables(void)      { return gpAttachMap->m_mdTables;          }
 
 i8   AM::iNextTxId(void)      { return gpAttachMap->m_pTxSet->iNextTxId();    }
 

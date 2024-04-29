@@ -217,8 +217,9 @@ void TablePtn::vAppendBuffer(DataBuffer* pDataBuffer, i8& nRowsInserted)
   // append buffer first, then
   // insert entries from the buffer into the indexes
 
-  switch (m_eKind) {
-    case CN_CRWTABLEPTN: {
+  eCN eClass = pDataBuffer->eGetClassNo();
+  switch (eClass) {
+    case BASE::CN_CRWBUFFER: {
       CrwBuffer *pCrwBuffer = _pCrwBuffer(pDataBuffer);
       if (pCrwBuffer->nRows() == 0) {
         delete pCrwBuffer;
@@ -228,6 +229,17 @@ void TablePtn::vAppendBuffer(DataBuffer* pDataBuffer, i8& nRowsInserted)
       nRowsInserted = pCrwBuffer->nRows();
       // TODO: Arjun - Update below for paging and bufferids
       vInsertIndexEntries(_pCrwBuffer(pDataBuffer));
+      break;
+    }
+
+    case CN_PDS: {
+      Pds* pPds = _pPds(pDataBuffer);
+      if (pPds->nItems() == 0) {
+        delete pPds;
+        return;
+      }
+      m_pCrwTablePtn->vAppendBuffer(pPds);
+      nRowsInserted = pPds->nItems();
       break;
     }
 
