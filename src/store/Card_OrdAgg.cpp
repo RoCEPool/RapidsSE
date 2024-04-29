@@ -45,7 +45,7 @@ Card_OrdAgg::~Card_OrdAgg(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* early project                                                              */
 /*----------------------------------------------------------------------------*/
-void Card_OrdAgg::vEarlyProject_root(CardIter* pCI)
+bool Card_OrdAgg::bEarlyProject_root(CardIter* pCI)
 {
   vDump(__func__);
 
@@ -56,7 +56,7 @@ void Card_OrdAgg::vEarlyProject_root(CardIter* pCI)
   RASSERT(! pCI->Early.m_pNeeded_later);
 
   if (pCI->pPeekPrev()->bIsCard(CK_o_PROJECT))
-    return;
+    return false;
 
   pCI->E.p_key = pSub_key();
   pCI->E.p_emit = pSub_emit();
@@ -80,6 +80,8 @@ void Card_OrdAgg::vEarlyProject_root(CardIter* pCI)
   pCI->E.p_ordAgg->vRestate_emit(pCI);
 
  // pCI->PRINTBOARD_dbg();
+
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/

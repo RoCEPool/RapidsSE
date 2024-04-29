@@ -61,7 +61,7 @@ void Card_GbyAgg::vDerive_streamKey(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* early project                                                              */
 /*----------------------------------------------------------------------------*/
-void Card_GbyAgg::vEarlyProject_root(CardIter* pCI)
+bool Card_GbyAgg::bEarlyProject_root(CardIter* pCI)
 {
   //vDump(0,(Stz*)__func__);
 
@@ -81,7 +81,7 @@ void Card_GbyAgg::vEarlyProject_root(CardIter* pCI)
     pCI->vSnapIf_arriving();
 
    // pCI->PRINTBOARD_dbg();
-    return;
+    return false;
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -110,6 +110,8 @@ void Card_GbyAgg::vEarlyProject_root(CardIter* pCI)
   pCI->E.p_gbyAgg->vRestate_emit(pCI);
 
  // pCI->PRINTBOARD_dbg();
+
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/

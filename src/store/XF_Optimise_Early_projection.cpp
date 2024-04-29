@@ -102,24 +102,49 @@ bool XF_Optimise_Early_projection::bOptimise(void)
 
       // -- -- -- -- -- -- --
       case CK_o_AGGREG:
-        m_pCI->E.p_aggreg->vEarlyProject_root(m_pCI);
+        if (m_pCI->E.p_aggreg->bEarlyProject_root(m_pCI)) {
+
+        }
+        else {
+
+        }
         break;
 
       case CK_o_GBYAGG:
-        m_pCI->E.p_gbyAgg->vEarlyProject_root(m_pCI);
+        if (m_pCI->E.p_gbyAgg->bEarlyProject_root(m_pCI)) {
+
+        }
+        else {
+
+        }
         break;
 
       case CK_o_ORDAGG:
-        m_pCI->E.p_ordAgg->vEarlyProject_root(m_pCI);
+        if (m_pCI->E.p_ordAgg->bEarlyProject_root(m_pCI)) {
+
+        }
+        else {
+
+        }
         break;
 
         // -- -- -- -- -- -- --
       case CK_o_PROJECT:
-        m_pCI->E.p_project->vEarlyProject_root(m_pCI);
+        if (m_pCI->E.p_project->bEarlyProject_root(m_pCI)) {
+
+        }
+        else {
+
+        }
         break;
 
       case CK_o_INDEXJOIN:
-        m_pCI->E.p_indexJoin->vEarlyProject_root(m_pCI);
+        if (m_pCI->E.p_indexJoin->bEarlyProject_root(m_pCI)) {
+
+        }
+        else {
+
+        }
         break;
 
         // -- -- -- -- -- -- --

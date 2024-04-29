@@ -229,7 +229,7 @@ void Card_Project::vEarlyProject_recurse_needed(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* early project                                                              */
 /*----------------------------------------------------------------------------*/
-void Card_Project::vEarlyProject_root(CardIter* pCI)
+bool Card_Project::bEarlyProject_root(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -263,6 +263,8 @@ void Card_Project::vEarlyProject_root(CardIter* pCI)
   RASSERT(! pCI->E.p_project->pSymbol()->Y_bHas(P_Early));
 
   pCI->E.p_Op->vRestate_emit(pCI);
+
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/

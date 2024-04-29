@@ -197,7 +197,7 @@ void Card_IndexJoin::vEarlyProject_add_transients(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* early project                                                              */
 /*----------------------------------------------------------------------------*/
-void Card_IndexJoin::vEarlyProject_root(CardIter* pCI)
+bool Card_IndexJoin::bEarlyProject_root(CardIter* pCI)
 {
   //vDump(0,(Stz*)__func__);
 
@@ -208,7 +208,7 @@ void Card_IndexJoin::vEarlyProject_root(CardIter* pCI)
   RASSERT(! pCI->Early.m_pNeeded_later);
 
   if (pCI->pPeekPrev()->bIsCard(CK_o_PROJECT))
-    return;
+    return false;
 
   pCI->E.p_key = pSub_key();
   pCI->E.p_emit = pSub_emit();
@@ -232,6 +232,8 @@ void Card_IndexJoin::vEarlyProject_root(CardIter* pCI)
   pCI->E.p_indexJoin->vRestate_emit(pCI);
 
  // pCI->PRINTBOARD_dbg();
+
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/

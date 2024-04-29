@@ -20,7 +20,7 @@ namespace STORE
 
     void vDerive_streamKey(CardIter* pCI);
 
-    void vEarlyProject_root(CardIter* pCI);
+    bool bEarlyProject_root(CardIter* pCI);
     void vCraft_needed_root(CardIter* pCI);
 
     void vInject_foldExpr(CardIter* pCI);

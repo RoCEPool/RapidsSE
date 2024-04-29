@@ -56,7 +56,7 @@ void Card_Aggreg::vDerive_streamKey(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* early project                                                              */
 /*----------------------------------------------------------------------------*/
-void Card_Aggreg::vEarlyProject_root(CardIter* pCI)
+bool Card_Aggreg::bEarlyProject_root(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -72,7 +72,7 @@ void Card_Aggreg::vEarlyProject_root(CardIter* pCI)
   if (0 == pCI->Early.m_pNeeded_later->nChildCards()) {
     DELETE_CARD(pCI->Early.m_pNeeded_later);
     pCI->Early.m_pOP_leaf = this;
-    return;
+    return false;
   }
 
   // insert empty early projection (has only needed) before this ordAgg
@@ -89,6 +89,8 @@ void Card_Aggreg::vEarlyProject_root(CardIter* pCI)
   pCI->E.p_aggreg->vRestate_emit(pCI);
 
  // pCI->PRINTBOARD_dbg();
+
+ return true;
 }
 
 /*----------------------------------------------------------------------------*/

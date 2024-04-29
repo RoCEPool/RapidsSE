@@ -26,7 +26,7 @@ namespace STORE
 
     void vEarlyProject_given_leaf(CardIter* pCI);
     void vEarlyProject_recurse_needed(CardIter* pCI);
-    void vEarlyProject_root(CardIter* pCI);
+    bool bEarlyProject_root(CardIter* pCI);
     void vCraft_needed_root(CardIter* pCI);
 
     void vSmooth_postAgg(CardIter* pCI);
