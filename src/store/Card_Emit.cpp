@@ -90,7 +90,7 @@ Card_Needed* Card_Emit::pCraftRoot_needed(CardIter* pCI)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   // this projection will be in an aggreg, gbyAgg or ordAgg
-  RASSERT(((Card_OP*)pCI->E.p_Op)->bIsEarlyRoot());
+  RASSERT(pCI->E.p_Op->bIsEarlyRoot());
 
   if (8 == pCI->m_pBench->iBenchNo() && 54 == pCI->m_pBench->nPrintBoard()) {
 //    pCI->E.p_Op->vDump(__func__);
@@ -193,7 +193,7 @@ Card_Needed* Card_Emit::pCraft_needed_root(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  RASSERT(((Card_OP*)pCI->E.p_Op)->bIsEarlyRoot());
+  RASSERT(pCI->E.p_Op->bIsEarlyRoot());
 
   if (8 == pCI->m_pBench->iBenchNo() && 56 == pCI->m_pBench->nPrintBoard()) {
     pCI->E.p_Op->vDump(__func__);

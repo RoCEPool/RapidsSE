@@ -67,19 +67,19 @@ void XF_Epilog_Map_Columns::vMap_Columns(void)
   m_pCI->vClearRegisters();
   m_pCI->vBeginEach();
   while (m_pCI->bEachOp(CK_o_GBYAGG)) {
-    ((Card_OP*)m_pCI->E.p_Op)->vMapColumns(m_pCI);
+    m_pCI->E.p_Op->vMapColumns(m_pCI);
   }
 
   m_pCI->vClearRegisters();
   m_pCI->vBeginEach();
   while (m_pCI->bEachOp(CK_o_SORT)) {
-    ((Card_OP*)m_pCI->E.p_Op)->vMapColumns(m_pCI);
+    m_pCI->E.p_Op->vMapColumns(m_pCI);
   }
 
   m_pCI->vClearRegisters();
   m_pCI->vBeginEach();
     while (m_pCI->bEachOp(CK_o_TOP)) {
-    ((Card_OP*)m_pCI->E.p_Op)->vMapColumns(m_pCI);
+    m_pCI->E.p_Op->vMapColumns(m_pCI);
   }
 
   m_pCI->vEndTransform(__LINE__);

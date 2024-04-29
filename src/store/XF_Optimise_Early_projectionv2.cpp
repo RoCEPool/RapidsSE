@@ -130,7 +130,7 @@ bool XF_Optimise_Early_projectionv2::bEarly_needed_OP(void)
       break;
   }
 
-  if (((Card_OP*)m_pCI->E.p_Op)->bIsEarlyRoot()) {
+  if (m_pCI->E.p_Op->bIsEarlyRoot()) {
 
     m_pCI->E.p_emit = m_pCI->E.p_Op->pSub_emit();
     m_pCI->E.p_key  = m_pCI->E.p_Op->pSub_key();

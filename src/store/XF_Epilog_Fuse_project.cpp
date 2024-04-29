@@ -82,7 +82,7 @@ void XF_Epilog_Fuse_project::vFuse_project(void)
       goto L_UPDATE_PRIOR_EMITTED;
     }
 
-    ((Card_OP*)m_pCI->E.p_Op)->vFuse_project_Viable(m_pCI);
+    m_pCI->E.p_Op->vFuse_project_Viable(m_pCI);
     m_pCI->E.p_deck->vDeleteChild(m_pCI->Next.m_pProject);
     m_pCI->E.p_Op->pSymbol()->Y_vSet(P_FusedProject);
 

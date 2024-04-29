@@ -56,7 +56,7 @@ void Card_Filter::vDeleteEmptyFilters(CardIter* pCI) {
 
   while (pCI->bEachOp()) {
     if ((pCI->E.p_filter = pCI->E.p_Op->pSub_filter()))
-      ((Card_OP*)pCI->E.p_Op)->vCull_filter_IfEmpty(pCI->E.p_filter);
+      pCI->E.p_Op->vCull_filter_IfEmpty(pCI->E.p_filter);
   }
 }
 
@@ -145,7 +145,7 @@ void Card_Filter::vEarlyProject_recurse_update(CardIter* pCI)
 
  // pCI->PRINTBOARD_dbg();
 
-  ((Card_OP*)pCI->E.p_Op)->vRestate_emit(pCI);
+  pCI->E.p_Op->vRestate_emit(pCI);
 
   //pCI->PRINTBOARD_dbg();
 

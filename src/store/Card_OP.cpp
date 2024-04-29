@@ -211,11 +211,11 @@ void Card_OP::vEarlyProject_backstep(CardIter* pCI)
     // don't go any further
 
     case CK_o_GBYAGG:
-      pCI->Early.m_pOP_leaf = (Card_OP*)pCI->E.p_Op;
+      pCI->Early.m_pOP_leaf = pCI->E.p_Op;
       break;
 
     case CK_o_ORDAGG:
-      pCI->Early.m_pOP_leaf = (Card_OP*)pCI->E.p_Op;
+      pCI->Early.m_pOP_leaf = pCI->E.p_Op;
       break;
 
     // -- -- -- -- -- -- --

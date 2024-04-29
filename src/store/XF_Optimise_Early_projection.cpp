@@ -94,7 +94,7 @@ bool XF_Optimise_Early_projection::bOptimise(void)
 
     while (m_pCI->bEachOp_reverse()) {
       if (Card_OP::bIsOp(m_pCI->E.p_Op->eCard()) &&
-          ((Card_OP*)m_pCI->E.p_Op)->bIsEarlyRoot()) {
+          m_pCI->E.p_Op->bIsEarlyRoot()) {
         bEarlyRoot = true;
         break;
       }
@@ -102,7 +102,7 @@ bool XF_Optimise_Early_projection::bOptimise(void)
     if (! bEarlyRoot)
       break;
 
-    ((Card_OP*)m_pCI->E.p_Op)->vEarlyProject_root(m_pCI);
+    m_pCI->E.p_Op->vEarlyProject_root(m_pCI);
 
     if (m_pCI->Early.m_pNeeded_later) {
       DELETE_CARD(m_pCI->Early.m_pNeeded_later);
@@ -184,7 +184,7 @@ bool XF_Optimise_Early_projection::bEarly_needed_OP(void)
       break;
   }
 
-  if (((Card_OP*)m_pCI->E.p_Op)->bIsEarlyRoot()) {
+  if (m_pCI->E.p_Op->bIsEarlyRoot()) {
 
     m_pCI->E.p_emit = m_pCI->E.p_Op->pSub_emit();
     m_pCI->E.p_key  = m_pCI->E.p_Op->pSub_key();

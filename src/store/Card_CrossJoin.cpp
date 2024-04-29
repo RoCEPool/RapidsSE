@@ -97,7 +97,7 @@ void Card_CrossJoin::vEarlyProject_recurse_update(CardIter* pCI)
 
  // pCI->PRINTBOARD_dbg();
 
-  ((Card_OP*)pCI->E.p_Op)->vRestate_emit(pCI);
+  pCI->E.p_Op->vRestate_emit(pCI);
 
   // pCI->PRINTBOARD_dbg();
 

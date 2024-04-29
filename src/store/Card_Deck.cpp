@@ -79,14 +79,14 @@ void Card_Deck::vAddStageCasts(CardIter* pCI)
                                                               p_project_prior,
                                                               p_cast_prior,
                                                               p_arriving,
-                                                              (Card_OP*)pCI->E.p_Op);
+                                                              pCI->E.p_Op);
         UNUSED(eStageCast);
         pCI->vRepositionOp();
        // pCI->PRINTBOARD_dbg();
         vDebugPoint();
       }
 
-      p_OP_prev = (Card_OP*)pCI->E.p_Op;
+      p_OP_prev = pCI->E.p_Op;
       p_project_prior  = nullptr;
       p_cast_prior     = nullptr;
     }
