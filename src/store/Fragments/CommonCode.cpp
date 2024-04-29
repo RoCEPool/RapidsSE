@@ -410,7 +410,7 @@ i8 vIndexDefContinue(Dynamic_T* aDynamicT) {
   i8 __INDEX_COLUMNS__;
   i8 CURRENT_DUP_OP;
 
-  IndexInfo __INDEX_INFO__[CURRENT_DUP_OP];
+  IndexInfo __INDEX_INFO__[C_MAX_DUP_OPS];
 
   {
     // marker-start

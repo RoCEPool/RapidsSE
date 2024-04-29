@@ -28,7 +28,7 @@ void vIndexScanBegin(Dynamic_T* aDynamicT) {
   i8 CURRENT_DUP_OP;
 
   char* __INDEXNAME__;
-  IndexInfo __INDEX_INFO__[CURRENT_DUP_OP];
+  IndexInfo __INDEX_INFO__[C_MAX_DUP_OPS];
 	RowInfo __ROW_INFO_TO__[C_MAX_DUP_OPS];
 
 	char* szStrArea;

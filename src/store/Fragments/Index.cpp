@@ -31,8 +31,8 @@ void vIndexDereferenceLB(Dynamic_T* aDynamicT) {
   i8 CURRENT_DUP_OP;
   char* aIndexCrw;
 
-  IndexInfo __INDEX_INFO__[CURRENT_DUP_OP];
-  RowInfo   __ROW_INFO_TO__[CURRENT_DUP_OP];
+  IndexInfo __INDEX_INFO__[C_MAX_DUP_OPS];
+  RowInfo   __ROW_INFO_TO__[C_MAX_DUP_OPS];
   i8 __COLUMNS_TO_INFLATE_;
   i8 __COLUMNS_INFLATED__;
 
@@ -92,8 +92,8 @@ void vIndexDereferenceUB(Dynamic_T* aDynamicT) {
   i8 CURRENT_DUP_OP;
   char* aIndexCrw;
 
-  IndexInfo __INDEX_INFO__[CURRENT_DUP_OP];
-  RowInfo   __ROW_INFO_TO__[CURRENT_DUP_OP];
+  IndexInfo __INDEX_INFO__[C_MAX_DUP_OPS];
+  RowInfo   __ROW_INFO_TO__[C_MAX_DUP_OPS];
   i8 __COLUMNS_TO_INFLATE_;
   i8 __COLUMNS_INFLATED__;
 
@@ -146,7 +146,7 @@ void vIndexDereferenceUB(Dynamic_T* aDynamicT) {
 void vIndexPositionBegin(Dynamic_T* aDynamicT) {
 
   i8 CURRENT_DUP_OP;
-  IndexInfo __INDEX_INFO__[CURRENT_DUP_OP];
+  IndexInfo __INDEX_INFO__[C_MAX_DUP_OPS];
 
   // marker-start
 
@@ -178,9 +178,7 @@ void vIndexPositionLower(Dynamic_T* aDynamicT) {
 
 #ifdef WITH_CLANG
   // position at lower bound
-	__INDEX_POSITION_LOWER__(&__INDEX_INFO__);
-  //__INDEX_INFO__.m_aEntInt =  (struct Ent_int *)__INDEX_POSITION_LOWER__(
-  //    &__INDEX_INFO__);
+	__INDEX_POSITION_LOWER__(&__INDEX_INFO__[CURRENT_DUP_OP]);
 #endif
 
   // marker-end
@@ -196,11 +194,12 @@ void vIndexPositionLower(Dynamic_T* aDynamicT) {
 // function-vIndexScanContinue
 void vIndexScanContinue(Dynamic_T* aDynamicT) {
 
-  IndexInfo __INDEX_INFO__;
+  i8 CURRENT_DUP_OP;
+  IndexInfo __INDEX_INFO__[C_MAX_DUP_OPS];
 
   // marker-start
 
-  if ( ! __INDEX_INFO__.m_aEntInt )
+  if ( ! __INDEX_INFO__[CURRENT_DUP_OP].m_aEntInt )
     goto L_Return;
 
   // marker-end
@@ -238,12 +237,13 @@ void vIndexPositionUpper(Dynamic_T* aDynamicT) {
 // function-vIndexCheckUpper
 void vIndexCheckUpper(Dynamic_T* aDynamicT) {
 
-  IndexInfo __INDEX_INFO__;
+  i8 CURRENT_DUP_OP;
+  IndexInfo __INDEX_INFO__[C_MAX_DUP_OPS];
 
   // marker-start
 
   // reached upper bound ?
-  if (__INDEX_INFO__.m_aEntInt == __INDEX_INFO__.m_aEntUpper) {
+  if (__INDEX_INFO__[CURRENT_DUP_OP].m_aEntInt == __INDEX_INFO__[CURRENT_DUP_OP].m_aEntUpper) {
     goto L_Return;
   }
 

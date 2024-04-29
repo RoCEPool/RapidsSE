@@ -181,8 +181,8 @@ void vIndexJoinDereference(Dynamic_T* aDynamicT) {
   i8 CURRENT_DUP_OP;
   char* aIndexCrw;
 
-  IndexInfo __INDEX_INFO__[CURRENT_DUP_OP];
-  RowInfo   __ROW_INFO_TO__[CURRENT_DUP_OP];
+  IndexInfo __INDEX_INFO__[C_MAX_DUP_OPS];
+  RowInfo   __ROW_INFO_TO__[C_MAX_DUP_OPS];
   i8 __COLUMNS_TO_INFLATE_;
   i8 __COLUMNS_INFLATED__;
 
@@ -240,8 +240,6 @@ void vIndexJoinPosition_gen(Dynamic_T* aDynamicT) {
   // position at lower bound
 	__INDEX_POSITION_LOWER__(
       &__INDEX_INFO__[CURRENT_DUP_OP]);
-  //__INDEX_INFO__.m_aEntInt =  (struct Ent_int *)__INDEX_POSITION_LOWER__(
-  //    &__INDEX_INFO__);
 #endif
 
   // did we find the entry ?
@@ -289,8 +287,6 @@ void vIndexJoinPosition_int(Dynamic_T* aDynamicT) {
 	// position at lower bound
 	__INDEX_POSITION_LOWER__(
       &__INDEX_INFO__[CURRENT_DUP_OP]);
-  //__INDEX_INFO__.m_aEntInt =  (struct Ent_int *)__INDEX_POSITION_LOWER__(
-  //    &__INDEX_INFO__);
 #endif
 
 	// did we find the entry ?
@@ -338,8 +334,6 @@ void vIndexAntiJoinPosition_gen(Dynamic_T* aDynamicT) {
 	// position at lower bound
 	__INDEX_POSITION_LOWER__(
       &__INDEX_INFO__[CURRENT_DUP_OP]);
-  //__INDEX_INFO__.m_aEntInt =  (struct Ent_int *)__INDEX_POSITION_LOWER__(
-  //    &__INDEX_INFO__);
 #endif
 
 	// did we find the entry ?
@@ -387,8 +381,6 @@ void vIndexAntiJoinPosition_int(Dynamic_T* aDynamicT) {
 	// position at lower bound
 	__INDEX_POSITION_LOWER__(
       &__INDEX_INFO__[CURRENT_DUP_OP]);
-  //__INDEX_INFO__.m_aEntInt =  (struct Ent_int *)__INDEX_POSITION_LOWER__(
-  //    &__INDEX_INFO__);
 #endif
 
 	// did we find the entry ?
@@ -430,7 +422,7 @@ void vIndexJoinReturn(Dynamic_T* aDynamicT) {
 
   i8 CURRENT_DUP_OP;
 
-  IndexInfo __INDEX_INFO__[CURRENT_DUP_OP];
+  IndexInfo __INDEX_INFO__[C_MAX_DUP_OPS];
   RowInfo __ROW_INFO_TO__[C_MAX_DUP_OPS];
 
   bool bLeftOuterRow;
@@ -695,8 +687,6 @@ void vIndexLeftOuterJoinPosition_gen(Dynamic_T* aDynamicT) {
   // position at lower bound
 __INDEX_POSITION_LOWER__(
       &__INDEX_INFO__[CURRENT_DUP_OP]);
-  //__INDEX_INFO__.m_aEntInt =  (struct Ent_int *)__INDEX_POSITION_LOWER__(
-  //    &__INDEX_INFO__);
 #endif
 
   // did we find the entry ?
@@ -745,8 +735,6 @@ void vIndexLeftOuterJoinPosition_int(Dynamic_T* aDynamicT) {
   // position at lower bound
 __INDEX_POSITION_LOWER__(
       &__INDEX_INFO__[CURRENT_DUP_OP]);
-  //__INDEX_INFO__.m_aEntInt =  (struct Ent_int *)__INDEX_POSITION_LOWER__(
-  //    &__INDEX_INFO__);
 #endif
 
 	// did we find the entry ?
