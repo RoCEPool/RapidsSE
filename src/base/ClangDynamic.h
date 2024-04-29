@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-#define C_MAX_DUP_OPS 6
+#define C_MAX_DUP_OPS 4
 
 struct ColumnInfo {
   i8    m_iColumnNo;      // this columns subscript

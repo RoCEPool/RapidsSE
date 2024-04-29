@@ -632,6 +632,7 @@ OpSketch* Stencil::pSketchIndexJoin(StageDef* pStageDef, OpDef* pOpDef)
 
   // get the sketchCount of same Op
   i8 iOpSketchCount = m_iOpSketchCount[SK_INDEXJOIN]++;
+  RASSERT(iOpSketchCount < C_MAX_DUP_OPS);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the code for the join
@@ -726,6 +727,7 @@ OpSketch* Stencil::pSketchIndexScan(StageDef* pStageDef, OpDef* pOpDef)
 
   // get the sketchCount of same Op
   i8 iOpSketchCount = m_iOpSketchCount[SK_INDEXSCAN]++;
+  RASSERT(iOpSketchCount < C_MAX_DUP_OPS);
 
   // create a new opSketch for this OP
   pOpSketch = new OpSketch(pStageDef, sIndexScanExpr, m_eHandlerKind, SK_INDEXSCAN, SR_NONE, SR_IT, II_ST);
@@ -783,6 +785,7 @@ OpSketch* Stencil::pSketchInflateCrw(StageDef* pStageDef, OpDef* pOpDef) {
 
   // get the sketchCount of same Op
   i8 iOpSketchCount = m_iOpSketchCount[SK_INFLATE_CRW]++;
+  RASSERT(iOpSketchCount < C_MAX_DUP_OPS);
 
   // create a new opSketch for this OP
   pOpSketch = new OpSketch(pStageDef, ""_Stz, m_eHandlerKind, SK_INFLATE_CRW, SR_NONE, SR_IT, II_NONE);
@@ -825,6 +828,7 @@ OpSketch* Stencil::pSketchPdsRow(StageDef* pStageDef, OpDef* pOpDef) {
 
   // get the sketchCount of same Op
   i8 iOpSketchCount = m_iOpSketchCount[SK_INFLATE_ROW]++;
+  RASSERT(iOpSketchCount < C_MAX_DUP_OPS);
 
   // create a new opSketch for this OP
   pOpSketch = new OpSketch(pStageDef, ""_Stz, m_eHandlerKind, SK_INFLATE_ROW, SR_NONE, SR_IT, II_NONE);
@@ -855,6 +859,8 @@ OpSketch* Stencil::pSketchEos(StageDef* pStageDef, OpSketch* pLastOpSketch) {
 
   // get the sketchCount of same Op
   i8 iOpSketchCount = m_iOpSketchCount[SK_EOS]++;
+  RASSERT(iOpSketchCount < C_MAX_DUP_OPS);
+
   i8 i_Op = pLastOpSketch->m_iOperatorNo + 1;
 
   // create a new opSketch
@@ -891,6 +897,7 @@ OpSketch* Stencil::pSketchFilter(StageDef* pStageDef, OpDef* pOpDef, OpSketch* p
 
   // get the sketchCount of same Op
   i8 iOpSketchCount = m_iOpSketchCount[SK_FILTER]++;
+  RASSERT(iOpSketchCount < C_MAX_DUP_OPS);
 
   if (pLastOpSketch) {
     if (pLastOpSketch->m_eSketchKind == SK_FILTER) {
@@ -954,6 +961,7 @@ OpSketch* Stencil::pSketchSemiJoin(StageDef* pStageDef, OpDef* pOpDef, OpSketch*
 
   // get the sketchCount of same Op
   i8 iOpSketchCount = m_iOpSketchCount[SK_SEMIJOIN]++;
+  RASSERT(iOpSketchCount < C_MAX_DUP_OPS);
 
   if (pLastOpSketch) {
     if (pLastOpSketch->m_eSketchKind == SK_FILTER) {
@@ -1025,6 +1033,7 @@ OpSketch* Stencil::pSketchLimit(StageDef* pStageDef, OpDef* pOpDef, OpSketch* pL
 
   // get the sketchCount of same Op
   i8 iOpSketchCount = m_iOpSketchCount[SK_LIMIT]++;
+  RASSERT(iOpSketchCount < C_MAX_DUP_OPS);
 
   if (pLastOpSketch) {
     if (pLastOpSketch->m_eSketchKind == SK_FILTER) {
@@ -1081,6 +1090,7 @@ OpSketch* Stencil::pSketchOrdAgg(StageDef* pStageDef, OpDef* pOpDef) {
 
   // get the sketchCount of same Op
   i8 iOpSketchCount = m_iOpSketchCount[SK_ORDAGG]++;
+  RASSERT(iOpSketchCount < C_MAX_DUP_OPS);
 
   // create a new opSketch for this OP
   OpSketch *pOpSketch = new OpSketch(pStageDef, sOrdAggExpr, m_eHandlerKind, SK_ORDAGG, m_ePreviousStencil, SR_AT, II_NONE);
@@ -1141,6 +1151,7 @@ OpSketch* Stencil::pSketchAggreg(StageDef* pStageDef, OpDef* pOpDef)
 
   // get the sketchCount of same Op
   i8 iOpSketchCount = m_iOpSketchCount[SK_AGGREG]++;
+  RASSERT(iOpSketchCount < C_MAX_DUP_OPS);
 
   // create a new opSketch for this OP
   OpSketch *pOpSketch = new OpSketch(pStageDef, sAggregExpr, m_eHandlerKind, SK_AGGREG, m_ePreviousStencil, SR_AT, II_NONE);
@@ -1190,6 +1201,7 @@ OpSketch* Stencil::pSketchAntiJoin(StageDef* pStageDef, OpDef* pOpDef, OpSketch*
 
   // get the sketchCount of same Op
   i8 iOpSketchCount = m_iOpSketchCount[SK_ANTIJOIN]++;
+  RASSERT(iOpSketchCount < C_MAX_DUP_OPS);
 
   if (pLastOpSketch) {
     if (pLastOpSketch->m_eSketchKind == SK_FILTER) {
@@ -1259,6 +1271,7 @@ OpSketch* Stencil::pSketchProject(StageDef* pStageDef, OpDef* pOpDef)
 
   // get the sketchCount of same Op
   i8 iOpSketchCount = m_iOpSketchCount[SK_PROJECT]++;
+  RASSERT(iOpSketchCount < C_MAX_DUP_OPS);
 
   // create a new opSketch for this OP
   OpSketch *pOpSketch = new OpSketch(pStageDef, sProjectExpr, m_eHandlerKind, SK_PROJECT, m_ePreviousStencil, SR_PT, II_NONE);
@@ -1306,6 +1319,7 @@ OpSketch* Stencil::pSketchPrjPotTub(StageDef* pStageDef, OpDef* pOpDef, bool bGe
 
     // get the sketchCount of same Op
     iOpSketchCount = m_iOpSketchCount[SK_PRJPOT]++;
+    RASSERT(iOpSketchCount < C_MAX_DUP_OPS);
 
 		pOpSketch = new OpSketch(pStageDef, sProjectExpr, m_eHandlerKind, SK_PRJPOT, m_ePreviousStencil, SR_PO,  II_NONE);
     pOpSketch->vSetOpNos(i_Op, iOpSketchCount, m_iPrevOpNo, m_iPrevDupOpNo);
@@ -1315,6 +1329,7 @@ OpSketch* Stencil::pSketchPrjPotTub(StageDef* pStageDef, OpDef* pOpDef, bool bGe
 
     // get the sketchCount of same Op
     iOpSketchCount = m_iOpSketchCount[SK_PRJTUB]++;
+    RASSERT(iOpSketchCount < C_MAX_DUP_OPS);
 
 		pOpSketch = new OpSketch(pStageDef, sProjectExpr, m_eHandlerKind, SK_PRJTUB, m_ePreviousStencil, SR_TO,  II_NONE);
 		pOpSketch->vLimitExpr(sLimitExpr);
@@ -1373,6 +1388,7 @@ OpSketch* Stencil::pSketchGbyAgg(StageDef* pStageDef, OpDef* pOpDef)
 
   // get the sketchCount of same Op
   i8 iOpSketchCount = m_iOpSketchCount[SK_GBYAGG]++;
+  RASSERT(iOpSketchCount < C_MAX_DUP_OPS);
 
   // create a new opSketch for this OP
   OpSketch *pOpSketch = new OpSketch(pStageDef, sGbyAggExpr, m_eHandlerKind, SK_GBYAGG, m_ePreviousStencil, SR_NONE, II_PL);
@@ -1428,6 +1444,7 @@ OpSketch* Stencil::pSketchSort(StageDef* pStageDef, OpDef* pOpDef)
 
   // get the sketchCount of same Op
   i8 iOpSketchCount = m_iOpSketchCount[SK_SORT]++;
+  RASSERT(iOpSketchCount < C_MAX_DUP_OPS);
 
   // create a new opSketch for this OP
   OpSketch *pOpSketch = new OpSketch(pStageDef, sSortExpr, m_eHandlerKind, SK_SORT, m_ePreviousStencil, SR_NONE,  II_PL);
@@ -1474,6 +1491,8 @@ OpSketch* Stencil::pSketchStreamDef(OpSketch* pLastOp) {
 
   // get the sketchCount of same Op
   i8 iOpSketchCount = m_iOpSketchCount[SK_STREAMDEF]++;
+  RASSERT(iOpSketchCount < C_MAX_DUP_OPS);
+
   i8 i_Op = pLastOp->m_iOperatorNo + 1;
 
   // create a new opSketch
@@ -1513,6 +1532,7 @@ OpSketch* Stencil::pSketchTop(StageDef* pStageDef, OpDef* pOpDef)
 
   // get the sketchCount of same Op
   i8 iOpSketchCount = m_iOpSketchCount[SK_TOP]++;
+  RASSERT(iOpSketchCount < C_MAX_DUP_OPS);
 
   // create a new opSketch for this OP
   OpSketch *pOpSketch = new OpSketch(pStageDef, sTopExpr, m_eHandlerKind, SK_TOP, m_ePreviousStencil, SR_NONE,  II_PL);
@@ -1569,6 +1589,7 @@ OpSketch* Stencil::pSketchPotTub(OpSketch* pLastOp, bool bGeneratePot, OpDef* pH
 
     // get the sketchCount of same Op
     iOpSketchCount = m_iOpSketchCount[SK_POT]++;
+    RASSERT(iOpSketchCount < C_MAX_DUP_OPS);
 
     pOpSketch = new OpSketch(nullptr, ""_Stz, m_eHandlerKind, SK_POT, m_ePreviousStencil, SR_PO,  II_PL);
     pOpSketch->vLimitExpr(sLimitExpr);
@@ -1577,6 +1598,7 @@ OpSketch* Stencil::pSketchPotTub(OpSketch* pLastOp, bool bGeneratePot, OpDef* pH
 
     // get the sketchCount of same Op
     iOpSketchCount = m_iOpSketchCount[SK_TUB]++;
+    RASSERT(iOpSketchCount < C_MAX_DUP_OPS);
 
     pOpSketch = new OpSketch(nullptr, ""_Stz, m_eHandlerKind, SK_TUB, m_ePreviousStencil, SR_TO,  II_PL);
     pOpSketch->vLimitExpr(sLimitExpr);
