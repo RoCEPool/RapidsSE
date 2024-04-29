@@ -96,70 +96,11 @@ bool XF_Optimise_Early_projection::bOptimise(void)
         break;
       }
     }
-    
+
     if (! bEarlyRoot)
       break;
 
-    switch (m_pCI->E.e_Op) {
-
-      // -- -- -- -- -- -- --
-      case CK_o_AGGREG:
-        if (m_pCI->E.p_aggreg->bEarlyProject_root(m_pCI)) {
-          vBackstep(m_pCI);
-          m_pCI->E.p_aggreg->vRestate_emit(m_pCI);
-        }
-        break;
-
-      case CK_o_GBYAGG:
-        if (m_pCI->E.p_gbyAgg->bEarlyProject_root(m_pCI)) {
-          vBackstep(m_pCI);
-          m_pCI->E.p_gbyAgg->vRestate_emit(m_pCI);
-        }
-        break;
-
-      case CK_o_ORDAGG:
-        if (m_pCI->E.p_ordAgg->bEarlyProject_root(m_pCI)) {
-          vBackstep(m_pCI);
-          m_pCI->E.p_ordAgg->vRestate_emit(m_pCI);
-        }
-        break;
-
-        // -- -- -- -- -- -- --
-      case CK_o_PROJECT:
-        if (m_pCI->E.p_project->bEarlyProject_root(m_pCI)) {
-          vBackstep(m_pCI);
-
-          m_pCI->E.p_Op = m_pCI->E.p_project;
-          m_pCI->E.e_Op = CK_o_PROJECT;
-          RASSERT(! m_pCI->E.p_project->pSymbol()->Y_bHas(P_Early));
-
-          RASSERT(m_pCI->Early.m_pOP_leaf);
-          m_pCI->E.p_Op->vRestate_emit(m_pCI);
-        }
-        break;
-
-      case CK_o_INDEXJOIN:
-        if (m_pCI->E.p_indexJoin->bEarlyProject_root(m_pCI)) {
-          vBackstep(m_pCI);
-          m_pCI->E.p_indexJoin->vRestate_emit(m_pCI);
-        }
-        break;
-
-        // -- -- -- -- -- -- --
-      case CK_o_CROSSJOIN:
-      case CK_o_INDEXSCAN:
-      case CK_o_LIMIT:
-      case CK_o_SCAN:
-      case CK_o_TOP:
-        break;
-
-      default:
-        NEVER_REACH;
-    }
-
-    if (m_pCI->Early.m_pNeeded_later) {
-      DELETE_CARD(m_pCI->Early.m_pNeeded_later);
-    }
+    vRoots(m_pCI);
 
     bOptRun = true;
 
@@ -377,6 +318,79 @@ void XF_Optimise_Early_projection::vBackstep(CardIter* pCI)
 
   RASSERT(pCI->Early.m_pOP_leaf);
   vDebugPoint();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void XF_Optimise_Early_projection::vRoots(CardIter* pCI)
+{
+  _static_
+
+  switch (pCI->E.e_Op) {
+
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    case CK_o_AGGREG:
+      if (pCI->E.p_aggreg->bEarlyProject_root(pCI)) {
+        vBackstep(pCI);
+        pCI->E.p_aggreg->vRestate_emit(pCI);
+      }
+      break;
+
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    case CK_o_GBYAGG:
+      if (pCI->E.p_gbyAgg->bEarlyProject_root(pCI)) {
+        vBackstep(pCI);
+        pCI->E.p_gbyAgg->vRestate_emit(pCI);
+      }
+      break;
+
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    case CK_o_INDEXJOIN:
+      if (pCI->E.p_indexJoin->bEarlyProject_root(pCI)) {
+        vBackstep(pCI);
+        pCI->E.p_indexJoin->vRestate_emit(pCI);
+      }
+      break;
+
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    case CK_o_ORDAGG:
+      if (pCI->E.p_ordAgg->bEarlyProject_root(pCI)) {
+        vBackstep(pCI);
+        pCI->E.p_ordAgg->vRestate_emit(pCI);
+      }
+      break;
+
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    case CK_o_PROJECT:
+      if (pCI->E.p_project->bEarlyProject_root(pCI)) {
+        vBackstep(pCI);
+
+        pCI->E.p_Op = pCI->E.p_project;
+        pCI->E.e_Op = CK_o_PROJECT;
+        RASSERT(! pCI->E.p_project->pSymbol()->Y_bHas(P_Early));
+
+        RASSERT(pCI->Early.m_pOP_leaf);
+        pCI->E.p_Op->vRestate_emit(pCI);
+      }
+      break;
+
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    case CK_o_CROSSJOIN:
+    case CK_o_INDEXSCAN:
+    case CK_o_LIMIT:
+    case CK_o_SCAN:
+    case CK_o_TOP:
+      break;
+
+    default:
+      NEVER_REACH;
+  }
+
+  if (pCI->Early.m_pNeeded_later) {
+    DELETE_CARD(pCI->Early.m_pNeeded_later);
+  }
+
 }
 
 /*============================================================================*/
