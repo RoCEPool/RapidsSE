@@ -9,6 +9,7 @@
 #include "Card_Term.hpp"
 
 #include "CardIter.hpp"
+#include "XF_Optimise_Early_projection.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -205,7 +206,7 @@ void Card_Project::vEarlyProject_recurse_needed(CardIter* pCI)
 
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_OP::vEarlyProject_backstep(pCI);
+  XF_Optimise_Early_projection::vEarlyProject_backstep(pCI);
 
   /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
 

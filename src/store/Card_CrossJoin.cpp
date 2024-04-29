@@ -5,6 +5,7 @@
 #include "Card_CrossJoin.hpp"
 #include "CardIter.hpp"
 #include "Board.hpp"
+#include "XF_Optimise_Early_projection.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -87,7 +88,7 @@ void Card_CrossJoin::vEarlyProject_recurse_update(CardIter* pCI)
 
  // pCI->PRINTBOARD_dbg();
 
-  Card_OP::vEarlyProject_backstep(pCI);
+  XF_Optimise_Early_projection::vEarlyProject_backstep(pCI);
 
   pCI->E.p_Op = this;
   pCI->E.e_Op = CK_o_CROSSJOIN;

@@ -5,6 +5,7 @@
 #include "Card_KeyNotExists.hpp"
 
 #include "CardIter.hpp"
+#include "XF_Optimise_Early_projection.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -96,7 +97,7 @@ void Card_KeyNotExists::vEarlyProject_recurse_add(CardIter* pCI)
   pCI->vInsertBefore(p_project_early, this);
   pCI->vRepositionOp();
 
-  Card_OP::vEarlyProject_backstep(pCI);
+  XF_Optimise_Early_projection::vEarlyProject_backstep(pCI);
 
   /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
 

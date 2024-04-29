@@ -16,6 +16,7 @@ namespace STORE
   public:
     void* operator new(size_t);
     void  operator delete(void*);
+    static void vEarlyProject_backstep(CardIter* pCI);
 
     XF_Optimise_Early_projection(CardIter* pCI);
    ~XF_Optimise_Early_projection(void) noexcept(false);
@@ -25,6 +26,8 @@ namespace STORE
     bool bOptimise(void);
 
   private:
+
+
     Footer* aFooter(void);
 
   };

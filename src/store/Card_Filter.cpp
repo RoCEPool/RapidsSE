@@ -12,6 +12,7 @@
 #include "Card_AndConj.hpp"
 #include "Card_OrConj.hpp"
 #include "CardIter.hpp"
+#include "XF_Optimise_Early_projection.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -139,7 +140,7 @@ void Card_Filter::vEarlyProject_recurse_update(CardIter* pCI)
   // check for additional/temporary transients
   vEarlyProject_add_transients(pCI);
 
-  Card_OP::vEarlyProject_backstep(pCI);
+  XF_Optimise_Early_projection::vEarlyProject_backstep(pCI);
 
   /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
 

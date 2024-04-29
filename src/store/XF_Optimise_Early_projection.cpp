@@ -104,21 +104,21 @@ bool XF_Optimise_Early_projection::bOptimise(void)
       // -- -- -- -- -- -- --
       case CK_o_AGGREG:
         if (m_pCI->E.p_aggreg->bEarlyProject_root(m_pCI)) {
-          Card_OP::vEarlyProject_backstep(m_pCI);
+          vEarlyProject_backstep(m_pCI);
           m_pCI->E.p_aggreg->vRestate_emit(m_pCI);
         }
         break;
 
       case CK_o_GBYAGG:
         if (m_pCI->E.p_gbyAgg->bEarlyProject_root(m_pCI)) {
-          Card_OP::vEarlyProject_backstep(m_pCI);
+          vEarlyProject_backstep(m_pCI);
           m_pCI->E.p_gbyAgg->vRestate_emit(m_pCI);
         }
         break;
 
       case CK_o_ORDAGG:
         if (m_pCI->E.p_ordAgg->bEarlyProject_root(m_pCI)) {
-          Card_OP::vEarlyProject_backstep(m_pCI);
+          vEarlyProject_backstep(m_pCI);
           m_pCI->E.p_ordAgg->vRestate_emit(m_pCI);
         }
         break;
@@ -126,7 +126,7 @@ bool XF_Optimise_Early_projection::bOptimise(void)
         // -- -- -- -- -- -- --
       case CK_o_PROJECT:
         if (m_pCI->E.p_project->bEarlyProject_root(m_pCI)) {
-          Card_OP::vEarlyProject_backstep(m_pCI);
+          vEarlyProject_backstep(m_pCI);
 
           m_pCI->E.p_Op = m_pCI->E.p_project;
           m_pCI->E.e_Op = CK_o_PROJECT;
@@ -139,7 +139,7 @@ bool XF_Optimise_Early_projection::bOptimise(void)
 
       case CK_o_INDEXJOIN:
         if (m_pCI->E.p_indexJoin->bEarlyProject_root(m_pCI)) {
-          Card_OP::vEarlyProject_backstep(m_pCI);
+          vEarlyProject_backstep(m_pCI);
           m_pCI->E.p_indexJoin->vRestate_emit(m_pCI);
         }
         break;
@@ -169,6 +169,108 @@ bool XF_Optimise_Early_projection::bOptimise(void)
   m_pCI->vEndTransform(__LINE__);
 
   return bOptRun;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void XF_Optimise_Early_projection::vEarlyProject_backstep(CardIter* pCI)
+{
+  _static_
+
+  RASSERT(pCI->Early.m_pNeeded_later);
+
+  //Card_OP* p_OP_leaf_maybe = pCI->G.p_Op;
+
+  if (!pCI->bEachOp_reverse())
+    return;
+
+  // which card did we arrive at?
+  switch (pCI->E.e_Op) {
+
+    // -- -- -- -- -- -- --
+    // don't go any further
+
+    case CK_o_GBYAGG:
+      pCI->Early.m_pOP_leaf = pCI->E.p_Op;
+      break;
+
+    case CK_o_ORDAGG:
+      pCI->Early.m_pOP_leaf = pCI->E.p_Op;
+      break;
+
+      // -- -- -- -- -- -- --
+      // recurse into...
+
+    case CK_o_CROSSJOIN:
+      pCI->vPushEach();
+      pCI->E.p_crossJoin->vEarlyProject_recurse_update(pCI);
+      pCI->vPopEach();
+      break;
+
+    case CK_o_FILTER:
+      pCI->vPushEach();
+      pCI->E.p_filter->vEarlyProject_recurse_update(pCI);
+      pCI->vPopEach();
+      break;
+
+    case CK_o_INDEXJOIN:
+      pCI->vPushEach();
+      pCI->E.p_indexJoin->vEarlyProject_recurse_add(pCI);
+      pCI->vPopEach();
+      break;
+
+    case CK_o_INDEXSCAN:
+      pCI->vPushEach();
+      pCI->E.p_indexScan->vEarlyProject_leaf(pCI);
+      pCI->vPopEach();
+      break;
+
+    case CK_o_KEYEXISTS:
+      pCI->vPushEach();
+      pCI->E.p_keyExists->vEarlyProject_recurse_add(pCI);
+      pCI->vPopEach();
+      break;
+
+    case CK_o_KEYNOTEXISTS:
+      pCI->vPushEach();
+      pCI->E.p_keyNotExists->vEarlyProject_recurse_add(pCI);
+      pCI->vPopEach();
+      break;
+
+    case CK_o_PROJECT:
+      if (pCI->E.p_project->pSub_needed()) {
+        pCI->vPushEach();
+        pCI->E.p_project->vEarlyProject_recurse_needed(pCI);
+        pCI->vPopEach();
+      }
+      else {
+        pCI->E.p_project->vEarlyProject_given_leaf(pCI);
+      }
+      break;
+
+    case CK_o_SCAN:
+      pCI->vPushEach();
+      pCI->E.p_scan->vEarlyProject_leaf(pCI);
+      pCI->vPopEach();
+      break;
+
+    case CK_o_WHERE:
+      pCI->vPushEach();
+      pCI->E.p_where->vEarlyProject_recurse_update(pCI);
+      pCI->vPopEach();
+      break;
+
+      // -- -- -- -- -- -- --
+      // missing??
+
+    default:
+      pCI->E.p_Op->vDump(__func__);
+      NEVER_REACH
+  }
+
+  RASSERT(pCI->Early.m_pOP_leaf);
+  vDebugPoint();
 }
 
 
