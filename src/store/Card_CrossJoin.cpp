@@ -76,23 +76,6 @@ void Card_CrossJoin::vMorph_table_To_crossJoin(STORE::CardIter *pCI)
 
 
 /*----------------------------------------------------------------------------*/
-/* early project                                                              */
-/*----------------------------------------------------------------------------*/
-void Card_CrossJoin::vEarlyProject_recurse_update(CardIter* pCI)
-{
-   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  XF_Optimise_Early_projection::vEarlyProject_backstep(pCI);
-
-  pCI->E.p_Op = this;
-  pCI->E.e_Op = CK_o_CROSSJOIN;
-
-  /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
-
-
-}
-
-/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Card_CrossJoin::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)

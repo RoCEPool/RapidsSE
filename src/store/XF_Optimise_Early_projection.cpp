@@ -203,15 +203,17 @@ void XF_Optimise_Early_projection::vEarlyProject_backstep(CardIter* pCI)
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     case CK_o_CROSSJOIN:
-      pCI->vPushEach();
       p_needed_save = pCI->Early.m_pNeeded_later->pClone();
-      pCI->E.p_crossJoin->vEarlyProject_recurse_update(pCI);
+
+      pCI->vPushEach();
+      XF_Optimise_Early_projection::vEarlyProject_backstep(pCI);
+      pCI->vPopEach();
+
       pCI->E.p_Op->vRestate_emit(pCI);
 
       delete pCI->Early.m_pNeeded_later;
       pCI->Early.m_pNeeded_later = p_needed_save;
 
-      pCI->vPopEach();
       break;
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
