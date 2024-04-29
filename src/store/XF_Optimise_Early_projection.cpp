@@ -103,7 +103,8 @@ bool XF_Optimise_Early_projection::bOptimise(void)
       // -- -- -- -- -- -- --
       case CK_o_AGGREG:
         if (m_pCI->E.p_aggreg->bEarlyProject_root(m_pCI)) {
-
+          RASSERT(m_pCI->Early.m_pOP_leaf);
+          m_pCI->E.p_aggreg->vRestate_emit(m_pCI);
         }
         else {
 
@@ -112,7 +113,8 @@ bool XF_Optimise_Early_projection::bOptimise(void)
 
       case CK_o_GBYAGG:
         if (m_pCI->E.p_gbyAgg->bEarlyProject_root(m_pCI)) {
-
+          RASSERT(m_pCI->Early.m_pOP_leaf);
+          m_pCI->E.p_gbyAgg->vRestate_emit(m_pCI);
         }
         else {
 
@@ -121,7 +123,8 @@ bool XF_Optimise_Early_projection::bOptimise(void)
 
       case CK_o_ORDAGG:
         if (m_pCI->E.p_ordAgg->bEarlyProject_root(m_pCI)) {
-
+          RASSERT(m_pCI->Early.m_pOP_leaf);
+          m_pCI->E.p_ordAgg->vRestate_emit(m_pCI);
         }
         else {
 
@@ -131,7 +134,9 @@ bool XF_Optimise_Early_projection::bOptimise(void)
         // -- -- -- -- -- -- --
       case CK_o_PROJECT:
         if (m_pCI->E.p_project->bEarlyProject_root(m_pCI)) {
-
+          RASSERT(m_pCI->Early.m_pOP_leaf);
+          RASSERT(! m_pCI->E.p_project->pSymbol()->Y_bHas(P_Early));
+          m_pCI->E.p_Op->vRestate_emit(m_pCI);
         }
         else {
 
@@ -140,7 +145,8 @@ bool XF_Optimise_Early_projection::bOptimise(void)
 
       case CK_o_INDEXJOIN:
         if (m_pCI->E.p_indexJoin->bEarlyProject_root(m_pCI)) {
-
+          RASSERT(m_pCI->Early.m_pOP_leaf);
+          m_pCI->E.p_indexJoin->vRestate_emit(m_pCI);
         }
         else {
 

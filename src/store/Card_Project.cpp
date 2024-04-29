@@ -259,11 +259,6 @@ bool Card_Project::bEarlyProject_root(CardIter* pCI)
 
   /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
 
-  RASSERT(pCI->Early.m_pOP_leaf);
-  RASSERT(! pCI->E.p_project->pSymbol()->Y_bHas(P_Early));
-
-  pCI->E.p_Op->vRestate_emit(pCI);
-
   return true;
 }
 

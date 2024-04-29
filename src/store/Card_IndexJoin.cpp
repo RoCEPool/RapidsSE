@@ -227,12 +227,6 @@ bool Card_IndexJoin::bEarlyProject_root(CardIter* pCI)
 
   /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
 
-  RASSERT(pCI->Early.m_pOP_leaf);
-
-  pCI->E.p_indexJoin->vRestate_emit(pCI);
-
- // pCI->PRINTBOARD_dbg();
-
   return true;
 }
 

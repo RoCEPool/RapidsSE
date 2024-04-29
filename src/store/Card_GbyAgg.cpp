@@ -105,12 +105,6 @@ bool Card_GbyAgg::bEarlyProject_root(CardIter* pCI)
 
   /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
 
-  RASSERT(pCI->Early.m_pOP_leaf);
-
-  pCI->E.p_gbyAgg->vRestate_emit(pCI);
-
- // pCI->PRINTBOARD_dbg();
-
   return true;
 }
 
