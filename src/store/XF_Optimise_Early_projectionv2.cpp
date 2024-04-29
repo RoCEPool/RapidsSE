@@ -130,24 +130,12 @@ void XF_Optimise_Early_projectionv2::vEarly_needed_OP(void)
 
   switch (m_pCI->E.e_Op) {
     case CK_o_AGGREG:
-      m_pCI->E.p_aggreg->vCraft_needed_root(m_pCI);
-      break;
-
     case CK_o_GBYAGG:
-      m_pCI->E.p_gbyAgg->vCraft_needed_root(m_pCI);
-      break;
-
     case CK_o_ORDAGG:
-      m_pCI->E.p_ordAgg->vCraft_needed_root(m_pCI);
-      break;
-
-      // -- -- -- -- -- -- --
     case CK_o_PROJECT:
-      m_pCI->E.p_project->vCraft_needed_root(m_pCI);
-      break;
-
     case CK_o_INDEXJOIN:
-      m_pCI->E.p_indexJoin->vCraft_needed_root(m_pCI);
+      m_pCI->Early.m_pNeeded_later = m_pCI->E.p_emit->pCraft_needed_root(m_pCI);
+      DELETE_CARD(m_pCI->Early.m_pNeeded_later);
       break;
 
     default:

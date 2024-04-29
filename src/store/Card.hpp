@@ -18,7 +18,7 @@
 #include "Ribbon.hpp"
 #include "Symbol.hpp"
 
-#define Z_NEEDEDv2
+//#define Z_NEEDEDv2
 
 namespace STORE
 {
