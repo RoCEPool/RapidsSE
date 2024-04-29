@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+#define C_MAX_DUP_OPS 6
+
 struct ColumnInfo {
   i8    m_iColumnNo;      // this columns subscript
   char  m_cColumnNm[256]; // name of the column
@@ -40,8 +42,6 @@ struct IndexInfo {
   void* m_aEntBuffer;
   struct Ent_int* m_aEntInt;
 };
-
-static const i8 C_MAX_DUP_OPS = 6;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // CODE SYNTH V2
