@@ -355,15 +355,19 @@ void XF_Optimise_Early_projection::vEarlyProject_backstep(CardIter* pCI)
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     case CK_o_WHERE:
-      pCI->vPushEach();
       p_needed_save = pCI->Early.m_pNeeded_later->pClone();
-      pCI->E.p_where->vEarlyProject_recurse_update(pCI);
-      pCI->E.p_Op = pCI->E.p_where;
+
+      pCI->E.p_where->vEarlyProject_add_transients(pCI);
+
+      pCI->vPushEach();
+      XF_Optimise_Early_projection::vEarlyProject_backstep(pCI);
+      pCI->vPopEach();
+
       pCI->E.p_Op->vRestate_emit(pCI);
+
       delete pCI->Early.m_pNeeded_later;
       pCI->Early.m_pNeeded_later = p_needed_save;
 
-      pCI->vPopEach();
       break;
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
