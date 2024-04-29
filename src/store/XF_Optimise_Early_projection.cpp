@@ -219,13 +219,7 @@ void XF_Optimise_Early_projection::vEarlyProject_backstep(CardIter* pCI)
       pCI->vPushEach();
       p_needed_save = pCI->Early.m_pNeeded_later->pClone();
       pCI->E.p_filter->vEarlyProject_recurse_update(pCI);
-      // pCI->PRINTBOARD_dbg();
-
       pCI->E.p_Op->vRestate_emit(pCI);
-
-      //pCI->PRINTBOARD_dbg();
-
-      // restore needed
       delete pCI->Early.m_pNeeded_later;
       pCI->Early.m_pNeeded_later = p_needed_save;
 
@@ -258,7 +252,9 @@ void XF_Optimise_Early_projection::vEarlyProject_backstep(CardIter* pCI)
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     case CK_o_INDEXSCAN:
       pCI->vPushEach();
-      pCI->E.p_indexScan->vEarlyProject_leaf(pCI);
+      pCI->Early.m_pOP_leaf = pCI->E.p_Op;
+
+      pCI->vSnapIf_arriving();
       pCI->vPopEach();
       break;
 

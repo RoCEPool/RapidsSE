@@ -70,22 +70,6 @@ void Card_IndexScan::vDerive_streamKey(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add an early project after this index scan                                 */
-/*----------------------------------------------------------------------------*/
-void Card_IndexScan::vEarlyProject_leaf(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  pCI->Early.m_pOP_leaf = this;
-
-  pCI->vSnapIf_arriving();
-
- // pCI->PRINTBOARD_dbg();
-
-  vDebugPoint();
-}
-
-/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Card_IndexScan::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
