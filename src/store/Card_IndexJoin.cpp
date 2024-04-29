@@ -74,28 +74,6 @@ void Card_IndexJoin::vDerive_streamKey(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
-/* early project                                                              */
-/*----------------------------------------------------------------------------*/
-void Card_IndexJoin::vEarlyProject_recurse_add(CardIter* pCI)
-{
-  //vDump(0,(Stz*)__func__);
-
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  // check for additional/temporary transients
-  vEarlyProject_add_transients(pCI);
-
-  // insert new empty early project (has only needed) before this indexJoin
-  Card_Project* p_project_early = pCI->Early.m_pNeeded_later->pNew_project_early(pCI);
-  pCI->vInsertBefore(p_project_early, this);
-  pCI->vRepositionOp();
-
-  XF_Optimise_Early_projection::vEarlyProject_backstep(pCI);
-
-  /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
-}
-
-/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Card_IndexJoin::vEarlyProject_add_transients(CardIter* pCI)

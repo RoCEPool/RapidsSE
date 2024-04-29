@@ -24,7 +24,6 @@ namespace STORE
 
     void vEarlyProject_add_transients(CardIter* pCI);
 
-    void vEarlyProject_recurse_add(CardIter* pCI);
     bool bEarlyProject_root(CardIter* pCI);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);

@@ -185,7 +185,8 @@ void XF_Optimise_Early_projection::vEarlyProject_backstep(CardIter* pCI)
   if (!pCI->bEachOp_reverse())
     return;
 
-  Card_Needed* p_needed_save;
+  Card_Needed*  p_needed_save;
+  Card_Project* p_project_early;
 
   // which card did we arrive at?
   switch (pCI->E.e_Op) {
@@ -240,18 +241,26 @@ void XF_Optimise_Early_projection::vEarlyProject_backstep(CardIter* pCI)
         break;
       }
 
-      pCI->vPushEach();
       p_needed_save = pCI->Early.m_pNeeded_later->pClone();
-      pCI->E.p_indexJoin->vEarlyProject_recurse_add(pCI);
 
-      pCI->E.p_table = pCI->E.p_indexJoin->pSub_table();
-      pCI->E.p_Op = pCI->E.p_indexJoin;
+      // check for additional/temporary transients
+      pCI->E.p_indexJoin->vEarlyProject_add_transients(pCI);
+
+      p_project_early = pCI->Early.m_pNeeded_later->pNew_project_early(pCI);
+      pCI->vInsertBefore(p_project_early, pCI->E.p_indexJoin);
+      pCI->vRepositionOp();
+
+      pCI->vPushEach();
+      XF_Optimise_Early_projection::vEarlyProject_backstep(pCI);
+      pCI->vPopEach();
+
+//      pCI->E.p_table = pCI->E.p_indexJoin->pSub_table();
+//      pCI->E.p_Op = pCI->E.p_indexJoin;
       pCI->E.p_indexJoin->vRestate_emit(pCI);
 
       delete pCI->Early.m_pNeeded_later;
       pCI->Early.m_pNeeded_later = p_needed_save;
 
-      pCI->vPopEach();
       break;
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
