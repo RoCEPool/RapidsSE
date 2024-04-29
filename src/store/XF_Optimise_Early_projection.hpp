@@ -24,13 +24,6 @@ namespace STORE
 
     bool bOptimise(void);
 
-    void vEarly_needed_loop(void);
-    void vEarly_needed_OP(void);
-
-    bool bEarly_projection_loop(void);
-    bool bEarly_projection_OP(void);
-
-
   private:
     Footer* aFooter(void);
 
