@@ -152,15 +152,18 @@ void XF_Optimise_Early_projection::vBackstep(CardIter* pCI)
     }
     pCI->vPopEach();
     return;
-
   }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  p_needed_save = pCI->Early.m_pNeeded_later->pClone();
+
 
   // which card did we arrive at?
   switch (pCI->E.e_Op) {
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     case CK_o_CROSSJOIN:
-      p_needed_save = pCI->Early.m_pNeeded_later->pClone();
 
       vBackstep(pCI);
       pCI->E.p_Op->vRestate_emit(pCI);
@@ -171,7 +174,6 @@ void XF_Optimise_Early_projection::vBackstep(CardIter* pCI)
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     case CK_o_FILTER:
-      p_needed_save = pCI->Early.m_pNeeded_later->pClone();
       pCI->E.p_filter->vEarlyProject_add_transients(pCI);
 
       vBackstep(pCI);
@@ -183,9 +185,6 @@ void XF_Optimise_Early_projection::vBackstep(CardIter* pCI)
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     case CK_o_INDEXJOIN:
-
-      p_needed_save = pCI->Early.m_pNeeded_later->pClone();
-
       pCI->E.p_indexJoin->vEarlyProject_add_transients(pCI);
 
       p_project_early = pCI->Early.m_pNeeded_later->pNew_project_early(pCI);
@@ -201,8 +200,6 @@ void XF_Optimise_Early_projection::vBackstep(CardIter* pCI)
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     case CK_o_KEYEXISTS:
-
-      p_needed_save = pCI->Early.m_pNeeded_later->pClone();
       pCI->E.p_keyExists->vEarlyProject_add_transients(pCI);
 
       p_project_early = pCI->Early.m_pNeeded_later->pNew_project_early(pCI);
@@ -218,8 +215,6 @@ void XF_Optimise_Early_projection::vBackstep(CardIter* pCI)
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     case CK_o_KEYNOTEXISTS:
-
-      p_needed_save = pCI->Early.m_pNeeded_later->pClone();
       pCI->E.p_keyNotExists->vEarlyProject_add_transients(pCI);
 
       p_project_early = pCI->Early.m_pNeeded_later->pNew_project_early(pCI);
@@ -235,8 +230,6 @@ void XF_Optimise_Early_projection::vBackstep(CardIter* pCI)
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     case CK_o_WHERE:
-      p_needed_save = pCI->Early.m_pNeeded_later->pClone();
-
       pCI->E.p_where->vEarlyProject_add_transients(pCI);
 
       vBackstep(pCI);
