@@ -19,6 +19,8 @@
 /*--------------------------------------------------------------------*/
 int __FUNCTION_CRW__(struct Dynamic_T* aDynamicT) {
 
+  bool bPdsRowBuffer = false;
+
   // marker-end
 
   return 0;
@@ -71,6 +73,7 @@ int __FUNCTION_EOS__(struct Dynamic_T* aDynamicT) {
 
   #include "../src/store/Fragments/vFLAT_FunctionLocals.h"
 
+  bool bPdsRowBuffer = false;
   paW = &aDynamicT->m_aW[0];
 
   // marker-end
@@ -87,6 +90,7 @@ int __FUNCTION_EOS__(struct Dynamic_T* aDynamicT) {
 /*--------------------------------------------------------------------*/
 int __FUNCTION_INDEX__(struct Dynamic_T* aDynamicT) {
 
+  bool bPdsRowBuffer = false;
   // marker-end
 
   return 0;
@@ -116,6 +120,8 @@ void vIndexContinue(struct Dynamic_T* aDynamicT) {
 /*--------------------------------------------------------------------*/
 int __FUNCTION_ROW__(struct Dynamic_T* aDynamicT)
 {
+  bool bPdsRowBuffer = false;
+
   // marker-end
 
   return 0;
@@ -129,6 +135,7 @@ int __FUNCTION_ROW__(struct Dynamic_T* aDynamicT)
 /*--------------------------------------------------------------------*/
 int __FUNCTION_PDSROW__(struct Dynamic_T* aDynamicT)
 {
+  bool bPdsRowBuffer = false;
   // marker-end
 
   return 0;
@@ -170,6 +177,8 @@ void vRowContinue(struct Dynamic_T* aDynamicT) {
 /* flattened function -- STREAMDEF                                    */
 /*--------------------------------------------------------------------*/
 int __FUNCTION_STREAMDEF__(struct Dynamic_T* aDynamicT) {
+
+  bool bPdsRowBuffer = false;
 
   // marker-end
 

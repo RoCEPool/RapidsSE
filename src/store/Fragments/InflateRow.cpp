@@ -30,6 +30,7 @@ void vInflatePdsRowBegin(Dynamic_T* aDynamicT) {
   void* aCurrentRow;
 
   i8 CURRENT_DUP_OP;
+  bool bPdsRowBuffer;
 
 	// marker-start
 	struct __STRUCT_TO___CURRENT_OP* p__STRUCT_TO___CURRENT_OP;
@@ -72,7 +73,8 @@ void vInflatePdsRowBegin(Dynamic_T* aDynamicT) {
 
 	aDynamicT->m_xRowInfoIT[CURRENT_DUP_OP].m_acStrArea = aDynamicT->m_xRowInfoIT[CURRENT_DUP_OP].m_acStrAreaSav;
 
-	piColumn = (i8*)aDynamicT->m_xRowInfoIT[CURRENT_DUP_OP].m_aRowCellArray;
+	//piColumn = (i8*)aDynamicT->m_xRowInfoIT[CURRENT_DUP_OP].m_aRowCellArray;
+  bPdsRowBuffer = true;
 
 	// marker-end
 	L_Return:

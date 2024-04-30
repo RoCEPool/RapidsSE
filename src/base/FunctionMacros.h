@@ -33,6 +33,12 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // PUSHES
 
+#define _PSH_CELL_ADDRESS(iArg) \
+  if (bPdsRowBuffer)           \
+    *paW++ = (i8)&iArg;         \
+  else                          \
+   *paW++ = 0;
+
 #define _PSH_COL(iArg) \
   *paW++ = (i8)iArg;
 

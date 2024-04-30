@@ -1199,6 +1199,8 @@ void vPotTubVchCol(Dynamic_T* aDynamicT) {
   i8  nSrcSize;
   i8  iOffset;
   i8  CURRENT_DUP_OP;
+  i8 PREV_OP;
+  bool bPdsRowBuffer;
   m8* amCellAddress;
   char* __STRING_AREA_TO__;
   RowInfo __ROW_INFO_TO__[C_MAX_DUP_OPS];
@@ -1218,6 +1220,9 @@ void vPotTubVchCol(Dynamic_T* aDynamicT) {
   else {
     // get the destination string
 
+    if (bPdsRowBuffer && PREV_OP == 0) {
+      szSrcStz += (i8)&p__STRUCT_FROM___PREV_OP->__COLUMN_FROM__.m_iAsI8;
+    }
     szDstStz = azStringDyn;
 
 		nSrcSize = strlen(szSrcStz) + 1;
@@ -1268,9 +1273,11 @@ void vCopyVchCol(Dynamic_T* aDynamicT) {
 
   char* szSrcStz;
   char* szDstStz;
+  bool bPdsRowBuffer;
 
   i8  nSrcSize;
   i8  CURRENT_DUP_OP;
+  i8 PREV_OP;
   RowInfo __ROW_INFO_TO__[C_MAX_DUP_OPS];
 
   // marker-start
@@ -1284,6 +1291,11 @@ void vCopyVchCol(Dynamic_T* aDynamicT) {
     p__STRUCT_TO___CURRENT_OP->__COLUMN_TO__.m_iAsI8 = C_DATUM_NULL;
   }
   else {
+
+    if (bPdsRowBuffer && PREV_OP == 0) {
+      szSrcStz += (i8)&p__STRUCT_FROM___PREV_OP->__COLUMN_FROM__.m_iAsI8;
+    }
+
     nSrcSize = strlen(szSrcStz) + 1;
 
     // get the destination string
@@ -1416,6 +1428,7 @@ void vPayLoadToTubVchCol(Dynamic_T* aDynamicT) {
      p__STRUCT_TO___CURRENT_OP->__COLUMN_TO__.m_iAsI8 = C_DATUM_NULL;
    }
    else {
+
      nSrcSize = strlen(szSrcStz) + 1;
 
      // get the destination string
@@ -1490,10 +1503,13 @@ void vPopulateVchPL(Dynamic_T* aDynamicT) {
 
   struct __STRUCT_FROM___PREV_OP* p__STRUCT_FROM___PREV_OP;
 
+  bool bPdsRowBuffer;
+
   char* szSrcStz;
   char* szDstStz;
 
   i8 nSrcSize;
+  i8 PREV_OP;
 
   // marker-start
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1504,6 +1520,11 @@ void vPopulateVchPL(Dynamic_T* aDynamicT) {
     aDynamicT->m_aiPayload[__INDEX_COLUMN__] = C_DATUM_NULL;
   }
   else {
+
+    if (bPdsRowBuffer && PREV_OP == 0) {
+      szSrcStz += (i8)&p__STRUCT_FROM___PREV_OP->__COLUMN_FROM__.m_iAsI8;
+    }
+
     nSrcSize = strlen(szSrcStz) + 1;
 #ifdef WITH_CLANG
     aDynamicT->m_aiPayload[__INDEX_COLUMN__] = (i8)aDynamicT->m_fp_aExtern_IndexTreeAllotPayStr(

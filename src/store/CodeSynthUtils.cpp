@@ -1132,7 +1132,7 @@ bool CodeSynthUtils::bReplacePrevOp(String* sLine, String* sReplacedLine, OpSket
 
   if (StrLib::bContains(sLine->azStr(), "PREV_OP")) {
     s32 sOperatorNo;
-    RASSERT(pOpSketch->m_iPrevOpNo > 0);
+    RASSERT(pOpSketch->m_iPrevOpNo >= 0);
     StrLib::vSprint(sOperatorNo, sizeof(sOperatorNo), nullptr, "%lld"_Stz, pOpSketch->m_iPrevOpNo);
     bool bResult = StrLib::bReplace(sReplacedLine->azStr(), sReplacedLine->nAreaBytes(),
                                     sLine->azStr(), "PREV_OP", sOperatorNo.azChar());
