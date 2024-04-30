@@ -871,7 +871,7 @@ void Weaver::vConcat_cmd(Stz* aFormat, ...)
 /*----------------------------------------------------------------------------*/
 void Weaver::vConcat_cmd_vArg_s(Stz* aFormat, va_list xArgs)
 {
-  static char caFormatted[C_1MB] = {'\0'};
+  char caFormatted[C_1MB] = {'\0'};
 
   // produce formatted line
   StrLib::vSprint(caFormatted, sizeof(caFormatted) - 3, xArgs, aFormat->azChar());

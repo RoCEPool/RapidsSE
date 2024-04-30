@@ -232,7 +232,192 @@
       <hashTree>
         <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Setup" enabled="true"/>
         <hashTree>
-          <com.rapidsdata.jmeter.samplers.JdbcRecorder guiclass="com.rapidsdata.jmeter.samplers.gui.JdbcRecorderGui" testclass="com.rapidsdata.jmeter.samplers.JdbcRecorder" testname="status">
+          <com.rapidsdata.jmeter.samplers.SethPlugin guiclass="com.rapidsdata.jmeter.samplers.gui.SethPluginGui" testclass="com.rapidsdata.jmeter.samplers.SethPlugin" testname="filterRowsTest">
+            <stringProp name="SethPlugin.jdbcUrl">${JDBC_URL}</stringProp>
+            <stringProp name="SethPlugin.testScript">--------------------------------------------------------------------------------
+-- filter tests
+--------------------------------------------------------------------------------
+
+trackmemory force;
+success;
+
+//------------------------------------------------------------------------------
+select * from ${testName2}_lineitem where L_DISCOUNT &gt;= 0.04;
+failure contains: &quot;No such table&quot;
+
+//------------------------------------------------------------------------------
+// create table lineitem
+create table ${testName2}_LineItem
+(
+ L_ORDERKEY      INTEGER       NOT NULL,
+ L_PARTKEY       INTEGER       NOT NULL,
+ L_SUPPKEY       INTEGER       NOT NULL,
+ L_LINENUMBER    INTEGER       NOT NULL,
+ L_QUANTITY      DECIMAL(15,2) NOT NULL,
+ L_EXTENDEDPRICE DECIMAL(15,2) NOT NULL,
+ L_DISCOUNT      DECIMAL(15,2) NOT NULL,
+ L_TAX           DECIMAL(15,2) NOT NULL,
+ L_RETURNFLAG    CHAR(1)       NOT NULL,
+ L_LINESTATUS    CHAR(1)       NOT NULL,
+ L_SHIPDATE      DATE NOT      NULL,
+ L_COMMITDATE    DATE NOT      NULL,
+ L_RECEIPTDATE   DATE NOT      NULL,
+ L_SHIPINSTRUCT  CHAR(25)      NOT NULL,
+ L_SHIPMODE      CHAR(10)      NOT NULL,
+ L_COMMENT       VARCHAR(44)   NOT NULL
+ );
+failure
+
+//------------------------------------------------------------------------------
+select * from ${testName2}_lineitem where L_DISCOUNT &gt;= 0.04;
+rows: 0
+
+// load data
+load ${testName2}_lineitem &quot;../DATA/TPCH/lineitem10.csv&quot;;
+success
+
+//------------------------------------------------------------------------------
+select * from ${testName2}_lineitem where L_DISCOUNT &gt;= 0.04;
+rows:
+  (1,1551894,76910,1,17.00,33078.94,0.04,*,*,*,*,*,*,*,*,*)
+  (1,673091,73092,2,36.00,38306.16,0.09,*,*,*,*,*,*,*,*,*)
+  (1,636998,36999,3,8.00,15479.68,0.10,*,*,*,*,*,*,*,*,*)
+  (1,21315,46316,4,28.00,34616.68,0.09,*,*,*,*,*,*,*,*,*)
+  (1,240267,15274,5,24.00,28974.00,0.10,*,*,*,*,*,*,*,*,*)
+  (1,156345,6348,6,32.00,44842.88,0.07,*,*,*,*,*,*,*,*,*)
+  (3,190355,65359,2,49.00,70822.15,0.10,*,*,*,*,*,*,*,*,*)
+  (3,42970,17971,1,45.00,86083.65,0.06,*,*,*,*,*,*,*,*,*)
+  (3,1284483,34508,3,22.00,39620.34,0.06,*,*,*,*,*,*,*,*,*)
+
+//------------------------------------------------------------------------------
+select * from ${testName2}_lineitem where L_DISCOUNT &gt; 0.04;
+rows:
+(1,673091,73092,2,36.00,38306.16,0.09,*,*,*,*,*,*,*,*,*)
+(1,636998,36999,3,8.00,15479.68,0.10,*,*,*,*,*,*,*,*,*)
+(1,21315,46316,4,28.00,34616.68,0.09,*,*,*,*,*,*,*,*,*)
+(1,240267,15274,5,24.00,28974.00,0.10,*,*,*,*,*,*,*,*,*)
+(1,156345,6348,6,32.00,44842.88,0.07,*,*,*,*,*,*,*,*,*)
+(3,190355,65359,2,49.00,70822.15,0.10,*,*,*,*,*,*,*,*,*)
+(3,42970,17971,1,45.00,86083.65,0.06,*,*,*,*,*,*,*,*,*)
+(3,1284483,34508,3,22.00,39620.34,0.06,*,*,*,*,*,*,*,*,*)
+
+//------------------------------------------------------------------------------
+select * from ${testName2}_lineitem where L_DISCOUNT &lt; 0.04;
+rows:
+  (2,1061698,11719,1,38.00,63066.32,0.00,*,*,*,*,*,*,*,*,*)
+
+//------------------------------------------------------------------------------
+select * from ${testName2}_lineitem where L_DISCOUNT &gt;= 0.04 and  L_DISCOUNT &lt;= 0.06;
+rows:
+  (1,1551894,76910,1,17.00,33078.94,0.04,*,*,*,*,*,*,*,*,*)
+  (3,42970,17971,1,45.00,86083.65,0.06,*,*,*,*,*,*,*,*,*)
+  (3,1284483,34508,3,22.00,39620.34,0.06,*,*,*,*,*,*,*,*,*)
+
+//------------------------------------------------------------------------------
+select * from ${testName2}_lineitem where L_DISCOUNT &lt; 0.04 and  L_DISCOUNT &gt; 0.06;
+rows: 0
+
+//------------------------------------------------------------------------------
+select * from ${testName2}_lineitem where L_DISCOUNT &gt;= 0.05 - 0.01 and  L_DISCOUNT &lt;= 0.05 + 0.01;
+rows:
+  (1,1551894,76910,1,17.00,33078.94,0.04,*,*,*,*,*,*,*,*,*)
+  (3,42970,17971,1,45.00,86083.65,0.06,*,*,*,*,*,*,*,*,*)
+  (3,1284483,34508,3,22.00,39620.34,0.06,*,*,*,*,*,*,*,*,*)
+
+//------------------------------------------------------------------------------
+select * from ${testName2}_lineitem where L_DISCOUNT &gt;= 0.04 and L_DISCOUNT &lt;= 0.06 and L_QUANTITY &lt; 24;
+rows:
+  (3,1284483,34508,3,22.00,39620.34,0.06,*,*,*,*,*,*,*,*,*)
+  (1,1551894,76910,1,17.00,33078.94,0.04,*,*,*,*,*,*,*,*,*)
+
+//------------------------------------------------------------------------------
+select * from ${testName2}_lineitem where L_DISCOUNT &gt;= 0.04 and L_DISCOUNT &lt;= 0.06 and L_QUANTITY &lt; 24;
+rows:
+  (3,1284483,34508,3,22.00,39620.34,0.06,*,*,*,*,*,*,*,*,*)
+  (1,1551894,76910,1,17.00,33078.94,0.04,*,*,*,*,*,*,*,*,*)
+
+//------------------------------------------------------------------------------
+select * from ${testName2}_lineitem where L_SHIPDATE &gt;= DATE &apos;1994-01-01&apos;;
+rows:
+ (3,42970,17971,1,45.00,86083.65,0.06,0.00,&apos;R&apos;,&apos;F&apos;,DATE &apos;1994-02-02&apos;,*,*,*,*,*)
+ (3,1284483,34508,3,22.00,39620.34,0.06,0.07,&apos;A&apos;,&apos;F&apos;,DATE &apos;1994-01-16&apos;,*,*,*,*,*)
+ (2,1061698,11719,1,38.00,63066.32,0.00,0.05,&apos;N&apos;,&apos;O&apos;,DATE &apos;1997-01-28&apos;,*,*,*,*,*)
+ (1,1551894,76910,1,17.00,33078.94,0.04,0.02,&apos;N&apos;,&apos;O&apos;,DATE &apos;1996-03-13&apos;,*,*,*,*,*)
+ (1,673091,73092,2,36.00,38306.16,0.09,0.06,&apos;N&apos;,&apos;O&apos;,DATE &apos;1996-04-12&apos;,*,*,*,*,*)
+ (1,636998,36999,3,8.00,15479.68,0.10,0.02,&apos;N&apos;,&apos;O&apos;,DATE &apos;1996-01-29&apos;,*,*,*,*,*)
+ (1,21315,46316,4,28.00,34616.68,0.09,0.06,&apos;N&apos;,&apos;O&apos;,DATE &apos;1996-04-21&apos;,*,*,*,*,*)
+ (1,240267,15274,5,24.00,28974.00,0.10,0.04,&apos;N&apos;,&apos;O&apos;,DATE &apos;1996-03-30&apos;,*,*,*,*,*)
+ (1,156345,6348,6,32.00,44842.88,0.07,0.02,&apos;N&apos;,&apos;O&apos;,DATE &apos;1996-01-30&apos;,*,*,*,*,*)
+
+//------------------------------------------------------------------------------
+select * from ${testName2}_lineitem where L_SHIPDATE &lt; DATE &apos;1994-01-01&apos;;
+rows:
+ (3,190355,65359,2,49.00,70822.15,0.10,0.00,&apos;R&apos;,&apos;F&apos;,DATE &apos;1993-11-09&apos;,*,*,*,*,*)
+
+//------------------------------------------------------------------------------
+select * from ${testName2}_lineitem where L_SHIPDATE &lt; DATE &apos;1995-01-01&apos;;
+rows:
+ (3,190355,65359,2,49.00,70822.15,0.10,0.00,&apos;R&apos;,&apos;F&apos;,DATE &apos;1993-11-09&apos;,*,*,*,*,*)
+ (3,42970,17971,1,45.00,86083.65,0.06,0.00,&apos;R&apos;,&apos;F&apos;,DATE &apos;1994-02-02&apos;,*,*,*,*,*)
+ (3,1284483,34508,3,22.00,39620.34,0.06,0.07,&apos;A&apos;,&apos;F&apos;,DATE &apos;1994-01-16&apos;,*,*,*,*,*)
+
+//------------------------------------------------------------------------------
+select * from ${testName2}_lineitem where L_SHIPDATE &gt;= DATE &apos;1995-01-01&apos;;
+rows:
+ (1,1551894,76910,1,17.00,33078.94,0.04,0.02,&apos;N&apos;,&apos;O&apos;,DATE &apos;1996-03-13&apos;,*,*,*,*,*)
+ (1,673091,73092,2,36.00,38306.16,0.09,0.06,&apos;N&apos;,&apos;O&apos;,DATE &apos;1996-04-12&apos;,*,*,*,*,*)
+ (1,636998,36999,3,8.00,15479.68,0.10,0.02,&apos;N&apos;,&apos;O&apos;,DATE &apos;1996-01-29&apos;,*,*,*,*,*)
+ (1,21315,46316,4,28.00,34616.68,0.09,0.06,&apos;N&apos;,&apos;O&apos;,DATE &apos;1996-04-21&apos;,*,*,*,*,*)
+ (1,240267,15274,5,24.00,28974.00,0.10,0.04,&apos;N&apos;,&apos;O&apos;,DATE &apos;1996-03-30&apos;,*,*,*,*,*)
+ (1,156345,6348,6,32.00,44842.88,0.07,0.02,&apos;N&apos;,&apos;O&apos;,DATE &apos;1996-01-30&apos;,*,*,*,*,*)
+ (2,1061698,11719,1,38.00,63066.32,0.00,0.05,&apos;N&apos;,&apos;O&apos;,DATE &apos;1997-01-28&apos;,*,*,*,*,*)
+
+//------------------------------------------------------------------------------
+select * from ${testName2}_lineitem where L_SHIPDATE &gt;= DATE &apos;1994-01-01&apos; and L_SHIPDATE &lt; DATE &apos;1995-01-01&apos;;
+rows:
+ (3,42970,17971,1,45.00,86083.65,0.06,0.00,&apos;R&apos;,&apos;F&apos;,DATE &apos;1994-02-02&apos;,*,*,*,*,*)
+ (3,1284483,34508,3,22.00,39620.34,0.06,0.07,&apos;A&apos;,&apos;F&apos;,DATE &apos;1994-01-16&apos;,*,*,*,*,*)
+
+//------------------------------------------------------------------------------
+select * from ${testName2}_lineitem where 2 &gt; 1;
+rows:
+ (3,190355,65359,2,49.00,70822.15,0.10,0.00,&apos;R&apos;,&apos;F&apos;,DATE &apos;1993-11-09&apos;,*,*,*,*,*)
+ (3,42970,17971,1,45.00,86083.65,0.06,0.00,&apos;R&apos;,&apos;F&apos;,DATE &apos;1994-02-02&apos;,*,*,*,*,*)
+ (3,1284483,34508,3,22.00,39620.34,0.06,0.07,&apos;A&apos;,&apos;F&apos;,DATE &apos;1994-01-16&apos;,*,*,*,*,*)
+ (2,1061698,11719,1,38.00,63066.32,0.00,0.05,&apos;N&apos;,&apos;O&apos;,DATE &apos;1997-01-28&apos;,*,*,*,*,*)
+ (1,1551894,76910,1,17.00,33078.94,0.04,0.02,&apos;N&apos;,&apos;O&apos;,DATE &apos;1996-03-13&apos;,*,*,*,*,*)
+ (1,673091,73092,2,36.00,38306.16,0.09,0.06,&apos;N&apos;,&apos;O&apos;,DATE &apos;1996-04-12&apos;,*,*,*,*,*)
+ (1,636998,36999,3,8.00,15479.68,0.10,0.02,&apos;N&apos;,&apos;O&apos;,DATE &apos;1996-01-29&apos;,*,*,*,*,*)
+ (1,21315,46316,4,28.00,34616.68,0.09,0.06,&apos;N&apos;,&apos;O&apos;,DATE &apos;1996-04-21&apos;,*,*,*,*,*)
+ (1,240267,15274,5,24.00,28974.00,0.10,0.04,&apos;N&apos;,&apos;O&apos;,DATE &apos;1996-03-30&apos;,*,*,*,*,*)
+ (1,156345,6348,6,32.00,44842.88,0.07,0.02,&apos;N&apos;,&apos;O&apos;,DATE &apos;1996-01-30&apos;,*,*,*,*,*)
+
+//------------------------------------------------------------------------------
+select * from ${testName2}_lineitem where 2 &lt; 1;
+rows: 0
+
+//------------------------------------------------------------------------------
+// drop the table
+drop table ${testName2}_lineitem;
+success;
+
+MemoryLeaks;
+rows: 0
+
+CLEANUP {
+  
+  drop table ${testName2}_lineitem;
+  mute
+}
+</stringProp>
+            <boolProp name="SethPlugin.continueOnSethFailure">true</boolProp>
+            <stringProp name="SethPlugin.logLevel">STEPS</stringProp>
+            <stringProp name="SethPlugin.resultFormat">LOG</stringProp>
+            <stringProp name="SethPlugin.otherOptions"></stringProp>
+            <stringProp name="SethPlugin.logNamePrefix"></stringProp>
+          </com.rapidsdata.jmeter.samplers.SethPlugin>
+          <hashTree/>
+          <com.rapidsdata.jmeter.samplers.JdbcRecorder guiclass="com.rapidsdata.jmeter.samplers.gui.JdbcRecorderGui" testclass="com.rapidsdata.jmeter.samplers.JdbcRecorder" testname="status" enabled="true">
             <stringProp name="JdbcRecorder.connPoolVarName">SEConnPool</stringProp>
             <stringProp name="JdbcRecorder.queries">status;
 lstbl;</stringProp>
@@ -243,7 +428,7 @@ lstbl;</stringProp>
             <stringProp name="JdbcRecorder.fileFormat">csv</stringProp>
           </com.rapidsdata.jmeter.samplers.JdbcRecorder>
           <hashTree/>
-          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker">
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
             <stringProp name="cacheKey">true</stringProp>
             <stringProp name="filename"></stringProp>
             <stringProp name="parameters"></stringProp>
@@ -1345,11 +1530,11 @@ dload lineitem paths
             <stringProp name="scriptLanguage">groovy</stringProp>
           </JSR223Sampler>
           <hashTree/>
-          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="validateRowCount">
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="validateRowCount" enabled="true">
             <boolProp name="TransactionController.includeTimers">false</boolProp>
           </TransactionController>
           <hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="countLineitem">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="countLineitem" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">SELECT COUNT(*) FROM lineitem;</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -1557,7 +1742,7 @@ dload lineitem paths
               </ResponseAssertion>
               <hashTree/>
             </hashTree>
-            <ResultCollector guiclass="SimpleDataWriter" testclass="ResultCollector" testname="Simple Data Writer">
+            <ResultCollector guiclass="SimpleDataWriter" testclass="ResultCollector" testname="Simple Data Writer" enabled="true">
               <boolProp name="ResultCollector.error_logging">false</boolProp>
               <objProp>
                 <name>saveConfig</name>
@@ -1590,7 +1775,7 @@ dload lineitem paths
             </ResultCollector>
             <hashTree/>
           </hashTree>
-          <com.rapidsdata.jmeter.samplers.JdbcRecorder guiclass="com.rapidsdata.jmeter.samplers.gui.JdbcRecorderGui" testclass="com.rapidsdata.jmeter.samplers.JdbcRecorder" testname="rowCounts">
+          <com.rapidsdata.jmeter.samplers.JdbcRecorder guiclass="com.rapidsdata.jmeter.samplers.gui.JdbcRecorderGui" testclass="com.rapidsdata.jmeter.samplers.JdbcRecorder" testname="rowCounts" enabled="true">
             <stringProp name="JdbcRecorder.connPoolVarName">SEConnPool</stringProp>
             <stringProp name="JdbcRecorder.queries">SELECT COUNT(*) FROM lineitem;
 SELECT COUNT(*) FROM orders;
@@ -1607,7 +1792,7 @@ SELECT COUNT(*) FROM region;</stringProp>
             <stringProp name="JdbcRecorder.fileFormat">pretty</stringProp>
           </com.rapidsdata.jmeter.samplers.JdbcRecorder>
           <hashTree/>
-          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker">
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
             <stringProp name="cacheKey">true</stringProp>
             <stringProp name="filename"></stringProp>
             <stringProp name="parameters"></stringProp>
@@ -1645,7 +1830,7 @@ SELECT COUNT(*) FROM region;</stringProp>
           <stringProp name="script">vars.put(&quot;HAS_FAILED_QUERY&quot;, &quot;false&quot;);</stringProp>
         </BeanShellPreProcessor>
         <hashTree/>
-        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="TPC-H SQL Queries" enabled="true"/>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="TPC-H SQL Queries" enabled="false"/>
         <hashTree>
           <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
             <stringProp name="cacheKey">true</stringProp>
