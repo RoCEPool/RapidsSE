@@ -30,6 +30,7 @@
 #include "XF_Optimise_Duplicate_filter.hpp"
 #include "XF_Optimise_Early_filter.hpp"
 #include "XF_Optimise_Early_projection.hpp"
+#include "XF_Optimise_Early_projectionv2.hpp"
 #include "XF_Optimise_Late_projection.hpp"
 #include "XF_Optimise_Reduce_gbyAgg_key.hpp"
 #include "XF_Optimise_Factor_boolPred.hpp"
@@ -222,7 +223,9 @@ void XF::vTransform(void)
   XF_Prolog_Analyse_emit::vAnalyse(m_pCI);             //
   XF_Utility_Verify_dic::vVerify(m_pCI);               //
   XF_Optimise_Early_projection::vOptimise(m_pCI);      //
-                                                       //
+#ifdef Z_NEEDEDv2
+  XF_Optimise_Early_projectionv2::vOptimise(m_pCI);    //
+#endif
   XF_Optimise_Reduce_gbyAgg_key::vOptimise(m_pCI);     //
   XF_Optimise_Static_calc::vOptimise(m_pCI);           //
   XF_Optimise_max_To_top::vOptimise(m_pCI);            //
@@ -317,14 +320,14 @@ void XF::vTransform_passThru(void)
 
     m_pCI->vTransform(__FILE__, __func__, XF_PASSTHRU_ADJUST_SORT);
     m_pCI->vBeginEach();
-    while (m_pCI->bEachOp(CK_o_SORT, CK_s_KEY, CK_t_EMIT)) {
+    while (m_pCI->bEachOp(CK_o_SORT, CK_p_KEY, CK_p_EMIT)) {
       m_pCI->E.p_emit->vApplyFacets(m_pCI,m_pCI->E.p_key);
     }
     m_pCI->vEndTransform(__LINE__);
 
     m_pCI->vTransform(__FILE__, __func__, XF_PASSTHRU_ADJUST_TOP);
     m_pCI->vBeginEach();
-    while (m_pCI->bEachOp(CK_o_TOP, CK_s_KEY, CK_t_EMIT)) {
+    while (m_pCI->bEachOp(CK_o_TOP, CK_p_KEY, CK_p_EMIT)) {
       m_pCI->E.p_emit->vApplyFacets(m_pCI,m_pCI->E.p_key);
     }
     m_pCI->vEndTransform(__LINE__);

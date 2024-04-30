@@ -35,7 +35,7 @@ namespace STORE
 
     void vBackstep(void);
     void vBegin(void);
-    void vBegin_reverse(void);
+    void vBegin_tail(void);
     bool bBegun(void);
 
     eCK  eChild(void);
@@ -90,6 +90,7 @@ namespace STORE
     Card_Index*       p_index(bool bSub=false);
     Card_JoinOrder*   p_joinOrder(bool bSub=false);
     Card_Map*         p_map(bool bSub=false);
+    Card_OP*          p_op(void);
     Card_RlnConj*     p_rlnConj(bool bSub=false);
     Card_Stage*       p_stage(bool bSub=false);
     Card_StreamHead*  p_streamHead(bool bSub=false);

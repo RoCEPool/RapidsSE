@@ -419,7 +419,7 @@ void Board::vPinCards(CardIter* pCI, Ribbon* pRibbon)
       pSubRibbon->vLaneFirst();
     else
     if (pSubRibbon->i_Char() &&
-        (CK_c_STAGE == eChild || CK_SECTION == eChild))
+        (CK_o_STAGE == eChild || CK_SECTION == eChild))
       pSubRibbon->vHeatNext();
     else
       pSubRibbon->vLaneNext();

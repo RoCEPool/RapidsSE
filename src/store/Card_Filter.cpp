@@ -12,6 +12,7 @@
 #include "Card_AndConj.hpp"
 #include "Card_OrConj.hpp"
 #include "CardIter.hpp"
+#include "XF_Optimise_Early_projection.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -56,7 +57,7 @@ void Card_Filter::vDeleteEmptyFilters(CardIter* pCI) {
 
   while (pCI->bEachOp()) {
     if ((pCI->E.p_filter = pCI->E.p_Op->pSub_filter()))
-      ((Card_OP*)pCI->E.p_Op)->vCull_filter_IfEmpty(pCI->E.p_filter);
+      pCI->E.p_Op->vCull_filter_IfEmpty(pCI->E.p_filter);
   }
 }
 
@@ -122,38 +123,6 @@ void Card_Filter::vEarlyProject_add_transients(CardIter* pCI)
   vAddTransients(pCI);
 }
 
-
-/*----------------------------------------------------------------------------*/
-/* early project                                                              */
-/*----------------------------------------------------------------------------*/
-void Card_Filter::vEarlyProject_recurse_update(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
- // pCI->PRINTBOARD_dbg();
-
-  // save the current projection needed
-  //   we can restore to this save if projection needed get extended
-  Card_Needed* p_needed_save = pCI->Early.m_pNeeded_later->pClone();
-
-  // check for additional/temporary transients
-  vEarlyProject_add_transients(pCI);
-
-  Card_OP::vEarlyProject_backstep(pCI);
-
-  /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
-
- // pCI->PRINTBOARD_dbg();
-
-  ((Card_OP*)pCI->E.p_Op)->vRestate_emit(pCI);
-
-  //pCI->PRINTBOARD_dbg();
-
-  // restore needed
-  delete pCI->Early.m_pNeeded_later;
-  pCI->Early.m_pNeeded_later = p_needed_save;
-}
-
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
@@ -177,7 +146,7 @@ void Card_Filter::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  vValidate_mustHave(CK_PREDICATE, CK_NONE);
+  vValidate_child_mustBe(CK_PREDICATE, CK_NONE);
 
   if (iDepth > 2) {
    // pCI->PRINTBOARD_dbg();
@@ -185,7 +154,7 @@ void Card_Filter::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   }
 
   if (iDepth > 1)
-    (void)Card::eValidate_parentEither(pCI,
+    (void)Card::eValidate_parent_either(pCI,
                                        CK_o_CROSSJOIN,
                                        CK_o_FROM,
                                        CK_o_HAVING,
@@ -196,7 +165,7 @@ void Card_Filter::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
                                        CK_NONE);
 
   if (CK_DECK == pParent->eCard()) {
-    vValidate_mustHave(CK_s_LEVEL, CK_t_EMIT, CK_NONE);
+    vValidate_child_mustBe(CK_p_LEVEL, CK_p_EMIT, CK_NONE);
   }
 
   UNUSED(pParent);

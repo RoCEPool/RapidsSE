@@ -4,6 +4,7 @@
 
 #include "CardUsage.hpp"
 #include "Card.hpp"
+#include "Card_Level.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -68,7 +69,7 @@ bool CardUsage::bAddCombined(Card_OP* p_OP)
     case CK_o_WHERE:
     case CK_o_SCAN:
     case CK_o_SORT:
-    case CK_s_TABLE:
+    case CK_p_TABLE:
     case CK_o_TOP:
       break;
 
@@ -105,7 +106,7 @@ bool CardUsage::bAddNext(Card_OP* p_OP)
     case CK_o_WHERE:
     case CK_o_SCAN:
     case CK_o_SORT:
-    case CK_s_TABLE:
+    case CK_p_TABLE:
     case CK_o_TOP:
       break;
 
@@ -142,7 +143,7 @@ bool CardUsage::bAddStage(Card_OP* p_OP)
     case CK_o_WHERE:
     case CK_o_SCAN:
     case CK_o_SORT:
-    case CK_s_TABLE:
+    case CK_p_TABLE:
     case CK_o_TOP:
       break;
 
@@ -171,7 +172,7 @@ void CardUsage::vClearAll(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARDUSAGE, _FOOTER_);
 
-  m_eLevel = Card::e_stageTopo_To_aggLevel(YG_ALL_PARTITIONS);
+  m_eLevel = Card_Level::e_stageTopo_To_aggLevel(YG_ALL_PARTITIONS);
 
   for (i8 i_Card = 0; i_Card < CK_ENUMS; i_Card++)
     m_baSawCard[i_Card] = false;

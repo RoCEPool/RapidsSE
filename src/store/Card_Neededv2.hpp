@@ -1,25 +1,31 @@
 /*============================================================================*/
-/* Card_Required.hpp -- Required Columns                                      */
+/* Card_Neededv2.hpp -- Neededv2 (for emit)                                       */
 /*============================================================================*/
 #pragma once
 
-#include "Card_symbol.hpp"
+#include "Card_EXPRLIST.hpp"
 
 namespace STORE
 {
-  class Card_Required : public Card_symbol<Card_Required>
+  class Card_Neededv2 : public Card_EXPRLIST
   {
   public:
     void* operator new(size_t);
     void  operator delete(void*);
-  
-    Card_Required(void);
-   ~Card_Required(void) noexcept(false);
+
+    Card_Neededv2(void);
+   ~Card_Neededv2(void) noexcept(false);
+
+    Card_Neededv2* pClone(void);
+
+    bool bNeededv2_expr(Card_Expr* p_expr_arg);
+
+    Card_Project* pNew_project_early(CardIter* pCI);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 
-  Card_Required* _pCard_Required(void* aAddr);
+  Card_Neededv2* _pCard_Neededv2(void* aAddr);
 }
 
 /*============================================================================*/

@@ -106,13 +106,13 @@ void XF_Epilog_Itemise_Columns::vItemise_Columns(void)
     Symbol *pSymbol_term = p_term->pSymbol();
 
     if ((pCI->E.p_indexJoin = _pCard_IndexJoin(pCI->pAncestor(CK_o_INDEXJOIN))) &&
-        (pCI->E.p_constraint = _pCard_Constraint(pCI->pAncestor(CK_s_CONSTRAINT)))) {
+        (pCI->E.p_constraint = _pCard_Constraint(pCI->pAncestor(CK_p_CONSTRAINT)))) {
 
       if (!pSymbol_term->bHasFacet(SF_NMD_COL))
         return C_CONTINUE_RECURSION;
 
       pCI->E.p_emit = pCI->E.p_indexJoin->pSub_emit();
-      pCI->E.p_expr = pCI->E.p_emit->pFind_expr_Matches(pSymbol_term);
+      pCI->E.p_expr = pCI->E.p_emit->pFind_expr(pSymbol_term);
       pSymbol_term->vApplyFacet(SF_ITM_COL, pCI->E.p_expr->szFacet(SF_ITM_COL));
       return C_CONTINUE_RECURSION;
     }

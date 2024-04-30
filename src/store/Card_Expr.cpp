@@ -71,7 +71,7 @@ void Card_Expr::vAssemble_injCrlRsl(CardIter* pCI)
     pCI->E.p_term->vApplyCast_x(pCI->E.p_key->xCast());
     pCI->E.p_expr->vApplyCast_x(pCI->E.p_key->xCast());
 
-    pCI->E.p_emit->vBump_expCol_In_rpnCalc(pCI);
+    pCI->E.p_emit->vBump_expCol(pCI);
     pCI->E.p_key->pSymbol()->Y_vSet(P_ProjBumped);
   }
 
@@ -182,7 +182,7 @@ Card_Expr* Card_Expr::pCraft_expr_of_nmdCol(Column *pColumn, i8 iExpCol,
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Expr::vApplyCast(CardIter* pCI, Card_Emit* p_Dic_expr)
+void Card_Expr::vApplyCast(CardIter* pCI, Card_EXPRLIST* p_Dic_expr)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -231,23 +231,7 @@ Card_Expr* Card_Expr::pClone(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Card_Expr::bContains(CardIter* pCI, Symbol* pSymbol_arg)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  for (pCI->vBeginTarget(this,CK_TERM); pCI->bEachTarget(); /**/) {
-    if (pCI->E.xTarget.p_term()->pSymbol()->bMatches(pSymbol_arg)) {
-      pCI->vEndTarget();
-      return true;
-    }
-  }
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_Expr::vDeleteFacetIf(CardIter* pCI, eSF eFacet, eSF eAlsoFacet, char cTblSyn)
+void Card_Expr::vDeleteIf_facet(CardIter* pCI, eSF eFacet, eSF eAlsoFacet, char cTblSyn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -258,7 +242,7 @@ void Card_Expr::vDeleteFacetIf(CardIter* pCI, eSF eFacet, eSF eAlsoFacet, char c
 /*----------------------------------------------------------------------------*/
 /* ensure expression has a SF_NMD_COL                                         */
 /*----------------------------------------------------------------------------*/
-void Card_Expr::vEnsure_expr_Has_nmdCol(i8 iExpCol)
+void Card_Expr::vEnsure_nmdCol(i8 iExpCol)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -277,6 +261,23 @@ void Card_Expr::vEnsure_expr_Has_nmdCol(i8 iExpCol)
 
   // synthetic column name
   pSym_expr->vApplyFacet(SF_NMD_COL,iExpCol);
+}
+
+/*----------------------------------------------------------------------------*/
+/* does expression have term ?                                                */
+/*----------------------------------------------------------------------------*/
+bool Card_Expr::bFind_term(CardIter* pCI, Symbol* pSym_term)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  for (pCI->vBeginTarget(this,CK_TERM); pCI->bEachTarget(); /**/) {
+    if (pCI->E.xTarget.p_term()->pSymbol()->bMatches(pSym_term)) {
+      pCI->vEndTarget();
+      return true;
+    }
+  }
+
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -379,23 +380,6 @@ Card_Term* Card_Expr::pGet_term0(void)
   Card_Term* p_term0 = pGet_term(0);
 
   return p_term0;
-}
-
-/*----------------------------------------------------------------------------*/
-/* does expression have term ?                                                */
-/*----------------------------------------------------------------------------*/
-bool Card_Expr::bHasTerm(CardIter* pCI, Symbol* pSymbol)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  for (pCI->vBeginTarget(this,CK_TERM); pCI->bEachTarget(); /**/) {
-    if (pCI->E.xTarget.p_term()->pSymbol()->bMatches(pSymbol)) {
-      pCI->vEndTarget();
-      return true;
-    }
-  }
-
-  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -570,18 +554,18 @@ bool Card_Expr::bNeedsBrace(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Card_Expr::bSameAs(Card_Expr* p_expr_arg)
+bool Card_Expr::bEqualTo(Card_Expr* pExpr_arg)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   i8 nChildren = nChildCards();
 
-  if (nChildren != p_expr_arg->nChildCards())
+  if (nChildren != pExpr_arg->nChildCards())
     return false;
 
   for (i8 i_Child = 0; i_Child != nChildren; i_Child++) {
     Card_Term* p_term_this = pGet_term(i_Child);
-    Card_Term* p_term_arg = p_expr_arg->pGet_term(i_Child);
+    Card_Term* p_term_arg = pExpr_arg->pGet_term(i_Child);
 
     if (p_term_this->bSymbolMatches(p_term_arg))
       continue;
@@ -663,21 +647,21 @@ void Card_Expr::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   }
 
 /**Z_KEY_DIRECTION validation*/
-  (void)Card::eValidate_parentEither(pCI,
-                                     CK_s_CONSTRAINT,
-                                     CK_t_EMIT,
-                                     CK_s_KEY,
+  (void)Card::eValidate_parent_either(pCI,
+                                     CK_p_CONSTRAINT,
+                                     CK_p_EMIT,
+                                     CK_p_KEY,
 
-                                     CK_c_FLAT,
-                                     CK_c_FOLD,
-                                     CK_s_INJECTABLE,
-                                     CK_s_NEEDED,
-                                     CK_STREAMKEY,
+                                     CK_o_FLAT,
+                                     CK_o_FOLD,
+                                     CK_p_INJECTABLE,
+                                     CK_p_NEEDED,
+                                     CK_p_STREAMKEY,
                                      CK_NONE);
 
-  vValidate_mustHave(CK_TERM, CK_NONE);
+  vValidate_child_mustBe(CK_TERM, CK_NONE);
 
-  if (pCI->bAncestor(CK_s_KEY)) {
+  if (pCI->bAncestor(CK_p_KEY)) {
     //vDump(__func__);
     if (! m_xSymbol.bHasFacet(SF_KEY_COL) || ! m_xSymbol.bValidate()) {
       vDump(__func__);

@@ -6,6 +6,7 @@
 
 #include "Card_OuterJoin.hpp"
 #include "CardIter.hpp"
+#include "XF_Optimise_Early_projection.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -68,7 +69,7 @@ void Card_Where::vCullMarked_rlnConj(CardIter* pCI) {
 
   _static_
 
-  pCI->vBeginEach_reverse();
+  pCI->vBeginEach_tail();
 
   while (pCI->bEachOp_reverse_foldBreak(CK_o_WHERE, CK_PREDICATE)) {
     (void)pCI->E.p_predicate->nCullMarked_rlnConj(MARK_AT);
@@ -82,7 +83,7 @@ void Card_Where::vDeleteEmpyWhere(CardIter* pCI) {
 
   _static_
 
-  pCI->vBeginEach_reverse();
+  pCI->vBeginEach_tail();
 
   while (pCI->bEachOp_reverse_foldBreak(CK_o_WHERE, CK_PREDICATE)) {
     if (0 == pCI->E.p_predicate->nChildCards()) {
@@ -98,7 +99,7 @@ void Card_Where::vMarkWhereConjWrtTable(CardIter* pCI) {
 
   _static_
 
-  pCI->vBeginEach_reverse();
+  pCI->vBeginEach_tail();
 
   while (pCI->bEachOp_reverse_foldBreak(CK_o_WHERE, CK_PREDICATE)) {
     pCI->E.p_predicate->vMark_rlnConj_Wrt_table(pCI, MARK_AT);
@@ -112,7 +113,7 @@ void Card_Where::vMoveWhereConjToTableFilter(CardIter* pCI, Stz* szWithMark) {
 
   _static_
 
-  pCI->vBeginEach_reverse();
+  pCI->vBeginEach_tail();
 
   while (pCI->bEachOp_reverse_foldBreak(CK_o_WHERE, CK_PREDICATE)) {
     pCI->E.p_predicate->vCopyMarked_rlnConj_To_table_filter(pCI, szWithMark);
@@ -132,40 +133,6 @@ void Card_Where::vEarlyProject_add_transients(CardIter* pCI)
 
   vAddTransients(pCI);
 }
-
-
-/*----------------------------------------------------------------------------*/
-/* early project                                                              */
-/*----------------------------------------------------------------------------*/
-void Card_Where::vEarlyProject_recurse_update(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
- // pCI->PRINTBOARD_dbg();
-
-  // save the current projection needed
-  //   we can restore to this save if projection needed get extended
-  Card_Needed* p_needed_save = pCI->Early.m_pNeeded_later->pClone();
-
-  // check for additional/temporary transients
-  vEarlyProject_add_transients(pCI);
-
-  Card_OP::vEarlyProject_backstep(pCI);
-
-  /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
-
- // pCI->PRINTBOARD_dbg();
-
-  pCI->E.p_Op = pCI->E.p_where;
-  ((Card_OP*)pCI->E.p_Op)->vRestate_emit(pCI);
-
- // pCI->PRINTBOARD_dbg();
-
-  // restore needed
-  delete pCI->Early.m_pNeeded_later;
-  pCI->Early.m_pNeeded_later = p_needed_save;
-}
-
 
 /*----------------------------------------------------------------------------*/
 /* smooth                                                                     */
@@ -203,12 +170,12 @@ void Card_Where::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  vValidate_mustHave(CK_s_LEVEL, CK_NONE);
+  vValidate_child_mustBe(CK_p_LEVEL, CK_NONE);
 
   if (!pSub_predicate())
     vDump(__func__);
 
-  vValidate_mustHave(CK_o_FILTER, CK_NONE);
+  vValidate_child_mustBe(CK_o_FILTER, CK_NONE);
 
   UNUSED(pParent);
   Card::vValidate(pCI,iDepth,pParent);

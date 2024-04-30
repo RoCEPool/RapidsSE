@@ -91,7 +91,7 @@ eXK Card_Cast::eStageCast(CardIter* pCI,
     // + stream joining to column which is table partition
 
     // ? prior column is key in stream ptn
-   if (p_streamPtn->bHasSymbolRecursive(CK_STREAMKEY,p_Y_tblCol_prior)) {
+   if (p_streamPtn->bHasSymbolRecursive(CK_p_STREAMKEY, p_Y_tblCol_prior)) {
       // + prior column is a key in stream partition
       //     stream is a unicast mapping to table partitions
       eCast = XK_UNICAST;
@@ -121,16 +121,16 @@ eXK Card_Cast::eStageCast(CardIter* pCI,
 
     case XK_BROADCAST:
       p_streamPtn->vDeleteAllChildren();
-       pCI->vAppendNewChild(p_streamPtn,CK_STREAMKEY,p_Y_tablePtn_join);
+       pCI->vAppendNewChild(p_streamPtn, CK_p_STREAMKEY, p_Y_tablePtn_join);
       break;
 
     case XK_HASHCAST:
       p_streamPtn->vDeleteAllChildren();
-      pCI->vAppendNewChild(p_streamPtn,CK_STREAMKEY,p_Y_tablePtn_join);
+      pCI->vAppendNewChild(p_streamPtn, CK_p_STREAMKEY, p_Y_tablePtn_join);
       break;
 
     case XK_UNICAST:
-      pCI->vAppendNewChild(p_streamPtn,CK_STREAMKEY,p_Y_tablePtn_join);
+      pCI->vAppendNewChild(p_streamPtn, CK_p_STREAMKEY, p_Y_tablePtn_join);
       break;
 
     default:
@@ -146,7 +146,7 @@ void Card_Cast::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  vValidate_notHave(CK_s_LEVEL, CK_NONE);
+  vValidate_child_notBe(CK_p_LEVEL, CK_NONE);
 
   Card::vValidate(pCI,iDepth,pParent);
   pCI->vValidateChildren(this,iDepth+1);

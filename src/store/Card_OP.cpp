@@ -40,39 +40,51 @@ Card_OP::~Card_OP(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* test if eCard is a op                                                      */
 /*----------------------------------------------------------------------------*/
-bool Card_OP::bIsOp(Card* pCard)
+bool Card_OP::bIsOp(eCK eCard)
 {
   _static_
-
-  eCK eCard = pCard->eCard();
 
   switch (eCard) {
 
     case CK_o_AGGREG:
+    case CK_o_CALL:
+    case CK_o_CAST:
+    case CK_o_CORRELATION:
     case CK_o_CROSSJOIN:
     case CK_o_FILTER:
+    case CK_o_FROM:
     case CK_o_GBYAGG:
+    case CK_o_HASH:
     case CK_o_HAVING:
-    case CK_o_INDEXJOIN:
     case CK_o_INDEXSCAN:
+    case CK_o_INDEXJOIN:
+    case CK_o_INFLATE:
     case CK_o_KEYEXISTS:
     case CK_o_KEYNOTEXISTS:
     case CK_o_LIMIT:
     case CK_o_ORDAGG:
+    case CK_o_PDSROW:
     case CK_o_PROJECT:
-    case CK_o_WHERE:
     case CK_o_SCAN:
     case CK_o_SORT:
     case CK_o_TOP:
+    case CK_o_WHERE:
+      return true;
+
+    case CK_o_ABSJOIN:
+    case CK_o_FLAT:
+    case CK_o_FOLD:
+    case CK_o_SEND:
+    case CK_o_STAGE:
       return true;
 
     default:
       return false;
   }
-
 }
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
@@ -137,151 +149,6 @@ void Card_OP::vCull_filter_IfEmpty(Card_Filter* p_filter)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_OP::vEarlyProject_root(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  switch (pCI->E.e_Op) {
-
-    // -- -- -- -- -- -- --
-    case CK_o_AGGREG:
-      pCI->E.p_aggreg->vEarlyProject_root(pCI);
-      break;
-
-    case CK_o_GBYAGG:
-      pCI->E.p_gbyAgg->vEarlyProject_root(pCI);
-      break;
-
-    case CK_o_ORDAGG:
-      pCI->E.p_ordAgg->vEarlyProject_root(pCI);
-      break;
-
-    // -- -- -- -- -- -- --
-    case CK_o_PROJECT:
-      pCI->E.p_project->vEarlyProject_root(pCI);
-      break;
-
-    case CK_o_INDEXJOIN:
-      pCI->E.p_indexJoin->vEarlyProject_root(pCI);
-      break;
-
-    // -- -- -- -- -- -- --
-    case CK_o_CROSSJOIN:
-    case CK_o_INDEXSCAN:
-    case CK_o_LIMIT:
-    case CK_o_SCAN:
-    case CK_o_TOP:
-      break;
-
-    default:
-      NEVER_REACH;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_OP::vEarlyProject_backstep(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  RASSERT(pCI->Early.m_pNeeded_later);
-
-  //Card_OP* p_OP_leaf_maybe = pCI->G.p_Op;
-
-  if (!pCI->bEachOp_reverse())
-    return;
-
-  // which card did we arrive at?
-  switch (pCI->E.e_Op) {
-
-    // -- -- -- -- -- -- --
-    // don't go any further
-
-    case CK_o_GBYAGG:
-      pCI->Early.m_pOP_leaf = (Card_OP*)pCI->E.p_Op;
-      break;
-
-    case CK_o_ORDAGG:
-      pCI->Early.m_pOP_leaf = (Card_OP*)pCI->E.p_Op;
-      break;
-
-    // -- -- -- -- -- -- --
-    // recurse into...
-
-    case CK_o_CROSSJOIN:
-      pCI->vPushEach();
-      pCI->E.p_crossJoin->vEarlyProject_recurse_update(pCI);
-      pCI->vPopEach();
-      break;
-
-    case CK_o_FILTER:
-      pCI->vPushEach();
-      pCI->E.p_filter->vEarlyProject_recurse_update(pCI);
-      pCI->vPopEach();
-      break;
-
-    case CK_o_INDEXJOIN:
-      pCI->vPushEach();
-      pCI->E.p_indexJoin->vEarlyProject_recurse_add(pCI);
-      pCI->vPopEach();
-      break;
-
-    case CK_o_INDEXSCAN:
-      pCI->vPushEach();
-      pCI->E.p_indexScan->vEarlyProject_leaf(pCI);
-      pCI->vPopEach();
-      break;
-
-    case CK_o_KEYEXISTS:
-      pCI->vPushEach();
-      pCI->E.p_keyExists->vEarlyProject_recurse_add(pCI);
-      pCI->vPopEach();
-      break;
-
-    case CK_o_KEYNOTEXISTS:
-      pCI->vPushEach();
-      pCI->E.p_keyNotExists->vEarlyProject_recurse_add(pCI);
-      pCI->vPopEach();
-      break;
-
-    case CK_o_PROJECT:
-      if (pCI->E.p_project->pSub_needed()) {
-        pCI->vPushEach();
-        pCI->E.p_project->vEarlyProject_recurse_needed(pCI);
-        pCI->vPopEach();
-      }
-      else {
-        pCI->E.p_project->vEarlyProject_given_leaf(pCI);
-      }
-      break;
-
-    case CK_o_SCAN:
-      pCI->vPushEach();
-      pCI->E.p_scan->vEarlyProject_leaf(pCI);
-      pCI->vPopEach();
-      break;
-
-    case CK_o_WHERE:
-      pCI->vPushEach();
-      pCI->E.p_where->vEarlyProject_recurse_update(pCI);
-      pCI->vPopEach();
-      break;
-
-    // -- -- -- -- -- -- --
-    // missing??
-
-    default:
-      pCI->E.p_Op->vDump(__func__);
-      NEVER_REACH
-  }
-
-  vDebugPoint();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 Card_Filter* Card_OP::pEnsure_filter(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
@@ -332,7 +199,7 @@ void Card_OP::vFuse_project_Viable(CardIter *pCI)
   pCI->E.p_emit = pCI->E.p_Op->pSub_emit();
   pCI->E.p_table = pCI->E.p_Op->pSub_table();
   char cTblSyn = pCI->E.p_table->pSymbol()->cTblSyn();
-  pCI->E.p_emit->vDeleteFacetIf(pCI,SF_EXP_COL, SF_TBL_COL, cTblSyn);
+  pCI->E.p_emit->vDeleteIf_facet(pCI, SF_EXP_COL, SF_TBL_COL, cTblSyn);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -451,7 +318,7 @@ void Card_OP::vMapColumns(CardIter *pCI)
   pCI->E.p_key = pSub_key();
   pCI->E.p_emit = pSub_emit();
 
-  pCI->vAppendNewChild(pCI->E.p_Op, CK_s_MAPPING);
+  pCI->vAppendNewChild(pCI->E.p_Op, CK_p_MAPPING);
   pCI->vAppendNewChild(pCI->E.p_mapping, CK_KEYCELLS);
   pCI->vAppendNewChild(pCI->E.p_mapping, CK_PAYLOADCELLS);
 
@@ -541,8 +408,8 @@ void Card_OP::vRestate_emit(CardIter* pCI)
   eCK eCard_OP = pCI->E.p_Op->eCard();
   switch (eCard_OP) {
 
-    case CK_c_SEND:
-    case CK_c_STAGE:
+    case CK_o_SEND:
+    case CK_o_STAGE:
     case CK_o_CALL:
     case CK_o_CORRELATION:
       RASSERT(! pCI->E.p_Op->pSub_emit());
@@ -554,7 +421,7 @@ void Card_OP::vRestate_emit(CardIter* pCI)
     case CK_o_GBYAGG:
     case CK_o_ORDAGG:
       pCI->E.p_emit = pCI->E.p_Op->pSub_emit(C_NOT_NULL);
-      pCI->E.p_emit->vEnsure_expr_Has_nmdCol();
+      pCI->E.p_emit->vEnsureAll_expr_Have_nmdCol();
       if (pCI->Arriving.m_pEmit) {
         pCI->Dic.m_p_expr = pCI->Arriving.m_pEmit;
         pCI->E.p_key = pCI->E.p_Op->pSub_key();
@@ -571,7 +438,7 @@ void Card_OP::vRestate_emit(CardIter* pCI)
       }
 
       pCI->E.p_emit = pCI->E.p_Op->pSub_emit(C_NOT_NULL);
-      pCI->E.p_emit->vEnsure_expr_Has_nmdCol();
+      pCI->E.p_emit->vEnsureAll_expr_Have_nmdCol();
       if (pCI->Arriving.m_pEmit) {
         pCI->Dic.m_p_expr = pCI->Arriving.m_pEmit;
         pCI->E.p_emit->vApplyCast(pCI,/*??*/pCI->Dic.m_p_expr);
@@ -639,6 +506,9 @@ void Card_OP::vRestate_emit(CardIter* pCI)
       pCI->E.p_Op->vDump(__func__);
       NEVER_REACH
       break;
+
+    case CK_o_FOLD:
+      return;
 
     default:
       pCI->E.p_Op->vDump(__func__);
@@ -728,7 +598,7 @@ void Card_OP::vRpn_aggreg(CardIter* pCI, String* psRpnExpr, Card_Aggreg* p_aggre
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   Card_Emit* pCard_Projection =
-      _pCard_Emit(p_aggreg->pFindSubCard(CK_t_EMIT));
+      _pCard_Emit(p_aggreg->pFindSubCard(CK_p_EMIT));
 
   if (! pCard_Projection)
     return;
@@ -840,7 +710,7 @@ void Card_OP::vRpn_gbyAgg(CardIter* pCI, String* psRpnExpr, Card_GbyAgg* p_gbyAg
 
 
   Card_Emit* pCard_Projection =
-      _pCard_Emit(p_gbyAgg->pFindSubCard(CK_t_EMIT));
+      _pCard_Emit(p_gbyAgg->pFindSubCard(CK_p_EMIT));
 
   if (! pCard_Projection)
     return;
@@ -1256,7 +1126,7 @@ void Card_OP::vRpn_ordAgg(CardIter* pCI, String* psRpnExpr, Card_OrdAgg* p_ordAg
   i8 nSubCards;
 
   Card_Key* pCard_Key =
-      _pCard_Key(p_ordAgg->pFindSubCard(CK_s_KEY));
+      _pCard_Key(p_ordAgg->pFindSubCard(CK_p_KEY));
 
   if (! pCard_Key)
     return;
@@ -1281,7 +1151,7 @@ void Card_OP::vRpn_ordAgg(CardIter* pCI, String* psRpnExpr, Card_OrdAgg* p_ordAg
 
 
   Card_Emit* pCard_Emit =
-      _pCard_Emit(p_ordAgg->pFindSubCard(CK_t_EMIT));
+      _pCard_Emit(p_ordAgg->pFindSubCard(CK_p_EMIT));
 
   if (! pCard_Emit)
     return;
@@ -1329,7 +1199,7 @@ void Card_OP::vRpn_project(CardIter* pCI, String* psRpnExpr, Card_Project* p_pro
   UNUSED(pCI);
 
   Card_Emit* pCard_Emit =
-      _pCard_Emit(p_project->pFindSubCard(CK_t_EMIT));
+      _pCard_Emit(p_project->pFindSubCard(CK_p_EMIT));
 
   i8 nSubCards = pCard_Emit->nItems();
   for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
@@ -1610,7 +1480,7 @@ void Card_OP::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
     return;
 
   if (pCI->pBoard()->pState()->bHasName(aOH[OH_PROLOG]))
-    vValidate_mustHave(CK_s_LEVEL, CK_NONE);
+    vValidate_child_mustBe(CK_p_LEVEL, CK_NONE);
 }
 
 /*============================================================================*/

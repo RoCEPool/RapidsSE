@@ -84,8 +84,8 @@ void XF_Epilog_Type_Cast::vCast(void)
       case CK_o_SORT:
        break;
 
-      case CK_c_STAGE:
-      case CK_c_SEND:
+      case CK_o_STAGE:
+      case CK_o_SEND:
 
       case CK_o_AGGREG:
       case CK_o_CALL:

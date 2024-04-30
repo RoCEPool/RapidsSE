@@ -1355,6 +1355,12 @@ bool Symbol::bSame(Facet* aFacet_a, Facet* aFacet_b)
 {
   _static_
 
+  if (! aFacet_a && ! aFacet_b)
+    return true;
+
+  if ( (aFacet_a && ! aFacet_b) || (! aFacet_a && aFacet_b) )
+    return false;
+
   if (aFacet_a->m_eFacet != aFacet_b->m_eFacet)
     return false;
 

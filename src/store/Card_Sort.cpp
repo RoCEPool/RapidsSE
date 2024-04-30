@@ -49,14 +49,11 @@ void Card_Sort::vDerive_streamKey(CardIter* pCI)
   RASSERT(bPeg_Projection(pCI));
   RASSERT(bPeg_Key(pCI));
 
-  pCI->E.p_emit->vDeleteSub(CK_STREAMKEY);
-
-
+  vDeleteSub(CK_p_STREAMKEY);
   pCI->E.p_streamKey = pCI->StreamOrder.m_pStreamKey = Card_StreamKey::pTo_streamKey(pCI->E.p_key);
-  pCI->E.p_emit->vAppendChild(pCI->StreamOrder.m_pStreamKey);
+  vAppendChild(pCI->StreamOrder.m_pStreamKey);
 
-
-  // set running projection for use by next op
+  // set running emit for use by next op
   pCI->StreamOrder.m_pEmit = pCI->E.p_emit;
 }
 
@@ -92,7 +89,7 @@ void Card_Sort::vSmooth(CardIter* pCI)
 
   for (Kid xEmit_sort(pCI->E.p_emit); xEmit_sort.bEach(); /**/) {
     Card_Expr* p_expr_emit_sort = xEmit_sort.p_expr();
-    Card_Expr* p_expr_key = pCI->E.p_key->pDecode_scalar_expr_Via_symbol(pCI,p_expr_emit_sort->pSymbol());
+    Card_Expr* p_expr_key = pCI->E.p_key->pFind_expr(pCI, p_expr_emit_sort->pSymbol());
     if (! p_expr_key)
       continue;
     Symbol* pSym_expr_key = p_expr_key->pSymbol();
@@ -110,7 +107,7 @@ void Card_Sort::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
   UNUSED(pParent);
 
-  vValidate_mustHave(CK_s_LEVEL, CK_s_KEY, CK_t_EMIT, CK_NONE);
+  vValidate_child_mustBe(CK_p_LEVEL, CK_p_KEY, CK_p_EMIT, CK_NONE);
 
   UNUSED(pParent);
   Card::vValidate(pCI,iDepth,pParent);

@@ -21,7 +21,7 @@ namespace STORE
    ~Card_Term(void) noexcept(false);
 
 
-    void vApplyCast(CardIter* pCI, Card_Emit* p_Dic_expr, Cast& rxCast_last);
+    void vApplyCast(CardIter* pCI, Card_EXPRLIST* p_Dic_expr, Cast& rxCast_last);
     void vBump_ordCol(eSF eFacet, i8 nBy= 1);
     Card_Term* pClone(void);
     Card_Term* pClone(Symbol* pDiffSymbol);

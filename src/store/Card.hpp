@@ -18,11 +18,7 @@
 #include "Ribbon.hpp"
 #include "Symbol.hpp"
 
-//#define Z_PART_STREAMKEY
-
-#define Z_PDSROW
-
-#define Z_TOPOLOGY_ENUM
+//#define Z_NEEDEDv2
 
 namespace STORE
 {
@@ -290,14 +286,6 @@ namespace STORE
 
     static void vCardLeaks(void);
 
-    static bool bIsConstruction(eCK eCard);
-    static bool bIsMain(eCK eCard);
-    static bool bIsOp(eCK eCard);
-
-    static eYG  e_aggLevel_To_stageTopo(eAL eLevel);
-
-    static eAL  e_stageTopo_To_aggLevel(eYG eStageTopo);
-
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
     bool bAllChildren(eCK eCard);
@@ -352,7 +340,6 @@ namespace STORE
     bool bHasSymbolRecursive(eCK eCard, Symbol* pSymbol);
 
     bool bIsCard(eCK eCard);
-    bool bIsMain(void);
     bool bIsOp(void);
     bool bIsPeek(eCK eChild0);
     bool bIsPeek(eCK eChild0, eCK eChild1);
@@ -412,14 +399,15 @@ namespace STORE
 
     void vValidate_hasChildren(void);
     void vValidate_hasType(void);
-    void vValidate_mayHave(i8 /*eCK*/ iCard_first, ...);
-    eCK  eValidate_mustEither(i8 /*eCK*/ iCard_first, ...);
-    void vValidate_mustHave(i8 /*eCK*/ iCard_first, ...);
-    eCK  eValidate_mustSome(i8 /*eCK*/ iCard_first, ...);
-    void vValidate_noChildren(void);
-    void vValidate_notHave(i8 /*eCK*/ iCard, ...);
-    eCK  eValidate_parentEither(CardIter* pCI, i8 /*eCK*/ iCard_first, ...);
-    void vValidate_parentMust(CardIter* pCI, eCK eParent);
+    void vValidate_child_mayBe(i8 /*eCK*/ iCard_first, ...);
+    eCK  vValidate_child_mustEither(i8 /*eCK*/ iCard_first, ...);
+    void vValidate_child_mustBe(i8 /*eCK*/ iCard_first, ...);
+    eCK  eValidate_child_mustSome(i8 /*eCK*/ iCard_first, ...);
+    void vValidate_hasNoChildren(void);
+    void vValidate_child_notBe(i8 /*eCK*/ iCard, ...);
+    eCK  eValidate_parent_either(CardIter* pCI, i8 /*eCK*/ iCard_first, ...);
+    void eValidate_parent_mustBe(CardIter* pCI, eCK eParent);
+    void vValidate_parent_notBe(CardIter* pCI, eCK eParent_not);
 
     void vValidationFailed(Stz* szFormat, ...);
     void vValidationPassed(void);

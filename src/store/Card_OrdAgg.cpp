@@ -45,7 +45,7 @@ Card_OrdAgg::~Card_OrdAgg(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* early project                                                              */
 /*----------------------------------------------------------------------------*/
-void Card_OrdAgg::vEarlyProject_root(CardIter* pCI)
+bool Card_OrdAgg::bEarlyProject_root(CardIter* pCI)
 {
   vDump(__func__);
 
@@ -56,41 +56,15 @@ void Card_OrdAgg::vEarlyProject_root(CardIter* pCI)
   RASSERT(! pCI->Early.m_pNeeded_later);
 
   if (pCI->pPeekPrev()->bIsCard(CK_o_PROJECT))
-    return;
-
-  pCI->E.p_key = pSub_key();
-  pCI->E.p_emit = pSub_emit();
+    return false;
 
   // get the root needed form of ordAgg's projection
-  pCI->Early.m_pOP_root = this;
-  pCI->Early.m_pOP_leaf = nullptr;
   pCI->Early.m_pNeeded_later  = pCI->E.p_emit->pCraftRoot_needed(pCI);
 
-  // insert empty early projection (has only needed) before this ordAgg
-  Card_Project* p_project_early = pCI->Early.m_pNeeded_later->pNew_project_early(pCI);
-  pCI->vInsertBefore(p_project_early, this);
-  pCI->vResynchOp();
-
-  Card_OP::vEarlyProject_backstep(pCI);
-
-  /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
-
-  RASSERT(pCI->Early.m_pOP_leaf);
-
-  pCI->E.p_ordAgg->vRestate_emit(pCI);
 
  // pCI->PRINTBOARD_dbg();
-}
 
-/*----------------------------------------------------------------------------*/
-/* craft needed                                                               */
-/*----------------------------------------------------------------------------*/
-void Card_OrdAgg::vCraft_needed_root(CardIter *pCI)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  pCI->Early.m_pNeeded_later = pCI->E.p_emit->pCraft_needed_root(pCI);
-  DELETE_CARD(pCI->Early.m_pNeeded_later);
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -100,7 +74,7 @@ void Card_OrdAgg::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  vValidate_mustHave(CK_s_LEVEL, CK_t_EMIT, CK_NONE);
+  vValidate_child_mustBe(CK_p_LEVEL, CK_p_EMIT, CK_NONE);
 
   UNUSED(pParent);
   Card::vValidate(pCI,iDepth,pParent);

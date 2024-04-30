@@ -16,7 +16,7 @@ namespace STORE
     Card_OP(eCK eCard, i8 iFixedDepth);
    ~Card_OP(void) noexcept(false);
 
-    static bool bIsOp(Card* pCard);
+     static bool bIsOp(eCK eCard);
 
     void vAnalyse_injectable(CardIter* pCI);
     void vApply_lambdaFn_ToAll_term(CardIter* pCI,
@@ -26,8 +26,6 @@ namespace STORE
 
     void vCull_filter_IfEmpty(Card_Filter* p_filter);
 
-    void vEarlyProject_root(CardIter* pCI);
-    void vEarlyProject_backstep(CardIter* pCI);
 
     Card_Filter* pEnsure_filter(void);
 

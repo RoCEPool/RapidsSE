@@ -113,13 +113,8 @@ Card::Card(eCK eCard, i8 iFixedDepth)
   m_xSymbol.vCard(this);
   MemLib::vZero(md_Coord, sizeof(md_Coord), CN_CARD);
 
-  if (CK_o_SORT == eCard)
+  if (CK_o_SCAN == eCard)
     vDebugPoint();
-
-#ifdef Z_NO_STREAMKEY
-  if (CK_STREAMKEY == eCard)
-    vDebugPoint();
-#endif
 
   m_eCard   = eCard;
   m_i_Child = C_UNKNOWN;
@@ -200,118 +195,8 @@ void Card::vCardLeaks(void)
 //  }
 }
 
-/*----------------------------------------------------------------------------*/
-/* convert eAL to eYG                                                         */
-/*----------------------------------------------------------------------------*/
-eYG Card::e_aggLevel_To_stageTopo(eAL eLevel)
-{
-  _static_
-
-  switch (eLevel) {
-    case AL_PARTITION : return YG_ALL_PARTITIONS;
-    case AL_NODE      : return YG_ALL_NODES;
-    case AL_ORIGIN    : return YG_ORIGIN_NODE;
-    default           : return YG_ALL_PARTITIONS;
-  }
-}
 
 /*----------------------------------------------------------------------------*/
-/* convert eYG to eAL                                                         */
-/*----------------------------------------------------------------------------*/
-eAL Card::e_stageTopo_To_aggLevel(eYG eStageTopo)
-{
-  _static_
-
-  eAL eLevel;
-
-  switch (eStageTopo) {
-    case YG_ALL_PARTITIONS : eLevel = AL_PARTITION; break;
-    case YG_ALL_NODES      : eLevel = AL_NODE;      break;
-    case YG_ORIGIN_NODE    : eLevel = AL_ORIGIN;    break;
-    default                : eLevel = AL_NONE;      break;
-  }
-
-  return eLevel;
-}
-
-/*----------------------------------------------------------------------------*/
-/* test if eCard is a construction                                            */
-/*----------------------------------------------------------------------------*/
-bool Card::bIsConstruction(eCK eCard)
-{
-  _static_
-
-  switch (eCard) {
-
-    case CK_c_ABSJOIN:
-    case CK_c_FLAT:
-    case CK_c_FOLD:
-    case CK_c_SEND:
-    case CK_c_STAGE:
-      return true;
-
-    default:
-      return false;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* test if eCard is a main                                                    */
-/*----------------------------------------------------------------------------*/
-bool Card::bIsMain(eCK eCard)
-{
-  _static_
-
-  if (bIsOp(eCard))
-    return true;
-
-  if (bIsConstruction(eCard))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* test if eCard is a op                                                      */
-/*----------------------------------------------------------------------------*/
-bool Card::bIsOp(eCK eCard)
-{
-  _static_
-
-  switch (eCard) {
-
-    case CK_o_AGGREG:
-    case CK_o_CALL:
-    case CK_o_CAST:
-    case CK_o_CORRELATION:
-    case CK_o_CROSSJOIN:
-    case CK_o_FILTER:
-    case CK_o_FROM:
-    case CK_o_GBYAGG:
-    case CK_o_HASH:
-    case CK_o_HAVING:
-    case CK_o_INDEXSCAN:
-    case CK_o_INDEXJOIN:
-    case CK_o_INFLATE:
-    case CK_o_KEYEXISTS:
-    case CK_o_KEYNOTEXISTS:
-    case CK_o_LIMIT:
-    case CK_o_ORDAGG:
-    case CK_o_PDSROW:
-    case CK_o_PROJECT:
-    case CK_o_SCAN:
-    case CK_o_SORT:
-    case CK_o_TOP:
-    case CK_o_WHERE:
-      return true;
-
-    default:
-      return false;
-  }
-}
-
-
-/*------------------------------------ ----------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -336,6 +221,9 @@ bool Card::bAllChildren(eCK eCard)
 void Card::vAppendChild(Card* pChild)
 {
   RASSERT(pChild);
+
+  if (CK_p_EMIT == eCard() && CK_p_STREAMKEY == pChild->eCard())
+    NEVER_REACH
 
   ChildCards::vAppendChild(pChild);
 
@@ -396,11 +284,6 @@ eCK Card::eCard(void)
 Card* Card::pCard(eCK eCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-#ifdef Z_PART_STREAMKEY
-  if (CK_STREAMKEY == eCard)
-    vDebugPoint();
-#endif
 
   m_eCard = eCard;
 
@@ -1049,26 +932,13 @@ bool Card::bIsCard(eCK eCard)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this card a main card                                                   */
-/*----------------------------------------------------------------------------*/
-bool Card::bIsMain(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (bIsMain(eCard()))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* is this card a op card                                                     */
 /*----------------------------------------------------------------------------*/
 bool Card::bIsOp(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (bIsOp(eCard()))
+  if (Card_OP::bIsOp(eCard()))
     return true;
 
   return false;
@@ -1781,21 +1651,9 @@ void Card::vValidate_hasChildren(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* validate this card has child cards                                         */
+/* validate set of child cards                                                */
 /*----------------------------------------------------------------------------*/
-void Card::vValidate_hasType(void)
-{
-  if (!pSymbol()->bValidType()) {
-    vDump(__func__);
-    NEVER_REACH
-  }
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* validate set of child cards                                                 */
-/*----------------------------------------------------------------------------*/
-void Card::vValidate_mayHave(i8 /*eCK*/ iCard_first, ...)
+void Card::vValidate_child_mayBe(i8 /*eCK*/ iCard_first, ...)
 {
   // The first parameter before the varargs (...) must not undergo default
   // argument promotion. This will occur if the enum type is smaller than
@@ -1842,7 +1700,7 @@ void Card::vValidate_mayHave(i8 /*eCK*/ iCard_first, ...)
 /*----------------------------------------------------------------------------*/
 /* validate set of child cards                                                */
 /*----------------------------------------------------------------------------*/
-void Card::vValidate_mustHave(i8 /*eCK*/ iCard_first, ...)
+void Card::vValidate_child_mustBe(i8 /*eCK*/ iCard_first, ...)
 {
   // The first parameter before the varargs (...) must not undergo default
   // argument promotion. This will occur if the enum type is smaller than
@@ -1870,7 +1728,7 @@ void Card::vValidate_mustHave(i8 /*eCK*/ iCard_first, ...)
     }
 
     if (! bMustHave) {
-      vValidationFailed("vValidate_mustHave: missing %lld %lls"_Stz,(i8)eCard_mustHave,aCK[eCard_mustHave]);
+      vValidationFailed("vValidate_child_mustBe: missing %lld %lls"_Stz,(i8)eCard_mustHave,aCK[eCard_mustHave]);
     }
 
     eCard_mustHave = (eCK)va_arg(xArgs, i8);
@@ -1884,7 +1742,7 @@ void Card::vValidate_mustHave(i8 /*eCK*/ iCard_first, ...)
 /*----------------------------------------------------------------------------*/
 /* validate set of child cards                                                */
 /*----------------------------------------------------------------------------*/
-eCK Card::eValidate_mustEither(i8 /*eCK*/ iCard_first, ...)
+eCK Card::vValidate_child_mustEither(i8 /*eCK*/ iCard_first, ...)
 {
   // The first parameter before the varargs (...) must not undergo default
   // argument promotion. This will occur if the enum type is smaller than
@@ -1930,7 +1788,7 @@ eCK Card::eValidate_mustEither(i8 /*eCK*/ iCard_first, ...)
 /*----------------------------------------------------------------------------*/
 /* validate set of child cards                                                */
 /*----------------------------------------------------------------------------*/
-eCK Card::eValidate_mustSome(i8 /*eCK*/ iCard_first, ...)
+eCK Card::eValidate_child_mustSome(i8 /*eCK*/ iCard_first, ...)
 {
   // The first parameter before the varargs (...) must not undergo default
   // argument promotion. This will occur if the enum type is smaller than
@@ -1974,20 +1832,9 @@ eCK Card::eValidate_mustSome(i8 /*eCK*/ iCard_first, ...)
 }
 
 /*----------------------------------------------------------------------------*/
-/* validate no child cards                                                    */
-/*----------------------------------------------------------------------------*/
-void Card::vValidate_noChildren(void)
-{
-  if (nChildCards()) {
-    vDump(__func__,"CARD FAILED: NOCHILDREN"_Stz);
-    NEVER_REACH
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* validate set of child cards                                                */
 /*----------------------------------------------------------------------------*/
-void Card::vValidate_notHave(i8 /*eCK*/ iCard, ...)
+void Card::vValidate_child_notBe(i8 /*eCK*/ iCard, ...)
 {
   // The first parameter before the varargs (...) must not undergo default
   // argument promotion. This will occur if the enum type is smaller than
@@ -2027,9 +1874,31 @@ void Card::vValidate_notHave(i8 /*eCK*/ iCard, ...)
 }
 
 /*----------------------------------------------------------------------------*/
+/* validate no child cards                                                    */
+/*----------------------------------------------------------------------------*/
+void Card::vValidate_hasNoChildren(void)
+{
+  if (nChildCards()) {
+    vDump(__func__,"CARD FAILED: NOCHILDREN"_Stz);
+    NEVER_REACH
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* validate this card has child cards                                         */
+/*----------------------------------------------------------------------------*/
+void Card::vValidate_hasType(void)
+{
+  if (!pSymbol()->bValidType()) {
+    vDump(__func__);
+    NEVER_REACH
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* validate set of child cards                                                */
 /*----------------------------------------------------------------------------*/
-eCK Card::eValidate_parentEither(CardIter* pCI, i8 /*eCK*/ iCard_first, ...)
+eCK Card::eValidate_parent_either(CardIter* pCI, i8 /*eCK*/ iCard_first, ...)
 {
   // The first parameter before the varargs (...) must not undergo default
   // argument promotion. This will occur if the enum type is smaller than
@@ -2071,14 +1940,26 @@ eCK Card::eValidate_parentEither(CardIter* pCI, i8 /*eCK*/ iCard_first, ...)
 /*----------------------------------------------------------------------------*/
 /* validate set of child cards                                                */
 /*----------------------------------------------------------------------------*/
-void Card::vValidate_parentMust(CardIter* pCI, eCK eParent)
+void Card::eValidate_parent_mustBe(CardIter* pCI, eCK eParent)
 {
 
-  if (CK_NONE == pCI->bAncestor(eParent)) {
+  if (! pCI->bAncestor(eParent)) {
     pCI->vAncestorDump(this);
     vValidationFailed("%s"_Stz,__func__);
   }
 
+}
+
+/*----------------------------------------------------------------------------*/
+/* validate set of child cards                                                */
+/*----------------------------------------------------------------------------*/
+void Card::vValidate_parent_notBe(CardIter* pCI, eCK eParent_not)
+{
+
+  if (pCI->bAncestor(eParent_not)) {
+    pCI->vAncestorDump(this);
+    vValidationFailed("%s"_Stz,__func__);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2173,13 +2054,13 @@ void Card::vPrint_card(CardIter* pCI, Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (bIsCard(CK_c_STAGE))
+  if (bIsCard(CK_o_STAGE))
     pRibbon->vMargin(szFacet(SF_STG_NM));
 
   if (CK_EXPR     == m_eCard) { vPrint_expr (pCI,pRibbon, iDepth); return; }
-  if (CK_s_LEVEL  == m_eCard) { vPrint_enum (pCI,pRibbon, iDepth); return; }
+  if (CK_p_LEVEL == m_eCard) { vPrint_enum (pCI, pRibbon, iDepth); return; }
   if (CK_TERM     == m_eCard) { vPrint_term (pCI,pRibbon, iDepth); return; }
-  if (CK_s_TABLE  == m_eCard) { vPrint_table(pCI,pRibbon, iDepth); return; }
+  if (CK_p_TABLE == m_eCard) { vPrint_table(pCI, pRibbon, iDepth); return; }
   if (CK_TOPOLOGY == m_eCard) { vPrint_enum (pCI,pRibbon, iDepth); return; }
 
   if (0 == iDepth) { vPrint_depth0(pCI,pRibbon, iDepth); return; }
@@ -2458,7 +2339,7 @@ void Card::vCatBracket(i8& ri_Char, Ribbon* pRibbon, CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (pCI->bAncestor(CK_s_MAPPING) ||pCI->bAncestor(CK_STREAMKEY))
+  if (pCI->bAncestor(CK_p_MAPPING) || pCI->bAncestor(CK_p_STREAMKEY))
     vCat(ri_Char, pRibbon,")"_Stz);
   else
     vCat(ri_Char, pRibbon,"]"_Stz);
@@ -2967,7 +2848,7 @@ Card_Constraint* Card::pSub_constraint(bool bNotNull)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Constraint* p_constraint =
-      _pCard_Constraint(pFindSubCard(CK_s_CONSTRAINT));
+      _pCard_Constraint(pFindSubCard(CK_p_CONSTRAINT));
 
   if (bNotNull && !p_constraint) {
     NEVER_REACH
@@ -3147,7 +3028,7 @@ Card_Emit* Card::pSub_emit(bool bNotNull)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Emit* p_emit =
-      _pCard_Emit(pFindSubCard(CK_t_EMIT));
+      _pCard_Emit(pFindSubCard(CK_p_EMIT));
 
   if (bNotNull && !p_emit) {
     NEVER_REACH
@@ -3237,7 +3118,7 @@ Card_Flat* Card::pSub_flat(bool bNotNull)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Flat* p_flat =
-      _pCard_Flat(pFindSubCard(CK_c_FOLD));
+      _pCard_Flat(pFindSubCard(CK_o_FOLD));
 
   if (bNotNull && !p_flat) {
     NEVER_REACH
@@ -3255,7 +3136,7 @@ Card_Fold* Card::pSub_fold(bool bNotNull)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Fold* p_fold =
-      _pCard_Fold(pFindSubCard(CK_c_FOLD));
+      _pCard_Fold(pFindSubCard(CK_o_FOLD));
 
   if (bNotNull && !p_fold) {
     NEVER_REACH
@@ -3309,7 +3190,7 @@ Card_Hashing* Card::pSub_hashing(bool bNotNull)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Hashing* p_hashing =
-      _pCard_Hashing(pFindSubCard(CK_s_HASHING));
+      _pCard_Hashing(pFindSubCard(CK_p_HASHING));
 
   if (bNotNull && !p_hashing) {
     NEVER_REACH
@@ -3327,7 +3208,7 @@ Card_HshCol* Card::pSub_hshCol(bool bNotNull)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_HshCol* p_hshCol =
-      _pCard_HshCol(pFindSubCard(CK_t_HSHCOL));
+      _pCard_HshCol(pFindSubCard(CK_HSHCOL));
 
   if (bNotNull && !p_hshCol) {
     NEVER_REACH
@@ -3345,7 +3226,7 @@ Card_HshColList* Card::pSub_hshColList(bool bNotNull)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_HshColList* p_hshColList =
-      _pCard_HshColList(pFindSubCard(CK_s_HSHCOLLIST));
+      _pCard_HshColList(pFindSubCard(CK_p_HSHCOLLIST));
 
   if (bNotNull && !p_hshColList) {
     NEVER_REACH
@@ -3435,7 +3316,7 @@ Card_IndexList* Card::pSub_indexList(bool bNotNull)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_IndexList* p_indexList =
-      _pCard_IndexList(pFindSubCard(CK_t_INDEXLIST));
+      _pCard_IndexList(pFindSubCard(CK_INDEXLIST));
 
   if (bNotNull && !p_indexList) {
     NEVER_REACH
@@ -3471,7 +3352,7 @@ Card_Injectable* Card::pSub_injectable(bool bNotNull)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Injectable* p_injected =
-      _pCard_Injectable(pFindSubCard(CK_s_INJECTABLE));
+      _pCard_Injectable(pFindSubCard(CK_p_INJECTABLE));
 
   if (bNotNull && !p_injected) {
     NEVER_REACH
@@ -3525,7 +3406,7 @@ Card_Key* Card::pSub_key(bool bNotNull)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Key* p_key =
-      _pCard_Key(pFindSubCard(CK_s_KEY));
+      _pCard_Key(pFindSubCard(CK_p_KEY));
 
   if (bNotNull && !p_key) {
     NEVER_REACH
@@ -3633,7 +3514,7 @@ Card_Level* Card::pSub_level(bool bNotNull)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Level* p_level =
-      _pCard_Level(pFindSubCard(CK_s_LEVEL));
+      _pCard_Level(pFindSubCard(CK_p_LEVEL));
 
   if (bNotNull && !p_level) {
     NEVER_REACH
@@ -3669,7 +3550,7 @@ Card_Mapping* Card::pSub_mapping(bool bNotNull)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Mapping* p_mapping =
-      _pCard_Mapping(pFindSubCard(CK_s_MAPPING));
+      _pCard_Mapping(pFindSubCard(CK_p_MAPPING));
 
   if (bNotNull && !p_mapping) {
     NEVER_REACH
@@ -3687,7 +3568,7 @@ Card_Needed* Card::pSub_needed(bool bNotNull)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Needed* p_needed =
-      _pCard_Needed(pFindSubCard(CK_s_NEEDED));
+      _pCard_Needed(pFindSubCard(CK_p_NEEDED));
 
   if (bNotNull && !p_needed) {
     NEVER_REACH
@@ -3838,24 +3719,6 @@ Card_Predicate* Card::pSub_predicate(bool bNotNull)
   }
 
   return p_predicate;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-#include "Card_Required.hpp"
-Card_Required* Card::pSub_required(bool bNotNull)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_Required* p_required =
-      _pCard_Required(pFindSubCard(CK_REQUIRED));
-
-  if (bNotNull && !p_required) {
-    NEVER_REACH
-  }
-
-  return p_required;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4068,10 +3931,10 @@ Card_StreamKey* Card::pSub_streamKey(bool bNotNull)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  //RASSERT(CK_t_EMIT != m_eCard);
+  //RASSERT(CK_p_EMIT != m_eCard);
 
   Card_StreamKey* p_streamKey =
-      _pCard_StreamKey(pFindSubCard(CK_STREAMKEY));
+      _pCard_StreamKey(pFindSubCard(CK_p_STREAMKEY));
 
   if (bNotNull && !p_streamKey) {
     NEVER_REACH
@@ -4143,7 +4006,7 @@ Card_Table* Card::pSub_table(bool bNotNull)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Table* p_table =
-      _pCard_Table(pFindSubCard(CK_s_TABLE));
+      _pCard_Table(pFindSubCard(CK_p_TABLE));
 
   if (bNotNull && !p_table) {
     NEVER_REACH
@@ -4161,7 +4024,7 @@ Card_TableNm* Card::pSub_tableNm(bool bNotNull)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_TableNm* p_tableNm =
-      _pCard_TableNm(pFindSubCard(CK_t_TABLENM));
+      _pCard_TableNm(pFindSubCard(CK_TABLENM));
 
   if (bNotNull && !p_tableNm) {
     NEVER_REACH

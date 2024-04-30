@@ -46,7 +46,7 @@ void ChildCards::vAppendChild(Card* pChild)
 {
   RASSERT(pChild);
 
-  if (m_pCard->bIsCard(CK_s_NEEDED))
+  if (m_pCard->bIsCard(CK_p_NEEDED))
     vDebugPoint();
 
   vAppend(pChild);

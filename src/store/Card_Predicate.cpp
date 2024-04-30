@@ -64,7 +64,7 @@ Card_Predicate* Card_Predicate::pTo_boolPred(CardIter* pCI, Card_Expr* p_expr_ar
   // does the expression have a WHEN in it?
 
   Symbol xWhen(SF_WHEN,"WHEN"_Stz);
-  if (p_expr_arg->bHasTerm(pCI,&xWhen)) {
+  if (p_expr_arg->bFind_term(pCI, &xWhen)) {
     p_predicate_new->vTransferChildren(p_expr_arg);
     return p_predicate_new;
   }
@@ -837,13 +837,13 @@ void Card_Predicate::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  (void)Card::eValidate_parentEither(pCI,
-                                     CK_s_CONSTRAINT,
+  (void)Card::eValidate_parent_either(pCI,
+                                     CK_p_CONSTRAINT,
                                      CK_o_FILTER,
                                      CK_NONE);
 
   if (nChildCards())
-    Card::eValidate_mustSome(CK_ANDCONJ,
+    Card::eValidate_child_mustSome(CK_ANDCONJ,
                              CK_NOTCONJ,
                              CK_ORCONJ,
                              CK_RLNCONJ,

@@ -189,7 +189,7 @@ void Card_JoinOrdering::vReorder(Card_Deck* pDeck)
 
   {
     Kid xCI_deck(pDeck);
-    if (xCI_deck.bEach(CK_c_FOLD))
+    if (xCI_deck.bEach(CK_o_FOLD))
       pAfter = xCI_deck.p_fold();
 
     if (! pAfter) {
@@ -207,7 +207,7 @@ void Card_JoinOrdering::vReorder(Card_Deck* pDeck)
 
     i8 i_Table = C_UNKNOWN;
     Card_From* p_from =
-        _pCard_From(pDeck->pFindChildWithSub(CK_o_FROM, CK_s_TABLE, szTblSyn, i_Table));
+        _pCard_From(pDeck->pFindChildWithSub(CK_o_FROM, CK_p_TABLE, szTblSyn, i_Table));
 
     pDeck->vRemoveChild(p_from);
 

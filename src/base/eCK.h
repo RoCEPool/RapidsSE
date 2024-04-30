@@ -7,21 +7,16 @@ enum eCK : i8 // card kind
 {
   /* */ CK_NONE=0,
 
-  // main cards
-  //  construction cards
-  /* */ CK_c_ABSJOIN,
-  /* */ CK_c_FLAT,
-  /* */ CK_c_FOLD,
-  /* */ CK_c_SEND,
-  /* */ CK_c_STAGE,
-
   //  operator cards
+  /* */ CK_o_ABSJOIN,
   /* */ CK_o_AGGREG,
   /* */ CK_o_CALL,
   /* */ CK_o_CAST,
   /* */ CK_o_CORRELATION,
   /* */ CK_o_CROSSJOIN,
   /* */ CK_o_FILTER,
+  /* */ CK_o_FLAT,
+  /* */ CK_o_FOLD,
   /* */ CK_o_FROM,
   /* */ CK_o_GBYAGG,
   /* */ CK_o_HASH,
@@ -36,27 +31,27 @@ enum eCK : i8 // card kind
   /* */ CK_o_PDSROW,
   /* */ CK_o_PROJECT,
   /* */ CK_o_SCAN,
+  /* */ CK_o_SEND,
   /* */ CK_o_SORT,
+  /* */ CK_o_STAGE,
   /* */ CK_o_TOP,
   /* */ CK_o_WHERE,
 
-  // secondary cards
-  /* */ CK_s_CONSTRAINT,
-  /* */ CK_s_HASHING,
-  /* */ CK_s_HSHCOLLIST,
-  /* */ CK_s_INJECTABLE,
-  /* */ CK_s_KEY,
-  /* */ CK_s_LEVEL,
-  /* */ CK_s_MAPPING,
-  /* */ CK_s_NEEDED,
-  /* */ CK_s_TABLE,
+  // card parts
+  /* */ CK_p_CONSTRAINT,
+  /* */ CK_p_EMIT,
+  /* */ CK_p_HASHING,
+  /* */ CK_p_HSHCOLLIST,
+  /* */ CK_p_INJECTABLE,
+  /* */ CK_p_KEY,
+  /* */ CK_p_LEVEL,
+  /* */ CK_p_MAPPING,
+  /* */ CK_p_NEEDED,
+  /* */ CK_p_NEEDEDv2,
+  /* */ CK_p_STREAMKEY,
+  /* */ CK_p_TABLE,
 
   // tertiary cards
-  /* */ CK_t_EMIT,
-  /* */ CK_t_HSHCOL,
-  /* */ CK_t_INDEXLIST,
-  /* */ CK_t_TABLENM,
-
   /* */ CK_ADDRESS,
   /* */ CK_ANDCONJ,
 
@@ -76,16 +71,19 @@ enum eCK : i8 // card kind
   /* */ CK_DEBUG,
   /* */ CK_DECISION,
   /* */ CK_DECK,
-   /* */ CK_DISPOSITION,
+  /* */ CK_DISPOSITION,
 
   /* */ CK_EXPR,
 
   /* */ CK_FILTPRED,
   /* */ CK_FILTPREDLIST,
 
+  /* */ CK_HSHCOL,
+
   /* */ CK_IDXCOL,
   /* */ CK_IDXCOLLIST,
   /* */ CK_INDEX,
+  /* */ CK_INDEXLIST,
   /* */ CK_INDEXNM,
 
   /* */ CK_JOINCAST,
@@ -110,7 +108,6 @@ enum eCK : i8 // card kind
   /* */ CK_PREDICATE,
 
   /* */ CK_RELNOP,
-  /* */ CK_REQUIRED,
   /* */ CK_RLNCONJ,
   /* */ CK_ROWCOUNT,
   /* */ CK_ROWSIZE,
@@ -123,7 +120,6 @@ enum eCK : i8 // card kind
   /* */ CK_SQYNO,
   /* */ CK_STREAMHEAD,
   /* */ CK_STREAMJOIN,
-  /* */ CK_STREAMKEY,
   /* */ CK_STREAMPER,
   /* */ CK_STREAMPTN,
   /* */ CK_STREAMSET,
@@ -131,6 +127,7 @@ enum eCK : i8 // card kind
   /* */ CK_SUBSET,
 
   /* */ CK_TABLELIST,
+  /* */ CK_TABLENM,
   /* */ CK_TABLEPTN,
   /* */ CK_TABLESIZE,
   /* */ CK_TBLSYN,
