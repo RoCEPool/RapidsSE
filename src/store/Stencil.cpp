@@ -225,18 +225,35 @@ eEC Stencil::eSynthesise(StageDef *pStageDef)
 
     if (pOpDef->szOpNm()->bSame("inflate"_Stz)) {
 
-      m_eHandlerKind = HK_CRWBUFFER;
-      m_sLabelLoop = "L_AdvanceNextCrwT"_Stz;
+      if (pOpDef->m_sAlt.bSame(""_Stz)) {
 
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-			pOpSketch = pSketchInflateCrw(pStageDef, pOpDef);
-			vAppend(pOpSketch);
+        m_eHandlerKind = HK_CRWBUFFER;
+        m_sLabelLoop = "L_AdvanceNextCrwT"_Stz;
 
-      bInflateGenerated = true;
-			m_ePreviousStencil = SR_IT;
-      m_iPrevOpNo = pOpSketch->m_iOperatorNo;
-      m_iPrevDupOpNo = pOpSketch->m_iDupOpNo;
-			continue;
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        pOpSketch = pSketchInflateCrw(pStageDef, pOpDef);
+        vAppend(pOpSketch);
+
+        bInflateGenerated = true;
+        m_ePreviousStencil = SR_IT;
+        m_iPrevOpNo = pOpSketch->m_iOperatorNo;
+        m_iPrevDupOpNo = pOpSketch->m_iDupOpNo;
+        continue;
+      }
+      else {
+        m_eHandlerKind = HK_PDSROWBUFFER;
+        m_sLabelLoop = "L_AdvanceNextRowT"_Stz;
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        pOpSketch = pSketchPdsRow(pStageDef, pOpDef);
+        vAppend(pOpSketch);
+
+        bInflateGenerated = true;
+        m_ePreviousStencil = SR_IT;
+        m_iPrevOpNo = pOpSketch->m_iOperatorNo;
+        m_iPrevDupOpNo = pOpSketch->m_iDupOpNo;
+      }
+
 		}
 
 		// generate code for indexScan OP
@@ -824,7 +841,7 @@ OpSketch* Stencil::pSketchPdsRow(StageDef* pStageDef, OpDef* pOpDef) {
 
   // get the streamDefs
   StreamDef *pStreamDefOut = pOpDef->m_pStreamDef_emitted;
-  StreamDef *pStreamDefLft = pOpDef->m_pStreamDef_arriving;
+  StreamDef *pStreamDefLft = pOpDef->m_pStreamDef_emitted;
 
   // get the sketchCount of same Op
   i8 iOpSketchCount = m_iOpSketchCount[SK_INFLATE_ROW]++;

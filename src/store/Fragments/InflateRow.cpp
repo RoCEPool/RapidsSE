@@ -139,11 +139,11 @@ void vInflateRowReturn(Dynamic_T* aDynamicT) {
 
   char* szStrArea;
   i8 CURRENT_DUP_OP;
-  struct __STRUCT_TO___CURRENT_OP* p__STRUCT_TO__;
+  struct __STRUCT_TO___CURRENT_OP* p__STRUCT_TO___CURRENT_OP;
 
   // marker-start
 
-  p__STRUCT_TO__ = (struct __STRUCT_TO___CURRENT_OP*)aDynamicT->m_xRowInfoIT[0].m_aRowCellArray;
+  p__STRUCT_TO___CURRENT_OP = (struct __STRUCT_TO___CURRENT_OP*)aDynamicT->m_xRowInfoIT[CURRENT_DUP_OP].m_aRowCellArray;
   szStrArea = aDynamicT->m_xRowInfoIT[CURRENT_DUP_OP].m_acStrArea;
 
   // marker-end
