@@ -81,6 +81,8 @@ bool XF_Optimise_Early_projection::bOptimise(void)
 
   RASSERT(nullptr == m_pCI->Early.m_pNeeded_later);
 
+  m_pCI->vClearRegisters();
+
   m_pCI->vBeginEach_tail();
 
   i8 iRoot = 0;
@@ -98,6 +100,9 @@ bool XF_Optimise_Early_projection::bOptimise(void)
 
     vRoot(m_pCI,iRoot++);
     DELETEIF_CARD(m_pCI->Early.m_pNeeded_later);
+
+    if (m_pCI->Early.m_pOp_tip)
+      m_pCI->vRepositionOp(m_pCI->Early.m_pOp_tip);
 
     bOptRun = true;
   }
