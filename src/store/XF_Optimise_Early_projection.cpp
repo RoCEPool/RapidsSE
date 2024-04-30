@@ -126,11 +126,16 @@ void XF_Optimise_Early_projection::vBackstep(CardIter* pCI)
     return;
   }
 
-
   if (pCI->E.p_Op->bIsCard(CK_o_INDEXSCAN) ||
-        pCI->E.p_Op->bIsCard(CK_o_SCAN)) {
+      pCI->E.p_Op->bIsCard(CK_o_SCAN)) {
     pCI->vSnapIf_arriving();
     pCI->vPopEach();
+    return;
+  }
+
+  if (pCI->pPeekPrev()->bIsCard(CK_o_PROJECT)) {
+      pCI->vSnapIf_arriving();
+      pCI->vPopEach();
     return;
   }
 
@@ -165,11 +170,6 @@ void XF_Optimise_Early_projection::vBackstep(CardIter* pCI)
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     case CK_o_INDEXJOIN:
-      if (pCI->pPeekPrev()->bIsCard(CK_o_GBYAGG) ||
-          pCI->pPeekPrev()->bIsCard(CK_o_PROJECT)) {
-        pCI->vSnapIf_arriving();
-        break;
-      }
 
       p_needed_save = pCI->Early.m_pNeeded_later->pClone();
 
@@ -190,10 +190,6 @@ void XF_Optimise_Early_projection::vBackstep(CardIter* pCI)
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     case CK_o_KEYEXISTS:
-      if (pCI->pPeekPrev()->bIsCard(CK_o_PROJECT)) {
-        pCI->vSnapIf_arriving();
-        break;
-      }
 
       p_needed_save = pCI->Early.m_pNeeded_later->pClone();
       pCI->E.p_keyExists->vEarlyProject_add_transients(pCI);
@@ -213,10 +209,6 @@ void XF_Optimise_Early_projection::vBackstep(CardIter* pCI)
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     case CK_o_KEYNOTEXISTS:
-      if (pCI->pPeekPrev()->bIsCard(CK_o_PROJECT)) {
-        pCI->vSnapIf_arriving();
-        break;
-      }
 
       p_needed_save = pCI->Early.m_pNeeded_later->pClone();
       pCI->E.p_keyNotExists->vEarlyProject_add_transients(pCI);
