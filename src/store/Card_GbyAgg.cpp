@@ -58,43 +58,6 @@ void Card_GbyAgg::vDerive_streamKey(CardIter* pCI)
   pCI->StreamOrder.m_pEmit = pCI->E.p_emit;
 }
 
-/*----------------------------------------------------------------------------*/
-/* early project                                                              */
-/*----------------------------------------------------------------------------*/
-bool Card_GbyAgg::bEarlyProject_root(CardIter* pCI)
-{
-  //vDump(0,(Stz*)__func__);
-
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  RASSERT(bIsPartitionLevel());
-
-  RASSERT(! pCI->Early.m_pNeeded_later);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // if the immediate previous card is a project then rely on that project
-  //   to have determined what projections are needed
-
-//  if (pCI->pPeekPrev()->bIsCard(CK_o_PROJECT)) {
-//
-//    pCI->vSnapIf_arriving();
-//
-//   // pCI->PRINTBOARD_dbg();
-//    return false;
-//  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  // get the root needed form of gbyAgg's projection
-  if (1 == m_i_Child)
-    vDebugPoint();
-
-  pCI->Early.m_pNeeded_later  = pCI->E.p_emit->pCraftRoot_needed(pCI);
-
-
-
-  return true;
-}
 
 /*----------------------------------------------------------------------------*/
 /* inject sub-query result into this gbyAgg                                   */
