@@ -517,7 +517,7 @@ void Step::vTableIsInternallyDefined(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* table.isInternallyDefines -- is the table for metadata?                    */
+/* Table[].isMetaData -- is the table for metadata?                           */
 /*----------------------------------------------------------------------------*/
 void Step::vTableIsMetaData(void)
 {

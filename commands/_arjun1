@@ -1,3 +1,2 @@
 _nation;
-_region;
-select * from tables;
+/weaved /keepCodeFile select * from tableOfTables;
