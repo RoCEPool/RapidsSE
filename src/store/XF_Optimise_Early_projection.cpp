@@ -101,8 +101,10 @@ bool XF_Optimise_Early_projection::bOptimise(void)
     vRoot(m_pCI,iRoot++);
     DELETEIF_CARD(m_pCI->Early.m_pNeeded_later);
 
-    if (m_pCI->Early.m_pOp_tip)
-      m_pCI->vRepositionOp(m_pCI->Early.m_pOp_tip);
+    if (m_pCI->pEarlyTip()) {
+      m_pCI->vRepositionOp(m_pCI->pEarlyTip());
+      m_pCI->vEarlyTip(nullptr);
+    }
 
     bOptRun = true;
   }
@@ -130,19 +132,19 @@ void XF_Optimise_Early_projection::vBackstep(CardIter* pCI, i8 iRoot, i8 iDepth,
   Card_Project* p_project_early;
 
   pCI->vPushEach();
-  pCI->E.p_Op->vDumpShort(__FUNCTION__,__LINE__,"pre-reverse"_Stz,iRoot,iDepth);
   if (!pCI->bEachOp_reverse()) {
     pCI->vPopEach();
     pCI->E.p_Op->vDumpShort(__FUNCTION__,__LINE__,"<< backstep"_Stz,iRoot,iDepth);
+    pCI->vEarlyTip(pCI->E.p_Op);;
     return;
   }
-  pCI->E.p_Op->vDumpShort(__FUNCTION__,__LINE__,"post-reverse"_Stz,iRoot,iDepth);
 
   if (pCI->E.p_Op->bIsCard(CK_o_INDEXSCAN) ||
       pCI->E.p_Op->bIsCard(CK_o_SCAN)) {
     pCI->vSnapIf_arriving();
     pCI->vPopEach();
     pCI->E.p_Op->vDumpShort(__FUNCTION__,__LINE__,"<< backstep"_Stz,iRoot,iDepth);
+    pCI->vEarlyTip(pCI->E.p_Op);;
     return;
   }
 
@@ -157,6 +159,7 @@ void XF_Optimise_Early_projection::vBackstep(CardIter* pCI, i8 iRoot, i8 iDepth,
     pCI->vSnapIf_arriving();
     pCI->vPopEach();
     pCI->E.p_Op->vDumpShort(__FUNCTION__,__LINE__,"<< backstep"_Stz,iRoot,iDepth);
+    pCI->vEarlyTip(pCI->E.p_Op);
     return;
   }
 
@@ -166,7 +169,6 @@ void XF_Optimise_Early_projection::vBackstep(CardIter* pCI, i8 iRoot, i8 iDepth,
 
       //pCI->PRINTBOARD_dbg();
       vBackstep(pCI,iRoot,iDepth+1,__FUNCTION__ ,__LINE__);
-
       pCI->E.p_needed = pCI->E.p_project->pSub_needed();
 
       pCI->E.p_emit = pCI->E.p_project->pCraft_emit_early(pCI);
@@ -175,6 +177,8 @@ void XF_Optimise_Early_projection::vBackstep(CardIter* pCI, i8 iRoot, i8 iDepth,
     }
     pCI->E.p_Op->vDumpShort(__FUNCTION__,__LINE__,"<< backstep"_Stz,iRoot,iDepth);
     pCI->vPopEach();
+    if (! pCI->pEarlyTip())
+      pCI->vEarlyTip(pCI->E.p_Op);;
     return;
   }
 
@@ -265,6 +269,7 @@ void XF_Optimise_Early_projection::vRoot(CardIter* pCI, i8 iRoot)
 
   if (pCI->pPeekPrev()->bIsCard(CK_o_PROJECT)) {
     pCI->E.p_Op->vDumpShort(__FUNCTION__,__LINE__,"<< root"_Stz,iRoot);
+    pCI->vEarlyTip(pCI->E.p_Op);;
     return;
   }
 
@@ -292,6 +297,7 @@ void XF_Optimise_Early_projection::vRoot(CardIter* pCI, i8 iRoot)
   pCI->Early.m_pNeeded_later = pCI->E.p_emit->pCraft_needed_root(pCI);
   if (! pCI->Early.m_pNeeded_later) {
     pCI->E.p_Op->vDumpShort(__FUNCTION__,__LINE__,"<< root"_Stz,iRoot);
+    pCI->vEarlyTip(pCI->E.p_Op);;
     return;
   }
 

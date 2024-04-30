@@ -1377,6 +1377,32 @@ bool CardIter::bEachTarget(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set early tip                                                              */
+/*----------------------------------------------------------------------------*/
+Card_OP* CardIter::pEarlyTip(void)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  return Early.m_pOp_tip;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set early tip                                                              */
+/*----------------------------------------------------------------------------*/
+void CardIter::vEarlyTip(Card_OP* p_Op_tip)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  if (! p_Op_tip) {
+    Early.m_pOp_tip = nullptr;
+    return;
+  }
+
+  RASSERT(! Early.m_pOp_tip);
+  Early.m_pOp_tip = p_Op_tip;
+}
+
+/*----------------------------------------------------------------------------*/
 /* end of phase                                                               */
 /*----------------------------------------------------------------------------*/
 void CardIter::vEndPhase(void)

@@ -223,6 +223,9 @@ namespace STORE
 
     bool bEachTarget(void);
 
+    Card_OP* pEarlyTip(void);
+    void vEarlyTip(Card_OP* p_Op_tip);
+
     void vEndPhase(void);
     Card* pEndTarget(void);
     void  vEndTarget(void);
