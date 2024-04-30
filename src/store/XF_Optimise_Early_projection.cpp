@@ -164,23 +164,11 @@ void XF_Optimise_Early_projection::vBackstep(CardIter* pCI)
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     case CK_o_CROSSJOIN:
-
-      vBackstep(pCI);
-      pCI->E.p_Op->vRestate_emit(pCI);
-      delete pCI->Early.m_pNeeded_later;
-      pCI->Early.m_pNeeded_later = p_needed_save;
-
       break;
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     case CK_o_FILTER:
       pCI->E.p_filter->vEarlyProject_add_transients(pCI);
-
-      vBackstep(pCI);
-      pCI->E.p_Op->vRestate_emit(pCI);
-      delete pCI->Early.m_pNeeded_later;
-      pCI->Early.m_pNeeded_later = p_needed_save;
-
       break;
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -190,12 +178,6 @@ void XF_Optimise_Early_projection::vBackstep(CardIter* pCI)
       p_project_early = pCI->Early.m_pNeeded_later->pNew_project_early(pCI);
       pCI->vInsertBefore(p_project_early, pCI->E.p_Op);
       pCI->vRepositionOp();
-
-      vBackstep(pCI);
-      pCI->E.p_Op->vRestate_emit(pCI);
-      delete pCI->Early.m_pNeeded_later;
-      pCI->Early.m_pNeeded_later = p_needed_save;
-
       break;
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -205,12 +187,6 @@ void XF_Optimise_Early_projection::vBackstep(CardIter* pCI)
       p_project_early = pCI->Early.m_pNeeded_later->pNew_project_early(pCI);
       pCI->vInsertBefore(p_project_early, pCI->E.p_keyExists);
       pCI->vRepositionOp();
-
-      vBackstep(pCI);
-      pCI->E.p_keyExists->vRestate_emit(pCI);
-      delete pCI->Early.m_pNeeded_later;
-      pCI->Early.m_pNeeded_later = p_needed_save;
-
       break;
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -220,23 +196,11 @@ void XF_Optimise_Early_projection::vBackstep(CardIter* pCI)
       p_project_early = pCI->Early.m_pNeeded_later->pNew_project_early(pCI);
       pCI->vInsertBefore(p_project_early, pCI->E.p_keyNotExists);
       pCI->vRepositionOp();
-
-      vBackstep(pCI);
-      pCI->E.p_keyNotExists->vRestate_emit(pCI);
-      delete pCI->Early.m_pNeeded_later;
-      pCI->Early.m_pNeeded_later = p_needed_save;
-
       break;
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     case CK_o_WHERE:
       pCI->E.p_where->vEarlyProject_add_transients(pCI);
-
-      vBackstep(pCI);
-      pCI->E.p_Op->vRestate_emit(pCI);
-      delete pCI->Early.m_pNeeded_later;
-      pCI->Early.m_pNeeded_later = p_needed_save;
-
       break;
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -244,6 +208,11 @@ void XF_Optimise_Early_projection::vBackstep(CardIter* pCI)
       pCI->E.p_Op->vDump(__func__);
       NEVER_REACH
   }
+
+  vBackstep(pCI);
+  pCI->E.p_Op->vRestate_emit(pCI);
+  delete pCI->Early.m_pNeeded_later;
+  pCI->Early.m_pNeeded_later = p_needed_save;
 
   pCI->vPopEach();
 }
