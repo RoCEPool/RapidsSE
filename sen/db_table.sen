@@ -301,6 +301,8 @@
   sTableNm table::removeTableAssembly
 
   sTableNm name::isSubFolder not assert
+
+  sTableNm MetaDataTable[].deleteTables
 ;
 
 /*============================================================================*/

@@ -1,2 +1,6 @@
 _nation;
-/weaved /keepCodeFile select * from tableOfTables;
+select * from tableOfTables;
+select * from tableOfTables;
+drop table nation;
+select * from tableOfTables;
+select * from tableOfTables;

@@ -104,6 +104,19 @@ Row* PdsCursor::pCurrRow(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get current row's key                                                      */
+/*----------------------------------------------------------------------------*/
+void* PdsCursor::pCurrKey(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PDSCURSOR,_FOOTER_);
+
+  if( ! m_pCurrentBlock)
+    return nullptr;
+
+  return m_pCurrentBlock->aItem();
+}
+
+/*----------------------------------------------------------------------------*/
 /* is the current block null?                                                 */
 /*----------------------------------------------------------------------------*/
 void PdsCursor::vNext(void)

@@ -30615,6 +30615,8 @@ void Task::vAddMunged(Task* )
     "  sTableNm table::removeTableAssembly\n"
     "\n"
     "  sTableNm name::isSubFolder not assert\n"
+    "\n"
+    "  sTableNm MetaDataTable[].deleteTables\n"
     " ;\n"
     "\n"
     "/*============================================================================*/\n"
