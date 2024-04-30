@@ -19,7 +19,8 @@ INCLUDE 'create_partsupp.test';
 INCLUDE 'create_region.test';
 INCLUDE 'create_supplier.test';
 
-//INCLUDE 'select_star.test';
+INCLUDE 'tpch_q3.test';
+
 //LOG 'operator.test';
 //INCLUDE '../../../../tests/tests1N4P/CombinedV2/operator.test';
 

@@ -194,6 +194,7 @@ namespace STORE
     void vClearRegistersIf(Card* pCard);
     eOA  eCueUser(String* psPrompt);
 
+    bool bDebugQuery(Stz* szQueryNm);
     void vDeleteWhenEmptySub(eCK eOp, eCK eSub);
     void vDontDescend(bool bDontDescend);
 
@@ -229,6 +230,7 @@ namespace STORE
     Card_OP* pFind_from_By_tblSyn(Symbol* pSym_tblSyn, i8 i_Before);
     void vFocusOnOp(void);
 
+    bool bIsQuery(Stz* szQueryNm);
     void vInsertAfter(Card* pCard, Card* pAfter);
     void vInsertBefore(Card* pCard, Card* pBefore);
 

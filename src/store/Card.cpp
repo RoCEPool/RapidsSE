@@ -49,6 +49,7 @@ Stz* P_InjCrlKey    = "bInjCrlKey"_Stz;
 Stz* P_Invalid      = "bInvalid"_Stz;
 Stz* P_Key          = "bKey"_Stz;
 Stz* P_Level        = "eLevel"_Stz;
+Stz* P_Line         = "iLine"_Stz;
 Stz* P_Payload      = "bPayload"_Stz;
 Stz* P_PrmOdn       = "szPrmOdn"_Stz;
 Stz* P_Permutation  = "i_Permutation"_Stz;
@@ -413,6 +414,9 @@ void Card::vDump(const char* azFunc, Stz* szTitle, i8 iDepth)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
+  if (! AM::JOB::bHasTag(C_OPTIMISER_TRACE))
+    return;
+
   if (0 == iDepth) {
     if (szTitle)
       vTrace("^^%s [%s] %p\n"_Stz,szTitle,azFunc,this);
@@ -456,17 +460,52 @@ void Card::vDump(const char* azFunc, Stz* szTitle, i8 iDepth)
 /*----------------------------------------------------------------------------*/
 /* dump card (short form)                                                     */
 /*----------------------------------------------------------------------------*/
-void Card::vDumpShort(const char* azFunc, Stz* szTitle)
+void Card::vDumpCaller(const char* azFunc, Stz* szTitle,
+                       const char* azCaller, i8 iLine)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (! AM::JOB::bHasTag(C_OPTIMISER_TRACE))
+    return;
+
+  vTrace("%s %s %s %lld\n"_Stz,
+         szTitle,
+         azFunc,
+         azCaller,
+         iLine);
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump card (short form)                                                     */
+/*----------------------------------------------------------------------------*/
+void Card::vDumpShort(const char* azFunc, i8 iLine,
+                      Stz* szTitle, i8 iArg1, i8 iArg2)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-	return;
+  if (! AM::JOB::bHasTag(C_OPTIMISER_TRACE))
+    return;
 
-  vTrace("--%s [%s] %p %s\n"_Stz,
+  vTrace("--%20s [%s %lld %lld %lld] %p %s #%lld %s"_Stz,
          szTitle,
          azFunc,
+         iLine,
+         iArg1,
+         iArg2,
          this,
+         aCK_short[m_eCard],
+         m_iSequence,
          md_Coord);
+
+  if (m_xSymbol.xTypeId().bIsValid()) {
+    vTrace(" (%s:%lld.%lld)"_Stz,
+           m_xSymbol.xTypeId().szTypeName(),
+           m_xSymbol.xCast().m_nTypeLength,
+           m_xSymbol.xCast().m_nTypeScale);
+  }
+
+  vTrace("\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

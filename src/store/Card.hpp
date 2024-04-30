@@ -182,6 +182,7 @@ extern Stz* P_Injected;
 extern Stz* P_Invalid;
 extern Stz* P_Key;
 extern Stz* P_Level;
+extern Stz* P_Line;
 extern Stz* P_PrmOdn;
 extern Stz* P_Payload;
 extern Stz* P_Permutation;
@@ -309,7 +310,8 @@ namespace STORE
 
     void  vDeleteFacetRecursive(eSF eFacet);
     void  vDump(const char* azFunc, Stz* szTitle=nullptr, i8 iDepth=0);
-    void  vDumpShort(const char* azFunc, Stz* szTitle);
+    void  vDumpCaller(const char* azFunc, Stz* szTitle, const char* azCaller, i8 iLine);
+    void  vDumpShort(const char* azFunc, i8 iLine, Stz* szTitle, i8 iArg1=C_UNKNOWN, i8 iArg2=C_UNKNOWN);
     Card* pDupCard(void);
     Card* pDupCardRecursive(void);
     Card_SubSet* pDupSubCardsRecursive(i8 i_From, i8 i_Till=C_UNKNOWN);
@@ -598,6 +600,18 @@ EndDefine
     delete __pCard;          \
     __pCard = nullptr;       \
   }                          \
+EndDefine
+
+/*----------------------------------------------------------------------------*/
+/* macro for deleting card                                                    */
+/*----------------------------------------------------------------------------*/
+#define DELETEIF_CARD(__pCard) \
+  {                            \
+    if (__pCard) {             \
+      delete __pCard;          \
+      __pCard = nullptr;       \
+    }                          \
+  }                            \
 EndDefine
 
 /*============================================================================*/

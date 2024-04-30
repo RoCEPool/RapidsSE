@@ -6,6 +6,7 @@
 #include "Cue.hpp"
 #include "OptimiserFun.hpp"
 #include "OptimiserCatalog.hpp"
+#include "Optimiser.hpp"
 
 #include "eOT.h"
 
@@ -788,6 +789,19 @@ eOA CardIter::eCueUser(String* psPrompt)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool CardIter::bDebugQuery(BASE::Stz *szQueryNm)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  if (AM::JOB::bHasTag(C_OPTIMISER_TRACE) && bIsQuery(szQueryNm))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* delete main when given sub is empty                                        */
 /*----------------------------------------------------------------------------*/
 void CardIter::vDeleteWhenEmptySub(eCK eOp, eCK eSub)
@@ -1485,6 +1499,19 @@ Card* CardIter::pChild(i8 i_Child)
   Card* pChild = E.xEachOp.pParent()->pGetChild(i_Child);
 
   return pChild;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool CardIter::bIsQuery(BASE::Stz *szQueryNm)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  if (m_pBench->pOptimiser()->szQueryNm()->bSame(szQueryNm))
+    return true;
+
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
