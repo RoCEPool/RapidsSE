@@ -60,8 +60,9 @@
 
     Port[].acceptConnection to pAcceptedSocket
 
-    AM::SHOW::bConnection if
-      iPort "Answered connection on port %v" str.format .traceWlp
+    trace.withWlp if
+      pAcceptedSocket socket.clientAddr@ iPort
+      "Answered connection on port %v from client at %v" str.format .traceWlp
     then
 
     // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -

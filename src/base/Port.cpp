@@ -221,6 +221,8 @@ bool Port::bAcceptClient(int& iSocketId, SysCall& roSysCall)
                            sServerAddr.azChar(),
                            sServerAddr.nAreaBytes())) {
     roSysCall.vError(errno);
+    close(iSocketId);
+    iSocketId = C_UNKNOWN;
     return false;
   }
 
@@ -229,6 +231,8 @@ bool Port::bAcceptClient(int& iSocketId, SysCall& roSysCall)
                            sClientAddr.azChar(),
                            sClientAddr.nAreaBytes())) {
     roSysCall.vError(errno);
+    close(iSocketId);
+    iSocketId = C_UNKNOWN;
     return false;
   }
 

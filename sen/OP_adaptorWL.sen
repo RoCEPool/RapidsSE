@@ -18,10 +18,11 @@
     while
       AdaptorWL[].nextPayloadToSend@ to pPayloadObj
 
-      TC_WLP trace.getComponent if
+      trace.withWlp if
         pPayloadObj payloadObj::size@
         pPayloadObj payloadObj::msgType@
-        "AdaptorWL: Piping out payload: %v : %v bytes" str.format .traceWlp
+        AdaptorWL[].clientAddr@
+        "Client %v: Piping out payload: %v : %v bytes" str.format .traceWlp
       then
 
       pPayloadObj [op].pipeOut
@@ -31,7 +32,7 @@
 
   // Check if the protocol is unviable (e.g. received invalid msg or in wrong sequence).
   AdaptorWL[].protocolErrorTest if
-    "AdaptorWL: Piping out error marker" .traceWlp
+    AdaptorWL[].clientAddr@ "Client %v: Piping out error marker" str.format .traceWlp
     AdaptorWL[].protocolError@ op__execErr
     false
     exit
@@ -46,7 +47,9 @@
 /*----------------------------------------------------------------------------*/
 : adaptorWL_AffectedRows
 
-  "adaptorWL_AffectedRows - BT_AFFECTEDROWS" .verbose
+//  trace.withWlp if
+//    AdaptorWL[].clientAddr@ "Client %v: adaptorWL_AffectedRows - BT_AFFECTEDROWS" str.format .traceWlp
+//  then
 
   // get the pdsRowBuffer
   PipeIn[]\clear to Pds[]
@@ -67,12 +70,14 @@
 /*----------------------------------------------------------------------------*/
 : adaptorWL_ExecErrors
 
-  "adaptorWL_ExecErrors - BT_EXECERRORS" .verbose
+//  trace.withWlp if
+//    AdaptorWL[].clientAddr@ "Client %v: adaptorWL_ExecErrors - BT_EXECERRORS" str.format .traceWlp
+//  then
 
   PipeIn[] to PdsErr[]
   nullptr to PipeIn[]
 
-  "AdaptorWL: Processing error PdsRowBuffer" .traceWlp
+  AdaptorWL[].clientAddr@ "Client %v: Processing error PdsRowBuffer" str.format .traceWlp
 
   adaptorWL[].executionError
 
@@ -89,7 +94,9 @@
 /*----------------------------------------------------------------------------*/
 : adaptorWL_CompileErrors
 
-  "adaptorWL_CompileErrors - COMPILEERRORS" .verbose
+//  trace.withWlp if
+//    AdaptorWL[].clientAddr@ "Client %v: adaptorWL_CompileErrors - COMPILEERRORS" str.format .traceWlp
+//  then
 
   PipeIn[] to PdsErr[]
   nullptr to PipeIn[]
@@ -109,7 +116,9 @@
 /*----------------------------------------------------------------------------*/
 : adaptorWL_Warning
 
-  "adaptorWL_Warning - BT_WARNINGS" .verbose
+//  trace.withWlp if
+//    AdaptorWL[].clientAddr@ "Client %v: adaptorWL_Warning - BT_WARNINGS" str.format .traceWlp
+//  then
 
   PipeIn[]\clear to PdsWarn[]
 
@@ -126,7 +135,10 @@
 /* Parse a query into one or more tasks                                       */
 /*----------------------------------------------------------------------------*/
 : adaptorWL_parseQuery params| sSmt |
-  "adaptorWL_parseQuery" .verbose
+
+//  trace.withWlp if
+//    AdaptorWL[].clientAddr@ "Client %v: adaptorWL_parseQuery" str.format .traceWlp
+//  then
 
   TaskList[].isNull assert
 
@@ -149,7 +161,10 @@
 /* Schedule the next task, if any                                             */
 /*----------------------------------------------------------------------------*/
 : adaptorWL_scheduleNextTask
-  "adaptorWL_scheduleNextTask" .verbose
+
+//  trace.withWlp if
+//    AdaptorWL[].clientAddr@ "Client %v: adaptorWL_scheduleNextTask" str.format .traceWlp
+//  then
 
   0 locals| pNextTask |
 
@@ -159,8 +174,8 @@
     exit
   then
 
-  TC_WLP trace.getComponent if
-    ticking::getTick "AdaptorWL: Scheduling task for execution at time %v" str.format .traceWlp
+  trace.withWlp if
+    ticking::getTick AdaptorWL[].clientAddr@ "Client %v: Scheduling task for execution at time %v" str.format .traceWlp
   then
 
   TaskList[].pop to pNextTask
@@ -194,7 +209,9 @@
 /*----------------------------------------------------------------------------*/
 : adaptorWL_StartMarker \handler
 
-  "adaptorWL_StartMarker - EV_M_START" .verbose
+//  trace.withWlp if
+//    AdaptorWL[].clientAddr@ "Client %v: adaptorWL_StartMarker - EV_M_START" str.format .traceWlp
+//  then
 
   PipeIn[]\clear [op].pipeout
 
@@ -214,7 +231,9 @@
 /*----------------------------------------------------------------------------*/
 : adaptorWL_Payload \handler
 
-  "adaptorWL_Payload - EV_D_PAYLOAD" .verbose
+//  trace.withWlp if
+//    AdaptorWL[].clientAddr@ "Client %v: adaptorWL_Payload - EV_D_PAYLOAD" str.format .traceWlp
+//  then
 
   PipeIn[]\clear locals| pPayloadObj |
   0 locals| iLastTime |
@@ -223,7 +242,10 @@
 
   // Check if we need to process this message
   pPayloadObj payloadObj::doNotProcess@ if
-    "AdaptorWL: ignoring payload with doNotProcess bit set" .traceWlp
+    trace.withWlp if
+      AdaptorWL[].clientAddr@ "Client %v: ignoring payload with doNotProcess bit set" str.format .traceWlp
+    then
+
     pPayloadObj [op].pipeOut
     true
     exit
@@ -237,7 +259,7 @@
     exit
   then
 
-  TC_WLP trace.getComponent if
+  trace.withWlp if
     // Calculate the elapsed time between receiving the payload off the socket
     // to processing it in the AdaptorWL
     ticking::getTick to iCurrTime
@@ -247,7 +269,8 @@
     iCurrTime
     pPayloadObj payloadObj::size@
     pPayloadObj payloadObj::msgType@
-    "AdaptorWL: Received payload: %v : %v bytes at time %v (elapsed socket recv to adaptor recv time: %v ns)" str.format .traceWlp
+    AdaptorWL[].clientAddr@
+    "Client %v: Received payload: %v : %v bytes at time %v (elapsed socket recv to adaptor recv time: %v ns)" str.format .traceWlp
   then
 
   // Decode the payload to a message. This might generate payloads to be sent.
@@ -275,19 +298,20 @@
   // Check if there are queries to be parsed and submitted through the API
   AdaptorWL[].hasQuery if
 
-    TC_WLP trace.getComponent if
+    trace.withWlp if
       iCurrTime to iLastTime
       ticking::getTick to iCurrTime
-      iCurrTime "AdaptorWL: About to start parsing query at time %v" str.format .traceWlp
+      iCurrTime AdaptorWL[].clientAddr@ "Client %v: About to start parsing query at time %v" str.format .traceWlp
     then
 
     AdaptorWL[].queryStr@ adaptorWL_parseQuery
 
-    TC_WLP trace.getComponent if
+    trace.withWlp if
       iCurrTime to iLastTime
       ticking::getTick to iCurrTime
       iCurrTime iLastTime - to iElapsedTime
-      iElapsedTime iCurrTime "AdaptorWL: Finished parsing query at time %v (elapsed time: %v ns)" str.format .traceWlp
+      iElapsedTime iCurrTime AdaptorWL[].clientAddr@
+      "Client %v: Finished parsing query at time %v (elapsed time: %v ns)" str.format .traceWlp
     then
 
     // Pipeout any payloads that were just generated so they can be sent straight away
@@ -316,7 +340,9 @@
 /*----------------------------------------------------------------------------*/
 : adaptorWL_StreamDef \handler
 
-  "adaptorWL_StreamDef - EV_D_STREAMDEF" .verbose
+//  trace.withWlp if
+//    AdaptorWL[].clientAddr@ "Client %v: adaptorWL_StreamDef - EV_D_STREAMDEF" str.format .traceWlp
+//  then
 
   // Pass stream def to Adaptor. Adaptor saves it for use with row data.
   PipeIn[]\clear AdaptorWL[].resultMetadata
@@ -335,7 +361,9 @@
 /*----------------------------------------------------------------------------*/
 : adaptorWL_CrwBuffer \handler
 
-  "adaptorWL_CrwBuffer - EV_D_CRWBUFFER" .verbose
+//  trace.withWlp if
+//    AdaptorWL[].clientAddr@ "Client %v: adaptorWL_CrwBuffer - EV_D_CRWBUFFER" str.format .traceWlp
+//  then
 
   PipeIn[] AdaptorWL[].crwBuffer
   Pipein[].delete
@@ -352,7 +380,9 @@
 /*----------------------------------------------------------------------------*/
 : adaptorWL_PdsRowBuffer \handler
 
-  "adaptorWL_PdsRowBuffer - EV_D_PDSROWBUFFER" .verbose
+//  trace.withWlp if
+//    AdaptorWL[].clientAddr@ "Client %v: adaptorWL_PdsRowBuffer - EV_D_PDSROWBUFFER" str.format .traceWlp
+//  then
 
   // handle AFFECTEDROWS
   PipeIn[].bufferType@ BT_AFFECTEDROWS == if
@@ -397,7 +427,9 @@
 /*----------------------------------------------------------------------------*/
 : adaptorWL_ChildExit \handler
 
-  "adaptorWL_ChildExit - EV_X_CHILDEXIT" .verbose
+//  trace.withWlp if
+//    AdaptorWL[].clientAddr@ "Client %v: adaptorWL_ChildExit - EV_X_CHILDEXIT" str.format .traceWlp
+//  then
 
   0 locals| iCurrTime    |
   0 locals| iElapsedTime |
@@ -406,7 +438,7 @@
   Pipein[].delete
 
   TC_WLP trace.getComponent if
-    ticking::getTick "AdaptorWL: Child task exited at time %v" str.format .traceWlp
+    ticking::getTick AdaptorWL[].clientAddr@ "Client %v: Child task exited at time %v" str.format .traceWlp
   then
 
   adaptorWL[].childJobExited
@@ -415,7 +447,7 @@
   // then an ErrorMarker[] will be set. We couldn't pipe this out until the
   // child job has exited, so now is the time.
   ErrorMarker[].isNotNull if
-    "adaptorWL: Piping out previously received error marker" .traceWlp
+    AdaptorWL[].clientAddr@ "Client %v: Piping out previously received error marker" str.format .traceWlp
     ErrorMarker[].pipeOut
     true
     exit
@@ -441,10 +473,10 @@
   // Print out how long it took from receiving the query to sending the last response.
   // This does not include the actual sending of the payloads or how long it takes for
   // the client to receive and display them.
-  TC_WLP trace.getComponent if
+  trace.withWlp if
     ticking::getTick to iCurrTime
     iCurrTime adaptorWL[].payloadCreateTime@ - to iElapsedTime
-    iElapsedTime iCurrTime "AdaptorWL: Recv & execution of query finished at time %v (elapsed time: %v ns)" str.format .traceWlp
+    iElapsedTime iCurrTime AdaptorWL[].clientAddr@ "Client %v: Recv & execution of query finished at time %v (elapsed time: %v ns)" str.format .traceWlp
   then
 
   true
@@ -457,21 +489,28 @@
 /*----------------------------------------------------------------------------*/
 : adaptorWL_Error \handler
 
-  "adaptorWL_Error - EV_M_ERROR" .verbose
+//  trace.withWlp if
+//    AdaptorWL[].clientAddr@ "Client %v: adaptorWL_Error - EV_M_ERROR" str.format .traceWlp
+//  then
 
   // We cannot simply pass this downstream if a statement has already been
   // submitted through the API. Instead we will need to save the error and
   // only re-emit it after the child job has exited.
 
   AdaptorWL[].isChildJobActive if
-    "AdaptorWL: Saving error marker until child query has completed" .traceWlp
+    trace.withWlp if
+      AdaptorWL[].clientAddr@ "Client %v: Saving error marker until child query has completed" str.format .traceWlp
+    then
 
     ErrorMarker[].isNull assert
     Pipein[]\clear ErrorMarker[].set
     true
 
   else
-    "AdaptorWL: Piping out error marker" .traceWlp
+    trace.withWlp if
+      AdaptorWL[].clientAddr@ "Client %v: Piping out error marker" str.format .traceWlp
+    then
+
     EV_M_ERROR_handler
   then
 ;
@@ -483,7 +522,9 @@
 /*----------------------------------------------------------------------------*/
 : adaptorWL_Cleaning \handler
 
-  "adaptorWL_Cleaning - EV_M_CLEANING" .verbose
+//  trace.withWlp if
+//    AdaptorWL[].clientAddr@ "Client %v: adaptorWL_Cleaning - EV_M_CLEANING" str.format .traceWlp
+//  then
 
   EV_M_CLEANING_handler
 ;

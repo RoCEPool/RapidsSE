@@ -35,7 +35,11 @@
 
       ErrorStr[].get ErrorCode[].get recvWL[].serialiseError to pPayload
       pPayload if
-        ErrorCode[].get ErrorCode::decodeError "RecvWL: sending ErrorResponse with error message: %v" str.format .traceWlp
+        trace.withWlp if
+          ErrorCode[].get ErrorCode::decodeError
+          Socket[].clientAddr@
+          "Client %v: sending ErrorResponse with error message: %v" str.format .traceWlp
+        then
         pPayload [op].pipeOut
       then
     then
@@ -46,10 +50,11 @@
   then
 
   Socket[].object.isNotNull if
-    TC_WLP trace.getComponent if
+    trace.withWlp if
       Socket[].object@ payloadObj::creationTime@
       Socket[].object@ payloadObj::size@
-      "RecvWL: Piping out payload received of %v bytes at time %v"
+      Socket[].clientAddr@
+      "Client %v: Piping out payload received of %v bytes at time %v"
       str.format .traceWlp
     then
 
@@ -87,7 +92,7 @@
 /*----------------------------------------------------------------------------*/
 : recvWL_StartMarker \handler
 
-  "recvWL_StartMarker - EV_M_START" .verbose
+  "recvWL_StartMarker - EV_M_START" .traceWlp
 
   // initialise
   recvWL_init
@@ -99,7 +104,11 @@
   recvWL_loop
 
   // If we get here then there was a problem receiving the next message from the client.
-  "recvWL_StartMarker: piping out error marker EC_WL_SOCKET_CLOSED" .traceWlp
+  trace.withWlp if
+    Socket[].clientAddr@
+    "Client %v: Client socket has been closed. Piping out error marker EC_WL_SOCKET_CLOSED"
+    str.format .traceWlp
+  then
   EC_WL_SOCKET_CLOSED op__execErr
 
   true
@@ -110,7 +119,9 @@
 /*----------------------------------------------------------------------------*/
 : recvWL_CLEANING \handler
 
-  "in recvWL_CLEANING" .verbose
+//  trace.withWlp if
+//    Socket[].clientAddr@ "Client %v: in recvWL_CLEANING" str.format .traceWlp
+//  then
 
   EV_M_CLEANING_handler
 ;

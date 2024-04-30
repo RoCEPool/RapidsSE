@@ -27,6 +27,7 @@ public:
 
   // adaptorWL
   void vAdaptorWLChildJobExited(void);
+  void vAdaptorWLClientAddr(void);
   void vAdaptorWLCompilerError(void);
   void vAdaptorWLCrwBuffer(void);
   void vAdaptorWLDecodePayload(void);
@@ -1897,6 +1898,7 @@ void vJobIdLastJobIdFetch(void);
   void vSocketSuccessFetch(void);
   void vSocketSuccessStore(void);
   void vSocketClientAddrFetch(void);
+  void vSocketStackClientAddrFetch(void);
 
 
   // sql compiler
@@ -2409,6 +2411,7 @@ void vJobIdLastJobIdFetch(void);
   void vTraceSet(void);
   void vTraceSetComponent(void);
   void vTraceGetComponent(void);
+  void vTraceWithWlp(void);
 
   // tub
   void vTubAppend(void);
