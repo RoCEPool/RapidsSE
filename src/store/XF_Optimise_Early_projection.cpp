@@ -139,6 +139,22 @@ void XF_Optimise_Early_projection::vBackstep(CardIter* pCI)
     return;
   }
 
+  if (pCI->E.p_Op->bIsCard(CK_o_PROJECT)) {
+    if (pCI->E.p_project->pSub_needed()) {
+      vBackstep(pCI);
+      RASSERT(pCI->E.p_project->pSymbol()->Y_bHas(P_Early));
+
+      pCI->E.p_needed = pCI->E.p_project->pSub_needed();
+
+      pCI->E.p_emit = pCI->E.p_project->pCraft_emit_early(pCI);
+      pCI->E.p_project->vAppendChild(pCI->E.p_emit);
+      pCI->vSnapIf_arriving(false);
+    }
+    pCI->vPopEach();
+    return;
+
+  }
+
   // which card did we arrive at?
   switch (pCI->E.e_Op) {
 
@@ -147,9 +163,7 @@ void XF_Optimise_Early_projection::vBackstep(CardIter* pCI)
       p_needed_save = pCI->Early.m_pNeeded_later->pClone();
 
       vBackstep(pCI);
-
       pCI->E.p_Op->vRestate_emit(pCI);
-
       delete pCI->Early.m_pNeeded_later;
       pCI->Early.m_pNeeded_later = p_needed_save;
 
@@ -161,7 +175,6 @@ void XF_Optimise_Early_projection::vBackstep(CardIter* pCI)
       pCI->E.p_filter->vEarlyProject_add_transients(pCI);
 
       vBackstep(pCI);
-
       pCI->E.p_Op->vRestate_emit(pCI);
       delete pCI->Early.m_pNeeded_later;
       pCI->Early.m_pNeeded_later = p_needed_save;
@@ -180,9 +193,7 @@ void XF_Optimise_Early_projection::vBackstep(CardIter* pCI)
       pCI->vRepositionOp();
 
       vBackstep(pCI);
-
       pCI->E.p_Op->vRestate_emit(pCI);
-
       delete pCI->Early.m_pNeeded_later;
       pCI->Early.m_pNeeded_later = p_needed_save;
 
@@ -199,9 +210,7 @@ void XF_Optimise_Early_projection::vBackstep(CardIter* pCI)
       pCI->vRepositionOp();
 
       vBackstep(pCI);
-
       pCI->E.p_keyExists->vRestate_emit(pCI);
-
       delete pCI->Early.m_pNeeded_later;
       pCI->Early.m_pNeeded_later = p_needed_save;
 
@@ -218,28 +227,10 @@ void XF_Optimise_Early_projection::vBackstep(CardIter* pCI)
       pCI->vRepositionOp();
 
       vBackstep(pCI);
-
       pCI->E.p_keyNotExists->vRestate_emit(pCI);
-
       delete pCI->Early.m_pNeeded_later;
       pCI->Early.m_pNeeded_later = p_needed_save;
 
-      break;
-
-    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-    case CK_o_PROJECT:
-      if (pCI->E.p_project->pSub_needed()) {
-        vBackstep(pCI);
-        RASSERT(pCI->E.p_project->pSymbol()->Y_bHas(P_Early));
-
-        pCI->E.p_needed = pCI->E.p_project->pSub_needed();
-
-        pCI->E.p_emit = pCI->E.p_project->pCraft_emit_early(pCI);
-        pCI->E.p_project->vAppendChild(pCI->E.p_emit);
-        pCI->vSnapIf_arriving(false);
-       }
-      else {
-      }
       break;
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -249,9 +240,7 @@ void XF_Optimise_Early_projection::vBackstep(CardIter* pCI)
       pCI->E.p_where->vEarlyProject_add_transients(pCI);
 
       vBackstep(pCI);
-
       pCI->E.p_Op->vRestate_emit(pCI);
-
       delete pCI->Early.m_pNeeded_later;
       pCI->Early.m_pNeeded_later = p_needed_save;
 
