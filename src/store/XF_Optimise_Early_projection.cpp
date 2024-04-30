@@ -299,16 +299,18 @@ void XF_Optimise_Early_projection::vRoots(CardIter* pCI)
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     case CK_o_AGGREG:
-      if (pCI->E.p_aggreg->bEarlyProject_root(pCI)) {
-        // insert empty early projection (has only needed) before this ordAgg
-        p_project_early = pCI->Early.m_pNeeded_later->pNew_project_early(pCI);
-        pCI->vInsertBefore(p_project_early, pCI->E.p_Op);
-        pCI->vRepositionOp();
+      pCI->Early.m_pNeeded_later  = pCI->E.p_emit->pCraftRoot_needed(pCI);
+      if (! pCI->Early.m_pNeeded_later)
+        break;
 
-        vBackstep(pCI);
+      // insert empty early projection (has only needed) before this ordAgg
+      p_project_early = pCI->Early.m_pNeeded_later->pNew_project_early(pCI);
+      pCI->vInsertBefore(p_project_early, pCI->E.p_Op);
+      pCI->vRepositionOp();
 
-        pCI->E.p_Op->vRestate_emit(pCI);
-      }
+      vBackstep(pCI);
+
+      pCI->E.p_Op->vRestate_emit(pCI);
       break;
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --

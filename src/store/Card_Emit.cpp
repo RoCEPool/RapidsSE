@@ -181,6 +181,11 @@ Card_Needed* Card_Emit::pCraftRoot_needed(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  if (! p_needed->nChildCards()) {
+    delete p_needed;
+    return nullptr;
+  }
+
   p_needed->vRenumberAll_expr();
 
   return p_needed;
