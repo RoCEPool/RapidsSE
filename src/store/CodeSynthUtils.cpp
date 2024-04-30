@@ -1168,10 +1168,11 @@ void CodeSynthUtils::vReplaceStructTo(String* sLine, OpSketch* pOpSketch)
 
   if (StrLib::bContains(sLine->azStr(), "__STRUCT_TO__")) {
 		RASSERT(pOpSketch->m_eStencilTo != SR_NONE);
-		bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(),
+
+    bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(),
 																		"__STRUCT_TO__", (char *) aSR[pOpSketch->m_eStencilTo]);
 		RASSERT(bResult);
-		RASSERT(StrLib::bContains(sLine->azStr(), "CURRENT_OP"));
+    RASSERT(StrLib::bContains(sLine->azStr(), "CURRENT_OP"));
     RASSERT(pOpSketch->m_iOperatorNo != C_UNKNOWN);
 		s32 sOperatorNo;
 		StrLib::vSprint(sOperatorNo, sizeof(sOperatorNo), nullptr, "%lld"_Stz, pOpSketch->m_iOperatorNo);
