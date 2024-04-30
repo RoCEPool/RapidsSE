@@ -97,6 +97,8 @@ bool XF_Optimise_Early_projection::bOptimise(void)
       break;
 
     vRoots(m_pCI);
+    if (m_pCI->Early.m_pNeeded_later)
+      DELETE_CARD(m_pCI->Early.m_pNeeded_later);
 
     bOptRun = true;
   }
@@ -290,6 +292,20 @@ void XF_Optimise_Early_projection::vRoots(CardIter* pCI)
 {
   _static_
 
+  switch (pCI->E.e_Op) {
+    case CK_o_CROSSJOIN:
+    case CK_o_INDEXSCAN:
+    case CK_o_LIMIT:
+    case CK_o_SCAN:
+    case CK_o_TOP:
+      return;
+
+    default:
+      break;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   pCI->E.p_key  = pCI->E.p_Op->pSub_key();
   pCI->E.p_emit = pCI->E.p_Op->pSub_emit();
 
@@ -382,22 +398,12 @@ void XF_Optimise_Early_projection::vRoots(CardIter* pCI)
       break;
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-    case CK_o_CROSSJOIN:
-    case CK_o_INDEXSCAN:
-    case CK_o_LIMIT:
-    case CK_o_SCAN:
-    case CK_o_TOP:
-      break;
 
     default:
       NEVER_REACH;
   }
 
-  if (pCI->Early.m_pNeeded_later) {
-    DELETE_CARD(pCI->Early.m_pNeeded_later);
-  }
-
-}
+ }
 
 /*============================================================================*/
 /* end                                                                        */
