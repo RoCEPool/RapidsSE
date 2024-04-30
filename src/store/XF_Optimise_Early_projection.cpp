@@ -352,25 +352,33 @@ void XF_Optimise_Early_projection::vRoots(CardIter* pCI)
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     case CK_o_ORDAGG:
-      if (pCI->E.p_ordAgg->bEarlyProject_root(pCI)) {
-        // insert empty early projection (has only needed) before this ordAgg
-        p_project_early = pCI->Early.m_pNeeded_later->pNew_project_early(pCI);
-        pCI->vInsertBefore(p_project_early, pCI->E.p_Op);
-        pCI->vRepositionOp();
-
-        vBackstep(pCI);
-        pCI->E.p_Op->vRestate_emit(pCI);
+      if (pCI->pPeekPrev()->bIsCard(CK_o_PROJECT)) {
+        break;
       }
+      pCI->Early.m_pNeeded_later  = pCI->E.p_emit->pCraftRoot_needed(pCI);
+      if (! pCI->Early.m_pNeeded_later)
+        break;
+
+      // insert empty early projection (has only needed) before this ordAgg
+      p_project_early = pCI->Early.m_pNeeded_later->pNew_project_early(pCI);
+      pCI->vInsertBefore(p_project_early, pCI->E.p_Op);
+      pCI->vRepositionOp();
+
+      vBackstep(pCI);
+      pCI->E.p_Op->vRestate_emit(pCI);
       break;
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     case CK_o_PROJECT:
-      if (pCI->E.p_project->bEarlyProject_root(pCI)) {
-        pCI->E.p_Op->vAppendChild(pCI->Early.m_pNeeded_later->pDupCardRecursive());
 
-        vBackstep(pCI);
-        pCI->E.p_Op->vRestate_emit(pCI);
-      }
+      pCI->Early.m_pNeeded_later  = pCI->E.p_emit->pCraftRoot_needed(pCI);
+      if (! pCI->Early.m_pNeeded_later)
+        break;
+
+      pCI->E.p_Op->vAppendChild(pCI->Early.m_pNeeded_later->pDupCardRecursive());
+
+      vBackstep(pCI);
+      pCI->E.p_Op->vRestate_emit(pCI);
       break;
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --

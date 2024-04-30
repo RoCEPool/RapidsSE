@@ -181,29 +181,6 @@ void Card_Project::vDerive_streamKey(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
-/* early project                                                              */
-/*----------------------------------------------------------------------------*/
-bool Card_Project::bEarlyProject_root(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  RASSERT(bIsPartitionLevel());
-
-  RASSERT(! pCI->Early.m_pNeeded_later);
-
-
-  // get the root needed form of projection
-  pCI->Early.m_pNeeded_later  = pCI->E.p_emit->pCraftRoot_needed(pCI);
-
-  // insert empty early projection (has only needed) before this ordAgg
-//  Card_Project* p_project_early = pCI->Early.m_pNeeded_later->pNew_project_early(pCI);
-//  pCI->vInsertBefore(p_project_early, this);
-//  pCI->vRepositionOp();
-
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* smooth                                                                     */
 /*----------------------------------------------------------------------------*/
 void Card_Project::vSmooth_postAgg(CardIter* pCI)
