@@ -77,7 +77,6 @@ bool Card_GbyAgg::bEarlyProject_root(CardIter* pCI)
 
   if (pCI->pPeekPrev()->bIsCard(CK_o_PROJECT)) {
 
-    pCI->Early.m_pOP_leaf = this;
     pCI->vSnapIf_arriving();
 
    // pCI->PRINTBOARD_dbg();
@@ -90,7 +89,6 @@ bool Card_GbyAgg::bEarlyProject_root(CardIter* pCI)
   pCI->E.p_emit = pSub_emit();
 
   // get the root needed form of gbyAgg's projection
-  pCI->Early.m_pOP_root = (Card_OP*)this;
   if (1 == m_i_Child)
     vDebugPoint();
 

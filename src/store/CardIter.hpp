@@ -39,8 +39,6 @@ namespace STORE
     } Dic;
 
     struct {
-      Card_OP*      m_pOP_root;
-      Card_OP *     m_pOP_leaf;
       Card_Needed * m_pNeeded_later;
     } Early;
 

@@ -65,13 +65,11 @@ bool Card_Aggreg::bEarlyProject_root(CardIter* pCI)
   RASSERT(! pCI->Early.m_pNeeded_later);
 
   // get the root needed form of ordAgg's projection
-  pCI->Early.m_pOP_root = (Card_OP*)this;
   pCI->E.p_emit = pSub_emit();
   pCI->Early.m_pNeeded_later  = pCI->E.p_emit->pCraftRoot_needed(pCI);
 
   if (0 == pCI->Early.m_pNeeded_later->nChildCards()) {
     DELETE_CARD(pCI->Early.m_pNeeded_later);
-    pCI->Early.m_pOP_leaf = this;
     return false;
   }
 

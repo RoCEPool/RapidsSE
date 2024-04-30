@@ -168,8 +168,6 @@ bool Card_IndexJoin::bEarlyProject_root(CardIter* pCI)
   pCI->E.p_emit = pSub_emit();
 
   // get the root needed form of ordAgg's projection
-  pCI->Early.m_pOP_root = this;
-  pCI->Early.m_pOP_leaf = nullptr;
   pCI->Early.m_pNeeded_later  = pCI->E.p_emit->pCraftRoot_needed(pCI);
 
   // insert empty early projection (has only needed) before this ordAgg

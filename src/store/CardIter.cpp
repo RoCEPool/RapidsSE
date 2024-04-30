@@ -661,8 +661,6 @@ void CardIter::vClearRegisters(void)
   Next.m_pProject   = nullptr;
   Next.m_pEmitted   = nullptr;
 
-  Early.m_pOP_root  = nullptr;
-  Early.m_pOP_leaf  = nullptr;
   Early.m_pNeeded_later = nullptr;
 
   StreamOrder.m_pStreamKey = nullptr;
