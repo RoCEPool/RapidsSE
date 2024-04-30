@@ -58,16 +58,9 @@ bool Card_OrdAgg::bEarlyProject_root(CardIter* pCI)
   if (pCI->pPeekPrev()->bIsCard(CK_o_PROJECT))
     return false;
 
-  pCI->E.p_key = pSub_key();
-  pCI->E.p_emit = pSub_emit();
-
   // get the root needed form of ordAgg's projection
   pCI->Early.m_pNeeded_later  = pCI->E.p_emit->pCraftRoot_needed(pCI);
 
-  // insert empty early projection (has only needed) before this ordAgg
-  Card_Project* p_project_early = pCI->Early.m_pNeeded_later->pNew_project_early(pCI);
-  pCI->vInsertBefore(p_project_early, this);
-  pCI->vRepositionOp();
 
  // pCI->PRINTBOARD_dbg();
 

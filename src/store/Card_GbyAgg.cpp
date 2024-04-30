@@ -75,18 +75,15 @@ bool Card_GbyAgg::bEarlyProject_root(CardIter* pCI)
   // if the immediate previous card is a project then rely on that project
   //   to have determined what projections are needed
 
-  if (pCI->pPeekPrev()->bIsCard(CK_o_PROJECT)) {
-
-    pCI->vSnapIf_arriving();
-
-   // pCI->PRINTBOARD_dbg();
-    return false;
-  }
+//  if (pCI->pPeekPrev()->bIsCard(CK_o_PROJECT)) {
+//
+//    pCI->vSnapIf_arriving();
+//
+//   // pCI->PRINTBOARD_dbg();
+//    return false;
+//  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  pCI->E.p_key = pSub_key();
-  pCI->E.p_emit = pSub_emit();
 
   // get the root needed form of gbyAgg's projection
   if (1 == m_i_Child)
@@ -94,10 +91,6 @@ bool Card_GbyAgg::bEarlyProject_root(CardIter* pCI)
 
   pCI->Early.m_pNeeded_later  = pCI->E.p_emit->pCraftRoot_needed(pCI);
 
-  // insert empty early projection (has only needed) before this gbyAgg
-  Card_Project* p_project_early = pCI->Early.m_pNeeded_later->pNew_project_early(pCI);
-  pCI->vInsertBefore(p_project_early, this);
-  pCI->vRepositionOp();
 
 
   return true;

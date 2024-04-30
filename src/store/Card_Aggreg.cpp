@@ -65,18 +65,12 @@ bool Card_Aggreg::bEarlyProject_root(CardIter* pCI)
   RASSERT(! pCI->Early.m_pNeeded_later);
 
   // get the root needed form of ordAgg's projection
-  pCI->E.p_emit = pSub_emit();
   pCI->Early.m_pNeeded_later  = pCI->E.p_emit->pCraftRoot_needed(pCI);
 
   if (0 == pCI->Early.m_pNeeded_later->nChildCards()) {
     DELETE_CARD(pCI->Early.m_pNeeded_later);
     return false;
   }
-
-  // insert empty early projection (has only needed) before this ordAgg
-  Card_Project* p_project_early = pCI->Early.m_pNeeded_later->pNew_project_early(pCI);
-  pCI->vInsertBefore(p_project_early, this);
-  pCI->vRepositionOp();
 
  return true;
 }

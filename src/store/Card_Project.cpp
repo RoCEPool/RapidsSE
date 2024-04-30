@@ -192,9 +192,6 @@ bool Card_Project::bEarlyProject_root(CardIter* pCI)
   RASSERT(! pCI->Early.m_pNeeded_later);
 
 
-  pCI->E.p_key = pSub_key();
-  pCI->E.p_emit = pSub_emit();
-
   // get the root needed form of projection
   pCI->Early.m_pNeeded_later  = pCI->E.p_emit->pCraftRoot_needed(pCI);
 
@@ -202,7 +199,6 @@ bool Card_Project::bEarlyProject_root(CardIter* pCI)
 //  Card_Project* p_project_early = pCI->Early.m_pNeeded_later->pNew_project_early(pCI);
 //  pCI->vInsertBefore(p_project_early, this);
 //  pCI->vRepositionOp();
-  vAppendChild(pCI->Early.m_pNeeded_later->pDupCardRecursive());
 
   return true;
 }
