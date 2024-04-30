@@ -134,9 +134,7 @@ void XF_Optimise_Early_projectionv2::vEarly_needed_OP(void)
     case CK_o_ORDAGG:
     case CK_o_PROJECT:
     case CK_o_INDEXJOIN:
-      m_pCI->Early.m_pNeeded_later = m_pCI->E.p_emit->pCraft_needed_root(m_pCI);
-      DELETE_CARD(m_pCI->Early.m_pNeeded_later);
-      break;
+     break;
 
     default:
       NEVER_REACH

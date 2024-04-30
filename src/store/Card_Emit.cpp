@@ -85,7 +85,7 @@ Card_Emit* Card_Emit::pClone(void)
 /*----------------------------------------------------------------------------*/
 /* craft factored-column-set this projection needs for early-projects         */
 /*----------------------------------------------------------------------------*/
-Card_Needed* Card_Emit::pCraftRoot_needed(CardIter* pCI)
+Card_Needed* Card_Emit::pCraft_needed_root(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -187,86 +187,6 @@ Card_Needed* Card_Emit::pCraftRoot_needed(CardIter* pCI)
   }
 
   p_needed->vRenumberAll_expr();
-
-  return p_needed;
-}
-
-/*----------------------------------------------------------------------------*/
-/* craft factored-column-set this projection needs for early-projects         */
-/*----------------------------------------------------------------------------*/
-Card_Needed* Card_Emit::pCraft_needed_root(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  RASSERT(pCI->E.p_Op->bIsEarlyRoot());
-
-  if (8 == pCI->m_pBench->iBenchNo() && 56 == pCI->m_pBench->nPrintBoard()) {
-    pCI->E.p_Op->vDump(__func__);
-    //this->vDump(__func__);
-    vDebugPoint();
-  }
-
-  Card_Needed *p_needed = new Card_Needed;
-
-  for (Kid xEmit(this); xEmit.bEach(CK_EXPR); /**/) {
-    for (pCI->vBeginTarget(xEmit.p_expr(),CK_TERM); pCI->bEachTarget(); /**/) {
-      Card_Term *p_term = pCI->E.xTarget.p_term();
-      Symbol *pSym_term = p_term->pSymbol();
-
-      if (! pSym_term->bIs_Col())
-        continue;
-
-      if (pSym_term->bHasFacet(SF_KEY_COL)) {
-        RASSERT(!pSym_term->bHasFacet(SF_NMD_COL));
-        RASSERT(!pSym_term->bHasFacet(SF_ITM_COL));
-        if (pSym_term->bHasFacet(SF_EXP_COL)) {
-          RASSERT(pCI->E.p_key->pFind_expr(SF_KEY_COL, pSym_term) ==
-                  pCI->E.p_key->pFind_expr_ignoring(pSym_term, SF_EXP_COL));
-          vDebugPoint();
-        }
-        else
-        if (pSym_term->bHasFacet(SF_TBL_COL)) {
-          RASSERT(pCI->E.p_key->pFind_expr(SF_KEY_COL, pSym_term) ==
-                  pCI->E.p_key->pFind_expr_ignoring(pSym_term, SF_TBL_COL));
-          vDebugPoint();
-        }
-        else {
-          RASSERT(pSym_term->bSingleFaceted(SF_KEY_COL));
-          RASSERT(pCI->E.p_key->pFind_expr_key_Matches(pCI,pSym_term));
-        }
-        RASSERT(pCI->E.p_key->pFind_expr_key_Matches(pCI,SF_KEY_COL, pSym_term));
-      }
-      else
-      if (pSym_term->bHasFacet(SF_EXP_COL)) {
-        if (pSym_term->bHasFacet(SF_TBL_COL)) {
-          RASSERT(pSym_term->bMultiFaceted(2));
-          vDebugPoint();
-        }
-        else {
-          RASSERT(pSym_term->bSingleFaceted(SF_EXP_COL));
-          vDebugPoint();
-        }
-      }
-      else
-      if (pSym_term->bHasFacet(SF_TBL_COL)) {
-        if (pSym_term->bHasFacet(SF_NMD_COL)) {
-          RASSERT(pSym_term->bMultiFaceted(2));
-          vDebugPoint();
-        }
-        else {
-          RASSERT(pSym_term->bSingleFaceted(SF_TBL_COL));
-          vDebugPoint();
-        }
-      }
-      else {
-        NEVER_REACH
-      }
-
-      // ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?
-      // todo:
-      // ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?
-    }
-  }
 
   return p_needed;
 }
