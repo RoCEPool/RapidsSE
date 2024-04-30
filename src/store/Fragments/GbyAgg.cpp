@@ -23,8 +23,12 @@
 // function-iGbyAggBegin
 i8 iGbyAggBegin(Dynamic_T* aDynamicT) {
 
-  struct __STRUCT_FROM__* p__STRUCT_FROM__;
-  RowInfo __ROW_INFO_FROM__;
+  i8 CURRENT_DUP_OP;
+  i8 PREV_DUP_OP;
+  i8 PREV_OP_NO;
+
+  struct __STRUCT_FROM___PREV_OP* p__STRUCT_FROM___PREV_OP;
+  RowInfo __ROW_INFO_FROM__[C_MAX_DUP_OPS];
 
   char* szStrArea;
 
@@ -34,32 +38,12 @@ i8 iGbyAggBegin(Dynamic_T* aDynamicT) {
 
   __L_LABEL__:
 
-  p__STRUCT_FROM__ = (struct __STRUCT_FROM__*)__ROW_INFO_FROM__.m_aRowCellArray;
-  szStrArea = __ROW_INFO_FROM__.m_acStrArea;
+  p__STRUCT_FROM___PREV_OP = (struct __STRUCT_FROM___PREV_OP*)__ROW_INFO_FROM__[PREV_DUP_OP].m_aRowCellArray;
+  szStrArea = __ROW_INFO_FROM__[PREV_DUP_OP].m_acStrArea;
 
   // marker-end
 
   return 0;
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- vGbyAggFindKey ----------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-// function-vGbyAggFindKey
-void vGbyAggFindKey(Dynamic_T* aDynamicT) {
-
-  void* aEntFound;
-
-  // marker-start
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // find key in payload index
-#ifdef WITH_CLANG
-  aEntFound = aExtern_IndexTreeFindEntry(aDynamicT->m_xIndexInfoPL.m_aIndexTree, aDynamicT->m_xIndexInfoPL.m_aEntKey);
-#endif
-  if ( !aEntFound ) {
-    // marker-end
-  }
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -74,7 +58,7 @@ void vGbyAggFindKeyAsc(Dynamic_T* aDynamicT) {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // find key in payload index
 #ifdef WITH_CLANG
-  aEntFound = aDynamicT->m_fp_aExtern_IndexTreeFindEntryAsc(aDynamicT->m_xIndexInfoPL.m_aIndexTree, aDynamicT->m_xIndexInfoPL.m_aEntKey);
+  aEntFound = aDynamicT->m_fp_aExtern_IndexTreeFindEntryAsc(aDynamicT->m_xIndexInfoPL[CURRENT_DUP_OP].m_aIndexTree, aDynamicT->m_xIndexInfoPL[CURRENT_DUP_OP].m_aEntKey);
 #endif
   if (!aEntFound) {
     // marker-end
@@ -93,7 +77,7 @@ void vGbyAggFindKeyAsc(Dynamic_T* aDynamicT) {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // find key in payload index
 #ifdef WITH_CLANG
-    aEntFound = aExtern_IndexTreeFindEntryAscDsc(aDynamicT->m_xIndexInfoPL.m_aIndexTree, aDynamicT->m_xIndexInfoPL.m_aEntKey);
+    aEntFound = aDynamicT->m_fp_aExtern_IndexTreeFindEntryAscDsc(aDynamicT->m_xIndexInfoPL[CURRENT_DUP_OP].m_aIndexTree, aDynamicT->m_xIndexInfoPL[CURRENT_DUP_OP].m_aEntKey);
 #endif
     if (!aEntFound) {
       // marker-end
@@ -180,7 +164,7 @@ i8 iGbyAggInsertIntKey(Dynamic_T* aDynamicT) {
     // insert key in the payload
 #ifdef WITH_CLANG
     aEntInserted = aExtern_IndexTreeInsertEnt(
-        aDynamicT->m_xIndexInfoPL.m_aIndexTree, aDynamicT->m_xIndexInfoPL.m_aEntInt, &aDynamicT->m_iErrorCode);
+        aDynamicT->m_xIndexInfoPL[CURRENT_DUP_OP].m_aIndexTree, aDynamicT->m_xIndexInfoPL[CURRENT_DUP_OP].m_aEntInt, &aDynamicT->m_iErrorCode);
 #endif
 
     // check for error

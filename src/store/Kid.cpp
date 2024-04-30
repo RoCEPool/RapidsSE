@@ -76,6 +76,9 @@ void Kid::vBackstep(void)
   if (m_bForwards) {
     m_i_Child--;
   }
+  else {
+    vDebugPoint();
+  }
 
   vChildUpdate();
 }
@@ -96,7 +99,7 @@ void Kid::vBegin(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Kid::vBegin_reverse(void)
+void Kid::vBegin_tail(void)
 {
   _nonProper_
 
@@ -172,7 +175,7 @@ bool Kid::bEach(void)
   _nonProper_
 
   RASSERT(m_bBegun);
-  RASSERT(m_bForwards);
+  vForwards(true);
 
   m_i_Child++;
   vChildUpdate();
@@ -242,7 +245,6 @@ bool Kid::bEach(eCK eChild, eCK eSub1)
 {
   _nonProper_
 
-
   while (bEach()) {
     if (this->eChild() == eChild) {
       if (! (m_pSub1 = m_pChild->pFindSubCard(eSub1)) )
@@ -309,7 +311,7 @@ bool Kid::bEach_reverse(void)
   _nonProper_
 
   RASSERT(m_bBegun);
-  RASSERT(! m_bForwards);
+  vForwards(false);
 
   m_i_Child--;
   vChildUpdate();
@@ -318,6 +320,7 @@ bool Kid::bEach_reverse(void)
     return true;
   }
 
+  m_bForwards = true;
   return false;
 }
 
@@ -506,7 +509,7 @@ void Kid::vReposition(Card* pChild)
         break;
   }
   else {
-    vBegin_reverse();
+    vBegin_tail();
     while (bEach_reverse())
       if (pChild == m_pChild)
         break;
@@ -681,6 +684,16 @@ Card_Map* Kid::p_map(bool bSub)
     return pChild()->pSub_map();
 
   return _pCard_Map(pChild());
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_OP* Kid::p_op(void)
+{
+  _nonProper_
+
+  return (Card_OP*)(pChild());
 }
 
 /*----------------------------------------------------------------------------*/

@@ -145,16 +145,16 @@ void XF_Synthesise_pipelineDef::vCraftPipelineDef(void)
 
   s32 sQueryNm = m_pCI->m_pBench->pOptimiser()->szQueryNm();
 
-  m_pPipelineDef = new PipelineDef(sQueryNm);
+  m_pPipelineDef = new PipelineDef(sQueryNm,__FILE__,__LINE__);
 
   m_pCI->vClearRegisters();
   m_pCI->vBeginEach();
   while (m_pCI->bEachOp()) {
-    if (m_pCI->E.p_Op->bIsCard(CK_c_STAGE))
+    if (m_pCI->E.p_Op->bIsCard(CK_o_STAGE))
       vCraftStageDef();
     else {
       vCraftOpDef();
-      m_pCI->vSnapArriving();
+      m_pCI->vSnapIf_arriving();
     }
   }
 
@@ -176,7 +176,9 @@ void XF_Synthesise_pipelineDef::vCraftStageDef(void)
 
   m_pStageDef = new StageDef(m_pPipelineDef->nItems(),
                              m_pCI->E.p_stage->szFacet(SF_STG_NM),
-                             m_pCI->E.p_stage);
+                             m_pCI->E.p_stage,
+                             __FILE__,
+                             __LINE__);
   m_pPipelineDef->vAppend(m_pStageDef);
 }
 
@@ -189,17 +191,17 @@ void XF_Synthesise_pipelineDef::vCraftOpDef(void)
 
   RASSERT(m_pStageDef);
 
-  if (m_pCI->E.p_Op->bIsCard(CK_o_ORDAGG))
+  if (m_pCI->E.p_Op->bIsCard(CK_o_PDSROW))
     vDebugPoint();
 
-  if (m_pCI->E.p_Op->bEither(CK_o_CAST, CK_c_COMBINED, CK_c_SEND, CK_NONE))
+  if (m_pCI->E.p_Op->bEither(CK_o_CAST, CK_o_SEND, CK_NONE))
     return;
 
   if (m_pCI->E.p_Op->bIsCard(CK_o_SCAN)) {
     return;
   }
 
-  m_pOpDef = new OpDef(m_pStageDef->nItems(), m_pCI->E.p_Op);
+  m_pOpDef = new OpDef(m_pStageDef->nItems(), m_pCI->E.p_Op, __FILE__, __LINE__);
   m_pStageDef->vAppend(m_pOpDef);
 
   vCraftStreamDefs();
@@ -245,6 +247,7 @@ void XF_Synthesise_pipelineDef::vCraftArgDefs(void)
     case CK_o_KEYNOTEXISTS: p_OP->vRpn_keyNotExists(m_pCI, sExpr, _pCard_KeyNotExists(p_OP)); break;
     case CK_o_LIMIT:        p_OP->vRpn_limit       (m_pCI, sExpr, _pCard_Limit(p_OP));        break;
     case CK_o_ORDAGG:       p_OP->vRpn_ordAgg      (m_pCI, sExpr, _pCard_OrdAgg(p_OP));       break;
+    case CK_o_PDSROW:       p_OP->vRpn_pdsRow      (m_pCI, sExpr, _pCard_PdsRow(p_OP));      break;
     case CK_o_PROJECT:      p_OP->vRpn_project     (m_pCI, sExpr, _pCard_Project(p_OP));      break;
     case CK_o_SCAN:         p_OP->vRpn_scan        (m_pCI, sExpr, _pCard_Scan(p_OP));         break;
     case CK_o_SORT:         p_OP->vRpn_sort        (m_pCI, sExpr, _pCard_Sort(p_OP));         break;
@@ -252,8 +255,7 @@ void XF_Synthesise_pipelineDef::vCraftArgDefs(void)
     case CK_o_WHERE:        p_OP->vRpn_where       (m_pCI, sExpr, _pCard_Where(p_OP));        break;
 
     case CK_o_CAST:
-    case CK_c_COMBINED:
-    case CK_c_SEND:
+    case CK_o_SEND:
       break;
 
     default:
@@ -267,107 +269,110 @@ void XF_Synthesise_pipelineDef::vCraftArgDefs(void)
   switch (eCard) {
 
     case CK_o_AGGREG:
-      m_pOpDef->vAppend(new ArgDef(0, "expr"_Stz, sExpr));
+      m_pOpDef->vAppend(new ArgDef(0, "expr"_Stz, sExpr, __FILE__, __LINE__));
       break;
 
     case CK_o_CROSSJOIN:
-      m_pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_CrossJoin(p_OP)->pSub_tableNm()->szFacet(SF_TBL_NM)));
-      m_pOpDef->vAppend(new ArgDef(1, "indexNm"_Stz, _pCard_CrossJoin(p_OP)->pSub_tableNm()->szFacet(SF_TBL_NM)));
-      m_pOpDef->vAppend(new ArgDef(2, "expr"_Stz, sExpr));
+      m_pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_CrossJoin(p_OP)->pSub_tableNm()->szFacet(SF_TBL_NM), __FILE__, __LINE__));
+      m_pOpDef->vAppend(new ArgDef(1, "indexNm"_Stz, _pCard_CrossJoin(p_OP)->pSub_tableNm()->szFacet(SF_TBL_NM), __FILE__, __LINE__));
+      m_pOpDef->vAppend(new ArgDef(2, "expr"_Stz, sExpr, __FILE__, __LINE__));
       break;
 
     case CK_o_FILTER:
-      m_pOpDef->vAppend(new ArgDef(0, "expr"_Stz, sExpr));
+      m_pOpDef->vAppend(new ArgDef(0, "expr"_Stz, sExpr, __FILE__, __LINE__));
       break;
 
     case CK_o_GBYAGG:
-      m_pOpDef->vAppend(new ArgDef(0, "expr"_Stz, sExpr));
+      m_pOpDef->vAppend(new ArgDef(0, "expr"_Stz, sExpr, __FILE__, __LINE__));
       break;
 
     case CK_o_HASH:
       if (m_pStageDef->i_Stage() == 5 && m_pOpDef->i_Op() == 1)
         vDebugPoint();
-      m_pOpDef->vAppend(new ArgDef(0, "expr"_Stz, sExpr));
-      m_pOpDef->m_pColHsh = new ColHsh;
+      m_pOpDef->vAppend(new ArgDef(0, "expr"_Stz, sExpr, __FILE__, __LINE__));
+      m_pOpDef->m_pColHsh = new ColHsh(__FILE__,__LINE__);
       m_pOpDef->m_pColHsh->vUpdate(_pCard_Hash(p_OP)->pSub_hashing());
       break;
 
     case CK_o_HAVING:
-      m_pOpDef->vAppend(new ArgDef(0, "expr"_Stz, sExpr));
+      m_pOpDef->vAppend(new ArgDef(0, "expr"_Stz, sExpr, __FILE__, __LINE__));
       break;
 
     case CK_o_INDEXJOIN:
-      m_pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_IndexJoin(p_OP)->pSub_tableNm()->szFacet(SF_TBL_NM)));
-      m_pOpDef->vAppend(new ArgDef(1, "indexNm"_Stz, _pCard_IndexJoin(p_OP)->pSub_tableNm()->szFacet(SF_TBL_NM)));
-      m_pOpDef->vAppend(new ArgDef(2, "expr"_Stz, sExpr));
+      m_pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_IndexJoin(p_OP)->pSub_tableNm()->szFacet(SF_TBL_NM), __FILE__, __LINE__));
+      m_pOpDef->vAppend(new ArgDef(1, "indexNm"_Stz, _pCard_IndexJoin(p_OP)->pSub_tableNm()->szFacet(SF_TBL_NM), __FILE__, __LINE__));
+      m_pOpDef->vAppend(new ArgDef(2, "expr"_Stz, sExpr, __FILE__, __LINE__));
 
       if (p_OP->pSub_constraint()) {
         p_OP->vRpn_indexJoin_constraint(m_pCI, sConstraint, _pCard_IndexJoin(p_OP));
-        m_pOpDef->vAppend(new ArgDef(4, "constraint"_Stz, sConstraint));
+        m_pOpDef->vAppend(new ArgDef(4, "constraint"_Stz, sConstraint, __FILE__, __LINE__));
       }
       break;
 
     case CK_o_INDEXSCAN:
-      m_pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_IndexScan(p_OP)->pSub_tableNm()->szFacet(SF_TBL_NM)));
-      m_pOpDef->vAppend(new ArgDef(1, "indexNm"_Stz, _pCard_IndexScan(p_OP)->pSub_tableNm()->szFacet(SF_TBL_NM)));
-      m_pOpDef->vAppend(new ArgDef(2, "expr"_Stz, sExpr));
+      m_pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_IndexScan(p_OP)->pSub_tableNm()->szFacet(SF_TBL_NM), __FILE__, __LINE__));
+      m_pOpDef->vAppend(new ArgDef(1, "indexNm"_Stz, _pCard_IndexScan(p_OP)->pSub_tableNm()->szFacet(SF_TBL_NM), __FILE__, __LINE__));
+      m_pOpDef->vAppend(new ArgDef(2, "expr"_Stz, sExpr, __FILE__, __LINE__));
       break;
 
     case CK_o_INFLATE:
       if (p_OP->pSymbol()->Y_bHas(P_AltFetch))
         m_pOpDef->m_sAlt = p_OP->pSymbol()->Y_szGet(P_AltFetch);
 
-      m_pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_Inflate(p_OP)->pSub_tableNm()->szFacet(SF_TBL_NM)));
+      m_pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_Inflate(p_OP)->pSub_tableNm()->szFacet(SF_TBL_NM), __FILE__, __LINE__));
       break;
 
     case CK_o_KEYEXISTS:
       p_OP->vRpn_keyExists_constraint(m_pCI, sConstraint, _pCard_KeyExists(p_OP));
 
-      m_pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_KeyExists(p_OP)->pSub_tableNm()->szFacet(SF_TBL_NM)));
-      m_pOpDef->vAppend(new ArgDef(1, "indexNm"_Stz, _pCard_KeyExists(p_OP)->pSub_indexNm()->szFacet(SF_IDX_NM)));
-      m_pOpDef->vAppend(new ArgDef(2, "expr"_Stz, sExpr));
-      m_pOpDef->vAppend(new ArgDef(3, "constraint"_Stz, sConstraint));
+      m_pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_KeyExists(p_OP)->pSub_tableNm()->szFacet(SF_TBL_NM), __FILE__, __LINE__));
+      m_pOpDef->vAppend(new ArgDef(1, "indexNm"_Stz, _pCard_KeyExists(p_OP)->pSub_indexNm()->szFacet(SF_IDX_NM), __FILE__, __LINE__));
+      m_pOpDef->vAppend(new ArgDef(2, "expr"_Stz, sExpr, __FILE__, __LINE__));
+      m_pOpDef->vAppend(new ArgDef(3, "constraint"_Stz, sConstraint, __FILE__, __LINE__));
       break;
 
     case CK_o_KEYNOTEXISTS:
       p_OP->vRpn_keyNotExists_constraint(m_pCI, sConstraint, _pCard_KeyNotExists(p_OP));
 
-      m_pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_KeyNotExists(p_OP)->pSub_tableNm()->szFacet(SF_TBL_NM)));
-      m_pOpDef->vAppend(new ArgDef(1, "indexNm"_Stz, _pCard_KeyNotExists(p_OP)->pSub_indexNm()->szFacet(SF_IDX_NM)));
-      m_pOpDef->vAppend(new ArgDef(2, "expr"_Stz, sExpr));
-      m_pOpDef->vAppend(new ArgDef(3, "constraint"_Stz, sConstraint));
+      m_pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_KeyNotExists(p_OP)->pSub_tableNm()->szFacet(SF_TBL_NM), __FILE__, __LINE__));
+      m_pOpDef->vAppend(new ArgDef(1, "indexNm"_Stz, _pCard_KeyNotExists(p_OP)->pSub_indexNm()->szFacet(SF_IDX_NM), __FILE__, __LINE__));
+      m_pOpDef->vAppend(new ArgDef(2, "expr"_Stz, sExpr, __FILE__, __LINE__));
+      m_pOpDef->vAppend(new ArgDef(3, "constraint"_Stz, sConstraint, __FILE__, __LINE__));
       break;
 
     case CK_o_LIMIT:
-      m_pOpDef->vAppend(new ArgDef(0, "expr"_Stz, sExpr));
+      m_pOpDef->vAppend(new ArgDef(0, "expr"_Stz, sExpr, __FILE__, __LINE__));
       break;
 
     case CK_o_ORDAGG:
-      m_pOpDef->vAppend(new ArgDef(0, "expr"_Stz, sExpr));
+      m_pOpDef->vAppend(new ArgDef(0, "expr"_Stz, sExpr, __FILE__, __LINE__));
+      break;
+
+    case CK_o_PDSROW:
       break;
 
     case CK_o_PROJECT:
-      m_pOpDef->vAppend(new ArgDef(0, "expr"_Stz, sExpr));
+      m_pOpDef->vAppend(new ArgDef(0, "expr"_Stz, sExpr, __FILE__, __LINE__));
       break;
 
     case CK_o_SCAN:
-      m_pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_Scan(p_OP)->pSub_tableNm()->szFacet(SF_TBL_NM)));
+      m_pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_Scan(p_OP)->pSub_tableNm()->szFacet(SF_TBL_NM), __FILE__, __LINE__));
       break;
 
-    case CK_c_SEND:
+    case CK_o_SEND:
       break;
 
     case CK_o_SORT:
-      m_pOpDef->vAppend(new ArgDef(0, "expr"_Stz, sExpr));
+      m_pOpDef->vAppend(new ArgDef(0, "expr"_Stz, sExpr, __FILE__, __LINE__));
       break;
 
     case CK_o_TOP:
-      m_pOpDef->vAppend(new ArgDef(0, "expr"_Stz, sExpr));
-      m_pOpDef->vAppend(new ArgDef(0, "count"_Stz, _pCard_Top(p_OP)->pSub_count()->szFacet(SF_INT_LIT)));
+      m_pOpDef->vAppend(new ArgDef(0, "expr"_Stz, sExpr, __FILE__, __LINE__));
+      m_pOpDef->vAppend(new ArgDef(0, "count"_Stz, _pCard_Top(p_OP)->pSub_count()->szFacet(SF_INT_LIT), __FILE__, __LINE__));
       break;
 
     case CK_o_WHERE:
-      m_pOpDef->vAppend(new ArgDef(0, "expr"_Stz, sExpr));
+      m_pOpDef->vAppend(new ArgDef(0, "expr"_Stz, sExpr, __FILE__, __LINE__));
       break;
 
 
@@ -448,7 +453,7 @@ void XF_Synthesise_pipelineDef::vCraftStreamDefs(void)
 
   if (p_OP->bIsCard(CK_o_INDEXJOIN)) {
     m_pOpDef->m_pStreamDef_arriving =
-        m_pCI->Flux.m_pArriving->pTo_StreamDef(nullptr, nullptr, p_OP);
+        m_pCI->Arriving.m_pEmit->pTo_StreamDef(nullptr, nullptr, p_OP);
   }
   else
 
@@ -458,7 +463,7 @@ void XF_Synthesise_pipelineDef::vCraftStreamDefs(void)
   else
   if (p_OP->bIsCard(CK_o_INDEXJOIN)) {
     m_pOpDef->m_pStreamDef_arriving =
-        m_pCI->Flux.m_pArriving->pTo_StreamDef(nullptr, nullptr, p_OP);
+        m_pCI->Arriving.m_pEmit->pTo_StreamDef(nullptr, nullptr, p_OP);
   }
   else
   if (p_OP->bIsCard(CK_o_INFLATE)) {
@@ -518,7 +523,7 @@ void XF_Synthesise_pipelineDef::vCraftColInj(void)
   Table* pTable = (Table*)p_table->pSymbol()->Y_pGet(P_Pointer);
   RASSERT(pTable);
   i8 nCrwCols = pTable->pStreamDef()->nColumns();
-  ColInj* pColInj = new ColInj(nCrwCols);
+  ColInj* pColInj = new ColInj(nCrwCols, __FILE__, __LINE__);
   m_pOpDef->vColInj(pColInj);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -543,6 +548,10 @@ void XF_Synthesise_pipelineDef::vCraftColInj(ColInj* pColInj, Card *pSubCard)
 
   Card_Injectable* p_injected = pSubCard->pSub_injectable();
   Card_Emit*   p_emit = pSubCard->pSub_emit();
+
+  pColInj->m_sRefer.vSprint("]emit #%lld"_Stz,
+                            //pSubCard->szCardNm(),
+                            p_emit->iSequence());
 
   //p_emit->vDump(__func__);
 
@@ -574,7 +583,7 @@ void XF_Synthesise_pipelineDef::vCraftColInj(ColInj* pColInj, Card *pSubCard)
     Kid xEmit(p_emit);
     for (;;) {
       Card_Expr *p_expr_e =
-          p_emit->pFind_expr_Matches(pSym_tblCol_i, &xEmit);
+          p_emit->pFind_expr(pSym_tblCol_i, &xEmit);
       if (! p_expr_e)
         return C_CONTINUE_RECURSION;
 
@@ -623,14 +632,14 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(void)
   if (! m_pCI->E.p_Op->bEither(CK_o_CROSSJOIN, CK_o_INDEXJOIN, CK_NONE))
     return;
 
-  if (! m_pCI->Flux.m_pArriving)
+  if (! m_pCI->Arriving.m_pEmit)
     return;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   //i8 nArriving = m_pCI->G.p_arriving->nChildCards();
-  i8 nArriving = m_pCI->Flux.m_pArriving->nChildCards();
-  ColPpg* pColPpg = new ColPpg(nArriving);
+  i8 nArriving = m_pCI->Arriving.m_pEmit->nChildCards();
+  ColPpg* pColPpg = new ColPpg(nArriving,__FILE__,__LINE__);
   m_pOpDef->vColPpg(pColPpg);
 
   vCraftColPpg(pColPpg, m_pCI->E.p_Op);
@@ -643,8 +652,11 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_PIPELINEDEF, _FOOTER_);
 
-  Card_Emit* p_arriving = m_pCI->Flux.m_pArriving;
+  Card_Emit* p_arriving = m_pCI->Arriving.m_pEmit;
   Card_Emit* p_emit  = pSubCard->pSub_emit();
+
+  pColPpg->m_sRefer.vSprint("]emit #%lld"_Stz,
+                            p_emit->iSequence());
 
 //  if (AM::JOB::bHasTag(C_OPTIMISER_TRACE)) {
 //    p_arriving->vDump(__func__, "--ARRIVING at SubCard--"_Stz);
@@ -697,15 +709,19 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
         bSym_term_a_Is_tblCol_only = true;
       }
 
-      if (bSym_term_a_Is_tblCol_only && (p_expr_e = p_emit->pFind_expr_Matches(pSym_term_a))) {
+      if (bSym_term_a_Is_tblCol_only && (p_expr_e = p_emit->pFind_expr(pSym_term_a))) {
         pSym_In_a = pSym_term_a;
       }
+//      else
+//      if ((p_expr_e = p_emit->pFind_expr(SF_TBL_COL,pSym_expr_a))) {
+//        pSym_In_a = pSym_expr_a;
+//      }
       else
-      if ((p_expr_e = p_emit->pFind_expr_Matches(SF_TBL_COL,pSym_expr_a))) {
+      if ((p_expr_e = p_emit->pFind_expr(SF_ITM_COL,pSym_expr_a))) {
         pSym_In_a = pSym_expr_a;
       }
       else
-      if ((p_expr_e = p_emit->pFind_expr_Matches_ignoring(pSym_expr_a, SF_EXP_COL))) {
+      if ((p_expr_e = p_emit->pFind_expr_ignoring(pSym_expr_a, SF_EXP_COL))) {
         pSym_In_a = pSym_expr_a;
       }
       else {
@@ -746,7 +762,7 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
       // - computed
 
       //if ((p_expr_e = p_emit->pGet_expr(pSym_expr_a))) {
-      if ((p_expr_e = p_emit->pContains(m_pCI,pSym_expr_a))) {
+      if ((p_expr_e = p_emit->pFind_term(m_pCI, pSym_expr_a))) {
 
 //      p_emit->vDump(__func__);
 //      p_expr_a->vDump(__func__);
@@ -782,14 +798,17 @@ void XF_Synthesise_pipelineDef::vCraftKeyMap(void)
   if (! m_pCI->E.p_Op->bEither(CK_o_ORDAGG, CK_NONE))
     return;
 
-  m_pOpDef->m_pKeyMap = new KeyMap;
+  m_pOpDef->m_pKeyMap = new KeyMap(__FILE__,__LINE__);
+
 
   m_pCI->E.p_emit = m_pCI->E.p_Op->pSub_emit();
+  m_pOpDef->m_pKeyMap->m_sRefer.vSprint("]emit #%lld"_Stz,
+                                        m_pCI->E.p_emit->iSequence());
 
 //Z_KEY_DIRECTION
   for (m_pCI->vBeginTarget(m_pCI->E.p_Op->pSub_key(),CK_EXPR); m_pCI->bEachTarget(); /**/) {
 
-    if ((m_pCI->E.p_expr = m_pCI->E.p_emit->pFind_expr_Matches(m_pCI->E.p_expr->pSymbol()))) {
+    if ((m_pCI->E.p_expr = m_pCI->E.p_emit->pFind_expr(m_pCI->E.p_expr->pSymbol()))) {
 
       i8 i_EmittedCol = m_pCI->E.p_expr->pSymbol()->iTo_ordinal(SF_EXP_COL) - 1;
       i8 i_Cell = m_pCI->E.p_expr->pSymbol()->iTo_ordinal(SF_KEY_COL) - 1;

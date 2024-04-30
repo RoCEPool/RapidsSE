@@ -87,6 +87,19 @@ void String::vConcat(Stz* szArg)
   StrLib::vConcat(m_caCharArea, m_nArea, szArg->azChar());
 }
 
+/*----------------------------------------------------------------------------*/
+/* concat argument, returning false if a truncation occurred                  */
+/*----------------------------------------------------------------------------*/
+bool String::bConcat(Stz* szArg)
+{
+  m_xHeader.vAssertHeader();
+  aFooter()->vAssertFooter();
+
+  bool bResult;
+  StrLib::vConcat(m_caCharArea, m_nArea, szArg->azChar(), &bResult);
+  return bResult;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* copy arg into this string                                                  */

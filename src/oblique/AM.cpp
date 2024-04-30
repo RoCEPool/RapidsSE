@@ -1857,6 +1857,17 @@ void AM::OP::vPipeToNextOp(Op* pCurrOp, Operand* pOperand,
   pCurrOp->vPipeToNextOp(pOperand,pTriggeringTask);
 }
 
+/*----------------------------------------------------------------------------*/
+/* append operand onto next operator in pipeline                              */
+/*----------------------------------------------------------------------------*/
+void AM::OP::vPipeToNextOpTasks(Op* pCurrOp, Operand* pOperand,
+													 Task* pTriggeringTask)
+{
+	_static_
+
+	pCurrOp->vPipeToNextOpTasks(pOperand,pTriggeringTask);
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* append operand onto next operator in pipeline                              */
@@ -5058,6 +5069,7 @@ static Stz* aEG[]
   "EG_RU"_Stz,
   
   "EG_SC"_Stz,
+  "EG_SF"_Stz,
   "EG_SI"_Stz,
 
   "EG_TA"_Stz,
@@ -5094,6 +5106,7 @@ Stz* AM::szEnumText(i8 i_EnumGroup, i8 i_Enum)
     case EG_AA: return aAA[i_Enum];
     case EG_AC: return aAC[i_Enum];
     case EG_AK: return aAK[i_Enum];
+    case EG_AL: return aAL[i_Enum];
     //case EG_AN: return aAN[i_Enum];
     case EG_AT: return aAT[i_Enum];
              
@@ -5168,6 +5181,7 @@ Stz* AM::szEnumText(i8 i_EnumGroup, i8 i_Enum)
     case EG_RU: return aRU[i_Enum];
       
     case EG_SC: return aSC[i_Enum];
+    case EG_SF: return aSF[i_Enum];
     case EG_SI: return aSI[i_Enum];
 
     case EG_TA: return aTA[i_Enum];

@@ -49,20 +49,19 @@ void Card_GbyAgg::vDerive_streamKey(CardIter* pCI)
 
   RASSERT(bPeg_Projection(pCI));
   RASSERT(bPeg_Key(pCI));
-  pCI->E.p_emit->vDelete_streamKey(pCI);
 
+  vDeleteSub(CK_p_STREAMKEY);
   pCI->StreamOrder.m_pStreamKey = Card_StreamKey::pTo_streamKey(pCI->E.p_key);
-  pCI->E.p_emit->vAppendChild(pCI->StreamOrder.m_pStreamKey);
-
+  vAppendChild(pCI->StreamOrder.m_pStreamKey);
 
   // set running projection for use by next op
-  pCI->StreamOrder.m_pEmitted = pCI->E.p_emit;
+  pCI->StreamOrder.m_pEmit = pCI->E.p_emit;
 }
 
 /*----------------------------------------------------------------------------*/
 /* early project                                                              */
 /*----------------------------------------------------------------------------*/
-void Card_GbyAgg::vEarlyProject_root(CardIter* pCI)
+bool Card_GbyAgg::bEarlyProject_root(CardIter* pCI)
 {
   //vDump(0,(Stz*)__func__);
 
@@ -76,52 +75,25 @@ void Card_GbyAgg::vEarlyProject_root(CardIter* pCI)
   // if the immediate previous card is a project then rely on that project
   //   to have determined what projections are needed
 
-  if (pCI->pPeekPrev()->bIsCard(CK_o_PROJECT)) {
-
-    pCI->Early.m_pOP_leaf = this;
-    pCI->Dic.m_p_expr = pCI->Flux.m_pArriving = pSub_emit();
-
-   // pCI->PRINTBOARD_dbg();
-    return;
-  }
+//  if (pCI->pPeekPrev()->bIsCard(CK_o_PROJECT)) {
+//
+//    pCI->vSnapIf_arriving();
+//
+//   // pCI->PRINTBOARD_dbg();
+//    return false;
+//  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pCI->E.p_key = pSub_key();
-  pCI->E.p_emit = pSub_emit();
-
   // get the root needed form of gbyAgg's projection
-  pCI->Early.m_pOP_root = (Card_OP*)this;
   if (1 == m_i_Child)
     vDebugPoint();
 
   pCI->Early.m_pNeeded_later  = pCI->E.p_emit->pCraftRoot_needed(pCI);
 
-  // insert empty early projection (has only needed) before this gbyAgg
-  Card_Project* p_project_early = pCI->Early.m_pNeeded_later->pNew_project_early(pCI);
-  pCI->vInsertBefore(p_project_early, this);
-  pCI->vResynchOp();
 
-  Card_OP::vEarlyProject_backstep(pCI);
 
-  /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
-
-  RASSERT(pCI->Early.m_pOP_leaf);
-
-  pCI->E.p_gbyAgg->vRestate_emit(pCI);
-
- // pCI->PRINTBOARD_dbg();
-}
-
-/*----------------------------------------------------------------------------*/
-/* craft needed                                                               */
-/*----------------------------------------------------------------------------*/
-void Card_GbyAgg::vCraft_needed_root(CardIter *pCI)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  pCI->Early.m_pNeeded_later = pCI->E.p_emit->pCraft_needed_root(pCI);
-  DELETE_CARD(pCI->Early.m_pNeeded_later);
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -139,17 +111,16 @@ void Card_GbyAgg::vInject_foldExpr(CardIter* pCI)
       Card_Term* p_term = pCI->E.xTarget.p_term();
       if (p_term->pSymbol()->bHasFacet(SF_EXP_COL)) {
         p_term->vBump_ordCol(SF_EXP_COL);
-        p_term->vMark1(MARK_CHANGED);
-       }
+      }
     }
   }
 
 
   pCI->E.p_emit = pCI->E.p_gbyAgg->pSub_emit();
-  pCI->E.p_emit->vBump_KeyCol_In_rpnCalc(pCI);
-  pCI->E.p_emit->vBump_expCol_In_rpnCalc(pCI);
+  pCI->E.p_emit->vBump_keyCol(pCI);
+  pCI->E.p_emit->vBump_expCol(pCI);
 
-  pCI->E.p_emit->vPush_foldExpr_Into_emit(pCI, pCI->Flat.m_pExpr_fold);
+  pCI->E.p_emit->vPush_foldExpr(pCI, pCI->Flat.m_pExpr_fold);
   pCI->E.p_key->vAdd_key_expr_BasedOn_expr(pCI,pCI->Flat.m_pExpr_fold,true,false);
 
   pCI->E.p_key->vRenumberAll_expr(SF_KEY_COL);
@@ -174,7 +145,7 @@ bool Card_GbyAgg::bMorph_gbyAgg_To_ordAgg(CardIter* pCI)
 
   pCI->E.p_key = pSub_key();
 
-  if (! pCI->E.p_key->bIsEqual(pCI,pCI->StreamOrder.m_pStreamKey))
+  if (!pCI->E.p_key->bEqualTo(pCI, pCI->StreamOrder.m_pStreamKey))
     return false;
 
   vCard(CK_o_ORDAGG);
@@ -187,7 +158,7 @@ bool Card_GbyAgg::bMorph_gbyAgg_To_ordAgg(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* smooth                                                                     */
 /*----------------------------------------------------------------------------*/
-void Card_GbyAgg::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
+void Card_GbyAgg::vSmooth(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -195,7 +166,7 @@ void Card_GbyAgg::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
 
   pCI->E.p_gbyAgg->pSymbol()->Y_vSet(P_Smoothed);
 
-  if (pCarryForward->GbyAgg.m_bInject_foldExpr) {
+  if (pCI->Carry.GbyAgg.m_bInject_foldExpr) {
     pCI->E.p_gbyAgg->vInject_foldExpr(pCI);
   }
 
@@ -208,7 +179,7 @@ void Card_GbyAgg::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  vValidate_mustHave(CK_s_LEVEL, CK_s_KEY, CK_s_STREAM, CK_NONE);
+  vValidate_child_mustBe(CK_p_LEVEL, CK_p_KEY, CK_p_EMIT, CK_NONE);
 
   UNUSED(pParent);
   Card::vValidate(pCI,iDepth,pParent);

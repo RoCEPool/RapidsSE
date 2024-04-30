@@ -13,6 +13,23 @@ metricsCtl disable;
 
 sleep 5;
 
+select stageName , opName, max(maxQs) from se__jobOperators where opName = 'dynamic' group by stageName, opName ;
+
+
+/*
+
+row: ('S01','dynamic',0)
+row: ('S02','dynamic',3)
+row: ('S03','dynamic',29)
+row: ('S04','dynamic',3)
+row: ('S05','dynamic',179)
+row: ('S06','dynamic',3)
+row: ('S07','dynamic',3)
+row: ('S08','dynamic',3)
+row: ('S09','dynamic',3)
+
+*/
+
 sysReport;
 select * from se__jobMetrics;
 select * from se__jobOperands;

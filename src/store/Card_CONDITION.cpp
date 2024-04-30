@@ -49,10 +49,10 @@ void Card_CONDITION::vAddTransients(CardIter* pCI)
     if (!p_term->pSymbol()->bHasFacet(SF_EXP_COL) && !p_term->pSymbol()->bHasFacet(SF_TBL_COL))
       return C_CONTINUE_RECURSION;
 
-    if (pCI->Early.m_pNeeded_later->pFind_expr_Matches(p_term->pSymbol()))
+    if (pCI->Early.m_pNeeded_later->pFind_expr(p_term->pSymbol()))
       return C_CONTINUE_RECURSION;
 
-    if (Card_Expr* p_expr_defn = pCI->pResolvePrior_expr(p_term)) {
+    if (Card_Expr* p_expr_defn = pCI->pPrior_expr(p_term->pSymbol())) {
       //p_expr_defn->vDump();
       Card_Expr* p_expr_clone = p_expr_defn->pClone();
       p_expr_clone->pGet_Symbol(0)->vDeleteFacet(SF_EXP_COL);
@@ -65,7 +65,7 @@ void Card_CONDITION::vAddTransients(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pSub_boolPred()->bLambdaWalk_term(bLambda);
+  pSub_predicate()->bLambdaWalk_term(bLambda);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -75,8 +75,8 @@ void Card_CONDITION::vX_expCol_To_tblCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if ((pCI->E.p_boolPred = pSub_boolPred()))
-    pCI->E.p_boolPred->vX_expCol_To_tblCol(pCI);
+  if ((pCI->E.p_predicate = pSub_predicate()))
+    pCI->E.p_predicate->vX_expCol_To_tblCol(pCI);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -86,10 +86,10 @@ void Card_CONDITION::vX_tblCol_To_expCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  pCI->E.p_boolPred = nullptr;
-  if ((pCI->E.p_boolPred = pSub_boolPred()))
-    pCI->E.p_boolPred->vX_tblCol_To_expCol(pCI);
-  pCI->E.p_boolPred = nullptr;
+  pCI->E.p_predicate = nullptr;
+  if ((pCI->E.p_predicate = pSub_predicate()))
+    pCI->E.p_predicate->vX_tblCol_To_expCol(pCI);
+  pCI->E.p_predicate = nullptr;
 }
 
 /*============================================================================*/

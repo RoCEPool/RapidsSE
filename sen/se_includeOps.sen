@@ -176,7 +176,9 @@ assert::stack_0
   "OP_progress.sen"             include
   "OP_project.sen"              include
   "OP_projValidation.sen"       include
+  "OP_ptnConsume.sen"           include
   "OP_ptnMap.sen"               include
+  "OP_ptnSendSE.sen"            include
   "OP_pulse.sen"                include
   "OP_pwf.sen"                  include
 

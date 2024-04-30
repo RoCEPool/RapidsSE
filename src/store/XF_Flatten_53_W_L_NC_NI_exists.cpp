@@ -86,21 +86,18 @@ void XF_Flatten_53_W_L_NC_NI_exists::vFlatten(void)
   // fold
 
   //pFold->vFold_basic(m_pCI,"W_L_NC_NI_exists"_Stz,CK_o_WHERE);
-  CarryForward* pCarryForward =
-      pFold_nc_subQuery(m_pCI, "W_L_NC_NI_exists"_Stz,
+  vFold_nc_subQuery(m_pCI, "W_L_NC_NI_exists"_Stz,
                                CK_o_WHERE, QO_IN_OP);
 
  // m_pCI->PRINTBOARD_dbg();
 
 
-  vSmooth(m_pCI,pCarryForward);
+  vSmooth(m_pCI);
  // m_pCI->PRINTBOARD_dbg();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   m_pCI->E.p_deck->vMarksClearRecursive();
-
-  delete pCarryForward;
 
   m_pCI->vEndTransform(__LINE__);
 //vValidateBench();

@@ -297,8 +297,23 @@ void Stream::vSpawnOpTasks(void)
     for (i8 i_Op = nItems() - 1; i_Op >= 0; i_Op--) {
       
       Op* pOp = pGet(i_Op);
-      
-      pOp->vSpawnTask();
+			if ( ! pOp->szOpNm()->bSame("dynamic"_Stz) ) {
+				pOp->vSpawnTask();
+				continue;
+			}
+			if (m_p_StageSpec->eStageTopology() == YG_ALL_PARTITIONS) {
+				if (m_p_StageSpec->iThreadsPerPtn() > 1) {
+					pOp->vSpawnTask();
+					//vTrace("Stage %s: spawning %lld multiple tasks\n"_Stz,
+					//			 m_p_StageSpec->szStageNm(), m_p_StageSpec->iThreadsPerPtn());
+					for (i8 iThreads = 1; iThreads < m_p_StageSpec->iThreadsPerPtn(); iThreads++)
+						pOp->vSpawnTask(true);
+				}
+				else
+					pOp->vSpawnTask();
+			}
+			else
+				pOp->vSpawnTask();
 
 //      if (AM::SYSTEM::bReady() && i_Op == 3)
 //        THROW_LOWMEMORY();

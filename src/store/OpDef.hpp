@@ -3,6 +3,7 @@
 /*============================================================================*/
 #pragma once
 
+#include "AbstractDef.hpp"
 #include "ArgDef.hpp"
 #include "IndexDef.hpp"
 #include "ColHsh.hpp"
@@ -16,7 +17,7 @@
 
 namespace STORE
 {
-  class OpDef : public Object
+  class OpDef : public AbstractDef
               , public ListExo2_t<ArgDef>
   {
   public:
@@ -25,8 +26,6 @@ namespace STORE
     char md_Coord[256];
 
     s32  m_sAlt;
-
-    Card* m_pCard;
 
     StreamDef* m_pStreamDef_arriving;
     StreamDef* m_pStreamDef_emitted;
@@ -58,7 +57,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-     OpDef(i8 i_Op, Card* pCard);
+     OpDef(i8 i_Op, Card* pCard, const char* azFile, i8 iLine);
     ~OpDef(void) noexcept(false);
 
     i8      nArgs(void);

@@ -9,10 +9,7 @@
 #include "eXF.h"
 #include "eOH.h"
 
-#include "CarryForward.hpp"
-
 #include "Card.hpp"
-#include "CardCtl.hpp"
 
 #include "Card_AbsJoin.hpp"
 #include "Card_Address.hpp"
@@ -20,7 +17,7 @@
 #include "Card_Aggreg.hpp"
 #include "Card_AndConj.hpp"
 
-#include "Card_BoolPred.hpp"
+#include "Card_Predicate.hpp"
 #include "Card_Bound.hpp"
 #include "Card_Bounds.hpp"
 
@@ -30,7 +27,6 @@
 #include "Card_Clause.hpp"
 #include "Card_RlnConj.hpp"
 #include "Card_COLUMN.hpp"
-#include "Card_Combined.hpp"
 #include "Card_CONDITION.hpp"
 #include "Card_Constraint.hpp"
 #include "Card_CorrCols.hpp"
@@ -105,10 +101,10 @@
 #include "Card_OuterJoin.hpp"
 
 #include "Card_PayloadCells.hpp"
+#include "Card_PdsRow.hpp"
 #include "Card_Project.hpp"
 
 #include "Card_RelnOp.hpp"
-#include "Card_Required.hpp"
 #include "Card_RowCount.hpp"
 #include "Card_RowSize.hpp"
 #include "Card_TermSeq.hpp"
@@ -122,7 +118,6 @@
 #include "Card_SqyInfo.hpp"
 #include "Card_SqyNo.hpp"
 #include "Card_Stage.hpp"
-#include "Card_Stream.hpp"
 #include "Card_StreamHead.hpp"
 #include "Card_StreamJoin.hpp"
 #include "Card_StreamKey.hpp"
@@ -131,10 +126,8 @@
 #include "Card_StreamSet.hpp"  //
 #include "Card_SubQuery.hpp"
 #include "Card_SubSet.hpp"
-#include "Card_Synthesis.hpp"
 
 #include "Card_Table.hpp"
-#include "Card_TableInfo.hpp"
 #include "Card_TableList.hpp"
 #include "Card_TableNm.hpp"
 #include "Card_TablePtn.hpp"

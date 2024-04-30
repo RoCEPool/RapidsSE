@@ -1,0 +1,138 @@
+/*============================================================================*/
+/* OP_ptnSendSE.sen -- Operator send for SE Adaptor                           */
+/*============================================================================*/
+
+" OP_ptnSendSE.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* send the operand in the PipeIn[] register to ptn tasks                     */
+/*----------------------------------------------------------------------------*/
+: PipeIn[].sendToPtnTasks \handler
+
+  PipeIn[]
+    nullptr to PipeIn[]
+
+  [op].pipeoutPtnTasks
+
+  // calling op_loop continues
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* send the operand in the PipeIn[] register to ptn tasks                     */
+/*----------------------------------------------------------------------------*/
+: PipeIn[].sendToPmyTasks \handler
+
+  PipeIn[]
+    nullptr to PipeIn[]
+
+  [op].pipeout
+
+  // calling op_loop continues
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* handler for EV_M_CANCELLING operand                                        */
+/*----------------------------------------------------------------------------*/
+: ptnSendSE_CANCELLING \handler
+
+  PipeIn[].sendToPtnTasks discard
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for EV_M_CLEANING operand                                          */
+/*----------------------------------------------------------------------------*/
+: ptnSendSE_CLEANING \handler
+
+  LogicUnit[].cleanup
+  PipeIn[].sendToPtnTasks
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for EV_M_EXITING operand                                           */
+/*----------------------------------------------------------------------------*/
+: ptnSendSE_EXITING \handler
+
+  PipeIn[].sendToPtnTasks discard
+
+  [op].ackJobTask
+  
+  false // calling op_loop exits
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for EV_M_EXITING operand                                           */
+/*----------------------------------------------------------------------------*/
+: ptnSendSE_CRWBUFFER \handler
+
+  //PipeIn[] "CRWBUFFER: %v" str.format .
+  PipeIn[].sendToPtnTasks discard
+
+  true
+;
+
+
+/*----------------------------------------------------------------------------*/
+/* handler for EV_D_STREAMDEF operand                                         */
+/*----------------------------------------------------------------------------*/
+: ptnSendSE_STREAMDEF \handler
+
+  PipeIn[].sendToPmyTasks discard
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute for send request                           (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+ : ptnSendSE_op \operator
+
+  _lu_initialise_
+
+  999999999999 [task].operandYield!
+
+  op__topology
+
+  find: PipeIn[].sendToPtnTasks [op].handlerAll!
+
+  find: ptnSendSE_CANCELLING  EV_M_CANCELLING  [op].handler!
+  find: ptnSendSE_CLEANING    EV_M_CLEANING    [op].handler!
+  find: ptnSendSE_EXITING     EV_M_EXITING     [op].handler!
+  find: ptnSendSE_STREAMDEF   EV_D_STREAMDEF   [op].handler!
+  find: ptnSendSE_CRWBUFFER   EV_D_CRWBUFFER   [op].handler!
+
+  //find: EV_M_HARDABORT_handler      EV_M_HARDABORT      [op].handler!
+  //find: EV_M_NODELOSSABORT_handler  EV_M_NODELOSSABORT  [op].handler!
+
+  op__loop
+
+  _lu_finalise_
+  
+  op__retires
+  
+  HAZARD
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: ptnSendSE :: ptnSendSE <sendCast> ;
+
+: ptnSendSE_cmdTags _cmdTags tagCopy: op_tags
+  tags{
+    <cmdDesc> = "--desc for op--"
+    <opEntry> = "ptnSendSE_op"
+  }
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

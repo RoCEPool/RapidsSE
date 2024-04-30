@@ -5,4 +5,10 @@ DIR=$(dirname "$0")
 REPO_ROOT="${DIR}/.."
 TESTLIST_FILE="${REPO_ROOT}/bamboo/unittest/testlists/2N4P.testlist"
 
-"${DIR}/sethTest.sh" -f "${TESTLIST_FILE}" $@
+args=("-f" "${TESTLIST_FILE}")
+
+if [ $# -gt 0 ]; then
+  args+=("$@")
+fi
+
+"${DIR}/sethTest.sh" "${args[@]}"

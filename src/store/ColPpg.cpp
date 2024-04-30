@@ -17,8 +17,8 @@ __aFooterFunction(ColPpg)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-ColPpg::ColPpg(i8 nCrwCols)
-    : Object(CN_COLPPG)
+ColPpg::ColPpg(i8 nCrwCols, const char* azFile, i8 iLine)
+    : AbstractDef(CN_COLPPG, azFile, iLine)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_COLPPG, _FOOTER_);
 
@@ -84,6 +84,7 @@ void ColPpg::vDump(i8 i_Tab)
 
   s256 sNotes;
 
+  vTrace("               %s:%lld\n"_Stz,m_sFile.szStz(),m_iLine);
   vTrace("%s%snArriving %lld\n"_Stz,
          Stz::szTab(i_Tab),
          Stz::szSpaces(7),

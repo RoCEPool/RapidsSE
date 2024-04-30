@@ -3,11 +3,11 @@
 /*============================================================================*/
 #pragma once
 
-#include "BASE.h"
+#include "AbstractDef.hpp"
 
 namespace STORE
 {
-  class ColMap : public Object
+  class ColMap : public AbstractDef
   {
     static const i8 C_COLMAP = 128;
 
@@ -30,7 +30,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    ColMap(void);
+    ColMap(const char* azFile, i8 iLine);
 
    ~ColMap(void) noexcept(false);
 

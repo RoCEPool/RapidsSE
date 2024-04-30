@@ -1098,7 +1098,7 @@ void Parcel::vSendParcelViaSocket(Op *pSendOp)
   sSupplemental.vSprint("%s %s"_Stz, pDstNode->szNodeNm(), aXK[m_eSendCast]);
 
 	if (AM::TRACE::bVerbose(C_VB_OP))
-		pSendOp->vOpTrace(this, (Stz *) __func__, true, sSupplemental);
+		pSendOp->vOpTrace(pSendOp->pTask(),this, (Stz *) __func__, true, sSupplemental);
 }
 
 /*============================================================================*/

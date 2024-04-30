@@ -66,8 +66,8 @@ void XF_Prolog_Reduce_not::vXF_not_Ops(void)
 
   m_pCI->vClearRegisters();
   m_pCI->vBeginEach();
-  while (m_pCI->bEachOp_bySub(CK_BOOLPRED)) {
-    m_pCI->E.p_boolPred->vReduce_not(m_pCI);
+  while (m_pCI->bEachOp_bySub(CK_PREDICATE)) {
+    m_pCI->E.p_predicate->vReduce_not(m_pCI);
   }
 
   m_pCI->vEndTransform(__LINE__);

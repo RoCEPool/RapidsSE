@@ -105,7 +105,7 @@ void XF_Prolog_Analyse_table::vXF_Analyse_table(Symbol* pSymbol_tableSyn)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Affix Table synonyms To All Table
   m_pCI->vBeginEach();
-  while (m_pCI->bEachOp(CK_o_FROM, CK_s_TABLE, CK_t_TABLENM))  {
+  while (m_pCI->bEachOp(CK_o_FROM, CK_p_TABLE, CK_TABLENM))  {
     m_pCI->E.p_table->vSet_Syn(pSymbol_tableSyn);
   }
 
@@ -113,7 +113,7 @@ void XF_Prolog_Analyse_table::vXF_Analyse_table(Symbol* pSymbol_tableSyn)
   // Produce Table Info Under All Table
   m_pCI->vClearRegisters();
   m_pCI->vBeginEach();
-  while (m_pCI->bEachOp(CK_o_FROM, CK_s_TABLE, CK_t_TABLENM)) {
+  while (m_pCI->bEachOp(CK_o_FROM, CK_p_TABLE, CK_TABLENM)) {
 
     Card_TableNm* p_tableNm = m_pCI->E.p_table->pSub_tableNm();
     Table* pTable = Card_Table::pAccess_Table(p_tableNm->szFacet(SF_TBL_NM));
@@ -132,14 +132,10 @@ void XF_Prolog_Analyse_table::vXF_Analyse_table(Symbol* pSymbol_tableSyn)
     m_pCI->E.p_rowSize   = (new Card_RowSize)   ->SYM(SF_INT_LIT, jRowSize);
     m_pCI->E.p_rowCount  = (new Card_RowCount)  ->SYM(SF_INT_LIT, nRowCount);
 
-    m_pCI->E.p_tableInfo = new Card_TableInfo;
-
-    m_pCI->E.p_tableInfo->vAppendChild(m_pCI->E.p_tablePtn);
-    m_pCI->E.p_tableInfo->vAppendChild(m_pCI->E.p_tableSize);
-    m_pCI->E.p_tableInfo->vAppendChild(m_pCI->E.p_rowSize);
-    m_pCI->E.p_tableInfo->vAppendChild(m_pCI->E.p_rowCount);
-
-    m_pCI->E.p_table->vAppendChild(m_pCI->E.p_tableInfo);
+    m_pCI->E.p_table->vAppendChild(m_pCI->E.p_tablePtn);
+    m_pCI->E.p_table->vAppendChild(m_pCI->E.p_tableSize);
+    m_pCI->E.p_table->vAppendChild(m_pCI->E.p_rowSize);
+    m_pCI->E.p_table->vAppendChild(m_pCI->E.p_rowCount);
   }
 
   m_pCI->vEndTransform(__LINE__);
@@ -160,7 +156,7 @@ void XF_Prolog_Analyse_table::vXF_Analyse_table_passThru(Symbol* pSymbol_tableSy
 
   m_pCI->vClearRegisters();
   m_pCI->vBeginEach();
-  while (m_pCI->bEachOp_bySub(CK_s_TABLE)) {
+  while (m_pCI->bEachOp_bySub(CK_p_TABLE)) {
 
     Card_TableNm *p_tableNm = m_pCI->E.p_table->pSub_tableNm();
     Table *pTable = Card_Table::pAccess_Table(p_tableNm->szFacet(SF_TBL_NM));

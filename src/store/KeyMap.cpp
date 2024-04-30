@@ -17,8 +17,8 @@ __aFooterFunction(KeyMap)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-KeyMap::KeyMap(void)
-    : Object(CN_KEYMAP)
+KeyMap::KeyMap(const char* azFile, i8 iLine)
+    : AbstractDef(CN_KEYMAP,azFile,iLine)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_KEYMAP, _FOOTER_);
 
@@ -73,6 +73,7 @@ void KeyMap::vDump(i8 i_Tab)
   _precondition_(_ADDRESS_, _MAGIC_, CN_KEYMAP, _FOOTER_);
   UNUSED(i_Tab);
 
+  vTrace("               %s:%lld\n"_Stz,m_sFile.szStz(),m_iLine);
   for (i8 i_Col = 0; i_Col < m_nCols; i_Col++) {
     vTrace("               [%lld] Cell %lld -> Emitted %lld\n"_Stz,
            i_Col,

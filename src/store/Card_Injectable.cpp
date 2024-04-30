@@ -11,7 +11,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE, Card_Injectable, CK_s_INJECTABLE)
+__pCastFunction_Card(STORE, Card_Injectable, CK_p_INJECTABLE)
 __aNewFunction(Card_Injectable, CN_CARD)
 __vDeleteFunction(Card_Injectable, CN_CARD)
 
@@ -21,7 +21,7 @@ __vDeleteFunction(Card_Injectable, CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Injectable::Card_Injectable(void)
-: Card_EXPRLIST(CK_s_INJECTABLE, 2)
+: Card_EXPRLIST(CK_p_INJECTABLE, 2)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
           
@@ -80,7 +80,7 @@ void Card_Injectable::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  (void)Card::eValidate_parentEither(pCI,
+  (void)Card::eValidate_parent_either(pCI,
                                      CK_o_CROSSJOIN,
                                      CK_o_FROM,
                                      CK_o_INFLATE,
@@ -90,7 +90,7 @@ void Card_Injectable::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
                                      CK_o_KEYNOTEXISTS,
                                      CK_o_SCAN,
                                      CK_NONE);
-  vValidate_mustHave(CK_EXPR,CK_NONE);
+  vValidate_child_mustBe(CK_EXPR,CK_NONE);
 
   Card::vValidate(pCI,iDepth,pParent);
   pCI->vValidateChildren(this,iDepth+1);

@@ -33,6 +33,7 @@ statementChoice   :
                     | lsidxcolCmd
                     | lsptncolCmd
                     | lstblCmd
+                    | metricsCtlCmd
                     | pipelineCmd
                     | queryCmd    // (select)
                     | setTraceCmd
@@ -224,6 +225,9 @@ lstblCmd          : LSTBL;
 // M
 memoryleaksCmd    : MEMORYLEAKS ;
 
+
+metricsCtlCmd     : METRICSCTL value=(ENABLE | DISABLE) ;
+
 // N
 noopCmd           : NOOP | NOP ;
 
@@ -235,7 +239,7 @@ pipelineCmd       : PIPELINE pipelineName=identifier
                     END
                   ;
 pipelineStage     : STAGE stageName=identifier
-                    ON (ORIGIN | ALL NODES | ALL PARTITIONS) ':'
+                    ON (ORIGIN | ALL NODES | ALL PARTITIONS | ALL PARTITIONS MULTIPLE THREADS integerLiteral ) ':'
                     pipelineOpSeq
                   ;
 pipelineOpSeq     : pipelineOperator ( '|' pipelineOperator)* ;
@@ -614,15 +618,15 @@ nonReservedWord   :
                     ANALYSE | ANALYZE | ANIDX | ANTBL | ASC
                   | BIT | BITS | BLOCK | BLOOM | BPA | BTREE | BYE | BYTE | BYTES
                   | CATALOG | CHARS | COMPACT | COMPACTIDX | CONCAT | CONFIG
-                  | DATA | DATE_FORMAT | DAYS | DECODE | DESC | DETAIL | DIGITS | DLOAD | DOCOL
-                  | ECHO | ENCLOSED_BY_LEADING | ENCLOSED_BY_TRAILING |ESCAPE_CHAR | EXIT_TOKEN | EXPLAIN | EXPORT
+                  | DATA | DATE_FORMAT | DAYS | DECODE | DESC | DETAIL | DIGITS | DISABLE | DLOAD | DOCOL
+                  | ECHO | ENABLE | ENCLOSED_BY_LEADING | ENCLOSED_BY_TRAILING |ESCAPE_CHAR | EXIT_TOKEN | EXPLAIN | EXPORT
                   | SQL_FALSE | FEDERATION | FIELD_DELIMITER | FILE | FORCE | FORMAT
                   | HASH | HASHKEY | HOURS
                   | IF | IFNULL | INDEX | INTERVAL_DT | INTERVAL_YM
                   | KEY
                   | LIMIT | LOAD | LOADREPLICATED | LOG | LOOP | LSIDX | LSPTNCOL | LSTBL
-                  | MEMORYLEAKS | MILLIS | MILLISECOND | MILLISECONDS | MINUTES
-                  | MONOTONIC | MONTHS | MS
+                  | MEMORYLEAKS | METRICSCTL | MILLIS | MILLISECOND | MILLISECONDS | MINUTES
+                  | MONOTONIC | MONTHS | MS | MULTIPLE
                   | NODE | NODES | NOOP | NOP | NOW
                   | OBJECTS | OFF | OFFSET | ORIGIN
                   | PARTITIONS | PATHS | PIPELINE | PLACING | PRETTY
@@ -630,7 +634,7 @@ nonReservedWord   :
                   | RECORD_ENDS | RECORD_TERMINATOR | REFERENCE | REGIONS | REPLICATED | ROWSIZE
                   | S_ONLY | SCHEMA | SEC | SECONDS | SKIPLIST | SLEEP | SPACE | STAGE | STATS
                   | STATISTICS | STATUS | SUBSTR | SZIDX | SZTBL
-                  | TABLESIZE | TEXT | TOP | TRACE | TRACKMEMORY | TREE | TRUNCATE | TYPE | TYPEOF
+                  | TABLESIZE | TEXT | THREADS | TOP | TRACE | TRACKMEMORY | TREE | TRUNCATE | TYPE | TYPEOF
                   | UNLOAD
                   | VALUE
                   | WEEK | WEEKS | WITH_NAMES | WITH_TYPES
@@ -696,6 +700,7 @@ DELETE                : D E L E T E;
 DESC                  : D E S C;
 DETAIL                : D E T A I L;
 DIGITS                : D I G I T S ;
+DISABLE               : D I S A B L E;
 DISCONNECT            : D I S C O N N E C T;
 DISTINCT              : D I S T I N C T;
 DLOAD                 : D L O A D;
@@ -703,6 +708,7 @@ DOCOL                 : D O C O L;
 DROP                  : D R O P;
 ECHO                  : E C H O;
 ELSE                  : E L S E;
+ENABLE                : E N A B L E;
 ENCLOSED_BY_LEADING   : E N C L O S E D '_' B Y '_' L E A D I N G;
 ENCLOSED_BY_TRAILING  : E N C L O S E D '_' B Y '_' T R A I L I N G;
 END                   : E N D;
@@ -761,6 +767,7 @@ LSPTNCOL              : L S P T N C O L;
 LSTBL                 : L S T B L;
 MAX                   : M A X;
 MEMORYLEAKS           : M E M O R Y L E A K S;
+METRICSCTL            : M E T R I C S C T L;
 MILLIS                : M I L L I S;
 MILLISECOND           : M I L L I S E C O N D;
 MILLISECONDS          : M I L L I S E C O N D S;
@@ -771,6 +778,7 @@ MONOTONIC             : M O N O T O N I C;
 MONTH                 : M O N T H;
 MONTHS                : M O N T H S;
 MS                    : M S;
+MULTIPLE              : M U L T I P L E;
 NATURAL               : N A T U R A L;
 NO                    : N O;
 NODES                 : N O D E S;
@@ -835,6 +843,7 @@ TABLESIZES            : T A B L E S I Z E S;
 TABLESIZE             : T A B L E S I Z E;
 TEXT                  : T E X T;
 THEN                  : T H E N;
+THREADS               : T H R E A D S;
 TIME                  : T I M E;
 TIMESTAMP             : T I M E S T A M P;
 TO                    : T O;

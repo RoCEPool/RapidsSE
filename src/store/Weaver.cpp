@@ -107,6 +107,30 @@ void Weaver::vCodeBlock(ExtendedText* pCodeBlock)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* weave : dynamic :                                                          */
+/*----------------------------------------------------------------------------*/
+void Weaver::vPtnSend(void)
+{
+	_precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
+
+	vTabOp();
+	vConcat_cmd("ptnSendSE"_Stz);      vEolOp();
+	//vTabOp();
+}
+
+/*----------------------------------------------------------------------------*/
+/* weave : dynamic :                                                          */
+/*----------------------------------------------------------------------------*/
+void Weaver::vPtnConsume(i8 iThreads)
+{
+	_precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
+
+	vTabOp();
+	vConcat_cmd("ptnConsume %lld"_Stz, iThreads);      vEolOp();
+	//vTabOp();
+}
+
+/*----------------------------------------------------------------------------*/
 /* weave : pipeline <name>                                                    */
 /*----------------------------------------------------------------------------*/
 void Weaver::vPipeline(void)
@@ -205,7 +229,7 @@ void Weaver::vCard(Card* pCard)
 
   eCK eCard = pCard->eCard();
   
-  if (CK_c_STAGE == eCard)
+  if (CK_o_STAGE == eCard)
     vStageNext(_pCard_Stage(pCard));
   else
     vOp(pCard);
@@ -245,10 +269,17 @@ void Weaver::vStageNext(Card_Stage* pCard_Stage)
   
   //vTabOp();  vConcat_cmd("next"_Stz);  vEolOp();
 
+	i8 iThreads = pCard_Stage->pSymbol()->Y_iGet(P_Threads);
+
   vPreStage();
   vTabStage();
-  vConcat_cmd("stage %s on %s : "_Stz, pCard_Stage->szFacet(SF_STG_NM), aYG_weave[eStageTopo]);
-  vEolStage();
+
+	if (iThreads > 1)
+		vConcat_cmd("stage %s on %s multiple threads %lld : "_Stz, pCard_Stage->szFacet(SF_STG_NM), aYG_weave[eStageTopo], iThreads);
+	else
+    vConcat_cmd("stage %s on %s : "_Stz, pCard_Stage->szFacet(SF_STG_NM), aYG_weave[eStageTopo]);
+
+	vEolStage();
 
   m_i_Stage++;
   
@@ -308,16 +339,13 @@ void Weaver::vOp(Card* pCard, bool bCommented)
 
   eCK eCard = pCard->eCard();
 
-  if (CK_c_COMBINED == eCard)
-    return;
-
-  if (CK_c_SEND == eCard)
+  if (CK_o_SEND == eCard)
     if (! AM::JOB::bHasTag(C_OPTIMISE_PASSTHRU))
       return;
 
   switch (eCard) {
 
-    case CK_c_ABSJOIN:      vArg_absJoin      (sOpArgs, _pCard_AbsJoin(pCard));      break;
+    case CK_o_ABSJOIN:      vArg_absJoin      (sOpArgs, _pCard_AbsJoin(pCard));      break;
     case CK_o_AGGREG:       vArg_aggreg       (sOpArgs, _pCard_Aggreg(pCard));       break;
     case CK_o_CAST:         vArg_cast         (sOpArgs, _pCard_Cast(pCard));         break;
     case CK_o_CROSSJOIN:    vArg_crossJoin    (sOpArgs, _pCard_CrossJoin(pCard));    break;
@@ -332,11 +360,12 @@ void Weaver::vOp(Card* pCard, bool bCommented)
     case CK_o_KEYNOTEXISTS: vArg_keyNotExists (sOpArgs, _pCard_KeyNotExists(pCard)); break;
     case CK_o_LIMIT:        vArg_limit        (sOpArgs, _pCard_Limit(pCard));        break;
     case CK_o_ORDAGG:       vArg_ordAgg       (sOpArgs, _pCard_OrdAgg(pCard));       break;
+    case CK_o_PDSROW:       vArg_pdsRow       (sOpArgs, _pCard_PdsRow(pCard));       break;
     case CK_o_PROJECT:      vArg_project      (sOpArgs, _pCard_Project(pCard));      break;
     case CK_o_SCAN:         vArg_scan         (sOpArgs, _pCard_Scan(pCard));         break;
-    case CK_c_SEND:         vArg_send         (sOpArgs, _pCard_Send(pCard));         break;
+    case CK_o_SEND:         vArg_send         (sOpArgs, _pCard_Send(pCard));         break;
     case CK_o_SORT:         vArg_sort         (sOpArgs, _pCard_Sort(pCard));         break;
-    case CK_s_TABLE:        vArg_table        (sOpArgs, _pCard_Table(pCard));        break;
+    case CK_p_TABLE:        vArg_table        (sOpArgs, _pCard_Table(pCard));        break;
     case CK_o_TOP:          vArg_top          (sOpArgs, _pCard_Top(pCard));          break;
     case CK_o_WHERE:        vArg_where        (sOpArgs, _pCard_Where(pCard));        break;
 
@@ -350,8 +379,8 @@ void Weaver::vOp(Card* pCard, bool bCommented)
        if (CK_o_CAST == eCard) sOpNm = "next"_Stz;
   else if (CK_o_CROSSJOIN == eCard) sOpNm = "indexJoin"_Stz;
   else if (CK_o_HAVING == eCard) sOpNm = "filter"_Stz;
-  else if (CK_c_SEND == eCard) sOpNm = "next"_Stz;
-  else if (CK_s_TABLE == eCard) sOpNm = "scan"_Stz;
+  else if (CK_o_SEND == eCard) sOpNm = "next"_Stz;
+  else if (CK_p_TABLE == eCard) sOpNm = "scan"_Stz;
   else if (CK_o_WHERE == eCard) sOpNm = "filter"_Stz;
   else                             sOpNm = aCK_short[eCard];
 
@@ -687,6 +716,16 @@ void Weaver::vArg_ordAgg(String* psOpArgs, Card_OrdAgg* pCard_OrdAgg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* weave : pdsRow                                                             */
+/*----------------------------------------------------------------------------*/
+void Weaver::vArg_pdsRow(String* psOpArgs, Card_PdsRow* pCard_pdsRow)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
+  UNUSED(psOpArgs);
+  UNUSED(pCard_pdsRow);
+}
+
+/*----------------------------------------------------------------------------*/
 /* weave : project <compiled> <expr>                                          */
 /*----------------------------------------------------------------------------*/
 void Weaver::vArg_project(String* psOpArgs, Card_Project* pCard_Project)
@@ -832,7 +871,7 @@ void Weaver::vConcat_cmd(Stz* aFormat, ...)
 /*----------------------------------------------------------------------------*/
 void Weaver::vConcat_cmd_vArg_s(Stz* aFormat, va_list xArgs)
 {
-  static char caFormatted[C_1MB] = {'\0'};
+  char caFormatted[C_1MB] = {'\0'};
 
   // produce formatted line
   StrLib::vSprint(caFormatted, sizeof(caFormatted) - 3, xArgs, aFormat->azChar());
@@ -953,26 +992,33 @@ void Weaver::vWeaveOptStmt(Board* pBoard)
     xDeck.vReposition(p_stage);
     while (xDeck.bEach()) {
 
-      if (CK_c_STAGE == xDeck.eChild())
+      if (CK_o_STAGE == xDeck.eChild())
         break;
       if (CK_o_CAST == xDeck.eChild())
         break;
-      if (CK_c_SEND == xDeck.eChild())
+      if (CK_o_SEND == xDeck.eChild())
         break;
 
       bool bCommented = true;
-      if (xDeck.pChild()->bEither(CK_o_SCAN, CK_s_TABLE, CK_NONE))
+      if (xDeck.pChild()->bEither(CK_o_SCAN, CK_p_TABLE, CK_NONE))
         bCommented = false;
 
       vOp(xDeck.pChild(), bCommented);
     }
 
+		i8 iThreads = p_stage->pSymbol()->Y_iGet(P_Threads);
+		if (iThreads > 1)
+			vPtnSend();
+
     vDynamic(pStageDef);
+
+		if (iThreads > 1)
+			vPtnConsume(iThreads);
 
     if (CK_o_CAST == xDeck.eChild())
       vOp(xDeck.pChild());
     else
-    if (CK_c_SEND == xDeck.eChild())
+    if (CK_o_SEND == xDeck.eChild())
       vOp(xDeck.pChild());
 
   }

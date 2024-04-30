@@ -75,32 +75,32 @@ void XF_Epilog_Cull_facet::vCull_facet(void)
     Card_Term* p_term = _pCard_Term(pCard);
     Symbol* pSym_term = p_term->pSymbol();
 
-    if (pCI->bAncestor(CK_s_INJECTABLE))
+    if (pCI->bAncestor(CK_p_INJECTABLE))
       return true;
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     if (pCI->bAncestor(CK_o_KEYEXISTS) || pCI->bAncestor(CK_o_KEYNOTEXISTS)) {
-      if (pCI->bAncestor(CK_s_CONSTRAINT)) {
+      if (pCI->bAncestor(CK_p_CONSTRAINT)) {
         if (pSym_term->bIs_Col()) {
           if (pSym_term->bHasFacet(SF_EXP_COL))
-            pSym_term->vCullFacet(SF_EXP_COL);
+            pSym_term->vCullFacet_except(SF_EXP_COL);
           else
           if (pSym_term->bHasFacet(SF_NMD_COL))
-            pSym_term->vCullFacet(SF_NMD_COL);
+            pSym_term->vCullFacet_except(SF_NMD_COL);
         }
       }
       else {
         if (pSym_term->bIs_Col()) {
           if (pSym_term->bHasFacet(SF_IDX_COL))
-            pSym_term->vCullFacet(SF_IDX_COL);
+            pSym_term->vCullFacet_except(SF_IDX_COL);
           else
           if (pSym_term->bHasFacet(SF_EXP_COL))
-            pSym_term->vCullFacet(SF_EXP_COL);
+            pSym_term->vCullFacet_except(SF_EXP_COL);
         }
       }
       if (pSym_term->bHasFacet(SF_NMD_COL))
-        pSym_term->vCullFacet(SF_NMD_COL);
+        pSym_term->vCullFacet_except(SF_NMD_COL);
 
 
       RASSERT(1 == pSym_term->nFacets());
@@ -110,15 +110,14 @@ void XF_Epilog_Cull_facet::vCull_facet(void)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     if (pSym_term->bHasFacet(SF_ITM_COL))
-      pSym_term->vCullFacet(SF_ITM_COL);
+      pSym_term->vCullFacet_leaving(SF_ITM_COL,SF_TBL_COL);
     else
     if (pSym_term->bHasFacet(SF_KEY_COL))
-      pSym_term->vCullFacet(SF_KEY_COL);
+      pSym_term->vCullFacet_leaving(SF_KEY_COL,SF_TBL_COL);
     else
     if (pSym_term->bHasFacet(SF_EXP_COL))
-      pSym_term->vCullFacet(SF_EXP_COL);
+      pSym_term->vCullFacet_leaving(SF_EXP_COL,SF_TBL_COL);
 
-    RASSERT(1 == pSym_term->nFacets());
     return true;
   };
 

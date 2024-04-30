@@ -133,10 +133,10 @@ bool XF_Flatten_24_W_A_C_ro::bSnap_IQ_crlKey(CardIter* pCI)
   pCI->vClearRegisters();
   pCI->vBeginEach();
 
-  while (pCI->bEachOp(CK_o_FROM, CK_t_EMIT, CK_o_FILTER)) {
+  while (pCI->bEachOp(CK_o_FROM, CK_p_EMIT, CK_o_FILTER)) {
 
-    pCI->E.p_boolPred = pCI->E.p_filter->pSub_boolPred();
-    Card_CONJ *p_conj_root = pCI->E.p_boolPred->pRoot_conj();
+    pCI->E.p_predicate = pCI->E.p_filter->pSub_predicate();
+    Card_CONJ *p_conj_root = pCI->E.p_predicate->pRoot_conj();
 
     bool bIgnore = p_conj_root->bLambdaWalk_conj(fbSnap_sqyArg);
     UNUSED(bIgnore);
@@ -174,15 +174,13 @@ void XF_Flatten_24_W_A_C_ro::vPromote_IQ_aggreg_To_gbyAgg_crlKey(CardIter* pCI)
 
     pCI->E.p_gbyAgg = _pCard_GbyAgg(pCI->E.p_Op);
     pCI->E.p_level  = pCI->E.p_gbyAgg->pSub_level();
-    pCI->E.p_stream = pCI->E.p_gbyAgg->pSub_stream();
-    pCI->E.p_emit   = pCI->E.p_stream->pSub_emit();
+    pCI->E.p_emit   = pCI->E.p_gbyAgg->pSub_emit();
 
     // -- -- -- -- -- -- -- -- -- -- --
     // key
 
     Card_Key::vAssemble_injCrlKey(pCI);
-    pCI->E.p_gbyAgg->vInsertChildBefore(pCI->E.p_key, pCI->E.p_stream);
-
+    pCI->E.p_gbyAgg->vInsertChildBefore(pCI->E.p_key, pCI->E.p_emit);
     // -- -- -- -- -- -- -- -- -- -- --
     // emit
 
@@ -220,7 +218,7 @@ void XF_Flatten_24_W_A_C_ro::vEnhance_IQ_emit_project_Add_crlKey(CardIter* pCI)
   RASSERT(CT_NONE != pCI->E.p_key->eCTVal());
 
   pCI->E.p_emit = pCI->E.p_project->pSub_emit();
-  pCI->E.p_emit->vBump_expCol_In_rpnCalc(pCI);// TODO: ,nBumpBy);
+  pCI->E.p_emit->vBump_expCol(pCI);// TODO: ,nBumpBy);
 
 
   // push <project>/_SQCRLKEY_
@@ -252,7 +250,7 @@ void XF_Flatten_24_W_A_C_ro::vEnhance_IQ_emit_project_Add_crlKey(CardIter* pCI)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void XF_Flatten_24_W_A_C_ro::vConvert_OQ_sqyPrm_Into_expCol(CardIter* pCI,
-                                                            Card_BoolPred *p_boolPred)
+                                                            Card_Predicate *p_predicate)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_24_W_A_C_RO, _FOOTER_);
 
@@ -282,11 +280,10 @@ void XF_Flatten_24_W_A_C_ro::vConvert_OQ_sqyPrm_Into_expCol(CardIter* pCI,
           xConj.pChild()->pSymbol()->vApplyFacets(&xSym_expCol1);
 
           Card_Expr* p_expr_found =
-              pCI->Flux.m_pArriving->pGet_expr((i8) 0);
+              pCI->Arriving.m_pEmit->pGet_expr((i8) 0);
 
           xConj.pChild()->vApplyCast_x(p_expr_found->xCast());
 
-          xConj.pChild()->vMark1(MARK_CHANGED);
         }
         else
         if (xConj.pChild()->bIsCard(CK_TERM) && xConj.pChild()->pSymbol()->bHasFacet(SF_TBL_COL)) {
@@ -301,8 +298,6 @@ void XF_Flatten_24_W_A_C_ro::vConvert_OQ_sqyPrm_Into_expCol(CardIter* pCI,
           Card_Expr* p_expr_otr = pCI->pBackSearch_expr_For_colNm(pSym_term, pCI->i_Child());
           Stz* szProjectedCol = p_expr_otr->pGet_term(0)->szFacet(SF_TBL_COL);
           xConj.pChild()->pSymbol()->vApplyFacet(SF_TBL_COL, szProjectedCol);  // TODO: hack!!
-          xConj.pChild()->vMark1(MARK_CHANGED);
-
           DELETE_CARD(p_term);
         }
         else {
@@ -327,7 +322,7 @@ void XF_Flatten_24_W_A_C_ro::vConvert_OQ_sqyPrm_Into_expCol(CardIter* pCI,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Card_CONJ* p_conj_root = static_cast<Card_CONJ*>(p_boolPred->pRoot_conj());
+  Card_CONJ* p_conj_root = static_cast<Card_CONJ*>(p_predicate->pRoot_conj());
 
   vResolve(p_conj_root, vResolve);
 }
@@ -336,7 +331,7 @@ void XF_Flatten_24_W_A_C_ro::vConvert_OQ_sqyPrm_Into_expCol(CardIter* pCI,
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void XF_Flatten_24_W_A_C_ro::vConvert_OQ_sqyNo_Into_expCol(CardIter* pCI,
-                                                           Card_BoolPred *p_boolPred)
+                                                           Card_Predicate *p_predicate)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_24_W_A_C_RO, _FOOTER_);
 
@@ -387,10 +382,8 @@ void XF_Flatten_24_W_A_C_ro::vConvert_OQ_sqyNo_Into_expCol(CardIter* pCI,
       DELETE_CARD(p_prev_conj);
 
       p_conj_child->pSymbol()->vApplyFacet(SF_EXP_COL, "$2"_Stz);
-      Card_Expr* p_expr_found = pCI->Flux.m_pArriving->pGet_expr(1);
+      Card_Expr* p_expr_found = pCI->Arriving.m_pEmit->pGet_expr(1);
       p_conj_child->vApplyCast_x(p_expr_found->xCast());
-      p_conj_child->vMark1(MARK_CHANGED);
-
       p_conj_arg->pSymbol()->Y_vSet(P_SqyRslTest);
     }
 
@@ -399,7 +392,7 @@ void XF_Flatten_24_W_A_C_ro::vConvert_OQ_sqyNo_Into_expCol(CardIter* pCI,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Card_CONJ* p_conj_root = static_cast<Card_CONJ*>(p_boolPred->pRoot_conj());
+  Card_CONJ* p_conj_root = static_cast<Card_CONJ*>(p_predicate->pRoot_conj());
 
   vResolve(p_conj_root, vResolve);
 }
@@ -407,11 +400,11 @@ void XF_Flatten_24_W_A_C_ro::vConvert_OQ_sqyNo_Into_expCol(CardIter* pCI,
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Flatten_24_W_A_C_ro::vMove_OQ_rlnConj_rslTest_To_from_filter(CardIter* pCI, Card_BoolPred *p_boolPred)
+void XF_Flatten_24_W_A_C_ro::vMove_OQ_rlnConj_rslTest_To_from_filter(CardIter* pCI, Card_Predicate *p_predicate)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_24_W_A_C_RO, _FOOTER_);
 
-  p_boolPred->vRemove_rlnConj(pCI->Flat.m_p_conj_rslTest);
+  p_predicate->vRemove_rlnConj(pCI->Flat.m_p_conj_rslTest);
 
   //p_rlnConj_sqyRslTest->vDump();
 
@@ -421,7 +414,7 @@ void XF_Flatten_24_W_A_C_ro::vMove_OQ_rlnConj_rslTest_To_from_filter(CardIter* p
 
   pCI->E.p_filter = p_OP->pEnsure_filter();
 
-  pCI->E.p_filter->pSub_boolPred()->vAppend_and_rlnConj(pCI->Flat.m_p_conj_rslTest);
+  pCI->E.p_filter->pSub_predicate()->vAppend_and_rlnConj(pCI->Flat.m_p_conj_rslTest);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -435,20 +428,15 @@ void XF_Flatten_24_W_A_C_ro::vRestate_emit_fold(CardIter* pCI)
 
   while (pCI->bEachOp()) {
 
-    if (CK_c_FOLD == pCI->E.e_Op)
+    if (CK_o_FOLD == pCI->E.e_Op)
       break;
 
-    if (Card_Emit* p_emit = pCI->E.p_Op->pSub_emit()) {
-      //pCI->PRINTBOARD_dbg();
-      pCI->Dic.m_p_expr = pCI->Flux.m_pArriving = p_emit;
-    }
+    pCI->vSnapIf_arriving();
   }
 
-  RASSERT(CK_c_FOLD == pCI->E.e_Op);
+  RASSERT(CK_o_FOLD == pCI->E.e_Op);
 
-  pCI->E.p_stream = new Card_Stream;
-  pCI->E.p_fold->vAppendChild(pCI->E.p_stream);
-  pCI->E.p_stream->vAppendChild(pCI->Flux.m_pArriving->pDupCardRecursive());
+  pCI->E.p_fold->vAppendChild(pCI->Arriving.m_pEmit->pDupCardRecursive());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -484,7 +472,7 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
 
   bool bSnapped = bSnap_IQ_crlKey(pCI);
   RASSERT(bSnapped);
-  pCI->PRINTBOARD_dbg();
+  //pCI->PRINTBOARD_dbg();
 //  pCI->Flat.m_p_expr_crlKey->vDump(__func__);
 //  pCI->Flat.m_p_conj_crlKey->vDump(__func__);
 //  pCI->Flat.m_p_term_crlKey->vDump(__func__);
@@ -496,7 +484,7 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
   //   thereby producing ordered subQuery stream
 
   vPromote_IQ_aggreg_To_gbyAgg_crlKey(pCI);
-  pCI->PRINTBOARD_dbg();
+  //pCI->PRINTBOARD_dbg();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // add correlation key to IQ:[<project>/<emit>/<crlKey>]
@@ -515,16 +503,16 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
   // fold fold fold fold fold fold fold fold fold fold fold fold fold fold fold
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
 
-  RASSERT(pCI->bEachOp(CK_c_FOLD));
+  RASSERT(pCI->bEachOp(CK_o_FOLD));
 
   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
   // outerQuery outerQuery outerQuery outerQuery outerQuery outerQuery outerQuery
   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
   // restate the emits of the leading OQ:<from>* sequence
-  pCI->Flux.m_pArriving = nullptr;
+  pCI->vSnap_arriving(nullptr,nullptr);
   while (pCI->pPeekNextIf(CK_o_FROM) && pCI->bEachOp(CK_o_FROM)) {
-    ((Card_OP*)pCI->E.p_Op)->vRestate_emit(pCI);
+    pCI->E.p_Op->vRestate_emit(pCI);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -539,9 +527,9 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
 
   pCI->vClearRegisters();
   pCI->vBeginEach();
-  while (pCI->bEachOp(CK_o_FROM, CK_o_FILTER, CK_BOOLPRED)) {
-    if (pCI->E.p_boolPred->bHasSub(pCI->Flat.m_p_conj_crlKey)) {
-      pCI->E.p_boolPred->vRemoveSub(pCI->Flat.m_p_conj_crlKey);
+  while (pCI->bEachOp(CK_o_FROM, CK_o_FILTER, CK_PREDICATE)) {
+    if (pCI->E.p_predicate->bHasSub(pCI->Flat.m_p_conj_crlKey)) {
+      pCI->E.p_predicate->vRemoveSub(pCI->Flat.m_p_conj_crlKey);
       break;
     }
   }
@@ -559,25 +547,23 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
   // fold fold fold fold fold fold fold fold fold fold fold fold fold fold fold
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
 
-  RASSERT(pCI->bEachOp(CK_c_FOLD));
+  RASSERT(pCI->bEachOp(CK_o_FOLD));
 
   // todo: this is messy and unclear
 
-  pCI->vForwards(false);
   while (pCI->bEachOp_reverse()) {
     if (pCI->E.p_Op->pSub_emit())
       break;
   }
-  pCI->vForwards(true);
 
-  pCI->Dic.m_p_expr = pCI->Flux.m_pArriving = pCI->E.p_Op->pSub_emit();
-  RASSERT(pCI->bEachOp(CK_c_FOLD));
+  pCI->vSnapIf_arriving();
+  RASSERT(pCI->bEachOp(CK_o_FOLD));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // ???
 
-  RASSERT(pCI->bEachOp(CK_o_WHERE, CK_BOOLPRED));
-  pCI->E.p_boolPred->vBump_expCol(2);
+  RASSERT(pCI->bEachOp(CK_o_WHERE, CK_PREDICATE));
+  pCI->E.p_predicate->vBump_expCol(2);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append correlation key conjunction onto the OQ:<where>/<filter>/<boolPred>
@@ -585,7 +571,7 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
   pCI->Flat.m_p_conj_crlKey->pSymbol()->Y_vCut(P_CrlKeyConj);
   pCI->Flat.m_p_conj_crlKey->pSymbol()->Y_vSet(P_CrlKeyTest);
 
-  pCI->E.p_boolPred->vAppend_and_rlnConj(_pCard_RlnConj(pCI->Flat.m_p_conj_crlKey));
+  pCI->E.p_predicate->vAppend_and_rlnConj(_pCard_RlnConj(pCI->Flat.m_p_conj_crlKey));
 
   //                   v           //  ]filter
   // F A A A P + F F F W A A A     //  .]boolPred
@@ -595,14 +581,14 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
   //           +                   //           $Q1
 
   //pCI->PRINTBOARD_dbg();
-  //pCI->G.p_boolPred->vDump(__func__);
-  vConvert_OQ_sqyPrm_Into_expCol(pCI, pCI->E.p_boolPred);
+  //pCI->G.p_predicate->vDump(__func__);
+  vConvert_OQ_sqyPrm_Into_expCol(pCI, pCI->E.p_predicate);
 
-  //pCI->G.p_boolPred->vDump(__func__);
-  vConvert_OQ_sqyNo_Into_expCol(pCI, pCI->E.p_boolPred);
+  //pCI->G.p_predicate->vDump(__func__);
+  vConvert_OQ_sqyNo_Into_expCol(pCI, pCI->E.p_predicate);
 
   //pCI->PRINTBOARD_dbg();
-  //pCI->G.p_boolPred->vDump(__func__);
+  //pCI->G.p_predicate->vDump(__func__);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // move the correlation predicate to table as a bounds
@@ -618,15 +604,15 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
   // f         +       bc          //           $d.2  ((pCI->m_pTerm_corrArg))
   //           + b <-  cp          //             %1
 
-  RASSERT(pCI->bEachOp(CK_c_FOLD));
-  RASSERT(pCI->bEachOp(CK_o_WHERE, CK_BOOLPRED));
-  vMove_OQ_rlnConj_rslTest_To_from_filter(pCI, pCI->E.p_boolPred);
+  RASSERT(pCI->bEachOp(CK_o_FOLD));
+  RASSERT(pCI->bEachOp(CK_o_WHERE, CK_PREDICATE));
+  vMove_OQ_rlnConj_rslTest_To_from_filter(pCI, pCI->E.p_predicate);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 //  pCI->vClearRegisters();
   pCI->vBeginEach();
-//  if (pCI->bEachOp(CK_c_FOLD)) {
+//  if (pCI->bEachOp(CK_o_FOLD)) {
 //    if (pCI->bEachOp(CK_o_WHERE)) {
 //      // TODO:
 //      // R_vUTE_Unproject_foldExpr_After_where();

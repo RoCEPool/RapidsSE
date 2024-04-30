@@ -1,5 +1,5 @@
 
-// Generated from /Users/craig/repos/rapidsse/thirdparty/antlr/sql.g4 by ANTLR 4.13.1
+// Generated from /Users/alka/rapidsse/thirdparty/antlr/sql.g4 by ANTLR 4.13.1
 
 #pragma once
 
@@ -270,6 +270,10 @@ public:
   }
 
   virtual std::any visitMemoryleaksCmd(sqlParser::MemoryleaksCmdContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitMetricsCtlCmd(sqlParser::MetricsCtlCmdContext *ctx) override {
     return visitChildren(ctx);
   }
 

@@ -36,7 +36,7 @@ namespace STORE
     // - - - - - - - - - - - - -
 
     char   md_Coord[256];
-    Card * p_Op;
+    Card_OP * p_Op;
     eCK    e_Op;
     i8     i_Op;
 
@@ -51,7 +51,7 @@ namespace STORE
     Card_Aggreg *        p_aggreg;
     Card_AndConj *       p_andConj;
 
-    Card_BoolPred *      p_boolPred;
+    Card_Predicate *      p_predicate;
     Card_Bound *         p_bound;
     Card_Bounds *        p_bounds;
 
@@ -60,7 +60,6 @@ namespace STORE
     Card_CallOp *        p_callOp;
     Card_Cast *          p_cast;
     Card_Clause *        p_clause;
-    Card_Combined *      p_combined;
     Card_Constraint *    p_constraint;
     Card_CorrCols *      p_corrCols;
     Card_Correlation *   p_correlation;
@@ -132,6 +131,7 @@ namespace STORE
 
     Card_Payload *       p_payload;
     Card_PayloadCells *  p_payloadCells;
+    Card_PdsRow *        p_pdsRow;
     Card_Project *       p_project;
 
     Card_RelnOp *        p_relnOp;
@@ -149,7 +149,6 @@ namespace STORE
     Card_SqyInfo *       p_sqyInfo;
     Card_SqyNo *         p_sqyNo;
     Card_Stage *         p_stage;
-    Card_Stream *        p_stream;
     Card_StreamHead *    p_streamHead;
     Card_StreamJoin *    p_streamJoin;
     Card_StreamKey *     p_streamKey;
@@ -158,10 +157,8 @@ namespace STORE
     Card_StreamSet *     p_streamSet;
     Card_SubQuery *      p_subQuery;
     Card_SubSet *        p_subSet;
-    Card_Synthesis *     p_synthesis;
 
     Card_Table *         p_table;
-    Card_TableInfo *     p_tableInfo;
     Card_TableList *     p_tableList;
     Card_TableNm *       p_tableNm;
     Card_TablePtn *      p_tablePtn;

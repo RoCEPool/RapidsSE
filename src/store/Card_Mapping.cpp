@@ -9,7 +9,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE, Card_Mapping, CK_s_MAPPING)
+__pCastFunction_Card(STORE, Card_Mapping, CK_p_MAPPING)
 __aNewFunction(Card_Mapping,CN_CARD)
 __vDeleteFunction(Card_Mapping,CN_CARD)
 
@@ -18,7 +18,7 @@ __vDeleteFunction(Card_Mapping,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Mapping::Card_Mapping(void)
-: Card_symbol(CK_s_MAPPING, 2)
+: Card_symbol(CK_p_MAPPING, 2)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -52,7 +52,6 @@ void Card_Mapping::vTo_ColMap(ColMap* pColMap)
     i8 i_EmittedCol = p_map->pSymbol()->Y_iGet(P_EmittedCol);
     i8 i_Cell       = p_map->pSymbol()->Y_iGet(P_Cell);
 
-    //pColMap->vAdd(i_EmittedCol, false, i_Cell);
     pColMap->vAdd3(false, i_Cell, /* -> */ i_EmittedCol);
   }
 
@@ -62,7 +61,6 @@ void Card_Mapping::vTo_ColMap(ColMap* pColMap)
     i8 i_EmittedCol = p_map->pSymbol()->Y_iGet(P_EmittedCol);
     i8 i_Cell       = p_map->pSymbol()->Y_iGet(P_Cell);
 
-    //pColMap->vAdd(i_EmittedCol, true, i_Cell);
     pColMap->vAdd3(true, i_Cell, /* -> */ i_EmittedCol);
   }
 }

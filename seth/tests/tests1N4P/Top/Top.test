@@ -40,7 +40,6 @@ success
 load ${testName2}_lineitem "../TPCH/SF_0001/lineitem.tbl";
 success
 
-/pipeline_def
 /optimise_passthru
 pipeline Q
 begin

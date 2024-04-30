@@ -10,7 +10,6 @@
 
 #include "XF_Epilog_Add_hash_cast.hpp"
 #include "XF_Epilog_Add_inflate.hpp"
-#include "XF_Epilog_Append_synthesis.hpp"
 #include "XF_Epilog_Cull_facet.hpp"
 #include "XF_Epilog_Determine_Columns.hpp"
 #include "XF_Epilog_Fuse_project.hpp"
@@ -31,6 +30,7 @@
 #include "XF_Optimise_Duplicate_filter.hpp"
 #include "XF_Optimise_Early_filter.hpp"
 #include "XF_Optimise_Early_projection.hpp"
+#include "XF_Optimise_Early_projectionv2.hpp"
 #include "XF_Optimise_Late_projection.hpp"
 #include "XF_Optimise_Reduce_gbyAgg_key.hpp"
 #include "XF_Optimise_Factor_boolPred.hpp"
@@ -92,11 +92,7 @@ XF::XF(CardIter* pCI)
 XF::~XF(void) noexcept(false)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF, _FOOTER_);
-
-
 }
-
-
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -227,7 +223,9 @@ void XF::vTransform(void)
   XF_Prolog_Analyse_emit::vAnalyse(m_pCI);             //
   XF_Utility_Verify_dic::vVerify(m_pCI);               //
   XF_Optimise_Early_projection::vOptimise(m_pCI);      //
-                                                       //
+#ifdef Z_NEEDEDv2
+  XF_Optimise_Early_projectionv2::vOptimise(m_pCI);    //
+#endif
   XF_Optimise_Reduce_gbyAgg_key::vOptimise(m_pCI);     //
   XF_Optimise_Static_calc::vOptimise(m_pCI);           //
   XF_Optimise_max_To_top::vOptimise(m_pCI);            //
@@ -262,7 +260,6 @@ void XF::vTransform(void)
   XF_Epilog_Type_Cast::vCast(m_pCI);                   //
                                                        //
   XF_Epilog_Fuse_project::vFuse(m_pCI);                // scan, indexScan, IndexJoin ?<= Project ; adds <arriving>
-  XF_Epilog_Append_synthesis::vAppend(m_pCI);          // adds <synthesis>
   XF_Epilog_Map_Columns::vMap(m_pCI);                  // gbyAgg, sort, top
 //XF_Epilog_Craft_StreamDef::vItemise_Columns(m_pCI);          //
   XF_Epilog_Determine_Columns::vDetermine(m_pCI);      // nil
@@ -279,6 +276,8 @@ void XF::vTransform(void)
 
   m_pCI->m_pBench->vPhase(m_pCI,OH_SYNTHESISE);                        //
                                                        //
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   m_pCI->vBeginBoard();                            //
   RASSERT(m_pCI->bEachBoard());                        //
                                                        //
@@ -297,14 +296,17 @@ void XF::vTransform_passThru(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF, _FOOTER_);
 
+
   m_pCI->vBeginBoard();
   while (m_pCI->bEachBoard()) {
+    m_pCI->E.pBoard->vPhase(OH_PASS_THRU);
     //XF_Prolog_X_sqyNm_To_sqyNo::vConvert_board(m_pCI);
     XF_Prolog_Validate_Board::vValidate(m_pCI);
   }
 
   m_pCI->vBeginBoard();
   while (m_pCI->bEachBoard()) {
+    m_pCI->E.pBoard->vPhase(OH_PASS_THRU);
 
     XF_Prolog_Analyse_table::vXF_Analyse_table_passThru(m_pCI);
     XF_Prolog_Analyse_injectable::vAnalyse_injected_passThru(m_pCI);   //
@@ -318,14 +320,14 @@ void XF::vTransform_passThru(void)
 
     m_pCI->vTransform(__FILE__, __func__, XF_PASSTHRU_ADJUST_SORT);
     m_pCI->vBeginEach();
-    while (m_pCI->bEachOp(CK_o_SORT, CK_s_KEY, CK_t_EMIT)) {
+    while (m_pCI->bEachOp(CK_o_SORT, CK_p_KEY, CK_p_EMIT)) {
       m_pCI->E.p_emit->vApplyFacets(m_pCI,m_pCI->E.p_key);
     }
     m_pCI->vEndTransform(__LINE__);
 
     m_pCI->vTransform(__FILE__, __func__, XF_PASSTHRU_ADJUST_TOP);
     m_pCI->vBeginEach();
-    while (m_pCI->bEachOp(CK_o_TOP, CK_s_KEY, CK_t_EMIT)) {
+    while (m_pCI->bEachOp(CK_o_TOP, CK_p_KEY, CK_p_EMIT)) {
       m_pCI->E.p_emit->vApplyFacets(m_pCI,m_pCI->E.p_key);
     }
     m_pCI->vEndTransform(__LINE__);
@@ -376,7 +378,7 @@ void XF::vTransform_passThru(void)
   XF_Epilog_Type_Cast::vCast(m_pCI);                   //
 
   XF_Epilog_Fuse_project::vFuse(m_pCI);                // scan, indexScan, IndexJoin ?<= Project ; adds <arriving>
-  XF_Epilog_Append_synthesis::vAppend(m_pCI);          // adds <synthesis>
+
   XF_Epilog_Map_Columns::vMap(m_pCI);                  //
   XF_Epilog_Hash_Columns::vHash(m_pCI);                //
                                                        //

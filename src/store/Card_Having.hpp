@@ -21,7 +21,7 @@ namespace STORE
     void vCorrect_After_Inject(CardIter* pCI, bool bBump);
 
     void vSmooth(CardIter* pCI, bool bSawProject);
-    void vSmooth(CardIter* pCI, CarryForward* pCarryForward);
+    void vSmooth(CardIter* pCI);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };

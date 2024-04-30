@@ -1,31 +1,30 @@
 /*============================================================================*/
-/* Card_Combined.cpp -- Combine                                                */
+/* Card_PdsRow.cpp -- Index Scan                                           */
 /*============================================================================*/
 
-#include "Card_Combined.hpp"
-#include "Card_Term.hpp"
+#include "Card_PdsRow.hpp"
 #include "CardIter.hpp"
+#include "Card_Filter.hpp"
+#include "Card_Project.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE, Card_Combined, CK_c_COMBINED)
-__aNewFunction(Card_Combined, CN_CARD)
-__vDeleteFunction(Card_Combined, CN_CARD)
+__pCastFunction_Card(STORE, Card_PdsRow, CK_o_PDSROW)
+__aNewFunction(Card_PdsRow,CN_CARD)
+__vDeleteFunction(Card_PdsRow,CN_CARD)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Combined::Card_Combined(void)
-: Card_CONSTRUCTION(CK_c_COMBINED, 1)
+Card_PdsRow::Card_PdsRow(void)
+: Card_OP(CK_o_PDSROW, 1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   _checkInitialised_(CN_CARD);
-
-  SYM(SF_INT_LIT,(i8) 0);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
@@ -33,28 +32,32 @@ Card_Combined::Card_Combined(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_Combined::~Card_Combined(void) noexcept(false)
+Card_PdsRow::~Card_PdsRow(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- Static ------------------------------------------------------------------*/
+/*-- static ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+
+/*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Combined::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
+void Card_PdsRow::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   Card::vValidate(pCI,iDepth,pParent);
+  Card_OP::vValidate(pCI,iDepth,pParent);
   pCI->vValidateChildren(this,iDepth+1);
-
   vValidationPassed();
 }
-
 
 /*============================================================================*/
 /* end                                                                        */

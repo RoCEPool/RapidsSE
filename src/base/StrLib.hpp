@@ -285,6 +285,7 @@ namespace BASE
     static bool  bToBool(const char* psArg);                                                                            // yes
     static d8    dToFlt(const char* psArg, bool* pbResult = nullptr);                                                   // yes
     static char  cToHex(i8 i);                                                                                          // yes
+    static i8    iToI8(const char cArg);                                                                              // yes
     static i8    iToI8(const char* psArg);                                                                              // yes
     static i8    iToI8(const char* psArg, bool* bInvalidValue, bool* bOverflowed);                                      // yes
     static char  cToLower(char c);                                                                                      // yes

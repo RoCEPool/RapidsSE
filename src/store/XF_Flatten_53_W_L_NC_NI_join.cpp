@@ -97,19 +97,16 @@ void XF_Flatten_53_W_L_NC_NI_join::vFlatten(void)
 
   m_pCI->vClearRegisters();
   m_pCI->vBeginEach();
-  //RASSERT(m_pCI->bEachOp(CK_o_PROJECT,CK_t_EMIT));
-  RASSERT(m_pCI->bEachOp(CK_c_FOLD));
+  //RASSERT(m_pCI->bEachOp(CK_o_PROJECT,CK_p_EMIT));
+  RASSERT(m_pCI->bEachOp(CK_o_FOLD));
 
-  CarryForward* pCarryForward = new CarryForward;
-  pCarryForward->Table.m_bReproject = true;
+  m_pCI->Carry.Table.m_bReproject = true;
 
-  vSmooth(m_pCI,pCarryForward);
+  vSmooth(m_pCI);
 
  // m_pCI->PRINTBOARD_dbg();
 
   m_pCI->E.p_deck->vMarksClearRecursive();
-
-  delete pCarryForward;
 
   m_pCI->vEndTransform(__LINE__);
 //vValidateBench();

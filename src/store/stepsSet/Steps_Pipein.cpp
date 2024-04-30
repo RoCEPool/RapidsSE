@@ -56,7 +56,7 @@ void Step::vPipeinBide(void)
   bool bPageIn = false;
   if (m_pThread->eDedicated()) {
         
-    while ( ! (pOperand = pOp->pPopOoOLeft(&bPageIn)) ) {
+    while ( ! (pOperand = pOp->pPopOoOLeft(this, &bPageIn)) ) {
       vDropTaskLock((Stz*)__func__);
       m_pThread->pPsxThd()->vSleepMsec(10,CN_TASK);
 
@@ -69,7 +69,13 @@ void Step::vPipeinBide(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   else {
-    pOperand = pOp->pPopOoOLeft(&bPageIn);
+//		if (pOp->nQueuedOperands() > 100) {
+//			vTrace("Stage: %s OP: %s has %lld operands in queue\n"_Stz,
+//						 pOp->szStageName(),
+//						 pOp->szOpNm(),
+//						 pOp->nQueuedOperands());
+//		}
+    pOperand = pOp->pPopOoOLeft(this, &bPageIn);
     m_pLogicUnit->vSetPipein(pOperand);
     
     if (m_pLogicUnit->m_xpPipein.bIsNull()) {
@@ -99,7 +105,7 @@ void Step::vPipeinBideNext(void)
 
   if (m_pLogicUnit->m_xpPipein.bIsNull()) {
     bool bPageIn = false;
-    if ( (pOperand = pOp->pPopOoOLeft(&bPageIn)) ) {
+    if ( (pOperand = pOp->pPopOoOLeft(this, &bPageIn)) ) {
       m_pLogicUnit->vSetPipein(pOperand);
     }
     else {
@@ -279,7 +285,7 @@ void Step::vPipeinNext(void)
   Op* pOp = *m_pOp;
 
   bool bPageIn = false;
-  Operand* pOperand = pOp->pPopOoOLeft(&bPageIn);
+  Operand* pOperand = pOp->pPopOoOLeft(this, &bPageIn);
   // TODO: Arjun - Check page in scenario
   
   m_pLogicUnit->vSetPipein(pOperand);
@@ -299,7 +305,7 @@ void Step::vPipeinPeek(void)
   // revised job/op model
     Op* pOp = *m_pOp;
 
-  m_pDataStack->vPushInt(pOp->bPeekLeft() ? true : false);
+  m_pDataStack->vPushInt(pOp->bPeekLeft(this) ? true : false);
   
   EXIT();
 }

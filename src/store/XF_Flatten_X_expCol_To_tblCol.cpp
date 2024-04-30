@@ -78,7 +78,7 @@ void XF_Flatten_X_expCol_To_tblCol::vX_expCol_To_tblCol(void)
     // conversions prior to projection
 
     if ((m_pCI->E.p_key = m_pCI->E.p_Op->pSub_key())) {
-      if (m_pCI->Flux.m_pArriving) {
+      if (m_pCI->Arriving.m_pEmit) {
 //Z_KEY_DIRECTION
         for (m_pCI->vBeginTarget(m_pCI->E.p_key,CK_EXPR); m_pCI->bEachTarget(); /**/) {
            m_pCI->E.p_expr->vX_expCol_To_tblCol(m_pCI);
@@ -99,9 +99,9 @@ void XF_Flatten_X_expCol_To_tblCol::vX_expCol_To_tblCol(void)
     // projection
 
     if ((m_pCI->E.p_emit = m_pCI->E.p_Op->pSub_emit())) {
-      if (m_pCI->Flux.m_pArriving)
+      if (m_pCI->Arriving.m_pEmit)
         m_pCI->E.p_emit->vX_expCol_To_tblCol(m_pCI);
-      m_pCI->Dic.m_p_expr = m_pCI->Flux.m_pArriving = m_pCI->E.p_emit;
+      m_pCI->vSnapIf_arriving();
       m_pCI->E.p_emit = nullptr;
     }
 
@@ -109,7 +109,7 @@ void XF_Flatten_X_expCol_To_tblCol::vX_expCol_To_tblCol(void)
     // conversions after projection
 
     if ((m_pCI->E.p_constraint = m_pCI->E.p_Op->pSub_constraint())) {
-      if (m_pCI->Flux.m_pArriving)
+      if (m_pCI->Arriving.m_pEmit)
         m_pCI->E.p_constraint->vX_expCol_To_tblCol(m_pCI);
       m_pCI->E.p_constraint = nullptr;
     }

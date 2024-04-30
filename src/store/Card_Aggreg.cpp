@@ -56,7 +56,7 @@ void Card_Aggreg::vDerive_streamKey(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* early project                                                              */
 /*----------------------------------------------------------------------------*/
-void Card_Aggreg::vEarlyProject_root(CardIter* pCI)
+bool Card_Aggreg::bEarlyProject_root(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -65,41 +65,14 @@ void Card_Aggreg::vEarlyProject_root(CardIter* pCI)
   RASSERT(! pCI->Early.m_pNeeded_later);
 
   // get the root needed form of ordAgg's projection
-  pCI->Early.m_pOP_root = (Card_OP*)this;
-  pCI->E.p_emit = pSub_emit();
   pCI->Early.m_pNeeded_later  = pCI->E.p_emit->pCraftRoot_needed(pCI);
 
   if (0 == pCI->Early.m_pNeeded_later->nChildCards()) {
     DELETE_CARD(pCI->Early.m_pNeeded_later);
-    pCI->Early.m_pOP_leaf = this;
-    return;
+    return false;
   }
 
-  // insert empty early projection (has only needed) before this ordAgg
-  Card_Project* p_project_early = pCI->Early.m_pNeeded_later->pNew_project_early(pCI);
-  pCI->vInsertBefore(p_project_early, this);
-  pCI->vResynchOp();
-
-  Card_OP::vEarlyProject_backstep(pCI);
-
-  /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
-
-  RASSERT(pCI->Early.m_pOP_leaf);
-
-  pCI->E.p_aggreg->vRestate_emit(pCI);
-
- // pCI->PRINTBOARD_dbg();
-}
-
-/*----------------------------------------------------------------------------*/
-/* craft needed                                                               */
-/*----------------------------------------------------------------------------*/
-void Card_Aggreg::vCraft_needed_root(CardIter *pCI)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  pCI->Early.m_pNeeded_later = pCI->E.p_emit->pCraft_needed_root(pCI);
-  DELETE_CARD(pCI->Early.m_pNeeded_later);
+ return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -120,7 +93,7 @@ void Card_Aggreg::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
   UNUSED(pParent);
 
-  vValidate_mustHave(CK_s_LEVEL, CK_s_STREAM, CK_NONE);
+  vValidate_child_mustBe(CK_p_LEVEL, CK_p_EMIT, CK_NONE);
 
   UNUSED(pParent);
   Card::vValidate(pCI,iDepth,pParent);

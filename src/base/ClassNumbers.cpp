@@ -63,12 +63,8 @@ Stz* BASE::aCN[CN_ENUMS+1]
 
     /* */ "_C__"_Stz,                 // CN__C__
     /* */ "CARD"_Stz,                 // CN_CARD
-    /* */ "CARDCTL"_Stz,              // CN_CARDCTL
-    /* */ "CARDHISTORY"_Stz,          // CN_CARDHISTORY
-    /* */ "CARDIMAGE"_Stz,            // CN_CARDIMAGE
     /* */ "CARDITER"_Stz,             // CN_CARDITER
     /* */ "CARDUSAGE"_Stz,            // CN_CARDUSAGE
-    /* */ "CARRYFORWARD"_Stz,         // CN_CARRYFORWARD
     /* */ "CATALOG"_Stz,              // CN_CATALOG
     /* */ "CHARSER"_Stz,              // CN_CHARSER
     /* */ "CHILDEXIT"_Stz,            // CN_CHILDEXIT
@@ -468,7 +464,6 @@ Stz* BASE::aCN[CN_ENUMS+1]
     /* */ "XF"_Stz,                     // CN_XF
 		/* */ "XF_EPILOG_ADD_HASH_CAST"_Stz,     // CN_XF_EPILOG_ADD_HASH_CAST
 		/* */ "XF_EPILOG_ADD_INFLATE"_Stz,       // CN_XF_EPILOG_ADD_INFLATE
-		/* */ "XF_EPILOG_APPEND_SYNTHESIS"_Stz,  // CN_XF_EPILOG_APPEND_SYNTHESIS
     /* */ "XF_EPILOG_CULL_FACET"_Stz,        // CN_XF_EPILOG_CULL_FACET
 		/* */ "XF_EPILOG_DETERMINE_COLUMNS"_Stz, // CN_XF_EPILOG_DETERMINE_COLUMNS
 		/* */ "XF_EPILOG_FUSE_PROJECT"_Stz,      // CN_XF_EPILOG_FUSE_PROJECT

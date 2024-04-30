@@ -9,7 +9,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE, Card_Hashing, CK_s_HASHING)
+__pCastFunction_Card(STORE, Card_Hashing, CK_p_HASHING)
 __aNewFunction(Card_Hashing,CN_CARD)
 __vDeleteFunction(Card_Hashing,CN_CARD)
 
@@ -18,7 +18,7 @@ __vDeleteFunction(Card_Hashing,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Hashing::Card_Hashing(void)
-: Card_symbol(CK_s_HASHING, 2)
+: Card_symbol(CK_p_HASHING, 2)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

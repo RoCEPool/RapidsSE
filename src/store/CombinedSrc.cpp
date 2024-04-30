@@ -238,9 +238,10 @@ void CombinedSrc::vSynthesizeCode(Stencil* pStencil, bool bFirstStage, bool bLas
         RASSERT ( bOpened );
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // operator stub
+        // operator begin
         vAppendCodeFragment(pOpSketch, "vOperatorStub"_Stz);
 
+        //vAppendStencilTo(pOpSketch);
         vAppendCodeFragment(pOpSketch, "vFilterBegin"_Stz, pOperatorFile);
         vGenerateExprCode(pOpSketch->m_pExprStack, "  "_Stz);
         vAppendCodeFragment(pOpSketch, "vExprCheck"_Stz);
@@ -490,7 +491,7 @@ void CombinedSrc::vSynthesizeCode(Stencil* pStencil, bool bFirstStage, bool bLas
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // operator begin
-        vOperatorBegin(pOpSketch);
+				vOperatorBegin(pOpSketch);
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // initialize with key kind
@@ -680,7 +681,7 @@ void CombinedSrc::vSynthesizeCode(Stencil* pStencil, bool bFirstStage, bool bLas
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // operator stub
         vAppendCodeFragment(pOpSketch, "vOperatorStub"_Stz);
-
+        vAppendStencilTo(pOpSketch);
         vAppendCodeFragment(pOpSketch, "vLimit"_Stz, pOperatorFile);
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1036,7 +1037,7 @@ void CombinedSrc::vAppendCodeInflateCols(OpSketch* pOpSketch, Stz* sReturnPrefix
 		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 		// skip columns not required
 		while (i_StreamLeftCol < pOpSketch->m_pColInj->m_axCol[i_Col].m_i_CrwCol) {
-			sReturnToColumn.vSprint("%s%lld"_Stz, sReturnPrefix, i_StreamLeftCol);
+			sReturnToColumn.vSprint("%s_%lld_%lld"_Stz, sReturnPrefix, pOpSketch->m_iOperatorNo, i_StreamLeftCol);
 
 			sCode = ""_Stz;
 			pOperatorFile->vSeekStart();
@@ -1052,7 +1053,7 @@ void CombinedSrc::vAppendCodeInflateCols(OpSketch* pOpSketch, Stz* sReturnPrefix
 		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 		// inflate columns required
 		if (i_StreamLeftCol == pOpSketch->m_pColInj->m_axCol[i_Col].m_i_CrwCol) {
-			sReturnToColumn.vSprint("%s%lld"_Stz, sReturnPrefix, i_StreamLeftCol);
+			sReturnToColumn.vSprint("%s_%lld_%lld"_Stz, sReturnPrefix, pOpSketch->m_iOperatorNo, i_StreamLeftCol);
 
 			sCode = ""_Stz;
 			pOperatorFile->vSeekStart();
@@ -1085,7 +1086,7 @@ void CombinedSrc::vAppendCodeInflateInjCols(OpSketch* pOpSketch, Stz* sReturnPre
 		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 		// skip columns not required
 		while (i_StreamRightCol < pOpSketch->m_pColInj->m_axCol[i_Col].m_i_CrwCol) {
-			sReturnToColumn.vSprint("%s%lld"_Stz, sReturnPrefix, i_StreamRightCol);
+			sReturnToColumn.vSprint("%s_%lld_%lld"_Stz, sReturnPrefix, pOpSketch->m_iOperatorNo, i_StreamRightCol);
 
 			sCode = ""_Stz;
 			pOperatorFile->vSeekStart();
@@ -1101,7 +1102,7 @@ void CombinedSrc::vAppendCodeInflateInjCols(OpSketch* pOpSketch, Stz* sReturnPre
 		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 		// inflate columns required
 		if (i_StreamRightCol == pOpSketch->m_pColInj->m_axCol[i_Col].m_i_CrwCol) {
-			sReturnToColumn.vSprint("%s%lld"_Stz, sReturnPrefix, i_StreamRightCol);
+			sReturnToColumn.vSprint("%s_%lld_%lld"_Stz, sReturnPrefix, pOpSketch->m_iOperatorNo, i_StreamRightCol);
 
 			sCode = ""_Stz;
 			pOperatorFile->vSeekStart();
@@ -1129,7 +1130,7 @@ void CombinedSrc::vAppendCodeInflateRightCols(OpSketch* pOpSketch, Stz* sReturnP
 	for (i8 i_Col = 0; i_Col < pOpSketch->m_pStreamDefRht->nColumns(); i_Col++) {
 
 		Column* pColumn = pOpSketch->m_pStreamDefRht->pGetColumn(i_Col);
-		sReturnToColumn.vSprint("%s%lld"_Stz, sReturnPrefix, i_Col+1);
+		sReturnToColumn.vSprint("%s_%lld_%lld"_Stz, sReturnPrefix, pOpSketch->m_iOperatorNo,i_Col+1);
 
 		sCode = ""_Stz;
 		pOperatorFile->vSeekStart();

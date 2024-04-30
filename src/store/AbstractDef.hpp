@@ -1,25 +1,26 @@
 /*============================================================================*/
-/* Card_Required.hpp -- Required Columns                                      */
+/* AbstractDef.hpp -- Abstract Definition                                     */
 /*============================================================================*/
 #pragma once
 
-#include "Card_symbol.hpp"
+#include "BASE.h"
 
 namespace STORE
 {
-  class Card_Required : public Card_symbol<Card_Required>
+  class AbstractDef : public Object
   {
+  public:
+    s256 m_sFile;
+    i8   m_iLine;
+
   public:
     void* operator new(size_t);
     void  operator delete(void*);
-  
-    Card_Required(void);
-   ~Card_Required(void) noexcept(false);
 
-    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
+     AbstractDef(eCN eClass, const char* azFile, i8 iLine);
+    ~AbstractDef(void) noexcept(false);
+
   };
-
-  Card_Required* _pCard_Required(void* aAddr);
 }
 
 /*============================================================================*/

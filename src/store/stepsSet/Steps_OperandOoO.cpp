@@ -95,7 +95,7 @@ void Step::vOperandOoONext(void)
   // revised job/op model
     Op* pOp = *m_pOp;
 
-  m_pLogicUnit->m_xpOperandOoO = pOp->pPopOoO();
+  m_pLogicUnit->m_xpOperandOoO = pOp->pPopOoO(this);
   
   if (m_pLogicUnit->m_xpOperandOoO.bIsNull())
     m_pDataStack->vPushInt(false);

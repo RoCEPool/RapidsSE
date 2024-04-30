@@ -36,7 +36,6 @@ namespace STORE
                          Card_Bounds* p_bounds, Card_CONJ *p_PRED);
     Stz* szColNm(i8 i_Col_base0);
     Card_Index* pFindChosenIndex(void);
-    void vPrint(Ribbon* pRibbon, i8 iDepth);
     void vDerive_bounds_From_filter(CardIter *pCI);
     bool bUsesSqyRsl(void);
     void vMorph_table_To_EEop(CardIter *pCI);

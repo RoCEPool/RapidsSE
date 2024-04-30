@@ -1,21 +1,25 @@
 /*============================================================================*/
-/* Card_TERMLIST.hpp -- Abstract Term List                                    */
+/* Card_PdsRow.hpp -- PdsRow                                                  */
 /*============================================================================*/
 #pragma once
 
-#include "Card_LIST.hpp"
+#include "Card_OP.hpp"
 
 namespace STORE
 {
-  class Card_TERMLIST : public Card_LIST
-  {  
+  class Card_PdsRow : public Card_OP
+  {
   public:
-    Card_TERMLIST(eCK eCard, i8 iFixedDepth);
-   ~Card_TERMLIST(void) noexcept(false);
+    void* operator new(size_t);
+    void  operator delete(void*);
+  
+    Card_PdsRow(void);
+   ~Card_PdsRow(void) noexcept(false);
 
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 
-  Card_TERMLIST* _pCard_TERMLIST(void* aAddr);
+  Card_PdsRow* _pCard_PdsRow(void* aAddr);
 }
 
 /*============================================================================*/

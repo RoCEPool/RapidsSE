@@ -190,6 +190,7 @@ i8 Stage::nOpsExeOnNode(i8 iThisNodeId, i8 iOriginNodeId)
     for (i8 i_Stream = 0; i_Stream < nItems(); i_Stream++) {
       Stream *pStream = pGet(i_Stream);
 
+
       if (YG_NEXT_NODE == m_pStageSpec->eStageTopology()) {
         if (MY::pNode()->iNodeId() != iOriginNodeId &&
             pStream->iNodeId() == iThisNodeId) {
@@ -207,10 +208,10 @@ i8 Stage::nOpsExeOnNode(i8 iThisNodeId, i8 iOriginNodeId)
     // stage has partitions topology
     for (i8 i_Stream = 0; i_Stream < nItems(); i_Stream++) {
       Stream *pStream = pGet(i_Stream);
-      
+
       i8 iWhichNodeId = AM::pLglPtnMap()->iNodeId(pStream->tLglPtn());
       if (iWhichNodeId == iThisNodeId) {
-        nOpsExe += pStream->nItems();
+        nOpsExe += pStream->nItems() + pStageSpec()->iThreadsPerPtn() - 1;
       }
     }
   }

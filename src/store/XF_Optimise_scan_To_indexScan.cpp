@@ -72,7 +72,7 @@ bool XF_Optimise_scan_To_indexScan::bOptimise(void)
 
   m_pCI->vClearRegisters();
   m_pCI->vBeginEach();
-  if (m_pCI->bEachOp(CK_o_SCAN, CK_t_INDEXLIST, CK_BOUNDS)) {
+  if (m_pCI->bEachOp(CK_o_SCAN, CK_INDEXLIST, CK_BOUNDS)) {
 
     if (m_pCI->E.p_bounds->pSub_bound()->bIsLBound() ||
         m_pCI->E.p_bounds->pSub_bound()->bIsUBound()) {

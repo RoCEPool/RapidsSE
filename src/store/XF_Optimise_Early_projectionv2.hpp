@@ -1,13 +1,13 @@
 /*============================================================================*/
-/* CN_XF_Epilog_Add_synthesis.hpp -- Add synthesis information                   */
+/* XF_Optimise_Early_projectionv2.hpp -- Early projection                                */
 /*============================================================================*/
 #pragma once
 
-#include "XF_EPILOG.hpp"
+#include "XF_OPTIMISE.hpp"
 
 namespace STORE
 {
-  class XF_Epilog_Append_synthesis : public XF_EPILOG
+  class XF_Optimise_Early_projectionv2 : public XF_OPTIMISE
   {
   private:
     // must be last
@@ -16,19 +16,24 @@ namespace STORE
   public:
     void* operator new(size_t);
     void  operator delete(void*);
-  
-    XF_Epilog_Append_synthesis(CardIter* pCI);
-   ~XF_Epilog_Append_synthesis(void) noexcept(false);
 
-    static void vAppend(CardIter* pCI);
+    XF_Optimise_Early_projectionv2(CardIter* pCI);
+   ~XF_Optimise_Early_projectionv2(void) noexcept(false);
 
-    void vAppend_synthesis(void);
+    static void vOptimise(CardIter* pCI);
 
   private:
+    void vEarly_needed_loop(void);
+    void vEarly_needed_OP(void);
+
+    bool bEarly_projection_loop(void);
+    bool bEarly_projection_OP(void);
+
     Footer* aFooter(void);
+
   };
 
-  XF_Epilog_Append_synthesis* _pXF_Epilog_Append_synthesis(void* aAddr);
+  XF_Optimise_Early_projectionv2* _pXF_Optimise_Early_projectionv2(void* aAddr);
 }
 
 /*============================================================================*/

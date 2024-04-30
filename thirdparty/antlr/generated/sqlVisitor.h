@@ -1,5 +1,5 @@
 
-// Generated from /Users/craig/repos/rapidsse/thirdparty/antlr/sql.g4 by ANTLR 4.13.1
+// Generated from /Users/alka/rapidsse/thirdparty/antlr/sql.g4 by ANTLR 4.13.1
 
 #pragma once
 
@@ -147,6 +147,8 @@ public:
     virtual std::any visitLstblCmd(sqlParser::LstblCmdContext *context) = 0;
 
     virtual std::any visitMemoryleaksCmd(sqlParser::MemoryleaksCmdContext *context) = 0;
+
+    virtual std::any visitMetricsCtlCmd(sqlParser::MetricsCtlCmdContext *context) = 0;
 
     virtual std::any visitNoopCmd(sqlParser::NoopCmdContext *context) = 0;
 

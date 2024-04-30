@@ -45,7 +45,7 @@ void Card_IndexNm::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   RASSERT(pSymbol()->bHasFacet(SF_IDX_NM));
 
   Card::vValidate(pCI,iDepth,pParent);
-  vValidate_noChildren();
+  vValidate_hasNoChildren();
   vValidationPassed();
 }
 

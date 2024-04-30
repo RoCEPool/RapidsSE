@@ -83,23 +83,23 @@ void XF_Flatten_10_F::vFlatten(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // fold of from
 
-  CarryForward* pCarryForward = pFold_from("From"_Stz,m_pCI);
+  vFold_from("From"_Stz,m_pCI);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // smoothing
 
-  pCarryForward->Table.m_bReproject = true;
-   vSmooth(m_pCI,pCarryForward);
+  m_pCI->Carry.Table.m_bReproject = true;
+  vSmooth(m_pCI);
 
   m_pCI->E.p_deck->vMarksClearRecursive();
 
   // todo: discuss with Alka
   m_pCI->vClearRegisters();
   m_pCI->vBeginEach();
-  if (m_pCI->bEachOp(CK_c_FOLD)) {
+  if (m_pCI->bEachOp(CK_o_FOLD)) {
     if (m_pCI->bEachOp(CK_o_WHERE)) {
       Card_Level* p_level_where = m_pCI->E.p_where->pSub_level();
-      if (m_pCI->bEachOp(CK_o_PROJECT, CK_s_LEVEL)) {
+      if (m_pCI->bEachOp(CK_o_PROJECT, CK_p_LEVEL)) {
         p_level_where->pSymbol()->Y_vSet(P_Level, m_pCI->E.p_level->pSymbol()->Y_iGet(P_Level));
       }
     }
@@ -107,8 +107,6 @@ void XF_Flatten_10_F::vFlatten(void)
 
   m_pCI->vEndTransform(__LINE__);
 
-
-  delete pCarryForward;
 
   XF_Prolog_Analyse_emit::vAnalyse(m_pCI);
 }

@@ -370,7 +370,7 @@ void Step::vSocketRecvObject(void)
     AM::PARCEL::vRecvContents((Parcel*)pReceivedObject,pSocket);
 
 		if (AM::TRACE::bVerbose(C_VB_OP))
-      MY::pOp()->vOpTrace((Parcel*)pReceivedObject,(Stz*)__func__,false);
+      MY::pOp()->vOpTrace(this, (Parcel*)pReceivedObject,(Stz*)__func__,false);
   }
   
   pSocket->vReceivedObject(pReceivedObject);
