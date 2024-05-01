@@ -196,6 +196,9 @@ extern Stz* P_SqyCall;
 extern Stz* P_SqyRslTest;
 extern Stz* P_Threads;
 extern Stz* P_Unproject;
+extern Stz* P_Xaction;
+extern Stz* P_Xdecision;
+extern Stz* P_Xform;
 
 extern Stz* C_CARD_HISTORY;
 extern Stz* C_CODE_BLOCK;

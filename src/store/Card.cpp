@@ -62,6 +62,9 @@ Stz* P_SqyCall      = "bSqyCall"_Stz;
 Stz* P_SqyRslTest   = "bSqyRslTest"_Stz;
 Stz* P_Threads      = "nThreads"_Stz;
 Stz* P_Unproject    = "bUnproject"_Stz;
+Stz* P_Xaction      = "iXaction"_Stz;
+Stz* P_Xdecision    = "eXdecision"_Stz;
+Stz* P_Xform        = "iXform"_Stz;
 
 Stz* C_CARD_HISTORY = "<card_history>"_Stz;
 Stz* C_CODE_BLOCK   = "<code_block>"_Stz;

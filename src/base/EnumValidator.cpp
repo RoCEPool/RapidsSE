@@ -128,6 +128,7 @@
 #include "eWK.h"
 #include "eXA.h"
 #include "eXC.h"
+#include "eXD.h"
 #include "eXF.h"
 #include "eXK.h"
 #include "eXP.h"
