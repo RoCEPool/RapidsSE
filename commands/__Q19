@@ -2,10 +2,7 @@
 /* __Q19_run                                                                  */
 /*============================================================================*/
 
-print "Q19";
-
-/******************************************************************************
-Q19_0: select
+select
          sum(l_extendedprice * (1 - l_discount)) as Revenue
 
   from LineItem, Part
@@ -36,56 +33,6 @@ Q19_0: select
             and p_size         between 1 and 15
             and l_shipmode     in ('AIR', 'AIR REG')
             and l_shipinstruct = 'DELIVER IN PERSON' );
-*******************************************************************************/
-
-/time pipeline Q19
-begin
-
-  stage first on origin :
-    start
-    | pulse once
-    | next
-
-
-  //
-  // Q19_0:
-  //   a) scan LineItem /L_ORDERKEY/  # _orderkey   _partkey   _suppkey
-  //   b) join Part     /P_PARTKEY/   # _partkey
-  //
-
-  // ∀ PART π P_PARTKEY as _partkey
-  stage Gs_PART on all partitions :
-    scan part
-    | project 1 "type INTEGER as _partkey P_PARTKEY"
-    | G_LINEITEM broadCast
-
-  // ⋈ LINEITEM IxL_PARTKEY _partkey
-  stage Gj_LINEITEM on all partitions :
-    indexJoin 1 lineitem IxL_PARTKEY "bound $I1 _partkey =="
-    | next
-
-  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
-
-  stage G_CNT_P on all partitions :
-    project 1 " type INTEGER as x_rowCntPtn )  countAll  "
-    //| debug streamDef
-    | next
-    
-  stage G_CNT_N on all nodes :
-    project 1 " type INTEGER as x_rowCntNode )  x_rowCntPtn sum  "
-    | next
-    
-  stage G_CNT_O on origin :
-    project 1 " type INTEGER as x_rowCntOrigin )  x_rowCntNode sum  "
-    | next
-
-  stage last on origin :
-    output
-    | debug accum0
-    | sink
-    | first
-    
-end ;
 
 /*============================================================================*/
 /* end                                                                        */

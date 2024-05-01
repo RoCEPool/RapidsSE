@@ -6,8 +6,6 @@
 //   SF10-1N1P : 45.73
 //   SF10-1N4P :
 
-/keepCodeFile
-/pipeline_def
 /weaved
 select
          o_year,
