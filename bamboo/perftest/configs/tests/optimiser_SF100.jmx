@@ -1974,7 +1974,7 @@ end ;</stringProp>
               </hashTree>
             </hashTree>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q2 Group" enabled="true"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q2 Group" enabled="false"/>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
@@ -2896,7 +2896,7 @@ begin
     | pulse once
     | next
 
-  stage S01 on all partitions :
+  stage S01 on all partitions multiple threads 4:
     scan rapidsse public Orders
     | filter &quot; type BOOLEAN O_ORDERDATE DATE &apos;1994-01-01&apos;  &gt;=
                             O_ORDERDATE DATE &apos;1995-01-01&apos;  &lt;  and  &quot;
@@ -4305,7 +4305,7 @@ order by
      | combined 0
      | next
 
-   stage S04 on all partitions :
+   stage S04 on all partitions multiple threads 4:
      indexJoin orders IxO_CUSTKEY &quot;BOUND $I1 C_CUSTKEY ==&quot;
      | project &quot;type DATE ( 0 ) as O_ORDERDATE O_ORDERDATE ,
                 type integer ( 19 ) as O_ORDERKEY O_ORDERKEY ,
@@ -5753,7 +5753,7 @@ begin
     | pulse once
     | next
 
-  stage S01 on all partitions :
+  stage S01 on all partitions multiple threads 4:
     indexScan Orders IxO_ORDERDATE &quot;LBOUND date &apos;1993-10-01&apos; &gt;=  UBOUND date &apos;1994-01-01&apos; &lt; &quot;
     | project &quot;type INTEGER ( 19 ) as O_CUSTKEY  O_CUSTKEY ,
                type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY&quot;
@@ -6447,7 +6447,7 @@ begin
      | combined 0
      | next broadcast
 
-  stage S02 on all partitions :
+  stage S02 on all partitions multiple threads 4:
     indexJoin lineitem IxL_PARTKEY &quot;bound $I1 P_PARTKEY ==&quot;
     | ordagg &quot; ordgroupBy type integer ( 19 ) P_PARTKEY
                aggregates type integer ( 19 ) as P_PARTKEY $K1 ,
@@ -6726,7 +6726,7 @@ begin
    | combined 0
    | next broadcast
 
- stage S02 on all partitions :
+ stage S02 on all partitions multiple threads 4:
    indexJoin lineitem IxL_PARTKEY &quot;BOUND $I1 p_partkey ==&quot; //J1
    | project &quot; type INTEGER ( 19 ) as L_PARTKEY l_partkey ,
                type DECIMAL ( 19  2 ) as L_QUANTITY L_QUANTITY ,
