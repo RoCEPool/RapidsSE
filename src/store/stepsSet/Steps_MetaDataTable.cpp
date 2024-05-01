@@ -733,7 +733,6 @@ void Step::vMetaDataTableTablesInsert(void)
   bool bAppend = false;
   if(pPdsRootBuffer->nItems() == 0) {
     pPdsRowBuffer = new Pds(pStreamDef, false, BT_DATA);
-    vTrace("Locked? %lld\n"_Stz, AM::pHashMap()->bIsLocked(pPdsRowBuffer->oGetBufferId().m_pvAsAddress));
     bAppend = true;
   } else {
     i8 iSearchKey = C_INT_MAX;
@@ -747,7 +746,6 @@ void Step::vMetaDataTableTablesInsert(void)
       pPdsRowBuffer = _pPds(pEntry->m_pValObject);
     } else {
       pPdsRowBuffer = new Pds(pStreamDef, false, BT_DATA);
-      vTrace("Locked? %lld\n"_Stz, AM::pHashMap()->bIsLocked(pPdsRowBuffer->oGetBufferId().m_pvAsAddress));
       bAppend = true;
     }
   }
@@ -810,11 +808,9 @@ void Step::vMetaDataTableTablesDelete(void)
       Stz* szRowTableNm = pRow->szColVal_ofs(2);
 
       if(szRowTableNm->bSame(szTableNm)) {
-        vTrace("Deleting Table row %s\n"_Stz, szRowTableNm);
         i8* pKey = (i8*)pRowCursor->pCurrKey();
 
         bool bResult = pPdsRowBuffer->bDelete(pKey);
-        vTrace("Result: %lld\n"_Stz, bResult);
         ASSERT(bResult);
         UNUSED(bResult);
 

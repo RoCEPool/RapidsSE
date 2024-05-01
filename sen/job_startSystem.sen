@@ -104,6 +104,7 @@
 
   // define the system tables
   "define the metadata tables" .verbose
+  start::md_tables
   start::md_catalog
   start::md_cluster
   start::md_columns
@@ -113,7 +114,6 @@
   start::md_queries
   start::md_schema
   start::md_sessions
-  start::md_tables
 
   // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   //

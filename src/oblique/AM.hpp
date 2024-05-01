@@ -780,7 +780,17 @@ namespace OBLIQUE
     static i8   nLvlLevels(void);
     static i8   iLvlRatio(void);
     static bool bMetadata(void);
-    static Table* pMetaDataTableOfTables(void);
+
+    static Table* pMetaDataTableCatalog     (void);
+    static Table* pMetaDataTableCluster     (void);
+    static Table* pMetaDataTableColumns     (void);
+    static Table* pMetaDataTableIndexColumns(void);
+    static Table* pMetaDataTableIndexes     (void);
+    static Table* pMetaDataTableNodes       (void);
+    static Table* pMetaDataTableQueries     (void);
+    static Table* pMetaDataTableSchema      (void);
+    static Table* pMetaDataTableSessions    (void);
+    static Table* pMetaDataTableOfTables    (void);
   
     static i8   iNextEpoch(void);
     static i8   iNextTxId(void);

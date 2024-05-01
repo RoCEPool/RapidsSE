@@ -110,7 +110,16 @@ AttachMap::AttachMap(bool bNoFree)
   AM::vRootConstant(m_pDicRoot->pFindWord("rootConstant"_Stz));
   AM::pConstantRoot()->vCategoryEnum(WC_ROOTCONSTANT);
 
-  m_mdTables = nullptr;
+  m_mdCatalog       = nullptr;
+  m_mdCluster       = nullptr;
+  m_mdColumns       = nullptr;
+  m_mdIndexColumns  = nullptr;
+  m_mdIndexes       = nullptr;
+  m_mdNodes         = nullptr;
+  m_mdQueries       = nullptr;
+  m_mdSchema        = nullptr;
+  m_mdSessions      = nullptr;
+  m_mdTables        = nullptr;
   
 
   _checkInitialised_(CN_ATTACHMAP);

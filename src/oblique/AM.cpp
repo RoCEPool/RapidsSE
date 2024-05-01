@@ -174,7 +174,7 @@ SysMetrics* AM::ATTACHMAP::pSysMetricsChain(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get sys metrics chain from attach map                                      */
+/* set metadata table pointer in AM                                           */
 /*----------------------------------------------------------------------------*/
 void AM::ATTACHMAP::vMetaDataTables(Table* pTable)
 {
@@ -182,8 +182,44 @@ void AM::ATTACHMAP::vMetaDataTables(Table* pTable)
 
   eMD eMetaDataKind = pTable->eMetaDataKind();
   switch(eMetaDataKind) {
+    case MD_CATALOG: {
+      gpAttachMap->m_mdCatalog      = pTable;
+      break;
+    }
+    case MD_CLUSTER: {
+      gpAttachMap->m_mdCluster      = pTable;
+      break;
+    }
+    case MD_COLUMNS: {
+      gpAttachMap->m_mdColumns      = pTable;
+      break;
+    }
+    case MD_INDEXCOLUMNS: {
+      gpAttachMap->m_mdIndexColumns = pTable;
+      break;
+    }
+    case MD_INDEXES: {
+      gpAttachMap->m_mdIndexes      = pTable;
+      break;
+    }
+    case MD_NODES: {
+      gpAttachMap->m_mdNodes        = pTable;
+      break;
+    }
+    case MD_QUERIES: {
+      gpAttachMap->m_mdQueries      = pTable;
+      break;
+    }
+    case MD_SCHEMA: {
+      gpAttachMap->m_mdSchema       = pTable;
+      break;
+    }
+    case MD_SESSIONS: {
+      gpAttachMap->m_mdSessions     = pTable;
+      break;
+    }
     case MD_TABLES: {
-      gpAttachMap->m_mdTables = pTable;
+      gpAttachMap->m_mdTables       = pTable;
       break;
     }
     default: {
@@ -3734,7 +3770,17 @@ i8   AM::iResidentSize(void)  { return Process::iResidentSize();  };
 
 bool AM::bProgress(void)      { return gpAttachMap->m_xSysArgs.m_bProgress;              }
 bool AM::bMetadata(void)      { return gpAttachMap->m_xSysArgs.m_bMetadata;          }
-Table* AM::pMetaDataTableOfTables(void)      { return gpAttachMap->m_mdTables;          }
+
+Table* AM::pMetaDataTableCatalog     (void)      { return gpAttachMap->m_mdCatalog;               }
+Table* AM::pMetaDataTableCluster     (void)      { return gpAttachMap->m_mdCluster;               }
+Table* AM::pMetaDataTableColumns     (void)      { return gpAttachMap->m_mdColumns;               }
+Table* AM::pMetaDataTableIndexColumns(void)      { return gpAttachMap->m_mdIndexColumns;          }
+Table* AM::pMetaDataTableIndexes     (void)      { return gpAttachMap->m_mdIndexes;               }
+Table* AM::pMetaDataTableNodes       (void)      { return gpAttachMap->m_mdNodes;                 }
+Table* AM::pMetaDataTableQueries     (void)      { return gpAttachMap->m_mdQueries;               }
+Table* AM::pMetaDataTableSchema      (void)      { return gpAttachMap->m_mdSchema;                }
+Table* AM::pMetaDataTableSessions    (void)      { return gpAttachMap->m_mdSessions;              }
+Table* AM::pMetaDataTableOfTables    (void)      { return gpAttachMap->m_mdTables;                }
 
 i8   AM::iNextTxId(void)      { return gpAttachMap->m_pTxSet->iNextTxId();    }
 

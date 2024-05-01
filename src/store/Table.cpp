@@ -75,9 +75,7 @@ Table::Table(Stz* szTableNm, eTT eKind)
   m_eKind    = eKind;
   m_eMetaDataKind = MD_NONE;
   if(m_eKind == TT_METADATA) {
-    if(szTableNm->bSame("tableOfTables"_Stz)) {
-      m_eMetaDataKind = MD_TABLES;
-    }
+    vMetaDataKind(szTableNm);
   }
   m_sTableStep = "";
   
@@ -574,6 +572,26 @@ void Table::vListContents(i8 i_Depth)
          );
 
   m_pStreamDef->vListContents(i_Depth+1);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set metadata table kind                                                    */
+/*----------------------------------------------------------------------------*/
+void Table::vMetaDataKind(Stz *szTableNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+
+  if     (szTableNm->bSame(C_TDEF_CATALOG))       m_eMetaDataKind = MD_CATALOG;
+  else if(szTableNm->bSame(C_TDEF_CLUSTER))       m_eMetaDataKind = MD_CLUSTER;
+  else if(szTableNm->bSame(C_TDEF_COLUMNS))       m_eMetaDataKind = MD_COLUMNS;
+  else if(szTableNm->bSame(C_TDEF_INDEXCOLUMNS))  m_eMetaDataKind = MD_INDEXCOLUMNS;
+  else if(szTableNm->bSame(C_TDEF_INDEXES))       m_eMetaDataKind = MD_INDEXES;
+  else if(szTableNm->bSame(C_TDEF_NODES))         m_eMetaDataKind = MD_NODES;
+  else if(szTableNm->bSame(C_TDEF_QUERIES))       m_eMetaDataKind = MD_QUERIES;
+  else if(szTableNm->bSame(C_TDEF_SCHEMA))        m_eMetaDataKind = MD_SCHEMA;
+  else if(szTableNm->bSame(C_TDEF_SESSIONS))      m_eMetaDataKind = MD_SESSIONS;
+  else if(szTableNm->bSame(C_TDEF_TABLES))        m_eMetaDataKind = MD_TABLES;
+  else                                                  m_eMetaDataKind = MD_NONE;
 }
 
 /*----------------------------------------------------------------------------*/

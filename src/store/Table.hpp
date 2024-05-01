@@ -77,6 +77,7 @@ namespace STORE
     eTT     eKind(void);
     void    vKind(eTT eKind);
     void    vListContents(i8 i_Depth);
+    void    vMetaDataKind(Stz* szTableNm);
     bool    bPopulateIndex(i8 iIndexNo);
     PtnDef*  pPtnDef(void);
     void    vGetGridEstimates(i8& jTableSize, i8& jRowSize, i8& nRowCount);

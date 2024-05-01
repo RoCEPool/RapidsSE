@@ -112,6 +112,15 @@ namespace STORE
     JobId         m_tWakerDemonJobId;
     JobId         m_tSuperDemonJobId;
 
+    Table*        m_mdCatalog;
+    Table*        m_mdCluster;
+    Table*        m_mdColumns;
+    Table*        m_mdIndexColumns;
+    Table*        m_mdIndexes;
+    Table*        m_mdNodes;
+    Table*        m_mdQueries;
+    Table*        m_mdSchema;
+    Table*        m_mdSessions;
     Table*        m_mdTables;
 
     // must be last
