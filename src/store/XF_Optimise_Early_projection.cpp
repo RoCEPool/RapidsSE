@@ -208,7 +208,7 @@ void XF_Optimise_Early_projection::vBackstep(CardIter* pCI, i8 iRoot, i8 iDepth,
         vDebugPoint();
       }
 
-      pCI->E.p_Op->vDecision(pCI,XD_ADD_EARLY_PROJECT);
+      pCI->E.p_Op->vDecision(pCI,XD_ADD_EARLY_PROJECT,__FUNCTION__ ,__LINE__);
       p_project_early = pCI->Early.m_pNeeded_later->pNew_project_early(pCI);
       p_project_early->pSymbol()->Y_vSet(P_Line,__LINE__);
       pCI->vInsertBefore(p_project_early, pCI->E.p_Op);
@@ -221,7 +221,7 @@ void XF_Optimise_Early_projection::vBackstep(CardIter* pCI, i8 iRoot, i8 iDepth,
     case CK_o_KEYEXISTS:
       pCI->E.p_keyExists->vEarlyProject_add_transients(pCI);
 
-      pCI->E.p_Op->vDecision(pCI,XD_ADD_EARLY_PROJECT);
+      pCI->E.p_Op->vDecision(pCI,XD_ADD_EARLY_PROJECT,__FUNCTION__ ,__LINE__);
       p_project_early = pCI->Early.m_pNeeded_later->pNew_project_early(pCI);
       p_project_early->pSymbol()->Y_vSet(P_Line,__LINE__);
       pCI->vInsertBefore(p_project_early, pCI->E.p_keyExists);
@@ -232,7 +232,7 @@ void XF_Optimise_Early_projection::vBackstep(CardIter* pCI, i8 iRoot, i8 iDepth,
     case CK_o_KEYNOTEXISTS:
       pCI->E.p_keyNotExists->vEarlyProject_add_transients(pCI);
 
-      pCI->E.p_Op->vDecision(pCI,XD_ADD_EARLY_PROJECT);
+      pCI->E.p_Op->vDecision(pCI,XD_ADD_EARLY_PROJECT,__FUNCTION__ ,__LINE__);
       p_project_early = pCI->Early.m_pNeeded_later->pNew_project_early(pCI);
       p_project_early->pSymbol()->Y_vSet(P_Line,__LINE__);
       pCI->vInsertBefore(p_project_early, pCI->E.p_keyNotExists);
@@ -308,7 +308,7 @@ void XF_Optimise_Early_projection::vRoot(CardIter* pCI, i8 iRoot)
     pCI->E.p_Op->vAppendChild(pCI->Early.m_pNeeded_later->pDupCardRecursive());
   }
   else {
-    pCI->E.p_Op->vDecision(pCI,XD_ADD_EARLY_PROJECT);
+    pCI->E.p_Op->vDecision(pCI,XD_ADD_EARLY_PROJECT,__FUNCTION__ ,__LINE__);
     p_project_early = pCI->Early.m_pNeeded_later->pNew_project_early(pCI);
     p_project_early->pSymbol()->Y_vSet(P_Line,__LINE__);
     pCI->vInsertBefore(p_project_early, pCI->E.p_Op);

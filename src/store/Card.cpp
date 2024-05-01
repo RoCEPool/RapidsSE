@@ -44,6 +44,7 @@ Stz* P_Early        = "bEarly"_Stz;
 Stz* P_EmittedCol   = "i_EmittedCol"_Stz;
 Stz* P_FixedNm      = "bFixedNm"_Stz;
 Stz* P_FixedPos     = "bFixedPos"_Stz;
+Stz* P_Fn           = "Fn"_Stz;
 Stz* P_FusedProject = "bFusedProject"_Stz;
 Stz* P_HashOf       = "szHashOf"_Stz;
 Stz* P_Injected     = "bInjected"_Stz;
@@ -401,7 +402,7 @@ eCT Card::eCTVal(void)
 /*----------------------------------------------------------------------------*/
 /* record decision against card                                               */
 /*----------------------------------------------------------------------------*/
-void Card::vDecision(CardIter* pCI, eXD eDecision)
+void Card::vDecision(CardIter* pCI, eXD eDecision, const char* azFn, i8 iLine)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -414,6 +415,8 @@ void Card::vDecision(CardIter* pCI, eXD eDecision)
   p_decision->pSymbol()->Y_vSet(P_Xform, pCI->m_pBench->iXform());
   p_decision->pSymbol()->Y_vSet(P_Xaction, pCI->m_pBench->iXaction_Inc());
   p_decision->pSymbol()->Y_vSet(P_Xdecision,eDecision);
+  p_decision->pSymbol()->Y_vSet(P_Fn,(Stz*)azFn);
+  p_decision->pSymbol()->Y_vSet(P_Line,iLine);
 }
 
 /*----------------------------------------------------------------------------*/

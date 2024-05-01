@@ -176,6 +176,7 @@ extern Stz* P_Early;
 extern Stz* P_EmittedCol;
 extern Stz* P_FixedNm;
 extern Stz* P_FixedPos;
+extern Stz* P_Fn;
 extern Stz* P_FusedProject;
 extern Stz* P_HashOf;
 extern Stz* P_InjCrlKey;
@@ -312,7 +313,7 @@ namespace STORE
 
     eCT  eCTVal(void);
 
-    void  vDecision(CardIter* pCI, eXD eDecision);
+    void  vDecision(CardIter* pCI, eXD eDecision, const char* azFn, i8 iLine);
     void  vDeleteFacetRecursive(eSF eFacet);
     void  vDump(const char* azFunc, Stz* szTitle=nullptr, i8 iDepth=0);
     void  vDumpCaller(const char* azFunc, Stz* szTitle, const char* azCaller, i8 iLine);
