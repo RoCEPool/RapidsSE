@@ -173,6 +173,7 @@ extern Stz* P_CrlKeyTerm;
 extern Stz* P_CrlKeyTest;
 extern Stz* P_DebugOption;
 extern Stz* P_Early;
+extern Stz* P_EarlyArc;
 extern Stz* P_EmittedCol;
 extern Stz* P_FixedNm;
 extern Stz* P_FixedPos;

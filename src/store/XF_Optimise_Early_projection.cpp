@@ -128,6 +128,8 @@ void XF_Optimise_Early_projection::vBackstep(CardIter* pCI, i8 iRoot, i8 iDepth,
 
   RASSERT(pCI->Early.m_pNeeded_later);
 
+  pCI->E.p_Op->pSymbol()->Y_vSet(P_EarlyArc,iRoot);
+
   Card_Needed*  p_needed_save;
   Card_Project* p_project_early;
 
@@ -135,7 +137,7 @@ void XF_Optimise_Early_projection::vBackstep(CardIter* pCI, i8 iRoot, i8 iDepth,
   if (!pCI->bEachOp_reverse()) {
     pCI->vPopEach();
     pCI->E.p_Op->vDumpShort(__FUNCTION__,__LINE__,"<< backstep"_Stz,iRoot,iDepth);
-    pCI->vEarlyTip(pCI->E.p_Op);;
+    pCI->vEarlyTip(pCI->E.p_Op);
     return;
   }
 
@@ -144,7 +146,7 @@ void XF_Optimise_Early_projection::vBackstep(CardIter* pCI, i8 iRoot, i8 iDepth,
     pCI->vSnapIf_arriving();
     pCI->vPopEach();
     pCI->E.p_Op->vDumpShort(__FUNCTION__,__LINE__,"<< backstep"_Stz,iRoot,iDepth);
-    pCI->vEarlyTip(pCI->E.p_Op);;
+    pCI->vEarlyTip(pCI->E.p_Op);
     return;
   }
 
