@@ -167,7 +167,7 @@ void XF_Optimise_Early_projection::vBackstep(CardIter* pCI, i8 iRoot, i8 iDepth,
     if (pCI->E.p_project->pSymbol()->Y_bHas(P_Early)) {
       RASSERT(pCI->E.p_project->pSub_needed());
 
-      pCI->PRINTBOARD_dbg();
+      //pCI->PRINTBOARD_dbg();
       vBackstep(pCI,iRoot,iDepth+1,__FUNCTION__ ,__LINE__);
       pCI->E.p_needed = pCI->E.p_project->pSub_needed();
 

@@ -3052,7 +3052,7 @@ Card_Decision* Card::pSub_decision(bool bNotNull)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Decision* p_decision =
-      _pCard_Decision(pFindSubCard(CK_DECISION));
+      _pCard_Decision(pFindSubCard(CK_p_DECISION));
 
   if (bNotNull && !p_decision) {
     NEVER_REACH

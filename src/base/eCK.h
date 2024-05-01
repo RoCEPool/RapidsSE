@@ -39,6 +39,7 @@ enum eCK : i8 // card kind
 
   // card parts
   /* */ CK_p_CONSTRAINT,
+  /* */ CK_p_DECISION,
   /* */ CK_p_EMIT,
   /* */ CK_p_HASHING,
   /* */ CK_p_HSHCOLLIST,
@@ -69,7 +70,6 @@ enum eCK : i8 // card kind
   /* */ CK_COUNT,
 
   /* */ CK_DEBUG,
-  /* */ CK_DECISION,
   /* */ CK_DECK,
   /* */ CK_DISPOSITION,
 
