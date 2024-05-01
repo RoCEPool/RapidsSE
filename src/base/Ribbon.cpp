@@ -230,7 +230,7 @@ void Ribbon::vPinSubRibbon(i8 i_Line, i8 i_Char, Ribbon* pSubRibbon)
 /*----------------------------------------------------------------------------*/
 /* print all the lines of this ribbon                                         */
 /*----------------------------------------------------------------------------*/
-void Ribbon::vPrintRibbon(Stz* szQueryNm, i8 iBenchNo, eOH ePhase, i8 iPrintNo)
+void Ribbon::vPrintRibbon(Stz* szQueryNm, i8 iBenchNo, i8 iXform, eOH ePhase, i8 iPrintNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
 
@@ -245,11 +245,12 @@ void Ribbon::vPrintRibbon(Stz* szQueryNm, i8 iBenchNo, eOH ePhase, i8 iPrintNo)
     Stz* szText_ribbon = pRibbonLine->szText();
     if (C_UNKNOWN != iPrintNo)
 
-      vTrace("%lld %s %2lld %s %2lld %s\n"_Stz,
+      vTrace("%lld %s %2lld %s x%2lld %2lld %s\n"_Stz,
              iBenchNo,
              szQueryNm,
              iPrintNo,
              aOH_short[ePhase],
+             iXform,
              i_RibbonLine+1,
              szText_ribbon);
     else

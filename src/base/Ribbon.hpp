@@ -60,7 +60,7 @@ namespace BASE
     void vNewLine(void);
 
     void vPinSubRibbon(i8 i_Line, i8 i_Char, Ribbon* pSubRibbon);
-    void vPrintRibbon(Stz* szQueryNm, i8 BenchNo, eOH ePhase, i8 iPrintNo=C_UNKNOWN);
+    void vPrintRibbon(Stz* szQueryNm, i8 BenchNo, i8 iXform, eOH ePhase, i8 iPrintNo=C_UNKNOWN);
     void vPutText(i8 i_Line, i8 i_Char, Stz* szText);
 
     void vSprint(i8& ri_Char, Stz* szFormat, ...);

@@ -288,9 +288,10 @@ void Board::vPrintBoard(CardIter* pCI)
   vPinMargin(pRibbon);
 
   i8 iBenchNo = m_pBench->iBenchNo();
+  i8 iXform   = m_pBench->iXform();
   eOH ePhase  = this->ePhase();
   i8 iPrintNo = m_pBench->nPrintBoard_inc();
-  pRibbon->vPrintRibbon(szQueryNm, iBenchNo, ePhase, iPrintNo);
+  pRibbon->vPrintRibbon(szQueryNm, iBenchNo, iXform, ePhase, iPrintNo);
 
   delete pRibbon;
 }
@@ -445,7 +446,8 @@ void Board::vPinTitle(Ribbon* pRibbon)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   i8 i_Char = C_UNKNOWN;
-  pRibbon->vSprint(i_Char, "PrintBoard: %s/%lld -- %s"_Stz,
+  pRibbon->vSprint(i_Char, "PrintBoard: x%lld %s/%lld -- %s"_Stz,
+                     m_pBench->iXform(),
                      aXF[m_pBench->eXform()],
                      m_pBench->nTransformPrint_inc(),
                      aXF_desc[m_pBench->eXform()]);
