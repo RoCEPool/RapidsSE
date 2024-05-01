@@ -4,6 +4,8 @@
 
 #include "Card.hpp"
 #include "Board.hpp"
+#include "Bench.hpp"
+
 #include "CardIter.hpp"
 #include "Kid.hpp"
 
@@ -42,6 +44,7 @@ Stz* P_Early        = "bEarly"_Stz;
 Stz* P_EmittedCol   = "i_EmittedCol"_Stz;
 Stz* P_FixedNm      = "bFixedNm"_Stz;
 Stz* P_FixedPos     = "bFixedPos"_Stz;
+Stz* P_Fn           = "Fn"_Stz;
 Stz* P_FusedProject = "bFusedProject"_Stz;
 Stz* P_HashOf       = "szHashOf"_Stz;
 Stz* P_Injected     = "bInjected"_Stz;
@@ -62,6 +65,9 @@ Stz* P_SqyCall      = "bSqyCall"_Stz;
 Stz* P_SqyRslTest   = "bSqyRslTest"_Stz;
 Stz* P_Threads      = "nThreads"_Stz;
 Stz* P_Unproject    = "bUnproject"_Stz;
+Stz* P_Xaction      = "iXaction"_Stz;
+Stz* P_Xdecision    = "eXdecision"_Stz;
+Stz* P_Xform        = "iXform"_Stz;
 
 Stz* C_CARD_HISTORY = "<card_history>"_Stz;
 Stz* C_CODE_BLOCK   = "<code_block>"_Stz;
@@ -391,6 +397,26 @@ eCT Card::eCTVal(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   return xCast().m_xTypeId.eCTVal();
+}
+
+/*----------------------------------------------------------------------------*/
+/* record decision against card                                               */
+/*----------------------------------------------------------------------------*/
+void Card::vDecision(CardIter* pCI, eXD eDecision, const char* azFn, i8 iLine)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_Decision* p_decision = pSub_decision();
+  if (! p_decision) {
+    p_decision = new Card_Decision;
+    vPushChild(p_decision);
+  }
+
+  p_decision->pSymbol()->Y_vSet(P_Xform, pCI->m_pBench->iXform());
+  p_decision->pSymbol()->Y_vSet(P_Xaction, pCI->m_pBench->iXaction_Inc());
+  p_decision->pSymbol()->Y_vSet(P_Xdecision,eDecision);
+  p_decision->pSymbol()->Y_vSet(P_Fn,(Stz*)azFn);
+  p_decision->pSymbol()->Y_vSet(P_Line,iLine);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3049,7 +3075,7 @@ Card_Decision* Card::pSub_decision(bool bNotNull)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Decision* p_decision =
-      _pCard_Decision(pFindSubCard(CK_DECISION));
+      _pCard_Decision(pFindSubCard(CK_p_DECISION));
 
   if (bNotNull && !p_decision) {
     NEVER_REACH

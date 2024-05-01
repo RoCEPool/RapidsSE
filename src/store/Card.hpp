@@ -10,6 +10,7 @@
 #include "eQO.h"
 #include "eRO.h"
 #include "eTE.h"
+#include "eXD.h"
 #include "eXK.h"
 #include "eYG.h"
 
@@ -175,6 +176,7 @@ extern Stz* P_Early;
 extern Stz* P_EmittedCol;
 extern Stz* P_FixedNm;
 extern Stz* P_FixedPos;
+extern Stz* P_Fn;
 extern Stz* P_FusedProject;
 extern Stz* P_HashOf;
 extern Stz* P_InjCrlKey;
@@ -196,6 +198,9 @@ extern Stz* P_SqyCall;
 extern Stz* P_SqyRslTest;
 extern Stz* P_Threads;
 extern Stz* P_Unproject;
+extern Stz* P_Xaction;
+extern Stz* P_Xdecision;
+extern Stz* P_Xform;
 
 extern Stz* C_CARD_HISTORY;
 extern Stz* C_CODE_BLOCK;
@@ -308,6 +313,7 @@ namespace STORE
 
     eCT  eCTVal(void);
 
+    void  vDecision(CardIter* pCI, eXD eDecision, const char* azFn, i8 iLine);
     void  vDeleteFacetRecursive(eSF eFacet);
     void  vDump(const char* azFunc, Stz* szTitle=nullptr, i8 iDepth=0);
     void  vDumpCaller(const char* azFunc, Stz* szTitle, const char* azCaller, i8 iLine);

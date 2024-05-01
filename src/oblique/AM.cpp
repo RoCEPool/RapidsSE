@@ -34,6 +34,7 @@
 #include "eTP.h"
 #include "eTT.h"
 #include "eUK.h"
+#include "eXD.h"
 
 #include "CmdLineArgs.hpp"
 
@@ -5066,6 +5067,7 @@ static Stz* aEG[]
   "EG_WK"_Stz,
 
   "EG_XA"_Stz,
+  "EG_XD"_Stz,
   "EG_XK"_Stz,
   "EG_XP"_Stz,
   
@@ -5178,6 +5180,7 @@ Stz* AM::szEnumText(i8 i_EnumGroup, i8 i_Enum)
     case EG_WK: return aWK[i_Enum];
 
     case EG_XA: return aXA[i_Enum];
+    case EG_XD: return aXD[i_Enum];
     case EG_XK: return aXK[i_Enum];
     case EG_XP: return aXP[i_Enum];
 

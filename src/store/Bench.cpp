@@ -33,6 +33,7 @@ Bench::Bench(Optimiser* pOptimiser)
 
   m_iXform        = 0;
   m_eXform        = XF_NONE;
+  m_iXaction      = 0;
   m_nPrintBoard   = 0;
   m_nTransformPrint = 0;
 
@@ -315,6 +316,16 @@ void Bench::vTransform(const char* azXfile, const char* azXfunc, eXF eXform)
   vXform(eXform);
 
   m_nTransformPrint = 0;
+}
+
+/*----------------------------------------------------------------------------*/
+/* inc action number                                                         */
+/*----------------------------------------------------------------------------*/
+i8 Bench::iXaction_Inc(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  return m_iXaction++;
 }
 
 /*----------------------------------------------------------------------------*/

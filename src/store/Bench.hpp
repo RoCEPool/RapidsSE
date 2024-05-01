@@ -27,6 +27,7 @@ namespace STORE
     i8   m_nTransformPrint;
 
     i8   m_iXform;
+    i8   m_iXaction;
 
     i4 m_iaSequence[CK_ENUMS];
 
@@ -70,6 +71,7 @@ namespace STORE
 
     void vTransform(const char* azXfile, const char* azXfunc, eXF eXform);
 
+    i8   iXaction_Inc(void);
     Stz* szXfile(void);
     void vXfile(Stz* szXfile);
     eXF  eXform(void);
