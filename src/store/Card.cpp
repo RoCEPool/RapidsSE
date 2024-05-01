@@ -4,6 +4,8 @@
 
 #include "Card.hpp"
 #include "Board.hpp"
+#include "Bench.hpp"
+
 #include "CardIter.hpp"
 #include "Kid.hpp"
 
@@ -394,6 +396,24 @@ eCT Card::eCTVal(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   return xCast().m_xTypeId.eCTVal();
+}
+
+/*----------------------------------------------------------------------------*/
+/* record decision against card                                               */
+/*----------------------------------------------------------------------------*/
+void Card::vDecision(CardIter* pCI, eXD eDecision)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_Decision* p_decision = pSub_decision();
+  if (! p_decision) {
+    p_decision = new Card_Decision;
+    vPushChild(p_decision);
+  }
+
+  p_decision->pSymbol()->Y_vSet(P_Xform, pCI->m_pBench->iXform());
+  p_decision->pSymbol()->Y_vSet(P_Xaction, pCI->m_pBench->iXaction_Inc());
+  p_decision->pSymbol()->Y_vSet(P_Xdecision,eDecision);
 }
 
 /*----------------------------------------------------------------------------*/

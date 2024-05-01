@@ -3,9 +3,10 @@
 /*============================================================================*/
 #pragma once
 
-enum eXD // Transaction Phase
+enum eXD // Transform Decision
 {
   /* 0 */ XD_NONE=0,
+  /*   */ XD_ADD_EARLY_PROJECT,
   /*   */ XD_ENUMS
 };
 

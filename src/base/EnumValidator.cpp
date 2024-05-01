@@ -309,6 +309,7 @@ void EnumValidator::vValidateEnumStzArrays(void)
       { aXA_short[XA_TSK_ENUMS - 1],    "aXA_short[]"_Stz,     "eXA"_Stz },
       {           aXC[XC_ENUMS - 1],          "aXC[]"_Stz,     "eXC"_Stz },
       {      aXC_note[XC_ENUMS - 1],     "aXC_note[]"_Stz,     "eXC"_Stz },
+      {           aXD[XD_ENUMS - 1],          "aXD[]"_Stz,     "eXD"_Stz },
       {           aXF[XF_ENUMS - 1],          "aXF[]"_Stz,     "eXF"_Stz },
       {           aXK[XK_ENUMS - 1],          "aXK[]"_Stz,     "eXK"_Stz },
       {           aXP[XP_ENUMS - 1],          "aXP[]"_Stz,     "eXP"_Stz },

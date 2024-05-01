@@ -7,6 +7,8 @@
 Stz* aXD[XD_ENUMS]
 {
   /* 0 */ "NONE"_Stz,
+  /*   */ "ADD_EARLY_PROJECT"_Stz,
+
 //  /* 8 */ "ENUMS"_Stz
 };
 

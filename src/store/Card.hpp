@@ -10,6 +10,7 @@
 #include "eQO.h"
 #include "eRO.h"
 #include "eTE.h"
+#include "eXD.h"
 #include "eXK.h"
 #include "eYG.h"
 
@@ -311,6 +312,7 @@ namespace STORE
 
     eCT  eCTVal(void);
 
+    void  vDecision(CardIter* pCI, eXD eDecision);
     void  vDeleteFacetRecursive(eSF eFacet);
     void  vDump(const char* azFunc, Stz* szTitle=nullptr, i8 iDepth=0);
     void  vDumpCaller(const char* azFunc, Stz* szTitle, const char* azCaller, i8 iLine);
