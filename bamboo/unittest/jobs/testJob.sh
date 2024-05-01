@@ -62,7 +62,7 @@ BUILD_TYPE=""
 
 # Which configurations do we wish to run and test with.
 # These values must match the names of the files in the bamboo/config directory
-# as well as the names of the files in the bamboo/testlists directory.
+# as well as the names of the files in the bamboo/unittest/testlists directory.
 # Examples are: "1N4P" "1N1P" "2N4P"
 BUILD_CONFIG=""
 
