@@ -223,9 +223,7 @@ void XF::vTransform(void)
   XF_Prolog_Analyse_emit::vAnalyse(m_pCI);             //
   XF_Utility_Verify_dic::vVerify(m_pCI);               //
   XF_Optimise_Early_projection::vOptimise(m_pCI);      //
-#ifdef Z_NEEDEDv2
   XF_Optimise_Early_projectionv2::vOptimise(m_pCI);    //
-#endif
   XF_Optimise_Reduce_gbyAgg_key::vOptimise(m_pCI);     //
   XF_Optimise_Static_calc::vOptimise(m_pCI);           //
   XF_Optimise_max_To_top::vOptimise(m_pCI);            //
