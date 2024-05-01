@@ -47,7 +47,8 @@ XF_Optimise_Early_projectionv2::~XF_Optimise_Early_projectionv2(void) noexcept(f
 void XF_Optimise_Early_projectionv2::vOptimise(CardIter* pCI)
 {
   _static_
-
+  UNUSED(pCI);
+  
 #ifdef Z_NEEDEDv2
 
   XF_Optimise_Early_projectionv2* pXF_Early_projection = new XF_Optimise_Early_projectionv2(pCI);
