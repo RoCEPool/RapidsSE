@@ -98,6 +98,7 @@ namespace STORE
 
   class Card_Disposition;
   class Card_Needed;
+  class Card_Neededv2;
   class Card_Cast;
   class Card_Note;
   class Card_NotConj;
@@ -520,6 +521,7 @@ namespace STORE
     Card_Map*           pSub_map(bool bNotNull=false);
     Card_Mapping*       pSub_mapping(bool bNotNull=false);
     Card_Needed*        pSub_needed(bool bNotNull=false);
+    Card_Neededv2*      pSub_neededv2(bool bNotNull=false);
     Card_NotConj*       pSub_notConj(bool bNotNull=false);
     Card_Note*          pSub_note(bool bNotNull=false);
     Card_On*            pSub_on(bool bNotNull=false);

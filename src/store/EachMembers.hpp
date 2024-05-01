@@ -120,6 +120,7 @@ namespace STORE
     Card_Mapping *       p_mapping;
 
     Card_Needed *        p_needed;
+    Card_Neededv2 *      p_neededv2;
     Card_Note *          p_note;
     Card_NotConj *       p_notConj;
 

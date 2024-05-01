@@ -98,7 +98,7 @@ bool XF_Optimise_Early_projection::bOptimise(void)
     if (! bNextRoot)
       break;
 
-    vRoot(m_pCI,iRoot++);
+    vEarlyRoot(m_pCI, iRoot++);
     DELETEIF_CARD(m_pCI->Early.m_pNeeded_later);
 
     if (m_pCI->pEarlyTip()) {
@@ -264,7 +264,7 @@ void XF_Optimise_Early_projection::vBackstep(CardIter* pCI, i8 iRoot, i8 iDepth,
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Optimise_Early_projection::vRoot(CardIter* pCI, i8 iRoot)
+void XF_Optimise_Early_projection::vEarlyRoot(CardIter* pCI, i8 iRoot)
 {
   _static_
 

@@ -55,7 +55,7 @@ void XF_Optimise_Early_projectionv2::vOptimise(CardIter* pCI)
 
   bool b1 = true;
 
-  pXF_Early_projection->vEarly_needed_loop();
+  pXF_Early_projection->vNeeded_rloop();
 
   pXF_Early_projection->vOptimised(b1);
 
@@ -71,7 +71,7 @@ void XF_Optimise_Early_projectionv2::vOptimise(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* loop thru operators / early projection                                     */
 /*----------------------------------------------------------------------------*/
-void XF_Optimise_Early_projectionv2::vEarly_needed_loop(void)
+void XF_Optimise_Early_projectionv2::vNeeded_rloop(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_EARLY_PROJECTION, _FOOTER_);
 
@@ -79,10 +79,27 @@ void XF_Optimise_Early_projectionv2::vEarly_needed_loop(void)
 
   RASSERT(nullptr == m_pCI->Early.m_pNeeded_later);
 
+  m_pCI->vClearRegisters();
+
   m_pCI->vBeginEach_tail();
 
-  while (m_pCI->bEachOp_reverse())
-    vEarly_needed_OP();
+  i8 iRoot = 0;
+
+  for (;;) {
+
+    bool bNextRoot = false;
+    while (m_pCI->bEachOp_reverse()) {
+      if (m_pCI->E.p_Op->bIsEarlyRoot()) {
+        bNextRoot = true;
+        break;
+      }
+    }
+    if (! bNextRoot)
+      break;
+
+    vNeeded_root(iRoot);
+    vNeeded_arced(iRoot);
+  }
 
   m_pCI->vEndTransform(__LINE__);
 
@@ -92,11 +109,30 @@ void XF_Optimise_Early_projectionv2::vEarly_needed_loop(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Optimise_Early_projectionv2::vEarly_needed_OP(void)
+void XF_Optimise_Early_projectionv2::vNeeded_root(i8 iRoot)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_EARLY_PROJECTION, _FOOTER_);
 
+  m_pCI->E.p_Op->pSymbol()->Y_vSet(P_EarlyArc,iRoot);
 }
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void XF_Optimise_Early_projectionv2::vNeeded_arced(i8 iRoot)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_EARLY_PROJECTION, _FOOTER_);
+
+  UNUSED(iRoot);
+
+  DELETEIF_CARD(m_pCI->Early.m_pNeeded_later);
+
+  if (m_pCI->pEarlyTip()) {
+    m_pCI->vRepositionOp(m_pCI->pEarlyTip());
+    m_pCI->vEarlyTip(nullptr);
+  }
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

@@ -19,7 +19,7 @@ namespace STORE
 
     static void vBackstep(CardIter* pCI, i8 iRoot, i8 iDepth,
                           const char* azCaller, i8 iLine);
-    static void vRoot(CardIter* pCI, i8 iRoot);
+    static void vEarlyRoot(CardIter* pCI, i8 iRoot);
 
     XF_Optimise_Early_projection(CardIter* pCI);
    ~XF_Optimise_Early_projection(void) noexcept(false);

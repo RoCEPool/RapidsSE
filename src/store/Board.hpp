@@ -90,6 +90,7 @@
 
 #include "Card_Disposition.hpp"
 #include "Card_Needed.hpp"
+#include "Card_Neededv2.hpp"
 #include "Card_Cast.hpp"
 #include "Card_Note.hpp"
 #include "Card_NotConj.hpp"

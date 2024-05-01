@@ -3646,6 +3646,24 @@ Card_Needed* Card::pSub_needed(bool bNotNull)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_Neededv2.hpp"
+Card_Neededv2* Card::pSub_neededv2(bool bNotNull)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Neededv2* p_neededv2 =
+      _pCard_Neededv2(pFindSubCard(CK_p_NEEDEDv2));
+
+  if (bNotNull && !p_neededv2) {
+    NEVER_REACH
+  }
+
+  return p_neededv2;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_Note.hpp"
 Card_Note* Card::pSub_note(bool bNotNull)
 {

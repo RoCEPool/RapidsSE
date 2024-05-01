@@ -23,8 +23,9 @@ namespace STORE
     static void vOptimise(CardIter* pCI);
 
   private:
-    void vEarly_needed_loop(void);
-    void vEarly_needed_OP(void);
+    void vNeeded_rloop(void);
+    void vNeeded_root(i8 iRoot);
+    void vNeeded_arced(i8 iRoot);
 
 
     Footer* aFooter(void);

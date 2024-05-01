@@ -1644,6 +1644,7 @@ Card* CardIter::pMember(eCK eCard)
     case CK_p_MAPPING:      return E.p_mapping;
 
     case CK_p_NEEDED:       return E.p_needed;
+    case CK_p_NEEDEDv2:     return E.p_neededv2;
     case CK_NOTE:           return E.p_note;
     case CK_NOTCONJ:        return E.p_notConj;
 
@@ -1788,6 +1789,7 @@ void CardIter::vMember(eCK eCard, Card* pCard)
     case CK_p_MAPPING: E.p_mapping           = _pCard_Mapping(pCard); break;
 
     case CK_p_NEEDED: E.p_needed            = _pCard_Needed(pCard); break;
+    case CK_p_NEEDEDv2: E.p_neededv2          = _pCard_Neededv2(pCard); break;
     case CK_NOTE: E.p_note              = _pCard_Note(pCard); break;
     case CK_NOTCONJ: E.p_notConj           = _pCard_NotConj(pCard);break;
 
@@ -2339,6 +2341,7 @@ void CardIter::vResetMembers(void)
   E.p_mapping          = nullptr;
 
   E.p_needed           = nullptr;
+  E.p_neededv2         = nullptr;
   E.p_note             = nullptr;
   E.p_notConj          = nullptr;
 
@@ -2625,6 +2628,7 @@ void CardIter::vValidateChildren(Card* pCard, i8 iDepth)
       case CK_p_MAPPING:      E.p_mapping->vValidate(this, iDepth, pCard);  break;
 
       case CK_p_NEEDED:       E.p_needed->vValidate(this, iDepth, pCard);  break;
+      case CK_p_NEEDEDv2:     E.p_neededv2->vValidate(this, iDepth, pCard);  break;
       case CK_NOTE:           E.p_note->vValidate(this, iDepth, pCard);  break;
       case CK_NOTCONJ:        E.p_notConj->vValidate(this, iDepth, pCard);  break;
 
