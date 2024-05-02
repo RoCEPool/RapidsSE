@@ -314,13 +314,44 @@ bool XF_Optimise_Early_projection::bIsRoot(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_EARLY_PROJECTION, _FOOTER_);
 
-  if (! m_pCI->E.p_Op->bIsEarlyRoot())
-    return false;
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // operators which could be an early needed root
+
+  switch (m_pCI->E.e_Op) {
+
+    case CK_o_AGGREG:
+      if (! m_pCI->E.p_Op->bIsPartitionLevel())
+        return false;
+      break;
+
+    case CK_o_GBYAGG:
+      if (! m_pCI->E.p_Op->bIsPartitionLevel())
+        return false;
+      break;
+
+    case CK_o_INDEXJOIN:
+      break;
+
+    case CK_o_ORDAGG:
+      break;
+
+    case CK_o_PROJECT:
+      if (! m_pCI->E.p_Op->bIsPartitionLevel())
+        return false;
+      break;
+
+    default:
+      return false;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (m_pCI->pPeekPrev() && m_pCI->pPeekPrev()->bIsCard(CK_o_PROJECT)) {
     RASSERT(! m_pCI->pPeekPrev()->pSymbol()->Y_bHas(P_Early));
     return false;
   }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   m_pCI->E.p_emit = m_pCI->E.p_Op->pSub_emit();
   m_pCI->Early.m_pNeeded_later = m_pCI->E.p_emit->pCraft_needed_root(m_pCI);
