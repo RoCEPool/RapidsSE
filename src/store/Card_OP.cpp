@@ -430,6 +430,7 @@ void Card_OP::vRestate_emit(CardIter* pCI)
       break;
 
     case CK_o_FOLD:
+      pCI->vSnapIf_arriving();
       return;
 
     default:

@@ -2486,6 +2486,9 @@ void CardIter::vSnapIf_arriving(bool bSub_emit)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
+  if (E.p_Op->bIsCard(CK_o_FOLD))
+    return;
+
   if (bSub_emit) {
     vSnapIf_arriving(E.p_Op->pSub_emit(),E.p_Op->pSub_streamKey());
   }

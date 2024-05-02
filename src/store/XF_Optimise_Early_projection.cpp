@@ -121,7 +121,7 @@ void XF_Optimise_Early_projection::vEarly_arc(i8 iRoot)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_EARLY_PROJECTION, _FOOTER_);
 
-  m_pCI->E.p_Op->vDumpShort(__FUNCTION__,__LINE__,">> root"_Stz,iRoot);
+  //m_pCI->E.p_Op->vDumpShort(__FUNCTION__,__LINE__,">> root"_Stz,iRoot);
 
   Card_Project* p_project_early;
 
@@ -139,7 +139,7 @@ void XF_Optimise_Early_projection::vEarly_arc(i8 iRoot)
   vEarly_op(iRoot, 0, __FUNCTION__, __LINE__);
 
   m_pCI->E.p_Op->vRestate_emit(m_pCI);
-  m_pCI->E.p_Op->vDumpShort(__FUNCTION__,__LINE__,"<< root"_Stz,iRoot);
+  //m_pCI->E.p_Op->vDumpShort(__FUNCTION__,__LINE__,"<< root"_Stz,iRoot);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -165,7 +165,7 @@ void XF_Optimise_Early_projection::vEarly_op(i8 iRoot, i8 iDepth,
   m_pCI->vPushEach();
   if (!m_pCI->bEachOp_reverse()) {
     m_pCI->vPopEach();
-    m_pCI->E.p_Op->vDumpShort(__FUNCTION__,__LINE__,"<< backstep"_Stz,iRoot,iDepth);
+    //m_pCI->E.p_Op->vDumpShort(__FUNCTION__,__LINE__,"<< backstep"_Stz,iRoot,iDepth);
     m_pCI->vEarlyTip(m_pCI->E.p_Op);
     return;
   }
@@ -174,32 +174,36 @@ void XF_Optimise_Early_projection::vEarly_op(i8 iRoot, i8 iDepth,
   if (bIsTip()) {
     m_pCI->vSnapIf_arriving();
     m_pCI->vPopEach();
-    m_pCI->E.p_Op->vDumpShort(__FUNCTION__,__LINE__,"<< backstep"_Stz,iRoot,iDepth);
+    //m_pCI->E.p_Op->vDumpShort(__FUNCTION__,__LINE__,"<< backstep"_Stz,iRoot,iDepth);
     m_pCI->vEarlyTip(m_pCI->E.p_Op);
     return;
   }
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+  
   if (m_pCI->E.p_Op->bIsCard(CK_o_PROJECT)) {
     if (m_pCI->E.p_project->pSymbol()->Y_bHas(P_Early)) {
       RASSERT(m_pCI->E.p_project->pSub_needed());
 
-      //m_pCI->PRINTBOARD_dbg();
       vEarly_op(iRoot, iDepth + 1, __FUNCTION__, __LINE__);
+
       m_pCI->E.p_needed = m_pCI->E.p_project->pSub_needed();
 
       m_pCI->E.p_emit = m_pCI->E.p_project->pCraft_emit_early(m_pCI);
       m_pCI->E.p_project->vAppendChild(m_pCI->E.p_emit);
       m_pCI->vSnapIf_arriving(false);
+      m_pCI->vPopEach();
+      if (! m_pCI->pEarlyTip())
+        m_pCI->vEarlyTip(m_pCI->E.p_Op);
+      return;
     }
-    m_pCI->E.p_Op->vDumpShort(__FUNCTION__,__LINE__,"<< backstep"_Stz,iRoot,iDepth);
+    //m_pCI->E.p_Op->vDumpShort(__FUNCTION__,__LINE__,"<< backstep"_Stz,iRoot,iDepth);
     m_pCI->vPopEach();
-    if (! m_pCI->pEarlyTip())
-      m_pCI->vEarlyTip(m_pCI->E.p_Op);;
+    m_pCI->vEarlyTip(m_pCI->E.p_Op);
     return;
   }
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
   p_needed_save = m_pCI->Early.m_pNeeded_later->pClone();
 
@@ -219,18 +223,11 @@ void XF_Optimise_Early_projection::vEarly_op(i8 iRoot, i8 iDepth,
     case CK_o_INDEXJOIN:
       m_pCI->E.p_indexJoin->vEarlyProject_add_transients(m_pCI);
 
-      if (m_pCI->bDebugQuery("OptQ3"_Stz)) {
-        m_pCI->E.p_Op->vDumpShort(__FUNCTION__,__LINE__, "pre-reposition"_Stz,iRoot,iDepth);
-        vDebugPoint();
-      }
-
       m_pCI->E.p_Op->vDecision(m_pCI,XD_ADD_EARLY_PROJECT,__FUNCTION__ ,__LINE__);
       p_project_early = m_pCI->Early.m_pNeeded_later->pNew_project_early(m_pCI);
       p_project_early->pSymbol()->Y_vSet(P_Line,__LINE__);
       m_pCI->vInsertBefore(p_project_early, m_pCI->E.p_Op);
       m_pCI->vRepositionOp();
-      if (m_pCI->bIsQuery("OptQ3"_Stz))
-        m_pCI->E.p_Op->vDumpShort(__FUNCTION__,__LINE__,"post-reposition"_Stz,iRoot,iDepth);
       break;
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -267,12 +264,13 @@ void XF_Optimise_Early_projection::vEarly_op(i8 iRoot, i8 iDepth,
   }
 
   vEarly_op(iRoot, iDepth + 1, __FUNCTION__, __LINE__);
+
   m_pCI->E.p_Op->vRestate_emit(m_pCI);
   delete m_pCI->Early.m_pNeeded_later;
   m_pCI->Early.m_pNeeded_later = p_needed_save;
 
   m_pCI->vPopEach();
-  m_pCI->E.p_Op->vDumpShort(__FUNCTION__,__LINE__,"<< backstep"_Stz,iRoot,iDepth);
+  //m_pCI->E.p_Op->vDumpShort(__FUNCTION__,__LINE__,"<< backstep"_Stz,iRoot,iDepth);
 }
 
 /*----------------------------------------------------------------------------*/
