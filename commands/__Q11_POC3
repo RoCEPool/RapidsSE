@@ -2,17 +2,97 @@
 /* __Q11                                                                      */
 /*============================================================================*/
 
-_partsupp
-_supplier
-_nation
+/keepCodeFile
+/optimise_passthru
+pipeline Query11
+begin
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
 
-// indexes
+  stage S01 on all partitions :
+    scan nation
+    | filter " type BOOLEAN N_NAME 'GERMANY'  ==  "
+    | project " type INTEGER ( 19 ) as N_NATIONKEY N_NATIONKEY"
+    | combined 0
+    | next
 
-/time load partsupp "<tpch_dir>/partsupp.<suffix>" ;
+  stage S02 on all partitions :
+    indexJoin supplier IxS_NATIONKEY "bound $I1 N_NATIONKEY =="
+    | project " type INTEGER ( 19 ) as S_SUPPKEY S_SUPPKEY"
+    | combined 0
+    | next broadcast
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+ stage S03 on all partitions :
+    indexJoin partsupp IxPS_SUPPKEY "bound $I1 S_SUPPKEY =="
+    | aggreg " type DECIMAL ( 19  2 ) )  PS_SUPPLYCOST PS_AVAILQTY casttype DECIMAL ( 19  2 ) CAST  *  sum  "
+    | combined 0
+    | next
 
-__Q11_run
+  stage S04 on all nodes :
+    aggreg " type DECIMAL ( 19  2 ) as INNERRESULT )  $1 sum  "
+    | combined 0
+    | next
+
+  stage S05 on origin :
+    aggreg " type DECIMAL ( 19  2 ) as INNERRESULT )  $1 sum   0.000001  *  "
+    | combined 0
+    | next broadcast
+
+  stage S06 on all partitions :
+    indexJoin nation IxN_NATIONKEY "bound $I1"
+    | filter " type BOOLEAN N_NAME 'GERMANY'  ==  "
+    | project " type INTEGER ( 19 ) as N_NATIONKEY N_NATIONKEY ,
+                type DECIMAL ( 19  2 ) as INNERRESULT INNERRESULT"
+    | combined 0
+    | next
+
+  stage S07 on all partitions :
+    indexJoin supplier IxS_NATIONKEY "bound $I1 N_NATIONKEY =="
+    | project " type INTEGER ( 19 ) as S_SUPPKEY S_SUPPKEY ,
+                type DECIMAL ( 19  2 ) as INNERRESULT INNERRESULT"
+    | combined 0
+    | next broadcast
+
+  stage S08 on all partitions :
+    indexJoin partsupp IxPS_SUPPKEY "bound $I1 S_SUPPKEY =="
+    | gbyAgg " GroupBy    type INTEGER ( 19 ) PS_PARTKEY
+               aggregates
+                          type INTEGER ( 19 ) as PS_PARTKEY $K1 ,
+                          type DECIMAL ( 19  2 ) as VALUE ) PS_SUPPLYCOST PS_AVAILQTY casttype DECIMAL ( 19  2 ) CAST  *  sum  ,
+                          type DECIMAL ( 19  2 ) as INNERRESULT INNERRESULT"
+    | combined 0
+    | next
+
+  stage S09 on all nodes :
+    gbyAgg " GroupBy    type INTEGER ( 19 ) PS_PARTKEY
+             aggregates type INTEGER ( 19 ) as PS_PARTKEY $K1 ,
+                        type DECIMAL ( 19  2 ) as VALUE ) VALUE sum  , type DECIMAL ( 19  2 ) as INNERRESULT INNERRESULT"
+    | combined 0
+    | next
+
+  stage S10 on origin :
+    gbyAgg " GroupBy    type INTEGER ( 19 ) PS_PARTKEY
+             aggregates type INTEGER ( 19 ) as PS_PARTKEY $K1 ,
+                        type DECIMAL ( 19  2 ) as VALUE ) VALUE sum  ,
+                        type DECIMAL ( 19  2 ) as INNERRESULT INNERRESULT"
+    | combined 0
+    | next
+
+  stage S11 on origin :
+    filter " type BOOLEAN  value INNERRESULT  >  "
+    | project " type INTEGER ( 19 ) as PS_PARTKEY PS_PARTKEY ,
+                type DECIMAL ( 19  2 ) as VALUE VALUE"
+    | sort " type DECIMAL ( 19  2 ) VALUE ASC  "
+    | combined 0
+    | next
+
+  stage S12 on origin :
+    output
+    | sink
+    | first
+end ;
 
 /*============================================================================*/
 /* end                                                                        */
