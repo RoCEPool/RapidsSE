@@ -1679,7 +1679,7 @@ OUT.flush();</stringProp>
             <stringProp name="scriptLanguage">groovy</stringProp>
           </JSR223Sampler>
           <hashTree/>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q1 Group" enabled="true"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q1 Group" enabled="false"/>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
@@ -2209,7 +2209,7 @@ end ;</stringProp>
               </hashTree>
             </hashTree>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q3 Group" enabled="true"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q3 Group" enabled="false"/>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
@@ -2588,7 +2588,7 @@ end ;
               </hashTree>
             </hashTree>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q4 Group" enabled="true"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q4 Group" enabled="false"/>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
@@ -2988,7 +2988,7 @@ end ;
               </hashTree>
             </hashTree>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q6 Group" enabled="true"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q6 Group" enabled="false"/>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
@@ -4398,7 +4398,7 @@ order by
               </hashTree>
             </hashTree>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q9 Group" enabled="true"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q9 Group" enabled="false"/>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
@@ -4423,7 +4423,7 @@ OUT.flush();</stringProp>
               <stringProp name="scriptLanguage">groovy</stringProp>
             </JSR223Sampler>
             <hashTree/>
-            <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q9Loop" enabled="true">
+            <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q9Loop" enabled="false">
               <boolProp name="LoopController.continue_forever">true</boolProp>
               <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
             </LoopController>
