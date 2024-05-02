@@ -50,6 +50,16 @@ void Step::vAddSteps_MetaDataTable(void)
 
   vAddStep("MetaDataTable[].insertTables"_Stz,  &Step::vMetaDataTableTablesInsert);
   vAddStep("MetaDataTable[].deleteTables"_Stz,  &Step::vMetaDataTableTablesDelete);
+  vAddStep("MetaDataTable[].insertCatalog"_Stz,  &Step::vMetaDataTableCatalogInsert);
+  vAddStep("MetaDataTable[].deleteCatalog"_Stz,  &Step::vMetaDataTableCatalogDelete);
+  vAddStep("MetaDataTable[].insertCluster"_Stz,  &Step::vMetaDataTableClusterInsert);
+  vAddStep("MetaDataTable[].insertColumns"_Stz,  &Step::vMetaDataTableColumnsInsert);
+  vAddStep("MetaDataTable[].insertIndexColumns"_Stz,  &Step::vMetaDataTableIndexColumnsInsert);
+  vAddStep("MetaDataTable[].insertIndexes"_Stz,  &Step::vMetaDataTableIndexInsert);
+  vAddStep("MetaDataTable[].insertNodes"_Stz,  &Step::vMetaDataTableNodesInsert);
+  vAddStep("MetaDataTable[].insertQueries"_Stz,  &Step::vMetaDataTableQueriesInsert);
+  vAddStep("MetaDataTable[].insertSessions"_Stz,  &Step::vMetaDataTableSessionsInsert);
+  vAddStep("MetaDataTable[].insertSchema"_Stz,  &Step::vMetaDataTableSchemaInsert);
   vAddStep("MetaDataTable[].setAM"_Stz,  &Step::vMetaDataTableSetAM);
 }
 
@@ -61,50 +71,27 @@ void Step::vMetaDataTableCatalog(void)
   ENTRY();
 
   Table* pTable = _pTable(*m_pLogicUnit->m_xpTable);
-  StreamDef* pStreamDef = pTable->pStreamDef();
 
-  Pds* pPdsRowBuffer = new Pds(pStreamDef, false, BT_DATA);
+  TablePtn* pTablePtn = pTable->pTablePtn(0);
 
-  Word* pCatalog = m_oDicStack.pFindWord("catalogs"_Stz);
-  Dic* pCatalogDic = _pDic(pCatalog->pObject());
+  BufferId oRootBufferId = pTablePtn->oRootBufferId();
+  Pds* pRootPds = _pPds(AM::pHashMap()->pValueAt(oRootBufferId.m_pvAsAddress));
 
-  // Get last word in dic catalog
-  Word* pCatalogFolderWord = pCatalogDic->pLastWord();
+  PdsCursor* pCursor = new PdsCursor(pRootPds);
 
-  // iterate dic catalog
-  while(pCatalogFolderWord) {
+  while(! pCursor->bIsCurrNull()) {
+    SkipListBlock* pSLBlock = pCursor->m_pCurrentBlock;
 
-    // get catalog name
-    s256 sCatalogNm(pCatalogFolderWord->szWordNm());
+    BufferId oBufferId = pTablePtn->oExtractBufferId((Object*)pSLBlock->aItem());
 
-    Row* pRow = pPdsRowBuffer->pAllotRow(C_VARGS_BEGIN,
-                                         sCatalogNm.szStz(),
-                                         C_VARGS_END);
-
-    if(! pRow) {
-      // Pipe out this full buffer
-      BufferId oBufferId = pPdsRowBuffer->oGetBufferId().m_pvAsAddress;
-      AM::pHashMap()->vDropKeyLock(oBufferId.m_pvAsAddress);
-      Operand* pOperand = _pOperand((Object*)oBufferId.m_pvAsAddress);
-      AM::OP::vPipeToNextOp(m_pOp,pOperand,this);
-
-      // create a new buffer and continue adding rows to it
-      pPdsRowBuffer = new Pds(pStreamDef, false, BT_DATA);
-      break;
-    }
-
-//    vTrace("%s\n"_Stz, sCatalogNm.szStz());
-
-    pCatalogFolderWord = pCatalogFolderWord->pPrevWord();
-  }
-
-  if(pPdsRowBuffer->nItems() > 0) {
-    BufferId oBufferId = pPdsRowBuffer->oGetBufferId().m_pvAsAddress;
-    AM::pHashMap()->vDropKeyLock(oBufferId.m_pvAsAddress);
     Operand* pOperand = _pOperand((Object*)oBufferId.m_pvAsAddress);
+
     AM::OP::vPipeToNextOp(m_pOp,pOperand,this);
-  } else
-    delete(pPdsRowBuffer);
+
+    pCursor->vNext();
+  }
+  AM::pHashMap()->vDropKeyLock(oRootBufferId.m_pvAsAddress);
+  delete pCursor;
 
   EXIT();
 }
@@ -598,84 +585,6 @@ void Step::vMetaDataTableTables(void)
   ENTRY();
 
   Table* pTable = _pTable(*m_pLogicUnit->m_xpTable);
-  /*
-  StreamDef* pStreamDef = pTable->pStreamDef();
-
-  Pds* pPdsRowBuffer = new Pds(pStreamDef, false, BT_DATA);
-
-  // get current folder
-  i8 iDepth =  m_oDicStack.nItems();
-  Object* pPtrDic =  m_oDicStack.pPick(iDepth - 1);
-
-  // Get table dict
-  Dic* pDic = _pDic(pPtrDic);
-  Word* pTableFolderWord = pDic->pLastWord();
-
-  // get the schema name
-  i8 i = 2;
-  while( pDic->eDicKind() != DK_SCHEMA) {
-    pPtrDic = m_oDicStack.pPick(iDepth - i);
-    pDic = _pDic(pPtrDic);
-    i++;
-  }
-
-  s256 sSchemaNm(pDic->szDicNm());
-
-  // get the catalog name
-  while( pDic->eDicKind() != DK_CATALOG) {
-    pPtrDic = m_oDicStack.pPick(iDepth - i);
-    pDic = _pDic(pPtrDic);
-    i++;
-  }
-
-  s256 sCatalogNm(pDic->szDicNm());
-
-  // iterate dic table
-
-  while(pTableFolderWord) {
-    // get table name
-    s256 sTableNm(pTableFolderWord->szWordNm());
-
-    // find tableNm folder in current dic
-    Word *pWordTable = m_oDicStack.pFindWord(sTableNm);
-    Dic *pDicTable = _pDic(pWordTable->pObject());
-
-    // find actual table in this table dic
-    Word *pWord = pDicTable->pFindWord(sTableNm);
-    Table *pTableCur = _pTable(pWord->pObject());
-
-    if( ! pTableCur->bIsUserCreated()) {
-      pTableFolderWord = pTableFolderWord->pPrevWord();
-      continue;
-    }
-
-    Row* pRow = pPdsRowBuffer->pAllotRow(C_VARGS_BEGIN,
-                                         sCatalogNm.szStz(),
-                                         sSchemaNm.szStz(),
-                                         pTableCur->szTableNm(),
-                                         C_VARGS_END);
-    if(! pRow) {
-      // Pipe out this full buffer
-      BufferId oBufferId = pPdsRowBuffer->oGetBufferId().m_pvAsAddress;
-      AM::pHashMap()->vDropKeyLock(oBufferId.m_pvAsAddress);
-      Operand* pOperand = _pOperand((Object*)oBufferId.m_pvAsAddress);
-      AM::OP::vPipeToNextOp(m_pOp,pOperand,this);
-
-      // create a new buffer and continue adding rows to it
-      pPdsRowBuffer = new Pds(pStreamDef, false, BT_DATA);
-      break;
-    }
-    pTableFolderWord = pTableFolderWord->pPrevWord();
-  }
-
-  if(pPdsRowBuffer->nItems() > 0) {
-    BufferId oBufferId = pPdsRowBuffer->oGetBufferId().m_pvAsAddress;
-    AM::pHashMap()->vDropKeyLock(oBufferId.m_pvAsAddress);
-    Operand* pOperand = _pOperand((Object*)oBufferId.m_pvAsAddress);
-    AM::OP::vPipeToNextOp(m_pOp,pOperand,this);
-  } else
-    delete(pPdsRowBuffer);
-*/
 
   TablePtn* pTablePtn = pTable->pTablePtn(0);
 
@@ -808,6 +717,276 @@ void Step::vMetaDataTableTablesDelete(void)
       Stz* szRowTableNm = pRow->szColVal_ofs(2);
 
       if(szRowTableNm->bSame(szTableNm)) {
+        i8* pKey = (i8*)pRowCursor->pCurrKey();
+
+        bool bResult = pPdsRowBuffer->bDelete(pKey);
+        ASSERT(bResult);
+        UNUSED(bResult);
+
+        delete pRowCursor;
+        delete pCursor;
+
+        AM::pHashMap()->vDropKeyLock(pPdsRowBuffer->oGetBufferId().m_pvAsAddress);
+        AM::pHashMap()->vDropKeyLock(oRootBufferId.m_pvAsAddress);
+        EXIT();
+        return;
+      }
+      pRowCursor->vNext();
+    }
+    delete pRowCursor;
+    AM::pHashMap()->vDropKeyLock(pPdsRowBuffer->oGetBufferId().m_pvAsAddress);
+    pCursor->vNext();
+  }
+  delete pCursor;
+  AM::pHashMap()->vDropKeyLock(oRootBufferId.m_pvAsAddress);
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* MetaDataTable[].insertCatalog --                                           */
+/*----------------------------------------------------------------------------*/
+void Step::vMetaDataTableCatalogInsert(void)
+{
+  ENTRY();
+
+  typedef struct {
+    i8 iKey;
+    BufferId oBufferId;
+  } PdsBufferIdItem;
+
+  s256 szCatalogNm;
+  m_pDataStack->vPopStr(szCatalogNm,__func__);
+
+  Table* pTable = AM::pMetaDataTableCatalog();
+  if(!pTable) {
+    EXIT();
+    return;
+  }
+  StreamDef* pStreamDef = pTable->pStreamDef();
+  TablePtn* pTablePtn = pTable->pTablePtn(0);
+  Pds* pPdsRootBuffer = _pPds(
+      AM::pHashMap()->pValueAt(
+          pTablePtn->oRootBufferId().m_pvAsAddress, true
+      ));
+
+  Pds* pPdsRowBuffer = nullptr;
+  bool bAppend = false;
+  if(pPdsRootBuffer->nItems() == 0) {
+    pPdsRowBuffer = new Pds(pStreamDef, false, BT_DATA);
+    bAppend = true;
+  } else {
+    i8 iSearchKey = C_INT_MAX;
+    SkipListBlock* pHead = pPdsRootBuffer->pFindLessThan((void*) &iSearchKey);
+    if(pHead != nullptr) {
+      // If the block is not null, extract the keys and values
+      PdsBufferIdItem* pBufferIdStruct = (PdsBufferIdItem*) pHead->aItem();
+
+      HashMapEntry* pEntry = AM::pHashMap()->pEntryAt(pBufferIdStruct->oBufferId.m_pvAsAddress, true);
+
+      pPdsRowBuffer = _pPds(pEntry->m_pValObject);
+    } else {
+      pPdsRowBuffer = new Pds(pStreamDef, false, BT_DATA);
+      bAppend = true;
+    }
+  }
+
+  Row* pRow = pPdsRowBuffer->pAllotRow(C_VARGS_BEGIN,
+                                       szCatalogNm.szStz(),
+                                       C_VARGS_END);
+
+  if(!pRow) {
+    ASSERT(0);
+  }
+
+  if(bAppend) {
+    i8 nRows = 0;
+    pTablePtn->vAppendBuffer(pPdsRowBuffer, nRows);
+  } else {
+    AM::pHashMap()->vDropKeyLock(pPdsRowBuffer->oGetBufferId().m_pvAsAddress);
+  }
+
+  AM::pHashMap()->vDropKeyLock(pPdsRootBuffer->oGetBufferId().m_pvAsAddress);
+
+  EXIT();
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* MetaDataTable[].insertColumns --                                           */
+/*----------------------------------------------------------------------------*/
+void Step::vMetaDataTableColumnsInsert(void)
+{
+  ENTRY();
+
+  typedef struct {
+    i8 iKey;
+    BufferId oBufferId;
+  } PdsBufferIdItem;
+
+  s256 szCatalogNm;
+  m_pDataStack->vPopStr(szCatalogNm,__func__);
+
+  Table* pTable = AM::pMetaDataTableCatalog();
+  if(!pTable) {
+    EXIT();
+    return;
+  }
+  StreamDef* pStreamDef = pTable->pStreamDef();
+  TablePtn* pTablePtn = pTable->pTablePtn(0);
+  Pds* pPdsRootBuffer = _pPds(
+      AM::pHashMap()->pValueAt(
+          pTablePtn->oRootBufferId().m_pvAsAddress, true
+      ));
+
+  Pds* pPdsRowBuffer = nullptr;
+  bool bAppend = false;
+  if(pPdsRootBuffer->nItems() == 0) {
+    pPdsRowBuffer = new Pds(pStreamDef, false, BT_DATA);
+    bAppend = true;
+  } else {
+    i8 iSearchKey = C_INT_MAX;
+    SkipListBlock* pHead = pPdsRootBuffer->pFindLessThan((void*) &iSearchKey);
+    if(pHead != nullptr) {
+      // If the block is not null, extract the keys and values
+      PdsBufferIdItem* pBufferIdStruct = (PdsBufferIdItem*) pHead->aItem();
+
+      HashMapEntry* pEntry = AM::pHashMap()->pEntryAt(pBufferIdStruct->oBufferId.m_pvAsAddress, true);
+
+      pPdsRowBuffer = _pPds(pEntry->m_pValObject);
+    } else {
+      pPdsRowBuffer = new Pds(pStreamDef, false, BT_DATA);
+      bAppend = true;
+    }
+  }
+
+  Row* pRow = pPdsRowBuffer->pAllotRow(C_VARGS_BEGIN,
+                                       szCatalogNm.szStz(),
+                                       C_VARGS_END);
+
+  if(!pRow) {
+    ASSERT(0);
+  }
+
+  if(bAppend) {
+    i8 nRows = 0;
+    pTablePtn->vAppendBuffer(pPdsRowBuffer, nRows);
+  } else {
+    AM::pHashMap()->vDropKeyLock(pPdsRowBuffer->oGetBufferId().m_pvAsAddress);
+  }
+
+  AM::pHashMap()->vDropKeyLock(pPdsRootBuffer->oGetBufferId().m_pvAsAddress);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* MetaDataTable[].insertSchema --                                            */
+/*----------------------------------------------------------------------------*/
+void Step::vMetaDataTableSchemaInsert(void)
+{
+  ENTRY();
+
+  typedef struct {
+    i8 iKey;
+    BufferId oBufferId;
+  } PdsBufferIdItem;
+
+  s256 szCatalogNm;
+  m_pDataStack->vPopStr(szCatalogNm,__func__);
+
+  s256 szSchemaNm;
+  m_pDataStack->vPopStr(szSchemaNm,__func__);
+
+  Table* pTable = AM::pMetaDataTableSchema();
+  if(!pTable) {
+    EXIT();
+    return;
+  }
+  StreamDef* pStreamDef = pTable->pStreamDef();
+  TablePtn* pTablePtn = pTable->pTablePtn(0);
+  Pds* pPdsRootBuffer = _pPds(
+      AM::pHashMap()->pValueAt(
+          pTablePtn->oRootBufferId().m_pvAsAddress, true
+      ));
+
+  Pds* pPdsRowBuffer = nullptr;
+  bool bAppend = false;
+  if(pPdsRootBuffer->nItems() == 0) {
+    pPdsRowBuffer = new Pds(pStreamDef, false, BT_DATA);
+    bAppend = true;
+  } else {
+    i8 iSearchKey = C_INT_MAX;
+    SkipListBlock* pHead = pPdsRootBuffer->pFindLessThan((void*) &iSearchKey);
+    if(pHead != nullptr) {
+      // If the block is not null, extract the keys and values
+      PdsBufferIdItem* pBufferIdStruct = (PdsBufferIdItem*) pHead->aItem();
+
+      HashMapEntry* pEntry = AM::pHashMap()->pEntryAt(pBufferIdStruct->oBufferId.m_pvAsAddress, true);
+
+      pPdsRowBuffer = _pPds(pEntry->m_pValObject);
+    } else {
+      pPdsRowBuffer = new Pds(pStreamDef, false, BT_DATA);
+      bAppend = true;
+    }
+  }
+
+  Row* pRow = pPdsRowBuffer->pAllotRow(C_VARGS_BEGIN,
+                                       szCatalogNm.szStz(),
+                                       szSchemaNm.szStz(),
+                                       C_VARGS_END);
+
+  if(!pRow) {
+    ASSERT(0);
+  }
+
+  if(bAppend) {
+    i8 nRows = 0;
+    pTablePtn->vAppendBuffer(pPdsRowBuffer, nRows);
+  } else {
+    AM::pHashMap()->vDropKeyLock(pPdsRowBuffer->oGetBufferId().m_pvAsAddress);
+  }
+
+  AM::pHashMap()->vDropKeyLock(pPdsRootBuffer->oGetBufferId().m_pvAsAddress);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* MetaDataTable[].deleteCatalog --                                           */
+/*----------------------------------------------------------------------------*/
+void Step::vMetaDataTableCatalogDelete(void)
+{
+  ENTRY();
+
+  s256 szCatalogNm;
+  m_pDataStack->vPopStr(szCatalogNm,__func__);
+
+  Table* pTable = AM::pMetaDataTableOfTables();
+  if(!pTable) {
+    EXIT();
+    return;
+  }
+  TablePtn* pTablePtn = pTable->pTablePtn(0);
+
+  BufferId oRootBufferId = pTablePtn->oRootBufferId();
+  Pds* pRootPds = _pPds(AM::pHashMap()->pValueAt(oRootBufferId.m_pvAsAddress));
+
+  PdsCursor* pCursor = new PdsCursor(pRootPds);
+
+  while(! pCursor->bIsCurrNull()) {
+    SkipListBlock* pSLBlock = pCursor->m_pCurrentBlock;
+
+    BufferId oBufferId = pTablePtn->oExtractBufferId((Object*)pSLBlock->aItem());
+    Pds* pPdsRowBuffer = _pPds(AM::pHashMap()->pValueAt(oBufferId.m_pvAsAddress, true));
+
+    PdsCursor* pRowCursor = new PdsCursor(pPdsRowBuffer);
+
+    while(! pRowCursor->bIsCurrNull()) {
+      Row* pRow = pRowCursor->pCurrRow();
+
+      Stz* szRowTableNm = pRow->szColVal_ofs(0);
+
+      if(szRowTableNm->bSame(szCatalogNm)) {
         i8* pKey = (i8*)pRowCursor->pCurrKey();
 
         bool bResult = pPdsRowBuffer->bDelete(pKey);

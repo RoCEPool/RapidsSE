@@ -135,6 +135,8 @@
   Path[].popCatalogFolder
 
   sCatalogNm folder::remove
+
+  sCatalogNm MetaDataTable[].deleteCatalog
 ;
 
 /*============================================================================*/

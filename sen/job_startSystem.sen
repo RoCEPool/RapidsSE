@@ -115,6 +115,19 @@
   start::md_schema
   start::md_sessions
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Metadata table inserts
+
+  // Add the catalog to the metadata Catalog table
+  "rapids" MetaDataTable[].insertCatalog
+
+  // Add the schema to the metadata Schema table
+  "rapids" "public" MetaDataTable[].insertSchema
+
+
+
+
+
   // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   //
   // This point onwards the SE execution model has been fully booted

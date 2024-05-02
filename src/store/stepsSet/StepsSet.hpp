@@ -1195,6 +1195,16 @@ void vJobIdLastJobIdFetch(void);
   void vMetaDataTableTables(void);
   void vMetaDataTableTablesInsert(void);
   void vMetaDataTableTablesDelete(void);
+  void vMetaDataTableCatalogInsert(void);
+  void vMetaDataTableCatalogDelete(void);
+  void vMetaDataTableClusterInsert(void);
+  void vMetaDataTableColumnsInsert(void);
+  void vMetaDataTableIndexColumnsInsert(void);
+  void vMetaDataTableIndexInsert(void);
+  void vMetaDataTableNodesInsert(void);
+  void vMetaDataTableQueriesInsert(void);
+  void vMetaDataTableSessionsInsert(void);
+  void vMetaDataTableSchemaInsert(void);
   void vMetaDataTableSetAM(void);
 
   // ErrorMarker[]
