@@ -151,6 +151,7 @@ void Card_Where::vSmooth(CardIter* pCI)
 
   RASSERT(pCI->E.p_Op == pCI->E.p_where);
   pCI->E.p_where->vRestate_emit(pCI);
+  pCI->vSnapIf_arriving();
 }
 
 /*----------------------------------------------------------------------------*/

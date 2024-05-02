@@ -73,6 +73,7 @@ void XF_Prolog_Analyse_emit::vXF_Analyse(void)
       continue;
 
     m_pCI->E.p_Op->vRestate_emit(m_pCI);
+    m_pCI->vSnapIf_arriving();
 
   } // while (m_pCI->bEachOp())
 

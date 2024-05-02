@@ -327,6 +327,7 @@ void XF_FLATTEN::vSmooth(CardIter* pCI)
     if (pCI->Carry.Table.m_bSeen) {
       pCI->E.p_table = pCI->E.p_from->pSub_table();
       pCI->E.p_Op->vRestate_emit(pCI);
+      pCI->vSnapIf_arriving();
       //pCI->PRINTBOARD_dbg();
     }
   }

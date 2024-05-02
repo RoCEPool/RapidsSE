@@ -139,6 +139,8 @@ void XF_Optimise_Early_projection::vEarly_arc(i8 iRoot)
   vEarly_op(iRoot, 0, __FUNCTION__, __LINE__);
 
   m_pCI->E.p_Op->vRestate_emit(m_pCI);
+  m_pCI->vSnapIf_arriving();
+
   //m_pCI->E.p_Op->vDumpShort(__FUNCTION__,__LINE__,"<< root"_Stz,iRoot);
 }
 
@@ -266,6 +268,8 @@ void XF_Optimise_Early_projection::vEarly_op(i8 iRoot, i8 iDepth,
   vEarly_op(iRoot, iDepth + 1, __FUNCTION__, __LINE__);
 
   m_pCI->E.p_Op->vRestate_emit(m_pCI);
+  m_pCI->vSnapIf_arriving();
+
   delete m_pCI->Early.m_pNeeded_later;
   m_pCI->Early.m_pNeeded_later = p_needed_save;
 
