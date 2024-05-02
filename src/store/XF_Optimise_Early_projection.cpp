@@ -105,8 +105,7 @@ bool XF_Optimise_Early_projection::bNextRoot(void)
   bool bFoundNextRoot = false;
 
   while (m_pCI->bEachOp_reverse()) {
-    if (m_pCI->E.p_Op->bIsEarlyRoot()) {
-  //if (bIsRoot()) {
+    if (bIsRoot()) {
       bFoundNextRoot = true;
       break;
     }

@@ -447,9 +447,9 @@ void Card::vDump(const char* azFunc, Stz* szTitle, i8 iDepth)
 
   if (0 == iDepth) {
     if (szTitle)
-      vTrace("^^%s [%s] %p\n"_Stz,szTitle,azFunc,this);
+      vTrace("^^%s [%s] \n"_Stz,szTitle,azFunc);
     else
-      vTrace("^^Card Dump [%s] %p\n"_Stz,azFunc,this);
+      vTrace("^^Card Dump [%s]\n"_Stz,azFunc);
   }
 
   s4K sFacets;
@@ -458,8 +458,7 @@ void Card::vDump(const char* azFunc, Stz* szTitle, i8 iDepth)
   s4K sProperties;
   m_xSymbol.Y_vTo_String(sProperties);
 
-  vTrace("  %p %18s %s%s : %s%s <%s> {%s} (%s:%lld.%lld)\n"_Stz
-        , this
+  vTrace("  %18s %s%s : %s%s <%s> {%s} (%s:%lld.%lld)\n"_Stz
         , aCK_short[m_eCard]
         , Stz::szTab(iDepth)
         , md_Coord[0] ? md_Coord : (char*)aCK[m_eCard]
@@ -515,13 +514,12 @@ void Card::vDumpShort(const char* azFunc, i8 iLine,
   if (! AM::JOB::bHasTag(C_OPTIMISER_TRACE))
     return;
 
-  vTrace("--%20s [%s %lld %lld %lld] %p %s #%lld %s"_Stz,
+  vTrace("--%20s [%s %lld %lld %lld] %s #%lld %s"_Stz,
          szTitle,
          azFunc,
          iLine,
          iArg1,
          iArg2,
-         this,
          aCK_short[m_eCard],
          m_iSequence,
          md_Coord);
@@ -2611,10 +2609,16 @@ void Card::vFormatHeader(String* pString)
     default           : cLevel = '?'; break;
   }
 
+#ifdef Z_NO_ADDRESSES
+  pString->vCatSprint("==%02lld %c--------------"_Stz,
+                      m_i_Child,
+                      cLevel);
+#else
   pString->vCatSprint("==%02lld %c--%10p--"_Stz,
                       m_i_Child,
                       cLevel,
                       ((char *) this) - (char *) AM::SYSARGS::aRegionAddr());
+#endif
 }
 
 /*----------------------------------------------------------------------------*/

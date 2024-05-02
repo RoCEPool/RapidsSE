@@ -35,10 +35,7 @@ namespace STORE
     bool bIsTip(void);
 
   private:
-
-
     Footer* aFooter(void);
-
   };
 
   XF_Optimise_Early_projection* _pXF_Optimise_Early_projection(void* aAddr);
