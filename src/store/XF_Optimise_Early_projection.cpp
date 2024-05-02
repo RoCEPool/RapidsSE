@@ -125,14 +125,6 @@ void XF_Optimise_Early_projection::vNeeded_root(i8 iRoot)
 
   Card_Project* p_project_early;
 
-//  m_pCI->E.p_emit = m_pCI->E.p_Op->pSub_emit();
-//  m_pCI->Early.m_pNeeded_later = m_pCI->E.p_emit->pCraft_needed_root(m_pCI);
-//  if (! m_pCI->Early.m_pNeeded_later) {
-//    m_pCI->E.p_Op->vDumpShort(__FUNCTION__,__LINE__,"<< root"_Stz,iRoot);
-//    m_pCI->vEarlyTip(m_pCI->E.p_Op);;
-//    return;
-//  }
-
   if (m_pCI->E.p_Op->bIsCard(CK_o_PROJECT)) {
     m_pCI->E.p_Op->vAppendChild(m_pCI->Early.m_pNeeded_later->pDupCardRecursive());
   }
@@ -169,6 +161,7 @@ void XF_Optimise_Early_projection::vNeeded_arc(i8 iRoot, i8 iDepth,
   Card_Needed*  p_needed_save;
   Card_Project* p_project_early;
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   m_pCI->vPushEach();
   if (!m_pCI->bEachOp_reverse()) {
     m_pCI->vPopEach();
@@ -177,6 +170,7 @@ void XF_Optimise_Early_projection::vNeeded_arc(i8 iRoot, i8 iDepth,
     return;
   }
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   if (bIsTip()) {
     m_pCI->vSnapIf_arriving();
     m_pCI->vPopEach();
@@ -185,21 +179,7 @@ void XF_Optimise_Early_projection::vNeeded_arc(i8 iRoot, i8 iDepth,
     return;
   }
 
-  if (m_pCI->pPeekPrev()->bIsCard(CK_o_PROJECT)) {
-
-    if (m_pCI->bDebugQuery("OptQ3"_Stz)) {
-      if (m_pCI->pPeekPrev()->pSymbol()->Y_bHas(P_Early))
-        m_pCI->PRINTBOARD_dbg();
-      RASSERT(!m_pCI->pPeekPrev()->pSymbol()->Y_bHas(P_Early));
-    }
-
-    m_pCI->vSnapIf_arriving();
-    m_pCI->vPopEach();
-    m_pCI->E.p_Op->vDumpShort(__FUNCTION__,__LINE__,"<< backstep"_Stz,iRoot,iDepth);
-    m_pCI->vEarlyTip(m_pCI->E.p_Op);
-    return;
-  }
-
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   if (m_pCI->E.p_Op->bIsCard(CK_o_PROJECT)) {
     if (m_pCI->E.p_project->pSymbol()->Y_bHas(P_Early)) {
       RASSERT(m_pCI->E.p_project->pSub_needed());
@@ -222,7 +202,6 @@ void XF_Optimise_Early_projection::vNeeded_arc(i8 iRoot, i8 iDepth,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   p_needed_save = m_pCI->Early.m_pNeeded_later->pClone();
-
 
   // which card did we arrive at?
   switch (m_pCI->E.e_Op) {
@@ -361,6 +340,10 @@ bool XF_Optimise_Early_projection::bIsTip(void)
 
   if (m_pCI->E.p_Op->bIsCard(CK_o_INDEXSCAN) ||
       m_pCI->E.p_Op->bIsCard(CK_o_SCAN)) {
+    return true;
+  }
+
+  if (m_pCI->pPeekPrev() && m_pCI->pPeekPrev()->bIsCard(CK_o_PROJECT)) {
     return true;
   }
 
