@@ -85,20 +85,9 @@ bool XF_Optimise_Early_projection::bOptimise(void)
 
   m_pCI->vBeginEach_tail();
 
-  i8 iRoot = 0;
-  for (;;) {
+  for (i8 iRoot = 0; bNextRoot();iRoot++) {
 
-    bool bNextRoot = false;
-    while (m_pCI->bEachOp_reverse()) {
-      if (m_pCI->E.p_Op->bIsEarlyRoot()) {
-        bNextRoot = true;
-        break;
-      }
-    }
-    if (! bNextRoot)
-      break;
-
-    vEarlyRoot(m_pCI, iRoot++);
+    vEarly_root(m_pCI, iRoot);
     DELETEIF_CARD(m_pCI->Early.m_pNeeded_later);
 
     if (m_pCI->pEarlyTip()) {
@@ -117,8 +106,28 @@ bool XF_Optimise_Early_projection::bOptimise(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Optimise_Early_projection::vBackstep(CardIter* pCI, i8 iRoot, i8 iDepth,
-                                             const char* azCaller, i8 iLine)
+bool XF_Optimise_Early_projection::bNextRoot(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_EARLY_PROJECTION, _FOOTER_);
+
+  bool bFoundNextRoot = false;
+
+  while (m_pCI->bEachOp_reverse()) {
+    if (m_pCI->E.p_Op->bIsEarlyRoot()) {
+      bFoundNextRoot = true;
+      break;
+    }
+  }
+
+  return bFoundNextRoot;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void XF_Optimise_Early_projection::vEarly_arc(CardIter* pCI, i8 iRoot, i8 iDepth,
+                                              const char* azCaller, i8 iLine)
 {
   _static_
 
@@ -170,7 +179,7 @@ void XF_Optimise_Early_projection::vBackstep(CardIter* pCI, i8 iRoot, i8 iDepth,
       RASSERT(pCI->E.p_project->pSub_needed());
 
       //pCI->PRINTBOARD_dbg();
-      vBackstep(pCI,iRoot,iDepth+1,__FUNCTION__ ,__LINE__);
+      vEarly_arc(pCI, iRoot, iDepth + 1, __FUNCTION__, __LINE__);
       pCI->E.p_needed = pCI->E.p_project->pSub_needed();
 
       pCI->E.p_emit = pCI->E.p_project->pCraft_emit_early(pCI);
@@ -252,7 +261,7 @@ void XF_Optimise_Early_projection::vBackstep(CardIter* pCI, i8 iRoot, i8 iDepth,
       NEVER_REACH
   }
 
-  vBackstep(pCI,iRoot,iDepth+1,__FUNCTION__ ,__LINE__);
+  vEarly_arc(pCI, iRoot, iDepth + 1, __FUNCTION__, __LINE__);
   pCI->E.p_Op->vRestate_emit(pCI);
   delete pCI->Early.m_pNeeded_later;
   pCI->Early.m_pNeeded_later = p_needed_save;
@@ -264,7 +273,7 @@ void XF_Optimise_Early_projection::vBackstep(CardIter* pCI, i8 iRoot, i8 iDepth,
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Optimise_Early_projection::vEarlyRoot(CardIter* pCI, i8 iRoot)
+void XF_Optimise_Early_projection::vEarly_root(CardIter* pCI, i8 iRoot)
 {
   _static_
 
@@ -317,11 +326,60 @@ void XF_Optimise_Early_projection::vEarlyRoot(CardIter* pCI, i8 iRoot)
     pCI->vRepositionOp();
   }
 
-  vBackstep(pCI,iRoot,0,__FUNCTION__ ,__LINE__);
+  vEarly_arc(pCI, iRoot, 0, __FUNCTION__, __LINE__);
 
   pCI->E.p_Op->vRestate_emit(pCI);
   pCI->E.p_Op->vDumpShort(__FUNCTION__,__LINE__,"<< root"_Stz,iRoot);
 }
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool XF_Optimise_Early_projection::bIsArc(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_EARLY_PROJECTION, _FOOTER_);
+
+  if (m_pCI->E.p_Op->bIsCard(CK_o_INDEXSCAN) ||
+      m_pCI->E.p_Op->bIsCard(CK_o_SCAN)) {
+    return false;
+  }
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool XF_Optimise_Early_projection::bIsRoot(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_EARLY_PROJECTION, _FOOTER_);
+
+  if (! m_pCI->E.p_Op->bIsEarlyRoot())
+    return false;
+
+  if (m_pCI->pPeekPrev() && m_pCI->pPeekPrev()->bIsCard(CK_o_PROJECT)) {
+    RASSERT(! m_pCI->pPeekPrev()->pSymbol()->Y_bHas(P_Early));
+    return false;
+  }
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool XF_Optimise_Early_projection::bIsTip(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_EARLY_PROJECTION, _FOOTER_);
+
+  if (m_pCI->E.p_Op->bIsCard(CK_o_INDEXSCAN) ||
+      m_pCI->E.p_Op->bIsCard(CK_o_SCAN)) {
+    return true;
+  }
+
+  return false;
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

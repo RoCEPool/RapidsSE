@@ -187,6 +187,7 @@ extern Stz* P_Invalid;
 extern Stz* P_Key;
 extern Stz* P_Level;
 extern Stz* P_Line;
+extern Stz* P_Note;
 extern Stz* P_PrmOdn;
 extern Stz* P_Payload;
 extern Stz* P_Permutation;

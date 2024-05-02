@@ -24,9 +24,16 @@ namespace STORE
 
   private:
     void vNeeded_rloop(void);
-    void vNeeded_root(i8 iRoot);
-    void vNeeded_arced(i8 iRoot);
+    bool bNextRoot(void);
 
+    void vNeeded_root(i8 iRoot);
+    void vNeeded_arc_recursive(i8 iRoot, i8 iDepth,
+                               const char* azCaller, i8 iLine);
+    void vNeeded_tip(i8 iRoot);
+
+    bool bIsArc(void);
+    bool bIsRoot(void);
+    bool bIsTip(void);
 
     Footer* aFooter(void);
 

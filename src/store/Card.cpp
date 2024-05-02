@@ -54,6 +54,7 @@ Stz* P_Invalid      = "bInvalid"_Stz;
 Stz* P_Key          = "bKey"_Stz;
 Stz* P_Level        = "eLevel"_Stz;
 Stz* P_Line         = "iLine"_Stz;
+Stz* P_Note         = "szNote"_Stz;
 Stz* P_Payload      = "bPayload"_Stz;
 Stz* P_PrmOdn       = "szPrmOdn"_Stz;
 Stz* P_Permutation  = "i_Permutation"_Stz;
@@ -2367,8 +2368,16 @@ void Card::vPrintProperties(CardIter* pCI, Ribbon* pRibbon, i8 iDepth)
   if (! m_xSymbol.bHasProperties())
     return;
 
+  if (m_xSymbol.Y_bHas(P_Note)) {
+    i8 i_Char = C_UNKNOWN;
+    vCatText(i_Char,pRibbon,m_xSymbol.Y_szGet(P_Note));
+    pRibbon->vNewLine();
+  }
+
   i8 nProperties = pSymbol()->Y_nPpy();
   for (i8 i_Property = 0; i_Property < nProperties; i_Property++) {
+    if (m_xSymbol.Y_szPpyNm(i_Property)->bSame(P_Note))
+      continue;
     i8 i_Char = C_UNKNOWN;
     vCatProperty(i_Char,pRibbon,i_Property);
     pRibbon->vNewLine();
