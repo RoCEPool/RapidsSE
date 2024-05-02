@@ -125,13 +125,13 @@ void XF_Optimise_Early_projection::vNeeded_root(i8 iRoot)
 
   Card_Project* p_project_early;
 
-  m_pCI->E.p_emit = m_pCI->E.p_Op->pSub_emit();
-  m_pCI->Early.m_pNeeded_later = m_pCI->E.p_emit->pCraft_needed_root(m_pCI);
-  if (! m_pCI->Early.m_pNeeded_later) {
-    m_pCI->E.p_Op->vDumpShort(__FUNCTION__,__LINE__,"<< root"_Stz,iRoot);
-    m_pCI->vEarlyTip(m_pCI->E.p_Op);;
-    return;
-  }
+//  m_pCI->E.p_emit = m_pCI->E.p_Op->pSub_emit();
+//  m_pCI->Early.m_pNeeded_later = m_pCI->E.p_emit->pCraft_needed_root(m_pCI);
+//  if (! m_pCI->Early.m_pNeeded_later) {
+//    m_pCI->E.p_Op->vDumpShort(__FUNCTION__,__LINE__,"<< root"_Stz,iRoot);
+//    m_pCI->vEarlyTip(m_pCI->E.p_Op);;
+//    return;
+//  }
 
   if (m_pCI->E.p_Op->bIsCard(CK_o_PROJECT)) {
     m_pCI->E.p_Op->vAppendChild(m_pCI->Early.m_pNeeded_later->pDupCardRecursive());
@@ -341,6 +341,12 @@ bool XF_Optimise_Early_projection::bIsRoot(void)
 
   if (m_pCI->pPeekPrev() && m_pCI->pPeekPrev()->bIsCard(CK_o_PROJECT)) {
     RASSERT(! m_pCI->pPeekPrev()->pSymbol()->Y_bHas(P_Early));
+    return false;
+  }
+
+  m_pCI->E.p_emit = m_pCI->E.p_Op->pSub_emit();
+  m_pCI->Early.m_pNeeded_later = m_pCI->E.p_emit->pCraft_needed_root(m_pCI);
+  if (! m_pCI->Early.m_pNeeded_later) {
     return false;
   }
 
