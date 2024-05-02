@@ -184,24 +184,28 @@ void XF_Optimise_Early_projection::vEarly_op(i8 iRoot, i8 iDepth,
   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
   
   if (m_pCI->E.p_Op->bIsCard(CK_o_PROJECT)) {
-    if (m_pCI->E.p_project->pSymbol()->Y_bHas(P_Early)) {
-      RASSERT(m_pCI->E.p_project->pSub_needed());
 
-      vEarly_op(iRoot, iDepth + 1, __FUNCTION__, __LINE__);
-
-      m_pCI->E.p_needed = m_pCI->E.p_project->pSub_needed();
-
-      m_pCI->E.p_emit = m_pCI->E.p_project->pCraft_emit_early(m_pCI);
-      m_pCI->E.p_project->vAppendChild(m_pCI->E.p_emit);
-      m_pCI->vSnapIf_arriving(false);
+    // a normal project (not an early) ?
+    if (! m_pCI->E.p_project->pSymbol()->Y_bHas(P_Early)) {
+      //m_pCI->E.p_Op->vDumpShort(__FUNCTION__,__LINE__,"<< backstep"_Stz,iRoot,iDepth);
       m_pCI->vPopEach();
-      if (! m_pCI->pEarlyTip())
-        m_pCI->vEarlyTip(m_pCI->E.p_Op);
+      m_pCI->vEarlyTip(m_pCI->E.p_Op);
       return;
     }
-    //m_pCI->E.p_Op->vDumpShort(__FUNCTION__,__LINE__,"<< backstep"_Stz,iRoot,iDepth);
+
+    // early project
+    RASSERT(m_pCI->E.p_project->pSub_needed());
+
+    vEarly_op(iRoot, iDepth + 1, __FUNCTION__, __LINE__);
+
+    m_pCI->E.p_needed = m_pCI->E.p_project->pSub_needed();
+
+    m_pCI->E.p_emit = m_pCI->E.p_project->pCraft_emit_early(m_pCI);
+    m_pCI->E.p_project->vAppendChild(m_pCI->E.p_emit);
+    m_pCI->vSnapIf_arriving(false);
     m_pCI->vPopEach();
-    m_pCI->vEarlyTip(m_pCI->E.p_Op);
+    if (! m_pCI->pEarlyTip())
+      m_pCI->vEarlyTip(m_pCI->E.p_Op);
     return;
   }
 
