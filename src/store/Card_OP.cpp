@@ -430,7 +430,6 @@ void Card_OP::vRestate_emit(CardIter* pCI)
       break;
 
     case CK_o_FOLD:
-      //pCI->vSnapIf_arriving();
       return;
 
     default:
@@ -503,7 +502,6 @@ void Card_OP::vRestate_emit(CardIter* pCI)
     pCI->Dic.m_p_expr = pCI->E.p_emit;
     pCI->E.p_key->vApplyCast(pCI,/*??*/pCI->Dic.m_p_expr);
   }
-  //pCI->vSnapIf_arriving();
 
   RASSERT(pCI->E.p_Op->pSub_emit() == pCI->E.p_emit);
 }
