@@ -164,7 +164,7 @@ void XF_Optimise_Early_projection::vNeeded_arc(i8 iRoot, i8 iDepth,
 
   RASSERT(m_pCI->Early.m_pNeeded_later);
 
-  m_pCI->E.p_Op->pSymbol()->Y_vSet(P_EarlyArc,iRoot);
+  //m_pCI->E.p_Op->pSymbol()->Y_vSet(P_EarlyArc,iRoot);
 
   Card_Needed*  p_needed_save;
   Card_Project* p_project_early;
@@ -177,8 +177,7 @@ void XF_Optimise_Early_projection::vNeeded_arc(i8 iRoot, i8 iDepth,
     return;
   }
 
-  if (m_pCI->E.p_Op->bIsCard(CK_o_INDEXSCAN) ||
-      m_pCI->E.p_Op->bIsCard(CK_o_SCAN)) {
+  if (bIsTip()) {
     m_pCI->vSnapIf_arriving();
     m_pCI->vPopEach();
     m_pCI->E.p_Op->vDumpShort(__FUNCTION__,__LINE__,"<< backstep"_Stz,iRoot,iDepth);
