@@ -3277,12 +3277,12 @@ OUT.flush();</stringProp>
               <stringProp name="scriptLanguage">groovy</stringProp>
             </JSR223Sampler>
             <hashTree/>
-            <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q7Loop" enabled="true">
+            <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q7Loop" enabled="false">
               <boolProp name="LoopController.continue_forever">true</boolProp>
               <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
             </LoopController>
             <hashTree>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q7" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q7" enabled="false">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/weaved
 /pipelineName = &quot;Q7&quot;
@@ -3336,7 +3336,7 @@ order by
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q7_1n_p_opt2" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q7_1n_p_opt2" enabled="false">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
 pipeline Query7
@@ -3459,7 +3459,7 @@ end ;</stringProp>
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q7_2n_p_opt1" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q7_2n_p_opt1" enabled="false">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
 pipeline Query7
@@ -3584,7 +3584,7 @@ end ;</stringProp>
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q7_2n_p_opt1_4mt" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q7_2n_p_opt1_4mt" enabled="false">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
 pipeline Query7
@@ -3709,7 +3709,7 @@ end ;</stringProp>
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q7_poc3_p_opt1" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q7_poc3_p_opt1" enabled="false">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
 pipeline Query7
@@ -3827,7 +3827,7 @@ begin
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q7_poc3_p_opt1_m" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q7_poc3_p_opt1_m" enabled="false">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
 pipeline Query7
@@ -3941,7 +3941,7 @@ begin
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q7_poc3_p_opt1_4mt" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q7_poc3_p_opt1_4mt" enabled="false">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
 pipeline Query7
@@ -4059,7 +4059,7 @@ begin
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q7_poc3_p_opt1_4mt_m" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q7_poc3_p_opt1_4mt_m" enabled="false">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
 pipeline Query7
@@ -6357,7 +6357,7 @@ OUT.flush();</stringProp>
               <stringProp name="scriptLanguage">groovy</stringProp>
             </JSR223Sampler>
             <hashTree/>
-            <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q15Loop" enabled="true">
+            <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q15Loop" enabled="false">
               <boolProp name="LoopController.continue_forever">true</boolProp>
               <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
             </LoopController>
@@ -6723,7 +6723,7 @@ OUT.flush();</stringProp>
               <stringProp name="scriptLanguage">groovy</stringProp>
             </JSR223Sampler>
             <hashTree/>
-            <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q18Loop" enabled="true">
+            <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q18Loop" enabled="false">
               <boolProp name="LoopController.continue_forever">true</boolProp>
               <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
             </LoopController>
