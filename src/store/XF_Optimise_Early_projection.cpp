@@ -125,32 +125,6 @@ void XF_Optimise_Early_projection::vNeeded_root(i8 iRoot)
 
   Card_Project* p_project_early;
 
-  if (m_pCI->pPeekPrev()->bIsCard(CK_o_PROJECT)) {
-    m_pCI->E.p_Op->vDumpShort(__FUNCTION__,__LINE__,"<< root"_Stz,iRoot);
-    m_pCI->vEarlyTip(m_pCI->E.p_Op);;
-    return;
-  }
-
-  switch (m_pCI->E.e_Op) {
-
-    // roots
-    case CK_o_AGGREG:
-    case CK_o_FILTER:
-    case CK_o_GBYAGG:
-    case CK_o_INDEXJOIN:
-    case CK_o_KEYEXISTS:
-    case CK_o_KEYNOTEXISTS:
-    case CK_o_PROJECT:
-    case CK_o_WHERE:
-      break;
-
-    default:
-      m_pCI->E.p_Op->vDumpShort(__FUNCTION__,__LINE__,"<< root"_Stz,iRoot);
-      return;
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
   m_pCI->E.p_emit = m_pCI->E.p_Op->pSub_emit();
   m_pCI->Early.m_pNeeded_later = m_pCI->E.p_emit->pCraft_needed_root(m_pCI);
   if (! m_pCI->Early.m_pNeeded_later) {
