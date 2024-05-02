@@ -252,6 +252,7 @@ namespace STORE
     Card* pPeekNext(void);
     Card* pPeekNextIf(eCK eCard);
     Card* pPeekPrev(void);
+    Card* pPeekPrevIf(eCK eCard);
     void vPopEach(void);
     bool bPositionAt(eCK eKind_at, i8 /* eCK */ iKind_First, ...);
     void vPrintBoard(const char* azFunc, const char* azFile, i8 iLineNo, bool bForce=false);

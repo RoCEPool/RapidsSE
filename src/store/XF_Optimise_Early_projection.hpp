@@ -22,15 +22,14 @@ namespace STORE
 
     static void vOptimise(CardIter* pCI);
 
-    bool bNeeded_rloop(void);
-    bool bNextRoot(void);
+    bool bEarly_rloop(void);
+    bool bPriorRoot(void);
 
-    void vNeeded_root(i8 iRoot);
-    void vNeeded_arc(i8 iRoot, i8 iDepth,
-                     const char* azCaller, i8 iLine);
+    void vEarly_arc(i8 iRoot);
+    void vEarly_op(i8 iRoot, i8 iDepth,
+                   const char* azCaller, i8 iLine);
     void vNeeded_tip(i8 iRoot);
 
-    bool bIsArc(void);
     bool bIsRoot(void);
     bool bIsTip(void);
 

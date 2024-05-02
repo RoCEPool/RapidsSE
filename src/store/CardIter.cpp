@@ -1939,11 +1939,25 @@ Card* CardIter::pPeekNextIf(eCK eCard)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  Card* pNextMain = this->pPeekNext();
-  if (! pNextMain || eCard != pNextMain->eCard())
+  Card* pNextChild = this->pPeekNext();
+  if (! pNextChild || eCard != pNextChild->eCard())
     return nullptr;
 
-  return pNextMain;
+  return pNextChild;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card* CardIter::pPeekPrevIf(eCK eCard)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  Card* pPrevChild = this->pPeekPrev();
+  if (! pPrevChild || eCard != pPrevChild->eCard())
+    return nullptr;
+
+  return pPrevChild;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1957,6 +1971,7 @@ Card* CardIter::pPeekPrev(void)
 
   return pChild;
 }
+
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
