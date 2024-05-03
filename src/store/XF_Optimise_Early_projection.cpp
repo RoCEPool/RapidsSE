@@ -170,22 +170,22 @@ void XF_Optimise_Early_projection::vEarly_body(i8 iRoot, i8 iDepth,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // back step to prev op
 
-  m_pCI->vPushEach();
-  if (!m_pCI->bEachOp_reverse()) {
-
-    m_pCI->vPopEach();
-    //m_pCI->E.p_Op->vDumpShort(__FUNCTION__,__LINE__,"<< backstep"_Stz,iRoot,iDepth);
+  if (!m_pCI->pPeekPrev()) {
     m_pCI->vEarlyTip(m_pCI->E.p_Op);
     return;
   }
 
+  m_pCI->vPushEach();
+  RASSERT(m_pCI->bEachOp_reverse());
+
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // is this as far as we can go?
+  // have we arrived at the tip of this arc?
 
   if (bIsTip()) {
     m_pCI->vSnapIf_arriving();
     m_pCI->vPopEach();
-    //m_pCI->E.p_Op->vDumpShort(__FUNCTION__,__LINE__,"<< backstep"_Stz,iRoot,iDepth);
+    //m_pCI->E.p_Op->vDumpShort(__FUNCTION__,__LINE__,"<< arcBody"_Stz,iRoot,iDepth);
     m_pCI->vEarlyTip(m_pCI->E.p_Op);
     return;
   }
@@ -281,7 +281,7 @@ void XF_Optimise_Early_projection::vEarly_body(i8 iRoot, i8 iDepth,
   delete m_pCI->Early.m_pNeeded_later;
   m_pCI->Early.m_pNeeded_later = p_needed_save;
 
-  //m_pCI->E.p_Op->vDumpShort(__FUNCTION__,__LINE__,"<< backstep"_Stz,iRoot,iDepth);
+  //m_pCI->E.p_Op->vDumpShort(__FUNCTION__,__LINE__,"<< arcBody"_Stz,iRoot,iDepth);
 }
 
 /*----------------------------------------------------------------------------*/
