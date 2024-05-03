@@ -25,10 +25,10 @@ namespace STORE
     bool bEarly_rloop(void);
     bool bPriorRoot(void);
 
-    void vEarly_arc(i8 iRoot);
-    void vEarly_op(i8 iRoot, i8 iDepth,
-                   const char* azCaller, i8 iLine);
-    void vNeeded_tip(i8 iRoot);
+    void vEarly_root(i8 iRoot);
+    void vEarly_body(i8 iRoot, i8 iDepth,
+                     const char* azCaller, i8 iLine);
+    void vEarly_tip(i8 iRoot);
 
     bool bIsRoot(void);
     bool bIsTip(void);
