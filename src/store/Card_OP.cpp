@@ -344,8 +344,8 @@ void Card_OP::vRestate_emit(CardIter* pCI)
     case CK_o_ORDAGG:
       pCI->E.p_emit = pCI->E.p_Op->pSub_emit(C_NOT_NULL);
       pCI->E.p_emit->vEnsureAll_expr_Have_nmdCol();
-      if (pCI->Arriving.m_pEmit) {
-        pCI->Dic.m_p_expr = pCI->Arriving.m_pEmit;
+      if (pCI->Arriving.m_pEmitted_prior) {
+        pCI->Dic.m_p_expr = pCI->Arriving.m_pEmitted_prior;
         pCI->E.p_key = pCI->E.p_Op->pSub_key();
         if (pCI->E.p_key)
           pCI->E.p_key->vApplyCast(pCI,/*??*/pCI->Dic.m_p_expr);
@@ -361,8 +361,8 @@ void Card_OP::vRestate_emit(CardIter* pCI)
 
       pCI->E.p_emit = pCI->E.p_Op->pSub_emit(C_NOT_NULL);
       pCI->E.p_emit->vEnsureAll_expr_Have_nmdCol();
-      if (pCI->Arriving.m_pEmit) {
-        pCI->Dic.m_p_expr = pCI->Arriving.m_pEmit;
+      if (pCI->Arriving.m_pEmitted_prior) {
+        pCI->Dic.m_p_expr = pCI->Arriving.m_pEmitted_prior;
         pCI->E.p_emit->vApplyCast(pCI,/*??*/pCI->Dic.m_p_expr);
       }
       break;
@@ -382,15 +382,15 @@ void Card_OP::vRestate_emit(CardIter* pCI)
         pCI->E.p_Op->vAppendChild(pCI->E.p_emit);
       }
 
-      if (pCI->Arriving.m_pEmit)
-        pCI->Arriving.m_pEmit->vInduct(pCI);
+      if (pCI->Arriving.m_pEmitted_prior)
+        pCI->Arriving.m_pEmitted_prior->vInduct(pCI);
 
       pCI->E.p_table = pCI->E.p_Op->pSub_table(C_NOT_NULL);
       pCI->E.p_emit->vInject_expr_nmdCol_table(pCI);
 
       if ((pCI->E.p_filter = pCI->E.p_Op->pSub_filter()) &&
           (pCI->E.p_predicate = pCI->E.p_filter->pSub_predicate())) {
-        pCI->Dic.m_p_expr = pCI->Arriving.m_pEmit;
+        pCI->Dic.m_p_expr = pCI->Arriving.m_pEmitted_prior;
         pCI->E.p_predicate->vApplyCast(pCI,/*??*/pCI->Dic.m_p_expr);
       }
 
@@ -417,7 +417,7 @@ void Card_OP::vRestate_emit(CardIter* pCI)
         pCI->E.p_Op->vAppendChild(pCI->E.p_emit);
       }
 
-      pCI->Arriving.m_pEmit->vInduct(pCI);
+      pCI->Arriving.m_pEmitted_prior->vInduct(pCI);
 
       break;
 
@@ -454,14 +454,14 @@ void Card_OP::vRestate_emit(CardIter* pCI)
                                  CK_o_WHERE,
                                  CK_NONE));
     if (pCI->E.p_Op->bEither(CK_o_KEYEXISTS, CK_o_KEYNOTEXISTS, CK_NONE)) {
-      if (pCI->Arriving.m_pEmit) {
+      if (pCI->Arriving.m_pEmitted_prior) {
         pCI->Dic.m_p_expr = _pCard_Emit(pCI->E.p_Op->pSub_injectable());
         pCI->E.p_filter->vUpdate_expCol(pCI,pCI->Dic.m_p_expr, true);
       }
     }
     else {
-      if (pCI->Arriving.m_pEmit) {
-        pCI->Dic.m_p_expr = pCI->Arriving.m_pEmit;
+      if (pCI->Arriving.m_pEmitted_prior) {
+        pCI->Dic.m_p_expr = pCI->Arriving.m_pEmitted_prior;
         if (pCI->E.p_Op->bIsCard(CK_o_HAVING))
           pCI->E.p_filter->vUpdate_expCol(pCI,pCI->Dic.m_p_expr, true);
         else

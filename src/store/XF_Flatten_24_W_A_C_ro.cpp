@@ -280,7 +280,7 @@ void XF_Flatten_24_W_A_C_ro::vConvert_OQ_sqyPrm_Into_expCol(CardIter* pCI,
           xConj.pChild()->pSymbol()->vApplyFacets(&xSym_expCol1);
 
           Card_Expr* p_expr_found =
-              pCI->Arriving.m_pEmit->pGet_expr((i8) 0);
+              pCI->Arriving.m_pEmitted_prior->pGet_expr((i8) 0);
 
           xConj.pChild()->vApplyCast_x(p_expr_found->xCast());
 
@@ -382,7 +382,7 @@ void XF_Flatten_24_W_A_C_ro::vConvert_OQ_sqyNo_Into_expCol(CardIter* pCI,
       DELETE_CARD(p_prev_conj);
 
       p_conj_child->pSymbol()->vApplyFacet(SF_EXP_COL, "$2"_Stz);
-      Card_Expr* p_expr_found = pCI->Arriving.m_pEmit->pGet_expr(1);
+      Card_Expr* p_expr_found = pCI->Arriving.m_pEmitted_prior->pGet_expr(1);
       p_conj_child->vApplyCast_x(p_expr_found->xCast());
       p_conj_arg->pSymbol()->Y_vSet(P_SqyRslTest);
     }
@@ -436,7 +436,7 @@ void XF_Flatten_24_W_A_C_ro::vRestate_emit_fold(CardIter* pCI)
 
   RASSERT(CK_o_FOLD == pCI->E.e_Op);
 
-  pCI->E.p_fold->vAppendChild(pCI->Arriving.m_pEmit->pDupCardRecursive());
+  pCI->E.p_fold->vAppendChild(pCI->Arriving.m_pEmitted_prior->pDupCardRecursive());
 }
 
 /*----------------------------------------------------------------------------*/

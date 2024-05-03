@@ -29,7 +29,7 @@ namespace STORE
     EachMembers E;
 
     struct {
-      Card_Emit *      m_pEmit;
+      Card_Emit *      m_pEmitted_prior;
       Card_StreamKey * m_pStreamKey;
     } Arriving;
 

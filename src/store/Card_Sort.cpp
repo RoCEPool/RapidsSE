@@ -85,7 +85,7 @@ void Card_Sort::vSmooth(CardIter* pCI)
     pCI->E.p_sort->vAppendChild(pCI->E.p_emit);
   }
 
-  pCI->Arriving.m_pEmit->vInduct(pCI);
+  pCI->Arriving.m_pEmitted_prior->vInduct(pCI);
 
   for (Kid xEmit_sort(pCI->E.p_emit); xEmit_sort.bEach(); /**/) {
     Card_Expr* p_expr_emit_sort = xEmit_sort.p_expr();

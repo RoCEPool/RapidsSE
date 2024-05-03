@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* XF_Optimise_Early_projection.hpp -- Early projection                                */
+/* XF_Optimise_Early_projection.hpp -- Early projection                       */
 /*============================================================================*/
 #pragma once
 
@@ -29,6 +29,8 @@ namespace STORE
     void vEarly_body(i8 iRoot, i8 iDepth,
                      const char* azCaller, i8 iLine);
     void vEarly_tip(i8 iRoot);
+
+    void vInsert_project_early(void);
 
     bool bIsRoot(void);
     bool bIsTip(void);

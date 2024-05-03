@@ -299,8 +299,8 @@ void Card_Term::vX_expCol_To_tblCol(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  if (Card_Term* p_term0 = pCI->Arriving.m_pEmit->pFind_term0_Of_expr(pSymbol_this)) {
-    Card_Expr* p_expr = pCI->Arriving.m_pEmit->pGet_expr(pSymbol_this);
+  if (Card_Term* p_term0 = pCI->Arriving.m_pEmitted_prior->pFind_term0_Of_expr(pSymbol_this)) {
+    Card_Expr* p_expr = pCI->Arriving.m_pEmitted_prior->pGet_expr(pSymbol_this);
     Symbol* pSymbol_term0 = p_term0->pSymbol();
 
     if (pSymbol_term0->bHasFacet(SF_TBL_COL)) {

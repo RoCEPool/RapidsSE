@@ -444,10 +444,10 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
       for (m_pCI->vBeginTarget(m_pCI->E.p_expr,CK_TERM); m_pCI->bEachTarget(); /**/) {
         m_pCI->E.p_term = m_pCI->E.xTarget.p_term();
 
-        if (m_pCI->Arriving.m_pEmit->pFind_expr(m_pCI->E.p_term->pSymbol()))
+        if (m_pCI->Arriving.m_pEmitted_prior->pFind_expr(m_pCI->E.p_term->pSymbol()))
           continue;
 
-        m_pCI->Arriving.m_pEmit->vDump(__func__);
+        m_pCI->Arriving.m_pEmitted_prior->vDump(__func__);
         m_pCI->E.p_term->vDump(__func__);
         NEVER_REACH
       }
@@ -468,8 +468,8 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
       if (! p_term->pSymbol()->bIs_Col())
         return C_CONTINUE_RECURSION;
 
-      if (pCI->Arriving.m_pEmit) {
-        if (pCI->Arriving.m_pEmit->pFind_expr(p_term->pSymbol())) {
+      if (pCI->Arriving.m_pEmitted_prior) {
+        if (pCI->Arriving.m_pEmitted_prior->pFind_expr(p_term->pSymbol())) {
           return C_CONTINUE_RECURSION;
         }
       }
@@ -549,8 +549,8 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
           m_pCI->E.p_term = xBound.p_term();
           if (! m_pCI->E.p_term->pSymbol()->bIs_Col())
             continue;
-          if (m_pCI->Arriving.m_pEmit) {
-            if (m_pCI->Arriving.m_pEmit->pFind_expr(m_pCI->E.p_term->pSymbol()))
+          if (m_pCI->Arriving.m_pEmitted_prior) {
+            if (m_pCI->Arriving.m_pEmitted_prior->pFind_expr(m_pCI->E.p_term->pSymbol()))
               continue;
           }
 
@@ -586,8 +586,8 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
         if (! m_pCI->E.p_term->pSymbol()->bIs_Col())
           continue;
 
-        if (m_pCI->Arriving.m_pEmit) {
-          if (m_pCI->Arriving.m_pEmit->pFind_expr(m_pCI->E.p_term->pSymbol()))
+        if (m_pCI->Arriving.m_pEmitted_prior) {
+          if (m_pCI->Arriving.m_pEmitted_prior->pFind_expr(m_pCI->E.p_term->pSymbol()))
             continue;
         }
 
@@ -654,7 +654,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
         if (m_pCI->E.p_term->pSymbol()->bValidCast())
           continue;
 
-        m_pCI->Arriving.m_pEmit->vDump(__func__);
+        m_pCI->Arriving.m_pEmitted_prior->vDump(__func__);
         m_pCI->E.p_term->vDump(__func__);
         NEVER_REACH
       }
@@ -883,12 +883,12 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
       for (m_pCI->vBeginTarget(m_pCI->E.p_expr,CK_TERM); m_pCI->bEachTarget(); /**/) {
         m_pCI->E.p_term = m_pCI->E.xTarget.p_term();
 
-        if (Card_Expr* p_expr_f = m_pCI->Arriving.m_pEmit->pFind_expr(m_pCI->E.p_term->pSymbol())) {
+        if (Card_Expr* p_expr_f = m_pCI->Arriving.m_pEmitted_prior->pFind_expr(m_pCI->E.p_term->pSymbol())) {
           if (p_expr_f->pSymbol()->bSameCast(m_pCI->E.p_term->pSymbol()))
             continue;
         }
 
-        m_pCI->Arriving.m_pEmit->vDump(__func__);
+        m_pCI->Arriving.m_pEmitted_prior->vDump(__func__);
         m_pCI->E.p_term->vDump(__func__);
         NEVER_REACH
       }
@@ -909,8 +909,8 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
       if (! p_term->pSymbol()->bIs_Col())
         return C_CONTINUE_RECURSION;
 
-      if (pCI->Arriving.m_pEmit) {
-        if (Card_Expr* p_expr_f = pCI->Arriving.m_pEmit->pFind_expr(p_term->pSymbol())) {
+      if (pCI->Arriving.m_pEmitted_prior) {
+        if (Card_Expr* p_expr_f = pCI->Arriving.m_pEmitted_prior->pFind_expr(p_term->pSymbol())) {
           if (p_expr_f->pSymbol()->bSameCast(p_term->pSymbol()))
             return C_CONTINUE_RECURSION;
         }
@@ -1000,8 +1000,8 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
           if (! m_pCI->E.p_term->pSymbol()->bIs_Col())
             continue;
 
-          if (m_pCI->Arriving.m_pEmit) {
-            if (Card_Expr* p_expr_f = m_pCI->Arriving.m_pEmit->pFind_expr(m_pCI->E.p_term->pSymbol()))
+          if (m_pCI->Arriving.m_pEmitted_prior) {
+            if (Card_Expr* p_expr_f = m_pCI->Arriving.m_pEmitted_prior->pFind_expr(m_pCI->E.p_term->pSymbol()))
               if (p_expr_f->pSymbol()->bSameCast(m_pCI->E.p_term->pSymbol()))
               continue;
           }
@@ -1038,13 +1038,13 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
         if (! m_pCI->E.p_term->pSymbol()->bIs_Col())
           continue;
 
-        if (m_pCI->Arriving.m_pEmit) {
-          if (Card_Expr* p_expr_f = m_pCI->Arriving.m_pEmit->pFind_expr(m_pCI->E.p_term->pSymbol())) {
+        if (m_pCI->Arriving.m_pEmitted_prior) {
+          if (Card_Expr* p_expr_f = m_pCI->Arriving.m_pEmitted_prior->pFind_expr(m_pCI->E.p_term->pSymbol())) {
             if (p_expr_f->pSymbol()->bSameCast(m_pCI->E.p_term->pSymbol())) {
               continue;
             }
             else {
-              //m_pCI->Arriving.m_pEmit->vDump(__func__);
+              //m_pCI->Arriving.m_pEmitted_prior->vDump(__func__);
               vDebugPoint();
             }
           }

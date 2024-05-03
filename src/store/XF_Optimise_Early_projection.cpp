@@ -125,25 +125,35 @@ void XF_Optimise_Early_projection::vEarly_root(i8 iRoot)
   //m_pCI->E.p_Op->vDumpShort(__FUNCTION__,__LINE__,">> root"_Stz,iRoot);
   RASSERT(! m_pCI->pEarlyTip());
   RASSERT(m_pCI->Early.m_pNeeded_later);
-  RASSERT(! m_pCI->Arriving.m_pEmit);
+  RASSERT(! m_pCI->Arriving.m_pEmitted_prior);
 
   Card_Project* p_project_early;
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // where are starting?
+
   if (m_pCI->E.p_Op->bIsCard(CK_o_PROJECT)) {
+    // - starting new arc from a project
+
     m_pCI->E.p_Op->vAppendChild(m_pCI->Early.m_pNeeded_later->pDupCardRecursive());
   }
   else {
+    // - starting new arc from some other op
     m_pCI->E.p_Op->vDecision(m_pCI,XD_ADD_EARLY_PROJECT,__FUNCTION__ ,__LINE__);
+
     p_project_early = m_pCI->Early.m_pNeeded_later->pNew_project_early(m_pCI);
     p_project_early->pSymbol()->Y_vSet(P_Line,__LINE__);
     m_pCI->vInsertBefore(p_project_early, m_pCI->E.p_Op);
     m_pCI->vRepositionOp();
   }
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // recursively process body of arc leftwards to tip
+
   vEarly_body(iRoot, 0, __FUNCTION__, __LINE__);
   RASSERT(m_pCI->pEarlyTip());
   RASSERT(m_pCI->Early.m_pNeeded_later);
-  RASSERT(m_pCI->Arriving.m_pEmit);
+  RASSERT(m_pCI->Arriving.m_pEmitted_prior);
 
   m_pCI->E.p_Op->vRestate_emit(m_pCI);
   m_pCI->vSnapIf_arriving();
@@ -162,15 +172,12 @@ void XF_Optimise_Early_projection::vEarly_body(i8 iRoot, i8 iDepth,
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_EARLY_PROJECTION, _FOOTER_);
 
   RASSERT(m_pCI->Early.m_pNeeded_later);
-  RASSERT(! m_pCI->Arriving.m_pEmit);
+  RASSERT(! m_pCI->Arriving.m_pEmitted_prior);
 
   m_pCI->E.p_deck->vRenumberRoot(0);
   m_pCI->E.p_Op->vDumpCaller(__FUNCTION__,">>"_Stz,azCaller,iLine);
 
   //m_pCI->E.p_Op->pSymbol()->Y_vSet(P_EarlyArc,iRoot);
-
-  Card_Needed*  p_needed_save;
-  Card_Project* p_project_early;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // back step to prev op
@@ -216,7 +223,7 @@ void XF_Optimise_Early_projection::vEarly_body(i8 iRoot, i8 iDepth,
 
   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
-  p_needed_save = m_pCI->Early.m_pNeeded_later->pClone();
+  Card_Needed* p_needed_save = m_pCI->Early.m_pNeeded_later->pClone();
 
   // which card did we arrive at?
   switch (m_pCI->E.e_Op) {
@@ -233,33 +240,21 @@ void XF_Optimise_Early_projection::vEarly_body(i8 iRoot, i8 iDepth,
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     case CK_o_INDEXJOIN:
       m_pCI->E.p_indexJoin->vEarlyProject_add_transients(m_pCI);
-
-      m_pCI->E.p_Op->vDecision(m_pCI,XD_ADD_EARLY_PROJECT,__FUNCTION__ ,__LINE__);
-      p_project_early = m_pCI->Early.m_pNeeded_later->pNew_project_early(m_pCI);
-      p_project_early->pSymbol()->Y_vSet(P_Line,__LINE__);
-      m_pCI->vInsertBefore(p_project_early, m_pCI->E.p_Op);
+      vInsert_project_early();
       m_pCI->vRepositionOp();
       break;
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     case CK_o_KEYEXISTS:
       m_pCI->E.p_keyExists->vEarlyProject_add_transients(m_pCI);
-
-      m_pCI->E.p_Op->vDecision(m_pCI,XD_ADD_EARLY_PROJECT,__FUNCTION__ ,__LINE__);
-      p_project_early = m_pCI->Early.m_pNeeded_later->pNew_project_early(m_pCI);
-      p_project_early->pSymbol()->Y_vSet(P_Line,__LINE__);
-      m_pCI->vInsertBefore(p_project_early, m_pCI->E.p_keyExists);
+      vInsert_project_early();
       m_pCI->vRepositionOp();
       break;
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     case CK_o_KEYNOTEXISTS:
       m_pCI->E.p_keyNotExists->vEarlyProject_add_transients(m_pCI);
-
-      m_pCI->E.p_Op->vDecision(m_pCI,XD_ADD_EARLY_PROJECT,__FUNCTION__ ,__LINE__);
-      p_project_early = m_pCI->Early.m_pNeeded_later->pNew_project_early(m_pCI);
-      p_project_early->pSymbol()->Y_vSet(P_Line,__LINE__);
-      m_pCI->vInsertBefore(p_project_early, m_pCI->E.p_keyNotExists);
+      vInsert_project_early();
       m_pCI->vRepositionOp();
       break;
 
@@ -304,6 +299,23 @@ void XF_Optimise_Early_projection::vEarly_tip(i8 iRoot)
     m_pCI->vRepositionOp(m_pCI->pEarlyTip());
     m_pCI->vEarlyTip(nullptr);
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* insert a new arly project                                                  */
+/*----------------------------------------------------------------------------*/
+void XF_Optimise_Early_projection::vInsert_project_early(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_EARLY_PROJECTION, _FOOTER_);
+
+  Card_Project* p_project_early;
+
+  m_pCI->E.p_Op->vDecision(m_pCI,XD_ADD_EARLY_PROJECT,__FUNCTION__ ,__LINE__);
+
+  p_project_early = m_pCI->Early.m_pNeeded_later->pNew_project_early(m_pCI);
+  p_project_early->pSymbol()->Y_vSet(P_Line,__LINE__);
+
+  m_pCI->vInsertBefore(p_project_early, m_pCI->E.p_Op);
 }
 
 /*----------------------------------------------------------------------------*/

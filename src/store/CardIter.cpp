@@ -654,7 +654,7 @@ void CardIter::vClearRegisters(void)
 
   //Flat.m_p_term_crlKey  = nullptr;
 
-  Arriving.m_pEmit = nullptr;
+  Arriving.m_pEmitted_prior = nullptr;
   Arriving.m_pStreamKey = nullptr;
 
   Dic.m_p_expr     = nullptr;
@@ -2123,7 +2123,7 @@ Card_Expr* CardIter::pPrior_expr(Symbol* pSymbol_arg)
   if (! p_arriving)
     return nullptr;
 
-  //RASSERT(p_arriving == this->Arriving.m_pEmit);
+  //RASSERT(p_arriving == this->Arriving.m_pEmitted_prior);
 
   Card_Expr* p_expr_resolved = p_arriving->pFind_expr(pSymbol_arg);
   return p_expr_resolved;
@@ -2458,7 +2458,7 @@ void CardIter::vSnap_arriving(Card_Emit* p_emit, Card_StreamKey* pStreamKey)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  Arriving.m_pEmit = p_emit;
+  Arriving.m_pEmitted_prior = p_emit;
   Dic.m_p_expr = p_emit;
 
   Arriving.m_pStreamKey = pStreamKey;
@@ -2472,7 +2472,7 @@ void CardIter::vSnapIf_arriving(Card_Emit* p_emit, Card_StreamKey * pStreamKey)
   _precondition_(_MAGIC_, _FOOTER_);
 
   if (p_emit) {
-    Arriving.m_pEmit = p_emit;
+    Arriving.m_pEmitted_prior = p_emit;
     Dic.m_p_expr = p_emit;
 
     Arriving.m_pStreamKey = pStreamKey;

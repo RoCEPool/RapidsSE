@@ -337,8 +337,8 @@ void XF_FLATTEN::vSmooth(CardIter* pCI)
   // [Where]
   if (pCI->pPeekNextIf(CK_o_WHERE) && pCI->bEachOp(CK_o_WHERE)) {
     if (pCI->Carry.Where_preAgg.m_bSeen) {
-      //pCI->Arriving.m_pEmit->vDump(__func__,"Smooth where"_Stz);
-      pCI->Dic.m_p_expr = pCI->Arriving.m_pEmit;
+      //pCI->Arriving.m_pEmitted_prior->vDump(__func__,"Smooth where"_Stz);
+      pCI->Dic.m_p_expr = pCI->Arriving.m_pEmitted_prior;
       pCI->E.p_where->vSmooth(pCI);
       //pCI->PRINTBOARD_dbg();
     }
