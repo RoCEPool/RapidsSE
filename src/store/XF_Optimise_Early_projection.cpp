@@ -125,6 +125,7 @@ void XF_Optimise_Early_projection::vEarly_root(i8 iRoot)
   //m_pCI->E.p_Op->vDumpShort(__FUNCTION__,__LINE__,">> root"_Stz,iRoot);
   RASSERT(! m_pCI->pEarlyTip());
   RASSERT(m_pCI->Early.m_pNeeded_later);
+  RASSERT(! m_pCI->Arriving.m_pEmit);
 
   Card_Project* p_project_early;
 
@@ -142,9 +143,12 @@ void XF_Optimise_Early_projection::vEarly_root(i8 iRoot)
   vEarly_body(iRoot, 0, __FUNCTION__, __LINE__);
   RASSERT(m_pCI->pEarlyTip());
   RASSERT(m_pCI->Early.m_pNeeded_later);
+  RASSERT(m_pCI->Arriving.m_pEmit);
 
   m_pCI->E.p_Op->vRestate_emit(m_pCI);
   m_pCI->vSnapIf_arriving();
+
+  m_pCI->vSnap_arriving(nullptr,nullptr);
 
   //m_pCI->E.p_Op->vDumpShort(__FUNCTION__,__LINE__,"<< root"_Stz,iRoot);
 }
@@ -158,6 +162,7 @@ void XF_Optimise_Early_projection::vEarly_body(i8 iRoot, i8 iDepth,
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_EARLY_PROJECTION, _FOOTER_);
 
   RASSERT(m_pCI->Early.m_pNeeded_later);
+  RASSERT(! m_pCI->Arriving.m_pEmit);
 
   m_pCI->E.p_deck->vRenumberRoot(0);
   m_pCI->E.p_Op->vDumpCaller(__FUNCTION__,">>"_Stz,azCaller,iLine);
