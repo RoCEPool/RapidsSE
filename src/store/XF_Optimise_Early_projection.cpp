@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* XF_Optimise_Early_projection.cpp -- Early projection                                */
+/* XF_Optimise_Early_projection.cpp -- Early projection                       */
 /*============================================================================*/
 
 #include "XF_Optimise_Early_projection.hpp"
@@ -190,7 +190,6 @@ void XF_Optimise_Early_projection::vEarly_body(i8 iRoot, i8 iDepth,
   m_pCI->vPushEach();
   RASSERT(m_pCI->bEachOp_reverse());
 
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // have we arrived at the tip of this arc?
 
@@ -234,33 +233,33 @@ void XF_Optimise_Early_projection::vEarly_body(i8 iRoot, i8 iDepth,
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     case CK_o_FILTER:
-      m_pCI->E.p_filter->vAddTransients(m_pCI);
+      m_pCI->E.p_filter->vAdd_transients(m_pCI);
       break;
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     case CK_o_INDEXJOIN:
-      m_pCI->E.p_indexJoin->vEarlyProject_add_transients(m_pCI);
+      m_pCI->E.p_indexJoin->vAdd_transients(m_pCI);
       vInsert_project_early();
       m_pCI->vRepositionOp();
       break;
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     case CK_o_KEYEXISTS:
-      m_pCI->E.p_keyExists->vEarlyProject_add_transients(m_pCI);
+      m_pCI->E.p_keyExists->vAdd_transients(m_pCI);
       vInsert_project_early();
       m_pCI->vRepositionOp();
       break;
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     case CK_o_KEYNOTEXISTS:
-      m_pCI->E.p_keyNotExists->vEarlyProject_add_transients(m_pCI);
+      m_pCI->E.p_keyNotExists->vAdd_transients(m_pCI);
       vInsert_project_early();
       m_pCI->vRepositionOp();
       break;
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     case CK_o_WHERE:
-      m_pCI->E.p_where->vAddTransients(m_pCI);
+      m_pCI->E.p_where->vAdd_transients(m_pCI);
       break;
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --

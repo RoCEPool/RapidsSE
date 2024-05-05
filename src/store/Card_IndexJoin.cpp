@@ -76,7 +76,7 @@ void Card_IndexJoin::vDerive_streamKey(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_IndexJoin::vEarlyProject_add_transients(CardIter* pCI)
+void Card_IndexJoin::vAdd_transients(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
