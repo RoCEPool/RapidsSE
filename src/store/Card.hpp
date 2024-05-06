@@ -460,7 +460,7 @@ namespace STORE
 
     void vFormatDots(String* pString, i8 iDepth);
     void vFormatEnum(String* pString);
-    void vFormatFacet(String* pString, i8 i_Facet, bool bSecondary=false);
+    void vFormatFacet(String* pString, i8 i_Facet, bool bSecondary=false, bool bFacetNo=false);
     void vFormatHeader(String* pString);
     void vFormatMarks(String* pString);
     void vFormatName(String* pString, i8 iDepth, bool bRight=false);
