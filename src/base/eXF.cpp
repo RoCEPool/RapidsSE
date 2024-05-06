@@ -21,6 +21,7 @@ Stz* aXF[XF_ENUMS]
   /* */ "XF_EPILOG_TYPE_CAST"_Stz,
   /* */ "XF_EPILOG_X_STMCOL_TO_COLNM"_Stz,
   /* */ "XF_EPILOG_X_TBLCOL_TO_EXPCOL"_Stz,
+
   /* */ "XF_FLATTEN_10_F"_Stz,
   /* */ "XF_FLATTEN_24_W_A_C_RO"_Stz,
   /* */ "XF_FLATTEN_32_W_A_NC_I"_Stz,
@@ -31,16 +32,17 @@ Stz* aXF[XF_ENUMS]
   /* */ "XF_FLATTEN_53_W_L_NC_NI_EXISTS"_Stz,
   /* */ "XF_FLATTEN_53_W_L_NC_NI_JOIN"_Stz,
   /* */ "XF_FLATTEN_74_H_A_NC_RO"_Stz,
-  /* */ "XF_FLATTEN_PURGE_WHERE"_Stz,
+  /* */ "XF_FLATTEN_ANCHOR_TABLE"_Stz,
   /* */ "XF_FLATTEN_DELETE_FOLD"_Stz,
   /* */ "XF_FLATTEN_DERIVE_BOUNDS"_Stz,
-  /* */ "XF_FLATTEN_ANCHOR_TABLE"_Stz,
   /* */ "XF_FLATTEN_JOIN_ORDERING"_Stz,
   /* */ "XF_FLATTEN_LEFT_SUBQUERY"_Stz,
   /* */ "XF_FLATTEN_PREDICATE_PULLUP"_Stz,
   /* */ "XF_FLATTEN_PREDICATE_REPOSITION"_Stz,
+  /* */ "XF_FLATTEN_PURGE_WHERE"_Stz,
   /* */ "XF_FLATTEN_SUBQUERY"_Stz,
   /* */ "XF_FLATTEN_X_EXPCOL_TO_TBLCOL"_Stz,
+
   /* */ "XF_OPTIMISE_AGGREG_TO_SORT_ORDAGG"_Stz,
   /* */ "XF_OPTIMISE_CULL_BOUND"_Stz,
   /* */ "XF_OPTIMISE_CULL_USED_BOUND"_Stz,
@@ -59,12 +61,14 @@ Stz* aXF[XF_ENUMS]
   /* */ "XF_OPTIMISE_SORTDESC_LIMIT_TO_TOP"_Stz,
   /* */ "XF_OPTIMISE_SORT_LIMIT_ALL_LEVELS"_Stz,
   /* */ "XF_OPTIMISE_STATIC_CALC"_Stz,
+
   /* */ "XF_PASSTHRU_ADJUST_SORT"_Stz,
   /* */ "XF_PASSTHRU_ADJUST_TOP"_Stz,
   /* */ "XF_PASSTHRU_TWEAK_INDEXJOIN"_Stz,
   /* */ "XF_PASSTHRU_TWEAK_INDEXSCAN"_Stz,
   /* */ "XF_PASSTHRU_TWEAK_KEYEXISTS"_Stz,
   /* */ "XF_PASSTHRU_TWEAK_KEYNOTEXITS"_Stz,
+
   /* */ "XF_PROLOG_ANALYSE_EMIT"_Stz,
   /* */ "XF_PROLOG_ANALYSE_INDEX"_Stz,
   /* */ "XF_PROLOG_ANALYSE_INJECTABLE"_Stz,
@@ -78,7 +82,9 @@ Stz* aXF[XF_ENUMS]
   /* */ "XF_PROLOG_X_SQYNM_TO_SQYNO"_Stz,
   /* */ "XF_PROLOG_X_COLNM_TO_EXPCOL"_Stz,
   /* */ "XF_PROLOG_X_SCAN_TO_FROM"_Stz,
+
   /* */ "XF_SYNTHESISE_CODE"_Stz,
+
   /* */ "XF_VERIFY_DIC"_Stz,
 
 //  /* */ "XF_ENUMS"_Stz
@@ -89,6 +95,7 @@ Stz* aXF_desc[XF_ENUMS]
   /* */ "none"_Stz, // XF_NONE
 
   /* */ "<to be supplied>"_Stz, // XF_EPILOG_ADD_HASH_CAST
+  /* */ "<to be supplied>"_Stz, // XF_EPILOG_ADD_INFLATE
   /* */ "<to be supplied>"_Stz, // XF_EPILOG_CULL_FACET
   /* */ "<to be supplied>"_Stz, // XF_EPILOG_DETERMINE_COLUMNS
   /* */ "<to be supplied>"_Stz, // XF_EPILOG_FUSE_PROJECT
@@ -97,28 +104,31 @@ Stz* aXF_desc[XF_ENUMS]
   /* */ "<to be supplied>"_Stz, // XF_EPILOG_MAP_COLUMNS
   /* */ "<to be supplied>"_Stz, // XF_EPILOG_PROMOTE_FILTER
   /* */ "<to be supplied>"_Stz, // XF_EPILOG_REINSTATE_STAGE
+  /* */ "<to be supplied>"_Stz, // XF_EPILOG_TYPE_CAST
   /* */ "<to be supplied>"_Stz, // XF_EPILOG_X_STMCOL_TO_COLNM
   /* */ "<to be supplied>"_Stz, // XF_EPILOG_X_TBLCOL_TO_EXPCOL
-  /* */ "<to be supplied>"_Stz, // XF_FLATTEN_10_F
-  /* */ "<to be supplied>"_Stz, // XF_FLATTEN_24_W_A_C_RO
-  /* */ "<to be supplied>"_Stz, // XF_FLATTEN_32_W_A_NC_I
-  /* */ "<to be supplied>"_Stz, // XF_FLATTEN_34_W_A_NC_RO
-  /* */ "<to be supplied>"_Stz, // XF_FLATTEN_40_W_L_C_E
-  /* */ "<to be supplied>"_Stz, // XF_FLATTEN_52_W_L_NC_I_EXISTS
-  /* */ "<to be supplied>"_Stz, // XF_FLATTEN_52_W_L_NC_I_JOIN
-  /* */ "<to be supplied>"_Stz, // XF_FLATTEN_53_W_L_NC_NI_EXISTS
-  /* */ "<to be supplied>"_Stz, // XF_FLATTEN_53_W_L_NC_NI_JOIN
-  /* */ "<to be supplied>"_Stz, // XF_FLATTEN_74_H_A_NC_RO
-  /* */ "<to be supplied>"_Stz, // XF_FLATTEN_PURGE_WHERE
-  /* */ "<to be supplied>"_Stz, // XF_FLATTEN_DELETE_FOLD
-  /* */ "<to be supplied>"_Stz, // XF_FLATTEN_DERIVE_BOUNDS
-  /* */ "<to be supplied>"_Stz, // XF_FLATTEN_ANCHOR_TABLE
-  /* */ "<to be supplied>"_Stz, // XF_FLATTEN_JOIN_ORDERING
-  /* */ "<to be supplied>"_Stz, // XF_FLATTEN_LEFT_SUBQUERY
-  /* */ "<to be supplied>"_Stz, // XF_FLATTEN_PREDICATE_PULLUP
-  /* */ "<to be supplied>"_Stz, // XF_FLATTEN_PREDICATE_REPOSITION
-  /* */ "<to be supplied>"_Stz, // XF_FLATTEN_SUBQUERY
-  /* */ "<to be supplied>"_Stz, // XF_FLATTEN_X_EXPCOL_TO_TBLCOL
+
+  /* */ "Flatten 10_F"_Stz,                  // XF_FLATTEN_10_F
+  /* */ "Flatten 24_W_A_C_RO"_Stz,           // XF_FLATTEN_24_W_A_C_RO
+  /* */ "Flatten 32_W_A_NC_I"_Stz,           // XF_FLATTEN_32_W_A_NC_I
+  /* */ "Flatten 34_W_A_NC_RO"_Stz,          // XF_FLATTEN_34_W_A_NC_RO
+  /* */ "Flatten 40_W_L_C_E"_Stz,            // XF_FLATTEN_40_W_L_C_E
+  /* */ "Flatten 52_W_L_NC_I_EXISTS"_Stz,    // XF_FLATTEN_52_W_L_NC_I_EXISTS
+  /* */ "Flatten 52_W_L_NC_I_JOIN"_Stz,      // XF_FLATTEN_52_W_L_NC_I_JOIN
+  /* */ "Flatten 53_W_L_NC_NI_EXISTS"_Stz,   // XF_FLATTEN_53_W_L_NC_NI_EXISTS
+  /* */ "Flatten 53_W_L_NC_NI_JOIN"_Stz,     // XF_FLATTEN_53_W_L_NC_NI_JOIN
+  /* */ "Flatten 74_H_A_NC_RO"_Stz,          // XF_FLATTEN_74_H_A_NC_RO
+  /* */ "anchor non re-orderable table"_Stz, // XF_FLATTEN_ANCHOR_TABLE
+  /* */ "delete fold card"_Stz,              // XF_FLATTEN_DELETE_FOLD
+  /* */ "derive index bounds"_Stz,           // XF_FLATTEN_DERIVE_BOUNDS
+  /* */ "re-order joins"_Stz,                // XF_FLATTEN_JOIN_ORDERING
+  /* */ "flatten left-most subquery"_Stz,    // XF_FLATTEN_LEFT_SUBQUERY
+  /* */ "pull-up predicates"_Stz,            // XF_FLATTEN_PREDICATE_PULLUP
+  /* */ "reposition predicates"_Stz,         // XF_FLATTEN_PREDICATE_REPOSITION
+  /* */ "delete empty where"_Stz,            // XF_FLATTEN_PURGE_WHERE
+  /* */ "flatten subquery"_Stz,              // XF_FLATTEN_SUBQUERY
+  /* */ "ExpCol $n to TblCol $$c.n"_Stz,     // XF_FLATTEN_X_EXPCOL_TO_TBLCOL
+
   /* */ "<to be supplied>"_Stz, // XF_OPTIMISE_AGGREG_TO_SORT_ORDAGG
   /* */ "<to be supplied>"_Stz, // XF_OPTIMISE_CULL_BOUND
   /* */ "<to be supplied>"_Stz, // XF_OPTIMISE_CULL_USED_BOUND
@@ -137,12 +147,14 @@ Stz* aXF_desc[XF_ENUMS]
   /* */ "<to be supplied>"_Stz, // XF_OPTIMISE_SORTDESC_LIMIT_TO_TOP
   /* */ "<to be supplied>"_Stz, // XF_OPTIMISE_SORT_LIMIT_ALL_LEVELS
   /* */ "<to be supplied>"_Stz, // XF_OPTIMISE_STATIC_CALC
+
   /* */ "<to be supplied>"_Stz, // XF_PASSTHRU_ADJUST_SORT
   /* */ "<to be supplied>"_Stz, // XF_PASSTHRU_ADJUST_TOP
   /* */ "<to be supplied>"_Stz, // XF_PASSTHRU_TWEAK_INDEXJOIN
   /* */ "<to be supplied>"_Stz, // XF_PASSTHRU_TWEAK_INDEXSCAN
   /* */ "<to be supplied>"_Stz, // XF_PASSTHRU_TWEAK_KEYEXISTS
   /* */ "<to be supplied>"_Stz, // XF_PASSTHRU_TWEAK_KEYNOTEXITS
+
   /* */ "<to be supplied>"_Stz, // XF_PROLOG_ANALYSE_EMIT
   /* */ "<to be supplied>"_Stz, // XF_PROLOG_ANALYSE_INDEX
   /* */ "<to be supplied>"_Stz, // XF_PROLOG_ANALYSE_SUBQUERY
@@ -154,14 +166,14 @@ Stz* aXF_desc[XF_ENUMS]
   /* */ "<to be supplied>"_Stz, // XF_PROLOG_VALIDATE_BOARD
   /* */ "<to be supplied>"_Stz, // XF_PROLOG_X_SQYNM_TO_SQYNO
   /* */ "<to be supplied>"_Stz, // XF_PROLOG_X_COLNM_TO_EXPCOL
-   /* */ "<to be supplied>"_Stz, // XF_PROLOG_X_SCAN_TO_FROM
+  /* */ "<to be supplied>"_Stz, // XF_PROLOG_X_SCAN_TO_FROM
+
   /* */ "<to be supplied>"_Stz, // XF_SYNTHESISE_CODE
+
   /* */ "<to be supplied>"_Stz, // XF_VERIFY_DIC
 
 // /* */        // XF_ENUMS"_Stz
 };
-
-
 
 /*============================================================================*/
 /* end                                                                        */
