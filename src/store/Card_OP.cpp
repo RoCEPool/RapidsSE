@@ -74,7 +74,6 @@ bool Card_OP::bIsOp(eCK eCard)
       return true;
 
     case CK_o_ABSJOIN:
-    case CK_o_FLAT:
     case CK_o_FOLD:
     case CK_o_SEND:
     case CK_o_STAGE:

@@ -121,7 +121,7 @@ Card::Card(eCK eCard, i8 iFixedDepth)
   m_xSymbol.vCard(this);
   MemLib::vZero(md_Coord, sizeof(md_Coord), CN_CARD);
 
-  if (CK_o_FLAT == eCard)
+  if (CK_o_FOLD == eCard)
     vDebugPoint();
 
   m_eCard   = eCard;
@@ -305,7 +305,7 @@ void Card::vCard(eCK eCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (CK_o_FLAT == eCard)
+  if (CK_o_FOLD == eCard)
     vDebugPoint();
 
   m_eCard = eCard;

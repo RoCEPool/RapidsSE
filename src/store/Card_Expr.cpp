@@ -651,7 +651,6 @@ void Card_Expr::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
                                      CK_p_EMIT,
                                      CK_p_KEY,
 
-                                     CK_o_FLAT,
                                      CK_o_FOLD,
                                      CK_p_INJECTABLE,
                                      CK_p_NEEDED,
