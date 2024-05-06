@@ -294,6 +294,8 @@ namespace STORE
     Stz* pFMT_FACET_PRIMARY      (void) { return "%s"_Stz; }
     Stz* pFMT_FACET_HEADER       (void) { return "==%02lld %c--------------"_Stz; }
     Stz* pFMT_FACET_MARKS        (void) { return "%s%s"_Stz; }
+    Stz* pFMT_FACET_NO           (void) { return "~%lld"_Stz; }
+
     Stz* pFMT_NAME_LEFT          (void) { return "%s"_Stz; }
     Stz* pFMT_NAME_RIGHT         (void) { return "%18s"_Stz; }
     Stz* pFMT_PPY_INTEGER        (void) { return "}%s=%lld"_Stz; }
