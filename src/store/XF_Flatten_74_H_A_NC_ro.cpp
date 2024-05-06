@@ -99,7 +99,6 @@ void XF_Flatten_74_H_A_NC_ro::vFlatten(void)
   m_pCI->E.p_deck->vMarksClearRecursive();
 
   m_pCI->vEndTransform(__LINE__);
-//vValidateBench();
 }
 
 /*============================================================================*/

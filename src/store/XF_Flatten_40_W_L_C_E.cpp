@@ -87,7 +87,6 @@ void XF_Flatten_40_W_L_C_E::vFlatten(void)
 
 
   m_pCI->vEndTransform(__LINE__);
-//vValidateBench();
 }
 
 /*============================================================================*/

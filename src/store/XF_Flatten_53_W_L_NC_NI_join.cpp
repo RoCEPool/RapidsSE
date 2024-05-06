@@ -109,7 +109,6 @@ void XF_Flatten_53_W_L_NC_NI_join::vFlatten(void)
   m_pCI->E.p_deck->vMarksClearRecursive();
 
   m_pCI->vEndTransform(__LINE__);
-//vValidateBench();
 }
 
 /*============================================================================*/

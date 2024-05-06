@@ -100,7 +100,6 @@ void XF_Flatten_32_W_A_NC_I::vFlatten(void)
  // m_pCI->PRINTBOARD_dbg();
 
   m_pCI->vEndTransform(__LINE__);
-//vValidateBench();
 }
 
 /*============================================================================*/

@@ -73,7 +73,6 @@ void XF_Prolog_X_colNm_To_expCol::vXF_colNm_To_expCol(void)
   }
 
   m_pCI->vEndTransform(__LINE__);
-//vValidateBench();
 }
 
 /*----------------------------------------------------------------------------*/

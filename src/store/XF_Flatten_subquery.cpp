@@ -204,7 +204,7 @@ void XF_Flatten_subquery::vFlatten_recurse(Symbol* pSym_sqyNo_inner, i8 iDepth)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // sub-query has been flattened
 
-  Card_Fold::vMorph_to_flat(m_pCI);
+  //Card_Fold::vMorph_to_flat(m_pCI);
 
   // m_pCI->PRINTBOARD_dbg();
 

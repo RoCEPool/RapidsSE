@@ -68,8 +68,11 @@ void XF_Flatten_Delete_flat::vXF_Delete_flat(void)
   while (m_pCI->bEachOp(CK_o_FLAT))
     m_pCI->E.p_deck->vDeleteChild(m_pCI->E.p_flat);
 
+  m_pCI->vBeginEach();
+  while (m_pCI->bEachOp(CK_o_FOLD))
+    m_pCI->E.p_deck->vDeleteChild(m_pCI->E.p_fold);
+
   m_pCI->vEndTransform(__LINE__);
-//vValidateBench();
 }
 
 /*============================================================================*/
