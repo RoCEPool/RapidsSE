@@ -14,6 +14,8 @@ activate s
 
 c-->s: Open socket connection
 
+s->c: Welcome message: \n'RapidsSE' (8 bytes)
+
 c->s: ProtocolCompatibleRequest
 note left of c
 """

@@ -67,12 +67,42 @@ In the Connection Dialog the concepts of protocol compatibility, tunnel
 establishment, user authentication, and session startup are clearly
 separated out.
 
-The first interactions in this dialog involves checking to see if the client
-and server are both talking with a compatible protocol version that they both
-understand. A ``ProtocolIncompatibleResponse`` message is sent in the case of
-an incompatibility and the socket is then disconnected. Please note that we use
-a specific message to indicate protocol incompatibility rather than the generic
-``ErrorResponse`` message because we want to protect the format of the messages
+.. index::
+   single: wireline protocol; v5, welcome message
+
+.. _wlpv5WelcomeMessage:
+
+When the RapidsSE server accepts the client's connection it will send the client
+a welcome message that indicates that the connection is now ready. The client
+must wait and read this from the server before it begins to issue any commands.
+This welcome message is a simple 8 byte message that contains the ascii
+characters ``RapidsSE`` (without a null terminator).
+
+This welcome message is important because under a high connection load a client
+may successfully call ``connect()`` but the TCP handshake might not actually be complete
+as the TCP stack on the server may not have processed the client's final ``ACK`` of the
+TCP 3-way handshake connection protocol [#]_. By ensuring that the client waits
+until it receives a welcome message from the server then the client can be sure
+that the connection has been properly established.
+
+.. [#] For an example of this occurs in Linux please refer to:
+   `http://veithen.io/2014/01/01/how-tcp-backlog-works-in-linux.html <http://veithen.io/2014/01/01/how-tcp-backlog-works-in-linux.html>`_
+
+If the server is overloaded by connections then the client's connect handshake
+will ultimately be terminated by the server's TCP/IP stack. This will mean that
+the client will get an error while waiting to read the welcome message, typically
+a "Connection reset" message indicating a TCP/IP protocol error. All client's should
+handle this connection corner case and either retry the connection or return an
+error to the caller.
+
+Following the receiving of the welcome message from the server all subsequent
+messages are serialised with Thrift and contain a message header as described
+:ref:`here <wlpv5MessageHeader>`. The first of these interactions involves checking
+to see if the client and server are both talking with a compatible protocol version
+that they both understand. A ``ProtocolIncompatibleResponse`` message is sent in
+the case of an incompatibility and the socket is then disconnected. Please note
+that we use a specific message to indicate protocol incompatibility rather than the
+generic ``ErrorResponse`` message because we want to protect the format of the messages
 involved in the compatibility check as much as possible. i.e., this allows the
 generic ``ErrorResponse`` message to be changed without it affecting the
 protocol compatibility check.

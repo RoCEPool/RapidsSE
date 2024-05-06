@@ -5,13 +5,16 @@
      :backlinks: none
 
 
+.. _wlpv5Messages:
+
 Wireline Messages
 =================
 
 Overview
 --------
 
-The messages that are sent between the client and server are defined in
+Apart from the initial :ref:`welcome message <wlpv5WelcomeMessage>`,
+the messages that are sent between the client and server are defined in
 message definition files written for `Apache Thrift <https://thrift.apache.org/>`_.
 An interface definition language such as Thrift was chosen to define messages
 because it alleviates developers from the tedious and error-prone work of
@@ -40,11 +43,13 @@ converted into UTF-8 format before being sent to the server.
 .. index::
    single: wireline protocol; v5, message header
 
+.. _wlpv5MessageHeader:
+
 Message Header
 --------------
 
 The Thrift message definitions are not self-describing. If a message is serialised
-to a sequence of bytes, the received cannot determine the type of message being
+to a sequence of bytes, the receiver cannot determine the type of message being
 received and therefore how to decode it. So whenever a wireline message is being
 sent, the sender must prepend a message header that contains two important bits
 of information:

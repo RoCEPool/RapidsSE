@@ -13,6 +13,15 @@
 Change History
 ==============
 
+Version 1.1
+-----------
+
+- **Note:** This version adds support for the RapidsSE server sending an initial
+  :ref:`welcome message <wlpv5WelcomeMessage>` when the client first connects,
+  to confirm that RapidsSE has accepted the connection. This provides more
+  resilient handling to large TCP connection storms.
+
+
 Version 1.0
 -----------
 
