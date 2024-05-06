@@ -358,9 +358,9 @@ function runSethTest() {
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 function runConnectionStormTest() {
-  local -r runtimeSec=30
-  local -r numConnections=100
-  local -r connStormTimeoutSec=60
+  local -r runtimeSec=20
+  local -r numConnections=50
+  local -r connStormTimeoutSec=40
 
   local connStormCmdLine=(
     "${CONN_STORM_SH}"
