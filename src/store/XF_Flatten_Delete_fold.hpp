@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* XF_Flatten_Delete_flat.hpp -- Delete flat                                          */
+/* XF_Flatten_Delete_fold.hpp -- Delete fold                                          */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class XF_Flatten_Delete_flat : public XF_TRANSFORM
+  class XF_Flatten_Delete_fold : public XF_TRANSFORM
   {
   private:
     // must be last
@@ -17,18 +17,18 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    XF_Flatten_Delete_flat(CardIter* pCI);
-   ~XF_Flatten_Delete_flat(void) noexcept(false);
+    XF_Flatten_Delete_fold(CardIter* pCI);
+   ~XF_Flatten_Delete_fold(void) noexcept(false);
 
-    static void vXF_Delete_flat(CardIter* pCI);
+    static void vXF_Delete_fold(CardIter* pCI);
 
-    void vXF_Delete_flat(void);
+    void vXF_Delete_fold(void);
 
   private:
     Footer* aFooter(void);
   };
 
-  XF_Flatten_Delete_flat* _pXF_Flatten_Delete_flat(void* aAddr);
+  XF_Flatten_Delete_fold* _pXF_Flatten_Delete_fold(void* aAddr);
 }
 
 /*============================================================================*/

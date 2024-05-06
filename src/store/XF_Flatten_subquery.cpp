@@ -22,7 +22,7 @@
 #include "XF_Flatten_53_W_L_NC_NI_join.hpp"
 #include "XF_Flatten_74_H_A_NC_ro.hpp"
 
-#include "XF_Flatten_Delete_flat.hpp"
+#include "XF_Flatten_Delete_fold.hpp"
 #include "XF_Flatten_Left_subQuery.hpp"
 
 #include "XF_Flatten_X_expCol_To_tblCol.hpp"
@@ -97,7 +97,7 @@ void XF_Flatten_subquery::vFlatten(void)
 
   vFlatten_recurse(nullptr,0);
 
-  XF_Flatten_Delete_flat::vXF_Delete_flat(m_pCI);
+  XF_Flatten_Delete_fold::vXF_Delete_fold(m_pCI);
 }
 
 /*----------------------------------------------------------------------------*/
