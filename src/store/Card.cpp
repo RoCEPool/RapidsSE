@@ -2439,10 +2439,13 @@ void Card::vCat(i8& ri_Char, Ribbon* pRibbon, Stz* szStr, bool bRight)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
+  static Stz* FMT_CAT_LEFT   = "%s"_Stz;
+  static Stz* FMT_CAT_RIGHT  = "%18s"_Stz;
+
   if (bRight)
-    pRibbon->vSprint(ri_Char, "%18s"_Stz, szStr);
+    pRibbon->vSprint(ri_Char, FMT_CAT_RIGHT, szStr);
   else
-    pRibbon->vSprint(ri_Char, "%s"_Stz, szStr);
+    pRibbon->vSprint(ri_Char, FMT_CAT_LEFT, szStr);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2743,9 +2746,9 @@ void Card::vFormatMarks(String* pString)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  static Stz* FMT_FACET_HEADER = "%s%s"_Stz;
+  static Stz* FMT_FACET_MARKS = "%s%s"_Stz;
 
-  pString->vCatSprint(FMT_FACET_HEADER,
+  pString->vCatSprint(FMT_FACET_MARKS,
                       szMark1(),
                       szMark2());
 }

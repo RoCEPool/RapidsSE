@@ -285,6 +285,25 @@ namespace STORE
     void vValidateBench(void);
     void vValidateChildren(Card* pCard, i8 iDepth);
 
+    Stz* pFMT_CAT_LEFT           (void) { return "%s"_Stz; }
+    Stz* pFMT_CAT_RIGHT          (void) { return "%18s"_Stz; }
+    Stz* pFMT_DOTS               (void) { return "%s%lld"_Stz; }
+    Stz* pFMT_ENUM               (void) { return "%s"_Stz; }
+    Stz* pFMT_FACET_UNKNOWN      (void) { return "%s"_Stz; }
+    Stz* pFMT_FACET_SECONDARY    (void) { return "<%s"_Stz; }
+    Stz* pFMT_FACET_PRIMARY      (void) { return "%s"_Stz; }
+    Stz* pFMT_FACET_HEADER       (void) { return "==%02lld %c--------------"_Stz; }
+    Stz* pFMT_FACET_MARKS        (void) { return "%s%s"_Stz; }
+    Stz* pFMT_NAME_LEFT          (void) { return "%s"_Stz; }
+    Stz* pFMT_NAME_RIGHT         (void) { return "%18s"_Stz; }
+    Stz* pFMT_PPY_INTEGER        (void) { return "}%s=%lld"_Stz; }
+    Stz* pFMT_PPY_INTEGER_decode (void) { return "}%s"_Stz; }
+    Stz* pFMT_PPY_STRING         (void) { return "}%s=%s"_Stz; }
+    Stz* pFMT_PPY_STRING_decode  (void) { return "}%s"_Stz; }
+    Stz* pFMT_PPY_SEQUENCE       (void) { return "#%lld"_Stz; }
+    Stz* pFMT_SPACES             (void) { return "%s"_Stz; }
+    Stz* pFMT_TYPE_LENGTH        (void) { return "%s%lld"_Stz; }
+
   private:
     Footer* aFooter(void);
   };
