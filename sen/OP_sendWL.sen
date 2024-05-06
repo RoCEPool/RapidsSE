@@ -20,6 +20,9 @@
 
   PipeIn[]\clear [op].pipeout
 
+  // Send the welcome message to the client
+  "RapidsSE" Socket[].sendStr discard
+
   true
 ;
 

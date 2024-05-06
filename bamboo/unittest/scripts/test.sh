@@ -28,6 +28,7 @@ CONN_STORM_SH="${DIR}/../harnesses/connectionStorm/connectionStorm.sh"
 
 COMMON_FN="${DIR}/common.fn"
 BOOTSTRAP_COMMON_FN="${BOOTSTRAP_DIR}/common.fn"
+BOOTSTRAP_BOOT_FN="${BOOTSTRAP_DIR}/boot.fn"
 
 readonly SCRIPT_NAME
 readonly DIR
@@ -39,6 +40,7 @@ readonly RESULTS_DIR
 
 readonly COMMON_FN
 readonly BOOTSTRAP_COMMON_FN
+readonly BOOTSTRAP_BOOT_FN
 
 # Set to 1 to print debug messages in Bamboo.
 readonly DEBUG=0
@@ -70,6 +72,11 @@ fi
 if [ -z "${__COMMON_FN:-}" ] ; then
   #shellcheck source=../../../bootstrap/common.fn
   source "${BOOTSTRAP_COMMON_FN}" || { >&2 echo "Could not load ${BOOTSTRAP_COMMON_FN}"; exit 1; }
+fi
+
+if [ -z "${__BOOT_FN:-}" ] ; then
+  #shellcheck source=../../../bootstrap/boot.fn
+  source "${BOOTSTRAP_BOOT_FN}" || { >&2 echo "Could not load ${BOOTSTRAP_BOOT_FN}"; exit 1; }
 fi
 
 
@@ -441,26 +448,6 @@ if ! STATUS_OUTPUT="$("${STATUS_SCRIPT}" 2>&1)" ; then
   exit 1
 fi
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# Run SETH and check the return value
-echo -e "\n"
-echo "=========================================================="
-echo "  Starting SETH tests"
-echo "=========================================================="
-
-TEST_HARNESSES_RUN=$((TEST_HARNESSES_RUN + 1))
-if runSethTest; then
-  SETH_RESULT="Success"
-  TEST_HARNESSES_COMPLETED=$((TEST_HARNESSES_COMPLETED + 1))
-else
-  SETH_RESULT="Failure"
-  TEST_HARNESSES_ABORTED=$((TEST_HARNESSES_ABORTED + 1))
-fi
-
-echo "=========================================================="
-echo "  Finished running SETH tests. Result: ${SETH_RESULT}"
-echo "=========================================================="
-echo -e "\n"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Run the Connection Storm test and check the return value
@@ -483,5 +470,35 @@ echo "  Finished running ConnectionStorm test. Result: ${CONNECTION_STORM_RESULT
 echo "=========================================================="
 echo -e "\n"
 
+if ! isClusterRunning ; then
+  exit 1
+fi
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Run SETH and check the return value
+echo -e "\n"
+echo "=========================================================="
+echo "  Starting SETH tests"
+echo "=========================================================="
+
+TEST_HARNESSES_RUN=$((TEST_HARNESSES_RUN + 1))
+if runSethTest; then
+  SETH_RESULT="Success"
+  TEST_HARNESSES_COMPLETED=$((TEST_HARNESSES_COMPLETED + 1))
+else
+  SETH_RESULT="Failure"
+  TEST_HARNESSES_ABORTED=$((TEST_HARNESSES_ABORTED + 1))
+fi
+
+echo "=========================================================="
+echo "  Finished running SETH tests. Result: ${SETH_RESULT}"
+echo "=========================================================="
+echo -e "\n"
+
+if ! isClusterRunning ; then
+  exit 1
+fi
+
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # TODO: Add any other tests here
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

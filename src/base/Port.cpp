@@ -243,6 +243,22 @@ bool Port::bAcceptClient(int& iSocketId, SysCall& roSysCall)
          ntohs(this->m_xClientAddr.sin_port));
   
   if (AM::bAttached()) AM::pResources()->vIncSocketOpen();
+
+  // Turn off socket address reuse on the accepted socket
+  int iOpt = 0;
+  int iResult = setsockopt(m_iSocketFd
+      ,SOL_SOCKET     // setting socket-level option
+      ,SO_REUSEADDR
+      ,(void*)&iOpt
+      ,sizeof(iOpt)
+  );
+
+  if (C_UNKNOWN == iResult) {
+    roSysCall.vError(errno);
+    close(iSocketId);
+    iSocketId = C_UNKNOWN;
+    return false;
+  }
   
   roSysCall.vSuccess();
   return true;
@@ -473,7 +489,7 @@ bool Port::bCreateListeningPort(int i4PortNo, SysCall& roSysCall)
   
   m_iSocketFd = socket(AF_INET
                       ,SOCK_STREAM
-                      ,0
+                      ,6  // tcp
                       );
   
   if (C_UNKNOWN == m_iSocketFd) {

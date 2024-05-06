@@ -1893,6 +1893,7 @@ void vJobIdLastJobIdFetch(void);
   void vSocketRecvObject(void);
   void vSocketRecvWLMsg(void);
   void vSocketSendObject(void);
+  void vSocketSendStr(void);
   void vSocketSendWLMsg(void);
   void vSocketSet(void);
   void vSocketSuccessFetch(void);

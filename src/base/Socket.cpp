@@ -457,6 +457,29 @@ bool Socket::bSendObject(Object* pObject, SysCall& roSysCall, eSY eSendWhy)
 }
 
 /*----------------------------------------------------------------------------*/
+/* send an ascii string                                                       */
+/*----------------------------------------------------------------------------*/
+bool Socket::bSendStr(String* pStr, SysCall& roSysCall, bool bIncNullTerminator)
+{
+  _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
+  ASSERT(pStr);
+  ASSERT(pStr->nLength() > 0);
+
+  roSysCall.vClear();
+
+  i8 nBytes = pStr->nLength() + (bIncNullTerminator ? 1 : 0);
+
+  bool bResult = bBytesSend(pStr->azStr(), nBytes,roSysCall);
+
+  if (bResult) {
+    m_pTotup->vAdd(CN_PAYLOADOBJ,nBytes);
+    m_pWhyTot->vAdd(SY_NONE,nBytes);
+  }
+
+  return bResult;
+}
+
+/*----------------------------------------------------------------------------*/
 /* send an object                                                             */
 /*----------------------------------------------------------------------------*/
 bool Socket::bSendWLMsg(WLP::PayloadObj* pPayloadObj, SysCall& roSysCall, eSY eSendWhy)

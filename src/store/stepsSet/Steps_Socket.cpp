@@ -67,6 +67,7 @@ void Step::vAddSteps_Socket(void)
   vAddStep("Socket[].recvObject"_Stz, &Step::vSocketRecvObject);
   vAddStep("Socket[].recvWLMsg"_Stz,  &Step::vSocketRecvWLMsg);
   vAddStep("Socket[].sendObject"_Stz, &Step::vSocketSendObject);
+  vAddStep("Socket[].sendStr"_Stz,    &Step::vSocketSendStr);
   vAddStep("Socket[].sendWLMsg"_Stz,  &Step::vSocketSendWLMsg);
   vAddStep("Socket[].set"_Stz,        &Step::vSocketSet);
   vAddStep("Socket[].success@"_Stz,   &Step::vSocketSuccessFetch);
@@ -434,6 +435,27 @@ void Step::vSocketSendObject(void)
   EXIT();
 }
 
+
+/*----------------------------------------------------------------------------*/
+/* Socket[].vSocketSendStr: send an ascii string via a socket                 */
+/*----------------------------------------------------------------------------*/
+void Step::vSocketSendStr(void)
+{
+  ENTRY();
+
+  s256 sStr;
+  m_pDataStack->vPopStr(sStr, __func__);
+
+  SysCall oSysCall;
+  Socket* pSocket = *m_pLogicUnit->m_xpSocket;
+
+
+  bool bResult = pSocket->bSendStr(sStr,oSysCall, false);
+
+  m_pDataStack->vPushInt(bResult);
+
+  EXIT();
+}
 
 /*----------------------------------------------------------------------------*/
 /* Socket[].sendWLMsg: send wireline message via a socket                     */
