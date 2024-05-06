@@ -59,7 +59,6 @@ Stz* P_Payload      = "bPayload"_Stz;
 Stz* P_PrmOdn       = "szPrmOdn"_Stz;
 Stz* P_Permutation  = "i_Permutation"_Stz;
 Stz* P_Pointer      = "pPointer"_Stz;
-Stz* P_ProjBumped   = "nProjBumped"_Stz;
 Stz* P_SendKind     = "eSendKind"_Stz;
 Stz* P_Smoothed     = "bSmoothed"_Stz;
 Stz* P_StageTopo    = "eStageTopo"_Stz;

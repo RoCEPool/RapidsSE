@@ -192,7 +192,6 @@ extern Stz* P_PrmOdn;
 extern Stz* P_Payload;
 extern Stz* P_Permutation;
 extern Stz* P_Pointer;
-extern Stz* P_ProjBumped;
 extern Stz* P_SendKind;
 extern Stz* P_Smoothed;
 extern Stz* P_StageTopo;

@@ -72,7 +72,6 @@ void Card_Expr::vAssemble_injCrlRsl(CardIter* pCI)
     pCI->E.p_expr->vApplyCast_x(pCI->E.p_key->xCast());
 
     pCI->E.p_emit->vBump_expCol(pCI);
-    pCI->E.p_key->pSymbol()->Y_vSet(P_ProjBumped);
   }
 
   pCI->E.p_expr->pSymbol()->Y_vSet(P_InjCrlKey);

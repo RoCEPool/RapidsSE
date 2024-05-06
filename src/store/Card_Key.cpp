@@ -62,7 +62,7 @@ void Card_Key::vAssemble_injCrlKey(CardIter* pCI)
 /**Z_KEY_DIRECTION assemble*/
 
   pCI->E.p_key = new Card_Key;
-  pCI->E.p_key->pSymbol()->Y_vSet(P_InjCrlKey);
+  //pCI->E.p_key->pSymbol()->Y_vSet(P_InjCrlKey);
 
   eAL e_Level = (eAL) pCI->E.p_level->pSymbol()->Y_iGet(P_Level);
   if (AL_PARTITION == e_Level) {

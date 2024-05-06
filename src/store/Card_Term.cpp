@@ -206,18 +206,18 @@ eTE Card_Term::eEvalTerm(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (1 == pSymbol()->nFacets()) {
-         if (pSymbol()->bHasFacet("and"_Stz)) return TE_AND;
-    else if (pSymbol()->bHasFacet("or"_Stz)) return TE_OR;
-    else if (pSymbol()->bHasFacet("not"_Stz)) return TE_NOT;
-    else if (pSymbol()->bHasFacet("}"_Stz)) return TE_EXECUTE;
-    else if (pSymbol()->bHasFacet("exists"_Stz)) return TE_EXISTS;
-    else if (pSymbol()->bHasFacet("in"_Stz)) return TE_IN;
+         if (pSymbol()->bHasFacet("and"_Stz))       return TE_AND;
+    else if (pSymbol()->bHasFacet("or"_Stz))        return TE_OR;
+    else if (pSymbol()->bHasFacet("not"_Stz))       return TE_NOT;
+    else if (pSymbol()->bHasFacet("}"_Stz))         return TE_EXECUTE;
+    else if (pSymbol()->bHasFacet("exists"_Stz))    return TE_EXISTS;
+    else if (pSymbol()->bHasFacet("in"_Stz))        return TE_IN;
     else if (pSymbol()->bHasFacet("notExists"_Stz)) return TE_NOTEXISTS;
-    else if (pSymbol()->bHasFacet("notIn"_Stz)) return TE_NOTIN;
+    else if (pSymbol()->bHasFacet("notIn"_Stz))     return TE_NOTIN;
   }
 
-       if (pSymbol()->bHasFacet(SF_RLN_OP))     return TE_RELNOP;
-  else if (pSymbol()->bHasFacet(SF_BOL_FN))     return TE_BOOLFN;
+       if (pSymbol()->bHasFacet(SF_RLN_OP))         return TE_RELNOP;
+  else if (pSymbol()->bHasFacet(SF_BOL_FN))         return TE_BOOLFN;
 
   else return TE_OTHER;
 }
