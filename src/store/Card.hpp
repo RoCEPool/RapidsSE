@@ -441,15 +441,19 @@ namespace STORE
     void vPrintProperties(CardIter* pCI, Ribbon* pRibbon, i8 iDepth);
 
     void vCat(i8& ri_Char, Ribbon* pRibbon, Stz* szStr, bool bRight=false);
+    void vCatAsterisk(i8& ri_Char, Ribbon* pRibbon);
     void vCatBlank(i8& ri_Char, Ribbon* pRibbon);
     void vCatBracket(i8& ri_Char, Ribbon* pRibbon, CardIter* pCI);
+    void vCatDash(i8& ri_Char, Ribbon* pRibbon);
     void vCatDots(i8& ri_Char, Ribbon* pRibbon, i8 iDepth);
     void vCatEnum(i8& ri_Char, Ribbon* pRibbon);
     void vCatFacet(i8& ri_Char, Ribbon* pRibbon, i8 i_Facet, bool bSecondary, bool bRight=false);
-    void vCatName(i8& ri_Char, Ribbon* pRibbon, i8 iDepth);
     void vCatMarks(i8& ri_Char, Ribbon* pRibbon);
+    void vCatName(i8& ri_Char, Ribbon* pRibbon, i8 iDepth);
+    void vCatPlus(i8& ri_Char, Ribbon* pRibbon);
     void vCatProperty(i8& ri_Char, Ribbon* pRibbon, i8 i_Property);
     void vCatSequence(i8& ri_Char, Ribbon* pRibbon);
+    void vCatSpaces(i8& ri_Char, Ribbon* pRibbon, i8 nSpaces);
     void vCatTblSyn(i8& ri_Char, Ribbon* pRibbon);
     void vCatText(i8& ri_Char, Ribbon* pRibbon, Stz* szStr);
     void vCatTypeLength(i8& ri_Char, Ribbon* pRibbon, i8 i_Facet);
@@ -462,6 +466,7 @@ namespace STORE
     void vFormatName(String* pString, i8 iDepth, bool bRight=false);
     void vFormatProperty(String* pString, i8 i_Property);
     void vFormatSequence(String* pString);
+    void vFormatSpaces(String* pString, i8 nSpaces);
     void vFormatTblSyn(String* pString);
     void vFormatTypeLength(String* pString, i8 i_Facet);
 

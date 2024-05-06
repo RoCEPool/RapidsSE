@@ -2145,8 +2145,7 @@ void Card::vPrint_depth0(CardIter* pCI, Ribbon* pRibbon, i8 iDepth)
   i8 i_Char = C_UNKNOWN;
 
   vCatMarks(i_Char,pRibbon);
-  vCatDots(i_Char,pRibbon,iDepth);
-  vCatBracket(i_Char,pRibbon,pCI);
+  vCatAsterisk(i_Char,pRibbon);
   vCatName(i_Char,pRibbon,iDepth);
   vCatBlank(i_Char,pRibbon);
   vCatSequence(i_Char,pRibbon);
@@ -2155,6 +2154,24 @@ void Card::vPrint_depth0(CardIter* pCI, Ribbon* pRibbon, i8 iDepth)
   vPrintFacets(pCI,pRibbon, iDepth);
   vPrintProperties(pCI,pRibbon, iDepth);
 }
+///*----------------------------------------------------------------------------*/
+//void Card::vPrint_depth0(CardIter* pCI, Ribbon* pRibbon, i8 iDepth)
+//{
+//  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+//
+//  i8 i_Char = C_UNKNOWN;
+//
+//  vCatMarks(i_Char,pRibbon);
+//  vCatDots(i_Char,pRibbon,iDepth);
+//  vCatBracket(i_Char,pRibbon,pCI);
+//  vCatName(i_Char,pRibbon,iDepth);
+//  vCatBlank(i_Char,pRibbon);
+//  vCatSequence(i_Char,pRibbon);
+//  pRibbon->vNewLine();
+//
+//  vPrintFacets(pCI,pRibbon, iDepth);
+//  vPrintProperties(pCI,pRibbon, iDepth);
+//}
 
 /*----------------------------------------------------------------------------*/
 /* print depth 1                                                              */
@@ -2166,8 +2183,7 @@ void Card::vPrint_depth1(CardIter* pCI, Ribbon* pRibbon, i8 iDepth)
   i8 i_Char = C_UNKNOWN;
 
   vCatMarks(i_Char,pRibbon);
-  vCatDots(i_Char,pRibbon,iDepth);
-  vCatBracket(i_Char,pRibbon,pCI);
+  vCatPlus(i_Char,pRibbon);
   vCatName(i_Char,pRibbon,iDepth);
   vCatBlank(i_Char,pRibbon);
   vCatSequence(i_Char,pRibbon);
@@ -2176,6 +2192,24 @@ void Card::vPrint_depth1(CardIter* pCI, Ribbon* pRibbon, i8 iDepth)
   vPrintFacets(pCI,pRibbon, iDepth);
   vPrintProperties(pCI,pRibbon, iDepth);
 }
+///*----------------------------------------------------------------------------*/
+//void Card::vPrint_depth1(CardIter* pCI, Ribbon* pRibbon, i8 iDepth)
+//{
+//  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+//
+//  i8 i_Char = C_UNKNOWN;
+//
+//  vCatMarks(i_Char,pRibbon);
+//  vCatDots(i_Char,pRibbon,iDepth);
+//  vCatBracket(i_Char,pRibbon,pCI);
+//  vCatName(i_Char,pRibbon,iDepth);
+//  vCatBlank(i_Char,pRibbon);
+//  vCatSequence(i_Char,pRibbon);
+//  pRibbon->vNewLine();
+//
+//  vPrintFacets(pCI,pRibbon, iDepth);
+//  vPrintProperties(pCI,pRibbon, iDepth);
+//}
 
 /*----------------------------------------------------------------------------*/
 /* print depth 2                                                              */
@@ -2230,8 +2264,10 @@ void Card::vPrint_enum(CardIter* pCI, Ribbon* pRibbon, i8 iDepth)
 
   i8 i_Char = C_UNKNOWN;
   vCatMarks(i_Char,pRibbon);
-  vCatDots(i_Char,pRibbon,iDepth);
-  vCatBracket(i_Char,pRibbon,pCI);
+  if (iDepth > 1) {
+    vCatDots(i_Char, pRibbon, iDepth);
+    vCatBracket(i_Char, pRibbon, pCI);
+  }
   vCatEnum(i_Char,pRibbon);
   pRibbon->vNewLine();
 }
@@ -2297,13 +2333,14 @@ void Card::vPrint_expr(CardIter* pCI, Ribbon* pRibbon, i8 iDepth)
 void Card::vPrint_table(CardIter* pCI, Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  UNUSED(pCI);
 
   i8 i_Char = C_UNKNOWN;
 
   vCatMarks(i_Char, pRibbon);
-  vCatDots(i_Char,pRibbon, iDepth);
-  vCatBracket(i_Char,pRibbon,pCI);
+  vCatPlus(i_Char,pRibbon);
   vCatName(i_Char,pRibbon, iDepth);
+
   vCatTblSyn(i_Char,pRibbon);
 
   pRibbon->vNewLine();
@@ -2330,6 +2367,13 @@ void Card::vPrintFacets(CardIter* pCI, Ribbon* pRibbon, i8 iDepth)
 
   if (!m_xSymbol.bHasFacets())
     return;
+
+  if (1 == m_xSymbol.nFacets() && ! m_xSymbol.bValidType()) {
+    i8 i_Char = C_UNKNOWN;
+    vCatFacet(i_Char,pRibbon,C_UNKNOWN,false,true);
+    pRibbon->vNewLine();
+    return;
+  }
 
   for (i8 i_Facet = 0; i_Facet < m_xSymbol.nFacets(); i_Facet++) {
     i8 i_Char = C_UNKNOWN;
@@ -2390,9 +2434,19 @@ void Card::vCat(i8& ri_Char, Ribbon* pRibbon, Stz* szStr, bool bRight)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   if (bRight)
-    pRibbon->vSprint(ri_Char, "%20s"_Stz, szStr);
+    pRibbon->vSprint(ri_Char, "%18s"_Stz, szStr);
   else
     pRibbon->vSprint(ri_Char, "%s"_Stz, szStr);
+}
+
+/*----------------------------------------------------------------------------*/
+/* cat asterisk                                                               */
+/*----------------------------------------------------------------------------*/
+void Card::vCatAsterisk(i8& ri_Char, Ribbon* pRibbon)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  vCat(ri_Char, pRibbon,"*"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2419,6 +2473,16 @@ void Card::vCatBracket(i8& ri_Char, Ribbon* pRibbon, CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
+/* cat dash                                                                   */
+/*----------------------------------------------------------------------------*/
+void Card::vCatDash(i8& ri_Char, Ribbon* pRibbon)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  vCat(ri_Char, pRibbon,"-"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
 /* cat dots                                                                   */
 /*----------------------------------------------------------------------------*/
 void Card::vCatDots(i8& ri_Char, Ribbon* pRibbon, i8 iDepth)
@@ -2440,7 +2504,7 @@ void Card::vCatEnum(i8& ri_Char, Ribbon* pRibbon)
   s256 sEnum;
   vFormatEnum(sEnum);
 
-  vCat(ri_Char, pRibbon,sEnum);
+  vCat(ri_Char, pRibbon, sEnum, true);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2457,6 +2521,18 @@ void Card::vCatFacet(i8& ri_Char, Ribbon* pRibbon, i8 i_Facet,
 }
 
 /*----------------------------------------------------------------------------*/
+/* cat marks                                                                  */
+/*----------------------------------------------------------------------------*/
+void Card::vCatMarks(i8& ri_Char, Ribbon* pRibbon)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  s256 sMarks;
+  vFormatMarks(sMarks);
+  vCat(ri_Char, pRibbon, sMarks);
+}
+
+/*----------------------------------------------------------------------------*/
 /* print                                                                      */
 /*----------------------------------------------------------------------------*/
 void Card::vCatName(i8& ri_Char, Ribbon* pRibbon, i8 iDepth)
@@ -2470,15 +2546,13 @@ void Card::vCatName(i8& ri_Char, Ribbon* pRibbon, i8 iDepth)
 }
 
 /*----------------------------------------------------------------------------*/
-/* cat marks                                                                  */
+/* cat plus                                                                   */
 /*----------------------------------------------------------------------------*/
-void Card::vCatMarks(i8& ri_Char, Ribbon* pRibbon)
+void Card::vCatPlus(i8& ri_Char, Ribbon* pRibbon)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  s256 sMarks;
-  vFormatMarks(sMarks);
-  vCat(ri_Char, pRibbon, sMarks);
+  vCat(ri_Char, pRibbon,"+"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2503,6 +2577,18 @@ void Card::vCatSequence(i8& ri_Char, Ribbon* pRibbon)
   s256 sSequence;
   vFormatSequence(sSequence);
   vCat(ri_Char, pRibbon,sSequence);
+}
+
+/*----------------------------------------------------------------------------*/
+/* cat spaces                                                                   */
+/*----------------------------------------------------------------------------*/
+void Card::vCatSpaces(i8& ri_Char, Ribbon* pRibbon, i8 nSpaces)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  s256 sDots;
+  vFormatSpaces(sDots,nSpaces);
+  vCat(ri_Char, pRibbon,sDots);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2578,16 +2664,24 @@ void Card::vFormatFacet(String* pString, i8 i_Facet, bool bSecondary)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Facet* aFacet = m_xSymbol.aFacet(i_Facet);
+  Facet* aFacet;
 
-  if (bSecondary)
-    pString->vSprint("<%s~%lld"_Stz,
-                        aFacet->m_sFacet.azChar(),
-                        i_Facet);
-  else
-    pString->vSprint("%s~%lld"_Stz,
-                     aFacet->m_sFacet.azChar(),
-                     i_Facet);
+  if (C_UNKNOWN == i_Facet) {
+    aFacet = m_xSymbol.aFacet(0);
+    pString->vSprint("%s"_Stz,
+                     aFacet->m_sFacet.azChar());
+  }
+  else {
+    aFacet = m_xSymbol.aFacet(i_Facet);
+    if (bSecondary)
+      pString->vSprint("<%s~%lld"_Stz,
+                       aFacet->m_sFacet.azChar(),
+                       i_Facet);
+    else
+      pString->vSprint("%s~%lld"_Stz,
+                       aFacet->m_sFacet.azChar(),
+                       i_Facet);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2714,6 +2808,20 @@ void Card::vFormatSequence(String* pString)
 
   pString->vCatSprint("#%lld"_Stz,
                       m_iSequence);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card::vFormatSpaces(String* pString, i8 nSpaces)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  UNUSED(pString);
+
+  pString->vCatSprint("%s%lld"_Stz,
+                      Stz::szSpaces(nSpaces),
+                      m_i_Child);
 }
 
 /*----------------------------------------------------------------------------*/
