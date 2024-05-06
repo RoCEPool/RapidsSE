@@ -1604,7 +1604,6 @@ Card* CardIter::pMember(eCK eCard)
     case CK_o_FILTER:       return E.p_filter;
     case CK_FILTPRED:       return E.p_filtPred;
     case CK_FILTPREDLIST:   return E.p_filtPredList;
-    case CK_o_FLAT:         return E.p_flat;
     case CK_o_FOLD:         return E.p_fold;
     case CK_o_FROM:         return E.p_from;
 
@@ -1749,7 +1748,6 @@ void CardIter::vMember(eCK eCard, Card* pCard)
     case CK_o_FILTER: E.p_filter            = _pCard_Filter(pCard); break;
     case CK_FILTPRED: E.p_filtPred          = _pCard_FiltPred(pCard); break;
     case CK_FILTPREDLIST: E.p_filtPredList      = _pCard_FiltPredList(pCard); break;
-    case CK_o_FLAT: E.p_flat              = _pCard_Flat(pCard); break;
     case CK_o_FOLD: E.p_fold              = _pCard_Fold(pCard); break;
     case CK_o_FROM: E.p_from              = _pCard_From(pCard); break;
 
@@ -2315,7 +2313,6 @@ void CardIter::vResetMembers(void)
   E.p_filter           = nullptr;
   E.p_filtPred         = nullptr;
   E.p_filtPredList     = nullptr;
-  E.p_flat             = nullptr;
   E.p_fold             = nullptr;
   E.p_from             = nullptr;
 
@@ -2606,7 +2603,6 @@ void CardIter::vValidateChildren(Card* pCard, i8 iDepth)
       case CK_o_FILTER:       E.p_filter->vValidate(this, iDepth, pCard);  break;
       case CK_FILTPRED:       E.p_filtPred->vValidate(this, iDepth, pCard);  break;
       case CK_FILTPREDLIST:   E.p_filtPredList->vValidate(this, iDepth, pCard);  break;
-      case CK_o_FLAT:         E.p_flat->vValidate(this, iDepth, pCard);  break;
       case CK_o_FOLD:         E.p_fold->vValidate(this, iDepth, pCard);  break;
       case CK_o_FROM:         E.p_from->vValidate(this, iDepth, pCard);  break;
 

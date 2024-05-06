@@ -306,8 +306,7 @@ void Card_Deck::vValidate(CardIter* pCI)
       case CK_o_FILTER:       pCI->E.p_filter->vValidate(pCI, 1, this); break;
       case CK_FILTPRED:     pCI->E.p_filtPred->vValidate(pCI, 1, this); break;
       case CK_FILTPREDLIST: pCI->E.p_filtPredList->vValidate(pCI, 1, this); break;
-      case CK_o_FLAT:         pCI->E.p_flat->vValidate(pCI, 1, this); break;
-      case CK_o_FOLD:         pCI->E.p_fold->vValidate(pCI, 1, this); break;
+       case CK_o_FOLD:         pCI->E.p_fold->vValidate(pCI, 1, this); break;
       case CK_o_FROM:         pCI->E.p_from->vValidate(pCI, 1, this); break;
 
       case CK_o_GBYAGG:       pCI->E.p_gbyAgg->vValidate(pCI, 1, this); break;

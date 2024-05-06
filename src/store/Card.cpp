@@ -3306,24 +3306,6 @@ Card_FiltPredList* Card::pSub_filtPredList(bool bNotNull)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#include "Card_Flat.hpp"
-Card_Flat* Card::pSub_flat(bool bNotNull)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_Flat* p_flat =
-      _pCard_Flat(pFindSubCard(CK_o_FOLD));
-
-  if (bNotNull && !p_flat) {
-    NEVER_REACH
-  }
-
-  return p_flat;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 #include "Card_Fold.hpp"
 Card_Fold* Card::pSub_fold(bool bNotNull)
 {

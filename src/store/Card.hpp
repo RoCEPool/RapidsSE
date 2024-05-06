@@ -57,7 +57,6 @@ namespace STORE
   class Card_Filter;
   class Card_FiltPred;
   class Card_FiltPredList;
-  class Card_Flat;
   class Card_Fold;
   class Card_From;
 
@@ -500,7 +499,6 @@ namespace STORE
     Card_FiltPred*      pSub_filtPred(bool bNotNull=false);
     Card_FiltPredList*  pSub_filtPredList(bool bNotNull=false);
     Card_Filter*        pSub_filter(bool bNotNull=false);
-    Card_Flat*          pSub_flat(bool bNotNull=false);
     Card_Fold*          pSub_fold(bool bNotNull=false);
     Card_From*          pSub_from(bool bNotNull=false);
     Card_GbyAgg*        pSub_gbyAgg(bool bNotNull=false);
