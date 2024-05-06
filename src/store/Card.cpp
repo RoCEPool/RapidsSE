@@ -2643,7 +2643,9 @@ void Card::vFormatDots(String* pString, i8 iDepth)
 
   UNUSED(pString);
 
-  pString->vCatSprint("%s%lld"_Stz,
+  static Stz* FMT_DOTS   = "%s%lld"_Stz;
+
+  pString->vCatSprint(FMT_DOTS,
                       Stz::szDots(iDepth - 1),
                       m_i_Child);
 }
@@ -2655,12 +2657,14 @@ void Card::vFormatEnum(String* pString)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
+  static Stz* FMT_ENUM   = "%s"_Stz;
+
   Stz* szGroup_Enum = szFacet(SF_ENUM);
   eEG eGroup = Symbol::eEval_enumGroup(szGroup_Enum);
   i8  iEnum  = Symbol::iEval_enum(szGroup_Enum);
   Stz* szEnum = AM::szEnumText(eGroup,iEnum);
 
-  pString->vCatSprint("%s"_Stz, szEnum);
+  pString->vCatSprint(FMT_ENUM, szEnum);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2672,22 +2676,28 @@ void Card::vFormatFacet(String* pString, i8 i_Facet, bool bSecondary, bool bFace
 
   Facet* aFacet;
 
+  static Stz* FMT_FACET_UNKNOWN   = "%s"_Stz;
+  static Stz* FMT_FACET_SECONDARY = "<%s"_Stz;
+  static Stz* FMT_FACET_PRIMARY   = "%s"_Stz;
+
+  static Stz* FMT_FACET_NO        = "~%lld"_Stz;
+
   if (C_UNKNOWN == i_Facet) {
     aFacet = m_xSymbol.aFacet(0);
-    pString->vSprint("%s"_Stz,
+    pString->vSprint(FMT_FACET_UNKNOWN,
                      aFacet->m_sFacet.azChar());
   }
   else {
     aFacet = m_xSymbol.aFacet(i_Facet);
     if (bSecondary)
-      pString->vSprint("<%s"_Stz,
+      pString->vSprint(FMT_FACET_SECONDARY,
                        aFacet->m_sFacet.azChar());
     else
-      pString->vSprint("%s"_Stz,
+      pString->vSprint(FMT_FACET_PRIMARY,
                        aFacet->m_sFacet.azChar());
 
     if (bFacetNo)
-      pString->vCatSprint("~%lld"_Stz,
+      pString->vCatSprint(FMT_FACET_NO,
                           i_Facet);
   }
 }
@@ -2698,6 +2708,8 @@ void Card::vFormatFacet(String* pString, i8 i_Facet, bool bSecondary, bool bFace
 void Card::vFormatHeader(String* pString)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  static Stz* FMT_FACET_HEADER        = "==%02lld %c--------------"_Stz;
 
   eAL eLevel = AL_NONE;
   if (Card_Level* p_level = pSub_level())
@@ -2712,11 +2724,12 @@ void Card::vFormatHeader(String* pString)
   }
 
 #ifdef Z_NO_ADDRESSES
-  pString->vCatSprint("==%02lld %c--------------"_Stz,
+  pString->vCatSprint(FMT_FACET_HEADER,
                       m_i_Child,
                       cLevel);
 #else
-  pString->vCatSprint("==%02lld %c--%10p--"_Stz,
+  static Stz* FMT_FACET_HEADER_addr   = "==%02lld %c--%10p--"_Stz;
+  pString->vCatSprint(FMT_FACET_HEADER_addr,
                       m_i_Child,
                       cLevel,
                       ((char *) this) - (char *) AM::SYSARGS::aRegionAddr());
@@ -2730,7 +2743,9 @@ void Card::vFormatMarks(String* pString)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  pString->vCatSprint("%s%s%"_Stz,
+  static Stz* FMT_FACET_HEADER = "%s%s"_Stz;
+
+  pString->vCatSprint(FMT_FACET_HEADER,
                       szMark1(),
                       szMark2());
 }
@@ -2741,6 +2756,9 @@ void Card::vFormatMarks(String* pString)
 void Card::vFormatName(String* pString, i8 iDepth, bool bJustify_right)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  static Stz* FMT_NAME_LEFT  = "%s"_Stz;
+  static Stz* FMT_NAME_RIGHT = "%18s"_Stz;
 
   s32 sName(szCardNm());
   if (0 == iDepth)
@@ -2755,10 +2773,10 @@ void Card::vFormatName(String* pString, i8 iDepth, bool bJustify_right)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (bJustify_right)
-    pString->vCatSprint("%18s"_Stz,
+    pString->vCatSprint(FMT_NAME_RIGHT,
                         sName.szStz());
   else
-    pString->vCatSprint("%s"_Stz,
+    pString->vCatSprint(FMT_NAME_LEFT,
                         sName.szStz());
 }
 
@@ -2768,6 +2786,11 @@ void Card::vFormatName(String* pString, i8 iDepth, bool bJustify_right)
 void Card::vFormatProperty(String* pString, i8 i_Property)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  static Stz* FMT_PPY_INTEGER        = "}%s=%lld"_Stz;
+  static Stz* FMT_PPY_INTEGER_decode = "}%s"_Stz;
+  static Stz* FMT_PPY_STRING         = "}%s=%s"_Stz;
+  static Stz* FMT_PPY_STRING_decode  = "}%s"_Stz;
 
   eTN ePpyTkn = pSymbol()->Y_ePpyTkn(i_Property);
 
@@ -2779,10 +2802,10 @@ void Card::vFormatProperty(String* pString, i8 i_Property)
 
       Stz* szDecode = szDecodeEnum(szPpyNm, iPpyVal);
       if (szDecode)
-        pString->vCatSprint("}%s"_Stz,
+        pString->vCatSprint(FMT_PPY_INTEGER_decode,
                             szDecode);
       else
-        pString->vCatSprint("}%s=%lld"_Stz,
+        pString->vCatSprint(FMT_PPY_INTEGER,
                             szPpyNm,
                             iPpyVal);
       break;
@@ -2793,10 +2816,10 @@ void Card::vFormatProperty(String* pString, i8 i_Property)
       Stz* szPpyVal = pSymbol()->Y_szGet(i_Property);
 
       if (szPpyVal->bSame("y"_Stz))
-        pString->vCatSprint("}%s"_Stz,
+        pString->vCatSprint(FMT_PPY_STRING_decode,
                             szPpyNm);
       else
-        pString->vCatSprint("}%s=%s"_Stz,
+        pString->vCatSprint(FMT_PPY_STRING,
                             szPpyNm,
                             szPpyVal);
       break;
@@ -2814,7 +2837,9 @@ void Card::vFormatSequence(String* pString)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  pString->vCatSprint("#%lld"_Stz,
+  static Stz* FMT_PPY_SEQUENCE  = "#%lld"_Stz;
+
+  pString->vCatSprint(FMT_PPY_SEQUENCE,
                       m_iSequence);
 }
 
@@ -2827,7 +2852,9 @@ void Card::vFormatSpaces(String* pString, i8 nSpaces)
 
   UNUSED(pString);
 
-  pString->vCatSprint("%s"_Stz,
+  static Stz* FMT_SPACES  = "%s"_Stz;
+
+  pString->vCatSprint(FMT_SPACES,
                       Stz::szSpaces(nSpaces));
 }
 
@@ -2849,7 +2876,9 @@ void Card::vFormatTypeLength(String* pString, i8 i_Facet)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
   UNUSED(i_Facet);
 
-  pString->vSprint("%s%lld"_Stz,
+  static Stz* FMT_TYPE_LENGTH  = "%s%lld"_Stz;
+
+  pString->vSprint(FMT_TYPE_LENGTH,
                    szCT_char[eCTVal()],
                    m_xSymbol.xCast().m_nTypeLength);
 }
