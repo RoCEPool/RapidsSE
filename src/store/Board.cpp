@@ -280,8 +280,8 @@ void Board::vPrintBoard(CardIter* pCI)
 
   vPinCards(pCI, pRibbon);
 
-  pRibbon->vDrawH('-',0);
-  pRibbon->vDrawH('-',2);
+  pRibbon->vDrawH('=',0);
+  pRibbon->vDrawH('=',2);
   pRibbon->vDrawH('=');
 
   vPinMargin(pRibbon);

@@ -34,9 +34,9 @@ Stz* aXF[XF_ENUMS]
   /* */ "XF_FLATTEN_74_H_A_NC_RO"_Stz,
   /* */ "XF_FLATTEN_ANCHOR_TABLE"_Stz,
   /* */ "XF_FLATTEN_DELETE_FOLD"_Stz,
+  /* */ "XF_FLATTEN_DELETE_LEFT_SUBQUERY"_Stz,
   /* */ "XF_FLATTEN_DERIVE_BOUNDS"_Stz,
   /* */ "XF_FLATTEN_JOIN_ORDERING"_Stz,
-  /* */ "XF_FLATTEN_LEFT_SUBQUERY"_Stz,
   /* */ "XF_FLATTEN_PREDICATE_PULLUP"_Stz,
   /* */ "XF_FLATTEN_PREDICATE_REPOSITION"_Stz,
   /* */ "XF_FLATTEN_PURGE_WHERE"_Stz,
@@ -108,26 +108,26 @@ Stz* aXF_desc[XF_ENUMS]
   /* */ "<to be supplied>"_Stz, // XF_EPILOG_X_STMCOL_TO_COLNM
   /* */ "<to be supplied>"_Stz, // XF_EPILOG_X_TBLCOL_TO_EXPCOL
 
-  /* */ "Flatten 10_F"_Stz,                  // XF_FLATTEN_10_F
-  /* */ "Flatten 24_W_A_C_RO"_Stz,           // XF_FLATTEN_24_W_A_C_RO
-  /* */ "Flatten 32_W_A_NC_I"_Stz,           // XF_FLATTEN_32_W_A_NC_I
-  /* */ "Flatten 34_W_A_NC_RO"_Stz,          // XF_FLATTEN_34_W_A_NC_RO
-  /* */ "Flatten 40_W_L_C_E"_Stz,            // XF_FLATTEN_40_W_L_C_E
-  /* */ "Flatten 52_W_L_NC_I_EXISTS"_Stz,    // XF_FLATTEN_52_W_L_NC_I_EXISTS
-  /* */ "Flatten 52_W_L_NC_I_JOIN"_Stz,      // XF_FLATTEN_52_W_L_NC_I_JOIN
-  /* */ "Flatten 53_W_L_NC_NI_EXISTS"_Stz,   // XF_FLATTEN_53_W_L_NC_NI_EXISTS
-  /* */ "Flatten 53_W_L_NC_NI_JOIN"_Stz,     // XF_FLATTEN_53_W_L_NC_NI_JOIN
-  /* */ "Flatten 74_H_A_NC_RO"_Stz,          // XF_FLATTEN_74_H_A_NC_RO
-  /* */ "anchor non re-orderable table"_Stz, // XF_FLATTEN_ANCHOR_TABLE
-  /* */ "delete fold card"_Stz,              // XF_FLATTEN_DELETE_FOLD
-  /* */ "derive index bounds"_Stz,           // XF_FLATTEN_DERIVE_BOUNDS
-  /* */ "re-order joins"_Stz,                // XF_FLATTEN_JOIN_ORDERING
-  /* */ "flatten left-most subquery"_Stz,    // XF_FLATTEN_LEFT_SUBQUERY
-  /* */ "pull-up predicates"_Stz,            // XF_FLATTEN_PREDICATE_PULLUP
-  /* */ "reposition predicates"_Stz,         // XF_FLATTEN_PREDICATE_REPOSITION
-  /* */ "delete empty where"_Stz,            // XF_FLATTEN_PURGE_WHERE
-  /* */ "flatten subquery"_Stz,              // XF_FLATTEN_SUBQUERY
-  /* */ "ExpCol $n to TblCol $$c.n"_Stz,     // XF_FLATTEN_X_EXPCOL_TO_TBLCOL
+  /* XF_FLATTEN_10_F                 */ "flatten 10_F by decision-tree"_Stz,
+  /* XF_FLATTEN_24_W_A_C_RO          */ "flatten 24_W_A_C_RO by decision-tree"_Stz,
+  /* XF_FLATTEN_32_W_A_NC_I          */ "flatten 32_W_A_NC_I by decision-tree"_Stz,
+  /* XF_FLATTEN_34_W_A_NC_RO         */ "flatten 34_W_A_NC_RO by decision-tree"_Stz,
+  /* XF_FLATTEN_40_W_L_C_E           */ "flatten 40_W_L_C_E by decision-tree"_Stz,
+  /* XF_FLATTEN_52_W_L_NC_I_EXISTS   */ "flatten 52_W_L_NC_I_EXISTS by decision-tree"_Stz,
+  /* XF_FLATTEN_52_W_L_NC_I_JOIN     */ "flatten 52_W_L_NC_I_JOIN by decision-tree"_Stz,
+  /* XF_FLATTEN_53_W_L_NC_NI_EXISTS  */ "flatten 53_W_L_NC_NI_EXISTS by decision-tree"_Stz,
+  /* XF_FLATTEN_53_W_L_NC_NI_JOIN    */ "flatten 53_W_L_NC_NI_JOIN by decision-tree"_Stz,
+  /* XF_FLATTEN_74_H_A_NC_RO         */ "flatten 74_H_A_NC_RO by decision-tree"_Stz,
+  /* XF_FLATTEN_ANCHOR_TABLE         */ "anchor non re-orderable table"_Stz,
+  /* XF_FLATTEN_DELETE_FOLD          */ "delete fold card"_Stz,
+  /* XF_FLATTEN_DELETE_LEFT_SUBQUERY */ "delete left-most subquery"_Stz,
+  /* XF_FLATTEN_DERIVE_BOUNDS        */ "derive index bounds from filter predicates"_Stz,
+  /* XF_FLATTEN_JOIN_ORDERING        */ "re-order joins"_Stz,
+  /* XF_FLATTEN_PREDICATE_PULLUP     */ "pull <where>/<filter> predicates up into <from>/<filter>"_Stz,
+  /* XF_FLATTEN_PREDICATE_REPOSITION */ "reposition predicates"_Stz,
+  /* XF_FLATTEN_PURGE_WHERE          */ "delete empty where"_Stz,
+  /* XF_FLATTEN_SUBQUERY             */ "flatten subquery"_Stz,
+  /* XF_FLATTEN_X_EXPCOL_TO_TBLCOL   */ "ExpCol $n to TblCol $$c.n"_Stz,
 
   /* */ "<to be supplied>"_Stz, // XF_OPTIMISE_AGGREG_TO_SORT_ORDAGG
   /* */ "<to be supplied>"_Stz, // XF_OPTIMISE_CULL_BOUND

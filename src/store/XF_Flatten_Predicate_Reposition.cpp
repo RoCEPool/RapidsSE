@@ -64,55 +64,44 @@ void XF_Flatten_Predicate_Reposition::vXF_Predicate_Reposition(void)
 
   m_pCI->vTransform(__FILE__, __func__, XF_FLATTEN_PREDICATE_REPOSITION);
 
+  // m_pCI->PRINTBOARD_dbg();
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // At Mark Where Pred Wrt Table
 
- // m_pCI->PRINTBOARD_dbg();
-
   m_pCI->vBeginEach_tail();
-
   while (m_pCI->bEachOp_reverse_foldBreak(CK_o_FROM, CK_PREDICATE)) {
     m_pCI->E.p_predicate->vMark_rlnConj_Wrt_table(m_pCI, MARK_AT);
   }
-
- // m_pCI->PRINTBOARD_dbg();
+  // m_pCI->PRINTBOARD_dbg();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Move At Marked Where Pred To Table Filter
 
   m_pCI->vClearRegisters();
-  m_pCI->vBeginEach();
   m_pCI->vBeginEach_tail();
-
   while (m_pCI->bEachOp_reverse_foldBreak(CK_o_FROM, CK_PREDICATE)) {
     m_pCI->E.p_predicate->vCopyMarked_rlnConj_To_table_filter(m_pCI, MARK_AT);
   }
-
- // m_pCI->PRINTBOARD_dbg();
+  // m_pCI->PRINTBOARD_dbg();
 
   m_pCI->vClearRegisters();
-  m_pCI->vBeginEach();
   m_pCI->vBeginEach_tail();
-
   while (m_pCI->bEachOp_reverse_foldBreak(CK_o_FROM, CK_PREDICATE)) {
     (void)m_pCI->E.p_predicate->nCullMarked_rlnConj(MARK_AT);
   }
-
- // m_pCI->PRINTBOARD_dbg();
+  // m_pCI->PRINTBOARD_dbg();
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Delete Empty Where
 
   m_pCI->vClearRegisters();
-  m_pCI->vBeginEach();
   m_pCI->vBeginEach_tail();
-
   while (m_pCI->bEachOp_reverse_foldBreak(CK_o_FROM, CK_o_FILTER)) {
     m_pCI->E.p_from->vCull_filter_IfEmpty(m_pCI->E.p_filter);
   }
-
- // m_pCI->PRINTBOARD_dbg();
+  // m_pCI->PRINTBOARD_dbg();
 
  m_pCI->E.p_deck->vMarksClearRecursive();
 
