@@ -128,7 +128,7 @@ int main(int argc, char* argv[])
           "--killPrev "
           "--munged "
           "--name SINGLENODE "
-          "--node SINGLENODE 127.0.0.1 5541 "
+          "--node SINGLENODE 127.0.0.1 5541 9123"
           "--heartbeat BROADCAST 8888 "
           "--cid %llu"
           ""_Stz,
