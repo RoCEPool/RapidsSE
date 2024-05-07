@@ -261,7 +261,6 @@ function checkForJobCrash() {
     "-e" "^INTERNAL ERROR"
     "-e" "^Caught SIG"
     "-e" "^Thread Backtrace"
-    "${logFile}"
   )
 
   # The exit code of grep is the exit code of this function
