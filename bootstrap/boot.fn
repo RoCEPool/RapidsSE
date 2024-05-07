@@ -217,7 +217,7 @@ function startCluster() {
     for row in "${nodeNames[@]}"
     do
       remoteNodeArgArr=("${row}")
-      [ -n "${EXTRA_START_ARGS}" ] && remoteNodeArgArr+=("${EXTRA_START_ARGS[@]}")
+      [ -n "${EXTRA_START_ARGS[*]}" ] && remoteNodeArgArr+=("${EXTRA_START_ARGS[@]}")
       startRemoteNode "${remoteNodeArgArr[@]}" &>/dev/null &
     done
 
