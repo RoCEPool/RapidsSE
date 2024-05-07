@@ -3,4 +3,6 @@ select * from tableOfTables;
 select * from schema;
 select * from catalog;
 select * from columns;
+select * from nodes;
+
 
