@@ -127,6 +127,7 @@
   // Iterate TableOfTables and get Table Ptr from Row Data
   // AM has all the info
   // Insert Table Data into other metadata tables
+  MetaDataTable[].init
 
   // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   //

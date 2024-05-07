@@ -60,6 +60,8 @@ void Step::vAddSteps_MetaDataTable(void)
 //  vAddStep("MetaDataTable[].insertQueries"_Stz,  &Step::vMetaDataTableQueriesInsert);
 //  vAddStep("MetaDataTable[].insertSessions"_Stz,  &Step::vMetaDataTableSessionsInsert);
   vAddStep("MetaDataTable[].insertSchema"_Stz,  &Step::vMetaDataTableSchemaInsert);
+
+  vAddStep("MetaDataTable[].init"_Stz,  &Step::vMetaDataTableInit);
   vAddStep("MetaDataTable[].setAM"_Stz,  &Step::vMetaDataTableSetAM);
 }
 
@@ -133,103 +135,27 @@ void Step::vMetaDataTableColumns(void)
 {
   ENTRY();
   Table* pTable = _pTable(*m_pLogicUnit->m_xpTable);
-  StreamDef* pStreamDef = pTable->pStreamDef();
 
-  Pds* pPdsRowBuffer = new Pds(pStreamDef, false, BT_DATA);
+  TablePtn* pTablePtn = pTable->pTablePtn(0);
 
-  // get current folder
-  i8 iDepth =  m_oDicStack.nItems();
-  Object* pPtrDic =  m_oDicStack.pPick(iDepth - 1);
+  BufferId oRootBufferId = pTablePtn->oRootBufferId();
+  Pds* pRootPds = _pPds(AM::pHashMap()->pValueAt(oRootBufferId.m_pvAsAddress));
 
-  // Get table dict
-  Dic* pDic = _pDic(pPtrDic);
-  Word* pTableFolderWord = pDic->pLastWord();
+  PdsCursor* pCursor = new PdsCursor(pRootPds);
 
-  // get the schema name
-  i8 i = 2;
-  while( pDic->eDicKind() != DK_SCHEMA) {
-    pPtrDic = m_oDicStack.pPick(iDepth - i);
-    pDic = _pDic(pPtrDic);
-    i++;
-  }
+  while(! pCursor->bIsCurrNull()) {
+    SkipListBlock* pSLBlock = pCursor->m_pCurrentBlock;
 
-  s256 sSchemaNm(pDic->szDicNm());
+    BufferId oBufferId = pTablePtn->oExtractBufferId((Object*)pSLBlock->aItem());
 
-  // get the catalog name
-  while( pDic->eDicKind() != DK_CATALOG) {
-    pPtrDic = m_oDicStack.pPick(iDepth - i);
-    pDic = _pDic(pPtrDic);
-    i++;
-  }
-
-  s256 sCatalogNm(pDic->szDicNm());
-
-  // iterate dic table
-
-  while(pTableFolderWord) {
-    // get table name
-    s256 sTableNm(pTableFolderWord->szWordNm());
-
-    // find tableNm folder in current dic
-    Word *pWordTable = m_oDicStack.pFindWord(sTableNm);
-    Dic *pDicTable = _pDic(pWordTable->pObject());
-
-    // find actual table in this table dic
-    Word *pWord = pDicTable->pFindWord(sTableNm);
-    Table *pTableCur = _pTable(pWord->pObject());
-
-    if( ! pTableCur->bIsUserCreated()) {
-      pTableFolderWord = pTableFolderWord->pPrevWord();
-      continue;
-    }
-
-    StreamDef* pStreamDef = pTableCur->pStreamDef();
-
-    i8 nColumns = pStreamDef->nColumns();
-    i8 i_Col = 0;
-
-    while(i_Col < nColumns) {
-      Column* pColumn = pStreamDef->pGetColumn(i_Col);
-
-      // Add column info to pds
-      Row *pRow = pPdsRowBuffer->pAllotRow(C_VARGS_BEGIN,
-                                           sCatalogNm.szStz(),
-                                           sSchemaNm.szStz(),
-                                           pTableCur->szTableNm(),
-                                           pColumn->iColumnNo(),
-                                           pColumn->szColNm(),
-                                           (i8)pColumn->eColumnType(),
-                                           aCT[pColumn->eColumnType()],
-                                           pColumn->iColumnScale(),
-                                           pColumn->iColumnLength(),
-                                           pColumn->bIsNullable(),
-                                           (i8)pColumn->bIsPtnKey(),
-                                           C_VARGS_END);
-      i_Col++;
-
-      if (!pRow) {
-        // Pipe out this full buffer
-        BufferId oBufferId = pPdsRowBuffer->oGetBufferId().m_pvAsAddress;
-        AM::pHashMap()->vDropKeyLock(oBufferId.m_pvAsAddress);
-        Operand* pOperand = _pOperand((Object*)oBufferId.m_pvAsAddress);
-        AM::OP::vPipeToNextOp(m_pOp,pOperand,this);
-
-        // create a new buffer and continue adding rows to it
-        pPdsRowBuffer = new Pds(pStreamDef, false, BT_DATA);
-        break;
-      }
-    }
-
-    pTableFolderWord = pTableFolderWord->pPrevWord();
-  }
-
-  if(pPdsRowBuffer->nItems() > 0) {
-    BufferId oBufferId = pPdsRowBuffer->oGetBufferId().m_pvAsAddress;
-    AM::pHashMap()->vDropKeyLock(oBufferId.m_pvAsAddress);
     Operand* pOperand = _pOperand((Object*)oBufferId.m_pvAsAddress);
+
     AM::OP::vPipeToNextOp(m_pOp,pOperand,this);
-  } else
-    delete(pPdsRowBuffer);
+
+    pCursor->vNext();
+  }
+  AM::pHashMap()->vDropKeyLock(oRootBufferId.m_pvAsAddress);
+  delete pCursor;
 
   EXIT();
 }
@@ -352,7 +278,7 @@ void Step::vMetaDataTableIndexColumns(void)
 void Step::vMetaDataTableIndexes(void)
 {
   ENTRY();
-
+/*
   Table* pTable = _pTable(*m_pLogicUnit->m_xpTable);
   StreamDef* pStreamDef = pTable->pStreamDef();
 
@@ -450,7 +376,29 @@ void Step::vMetaDataTableIndexes(void)
     AM::OP::vPipeToNextOp(m_pOp,pOperand,this);
   } else
     delete(pPdsRowBuffer);
+*/
+  Table* pTable = _pTable(*m_pLogicUnit->m_xpTable);
 
+  TablePtn* pTablePtn = pTable->pTablePtn(0);
+
+  BufferId oRootBufferId = pTablePtn->oRootBufferId();
+  Pds* pRootPds = _pPds(AM::pHashMap()->pValueAt(oRootBufferId.m_pvAsAddress));
+
+  PdsCursor* pCursor = new PdsCursor(pRootPds);
+
+  while(! pCursor->bIsCurrNull()) {
+    SkipListBlock* pSLBlock = pCursor->m_pCurrentBlock;
+
+    BufferId oBufferId = pTablePtn->oExtractBufferId((Object*)pSLBlock->aItem());
+
+    Operand* pOperand = _pOperand((Object*)oBufferId.m_pvAsAddress);
+
+    AM::OP::vPipeToNextOp(m_pOp,pOperand,this);
+
+    pCursor->vNext();
+  }
+  AM::pHashMap()->vDropKeyLock(oRootBufferId.m_pvAsAddress);
+  delete pCursor;
   EXIT();
 }
 
@@ -1081,6 +1029,245 @@ void Step::vMetaDataTableCatalogDelete(void)
   }
   delete pCursor;
   AM::pHashMap()->vDropKeyLock(oRootBufferId.m_pvAsAddress);
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* MetaDataTable[].init -- Init all metadata tables                           */
+/*----------------------------------------------------------------------------*/
+void Step::vMetaDataTableInit(void)
+{
+  ENTRY();
+
+  typedef struct {
+    i8 iKey;
+    BufferId oBufferId;
+  } PdsBufferIdItem;
+
+  for(i8 iMetaDataTable = 1; iMetaDataTable < (i8) MD_ENUMS; iMetaDataTable++) {
+    Table* pTableCur = AM::ATTACHMAP::pMetaDataTables(aMD[iMetaDataTable]);
+    if(!pTableCur)
+      continue;
+    StreamDef* pStreamDef = pTableCur->pStreamDef();
+
+    s256 sCatalogNm = "rapids"_Stz;
+    s256 sSchemaNm = "public"_Stz;
+
+
+    //------------------------------------------------------------------------
+    // Insert into columns
+
+    Table* pTableColumns = AM::pMetaDataTableColumns();
+    StreamDef* pColumnsStreamDef = pTableColumns->pStreamDef();
+    TablePtn* pTablePtn = pTableColumns->pTablePtn(0);
+    Pds* pPdsRootBuffer = _pPds(
+        AM::pHashMap()->pValueAt(
+            pTablePtn->oRootBufferId().m_pvAsAddress, true
+        ));
+
+    Pds* pPdsRowBuffer = nullptr;
+    bool bAppend = false;
+    if(pPdsRootBuffer->nItems() == 0) {
+      pPdsRowBuffer = new Pds(pColumnsStreamDef, false, BT_DATA);
+      bAppend = true;
+    } else {
+      i8 iSearchKey = C_INT_MAX;
+      SkipListBlock* pHead = pPdsRootBuffer->pFindLessThan((void*) &iSearchKey);
+      if(pHead != nullptr) {
+        // If the block is not null, extract the keys and values
+        PdsBufferIdItem* pBufferIdStruct = (PdsBufferIdItem*) pHead->aItem();
+
+        HashMapEntry* pEntry = AM::pHashMap()->pEntryAt(pBufferIdStruct->oBufferId.m_pvAsAddress, true);
+
+        pPdsRowBuffer = _pPds(pEntry->m_pValObject);
+      } else {
+        pPdsRowBuffer = new Pds(pColumnsStreamDef, false, BT_DATA);
+        bAppend = true;
+      }
+    }
+
+    i8 nColumns = pStreamDef->nColumns();
+    i8 i_Col = 0;
+
+    while(i_Col < nColumns) {
+      Column* pColumn = pStreamDef->pGetColumn(i_Col);
+
+      // Add column info to pds
+      Row *pRow = pPdsRowBuffer->pAllotRow(C_VARGS_BEGIN,
+                                           sCatalogNm.szStz(),
+                                           sSchemaNm.szStz(),
+                                           pTableCur->szTableNm(),
+                                           pColumn->iColumnNo(),
+                                           pColumn->szColNm(),
+                                           (i8)pColumn->eColumnType(),
+                                           aCT[pColumn->eColumnType()],
+                                           pColumn->iColumnScale(),
+                                           pColumn->iColumnLength(),
+                                           pColumn->bIsNullable(),
+                                           (i8)pColumn->bIsPtnKey(),
+                                           C_VARGS_END);
+      i_Col++;
+
+      if (!pRow) {
+        i8 nRows = 0;
+        pTablePtn->vAppendBuffer(pPdsRowBuffer, nRows);
+
+        BufferId oBufferId = pPdsRowBuffer->oGetBufferId().m_pvAsAddress;
+        AM::pHashMap()->vDropKeyLock(oBufferId.m_pvAsAddress);
+
+        // create a new buffer and continue adding rows to it
+        pPdsRowBuffer = new Pds(pColumnsStreamDef, false, BT_DATA);
+        bAppend = true;
+      }
+    }
+
+    if(bAppend) {
+      i8 nRows = 0;
+      pTablePtn->vAppendBuffer(pPdsRowBuffer, nRows);
+    } else {
+      AM::pHashMap()->vDropKeyLock(pPdsRowBuffer->oGetBufferId().m_pvAsAddress);
+    }
+
+
+    //------------------------------------------------------------------------
+    // Insert into indexes
+
+    Table* pTableIndexes = AM::pMetaDataTableIndexes();
+    StreamDef* pIndexesStreamDef = pTableIndexes->pStreamDef();
+    pTablePtn = pTableIndexes->pTablePtn(0);
+    pPdsRootBuffer = _pPds(
+        AM::pHashMap()->pValueAt(
+            pTablePtn->oRootBufferId().m_pvAsAddress, true
+        ));
+
+    pPdsRowBuffer = nullptr;
+    bAppend = false;
+    if(pPdsRootBuffer->nItems() == 0) {
+      pPdsRowBuffer = new Pds(pIndexesStreamDef, false, BT_DATA);
+      bAppend = true;
+    } else {
+      i8 iSearchKey = C_INT_MAX;
+      SkipListBlock* pHead = pPdsRootBuffer->pFindLessThan((void*) &iSearchKey);
+      if(pHead != nullptr) {
+        // If the block is not null, extract the keys and values
+        PdsBufferIdItem* pBufferIdStruct = (PdsBufferIdItem*) pHead->aItem();
+
+        HashMapEntry* pEntry = AM::pHashMap()->pEntryAt(pBufferIdStruct->oBufferId.m_pvAsAddress, true);
+
+        pPdsRowBuffer = _pPds(pEntry->m_pValObject);
+      } else {
+        pPdsRowBuffer = new Pds(pIndexesStreamDef, false, BT_DATA);
+        bAppend = true;
+      }
+    }
+
+    IdxVec* pIndexVector = pTableCur->pIdxVec();
+    i8 iNumIndexes = pIndexVector->nItems();
+    for(i8 i_idx = 0; i_idx < iNumIndexes; i_idx++) {
+      Index* pIndex = pIndexVector->pGet(i_idx);
+
+      // Add index info to pds
+      Row* pRow = pPdsRowBuffer->pAllotRow(C_VARGS_BEGIN,
+                                           sCatalogNm.szStz(),
+                                           sSchemaNm.szStz(),
+                                           pTableCur->szTableNm(),
+                                           pIndex->szIndexNm(),
+                                           C_VARGS_END);
+
+      if (!pRow) {
+        i8 nRows = 0;
+        pTablePtn->vAppendBuffer(pPdsRowBuffer, nRows);
+
+        BufferId oBufferId = pPdsRowBuffer->oGetBufferId().m_pvAsAddress;
+        AM::pHashMap()->vDropKeyLock(oBufferId.m_pvAsAddress);
+
+        // create a new buffer and continue adding rows to it
+        pPdsRowBuffer = new Pds(pIndexesStreamDef, false, BT_DATA);
+        bAppend = true;
+      }
+    }
+
+    if(bAppend) {
+      i8 nRows = 0;
+      pTablePtn->vAppendBuffer(pPdsRowBuffer, nRows);
+    } else {
+      AM::pHashMap()->vDropKeyLock(pPdsRowBuffer->oGetBufferId().m_pvAsAddress);
+    }
+
+    //------------------------------------------------------------------------
+    // Insert into indexColumns
+
+    Table* pTableIndexCols = AM::pMetaDataTableIndexes();
+    StreamDef* pIndexColsStreamDef = pTableIndexes->pStreamDef();
+    pTablePtn = pTableIndexCols->pTablePtn(0);
+    pPdsRootBuffer = _pPds(
+        AM::pHashMap()->pValueAt(
+            pTablePtn->oRootBufferId().m_pvAsAddress, true
+        ));
+
+    pPdsRowBuffer = nullptr;
+    bAppend = false;
+    if(pPdsRootBuffer->nItems() == 0) {
+      pPdsRowBuffer = new Pds(pIndexColsStreamDef, false, BT_DATA);
+      bAppend = true;
+    } else {
+      i8 iSearchKey = C_INT_MAX;
+      SkipListBlock* pHead = pPdsRootBuffer->pFindLessThan((void*) &iSearchKey);
+      if(pHead != nullptr) {
+        // If the block is not null, extract the keys and values
+        PdsBufferIdItem* pBufferIdStruct = (PdsBufferIdItem*) pHead->aItem();
+
+        HashMapEntry* pEntry = AM::pHashMap()->pEntryAt(pBufferIdStruct->oBufferId.m_pvAsAddress, true);
+
+        pPdsRowBuffer = _pPds(pEntry->m_pValObject);
+      } else {
+        pPdsRowBuffer = new Pds(pIndexColsStreamDef, false, BT_DATA);
+        bAppend = true;
+      }
+    }
+
+    for(i8 i_idx = 0; i_idx < iNumIndexes; i_idx++) {
+      Index* pIndex = pIndexVector->pGet(i_idx);
+
+      i8 nColumns = pIndex->nColumns();
+      i8 i_Col = 0;
+
+      while(i_Col < nColumns) {
+        // Add index info to pds
+        Row *pRow = pPdsRowBuffer->pAllotRow(C_VARGS_BEGIN,
+                                             sCatalogNm.szStz(),
+                                             sSchemaNm.szStz(),
+                                             pTableCur->szTableNm(),
+                                             pIndex->szIndexNm(),
+                                             pIndex->pGetColumn(i_Col)->szColNm(),
+                                             i_Col,
+                                             C_VARGS_END);
+
+        if (!pRow) {
+          i8 nRows = 0;
+          pTablePtn->vAppendBuffer(pPdsRowBuffer, nRows);
+
+          BufferId oBufferId = pPdsRowBuffer->oGetBufferId().m_pvAsAddress;
+          AM::pHashMap()->vDropKeyLock(oBufferId.m_pvAsAddress);
+
+          // create a new buffer and continue adding rows to it
+          pPdsRowBuffer = new Pds(pIndexColsStreamDef, false, BT_DATA);
+          bAppend = true;
+        }
+      }
+    }
+
+    if(bAppend) {
+      i8 nRows = 0;
+      pTablePtn->vAppendBuffer(pPdsRowBuffer, nRows);
+    } else {
+      AM::pHashMap()->vDropKeyLock(pPdsRowBuffer->oGetBufferId().m_pvAsAddress);
+    }
+  }
+
+
+
+
   EXIT();
 }
 

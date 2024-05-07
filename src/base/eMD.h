@@ -3,6 +3,7 @@
 /*============================================================================*/
 #pragma once
 
+// Values below must be continuous
 enum eMD // MetaData Table
 {
   /* 0 */ MD_NONE=0,
@@ -15,7 +16,7 @@ enum eMD // MetaData Table
   /* 7 */ MD_QUERIES,
   /* 8 */ MD_SCHEMA,
   /* 9 */ MD_SESSIONS,
-  /* 1 */ MD_TABLES,
+  /* 10 */ MD_TABLES,
   /*   */ MD_ENUMS
 };
 

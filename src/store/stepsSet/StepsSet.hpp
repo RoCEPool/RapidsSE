@@ -1205,6 +1205,7 @@ void vJobIdLastJobIdFetch(void);
 //  void vMetaDataTableQueriesInsert(void);
 //  void vMetaDataTableSessionsInsert(void);
   void vMetaDataTableSchemaInsert(void);
+  void vMetaDataTableInit(void);
   void vMetaDataTableSetAM(void);
 
   // ErrorMarker[]

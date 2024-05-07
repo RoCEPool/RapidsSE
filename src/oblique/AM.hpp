@@ -255,6 +255,7 @@ namespace OBLIQUE
       static void vSysMetricsAdd(SysMetrics* pSysMetrics);
       static SysMetrics* pSysMetricsChain(void);
       static void vMetaDataTables(Table* pTable);
+      static Table* pMetaDataTables(Stz* szMDKind);
     };
 
     class DIC

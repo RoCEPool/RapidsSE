@@ -228,6 +228,26 @@ void AM::ATTACHMAP::vMetaDataTables(Table* pTable)
   }
 }
 
+/*----------------------------------------------------------------------------*/
+/* set metadata table pointer in AM                                           */
+/*----------------------------------------------------------------------------*/
+Table* AM::ATTACHMAP::pMetaDataTables(Stz* szMDKind)
+{
+  _static_
+
+  if      (szMDKind->bSame("MD_CATALOG"_Stz))       { return gpAttachMap->m_mdCatalog; }
+  else if (szMDKind->bSame("MD_CLUSTER"_Stz))       { return gpAttachMap->m_mdCluster; }
+  else if (szMDKind->bSame("MD_COLUMNS"_Stz))       { return gpAttachMap->m_mdColumns; }
+  else if (szMDKind->bSame("MD_INDEXCOLUMNS"_Stz))  { return gpAttachMap->m_mdIndexColumns; }
+  else if (szMDKind->bSame("MD_INDEXES"_Stz))       { return gpAttachMap->m_mdIndexes; }
+  else if (szMDKind->bSame("MD_NODES"_Stz))         { return gpAttachMap->m_mdNodes; }
+  else if (szMDKind->bSame("MD_QUERIES"_Stz))       { return gpAttachMap->m_mdQueries; }
+  else if (szMDKind->bSame("MD_SCHEMA"_Stz))        { return gpAttachMap->m_mdSchema; }
+  else if (szMDKind->bSame("MD_SESSIONS"_Stz))      { return gpAttachMap->m_mdSessions; }
+  else if (szMDKind->bSame("MD_TABLES"_Stz))        { return gpAttachMap->m_mdTables; }
+  else return nullptr;
+}
+
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*                                   DIC                                      */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
