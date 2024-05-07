@@ -302,7 +302,7 @@ function runAndMonitorTest() {
   removeLogs "${CONFIG_FILE}"
 
   # Start SE if it hasn't already been started
-  if isClusterRunning; then
+  if ! isClusterRunning; then
     # shellcheck disable=SC2119
     startCluster
   fi
