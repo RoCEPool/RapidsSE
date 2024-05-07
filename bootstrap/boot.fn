@@ -208,7 +208,7 @@ function startCluster() {
     do
       debugPrint "Starting ${row}"
       remoteNodeArgArr=("${row}")
-      [ -n "${EXTRA_START_ARGS[*]}" ] && remoteNodeArgArr+=("${EXTRA_START_ARGS[@]}")
+      [ -n "${EXTRA_START_ARGS[*]:-}" ] && remoteNodeArgArr+=("${EXTRA_START_ARGS[@]}")
       startRemoteNode "${remoteNodeArgArr[@]}" || errorExit "Could not start node ${row} in the cluster."
     done
 
@@ -217,7 +217,7 @@ function startCluster() {
     for row in "${nodeNames[@]}"
     do
       remoteNodeArgArr=("${row}")
-      [ -n "${EXTRA_START_ARGS[*]}" ] && remoteNodeArgArr+=("${EXTRA_START_ARGS[@]}")
+      [ -n "${EXTRA_START_ARGS[*]:-}" ] && remoteNodeArgArr+=("${EXTRA_START_ARGS[@]}")
       startRemoteNode "${remoteNodeArgArr[@]}" &>/dev/null &
     done
 
