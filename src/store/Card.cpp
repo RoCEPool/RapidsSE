@@ -758,46 +758,6 @@ Card* Card::pFindMark1Recursive(Stz* szMark1, eCK eCard)
 }
 
 /*----------------------------------------------------------------------------*/
-/* find mark2 recursively within this card                                    */
-/*----------------------------------------------------------------------------*/
-Card* Card::pFindMark2Recursive(char cMark2, eCK eCard)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if ( (CK_NONE == eCard || eCard == m_eCard)) {
-    if (cMark2 == this->cMark2())
-      return this;
-  }
-
-  for (Kid xCard(this); xCard.bEach_opaque(); /**/) {
-    if (Card *pFoundCard = xCard.pChild()->pFindMark2Recursive(cMark2, eCard))
-      return pFoundCard;
-  }
-
-  return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* find mark2 recursively within this card                                    */
-/*----------------------------------------------------------------------------*/
-Card* Card::pFindMark2Recursive(Stz* szMark2, eCK eCard)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if ( (CK_NONE == eCard || eCard == m_eCard)) {
-    if (this->bMark2(szMark2))
-      return this;
-  }
-
-  for (Kid xCard(this); xCard.bEach_opaque(); /**/) {
-    if (Card *pFoundCard = xCard.pChild()->pFindMark2Recursive(szMark2, eCard))
-      return pFoundCard;
-  }
-
-  return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
 /* find sub card with given facet                                             */
 /*----------------------------------------------------------------------------*/
 Card* Card::pFindCard_WithSubFacet(eCK eCard, eSF eFacet)
@@ -2727,9 +2687,10 @@ void Card::vFormatMarks(CardIter* pCI, String* pString)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
   
-  pString->vCatSprint(pCI->szFMT_FACET_MARKS(),
-                      szMark1(),
-                      szMark2());
+  pString->vCatSprint(pCI->szFMT_MARKS(),
+                      szMark2(),
+                      szMark1()
+                      );
 }
 
 /*----------------------------------------------------------------------------*/
