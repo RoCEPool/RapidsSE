@@ -1,8 +1,11 @@
+_nation;
+create index nation_idx1 ON nation(N_NATIONKEY);
 
 select * from tableOfTables;
 select * from schema;
 select * from catalog;
 select * from columns;
 select * from nodes;
-
+select * from tableIndexes;
+select * from indexColumns;
 

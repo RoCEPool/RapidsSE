@@ -39,6 +39,10 @@
   IndexDef[] <indexNm> Table[] index::createIndex locals| pIndex |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Update info in metadata tables if it is a unique index
+  pIndex MetaDataTable[].createIndex
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // validate the unqiue index columns are a subset of the partition keys
 
   pIndex index.isUnique@ if
