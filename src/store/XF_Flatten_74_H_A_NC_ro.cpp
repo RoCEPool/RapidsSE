@@ -89,7 +89,7 @@ void XF_Flatten_74_H_A_NC_ro::vFlatten(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // smoothing of: subQuery | XF_Fold | Table* [Where] GbyAgg_PNO [Project (avg)] Having [Sort]
 
-  XF_Flatten_Left_subQuery::vRotate_Next(m_pCI);
+  vRotate_Next();
 
   //m_pCI->PRINTBOARD_dbg();
 

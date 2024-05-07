@@ -19,7 +19,7 @@ __aFooterFunction(XF_Flatten_Left_subQuery )
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Flatten_Left_subQuery::XF_Flatten_Left_subQuery(CardIter* pCI)
-: XF_TRANSFORM(CN_XF_FLATTEN_LEFT_SUBQUERY, pCI)
+: XF_FLATTEN(CN_XF_FLATTEN_LEFT_SUBQUERY, pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_LEFT_SUBQUERY, _FOOTER_);
 
@@ -34,20 +34,6 @@ XF_Flatten_Left_subQuery::XF_Flatten_Left_subQuery(CardIter* pCI)
 XF_Flatten_Left_subQuery::~XF_Flatten_Left_subQuery(void) noexcept(false)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_LEFT_SUBQUERY, _FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* remove left-most subquery and rotate next sub-query to be first card       */
-/*----------------------------------------------------------------------------*/
-void XF_Flatten_Left_subQuery::vRotate_Next(CardIter* pCI)
-{
-  _static_
-
-  XF_Flatten_Left_subQuery* pXF_Delete_flat = new XF_Flatten_Left_subQuery(pCI);
-
-  pXF_Delete_flat->vRotate_Next();
-
-  delete pXF_Delete_flat;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -87,23 +73,6 @@ void XF_Flatten_Left_subQuery::vRemove_LeftMost(void)
   }
 
   m_pCI->vEndTransform(__LINE__);
-}
-
-/*----------------------------------------------------------------------------*/
-/* remove left-most subquery and rotate next sub-query to be first card       */
-/*----------------------------------------------------------------------------*/
-void XF_Flatten_Left_subQuery::vRotate_Next(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_LEFT_SUBQUERY, _FOOTER_);
-
-  //m_pCI->vTransform(__FILE__, __func__, XF_FLATTEN_DELETE_LEFT_SUBQUERY);
-
-  Kid xDeck(m_pCI->E.p_deck);
-  if (xDeck.bEach(CK_SUBQUERY)) {
-    m_pCI->E.p_deck->vRotateFirst(xDeck.pChild());
-  }
-
-  //m_pCI->vEndTransform(__LINE__);
 }
 
 /*============================================================================*/

@@ -89,7 +89,7 @@ void XF_Flatten_32_W_A_NC_I::vFlatten(void)
   vSet_carry(m_pCI, CK_o_WHERE, QO_IN_OP);
   m_pCI->PRINTBOARD_dbg();
 
-  XF_Flatten_Left_subQuery::vRotate_Next(m_pCI);
+  vRotate_Next();
   m_pCI->PRINTBOARD_dbg();
 
   vSmooth(m_pCI);

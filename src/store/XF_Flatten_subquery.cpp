@@ -40,7 +40,7 @@ __aFooterFunction(XF_Flatten_subquery)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Flatten_subquery::XF_Flatten_subquery(CardIter* pCI)
-: XF_TRANSFORM(CN_XF_FLATTEN_SUBQUERY)
+: XF_FLATTEN(CN_XF_FLATTEN_SUBQUERY,pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_SUBQUERY, _FOOTER_);
 
@@ -199,7 +199,7 @@ void XF_Flatten_subquery::vFlatten_recurse(Symbol* pSym_sqyNo_inner, i8 iDepth)
 
   XF_Flatten_Left_subQuery::vRemove_LeftMost(m_pCI);
   XF_Flatten_Join_Ordering::vXF_Join_Ordering(m_pCI);
-  XF_Flatten_Left_subQuery::vRotate_Next(m_pCI);
+  vRotate_Next();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // sub-query has been flattened

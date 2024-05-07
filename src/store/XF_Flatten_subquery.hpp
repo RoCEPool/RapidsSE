@@ -3,12 +3,12 @@
 /*============================================================================*/
 #pragma once
 
-#include "XF_TRANSFORM.hpp"
+#include "XF_FLATTEN.hpp"
 
 
 namespace STORE
 {
-  class XF_Flatten_subquery : public XF_TRANSFORM
+  class XF_Flatten_subquery : public XF_FLATTEN
   {
   private:
 

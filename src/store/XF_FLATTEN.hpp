@@ -29,6 +29,8 @@ namespace STORE
 
     void vInto_KEYnotEXISTS(CardIter* pCI);
 
+    void vRotate_Next(void);
+
   };
 
 }

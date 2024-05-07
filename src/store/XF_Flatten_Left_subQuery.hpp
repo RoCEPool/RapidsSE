@@ -3,11 +3,11 @@
 /*============================================================================*/
 #pragma once
 
-#include "XF_TRANSFORM.hpp"
+#include "XF_FLATTEN.hpp"
 
 namespace STORE
 {
-  class XF_Flatten_Left_subQuery : public XF_TRANSFORM
+  class XF_Flatten_Left_subQuery : public XF_FLATTEN
   {
   private:
     // must be last
@@ -21,10 +21,8 @@ namespace STORE
    ~XF_Flatten_Left_subQuery(void) noexcept(false);
 
     static void vRemove_LeftMost(CardIter* pCI);
-    static void vRotate_Next(CardIter* pCI);
 
     void vRemove_LeftMost(void);
-    void vRotate_Next(void);
 
   private:
     Footer* aFooter(void);

@@ -446,6 +446,21 @@ void XF_FLATTEN::vInto_KEYnotEXISTS(CardIter* pCI)
 
 }
 
+/*----------------------------------------------------------------------------*/
+/* remove left-most subquery and rotate next sub-query to be first card       */
+/*----------------------------------------------------------------------------*/
+void XF_FLATTEN::vRotate_Next(void)
+{
+  //m_pCI->vTransform(__FILE__, __func__, XF_FLATTEN_DELETE_LEFT_SUBQUERY);
+
+  Kid xDeck(m_pCI->E.p_deck);
+  if (xDeck.bEach(CK_SUBQUERY)) {
+    m_pCI->E.p_deck->vRotateFirst(xDeck.pChild());
+  }
+
+  //m_pCI->vEndTransform(__LINE__);
+}
+
 
 /*============================================================================*/
 /* end                                                                        */
