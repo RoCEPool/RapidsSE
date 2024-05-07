@@ -2251,7 +2251,7 @@ void Card::vPrint_expr(CardIter* pCI, Ribbon* pRibbon, i8 iDepth)
     vCatMarks(pCI, i_Char,pRibbon);
     vCatSpaces(pCI, i_Char,pRibbon, 2);
     vCatFacet(pCI,i_Char,pRibbon,i_Facet_primary,false,false);
-    vCatSpaces(pCI, i_Char,pRibbon, 2);
+    vCatSpaces(pCI, i_Char,pRibbon, 1);
     vCatTypeLength(pCI, i_Char,pRibbon,i_Facet_primary);
     pRibbon->vNewLine();
   }
@@ -2261,7 +2261,7 @@ void Card::vPrint_expr(CardIter* pCI, Ribbon* pRibbon, i8 iDepth)
     vCatMarks(pCI, i_Char,pRibbon);
     vCatSpaces(pCI, i_Char,pRibbon, 2);
     vCatFacet(pCI,i_Char,pRibbon,i_Facet_primary,false,false);
-    vCatSpaces(pCI, i_Char,pRibbon, 2);
+    vCatSpaces(pCI, i_Char,pRibbon, 1);
     vCatTypeLength(pCI, i_Char,pRibbon,i_Facet_primary);
     pRibbon->vNewLine();
   }
@@ -2586,7 +2586,7 @@ void Card::vCatTypeLength(CardIter* pCI, i8& ri_Char, Ribbon* pRibbon, i8 i_Face
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   s256 sTypeLen;
-  vFormatTypeLength(pCI, sTypeLen,i_Facet);
+  vFormatTypeLengthScale(pCI, sTypeLen, i_Facet);
   vCat(pCI, ri_Char, pRibbon,sTypeLen);
 }
 
@@ -2803,14 +2803,24 @@ void Card::vFormatTblSyn(CardIter* pCI, String* pString)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card::vFormatTypeLength(CardIter* pCI, String* pString, i8 i_Facet)
+void Card::vFormatTypeLengthScale(CardIter* pCI, String* pString, i8 i_Facet)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
   UNUSED(i_Facet);
-  
-  pString->vSprint(pCI->szFMT_TYPE_LENGTH(),
-                   szCT_char[eCTVal()],
-                   m_xSymbol.xCast().m_nTypeLength);
+
+  if (0 == m_xSymbol.xCast().m_nTypeLength)
+    pString->vSprint(pCI->szFMT_TYPE(),
+                     szCT_char[eCTVal()]);
+  else
+  if (0 == m_xSymbol.xCast().m_nTypeScale)
+    pString->vSprint(pCI->szFMT_TYPE_LENGTH(),
+                     szCT_char[eCTVal()],
+                     m_xSymbol.xCast().m_nTypeLength);
+  else
+    pString->vSprint(pCI->szFMT_TYPE_LENGTH_SCALE(),
+                     szCT_char[eCTVal()],
+                     m_xSymbol.xCast().m_nTypeLength,
+                     m_xSymbol.xCast().m_nTypeScale);
 }
 
 

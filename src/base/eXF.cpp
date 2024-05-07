@@ -120,7 +120,7 @@ Stz* aXF_desc[XF_ENUMS]
   /* XF_FLATTEN_ANCHOR_TABLE         */ "anchor non re-orderable table"_Stz,
   /* XF_FLATTEN_DELETE_FOLD          */ "delete <fold>"_Stz,
   /* XF_FLATTEN_DELETE_LEFT_SUBQUERY */ "delete left-most <subquery>"_Stz,
-  /* XF_FLATTEN_DERIVE_BOUNDS        */ "derive ..<index>/<bounds> from <filter>/<predicate>"_Stz,
+  /* XF_FLATTEN_DERIVE_BOUNDS        */ "derive ../<table>/<index>/<bounds> from <filter>/<predicate>"_Stz,
   /* XF_FLATTEN_JOIN_ORDERING        */ "re-order joins right of <fold>"_Stz,
   /* XF_FLATTEN_PREDICATE_PULLUP     */ "pull <where>/<filter> predicates up into <from>/<filter>"_Stz,
   /* XF_FLATTEN_PREDICATE_REPOSITION */ "reposition predicates"_Stz,

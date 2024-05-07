@@ -464,7 +464,7 @@ namespace STORE
     void vFormatSequence  (CardIter* pCI, String* pString);
     void vFormatSpaces    (CardIter* pCI, String* pString, i8 nSpaces);
     void vFormatTblSyn    (CardIter* pCI, String* pString);
-    void vFormatTypeLength(CardIter* pCI, String* pString, i8 i_Facet);
+    void vFormatTypeLengthScale(CardIter* pCI, String* pString, i8 i_Facet);
 
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 

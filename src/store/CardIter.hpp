@@ -303,7 +303,9 @@ namespace STORE
     Stz* szFMT_PPY_STRING_decode  (void) { return "}%s"_Stz; }
     Stz* szFMT_PPY_SEQUENCE       (void) { return "#%lld"_Stz; }
     Stz* szFMT_SPACES             (void) { return "%s"_Stz; }
-    Stz* szFMT_TYPE_LENGTH        (void) { return "%s%lld"_Stz; }
+    Stz* szFMT_TYPE               (void) { return "%s"_Stz; }
+    Stz* szFMT_TYPE_LENGTH        (void) { return "%s(%lld)"_Stz; }
+    Stz* szFMT_TYPE_LENGTH_SCALE  (void) { return "%s(%lld,%lld)"_Stz; }
 
   private:
     Footer* aFooter(void);
