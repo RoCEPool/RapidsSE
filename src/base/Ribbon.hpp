@@ -28,8 +28,6 @@ namespace BASE
 
     IntSet* m_pLaneTabs; // lane tabs
 
-    s32 m_sRightFormat; // format for vSprintRight() based on C_RIBBON_LANE_WIDTH
-
     // must be last
     Footer m_xFooter;    
     
@@ -73,7 +71,6 @@ namespace BASE
     void vAddLine(void);
 
     void vFormatLeft(String* pString, Stz* szFormat, va_list xArgs);
-    void vFormatRight(String* pString, Stz* szFormat, va_list xArgs);
 
     void vInitTabs(i8 i_Start, i8 nEach);
 

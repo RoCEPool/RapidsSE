@@ -25,7 +25,7 @@ RibbonLine::RibbonLine(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBONLINE);
   
   m_caText[0] = '\0';
-  StrLib::vPad(m_caText, sizeof(m_caText), C_RIBBON_MAX_TEXT - 1, ' ');
+  StrLib::vPad(m_caText, sizeof(m_caText), C_RIBBON_TEXT - 1, ' ');
 
   _checkInitialised_(CN_RIBBONLINE);
   
