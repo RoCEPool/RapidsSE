@@ -20,12 +20,13 @@ namespace STORE
     XF_Utility_Verify_dic(CardIter* pCI);
    ~XF_Utility_Verify_dic(void) noexcept(false);
 
-    static void vVerify(CardIter* pCI);
-
-    void vVerify(void);
+    static void vVerify_dic(CardIter* pCI);
 
     void vVerify_dic_loop(void);
     void vVerify_dic_OP(void);
+
+    // - - - - - - - - - - - - - - - - - - - - - -
+
 
   private:
     Footer* aFooter(void);

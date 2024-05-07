@@ -40,7 +40,7 @@ XF_Utility_Verify_dic::~XF_Utility_Verify_dic(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Utility_Verify_dic::vVerify(CardIter* pCI)
+void XF_Utility_Verify_dic::vVerify_dic(CardIter* pCI)
 {
   _static_
 
