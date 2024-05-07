@@ -85,8 +85,6 @@ namespace STORE
     void    vResetPointers(void);
     EntBuffer* pRootBuffer(i8 i_TablePtn, i8 i_Index);
     eMD        eMetaDataKind(void);
-    void       vMetaDataStep(Stz* szStepNm);
-    Stz*       szMetaDataStep(void);
     StreamDef* pStreamDef(void);
     void       vStreamDef(StreamDef* pStreamDef);
     Stz*    szTableNm(void);

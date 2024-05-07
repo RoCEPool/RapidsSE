@@ -77,7 +77,6 @@ Table::Table(Stz* szTableNm, eTT eKind)
   if(m_eKind == TT_METADATA) {
     vMetaDataKind(szTableNm);
   }
-  m_sTableStep = "";
   
   m_oLocation.vSet();
   m_pStreamDef   = nullptr;
@@ -679,28 +678,6 @@ eMD Table::eMetaDataKind(void)
 
   ASSERT(m_eKind == TT_METADATA);
   return m_eMetaDataKind;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get root buffer of given index                                             */
-/*----------------------------------------------------------------------------*/
-void Table::vMetaDataStep(Stz* szStepNm)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-
-  m_sTableStep = szStepNm;
-  return;
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* get root buffer of given index                                             */
-/*----------------------------------------------------------------------------*/
-Stz* Table::szMetaDataStep(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-
-  return m_sTableStep;
 }
 
 /*----------------------------------------------------------------------------*/

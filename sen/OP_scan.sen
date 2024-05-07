@@ -53,7 +53,7 @@
   // get the root BufferId pds cursor from this TablePtn
 
   Table[].isMetaData if
-    Table[].getStep find execute
+    MetaDataTable[].select
 
     // Finished sending all bufferIds to the next op
     // drop table ptn lock

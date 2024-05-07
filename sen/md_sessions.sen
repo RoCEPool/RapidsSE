@@ -14,7 +14,7 @@
     SessionId    INTEGER NOT NULL ,
     Connected      BOOLEAN NOT NULL ,
     Status      VARCHAR NOT NULL
-  ) < metaData > = MetaDataTable[].sessions ;
+  ) < metaData > = 1 ;
   "
   nullptr api::forkChild  api:executeCheck
 

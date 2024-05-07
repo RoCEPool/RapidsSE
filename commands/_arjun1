@@ -1,6 +1,6 @@
-_nation;
+
 select * from tableOfTables;
-select * from tableOfTables;
-drop table nation;
-select * from tableOfTables;
-select * from tableOfTables;
+select * from schema;
+select * from catalog;
+select * from columns;
+

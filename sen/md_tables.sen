@@ -14,7 +14,7 @@
     catalogName   VARCHAR NOT NULL ,
     schemaName    VARCHAR NOT NULL ,
     tableName     VARCHAR NOT NULL
-  ) < metaData > = MetaDataTable[].tables ;
+  ) < metaData > = 1 ;
   "
   nullptr api::forkChild  api:executeCheck
 

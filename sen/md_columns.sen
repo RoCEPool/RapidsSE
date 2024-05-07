@@ -22,7 +22,7 @@
     Length         INTEGER NOT NULL ,
     Nullable       BOOLEAN NOT NULL ,
     IsPartitionKey BOOLEAN NOT NULL
-  ) < metaData > = MetaDataTable[].columns ;
+  ) < metaData > = 1 ;
   "
   nullptr api::forkChild  api:executeCheck
 

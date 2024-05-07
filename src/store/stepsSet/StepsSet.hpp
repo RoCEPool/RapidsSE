@@ -1182,17 +1182,8 @@ void vJobIdLastJobIdFetch(void);
   void vNumberMagnitude(void);
 
   // metaDataTable
-  void vMetaDataTablePrint(void);
-  void vMetaDataTableCatalog(void);
-  void vMetaDataTableCluster(void);
-  void vMetaDataTableColumns(void);
-  void vMetaDataTableIndexColumns(void);
-  void vMetaDataTableIndexes(void);
-  void vMetaDataTableNodes(void);
-  void vMetaDataTableQueries(void);
-  void vMetaDataTableSchema(void);
-  void vMetaDataTableSessions(void);
-  void vMetaDataTableTables(void);
+  void vMetaDataTableSelect(void);
+
   void vMetaDataTableTablesInsert(void);
   void vMetaDataTableTablesDelete(void);
   void vMetaDataTableCatalogInsert(void);
@@ -2158,7 +2149,6 @@ void vJobIdLastJobIdFetch(void);
   void vTableFindColumn(void);
   void vTableGet(void);
   void vTableGetName(void);
-  void vTableGetStep(void);
   void vTableIndexCount(void);
   void vTableIsColumn(void);
   void vTableIsInternallyDefined(void);

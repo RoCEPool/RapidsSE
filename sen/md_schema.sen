@@ -13,7 +13,7 @@
   define metadata table schema (
     CatalogName VARCHAR NOT NULL ,
     SchemaName  VARCHAR NOT NULL
-  ) < metaData > = MetaDataTable[].schema ;
+  ) < metaData > = 1 ;
   "
   nullptr api::forkChild  api:executeCheck
 

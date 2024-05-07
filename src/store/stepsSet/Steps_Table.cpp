@@ -57,7 +57,6 @@ void Step::vAddSteps_Table(void)
   vAddStep("table.indexCount"_Stz,         &Step::vTableIndexCount);
   vAddStep("table.isColumn"_Stz,           &Step::vTableIsColumn);
   vAddStep("table.getName"_Stz,            &Step::vTableGetName);
-  vAddStep("Table[].getStep"_Stz,            &Step::vTableGetStep);
   vAddStep("Table[].isInternallyDefined"_Stz,   &Step::vTableIsInternallyDefined);
   vAddStep("Table[].isMetaData"_Stz,   &Step::vTableIsMetaData);
   vAddStep("Table[].isReplicated"_Stz,     &Step::vTableIsReplicated);
@@ -625,22 +624,6 @@ void Step::vTableGetName(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Table[].getStep -- fetch table step                                        */
-/*----------------------------------------------------------------------------*/
-void Step::vTableGetStep(void)
-{
-  ENTRY();
-
-  Table* pTable = _pTable(*m_pLogicUnit->m_xpTable);
-
-  Stz* szTableStepNm = pTable->szMetaDataStep();
-
-  m_pDataStack->vPushStz(szTableStepNm);
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* Table[].name@ -- fetch table name                                          */
 /*----------------------------------------------------------------------------*/
 void Step::vTableNameFetch(void)
@@ -670,7 +653,6 @@ void Step::vTableNew(void) {
   TagSet *pJobTags = pJob->pJobTags();
   Op* pOp = MY::pOp();
   TagSet* pOpTags = pOp ? pOp->pOpTags() : nullptr;
-  Stz* szStepName = nullptr;
 
   eTT eTableKind = TT_NORMAL;
   if (pJobTags && pJobTags->bHasName(C_TAG_INFOSET))
@@ -680,14 +662,11 @@ void Step::vTableNew(void) {
     eTableKind = TT_INTERNAL;
   else if (pJobTags && pJobTags->bHasName(C_TAG_METADATA)) {
     eTableKind = TT_METADATA;
-    szStepName = pJobTags->szValue(C_TAG_METADATA);
   }
   else if (pJobTags && pJobTags->bHasName(C_TAG_REPLICATED))
     eTableKind = TT_REPLICATED;
 
   Table *pTable = new Table(sTableNm, eTableKind);
-  if(szStepName)
-    pTable->vMetaDataStep(szStepName);
 
 
   // SAME NODE TESTING ////////////////////// SAME NODE TESTING //////////////////////////////

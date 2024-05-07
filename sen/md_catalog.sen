@@ -12,7 +12,7 @@
   "
   define metadata table catalog (
     CatalogName VARCHAR NOT NULL
-  ) < metaData > = MetaDataTable[].catalog ;
+  ) < metaData > = 1 ;
   "
   nullptr api::forkChild  api:executeCheck
 

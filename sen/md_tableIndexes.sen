@@ -15,7 +15,7 @@
     szSchemaName  VARCHAR NOT NULL ,
     szTableName   VARCHAR NOT NULL ,
     szIndexName   VARCHAR NOT NULL
-  ) < metaData > = MetaDataTable[].indexes ;
+  ) < metaData > = 1 ;
   "
   nullptr api::forkChild  api:executeCheck
 

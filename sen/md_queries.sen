@@ -16,7 +16,7 @@
     SqlText         VARCHAR NOT NULL ,
     SubmitTimeStamp TIMESTAMP NOT NULL ,
     Status          VARCHAR NOT NULL
-  ) < metaData > = MetaDataTable[].queries ;
+  ) < metaData > = 1 ;
   "
   nullptr api::forkChild  api:executeCheck
 

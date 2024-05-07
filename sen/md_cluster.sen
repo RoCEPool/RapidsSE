@@ -12,7 +12,7 @@
   "
   define metadata table cluster (
     ClusterId   INTEGER NOT NULL
-  ) < metaData > = MetaDataTable[].cluster ;
+  ) < metaData > = 1 ;
   "
   nullptr api::forkChild  api:executeCheck
 

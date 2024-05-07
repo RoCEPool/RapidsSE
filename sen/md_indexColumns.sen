@@ -17,7 +17,7 @@
     IndexName   VARCHAR NOT NULL ,
     ColumnName  VARCHAR NOT NULL ,
     ColumnNo    INTEGER NOT NULL
-  ) < metaData > = MetaDataTable[].indexColumns ;
+  ) < metaData > = 1 ;
   "
   nullptr api::forkChild  api:executeCheck
 

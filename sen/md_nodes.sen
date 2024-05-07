@@ -15,7 +15,7 @@
     Address           VARCHAR NOT NULL ,
     Port               INTEGER NOT NULL ,
     ConnectTimeStamp  TIMESTAMP  NOT NULL
-  ) < metaData > = MetaDataTable[].nodes ;
+  ) < metaData > = 1 ;
   "
   nullptr api::forkChild  api:executeCheck
 
