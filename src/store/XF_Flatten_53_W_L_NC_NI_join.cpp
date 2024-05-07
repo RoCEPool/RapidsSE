@@ -82,7 +82,7 @@ void XF_Flatten_53_W_L_NC_NI_join::vFlatten(void)
   // fold of exists subQuery
 
 
-  vFold_basic(m_pCI, "53_W_L_NC_NI_join"_Stz, CK_o_WHERE);
+  vFold_subQuery(m_pCI, "53_W_L_NC_NI_join"_Stz, CK_o_WHERE);
 
  // m_pCI->PRINTBOARD_dbg();
 

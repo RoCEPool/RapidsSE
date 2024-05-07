@@ -84,7 +84,7 @@ void XF_Flatten_24_W_A_C_ro::vFlatten(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  vFold_basic(m_pCI, "24_W_A_C_ro"_Stz, CK_o_WHERE);
+  vFold_subQuery(m_pCI, "24_W_A_C_ro"_Stz, CK_o_WHERE);
   m_pCI->PRINTBOARD_dbg();
 
   vPromote_aggreg_To_gbyAgg(m_pCI);

@@ -34,7 +34,7 @@ XF_FLATTEN::~XF_FLATTEN(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* XF_Fold a sub-query (before outer-query)                                   */
 /*----------------------------------------------------------------------------*/
-void XF_FLATTEN::vFold_basic(CardIter* pCI, Stz* szFoldNm, eCK eCardWithSQ)
+void XF_FLATTEN::vFold_subQuery(CardIter* pCI, Stz* szFoldNm, eCK eCardWithSQ)
 {
   // 1) find H_A_NC_ro subquery call in mq:<having>/<boolPred>/<roPred>
   pCI->vBeginEach_tail();
@@ -108,8 +108,6 @@ void XF_FLATTEN::vFold_basic(CardIter* pCI, Stz* szFoldNm, eCK eCardWithSQ)
     pCI->E.p_fold->vDerive_emit_fold(pCI, pBoard_inner->pSubQuery());
     pCI->Flat.m_pExpr_fold = pCI->E.p_expr;
   }
-  // pCI->PRINTBOARD_dbg();
-
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -171,81 +169,10 @@ void XF_FLATTEN::vFold_from(Stz* szFoldNm, CardIter* pCI)
 
 
 /*----------------------------------------------------------------------------*/
-/* XF_Fold a non-correlated sub-query (before outer-query)                       */
+/* set carry                                                                  */
 /*----------------------------------------------------------------------------*/
-void XF_FLATTEN::vFold_nc_subQuery(CardIter* pCI, Stz* szFoldNm,
-                                            eCK eCardWithSQ, eQO eWhatOp)
+void XF_FLATTEN::vSet_carry(CardIter* pCI, eCK eCardWithSQ, eQO eWhatOp)
 {
-//  pCI->vBeginEach();
-//
-//  // 1) find H_A_NC_ro subquery call in mq:<having>/<boolPred>/<roPred>
-////  if (pCI->bEachOp(eCardWithSQ, CK_PREDICATE)) {
-//  pCI->vBeginEach_tail();
-//  if (pCI->bEachOp_reverse_foldBreak(eCardWithSQ, CK_PREDICATE)) {
-//    if (!Board::bMark_sqyCall(pCI)) {
-//      vTrace("DID NOT FIND %s SubQuery call\n"_Stz, szFoldNm);
-//      NEVER_REACH
-//    }
-//  }
-//  // pCI->PRINTBOARD_dbg();
-//
-//  // 2) push to sq
-//  Board* pBoard = pCI->m_pBench->pFindBoard(pCI->Flat.m_p_term_sqyCall->pSymbol());
-//  if (! pBoard) {
-//    vTrace("DID NOT FIND Board %s\n"_Stz, pCI->Flat.m_p_term_sqyCall->szFacet(SF_SQY_NO));
-//    NEVER_REACH
-//  }
-//  pCI->vPushEach();
-//  pCI->vUseBoard(pBoard);
-//
-//
-//  SubQuery* pSubQuery_save = pCI->pBoard()->pSubQuery();
-//
-//  // 3) get copy of sq
-//  pCI->Flat.m_pCopy_inner = pCI->E.p_deck->pDupSubCardsRecursive(0);
-//
-//  // 4) pop back to mq
-//  pCI->vPopEach();
-//
-//  // 5) add <fold> (before MQ)
-//  pCI->E.p_fold = Card_Fold::pCraft_fold(szFoldNm, pSubQuery_save->pBoard()->i_Board());
-//  pCI->E.p_deck->vPushChild(pCI->E.p_fold);
-//
-//  // 6) copy up sq (add before fold)
-//  pCI->E.p_deck->vPushChild(pCI->Flat.m_pCopy_inner);
-//  pCI->E.p_deck->vRemoveChildLeavingSubs(pCI->Flat.m_pCopy_inner);
-//  DELETE_CARD(pCI->Flat.m_pCopy_inner);
-//
-//
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//
-//  pCI->vClearRegisters();
-//  pCI->vBeginEach();
-//  while (pCI->bEachOp()) {
-//
-//    pCI->vSnapIf_arriving();
-//
-//    if (pCI->pPeekNextIf(CK_o_FOLD))
-//      break;
-//  }
-//
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//
-//
-//  // 7) derive the fold (SQ result) expr
-//  pCI->Flat.m_pExpr_fold = nullptr;
-//  pCI->vBeginEach();
-//  if (pCI->bEachOp(CK_o_FOLD)) {
-//    pCI->Flat.m_i_fold = pCI->E.i_Op;
-//    pCI->E.p_fold->vDerive_emit_fold(pCI, pSubQuery_save);
-//    pCI->Flat.m_pExpr_fold = pCI->E.p_expr;
-//  }
-//  // pCI->PRINTBOARD_dbg();
-
-
-
-
-  vFold_basic(pCI,szFoldNm,eCardWithSQ);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -310,9 +237,6 @@ void XF_FLATTEN::vFold_nc_subQuery(CardIter* pCI, Stz* szFoldNm,
 
   if (pCI->Carry.Sort.m_bSeen)
     pCI->Carry.Sort.m_bCorrect_After_Inject = true;
-
-  // pCI->PRINTBOARD_dbg();
-
 }
 
 /*----------------------------------------------------------------------------*/

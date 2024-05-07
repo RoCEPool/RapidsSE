@@ -19,12 +19,11 @@ namespace STORE
    ~XF_FLATTEN(void) noexcept(false);
 
   protected:
-    void vFold_basic(CardIter* pCI, Stz* szFoldNm, eCK eCardWithSQ);
+    void vFold_subQuery(CardIter* pCI, Stz* szFoldNm, eCK eCardWithSQ);
 
     void vFold_from(Stz* szFoldNm, CardIter* pCI);
 
-    void vFold_nc_subQuery(CardIter* pCI, Stz* szFoldNm,
-                                    eCK eCardWithSQ, eQO eWhatOp);
+    void vSet_carry(CardIter* pCI, eCK eCardWithSQ, eQO eWhatOp);
 
     void vSmooth(CardIter* pCI);
 
