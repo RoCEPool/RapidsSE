@@ -87,17 +87,19 @@ void XF_Flatten_32_W_A_NC_I::vFlatten(void)
   // fold of subQuery
 
   vFold_nc_subQuery(m_pCI, "W_A_NC_I"_Stz, CK_o_WHERE, QO_IN_OP);
+  m_pCI->PRINTBOARD_dbg();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // smoothing of: subQuery | XF_Fold | Table* [Where] GbyAgg_PNO [Project (avg)] Having
 
   XF_Flatten_Left_subQuery::vRotate_Next(m_pCI);
+  m_pCI->PRINTBOARD_dbg();
 
   vSmooth(m_pCI);
+  m_pCI->PRINTBOARD_dbg();
 
   m_pCI->E.p_deck->vMarksClearRecursive();
-
- // m_pCI->PRINTBOARD_dbg();
+  m_pCI->PRINTBOARD_dbg();
 
   m_pCI->vEndTransform(__LINE__);
 }
