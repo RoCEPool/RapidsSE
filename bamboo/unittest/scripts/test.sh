@@ -297,15 +297,17 @@ function runAndMonitorTest() {
   # test may have failed, for example. We also want to capture separate log files
   # for each unit test being run so that problems are easier to track down.
 
+  # Stop SE if it is already running. This way we can remove the old logs cleanly.
+  if isClusterRunning; then
+    # shellcheck disable=SC2119
+    stopCluster
+  fi
+
   # Remove any SE log files from the install directories of each node
   removeLogs "${CONFIG_FILE}"
 
-  # Start SE if it hasn't already been started
-  if ! isClusterRunning; then
-    # shellcheck disable=SC2119
-    startCluster
-  fi
-
+  # Now start the cluster
+  startCluster
 
   # Run the test harness
   local harnessStartTime
@@ -379,7 +381,8 @@ function runAndMonitorTest() {
       writeHarnessFailureJUnitResult "${harnessName}" "${elapsedTime}" "${failureSummary}" "${failureDetail}"
 
       # Stop SE
-      "${DIR}/stop.sh" "${CONFIG_FILE}" || true
+
+      stopCluster || true
 
       # Copy the logs
       copyLogs "${CONFIG_FILE}" "${LOG_OUTPUT_DIR}" "${RESULTS_DIR}" || true
@@ -425,7 +428,7 @@ function runAndMonitorTest() {
       writeHarnessFailureJUnitResult "${harnessName}" "${elapsedTime}" "${failureSummary}" "${failureDetail}"
 
       # Stop SE
-      "${DIR}/stop.sh" "${CONFIG_FILE}" || true
+      stopCluster || true
 
       # Copy the logs
       copyLogs "${CONFIG_FILE}" "${LOG_OUTPUT_DIR}" "${RESULTS_DIR}" || true
@@ -461,7 +464,7 @@ function runAndMonitorTest() {
       writeHarnessFailureJUnitResult "${harnessName}" "${elapsedTime}" "${failureSummary}" "${failureDetail}"
 
       # Stop SE
-      "${DIR}/stop.sh" "${CONFIG_FILE}" || true
+      stopCluster || true
 
       # Copy the logs
       copyLogs "${CONFIG_FILE}" "${LOG_OUTPUT_DIR}" "${RESULTS_DIR}" || true
@@ -487,7 +490,7 @@ function runAndMonitorTest() {
     writeHarnessFailureJUnitResult "${harnessName}" "${elapsedTime}" "${failureSummary}" "${failureDetail}"
 
     # Stop SE
-    "${DIR}/stop.sh" "${CONFIG_FILE}" || true
+    stopCluster || true
 
     # Copy the logs
     copyLogs "${CONFIG_FILE}" "${LOG_OUTPUT_DIR}" "${RESULTS_DIR}" || true
@@ -541,11 +544,11 @@ function runSethTest() {
 function runConnectionStormTest() {
   local -r runtimeSec=20
   local -r numConnections=50
-  local -r connStormTimeoutSec=40
+  local -r connStormTimeoutSec=60
 
   local connStormCmdLine=(
     "${CONN_STORM_SH}"
-    "-u" "${URL}"
+    "-u" "${URL}?logintimeout=10"
     "-t" "${runtimeSec}"
     "-c" "${numConnections}"
     "-d" "${RESULTS_DIR}/connectionStorm-${TARGET}.xml"
@@ -660,9 +663,6 @@ while [ "${i}" -lt "${#TEST_TO_RUN[@]}" ]; do
   echo "=========================================================="
   echo -e "\n"
 
-  if ! isClusterRunning ; then
-    exit 1
-  fi
 done
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

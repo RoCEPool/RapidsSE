@@ -365,8 +365,7 @@ function copyLogs() {
       cp "${installDir}"/se*.log "${nodeDir}" &>/dev/null || true
 
       for f in "${nodeDir}"/se*.log; do
-        #mv "$f" "$(echo "$f" | sed s/.log/."${nodeName}".log/)" &>/dev/null || true
-        mv "$f" "${f//.log/."${nodeName}".log}" &>/dev/null || true
+        mv "$f" "${f//.log/.${nodeName}.log}" &>/dev/null || true
       done
 
       cp "${installDir}/clusterStatus.log" "${logOutputDir}/clusterStatus.${nodeName}.log" &>/dev/null || true
@@ -374,7 +373,7 @@ function copyLogs() {
       # Copy any queryLib source and log files
       local queryLibDir="${nodeDir}/queryLibs"
       mkdir -p "${queryLibDir}"
-      cp -r "${installDir}/queryLibs/src" "${queryLibDir}"
+      cp -r "${installDir}/queryLibs/src" "${queryLibDir}" &>/dev/null || true
 
     done
 
