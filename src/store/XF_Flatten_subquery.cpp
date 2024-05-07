@@ -26,6 +26,7 @@
 #include "XF_Flatten_Left_subQuery.hpp"
 
 #include "XF_Flatten_X_expCol_To_tblCol.hpp"
+#include "XF_Utility.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -197,7 +198,7 @@ void XF_Flatten_subquery::vFlatten_recurse(Symbol* pSym_sqyNo_inner, i8 iDepth)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // things to do to this outer query after flattening it's sub-queries
 
-  XF_Flatten_Left_subQuery::vRemove_LeftMost(m_pCI);
+  XF_Utility::vRemove_LeftMost(m_pCI);
   XF_Flatten_Join_Ordering::vXF_Join_Ordering(m_pCI);
   vRotate_Next();
 

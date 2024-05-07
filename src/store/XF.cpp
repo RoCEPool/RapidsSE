@@ -198,7 +198,7 @@ void XF::vTransform(void)
                                                      //
   XF_Flatten_subquery::vFlatten(m_pCI);                       //
                                                      //
-  XF_Flatten_Left_subQuery::vRemove_LeftMost(m_pCI); //
+  XF_Utility::vRemove_LeftMost(m_pCI); //
                                                      //
   RASSERT(0 == m_pCI->pBoard()->pDeck()->nChildCards(CK_SUBQUERY));
                                                      //
@@ -388,7 +388,7 @@ void XF::vTransform_passThru(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //
 
-  XF_Flatten_Left_subQuery::vRemove_LeftMost(m_pCI);
+  XF_Utility::vRemove_LeftMost(m_pCI);
 
   XF_Synthesise_pipelineDef::vSynthesise(m_pCI);
 

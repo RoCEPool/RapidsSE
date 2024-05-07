@@ -44,16 +44,16 @@ void XF_Utility::vVerify_dic(CardIter* pCI)
 {
   _static_
 
-  XF_Utility* pXF_Validate = new XF_Utility(pCI);
+  XF_Utility* pXF_Utility = new XF_Utility(pCI);
 
   try {
-    pXF_Validate->vVerify_dic_loop();
+    pXF_Utility->vVerify_dic_loop();
   }
   catch (Error xError) {
-    delete pXF_Validate;
+    delete pXF_Utility;
     throw xError;
   }
-  delete pXF_Validate;
+  delete pXF_Utility;
 }
 
 
@@ -1098,6 +1098,45 @@ void XF_Utility::vVerify_dic_OP(void)
 /*============================================================================*/
 /*============================================================================*/
 
+
+/*----------------------------------------------------------------------------*/
+/* remove left-most subquery and rotate next sub-query to be first card       */
+/*----------------------------------------------------------------------------*/
+void XF_Utility::vRemove_LeftMost(CardIter* pCI)
+{
+  _static_
+
+  XF_Utility* pXF_Utility = new XF_Utility(pCI);
+
+  pXF_Utility->vRemove_LeftMost();
+
+  delete pXF_Utility;
+}
+
+
+
+/*----------------------------------------------------------------------------*/
+/*-- public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* remove left-most subquery and rotate next sub-query to be first card       */
+/*----------------------------------------------------------------------------*/
+void XF_Utility::vRemove_LeftMost(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_VALIDATE_BOARD, _FOOTER_);
+
+  m_pCI->vTransform(__FILE__, __func__, XF_FLATTEN_DELETE_LEFT_SUBQUERY);
+
+  Kid xDeck(m_pCI->E.p_deck);
+  if (xDeck.bEach()) {
+    if (CK_SUBQUERY == xDeck.eChild()) {
+      xDeck.vDelete();
+    }
+  }
+
+  m_pCI->vEndTransform(__LINE__);
+}
 
 
 /*============================================================================*/
