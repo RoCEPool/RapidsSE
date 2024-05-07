@@ -57,6 +57,8 @@ readonly SETH_TIMEOUT_DEBUG_MULTIPLIER=2
 # we write to the test log in a tight loop and eat up all disk space.
 readonly MAX_DISK_USED_PCT="90"
 
+# The number of log file lines to show when a crash is detected
+readonly LOG_FILE_LINES_TO_SHOW=250
 
 ###############################################################################
 ### Includes                                                                ###
@@ -84,6 +86,14 @@ fi
 ### Significant Global Variables                                            ###
 ###############################################################################
 
+# TODO: Add any other tests here
+# The array of unit test harnesses to run. The format here is:
+#  <testName> <testFunctionToCall>
+TEST_TO_RUN=(
+  "ConnectionStorm" "runConnectionStormTest"
+  "SETH"            "runSethTest"
+)
+
 # Track the number of test harnesses that have been run and the number that
 # have run to completion successfully or have been aborted due to a problem.
 # This is not a measure of whether the tests have passed or failed, just
@@ -104,6 +114,9 @@ TARGET=""
 # The path of the config file to be used for installation
 CONFIG_FILE=""
 
+# The path where bamboo log files should be saved
+LOG_OUTPUT_DIR=""
+
 # This is the collection of tests that are actually run by bamboo.
 TESTLIST_FILE=""
 
@@ -117,11 +130,10 @@ SETH_TIMEOUT="${SETH_TIMEOUT_BASE}"
 
 ## An exit hook that runs whether the script is exiting cleanly or in error.
 ## Params: None
-
+# shellcheck disable=SC2317
 function onExit() {
 
   if [ "${STOP_REQ}" -eq 1 ]; then
-    # TODO: Stop RapidsSE if it has been installed
     # First, kill any rogue SE and SETH instances owned by the current user.
     killRogueInstances
   fi
@@ -150,11 +162,12 @@ function onExit() {
 
 function processArgs() {
 
-  if [ "$#" -lt 3  ] || [ "$#" -gt 5  ]; then
+  if [ "$#" -lt 4  ] || [ "$#" -gt 6  ]; then
     errorExit "Incorrect arguments provided\n" "Usage: ./${SCRIPT_NAME} " \
               "[ --testsuffix <suffix> ]" \
               "{ *debug* | *release* } " \
               "path/of/cluster.config " \
+              "<logfile output dir> " \
               "path/of/testlistFile"
   fi
 
@@ -165,7 +178,7 @@ function processArgs() {
   fi
 
   TARGET="$1"
-
+  shift
   if ! [[ "${TARGET}" = *debug* || "${TARGET}" = *release* ]]; then
     errorExit "Non-optional parameter 1 must contain the substring \"debug\" or \"release\""
   fi
@@ -178,12 +191,18 @@ function processArgs() {
          "because we are running against a debug build of SE."
   fi
 
-  CONFIG_FILE="$2"
+  CONFIG_FILE="$1"
+  shift
   if [ ! -f "${CONFIG_FILE}" ]; then
     errorExit "Cannot locate the cluster configuration file at: ${CONFIG_FILE}"
   fi
 
-  TESTLIST_FILE="$3"
+  LOG_OUTPUT_DIR="$1"
+  shift
+  mkdir -p "${LOG_OUTPUT_DIR}"
+
+  TESTLIST_FILE="$1"
+  shift
   if [ ! -f "${TESTLIST_FILE}" ]; then
     errorExit "Cannot locate the test list file that SETH will execute: ${TESTLIST_FILE}"
   fi
@@ -193,7 +212,64 @@ function processArgs() {
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# Runs a generic test and monitors for SE hanging and crashing.
+# Write out a JUnit result file indicating that the test harness encountered
+# a significant error and wasn't able to complete.
+#
+# Parameters:
+#   $1      : The test harness name
+#   $2      : The elapsed time of the test
+#   $3      : The summary of the failure
+#   $4      : The detail of the failure
+# shellcheck disable=SC2317
+function writeHarnessFailureJUnitResult() {
+  local -r requiredArguments=3
+
+  if [ "$#" -lt "${requiredArguments}" ]; then
+    errorExit "Function \"writeHarnessFailureJUnitResult\" requires at least ${requiredArguments} arguments"
+  fi
+
+  local harnessName="$1"
+  local elapsedTime="$2"
+  local failureSummary="$3"
+  local failureDetail="$4"
+
+  local outputFile="${RESULTS_DIR}/${harnessName}-${TARGET}-Failure.xml"
+
+  cat << EOF > "${outputFile}"
+<?xml version="1.0" encoding="UTF-8"?>
+  <testsuite name="${harnessName} Harness" time="${elapsedTime}">
+      <testcase name="Harness Failure" classname="" time="${elapsedTime}">
+          <failure message="${failureSummary}" type="Execution Error">
+              ${failureDetail}
+          </failure>
+      </testcase>
+  </testsuite>
+EOF
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Grep the SE log file for a number of known error conditions that will typically
+# prevent a test harness from moving forward.
+#
+# Parameters: None
+# shellcheck disable=SC2317
+function checkForJobCrash() {
+
+  local grepOptions=(
+    "-E"
+    "-e" "^@THROW @THROW @THROW"
+    "-e" "^INTERNAL ERROR"
+    "-e" "^Caught SIG"
+    "-e" "^Thread Backtrace"
+    "${logFile}"
+  )
+
+  # The exit code of grep is the exit code of this function
+  grep "${grepOptions[@]}" "${INSTALL_DIR}"/se*.log >/dev/null 2>&1
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Runs a generic unit test and monitors for SE hanging and crashing.
 #
 # Parameters:
 #   $1      : A name of the test harness
@@ -204,6 +280,7 @@ function processArgs() {
 #          non-zero if it aborted due to an error.
 # Note: this is not a measure of whether the tests passed, just whether the test
 #       harness ran to completion.
+# shellcheck disable=SC2317
 function runAndMonitorTest() {
   local -r requiredArguments=3
 
@@ -217,6 +294,21 @@ function runAndMonitorTest() {
   shift
   local harnessCmdLine=("$@")
 
+  # First, ensure that we are operating in a clean environment. A previous unit
+  # test may have failed, for example. We also want to capture separate log files
+  # for each unit test being run so that problems are easier to track down.
+
+  # Remove any SE log files from the install directories of each node
+  removeLogs "${CONFIG_FILE}"
+
+  # Start SE if it hasn't already been started
+  if isClusterRunning; then
+    # shellcheck disable=SC2119
+    startCluster
+  fi
+
+
+  # Run the test harness
   local harnessStartTime
   harnessStartTime="$(date +%s)"
 
@@ -228,28 +320,71 @@ function runAndMonitorTest() {
   local harnessPid=$!  # This will actually be the pid of the subshell
 
 
-  # Now wait until the test harness finishes running. If SE exits then it has crashed and we have an error.
+  # Now wait until the test harness finishes running or something goes wrong with SE.
+  # If SE exits then it has crashed and we have an error.
+  # We will also grep the log file looking for job crashes because these will cause the
+  # test harness to hang and ultimately time out.
+
   local clusterOutput
+  local seProcessCrash=0
+  local seJobCrash=0
+  local failureSummary=""
+  local failureDetail=""
+
+  local currentTime
+  local elapsedTime
+
   while true
   do
-    # Check if SE is still running
+    # Check if the SE process has crashed or if a job has crashed
     if ! clusterOutput="$("${STATUS_SCRIPT}" 2>&1)" ; then
+      seProcessCrash=1
+      failureSummary="RapidsSE PROCESS has crashed"
 
-      # print to stderr
-      >&2 echo "" 1>&2
-      >&2 echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" 1>&2
-      >&2 echo "!!! ERROR: Rapids SE CLUSTER HAS CRASHED!!!" 1>&2
-      >&2 echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" 1>&2
-      >&2 echo "" 1>&2
-      >&2 echo "Cluster Status:" 1>&2
-      >&2 echo "${clusterOutput}" 1>&2
-      >&2 echo "" 1>&2
-      >&2 echo "Here are the last 250 lines of its log file:" 1>&2
-      >&2 tail -n 250 "${SE_LOG_FILE}" 1>&2
+      {
+        echo ""
+        echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+        echo "!!! ERROR: Rapids SE --PROCESS-- HAS CRASHED!!!"
+        echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+        echo ""
+        echo "Cluster Status:"
+        echo "${clusterOutput}"
+        echo ""
+        echo "Here are the last ${LOG_FILE_LINES_TO_SHOW} lines of its log file:"
+        tail -n "${LOG_FILE_LINES_TO_SHOW}" "${SE_LOG_FILE}"
+      } >&2
 
+    elif checkForJobCrash; then
+      seJobCrash=1
+      failureSummary="RapidsSE JOB has crashed"
+      {
+        echo ""
+        echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+        echo "!!! ERROR: Rapids SE --JOB-- HAS CRASHED!!!"
+        echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+        echo ""
+        echo "Here are the last ${LOG_FILE_LINES_TO_SHOW} lines of its log file:"
+        tail -n "${LOG_FILE_LINES_TO_SHOW}" "${SE_LOG_FILE}"
+      } >&2
+    fi
+
+    if [[ "${seProcessCrash}" -eq 1 ||  "${seJobCrash}" -eq 1 ]]; then
       # Clean up the test harness process
       echo "Cleaning up. Killing ${harnessName} pid ${harnessPid:-(none)}"
       kill -9 "${harnessPid}" &>/dev/null || true
+
+      # Write out a JUnit result file indicating the process/job has crashed
+      failureDetail="Please refer to the RapidsSE log files for details."
+      currentTime="$(date +%s)"
+      elapsedTime="$((currentTime - harnessStartTime))"
+      writeHarnessFailureJUnitResult "${harnessName}" "${elapsedTime}" "${failureSummary}" "${failureDetail}"
+
+      # Stop SE
+      "${DIR}/stop.sh" "${CONFIG_FILE}" || true
+
+      # Copy the logs
+      copyLogs "${CONFIG_FILE}" "${LOG_OUTPUT_DIR}" "${RESULTS_DIR}" || true
+
       false
       return
     fi
@@ -261,8 +396,6 @@ function runAndMonitorTest() {
     fi
 
     # How long has the test harness been running
-    local currentTime
-    local elapsedTime
     currentTime="$(date +%s)"
     elapsedTime="$((currentTime - harnessStartTime))"
 
@@ -274,16 +407,30 @@ function runAndMonitorTest() {
     # Check to see if the test harness tests have hung
     if [ "${elapsedTime}" -gt "${harnessTimeout}" ]
     then
-      >&2 echo "" 1>&2
-      >&2 echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" 1>&2
-      >&2 echo "ERROR: ${harnessName} has taken more than ${harnessTimeout} seconds to execute." 1>&2
-      >&2 echo "ERROR: The test is assumed to have hung. Stopping all tasks." 1>&2
-      >&2 echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" 1>&2
-      >&2 echo "" 1>&2
+      failureSummary="${harnessName} has taken more than ${harnessTimeout} seconds to execute"
+      failureDetail="The test is assumed to have hung. Stopping all tasks"
+      {
+        echo ""
+        echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+        echo "ERROR: ${failureSummary}."
+        echo "ERROR: ${failureDetail}."
+        echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+        echo ""
+      } >&2
 
       # Cleanup the test harness process. Don't worry about SE - it'll get cleaned up later.
       echo "Cleaning up. Killing ${harnessName} pid ${harnessPid:-(none)}"
       kill -9 "${harnessPid}" &>/dev/null || true
+
+      # Write out a JUnit result file indicating the test has exceeded time limit
+      writeHarnessFailureJUnitResult "${harnessName}" "${elapsedTime}" "${failureSummary}" "${failureDetail}"
+
+      # Stop SE
+      "${DIR}/stop.sh" "${CONFIG_FILE}" || true
+
+      # Copy the logs
+      copyLogs "${CONFIG_FILE}" "${LOG_OUTPUT_DIR}" "${RESULTS_DIR}" || true
+
       false
       return
     fi
@@ -296,16 +443,30 @@ function runAndMonitorTest() {
     then
       local diskPartition
       diskPartition="$(df -h "${INSTALL_DIR}" | awk '{ print $1; }' | tail -n 1)"
-      >&2 echo "" 1>&2
-      >&2 echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" 1>&2
-      >&2 echo "ERROR: Disk space is running very low (${diskUsedPct}% used) on partition ${diskPartition}." 1>&2
-      >&2 echo "ERROR: Stopping all tasks before they fail due to lack of disk space." 1>&2
-      >&2 echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" 1>&2
-      >&2 echo "" 1>&2
+      failureSummary="Disk space is running very low (${diskUsedPct}% used) on partition ${diskPartition}"
+      failureDetail="Stopping all tasks before they fail due to lack of disk space"
+      {
+        echo ""
+        echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+        echo "ERROR: ${failureSummary}."
+        echo "ERROR: ${failureDetail}."
+        echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+        echo ""
+      } >&2
 
-      # Cleanup the test harness process. Don't worry about SE - it'll get cleaned up later.
+      # Cleanup the test harness process.
       echo "Cleaning up. Killing ${harnessName} pid ${harnessPid:-(none)}"
       kill -9 "${harnessPid}" &>/dev/null || true
+
+      # Write out a JUnit result file indicating the disk has run out of space
+      writeHarnessFailureJUnitResult "${harnessName}" "${elapsedTime}" "${failureSummary}" "${failureDetail}"
+
+      # Stop SE
+      "${DIR}/stop.sh" "${CONFIG_FILE}" || true
+
+      # Copy the logs
+      copyLogs "${CONFIG_FILE}" "${LOG_OUTPUT_DIR}" "${RESULTS_DIR}" || true
+
       false
       return
     fi
@@ -319,7 +480,19 @@ function runAndMonitorTest() {
 
   if [ "${harnessElapsedTime}" -lt 5 ]
   then
-    >&2 echo "${harnessName} finished too quickly (<5 sec). Something must have gone wrong or there were little or no tests to be run." 1>&2
+    failureSummary="${harnessName} finished too quickly (<5 sec)"
+    failureDetail="${harnessName} finished too quickly (<5 sec). Something must have gone wrong or there were little or no tests to be run."
+    >&2 echo "${failureDetail}" 1>&2
+
+    # Write out a JUnit result file indicating the test finished too quickly
+    writeHarnessFailureJUnitResult "${harnessName}" "${elapsedTime}" "${failureSummary}" "${failureDetail}"
+
+    # Stop SE
+    "${DIR}/stop.sh" "${CONFIG_FILE}" || true
+
+    # Copy the logs
+    copyLogs "${CONFIG_FILE}" "${LOG_OUTPUT_DIR}" "${RESULTS_DIR}" || true
+
     false
     return
   fi
@@ -329,6 +502,10 @@ function runAndMonitorTest() {
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Execute the SETH unit test
+# Params: None
+#
+# shellcheck disable=SC2317
 function runSethTest() {
   # Classpath of invoking SETH and the corresponding JDBC driver (in the shell directory).
   # (yes, this will also load the SE Shell jar files, but this way is simpler).
@@ -343,6 +520,7 @@ function runSethTest() {
     "--resultdir" "${RESULTS_DIR}"
     "--resultname" "results-${TARGET}.xml"
     "--resultformat" "junit"
+    "--lognameprefix" "seth"
   )
 
   if [ -n "${TEST_SUFFIX}" ]; then
@@ -357,6 +535,10 @@ function runSethTest() {
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Execute the Connection Storm unit test
+# Params: None
+#
+# shellcheck disable=SC2317
 function runConnectionStormTest() {
   local -r runtimeSec=20
   local -r numConnections=50
@@ -450,55 +632,45 @@ fi
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# Run the Connection Storm test and check the return value
-echo -e "\n"
-echo "=========================================================="
-echo "  Starting ConnectionStorm test"
-echo "=========================================================="
+# Run each of the unit test harnesses
 
-TEST_HARNESSES_RUN=$((TEST_HARNESSES_RUN + 1))
-if runConnectionStormTest; then
-  CONNECTION_STORM_RESULT="Success"
-  TEST_HARNESSES_COMPLETED=$((TEST_HARNESSES_COMPLETED + 1))
-else
-  CONNECTION_STORM_RESULT="Failure"
-  TEST_HARNESSES_ABORTED=$((TEST_HARNESSES_ABORTED + 1))
-fi
+i=0
+while [ "${i}" -lt "${#TEST_TO_RUN[@]}" ]; do
 
-echo "=========================================================="
-echo "  Finished running ConnectionStorm test. Result: ${CONNECTION_STORM_RESULT}"
-echo "=========================================================="
-echo -e "\n"
+  TEST_NAME="${TEST_TO_RUN[$i]}"
+  i=$((i+1))
+  TEST_FUNC="${TEST_TO_RUN[$i]}"
+  i=$((i+1))
 
-if ! isClusterRunning ; then
-  exit 1
-fi
+  echo -e "\n"
+  echo "=========================================================="
+  echo "  Starting ${TEST_NAME} test"
+  echo "=========================================================="
+
+  TEST_HARNESSES_RUN=$((TEST_HARNESSES_RUN + 1))
+  if ${TEST_FUNC}; then
+    LAST_RESULT="Success"
+    TEST_HARNESSES_COMPLETED=$((TEST_HARNESSES_COMPLETED + 1))
+  else
+    LAST_RESULT="Failure"
+    TEST_HARNESSES_ABORTED=$((TEST_HARNESSES_ABORTED + 1))
+  fi
+
+  echo "=========================================================="
+  echo "  Finished running ${TEST_NAME} test. Result: ${LAST_RESULT}"
+  echo "=========================================================="
+  echo -e "\n"
+
+  if ! isClusterRunning ; then
+    exit 1
+  fi
+done
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# Run SETH and check the return value
-echo -e "\n"
-echo "=========================================================="
-echo "  Starting SETH tests"
-echo "=========================================================="
+# Exit with the appropriate error code
 
-TEST_HARNESSES_RUN=$((TEST_HARNESSES_RUN + 1))
-if runSethTest; then
-  SETH_RESULT="Success"
-  TEST_HARNESSES_COMPLETED=$((TEST_HARNESSES_COMPLETED + 1))
-else
-  SETH_RESULT="Failure"
-  TEST_HARNESSES_ABORTED=$((TEST_HARNESSES_ABORTED + 1))
-fi
-
-echo "=========================================================="
-echo "  Finished running SETH tests. Result: ${SETH_RESULT}"
-echo "=========================================================="
-echo -e "\n"
-
-if ! isClusterRunning ; then
+if [[ "${TEST_HARNESSES_RUN}" -eq 0 || "${TEST_HARNESSES_ABORTED}" -gt 0 ]]; then
   exit 1
+else
+  exit 0
 fi
-
-#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# TODO: Add any other tests here
-#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

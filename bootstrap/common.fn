@@ -178,11 +178,11 @@ function printIndentArray() {
 
   local var
 
-  for var in ${array[*]}
+  for var in "${array[@]}"
   do
     # Intentional to preserve meaning of seq operator.
     # shellcheck disable=SC2046 
-    printf "%0.s " $(seq 1 ${indents})
+    printf "%0.s " $(seq 1 "${indents}")
     printf '%s\n' "${var}"
   done
 }
@@ -904,10 +904,13 @@ function singleNodeCfgsSetValues() {
   shift
   local nodeName="$1"
   shift
-  local -a value=("$@")
+  local -a value
+  value=("$@")
 
+  local -a arr
   arr=$( IFS=:; printf '%s' "${value[*]}" )
 
+  # shellcheck disable=SC2140
   eval "${NODE_CFG_PREFIX}${nodeName}"["${key}"]='${arr[@]}'
 }
 
@@ -925,7 +928,8 @@ function singleNodeCfgsSetValues() {
 function nodeCfgSetValue() {
   local nodeName=$1
   local key=$2
-  local value=$3
+  local value
+  value=$3
 
   # Escape any quotes in the value
   local escapedVal

@@ -172,7 +172,7 @@ function compileSE() {
       fi
 
       echo "Using GCC version ${newestGccVer} from SCL"
-      scl enable devtoolset-${newestGccVer} "make clean && time make ${target} -j$(nproc)"
+      scl enable "devtoolset-${newestGccVer}" "make clean && time make ${target} -j$(nproc)"
 
     else
       make clean && time make "${target}" "-j$(nproc)"
@@ -332,3 +332,85 @@ function isTpchDir() {
   return 0
 }
 
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Copies log files from each node of the locally installed SE to the bamboo log directory
+## Params:
+##  $1 - path of the cluster config file
+##  $2 - path of where the log files should be copied
+##  $3 - (optional) path where bamboo result files are being written
+function copyLogs() {
+
+  local configFile="$1"
+  local logOutputDir="$2"
+  local bambooResultsDir="$3"
+
+  # Execute in a subshell so that sourcing the config file doesn't pollute
+  # the global variable environment
+  (
+    # shellcheck disable=SC1090
+    source "${configFile}"
+
+    # sleep 5
+
+    for nodeName in "${NODE_LIST[@]}"; do
+      # Get the installation directory
+      local installDir
+      installDir="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_DIR_KEY}")"
+
+      local nodeDir
+      nodeDir="${logOutputDir}/${nodeName}"
+
+      mkdir -p "${nodeDir}"
+
+      cp "${installDir}"/se*.log "${nodeDir}" &>/dev/null || true
+
+      for f in "${nodeDir}"/se*.log; do
+        #mv "$f" "$(echo "$f" | sed s/.log/."${nodeName}".log/)" &>/dev/null || true
+        mv "$f" "${f//.log/."${nodeName}".log}" &>/dev/null || true
+      done
+
+      cp "${installDir}/clusterStatus.log" "${logOutputDir}/clusterStatus.${nodeName}.log" &>/dev/null || true
+
+      # Copy any queryLib source and log files
+      local queryLibDir="${nodeDir}/queryLibs"
+      mkdir -p "${queryLibDir}"
+      cp -r "${installDir}/queryLibs/src" "${queryLibDir}"
+
+    done
+
+    # Copy Seth log files
+    if [ -n "${bambooResultsDir}" ]; then
+      mv "${bambooResultsDir}"/seth-log-* "${logOutputDir}" &>/dev/null || true
+    fi
+  )
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Remove log files from each node of the locally installed SE
+## Params:
+##  $1 - path of the cluster config file
+function removeLogs() {
+
+  local configFile="$1"
+
+  # Execute in a subshell so that sourcing the config file doesn't pollute
+  # the global variable environment
+  (
+    # shellcheck disable=SC1090
+    source "${configFile}"
+
+    for nodeName in "${NODE_LIST[@]}"; do
+      # Get the installation directory
+      local installDir
+      installDir="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_DIR_KEY}")"
+
+      rm -f "${installDir}"/se*.log || true
+
+      rm -f "${installDir}/clusterStatus.log" || true
+
+      # Remove any queryLib source and log files
+      rm -rf "${installDir}/queryLibs/"* || true
+    done
+  )
+}

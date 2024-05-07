@@ -208,7 +208,7 @@ function startCluster() {
     do
       debugPrint "Starting ${row}"
       remoteNodeArgArr=("${row}")
-      [ -n "${EXTRA_START_ARGS[@]}" ] && remoteNodeArgArr+=("${EXTRA_START_ARGS[@]}")
+      [ -n "${EXTRA_START_ARGS[*]}" ] && remoteNodeArgArr+=("${EXTRA_START_ARGS[@]}")
       startRemoteNode "${remoteNodeArgArr[@]}" || errorExit "Could not start node ${row} in the cluster."
     done
 
@@ -292,7 +292,7 @@ function startRemoteNode() {
     remoteCmd="cd \"${dir}\" && ./${START_SCRIPT} --node"
   fi
 
-  if [ ${DEBUG} -eq 1 ]; then
+  if [ "${DEBUG}" -eq 1 ]; then
     remoteCmd="${remoteCmd} --debug"
   fi
 
@@ -316,7 +316,8 @@ function startCurrentNode() {
   local host
   local internalPort
   local clientPort
-  local heartbeat
+  local heartbeatPort
+  local heartbeatAddress
   local dir
   local partitions
   local threads
@@ -324,7 +325,7 @@ function startCurrentNode() {
   local clusterId
   local diskPathsStr
   local params
-  local extraStartArgs=($@)
+  local extraStartArgs=("$@")
 
 
   host="$(nodeCfgGetValue "${CURRENT_NODE_NAME}" "${NODE_CFG_HOST_KEY}")"
@@ -393,7 +394,7 @@ function startCurrentNode() {
   export SE_ENV_INTKEY=1
 
 
-  if [ ${DEBUG} -eq 1 ]; then
+  if [ "${DEBUG}" -eq 1 ]; then
     echo "Starting RapidsSE on node ${CURRENT_NODE_NAME} [host ${host}] with the command:"
     echo "  ${startCmd[*]}"
 
@@ -559,7 +560,7 @@ function remoteClusterXConnect() {
 
   remoteCmd="cd \"${dir}\" && ./${START_SCRIPT} --node --clusterinit"
 
-  if [ ${DEBUG} -eq 1 ]; then
+  if [ "${DEBUG}" -eq 1 ]; then
     remoteCmd="${remoteCmd} --debug"
   fi
 
@@ -1238,7 +1239,7 @@ function stopRemoteNode() {
 
   remoteCmd="cd \"${dir}\" && ./${STOP_SCRIPT} --node"
 
-  if [ ${DEBUG} -eq 1 ]; then
+  if [ "${DEBUG}" -eq 1 ]; then
     remoteCmd="${remoteCmd} --debug"
   fi
 
@@ -1290,7 +1291,7 @@ function stopCurrentNode() {
     stopCmd+=("--appendTrace")
 
 
-    if [ ${DEBUG} -eq 1 ]; then
+    if [ "${DEBUG}" -eq 1 ]; then
       echo "Stopping RapidsSE on node ${CURRENT_NODE_NAME} [host ${host}] with the command:"
       echo "  ${stopCmd[*]}"
 
