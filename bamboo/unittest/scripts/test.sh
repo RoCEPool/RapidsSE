@@ -233,12 +233,12 @@ function writeHarnessFailureJUnitResult() {
   local failureSummary="$3"
   local failureDetail="$4"
 
-  local outputFile="${RESULTS_DIR}/${harnessName}-${TARGET}-Failure.xml"
+  local outputFile="${RESULTS_DIR}/harnessFailure-${harnessName// /}-${TARGET}.xml"
 
   cat << EOF > "${outputFile}"
 <?xml version="1.0" encoding="UTF-8"?>
-  <testsuite name="${harnessName} Harness" time="${elapsedTime}">
-      <testcase name="Harness Failure" classname="" time="${elapsedTime}">
+  <testsuite name="Harness Execution" time="${elapsedTime}">
+      <testcase name="${harnessName} Harness Failure" classname="" time="${elapsedTime}">
           <failure message="${failureSummary}" type="Execution Error">
               ${failureDetail}
           </failure>
@@ -293,6 +293,9 @@ function runAndMonitorTest() {
   shift
   local harnessCmdLine=("$@")
 
+  local failureSummary=""
+  local failureDetail=""
+
   # First, ensure that we are operating in a clean environment. A previous unit
   # test may have failed, for example. We also want to capture separate log files
   # for each unit test being run so that problems are easier to track down.
@@ -307,7 +310,14 @@ function runAndMonitorTest() {
   removeLogs "${CONFIG_FILE}"
 
   # Now start the cluster
-  startCluster
+  if ! startCluster; then
+    failureSummary="Cluster failed to start"
+    failureDetail="Check the log files for details"
+    writeHarnessFailureJUnitResult "${harnessName}" 0 "${failureSummary}" "${failureDetail}"
+    copyLogs "${CONFIG_FILE}" "${LOG_OUTPUT_DIR}" "${RESULTS_DIR}" || true
+    false
+    return
+  fi
 
   # Run the test harness
   local harnessStartTime
@@ -329,8 +339,6 @@ function runAndMonitorTest() {
   local clusterOutput
   local seProcessCrash=0
   local seJobCrash=0
-  local failureSummary=""
-  local failureDetail=""
 
   local currentTime
   local elapsedTime
@@ -351,8 +359,10 @@ function runAndMonitorTest() {
         echo "Cluster Status:"
         echo "${clusterOutput}"
         echo ""
-        echo "Here are the last ${LOG_FILE_LINES_TO_SHOW} lines of its log file:"
+        echo "Here are the last ${LOG_FILE_LINES_TO_SHOW} lines of the log file from the first node:"
+        echo -e "\n-----------------------------LOG---------------------------------"
         tail -n "${LOG_FILE_LINES_TO_SHOW}" "${SE_LOG_FILE}"
+        echo -e "-----------------------------LOG---------------------------------\n"
       } >&2
 
     elif checkForJobCrash; then
@@ -364,8 +374,10 @@ function runAndMonitorTest() {
         echo "!!! ERROR: Rapids SE --JOB-- HAS CRASHED!!!"
         echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
         echo ""
-        echo "Here are the last ${LOG_FILE_LINES_TO_SHOW} lines of its log file:"
+        echo "Here are the last ${LOG_FILE_LINES_TO_SHOW} lines of the log file from the first node:"
+        echo -e "\n-----------------------------LOG---------------------------------"
         tail -n "${LOG_FILE_LINES_TO_SHOW}" "${SE_LOG_FILE}"
+        echo -e "-----------------------------LOG---------------------------------\n"
       } >&2
     fi
 
@@ -381,7 +393,6 @@ function runAndMonitorTest() {
       writeHarnessFailureJUnitResult "${harnessName}" "${elapsedTime}" "${failureSummary}" "${failureDetail}"
 
       # Stop SE
-
       stopCluster || true
 
       # Copy the logs
@@ -520,7 +531,7 @@ function runSethTest() {
     "-u" "${URL}"
     "--logsteps"
     "--resultdir" "${RESULTS_DIR}"
-    "--resultname" "results-${TARGET}.xml"
+    "--resultname" "seth-results-${TARGET}.xml"
     "--resultformat" "junit"
     "--lognameprefix" "seth"
   )
