@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* XF_Utility_Verify_dic.hpp -- Verify dic                                    */
+/* XF_Utility.hpp -- Verify dic                                    */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class XF_Utility_Verify_dic : public XF_PROLOG
+  class XF_Utility : public XF_PROLOG
   {
   private:
     // must be last
@@ -17,8 +17,8 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    XF_Utility_Verify_dic(CardIter* pCI);
-   ~XF_Utility_Verify_dic(void) noexcept(false);
+    XF_Utility(CardIter* pCI);
+   ~XF_Utility(void) noexcept(false);
 
     static void vVerify_dic(CardIter* pCI);
 
@@ -32,7 +32,7 @@ namespace STORE
     Footer* aFooter(void);
   };
 
-  XF_Utility_Verify_dic* _pXF_Utility_Verify_dic(void* aAddr);
+  XF_Utility* _pXF_Utility(void* aAddr);
 }
 
 /*============================================================================*/

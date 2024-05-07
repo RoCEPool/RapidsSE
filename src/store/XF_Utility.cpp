@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* XF_Utility_Verify_dic.cpp -- Verify dic                                    */
+/* XF_Utility.cpp -- Verify dic                                    */
 /*============================================================================*/
 
-#include "XF_Utility_Verify_dic.hpp"
+#include "XF_Utility.hpp"
 
 #include "Error.hpp"
 
@@ -10,16 +10,16 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_Utility_Verify_dic, CN_XF_PROLOG_VALIDATE_BOARD)
-__aNewFunction(XF_Utility_Verify_dic, CN_XF_PROLOG_VALIDATE_BOARD)
-__vDeleteFunction(XF_Utility_Verify_dic, CN_XF_PROLOG_VALIDATE_BOARD)
-__aFooterFunction(XF_Utility_Verify_dic)
+__pCastFunction(STORE, XF_Utility, CN_XF_PROLOG_VALIDATE_BOARD)
+__aNewFunction(XF_Utility, CN_XF_PROLOG_VALIDATE_BOARD)
+__vDeleteFunction(XF_Utility, CN_XF_PROLOG_VALIDATE_BOARD)
+__aFooterFunction(XF_Utility)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-XF_Utility_Verify_dic::XF_Utility_Verify_dic(CardIter* pCI)
+XF_Utility::XF_Utility(CardIter* pCI)
 : XF_PROLOG(CN_XF_PROLOG_VALIDATE_BOARD, pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_VALIDATE_BOARD, _FOOTER_);
@@ -32,7 +32,7 @@ XF_Utility_Verify_dic::XF_Utility_Verify_dic(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-XF_Utility_Verify_dic::~XF_Utility_Verify_dic(void) noexcept(false)
+XF_Utility::~XF_Utility(void) noexcept(false)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_VALIDATE_BOARD, _FOOTER_);
 }
@@ -40,11 +40,11 @@ XF_Utility_Verify_dic::~XF_Utility_Verify_dic(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Utility_Verify_dic::vVerify_dic(CardIter* pCI)
+void XF_Utility::vVerify_dic(CardIter* pCI)
 {
   _static_
 
-  XF_Utility_Verify_dic* pXF_Validate = new XF_Utility_Verify_dic(pCI);
+  XF_Utility* pXF_Validate = new XF_Utility(pCI);
 
   try {
     pXF_Validate->vVerify_dic_loop();
@@ -64,7 +64,7 @@ void XF_Utility_Verify_dic::vVerify_dic(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Utility_Verify_dic::vVerify_dic_loop(void)
+void XF_Utility::vVerify_dic_loop(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_VALIDATE_BOARD, _FOOTER_);
 
@@ -86,7 +86,7 @@ void XF_Utility_Verify_dic::vVerify_dic_loop(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Utility_Verify_dic::vVerify_dic_OP(void)
+void XF_Utility::vVerify_dic_OP(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_VALIDATE_BOARD, _FOOTER_);
 
@@ -1092,6 +1092,13 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
 
   vDebugPoint();
 }
+
+
+/*============================================================================*/
+/*============================================================================*/
+/*============================================================================*/
+
+
 
 /*============================================================================*/
 /* end                                                                        */

@@ -56,7 +56,7 @@
 #include "XF_Prolog_X_scan_To_from.hpp"
 #include "XF_Synthesise_code.hpp"
 #include "XF_Synthesise_pipelineDef.hpp"
-#include "XF_Utility_Verify_dic.hpp"
+#include "XF_Utility.hpp"
 
 #include "Job.hpp"
 
@@ -220,7 +220,7 @@ void XF::vTransform(void)
   //XF_Optimise_gbyAgg_To_ordAgg::vOptimise(m_pCI);    //
   XF_Optimise_Cull_bound::vOptimise(m_pCI);            //
   XF_Prolog_Analyse_emit::vAnalyse(m_pCI);             //
-  XF_Utility_Verify_dic::vVerify_dic(m_pCI);               //
+  XF_Utility::vVerify_dic(m_pCI);               //
   XF_Optimise_Early_projection::vOptimise(m_pCI);      //
   XF_Optimise_Reduce_gbyAgg_key::vOptimise(m_pCI);     //
   XF_Optimise_Static_calc::vOptimise(m_pCI);           //
