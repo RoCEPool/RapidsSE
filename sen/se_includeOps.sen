@@ -55,6 +55,7 @@ assert::stack_0
 "d" .verbose
 
   "OP_defineTable.sen"          include
+  "OP_defineMetaDataTable.sen"  include
   "OP_delete.sen"               include
   "OP_disconnect.sen"           include
   "OP_docol.sen"                include

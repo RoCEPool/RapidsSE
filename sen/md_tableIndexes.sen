@@ -10,7 +10,7 @@
 
   STD_BOOTFORK_TAG
   "
-  define table tableIndexes (
+  define metadata table tableIndexes (
     szCatalogName VARCHAR NOT NULL ,
     szSchemaName  VARCHAR NOT NULL ,
     szTableName   VARCHAR NOT NULL ,

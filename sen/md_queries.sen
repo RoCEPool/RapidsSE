@@ -10,7 +10,7 @@
 
   STD_BOOTFORK_TAG
   "
-  define table queries (
+  define metadata table queries (
     QueryId          INTEGER NOT NULL ,
     Timestamp       TIMESTAMP NOT NULL ,
     SqlText         VARCHAR NOT NULL ,

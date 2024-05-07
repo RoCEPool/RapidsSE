@@ -10,7 +10,7 @@
 
   STD_BOOTFORK_TAG
   "
-  define table nodes (
+  define metadata table nodes (
     NodeId             INTEGER NOT NULL ,
     Address           VARCHAR NOT NULL ,
     Port               INTEGER NOT NULL ,

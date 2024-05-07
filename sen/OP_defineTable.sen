@@ -31,6 +31,7 @@
   // create the table
 
   StreamDefLft[] <tableNm> table::createTable to Table[]
+  // If MetaData
   nullptr to StreamDefLft[]
 ;
 

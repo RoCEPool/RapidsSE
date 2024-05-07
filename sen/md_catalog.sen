@@ -10,7 +10,7 @@
 
   STD_BOOTFORK_TAG
   "
-  define table catalog (
+  define metadata table catalog (
     CatalogName VARCHAR NOT NULL
   ) < metaData > = MetaDataTable[].catalog ;
   "

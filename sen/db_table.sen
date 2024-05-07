@@ -193,11 +193,6 @@
  pTable table.createPtnDef
 
  pTable table::addToFolder
-
- pTable MetaDataTable[].setAM
-
- // create row in metadata table with catalogNm, schemaNm, tableNm
- sTableNm MetaDataTable[].insertTables
  
  Path[].popNamedTableFolder
 

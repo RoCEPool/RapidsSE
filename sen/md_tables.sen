@@ -10,7 +10,7 @@
 
   STD_BOOTFORK_TAG
   "
-  define table tableOfTables (
+  define metadata table tableOfTables (
     catalogName   VARCHAR NOT NULL ,
     schemaName    VARCHAR NOT NULL ,
     tableName     VARCHAR NOT NULL

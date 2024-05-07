@@ -124,42 +124,9 @@
   // Add the schema to the metadata Schema table
   "rapids" "public" MetaDataTable[].insertSchema
 
-  //  move to /tenants
-  attachmap::tenants@ execute
-  Path[].pushFolder
-
-    //  move to /tenants/boray
-    //  move to /tenants/boray/catalogs
-    "boray" Folder[].findSymbol execute
-    Path[].pushFolder
-
-      "catalogs" Folder[].findSymbol execute
-      Path[].pushFolder
-
-        // move to /tenants/boray/catalogs/rapids
-        // move to /tenants/boray/catalogs/rapids/schemas
-        "rapids" Folder[].findSymbol execute
-        Path[].pushFolder
-
-          "schemas" Folder[].findSymbol execute
-          Path[].pushFolder
-
-            // move to /tenants/boray/catalogs/rapids/schemas/public
-            // move to /tenants/boray/catalogs/rapids/schemas/public/tables
-            "public" Folder[].findSymbol execute
-            Path[].pushFolder
-              "tables" Folder[].findSymbol execute
-              Path[].pushFolder
-                MetaDataTable[].insertColumns
-              Path[].popFolder
-            Path[].popFolder
-          Path[].popFolder
-      Path[].popFolder
-    Path[].popFolder
-  Path[].popFolder
-
-
-
+  // Iterate TableOfTables and get Table Ptr from Row Data
+  // AM has all the info
+  // Insert Table Data into other metadata tables
 
   // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   //

@@ -624,7 +624,10 @@ void Step::vMetaDataTableTablesInsert(void)
   } PdsBufferIdItem;
 
   s256 szTableNm;
-  m_pDataStack->vPopStr(szTableNm,__func__);
+//  m_pDataStack->vPopStr(szTableNm,__func__);
+
+  Table* pNewTable = _pTable(*m_pLogicUnit->m_xpTable);
+  szTableNm = pNewTable->szTableNm();
 
   Table* pTable = AM::pMetaDataTableOfTables();
   if(!pTable) {
@@ -1088,10 +1091,9 @@ void Step::vMetaDataTableSetAM(void)
 {
   ENTRY();
 
-  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__ ));
+  Table* pTable = _pTable(*m_pLogicUnit->m_xpTable);
 
-  if(pTable->bIsMetaDataTable())
-    AM::ATTACHMAP::vMetaDataTables(pTable);
+  AM::ATTACHMAP::vMetaDataTables(pTable);
 
   EXIT();
 }

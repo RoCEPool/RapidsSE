@@ -10,7 +10,7 @@
 
   STD_BOOTFORK_TAG
   "
-  define table indexColumns (
+  define metadata table indexColumns (
     CatalogName VARCHAR NOT NULL ,
     SchemaName  VARCHAR NOT NULL ,
     TableName   VARCHAR NOT NULL ,

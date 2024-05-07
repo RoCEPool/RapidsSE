@@ -10,7 +10,7 @@
 
   STD_BOOTFORK_TAG
   "
-  define table sessions (
+  define metadata table sessions (
     SessionId    INTEGER NOT NULL ,
     Connected      BOOLEAN NOT NULL ,
     Status      VARCHAR NOT NULL

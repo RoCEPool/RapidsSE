@@ -10,7 +10,7 @@
 
   STD_BOOTFORK_TAG
   "
-  define table cluster (
+  define metadata table cluster (
     ClusterId   INTEGER NOT NULL
   ) < metaData > = MetaDataTable[].cluster ;
   "
