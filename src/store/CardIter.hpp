@@ -292,9 +292,9 @@ namespace STORE
     Stz* szFMT_FACET_UNKNOWN      (void) { return "%s"_Stz; }
     Stz* szFMT_FACET_SECONDARY    (void) { return "<%s"_Stz; }
     Stz* szFMT_FACET_PRIMARY      (void) { return "%s"_Stz; }
-    Stz* szFMT_FACET_HEADER       (void) { return "==%02lld %c--------------"_Stz; }
+    Stz* szFMT_FACET_HEADER       (void) { return "===%02lld-%c--------------"_Stz; }
     Stz* szFMT_FACET_NO           (void) { return "~%lld"_Stz; }
-    Stz* szFMT_MARKS              (void) { return "%s%s"_Stz; }
+    Stz* szFMT_MARKS              (void) { return "%2s%s"_Stz; }
     Stz* szFMT_NAME_LEFT          (void) { return "%s"_Stz; }
     Stz* szFMT_NAME_RIGHT         (void) { return "%18s"_Stz; }
     Stz* szFMT_PPY_INTEGER        (void) { return "}%s=%lld"_Stz; }

@@ -6,7 +6,7 @@
 namespace BASE
 {
   static const i8 C_RIBBON_LANES      = 64;
-  static const i8 C_RIBBON_LANE_WIDTH = 20;
+  static const i8 C_RIBBON_LANE_WIDTH = 21;
   static const i8 C_RIBBON_LANE_GAP   = 1;
 
   static const i8 C_RIBBON_TEXT = 1 + (C_RIBBON_LANES
