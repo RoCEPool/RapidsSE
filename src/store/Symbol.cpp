@@ -937,6 +937,29 @@ bool Symbol::bIs_Parenthesis(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is given arg a subQuery correaltion column?  (i.e. $SCn)                   */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Sqy_Cky(Stz* szArg)
+{
+  _static_
+
+  char acFirst  = szArg->cChar(0);
+  char acSecond = szArg->cChar(1);
+  char acThird  = szArg->cChar(2);
+  char acFourth = szArg->cChar(3);
+  char acFifth  = szArg->cChar(4);
+
+  if (   '$' == acFirst
+         && 'S' == acSecond
+         && 'C' == acThird
+         && StrLib::bIsDigit(acFourth)
+         && ! acFifth)
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is given arg a relational-operator?                                        */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Rln_Op(Stz* szArg)
@@ -1527,6 +1550,7 @@ void Symbol::vApplyFacet(eSF eFacet, i8 iInt)
     case SF_ITM_COL:    vFacet_Itm_Col(iInt);    break;
     case SF_KEY_COL:    vFacet_Key_Col(iInt);    break;
     case SF_NMD_COL:    vFacet_Nmd_Col(iInt);    break;
+    case SF_SQY_CKY:    vFacet_Sqy_Cky(iInt);    break;
     case SF_SQY_PRM:    vFacet_Sqy_Prm(iInt);    break;
     case SF_SQY_RSL:    vFacet_Sqy_Rsl(iInt);    break;
     case SF_SQY_NO:     vFacet_Sqy_No(iInt);     break;
@@ -1603,6 +1627,7 @@ void Symbol::vApplyFacet(eSF eFacet, Stz* szArg)
     case SF_NOTE:        vFacet_Note(szArg);        break;
     case SF_NULL:        vFacet_Null(szArg);        break;
     case SF_PARENTHESIS: vFacet_Parenthesis(szArg); break;
+    case SF_SQY_CKY:     vFacet_Sqy_Cky(szArg);     break;
     case SF_SQY_NM:      vFacet_Sqy_Nm(szArg);      break;
     case SF_SQY_NO:      vFacet_Sqy_No(szArg);      break;
     case SF_RLN_OP:      vFacet_Rln_Op(szArg);      break;
@@ -2504,6 +2529,7 @@ bool Symbol::bValidate(void)
       case SF_NULL:        b = bIs_Null(szFacet);        break;
       case SF_PARENTHESIS: b = bIs_Parenthesis(szFacet); break;
       case SF_RLN_OP:      b = bIs_Rln_Op(szFacet);      break;
+      case SF_SQY_CKY:     b = bIs_Sqy_Cky(szFacet);     break;
       case SF_SQY_NM:      b = bIs_Sqy_Nm(szFacet);      break;
       case SF_SQY_NO:      b = bIs_Sqy_No(szFacet);      break;
       case SF_SQY_OP:      b = bIs_Sqy_Op(szFacet);      break;
@@ -3571,6 +3597,34 @@ void Symbol::vFacet_Rln_Op(Stz* szRlnOp)
   vFacetSet(SF_RLN_OP, szRlnOp);
 
   RASSERT(bHasFacet(SF_RLN_OP));
+}
+
+/*----------------------------------------------------------------------------*/
+/* for a subQuery correlation key                                             */
+/*----------------------------------------------------------------------------*/
+void Symbol::vFacet_Sqy_Cky(i8 iOrdinal)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  //RASSERT(! bHasFacets());
+
+  vFacetSprint(SF_SQY_CKY, "$SC%lld"_Stz, iOrdinal);
+
+  RASSERT(bHasFacet(SF_SQY_CKY));
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to given parameter column                                  */
+/*----------------------------------------------------------------------------*/
+void Symbol::vFacet_Sqy_Cky(Stz* szSqyRsl)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  //RASSERT(! bHasFacets());
+
+  vFacetSet(SF_SQY_CKY, szSqyRsl);
+
+  RASSERT(bHasFacet(SF_SQY_CKY));
 }
 
 /*----------------------------------------------------------------------------*/
