@@ -26738,6 +26738,7 @@ void Task::vAddMunged(Task* )
     "  // create the table\n"
     "\n"
     "  StreamDefLft[] sTableNm table::createTable to Table[]\n"
+    "  MetaDataTable[].createTable\n"
     "  nullptr to StreamDefLft[]\n"
     " ;\n"
     "\n"

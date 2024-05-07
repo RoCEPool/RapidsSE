@@ -1183,6 +1183,7 @@ void vJobIdLastJobIdFetch(void);
 
   // metaDataTable
   void vMetaDataTableSelect(void);
+  void vMetaDataTableCreateTable(void);
 
   void vMetaDataTableTablesInsert(void);
   void vMetaDataTableTablesDelete(void);

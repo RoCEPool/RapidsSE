@@ -33,6 +33,7 @@
   // create the table
 
   StreamDefLft[] sTableNm table::createTable to Table[]
+  MetaDataTable[].createTable
   nullptr to StreamDefLft[]
 ;
 
