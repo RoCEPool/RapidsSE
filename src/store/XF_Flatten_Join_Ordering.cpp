@@ -340,7 +340,6 @@ void XF_Flatten_Join_Ordering::vReorderTables(void)
   DELETE_CARD(p_streamPrmAll);
 
   pBoard = m_pCI->E.pBoard;
-  //m_pCI->vPopBoard();
   m_pCI->vPopEach();
   m_pCI->m_pBench->vRemove(pBoard);
   delete pBoard;

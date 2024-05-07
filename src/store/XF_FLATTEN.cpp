@@ -65,6 +65,9 @@ void XF_FLATTEN::vFold_basic(CardIter* pCI, Stz* szFoldNm, eCK eCardWithSQ)
     pCI->Flat.m_pCorrelation = pCI->E.p_deck->pSub_correlation();
     i_dup_from = 1;
   }
+  else {
+    vDebugPoint();
+  }
 
 
   // 3) get copy of this inner query
@@ -148,7 +151,6 @@ void XF_FLATTEN::vFold_from(Stz* szFoldNm, CardIter* pCI)
   // ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^
 
   // x) pop back to mq
-  //pCI->vPopBoard();
   pCI->vPopEach();
   pCI->E.p_deck->vPushChild(pCI->Flat.m_pCopy_inner);
   pCI->E.p_deck->vRemoveChildLeavingSubs(pCI->Flat.m_pCopy_inner);
@@ -176,7 +178,9 @@ void XF_FLATTEN::vFold_nc_subQuery(CardIter* pCI, Stz* szFoldNm,
   pCI->vBeginEach();
 
   // 1) find H_A_NC_ro subquery call in mq:<having>/<boolPred>/<roPred>
-  if (pCI->bEachOp(eCardWithSQ, CK_PREDICATE)) {
+//  if (pCI->bEachOp(eCardWithSQ, CK_PREDICATE)) {
+  pCI->vBeginEach_tail();
+  if (pCI->bEachOp_reverse_foldBreak(eCardWithSQ, CK_PREDICATE)) {
     if (!Board::bMark_sqyCall(pCI)) {
       vTrace("DID NOT FIND %s SubQuery call\n"_Stz, szFoldNm);
       NEVER_REACH
@@ -200,7 +204,6 @@ void XF_FLATTEN::vFold_nc_subQuery(CardIter* pCI, Stz* szFoldNm,
   pCI->Flat.m_pCopy_inner = pCI->E.p_deck->pDupSubCardsRecursive(0);
 
   // 4) pop back to mq
-  //pCI->vPopBoard();
   pCI->vPopEach();
 
   // 5) add <fold> (before MQ)

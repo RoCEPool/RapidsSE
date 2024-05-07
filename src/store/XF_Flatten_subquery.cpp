@@ -213,7 +213,6 @@ void XF_Flatten_subquery::vFlatten_recurse(Symbol* pSym_sqyNo_inner, i8 iDepth)
   // ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^
 
   if (iDepth) {
-    //m_pCI->vPopBoard();
     m_pCI->vPopEach();
     m_pCI->vUseBoard(pBoard_outer);
   }

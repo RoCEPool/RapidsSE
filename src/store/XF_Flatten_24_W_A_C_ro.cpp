@@ -82,6 +82,8 @@ void XF_Flatten_24_W_A_C_ro::vFlatten(void)
 
   m_pCI->vTransform(__FILE__, __func__, XF_FLATTEN_24_W_A_C_RO);
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   vFold_basic(m_pCI, "24_W_A_C_ro"_Stz, CK_o_WHERE);
   m_pCI->PRINTBOARD_dbg();
 
@@ -90,6 +92,8 @@ void XF_Flatten_24_W_A_C_ro::vFlatten(void)
 
   vRestate_emit_fold(m_pCI);
   m_pCI->PRINTBOARD_dbg();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   m_pCI->E.p_deck->vMarksClearRecursive();
 

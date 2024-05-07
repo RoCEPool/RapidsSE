@@ -1,0 +1,60 @@
+--------------------------------------------------------------------------------
+-- optimiser study B
+--------------------------------------------------------------------------------
+LOG ' ';
+LOG '** Optimiser Study B **';
+
+//------------------------------------------------------------------------------
+LOG ' ';
+INCLUDE 'create_customer.test';
+INCLUDE 'create_lineitem.test';
+INCLUDE 'create_nation.test';
+INCLUDE 'create_orders.test';
+INCLUDE 'create_part.test';
+INCLUDE 'create_partsupp.test';
+INCLUDE 'create_region.test';
+INCLUDE 'create_supplier.test';
+
+//------------------------------------------------------------------------------
+
+INCLUDE 'r_FOLD_24_W_A_C_ro.test';
+INCLUDE 'r_FOLD_32_W_A_NC_I.test';
+
+//------------------------------------------------------------------------------
+LOG ' ';
+INCLUDE 'drop_tables.test';
+
+LOG 'End Optimiser Study B';
+
+//------------------------------------------------------------------------------
+
+CLEANUP {
+
+  drop table customer;
+  mute
+
+  drop table supplier;
+  mute
+
+  drop table orders;
+  mute
+
+  drop table partsupp;
+  mute
+
+  drop table part;
+  mute
+
+  drop table region;
+  mute
+
+  drop table lineitem;
+  mute
+
+  drop table nation;
+  mute
+}
+
+--------------------------------------------------------------------------------
+-- end
+--------------------------------------------------------------------------------
