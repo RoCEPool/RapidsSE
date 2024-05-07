@@ -23,7 +23,6 @@
 #include "XF_Flatten_74_H_A_NC_ro.hpp"
 
 #include "XF_Flatten_Delete_fold.hpp"
-#include "XF_Flatten_Left_subQuery.hpp"
 
 #include "XF_Flatten_X_expCol_To_tblCol.hpp"
 #include "XF_Utility.hpp"
