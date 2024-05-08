@@ -183,7 +183,7 @@ void XF_FLATTEN::vSet_carry(CardIter* pCI, eCK eCardWithSQ, eQO eWhatOp)
 
   // SubQuery
   if (pCI->pPeekNextIf(CK_SUBQUERY))
-    RASSERT(pCI->pAdvanceChild()->bIsCard(CK_SUBQUERY));
+    RASSERT(pCI->bEachOp());
 
   // From*
   while (pCI->pPeekNextIf(CK_o_FROM) && pCI->bEachOp(CK_o_FROM)) {
@@ -249,8 +249,8 @@ void XF_FLATTEN::vSmooth(CardIter* pCI)
   RASSERT(pCI->E.p_Op->bIsCard(CK_o_FOLD));
   //RASSERT(pCI->m_pExpr_fold);
 
-  if(pCI->pPeekNextIf(CK_SUBQUERY))
-    RASSERT(pCI->pAdvanceChild());
+  if (pCI->pPeekNextIf(CK_SUBQUERY))
+    RASSERT(pCI->bEachOp());
 
   // Table*
   while (pCI->pPeekNextIf(CK_o_FROM) && pCI->bEachOp(CK_o_FROM)) {

@@ -89,51 +89,6 @@ CardIter::~CardIter(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* advance                                                                    */
-/*----------------------------------------------------------------------------*/
-Card* CardIter::pAdvanceChild(void)
-{
-  _precondition_( _MAGIC_, _FOOTER_);
-
-  E.xEachOp.bEach();
-
-  return E.xEachOp.pChild();
-}
-
-/*----------------------------------------------------------------------------*/
-/* visit all sub-cards of given eToSubs and apply lambda function             */
-/*----------------------------------------------------------------------------*/
-bool CardIter::bLambdaWalk(Card* pCard, eCK eToSubs,
-                               std::function<bool(Card* pCard)> bfLambdaFn)
-{
-  _precondition_( _MAGIC_, _FOOTER_);
-
-  if (CK_NONE == eToSubs || eToSubs == pCard->eCard()) {
-    bool bContinue = bfLambdaFn(pCard);
-    if (! bContinue)
-      return C_TERMINATE_RECURSION;
-  }
-
-  vAncestorPush(pCard);
-  vAncestorCounterReset();
-
-  Kid xCard(pCard);
-  while (xCard.bEach_opaque()) {
-    bool bContinue = bLambdaWalk(xCard.pChild(), eToSubs, bfLambdaFn);
-    if (! bContinue) {
-      vAncestorPop();
-      return C_TERMINATE_RECURSION;
-    }
-    else
-      vDebugPoint();
-  }
-
-  vAncestorCounterReset();
-  vAncestorPop();
-  return C_CONTINUE_RECURSION;
-}
-
-/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void CardIter::vAppendChild(eCK eParent, Card* pChild)
@@ -707,28 +662,6 @@ void CardIter::vClearRegisters(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* clear the general M registers if they match given pointer                  */
-/*----------------------------------------------------------------------------*/
-void CardIter::vClearRegistersIf(Card* pCard)
-{
-  _precondition_(_MAGIC_, _FOOTER_);
-
-  if (pCard == E.p_Op) {
-    E.p_Op = nullptr;
-    E.e_Op = CK_NONE;
-  }
-  if (pCard == E.p_Sub) {
-    E.p_Sub = nullptr;
-  }
-  if (pCard == E.p_Sub2) {
-    E.p_Sub2 = nullptr;
-  }
-  if (pCard == E.p_Sub3) {
-    E.p_Sub3 = nullptr;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* cue user                                                                   */
 /*----------------------------------------------------------------------------*/
 eOA CardIter::eCueUser(String* psPrompt)
@@ -787,19 +720,6 @@ eOA CardIter::eCueUser(String* psPrompt)
     goto L_Input;
 
   return eOptAct;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool CardIter::bDebugQuery(BASE::Stz *szQueryNm)
-{
-  _precondition_(_MAGIC_, _FOOTER_);
-
-  if (AM::JOB::bHasTag(C_OPTIMISER_TRACE) && bIsQuery(szQueryNm))
-    return true;
-
-  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1559,6 +1479,39 @@ void CardIter::vInsertBefore(Card* pCard, Card* pBefore)
   _precondition_(_MAGIC_, _FOOTER_);
 
   E.p_deck->vInsertChildBefore(pCard, pBefore);
+}
+
+/*----------------------------------------------------------------------------*/
+/* visit all sub-cards of given eToSubs and apply lambda function             */
+/*----------------------------------------------------------------------------*/
+bool CardIter::bLambdaWalk(Card* pCard, eCK eToSubs,
+                           std::function<bool(Card* pCard)> bfLambdaFn)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  if (CK_NONE == eToSubs || eToSubs == pCard->eCard()) {
+    bool bContinue = bfLambdaFn(pCard);
+    if (! bContinue)
+      return C_TERMINATE_RECURSION;
+  }
+
+  vAncestorPush(pCard);
+  vAncestorCounterReset();
+
+  Kid xCard(pCard);
+  while (xCard.bEach_opaque()) {
+    bool bContinue = bLambdaWalk(xCard.pChild(), eToSubs, bfLambdaFn);
+    if (! bContinue) {
+      vAncestorPop();
+      return C_TERMINATE_RECURSION;
+    }
+    else
+      vDebugPoint();
+  }
+
+  vAncestorCounterReset();
+  vAncestorPop();
+  return C_CONTINUE_RECURSION;
 }
 
 /*----------------------------------------------------------------------------*/

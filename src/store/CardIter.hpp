@@ -149,7 +149,6 @@ namespace STORE
     CardIter(Bench* pBench);
    ~CardIter(void) noexcept(false);
 
-    Card* pAdvanceChild(void);
     void vAppendChild(eCK eParent, Card* pChild);
     void vAppendNewChild(eCK eParent, eCK eChild);
     void vAppendNewChild(Card* pParent, eCK eChild);
@@ -191,10 +190,8 @@ namespace STORE
     Card* pChild(i8 i_Child);
     void vChild(Card* pChild);
     void vClearRegisters(void);
-    void vClearRegistersIf(Card* pCard);
     eOA  eCueUser(String* psPrompt);
 
-    bool bDebugQuery(Stz* szQueryNm);
     void vDeleteWhenEmptySub(eCK eOp, eCK eSub);
     void vDontDescend(bool bDontDescend);
 
