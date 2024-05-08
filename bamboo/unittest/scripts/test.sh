@@ -295,6 +295,8 @@ function runAndMonitorTest() {
 
   local failureSummary=""
   local failureDetail=""
+  local harnessLogOutputDir="${LOG_OUTPUT_DIR}/${harnessName// /}"
+  local harnessResultsDir="${RESULTS_DIR}/${harnessName// /}"
 
   # First, ensure that we are operating in a clean environment. A previous unit
   # test may have failed, for example. We also want to capture separate log files
@@ -309,12 +311,12 @@ function runAndMonitorTest() {
   # Remove any SE log files from the install directories of each node
   removeLogs "${CONFIG_FILE}"
 
-  # Now start the cluster
+  # Now start the cluster. Log files will be created.
   if ! startCluster; then
     failureSummary="Cluster failed to start"
     failureDetail="Check the log files for details"
     writeHarnessFailureJUnitResult "${harnessName}" 0 "${failureSummary}" "${failureDetail}"
-    copyLogs "${CONFIG_FILE}" "${LOG_OUTPUT_DIR}" "${RESULTS_DIR}" || true
+    copyLogs "${CONFIG_FILE}" "${harnessLogOutputDir}" "${harnessResultsDir}" || true
     false
     return
   fi
@@ -396,7 +398,7 @@ function runAndMonitorTest() {
       stopCluster || true
 
       # Copy the logs
-      copyLogs "${CONFIG_FILE}" "${LOG_OUTPUT_DIR}" "${RESULTS_DIR}" || true
+      copyLogs "${CONFIG_FILE}" "${harnessLogOutputDir}" "${harnessResultsDir}" || true
 
       false
       return
@@ -442,7 +444,7 @@ function runAndMonitorTest() {
       stopCluster || true
 
       # Copy the logs
-      copyLogs "${CONFIG_FILE}" "${LOG_OUTPUT_DIR}" "${RESULTS_DIR}" || true
+      copyLogs "${CONFIG_FILE}" "${harnessLogOutputDir}" "${harnessResultsDir}" || true
 
       false
       return
@@ -478,7 +480,7 @@ function runAndMonitorTest() {
       stopCluster || true
 
       # Copy the logs
-      copyLogs "${CONFIG_FILE}" "${LOG_OUTPUT_DIR}" "${RESULTS_DIR}" || true
+      copyLogs "${CONFIG_FILE}" "${harnessLogOutputDir}" "${harnessResultsDir}" || true
 
       false
       return
@@ -504,7 +506,7 @@ function runAndMonitorTest() {
     stopCluster || true
 
     # Copy the logs
-    copyLogs "${CONFIG_FILE}" "${LOG_OUTPUT_DIR}" "${RESULTS_DIR}" || true
+    copyLogs "${CONFIG_FILE}" "${harnessLogOutputDir}" "${harnessResultsDir}" || true
 
     false
     return

@@ -350,38 +350,55 @@ function copyLogs() {
     # shellcheck disable=SC1090
     source "${configFile}"
 
+    local src
+    local dest
+
     for nodeName in "${NODE_LIST[@]}"; do
       # Get the installation directory
       local installDir
       installDir="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_DIR_KEY}")"
 
-      local nodeDir
-      nodeDir="${logOutputDir}/${nodeName}"
+      local outputNodeDir
+      outputNodeDir="${logOutputDir}/${nodeName}"
 
-      mkdir -p "${nodeDir}"
+      mkdir -p "${outputNodeDir}"
 
       local baseFileName
-      for f in "${nodeDir}"/se*.log; do
+      for f in "${outputNodeDir}"/se*.log; do
         baseFileName="$(basename "${f}")"
-        cp "${f}" "${nodeDir}/${baseFileName//.log/.${nodeName}.log}" &>/dev/null || true
+        src="${f}"
+        dest="${outputNodeDir}/${baseFileName//.log/.${nodeName}.log}"
+        echo "Copying logs: ${src} --> ${dest}"
+        cp "${src}" "${dest}" >/dev/null || true
       done
 
-      cp "${installDir}/clusterStatus.log" "${logOutputDir}/clusterStatus.${nodeName}.log" &>/dev/null || true
+      if [ -f "${installDir}/clusterStatus.log" ]; then
+        src="${installDir}/clusterStatus.log"
+        dest="${logOutputDir}/clusterStatus.${nodeName}.log"
+        echo "Copying logs: ${src} --> ${dest}"
+        cp "${src}" "${dest}" >/dev/null || true
+      fi
 
       # Copy any queryLib source and log files
-      local queryLibDir="${nodeDir}/queryLibs"
-      mkdir -p "${queryLibDir}"
-      cp -r "${installDir}/queryLibs/src" "${queryLibDir}" &>/dev/null || true
+      local outputQueryLibDir="${outputNodeDir}/queryLibs"
+      if [ -d "${installDir}/queryLibs/src" ] && compgen -G "${installDir}/queryLibs/src/*" >/dev/null; then
+        mkdir -p "${outputQueryLibDir}"
+        src="${installDir}/queryLibs/src"
+        dest="${outputQueryLibDir}"
+        echo "Copying logs (recursively): ${src} --> ${dest}"
+        cp -r "${src}" "${dest}" >/dev/null || true
+      fi
 
     done
 
     # Move Seth log files from the results directory to the logs directory.
     # Seth writes them out to the results directory automatically.
-    set -x
-    if [ -n "${bambooResultsDir}" ]; then
-      mv "${bambooResultsDir}"/seth-log-* "${logOutputDir}" || true
+    if [ -n "${bambooResultsDir}" ] && compgen -G "${bambooResultsDir}/seth-log-*" >/dev/null; then
+      src="${bambooResultsDir}/seth-log-*"
+      dest="${logOutputDir}"
+      echo "Copying logs: ${src} --> ${dest}"
+      mv "${bambooResultsDir}"/seth-log-* "${dest}" || true
     fi
-    set +x
   )
 }
 
