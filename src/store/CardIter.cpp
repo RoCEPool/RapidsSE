@@ -635,8 +635,8 @@ void CardIter::vClearRegisters(void)
   E.Iter.eSecondary = CK_NONE;
   E.Iter.eTertiary  = CK_NONE;
 
-  Carry.Table.m_bSeen      = false;
-  Carry.Table.m_nTables    = 0;
+  Carry.From.m_bSeen      = false;
+  Carry.From.m_nTables    = 0;
 
   Carry.Where_preAgg.m_bSeen  = false;
   Carry.Where_preAgg.m_bMorph_sqlOp_To_EQ = false;

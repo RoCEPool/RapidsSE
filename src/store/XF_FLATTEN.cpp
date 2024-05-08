@@ -181,44 +181,48 @@ void XF_FLATTEN::vSet_carry(CardIter* pCI, eCK eCardWithSQ, eQO eWhatOp)
   RASSERT(pCI->bEachOp(CK_o_FOLD));
   RASSERT(pCI->E.p_Op->bIsCard(CK_o_FOLD));
 
-  // SubQuery
+  // <subQuery>
   if (pCI->pPeekNextIf(CK_SUBQUERY))
     RASSERT(pCI->bEachOp());
 
-  // From*
+  // <from>*
   while (pCI->pPeekNextIf(CK_o_FROM) && pCI->bEachOp(CK_o_FROM)) {
-    pCI->Carry.Table.m_bSeen = true;
-    pCI->Carry.Table.m_nTables++;
+    pCI->Carry.From.m_bSeen = true;
+    pCI->Carry.From.m_nTables++;
   }
 
-  // [Where]
+  // [<where>]
   if (pCI->pPeekNextIf(CK_o_WHERE) && pCI->bEachOp(CK_o_WHERE)) {
     pCI->Carry.Where_preAgg.m_bSeen = true;
   }
 
-  // Aggreg
+  // <aggreg>*
   while (pCI->pPeekNextIf(CK_o_AGGREG) && pCI->bEachOp(CK_o_AGGREG)) {
     pCI->Carry.GbyAgg.m_bSeen = true;
   }
-  // GbyAgg
+
+  // <gbyAgg>*
   while (pCI->pPeekNextIf(CK_o_GBYAGG) && pCI->bEachOp(CK_o_GBYAGG)) {
     pCI->Carry.GbyAgg.m_bSeen = true;
   }
 
-  // [project]
+  // [<project>]
   if (pCI->pPeekNextIf(CK_o_PROJECT) && pCI->bEachOp(CK_o_PROJECT)) {
     pCI->Carry.Project_postAgg.m_bSeen = true;
   }
 
-  // Having
+  // <having>
   if (pCI->pPeekNextIf(CK_o_HAVING) && pCI->bEachOp(CK_o_HAVING)) {
     pCI->Carry.Having.m_bSeen = true;
   }
 
-  // Sort
+  // <sort>
   if (pCI->pPeekNextIf(CK_o_SORT) && pCI->bEachOp(CK_o_SORT)) {
     pCI->Carry.Sort.m_bSeen = true;
+    pCI->Carry.Sort.m_bCorrect_After_Inject = true;
   }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (CK_o_HAVING == eCardWithSQ) {
     pCI->Carry.GbyAgg.m_bInject_foldExpr = true;
@@ -232,9 +236,6 @@ void XF_FLATTEN::vSet_carry(CardIter* pCI, eCK eCardWithSQ, eQO eWhatOp)
     if (QO_RELN_OP == eWhatOp)
       pCI->Carry.Where_preAgg.bReplace_sqCall_With_result = true;
   }
-
-  if (pCI->Carry.Sort.m_bSeen)
-    pCI->Carry.Sort.m_bCorrect_After_Inject = true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -254,7 +255,7 @@ void XF_FLATTEN::vSmooth(CardIter* pCI)
 
   // Table*
   while (pCI->pPeekNextIf(CK_o_FROM) && pCI->bEachOp(CK_o_FROM)) {
-    if (pCI->Carry.Table.m_bSeen) {
+    if (pCI->Carry.From.m_bSeen) {
       pCI->E.p_table = pCI->E.p_from->pSub_table();
       pCI->E.p_Op->vRestate_emit(pCI);
       pCI->vSnapIf_arriving();

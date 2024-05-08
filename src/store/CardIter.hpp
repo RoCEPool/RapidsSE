@@ -86,7 +86,7 @@ namespace STORE
       {
         bool m_bSeen;
         i8 m_nTables;
-      } Table;
+      } From;
 
       struct
       {
