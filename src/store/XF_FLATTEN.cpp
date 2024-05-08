@@ -250,55 +250,55 @@ void XF_FLATTEN::vSmooth(CardIter* pCI)
 
   // <from>*
   while (pCI->pPeekNextIf(CK_o_FROM) && pCI->bEachOp(CK_o_FROM)) {
-    if (pCI->Smooth.From.m_bSeen) {
+    //if (pCI->Smooth.From.m_bSeen) {
       pCI->E.p_table = pCI->E.p_from->pSub_table();
       pCI->E.p_Op->vRestate_emit(pCI);
-    }
+    //}
     pCI->vSnapIf_arriving();
   }
 
   // [<where>]
   if (pCI->pPeekNextIf(CK_o_WHERE) && pCI->bEachOp(CK_o_WHERE)) {
-    if (pCI->Smooth.Where_preAgg.m_bSeen) {
+    //if (pCI->Smooth.Where_preAgg.m_bSeen) {
       pCI->Dic.m_p_expr = pCI->Arriving.m_pEmitted_prior;
       pCI->E.p_where->vSmooth(pCI);
       pCI->E.p_Op->vRestate_emit(pCI);
-    }
+    //}
     pCI->vSnapIf_arriving();
   }
 
   // [<gbyAgg partition|node|origin>]
   while (pCI->pPeekNextIf(CK_o_GBYAGG) && pCI->bEachOp(CK_o_GBYAGG)) {
-    if (pCI->Smooth.GbyAgg.m_bSeen) {
+    //if (pCI->Smooth.GbyAgg.m_bSeen) {
       pCI->E.p_gbyAgg->vSmooth(pCI);
       pCI->E.p_Op->vRestate_emit(pCI);
-    }
+    //}
     pCI->vSnapIf_arriving();
   }
 
   // [<project>]
   if (pCI->pPeekNextIf(CK_o_PROJECT) && pCI->bEachOp(CK_o_PROJECT)) {
-    if (pCI->Smooth.Project_postAgg.m_bSeen) {
+    //if (pCI->Smooth.Project_postAgg.m_bSeen) {
       pCI->E.p_project->vSmooth_postAgg(pCI);
       pCI->E.p_Op->vRestate_emit(pCI);
-    }
+    //}
     pCI->vSnapIf_arriving();
   }
 
   // [<having>]
   if (pCI->pPeekNextIf(CK_o_HAVING) && pCI->bEachOp(CK_o_HAVING)) {
-    if (pCI->Smooth.Having.m_bSeen) {
+    //if (pCI->Smooth.Having.m_bSeen) {
       pCI->E.p_having->vSmooth(pCI);
       pCI->E.p_Op->vRestate_emit(pCI);
-    }
+    //}
     pCI->vSnapIf_arriving();
   }
 
   // [<sort>]
   if (pCI->pPeekNextIf(CK_o_SORT) && pCI->bEachOp(CK_o_SORT)) {
-    if (pCI->Smooth.Sort.m_bSeen) {
+    //if (pCI->Smooth.Sort.m_bSeen) {
+    if (pCI->Arriving.m_pEmitted_prior) {
       pCI->E.p_sort->vSmooth(pCI);
-
       pCI->E.p_Op->vRestate_emit(pCI);
     }
     pCI->vSnapIf_arriving();
