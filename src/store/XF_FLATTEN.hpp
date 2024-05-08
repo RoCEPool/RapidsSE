@@ -27,6 +27,8 @@ namespace STORE
 
     void vSmooth(CardIter* pCI);
 
+    static i8 nTables_In_SubQuery(CardIter* pCI, Stz* szFold, eCK eCardWithSQ);
+
     void vInto_KEYnotEXISTS(CardIter* pCI);
 
     void vRotate_Next(void);
