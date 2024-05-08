@@ -80,25 +80,11 @@ void XF_Flatten_34_W_A_NC_ro::vFlatten(void)
 
   vFold_subQuery(m_pCI, "W_A_NC_ro"_Stz, CK_o_WHERE);
   vSet_carry(m_pCI, CK_o_WHERE, QO_RELN_OP);
-
- // m_pCI->PRINTBOARD_dbg();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // smoothing W_A_NC_ro
-
-  // XF_Fold | Table* Where GbyAgg_P GbyAgg_N GbyAgg_O
-
-  m_pCI->vBeginEach();
-  //RASSERT(m_pCI->bEachOp(CK_o_PROJECT,CK_p_EMIT));
-  RASSERT(m_pCI->bEachOp(CK_o_FOLD));
-
   vSmooth(m_pCI);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   m_pCI->E.p_deck->vMarksClearRecursive();
-
- // m_pCI->PRINTBOARD_dbg();
 
   m_pCI->vEndTransform(__LINE__);
 }
