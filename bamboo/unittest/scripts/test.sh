@@ -512,6 +512,7 @@ function runAndMonitorTest() {
     return
   fi
 
+  echo "${harnessName} has completed its execution. Logs have not been copied."
   true
 }
 

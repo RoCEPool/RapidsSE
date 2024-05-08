@@ -364,7 +364,7 @@ function copyLogs() {
       mkdir -p "${outputNodeDir}"
 
       local baseFileName
-      for f in "${outputNodeDir}"/se*.log; do
+      for f in "${installDir}"/se*.log; do
         baseFileName="$(basename "${f}")"
         src="${f}"
         dest="${outputNodeDir}/${baseFileName//.log/.${nodeName}.log}"

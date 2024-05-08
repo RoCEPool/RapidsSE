@@ -148,7 +148,7 @@ if [ ! -f "${TESTLIST_FILE}" ]; then
 fi
 
 # Create the output directory for logs
-LOG_OUTPUT_DIR="${BAMBOO_LOGS_DIR}/${BUILD_TYPE}-${BUILD_CONFIG}${CONFIG_SUFFIX:-}"
+LOG_OUTPUT_DIR="${BAMBOO_LOGS_DIR}"
 mkdir -p "${LOG_OUTPUT_DIR}"
 
 # *** Install RapidsSE ***
