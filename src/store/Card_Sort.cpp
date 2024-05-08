@@ -95,8 +95,6 @@ void Card_Sort::vSmooth(CardIter* pCI)
     Symbol* pSym_expr_key = p_expr_key->pSymbol();
     p_expr_emit_sort->pGet_term(0)->pSymbol()->vApplyFacets(pSym_expr_key);
    }
-
-  pCI->vSnapIf_arriving();
 }
 
 /*----------------------------------------------------------------------------*/

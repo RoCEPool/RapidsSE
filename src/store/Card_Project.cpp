@@ -189,8 +189,6 @@ void Card_Project::vSmooth_postAgg(CardIter* pCI)
 
   pCI->E.p_project->pSymbol()->Y_vSet(P_Smoothed);
 
-  pCI->vSnapIf_arriving();
-
 }
 
 /*----------------------------------------------------------------------------*/

@@ -253,8 +253,8 @@ void XF_FLATTEN::vSmooth(CardIter* pCI)
     if (pCI->Smooth.From.m_bSeen) {
       pCI->E.p_table = pCI->E.p_from->pSub_table();
       pCI->E.p_Op->vRestate_emit(pCI);
-      pCI->vSnapIf_arriving();
     }
+    pCI->vSnapIf_arriving();
   }
 
   // [<where>]
@@ -263,6 +263,7 @@ void XF_FLATTEN::vSmooth(CardIter* pCI)
       pCI->Dic.m_p_expr = pCI->Arriving.m_pEmitted_prior;
       pCI->E.p_where->vSmooth(pCI);
     }
+    pCI->vSnapIf_arriving();
   }
 
   // [<gbyAgg_partition>]
@@ -270,6 +271,7 @@ void XF_FLATTEN::vSmooth(CardIter* pCI)
     if (pCI->Smooth.GbyAgg.m_bSeen) {
       pCI->E.p_gbyAgg->vSmooth(pCI);
     }
+    pCI->vSnapIf_arriving();
   }
 
   // [<gbyAgg_node>]
@@ -277,6 +279,7 @@ void XF_FLATTEN::vSmooth(CardIter* pCI)
     if (pCI->Smooth.GbyAgg.m_bSeen) {
       pCI->E.p_gbyAgg->vSmooth(pCI);
     }
+    pCI->vSnapIf_arriving();
   }
 
   // [<gbyAgg_origin>]
@@ -292,13 +295,15 @@ void XF_FLATTEN::vSmooth(CardIter* pCI)
     if (pCI->Smooth.Project_postAgg.m_bSeen) {
       pCI->E.p_project->vSmooth_postAgg(pCI);
     }
+    pCI->vSnapIf_arriving();
   }
 
-  // ,<having>]
+  // [<having>]
   if (pCI->pPeekNextIf(CK_o_HAVING) && pCI->bEachOp(CK_o_HAVING)) {
     if (pCI->Smooth.Having.m_bSeen) {
       pCI->E.p_having->vSmooth(pCI);
     }
+    pCI->vSnapIf_arriving();
   }
 
   // [<sort>]
@@ -306,6 +311,7 @@ void XF_FLATTEN::vSmooth(CardIter* pCI)
     if (pCI->Smooth.Sort.m_bSeen) {
       pCI->E.p_sort->vSmooth(pCI);
     }
+    pCI->vSnapIf_arriving();
   }
 
   //  --  --  --  --  --  --  --  --  --  --  --  --  --  --
@@ -313,6 +319,7 @@ void XF_FLATTEN::vSmooth(CardIter* pCI)
   if (pCI->Smooth.Unproject.m_bUnproject_foldExpr) {
     pCI->E.p_emit = pCI->E.p_gbyAgg->pSub_emit();
     Card_Project::vUnproject_foldExpr(pCI);
+    pCI->vSnapIf_arriving();
   }
 
   //pCI->PRINTBOARD_dbg();

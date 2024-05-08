@@ -68,8 +68,6 @@ void Card_Having::vSmooth(CardIter* pCI)
 
   if (pCI->Smooth.Having.m_bCorrect_After_Inject)
     vCorrect_After_Inject(pCI, bBump);
-
-  pCI->vSnapIf_arriving();
 }
 
 /*----------------------------------------------------------------------------*/

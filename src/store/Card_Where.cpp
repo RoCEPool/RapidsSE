@@ -131,6 +131,8 @@ void Card_Where::vSmooth(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
+  RASSERT(pCI->E.p_Op == pCI->E.p_where);
+
   pCI->E.p_where->pSymbol()->Y_vSet(P_Smoothed);
 
   if (pCI->Smooth.Where_preAgg.m_bMorph_sqlOp_To_EQ) {
@@ -146,12 +148,9 @@ void Card_Where::vSmooth(CardIter* pCI)
 
     Card_Expr* p_expr_0 = pCI->Arriving.m_pEmitted_prior->pGet_expr((i8) 0);
     pCI->Flat.m_p_term_sqyCall->vApplyCast_x(p_expr_0->xCast());
-
   }
 
-  RASSERT(pCI->E.p_Op == pCI->E.p_where);
   pCI->E.p_where->vRestate_emit(pCI);
-  pCI->vSnapIf_arriving();
 }
 
 /*----------------------------------------------------------------------------*/
