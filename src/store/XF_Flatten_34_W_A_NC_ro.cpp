@@ -79,7 +79,7 @@ void XF_Flatten_34_W_A_NC_ro::vFlatten(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   vFold_subQuery(m_pCI, "W_A_NC_ro"_Stz, CK_o_WHERE);
-  vSet_carry(m_pCI, CK_o_WHERE, QO_RELN_OP);
+  vSet_smooth(m_pCI, CK_o_WHERE, QO_RELN_OP);
   vSmooth(m_pCI);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

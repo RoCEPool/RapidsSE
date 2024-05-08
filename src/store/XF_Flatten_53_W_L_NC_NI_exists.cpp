@@ -85,7 +85,7 @@ void XF_Flatten_53_W_L_NC_NI_exists::vFlatten(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   vFold_subQuery(m_pCI, "W_L_NC_NI_exists"_Stz, CK_o_WHERE);
-  vSet_carry(m_pCI, CK_o_WHERE, QO_IN_OP);
+  vSet_smooth(m_pCI, CK_o_WHERE, QO_IN_OP);
   vSmooth(m_pCI);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

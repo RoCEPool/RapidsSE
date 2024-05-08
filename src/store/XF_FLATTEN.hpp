@@ -23,7 +23,7 @@ namespace STORE
 
     void vFold_from(Stz* szFoldNm, CardIter* pCI);
 
-    void vSet_carry(CardIter* pCI, eCK eCardWithSQ, eQO eWhatOp);
+    void vSet_smooth(CardIter* pCI, eCK eCardWithSQ, eQO eWhatOp);
 
     void vSmooth(CardIter* pCI);
 

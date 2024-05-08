@@ -82,7 +82,7 @@ void XF_Flatten_74_H_A_NC_ro::vFlatten(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   vFold_subQuery(m_pCI, "H_A_NC_ro"_Stz, CK_o_HAVING);
-  vSet_carry(m_pCI, CK_o_HAVING, QO_RELN_OP);
+  vSet_smooth(m_pCI, CK_o_HAVING, QO_RELN_OP);
   vRotate_Next();
   vSmooth(m_pCI);
 
