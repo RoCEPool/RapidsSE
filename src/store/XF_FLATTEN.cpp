@@ -248,7 +248,7 @@ void XF_FLATTEN::vSmooth(CardIter* pCI)
   if (pCI->pPeekNextIf(CK_SUBQUERY))
     RASSERT(pCI->bEachOp());
 
-  // <from>>*
+  // <from>*
   while (pCI->pPeekNextIf(CK_o_FROM) && pCI->bEachOp(CK_o_FROM)) {
     if (pCI->Smooth.From.m_bSeen) {
       pCI->E.p_table = pCI->E.p_from->pSub_table();
@@ -262,7 +262,7 @@ void XF_FLATTEN::vSmooth(CardIter* pCI)
     if (pCI->Smooth.Where_preAgg.m_bSeen) {
       pCI->Dic.m_p_expr = pCI->Arriving.m_pEmitted_prior;
       pCI->E.p_where->vSmooth(pCI);
-      pCI->E.p_where->vRestate_emit(pCI);
+      pCI->E.p_Op->vRestate_emit(pCI);
     }
     pCI->vSnapIf_arriving();
   }
@@ -271,6 +271,7 @@ void XF_FLATTEN::vSmooth(CardIter* pCI)
   while (pCI->pPeekNextIf(CK_o_GBYAGG) && pCI->bEachOp(CK_o_GBYAGG)) {
     if (pCI->Smooth.GbyAgg.m_bSeen) {
       pCI->E.p_gbyAgg->vSmooth(pCI);
+      pCI->E.p_Op->vRestate_emit(pCI);
     }
     pCI->vSnapIf_arriving();
   }
@@ -279,6 +280,7 @@ void XF_FLATTEN::vSmooth(CardIter* pCI)
   if (pCI->pPeekNextIf(CK_o_PROJECT) && pCI->bEachOp(CK_o_PROJECT)) {
     if (pCI->Smooth.Project_postAgg.m_bSeen) {
       pCI->E.p_project->vSmooth_postAgg(pCI);
+      pCI->E.p_Op->vRestate_emit(pCI);
     }
     pCI->vSnapIf_arriving();
   }
@@ -287,6 +289,7 @@ void XF_FLATTEN::vSmooth(CardIter* pCI)
   if (pCI->pPeekNextIf(CK_o_HAVING) && pCI->bEachOp(CK_o_HAVING)) {
     if (pCI->Smooth.Having.m_bSeen) {
       pCI->E.p_having->vSmooth(pCI);
+      pCI->E.p_Op->vRestate_emit(pCI);
     }
     pCI->vSnapIf_arriving();
   }
@@ -295,6 +298,8 @@ void XF_FLATTEN::vSmooth(CardIter* pCI)
   if (pCI->pPeekNextIf(CK_o_SORT) && pCI->bEachOp(CK_o_SORT)) {
     if (pCI->Smooth.Sort.m_bSeen) {
       pCI->E.p_sort->vSmooth(pCI);
+
+      pCI->E.p_Op->vRestate_emit(pCI);
     }
     pCI->vSnapIf_arriving();
   }
@@ -304,7 +309,8 @@ void XF_FLATTEN::vSmooth(CardIter* pCI)
   if (pCI->Smooth.Unproject.m_bUnproject_foldExpr) {
     pCI->E.p_emit = pCI->E.p_gbyAgg->pSub_emit();
     Card_Project::vUnproject_foldExpr(pCI);
-    pCI->vSnapIf_arriving();
+    //pCI->E.p_Op->vRestate_emit(pCI);
+    //pCI->vSnapIf_arriving();
   }
 
   //pCI->PRINTBOARD_dbg();
