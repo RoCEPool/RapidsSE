@@ -187,6 +187,8 @@ void Card_Project::vSmooth_postAgg(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
+  RASSERT(pCI->E.p_Op == pCI->E.p_project);
+
   pCI->E.p_project->pSymbol()->Y_vSet(P_Smoothed);
 
 }

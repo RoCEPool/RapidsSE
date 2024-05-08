@@ -262,35 +262,20 @@ void XF_FLATTEN::vSmooth(CardIter* pCI)
     if (pCI->Smooth.Where_preAgg.m_bSeen) {
       pCI->Dic.m_p_expr = pCI->Arriving.m_pEmitted_prior;
       pCI->E.p_where->vSmooth(pCI);
+      pCI->E.p_where->vRestate_emit(pCI);
     }
     pCI->vSnapIf_arriving();
   }
 
-  // [<gbyAgg_partition>]
-  if (pCI->pPeekNextIf(CK_o_GBYAGG) && pCI->bEachOp(CK_o_GBYAGG)) {
+  // [<gbyAgg partition|node|origin>]
+  while (pCI->pPeekNextIf(CK_o_GBYAGG) && pCI->bEachOp(CK_o_GBYAGG)) {
     if (pCI->Smooth.GbyAgg.m_bSeen) {
       pCI->E.p_gbyAgg->vSmooth(pCI);
     }
     pCI->vSnapIf_arriving();
   }
 
-  // [<gbyAgg_node>]
-  if (pCI->pPeekNextIf(CK_o_GBYAGG) && pCI->bEachOp(CK_o_GBYAGG)) {
-    if (pCI->Smooth.GbyAgg.m_bSeen) {
-      pCI->E.p_gbyAgg->vSmooth(pCI);
-    }
-    pCI->vSnapIf_arriving();
-  }
-
-  // [<gbyAgg_origin>]
-  if (pCI->pPeekNextIf(CK_o_GBYAGG) && pCI->bEachOp(CK_o_GBYAGG)) {
-    if (pCI->Smooth.GbyAgg.m_bSeen) {
-      pCI->E.p_gbyAgg->vSmooth(pCI);
-     }
-    pCI->vSnapIf_arriving();
-  }
-
-  // [<project (avg)>]
+  // [<project>]
   if (pCI->pPeekNextIf(CK_o_PROJECT) && pCI->bEachOp(CK_o_PROJECT)) {
     if (pCI->Smooth.Project_postAgg.m_bSeen) {
       pCI->E.p_project->vSmooth_postAgg(pCI);

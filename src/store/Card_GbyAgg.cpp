@@ -116,7 +116,7 @@ void Card_GbyAgg::vSmooth(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
- // pCI->PRINTBOARD_dbg();
+  RASSERT(pCI->E.p_Op == pCI->E.p_gbyAgg);
 
   pCI->E.p_gbyAgg->pSymbol()->Y_vSet(P_Smoothed);
 

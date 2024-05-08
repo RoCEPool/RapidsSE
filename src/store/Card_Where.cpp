@@ -149,8 +149,6 @@ void Card_Where::vSmooth(CardIter* pCI)
     Card_Expr* p_expr_0 = pCI->Arriving.m_pEmitted_prior->pGet_expr((i8) 0);
     pCI->Flat.m_p_term_sqyCall->vApplyCast_x(p_expr_0->xCast());
   }
-
-  pCI->E.p_where->vRestate_emit(pCI);
 }
 
 /*----------------------------------------------------------------------------*/

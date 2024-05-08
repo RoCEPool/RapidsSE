@@ -64,6 +64,8 @@ void Card_Sort::vSmooth(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
+  RASSERT(pCI->E.p_Op == pCI->E.p_sort);
+
   pCI->E.p_key = pCI->E.p_sort->pSub_key();
 
   if (pCI->Smooth.Sort.m_bCorrect_After_Inject)

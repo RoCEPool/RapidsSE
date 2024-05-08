@@ -62,6 +62,8 @@ void Card_Having::vSmooth(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
+  RASSERT(pCI->E.p_Op == pCI->E.p_having);
+
   pCI->E.p_having->pSymbol()->Y_vSet(P_Smoothed);
 
   bool bBump = ! pCI->Smooth.Project_postAgg.m_bSeen;
