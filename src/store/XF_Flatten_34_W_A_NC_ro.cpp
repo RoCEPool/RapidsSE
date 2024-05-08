@@ -74,9 +74,9 @@ void XF_Flatten_34_W_A_NC_ro::vFlatten(void)
    */
 
   m_pCI->vTransform(__FILE__, __func__, XF_FLATTEN_34_W_A_NC_RO);
+  //m_pCI->PRINTBOARD_dbg();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // fold of subQuery
 
   vFold_subQuery(m_pCI, "W_A_NC_ro"_Stz, CK_o_WHERE);
   vSet_carry(m_pCI, CK_o_WHERE, QO_RELN_OP);

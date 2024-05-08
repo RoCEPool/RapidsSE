@@ -76,14 +76,12 @@ void XF_Flatten_40_W_L_C_E::vFlatten(void)
    */
 
   m_pCI->vTransform(__FILE__, __func__, XF_FLATTEN_40_W_L_C_E);
+  //m_pCI->PRINTBOARD_dbg();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   vFold_subQuery(m_pCI, "40_W_L_C_E"_Stz, CK_o_WHERE);
-//  m_pCI->PRINTBOARD_dbg();
-
   vInto_KEYnotEXISTS(m_pCI);
-//  m_pCI->PRINTBOARD_dbg();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

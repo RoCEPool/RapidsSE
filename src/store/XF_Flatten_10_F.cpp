@@ -77,17 +77,11 @@ void XF_Flatten_10_F::vFlatten(void)
    */
 
   m_pCI->vTransform(__FILE__, __func__, XF_FLATTEN_10_F);
-
- // m_pCI->PRINTBOARD_dbg();
+  //m_pCI->PRINTBOARD_dbg();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // fold of from
 
   vFold_from("From"_Stz,m_pCI);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // smoothing
-
   m_pCI->Carry.Table.m_bReproject = true;
   vSmooth(m_pCI);
 
@@ -105,8 +99,9 @@ void XF_Flatten_10_F::vFlatten(void)
     }
   }
 
-  m_pCI->vEndTransform(__LINE__);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  m_pCI->vEndTransform(__LINE__);
 
   XF_Prolog_Analyse_emit::vAnalyse(m_pCI);
 }

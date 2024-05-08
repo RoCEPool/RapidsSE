@@ -81,18 +81,14 @@ void XF_Flatten_32_W_A_NC_I::vFlatten(void)
    */
 
   m_pCI->vTransform(__FILE__, __func__, XF_FLATTEN_32_W_A_NC_I);
+  //m_pCI->PRINTBOARD_dbg();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   vFold_subQuery(m_pCI, "W_A_NC_I"_Stz, CK_o_WHERE);
   vSet_carry(m_pCI, CK_o_WHERE, QO_IN_OP);
-  //m_pCI->PRINTBOARD_dbg();
-
   vRotate_Next();
-  //m_pCI->PRINTBOARD_dbg();
-
   vSmooth(m_pCI);
-  //m_pCI->PRINTBOARD_dbg();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
