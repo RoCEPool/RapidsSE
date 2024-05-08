@@ -682,7 +682,6 @@ void CardIter::vClearRegisters(void)
 
   Carry.Table.m_bSeen      = false;
   Carry.Table.m_nTables    = 0;
-  Carry.Table.m_bReproject = false;
 
   Carry.Where_preAgg.m_bSeen  = false;
   Carry.Where_preAgg.m_bMorph_sqlOp_To_EQ = false;

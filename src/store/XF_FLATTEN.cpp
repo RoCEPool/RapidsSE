@@ -221,13 +221,11 @@ void XF_FLATTEN::vSet_carry(CardIter* pCI, eCK eCardWithSQ, eQO eWhatOp)
   }
 
   if (CK_o_HAVING == eCardWithSQ) {
-    pCI->Carry.Table.m_bReproject = true;
     pCI->Carry.GbyAgg.m_bInject_foldExpr = true;
     pCI->Carry.Having.m_bCorrect_After_Inject = true;
     pCI->Carry.Unproject.m_bUnproject_foldExpr = true;
   }
   else {
-    pCI->Carry.Table.m_bReproject = true;
     if (QO_IN_OP == eWhatOp || QO_NOT_IN_OP == eWhatOp)
       pCI->Carry.Where_preAgg.m_bMorph_sqlOp_To_EQ = true;
     else

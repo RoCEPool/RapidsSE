@@ -83,7 +83,6 @@ void XF_Flatten_53_W_L_NC_NI_join::vFlatten(void)
 
   vFold_subQuery(m_pCI, "53_W_L_NC_NI_join"_Stz, CK_o_WHERE);
   vInto_KEYnotEXISTS(m_pCI);
-  m_pCI->Carry.Table.m_bReproject = true;
   vSmooth(m_pCI);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

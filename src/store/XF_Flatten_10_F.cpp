@@ -82,7 +82,6 @@ void XF_Flatten_10_F::vFlatten(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   vFold_from("From"_Stz,m_pCI);
-  m_pCI->Carry.Table.m_bReproject = true;
   vSmooth(m_pCI);
 
   m_pCI->E.p_deck->vMarksClearRecursive();
