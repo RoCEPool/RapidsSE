@@ -66,17 +66,8 @@ void Card_Sort::vSmooth(CardIter* pCI)
 
   pCI->E.p_key = pCI->E.p_sort->pSub_key();
 
-//Z_KEY_DIRECTION
-  if (pCI->Smooth.Sort.m_bCorrect_After_Inject) {
-    for (pCI->vBeginTarget(pCI->E.p_key,CK_EXPR); pCI->bEachTarget(); /**/) {
-      for (pCI->vBeginTarget(pCI->E.xTarget.p_expr(),CK_TERM); pCI->bEachTarget(); /**/) {
-        pCI->E.p_term = pCI->E.xTarget.p_term();
-        if (pCI->E.p_term->pSymbol()->bHasFacet(SF_EXP_COL)) {
-          pCI->E.p_term->vBump_ordCol(SF_EXP_COL);
-        }
-      }
-    }
-  }
+  if (pCI->Smooth.Sort.m_bCorrect_After_Inject)
+    pCI->E.p_key->vBump_expCol(pCI);
 
   if ((pCI->E.p_emit = pCI->E.p_sort->pSub_emit()))
     pCI->E.p_emit->vDeleteAllChildren();
