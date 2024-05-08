@@ -612,17 +612,17 @@ void CardIter::vClearRegisters(void)
   Arriving.m_pEmitted_prior = nullptr;
   Arriving.m_pStreamKey = nullptr;
 
-  Dic.m_p_expr     = nullptr;
-  Dic.m_p_key      = nullptr;
+  Dic.m_p_expr = nullptr;
+  Dic.m_p_key = nullptr;
 
-  Next.m_pProject   = nullptr;
-  Next.m_pEmitted   = nullptr;
+  Next.m_pProject = nullptr;
+  Next.m_pEmitted = nullptr;
 
   Early.m_pOp_tip = nullptr;
   Early.m_pNeeded_later = nullptr;
 
   StreamOrder.m_pStreamKey = nullptr;
-  StreamOrder.m_pEmit   = nullptr;
+  StreamOrder.m_pEmit = nullptr;
 
   X.m_pExprList_a = nullptr;
   X.m_pExprList_i = nullptr;
@@ -630,35 +630,33 @@ void CardIter::vClearRegisters(void)
 
   Flat.m_i_fold = C_UNKNOWN;
 
-  E.Iter.ePrimary   = CK_NONE;
-  E.Iter.eTarget    = CK_NONE;
+  E.Iter.ePrimary = CK_NONE;
+  E.Iter.eTarget = CK_NONE;
   E.Iter.eSecondary = CK_NONE;
-  E.Iter.eTertiary  = CK_NONE;
+  E.Iter.eTertiary = CK_NONE;
 
-  Carry.From.m_bSeen      = false;
-  Carry.From.m_nTables    = 0;
+  Smooth.From.m_bSeen = false;
 
-  Carry.Where_preAgg.m_bSeen  = false;
-  Carry.Where_preAgg.m_bMorph_sqlOp_To_EQ = false;
-  Carry.Where_preAgg.bReplace_sqCall_With_result = false;
+  Smooth.Where_preAgg.m_bSeen = false;
+  Smooth.Where_preAgg.m_bMorph_sqlOp_To_EQ = false;
+  Smooth.Where_preAgg.bReplace_sqCall_With_result = false;
 
-  Carry.Aggreg.m_bSeen   = false;
-  Carry.Aggreg.m_bMorph_To_gbyAgg = false;
+  Smooth.Aggreg.m_bSeen = false;
+  Smooth.Aggreg.m_bMorph_To_gbyAgg = false;
 
-  Carry.GbyAgg.m_bSeen   = false;
-  Carry.GbyAgg.m_bInject_foldExpr = false;
+  Smooth.GbyAgg.m_bSeen = false;
+  Smooth.GbyAgg.m_bInject_foldExpr = false;
 
-  Carry.Project_postAgg.m_bSeen   = false;
+  Smooth.Project_postAgg.m_bSeen = false;
 
-  Carry.Having.m_bSeen                 = false;
-  Carry.Having.m_bCorrect_After_Inject = false;
+  Smooth.Having.m_bSeen = false;
+  Smooth.Having.m_bCorrect_After_Inject = false;
 
-  Carry.Sort.m_bSeen                 = false;
-  Carry.Sort.m_bCorrect_After_Inject = false;
+  Smooth.Sort.m_bSeen = false;
+  Smooth.Sort.m_bCorrect_After_Inject = false;
 
-  Carry.Unproject.m_bSeen               = false;
-  Carry.Unproject.m_bUnproject_foldExpr = false;
-
+  Smooth.Unproject.m_bSeen = false;
+  Smooth.Unproject.m_bUnproject_foldExpr = false;
 }
 
 /*----------------------------------------------------------------------------*/

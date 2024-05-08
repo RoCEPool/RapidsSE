@@ -187,54 +187,53 @@ void XF_FLATTEN::vSet_carry(CardIter* pCI, eCK eCardWithSQ, eQO eWhatOp)
 
   // <from>*
   while (pCI->pPeekNextIf(CK_o_FROM) && pCI->bEachOp(CK_o_FROM)) {
-    pCI->Carry.From.m_bSeen = true;
-    pCI->Carry.From.m_nTables++;
+    pCI->Smooth.From.m_bSeen = true;
   }
 
   // [<where>]
   if (pCI->pPeekNextIf(CK_o_WHERE) && pCI->bEachOp(CK_o_WHERE)) {
-    pCI->Carry.Where_preAgg.m_bSeen = true;
+    pCI->Smooth.Where_preAgg.m_bSeen = true;
   }
 
   // <aggreg>*
   while (pCI->pPeekNextIf(CK_o_AGGREG) && pCI->bEachOp(CK_o_AGGREG)) {
-    pCI->Carry.GbyAgg.m_bSeen = true;
+    pCI->Smooth.Aggreg.m_bSeen = true;
   }
 
   // <gbyAgg>*
   while (pCI->pPeekNextIf(CK_o_GBYAGG) && pCI->bEachOp(CK_o_GBYAGG)) {
-    pCI->Carry.GbyAgg.m_bSeen = true;
+    pCI->Smooth.GbyAgg.m_bSeen = true;
   }
 
   // [<project>]
   if (pCI->pPeekNextIf(CK_o_PROJECT) && pCI->bEachOp(CK_o_PROJECT)) {
-    pCI->Carry.Project_postAgg.m_bSeen = true;
+    pCI->Smooth.Project_postAgg.m_bSeen = true;
   }
 
   // <having>
   if (pCI->pPeekNextIf(CK_o_HAVING) && pCI->bEachOp(CK_o_HAVING)) {
-    pCI->Carry.Having.m_bSeen = true;
+    pCI->Smooth.Having.m_bSeen = true;
   }
 
   // <sort>
   if (pCI->pPeekNextIf(CK_o_SORT) && pCI->bEachOp(CK_o_SORT)) {
-    pCI->Carry.Sort.m_bSeen = true;
-    pCI->Carry.Sort.m_bCorrect_After_Inject = true;
+    pCI->Smooth.Sort.m_bSeen = true;
+    pCI->Smooth.Sort.m_bCorrect_After_Inject = true;
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (CK_o_HAVING == eCardWithSQ) {
-    pCI->Carry.GbyAgg.m_bInject_foldExpr = true;
-    pCI->Carry.Having.m_bCorrect_After_Inject = true;
-    pCI->Carry.Unproject.m_bUnproject_foldExpr = true;
+    pCI->Smooth.GbyAgg.m_bInject_foldExpr = true;
+    pCI->Smooth.Having.m_bCorrect_After_Inject = true;
+    pCI->Smooth.Unproject.m_bUnproject_foldExpr = true;
   }
   else {
     if (QO_IN_OP == eWhatOp || QO_NOT_IN_OP == eWhatOp)
-      pCI->Carry.Where_preAgg.m_bMorph_sqlOp_To_EQ = true;
+      pCI->Smooth.Where_preAgg.m_bMorph_sqlOp_To_EQ = true;
     else
     if (QO_RELN_OP == eWhatOp)
-      pCI->Carry.Where_preAgg.bReplace_sqCall_With_result = true;
+      pCI->Smooth.Where_preAgg.bReplace_sqCall_With_result = true;
   }
 }
 
@@ -255,7 +254,7 @@ void XF_FLATTEN::vSmooth(CardIter* pCI)
 
   // Table*
   while (pCI->pPeekNextIf(CK_o_FROM) && pCI->bEachOp(CK_o_FROM)) {
-    if (pCI->Carry.From.m_bSeen) {
+    if (pCI->Smooth.From.m_bSeen) {
       pCI->E.p_table = pCI->E.p_from->pSub_table();
       pCI->E.p_Op->vRestate_emit(pCI);
       pCI->vSnapIf_arriving();
@@ -267,7 +266,7 @@ void XF_FLATTEN::vSmooth(CardIter* pCI)
 
   // [Where]
   if (pCI->pPeekNextIf(CK_o_WHERE) && pCI->bEachOp(CK_o_WHERE)) {
-    if (pCI->Carry.Where_preAgg.m_bSeen) {
+    if (pCI->Smooth.Where_preAgg.m_bSeen) {
       //pCI->Arriving.m_pEmitted_prior->vDump(__func__,"Smooth where"_Stz);
       pCI->Dic.m_p_expr = pCI->Arriving.m_pEmitted_prior;
       pCI->E.p_where->vSmooth(pCI);
@@ -278,7 +277,7 @@ void XF_FLATTEN::vSmooth(CardIter* pCI)
 
   // GbyAgg_partition
   if (pCI->pPeekNextIf(CK_o_GBYAGG) && pCI->bEachOp(CK_o_GBYAGG)) {
-    if (pCI->Carry.GbyAgg.m_bSeen) {
+    if (pCI->Smooth.GbyAgg.m_bSeen) {
       pCI->E.p_gbyAgg->vSmooth(pCI);
       //pCI->PRINTBOARD_dbg();
     }
@@ -286,7 +285,7 @@ void XF_FLATTEN::vSmooth(CardIter* pCI)
 
   // GbyAgg_node
   if (pCI->pPeekNextIf(CK_o_GBYAGG) && pCI->bEachOp(CK_o_GBYAGG)) {
-    if (pCI->Carry.GbyAgg.m_bSeen) {
+    if (pCI->Smooth.GbyAgg.m_bSeen) {
       pCI->E.p_gbyAgg->vSmooth(pCI);
       //pCI->PRINTBOARD_dbg();
     }
@@ -294,7 +293,7 @@ void XF_FLATTEN::vSmooth(CardIter* pCI)
 
   // GbyAgg_origin
   if (pCI->pPeekNextIf(CK_o_GBYAGG) && pCI->bEachOp(CK_o_GBYAGG)) {
-    if (pCI->Carry.GbyAgg.m_bSeen) {
+    if (pCI->Smooth.GbyAgg.m_bSeen) {
       pCI->E.p_gbyAgg->vSmooth(pCI);
       //pCI->PRINTBOARD_dbg();
 
@@ -304,7 +303,7 @@ void XF_FLATTEN::vSmooth(CardIter* pCI)
 
   // [project (avg)]
   if (pCI->pPeekNextIf(CK_o_PROJECT) && pCI->bEachOp(CK_o_PROJECT)) {
-    if (pCI->Carry.Project_postAgg.m_bSeen) {
+    if (pCI->Smooth.Project_postAgg.m_bSeen) {
       pCI->E.p_project->vSmooth_postAgg(pCI);
       //pCI->PRINTBOARD_dbg();
     }
@@ -312,7 +311,7 @@ void XF_FLATTEN::vSmooth(CardIter* pCI)
 
   // Having
   if (pCI->pPeekNextIf(CK_o_HAVING) && pCI->bEachOp(CK_o_HAVING)) {
-    if (pCI->Carry.Having.m_bSeen) {
+    if (pCI->Smooth.Having.m_bSeen) {
       pCI->E.p_having->vSmooth(pCI);
       //pCI->PRINTBOARD_dbg();
     }
@@ -320,7 +319,7 @@ void XF_FLATTEN::vSmooth(CardIter* pCI)
 
   // Sort
   if (pCI->pPeekNextIf(CK_o_SORT) && pCI->bEachOp(CK_o_SORT)) {
-    if (pCI->Carry.Sort.m_bSeen) {
+    if (pCI->Smooth.Sort.m_bSeen) {
       pCI->E.p_sort->vSmooth(pCI);
       //pCI->PRINTBOARD_dbg();
     }
@@ -328,7 +327,7 @@ void XF_FLATTEN::vSmooth(CardIter* pCI)
 
   //  --  --  --  --  --  --  --  --  --  --  --  --  --  --
 
-  if (pCI->Carry.Unproject.m_bUnproject_foldExpr) {
+  if (pCI->Smooth.Unproject.m_bUnproject_foldExpr) {
     pCI->E.p_emit = pCI->E.p_gbyAgg->pSub_emit();
     Card_Project::vUnproject_foldExpr(pCI);
     //pCI->PRINTBOARD_dbg();

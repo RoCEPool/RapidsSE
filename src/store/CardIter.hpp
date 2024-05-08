@@ -85,7 +85,6 @@ namespace STORE
       struct
       {
         bool m_bSeen;
-        i8 m_nTables;
       } From;
 
       struct
@@ -130,11 +129,9 @@ namespace STORE
         bool m_bUnproject_foldExpr;
       } Unproject;
 
-    } Carry;
+    } Smooth;
 
-
-
-    i8 m_nAncestors;
+    i8    m_nAncestors;
     Card* m_paAncestry[C_CARD_ANCESTRY];
     i8    m_iaAncestry[C_CARD_ANCESTRY];
 
