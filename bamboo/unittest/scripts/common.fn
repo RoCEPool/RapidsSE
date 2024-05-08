@@ -350,8 +350,6 @@ function copyLogs() {
     # shellcheck disable=SC1090
     source "${configFile}"
 
-    # sleep 5
-
     for nodeName in "${NODE_LIST[@]}"; do
       # Get the installation directory
       local installDir
@@ -362,10 +360,10 @@ function copyLogs() {
 
       mkdir -p "${nodeDir}"
 
-      cp "${installDir}"/se*.log "${nodeDir}" &>/dev/null || true
-
+      local baseFileName
       for f in "${nodeDir}"/se*.log; do
-        mv "$f" "${f//.log/.${nodeName}.log}" &>/dev/null || true
+        baseFileName="$(basename "${f}")"
+        cp "${f}" "${nodeDir}/${baseFileName//.log/.${nodeName}.log}" &>/dev/null || true
       done
 
       cp "${installDir}/clusterStatus.log" "${logOutputDir}/clusterStatus.${nodeName}.log" &>/dev/null || true
@@ -377,10 +375,13 @@ function copyLogs() {
 
     done
 
-    # Copy Seth log files
+    # Move Seth log files from the results directory to the logs directory.
+    # Seth writes them out to the results directory automatically.
+    set -x
     if [ -n "${bambooResultsDir}" ]; then
-      mv "${bambooResultsDir}"/seth-log-* "${logOutputDir}" &>/dev/null || true
+      mv "${bambooResultsDir}"/seth-log-* "${logOutputDir}" || true
     fi
+    set +x
   )
 }
 
