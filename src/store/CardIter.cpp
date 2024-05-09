@@ -634,27 +634,19 @@ void CardIter::vClearRegisters(void)
   X.m_pExprList_i = nullptr;
   X.m_pExprList_k = nullptr;
 
-  Smooth.From.m_bSeen = false;
-
-  Smooth.Where_preAgg.m_bSeen = false;
   Smooth.Where_preAgg.m_bMorph_sqlOp_To_EQ = false;
   Smooth.Where_preAgg.bReplace_sqCall_With_result = false;
 
-  Smooth.Aggreg.m_bSeen = false;
   Smooth.Aggreg.m_bMorph_To_gbyAgg = false;
 
-  Smooth.GbyAgg.m_bSeen = false;
   Smooth.GbyAgg.m_bInject_foldExpr = false;
 
   Smooth.Project_postAgg.m_bSeen = false;
 
-  Smooth.Having.m_bSeen = false;
   Smooth.Having.m_bCorrect_After_Inject = false;
 
-  Smooth.Sort.m_bSeen = false;
   Smooth.Sort.m_bCorrect_After_Inject = false;
 
-  Smooth.Unproject.m_bSeen = false;
   Smooth.Unproject.m_bUnproject_foldExpr = false;
 }
 

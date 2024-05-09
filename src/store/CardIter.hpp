@@ -84,25 +84,17 @@ namespace STORE
     {
       struct
       {
-        bool m_bSeen;
-      } From;
-
-      struct
-      {
-        bool m_bSeen;
         bool m_bMorph_sqlOp_To_EQ;
         bool bReplace_sqCall_With_result;
       } Where_preAgg;
 
       struct
       {
-        bool m_bSeen;
         bool m_bMorph_To_gbyAgg;
       } Aggreg;
 
       struct
       {
-        bool m_bSeen;
         bool m_bInject_foldExpr;
       } GbyAgg;
 
@@ -113,19 +105,16 @@ namespace STORE
 
       struct
       {
-        bool m_bSeen;
         bool m_bCorrect_After_Inject;
       } Having;
 
       struct
       {
-        bool m_bSeen;
         bool m_bCorrect_After_Inject;
       } Sort;
 
       struct
       {
-        bool m_bSeen;
         bool m_bUnproject_foldExpr;
       } Unproject;
 
