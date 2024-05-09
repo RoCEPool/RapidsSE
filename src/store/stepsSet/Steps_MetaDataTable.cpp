@@ -39,18 +39,11 @@ void Step::vAddSteps_MetaDataTable(void)
   vAddStep("MetaDataTable[].select"_Stz,        &Step::vMetaDataTableSelect);
   vAddStep("MetaDataTable[].createTable"_Stz,  &Step::vMetaDataTableCreateTable);
   vAddStep("MetaDataTable[].createIndex"_Stz,  &Step::vMetaDataTableCreateIndex);
-
-
   vAddStep("MetaDataTable[].insertTables"_Stz,  &Step::vMetaDataTableTablesInsert);
   vAddStep("MetaDataTable[].dropTable"_Stz,  &Step::vMetaDataTableDropTable);
+
   vAddStep("MetaDataTable[].insertCatalog"_Stz,  &Step::vMetaDataTableCatalogInsert);
   vAddStep("MetaDataTable[].deleteCatalog"_Stz,  &Step::vMetaDataTableCatalogDelete);
-//  vAddStep("MetaDataTable[].insertCluster"_Stz,  &Step::vMetaDataTableClusterInsert);
-  vAddStep("MetaDataTable[].insertColumns"_Stz,  &Step::vMetaDataTableColumnsInsert);
-//  vAddStep("MetaDataTable[].insertIndexColumns"_Stz,  &Step::vMetaDataTableIndexColumnsInsert);
-//  vAddStep("MetaDataTable[].insertNodes"_Stz,  &Step::vMetaDataTableNodesInsert);
-//  vAddStep("MetaDataTable[].insertQueries"_Stz,  &Step::vMetaDataTableQueriesInsert);
-//  vAddStep("MetaDataTable[].insertSessions"_Stz,  &Step::vMetaDataTableSessionsInsert);
   vAddStep("MetaDataTable[].insertSchema"_Stz,  &Step::vMetaDataTableSchemaInsert);
 
   vAddStep("MetaDataTable[].init"_Stz,  &Step::vMetaDataTableInit);
@@ -753,144 +746,6 @@ void Step::vMetaDataTableCatalogInsert(void)
 
   if(!pRow) {
     ASSERT(0);
-  }
-
-  if(bAppend) {
-    i8 nRows = 0;
-    pTablePtn->vAppendBuffer(pPdsRowBuffer, nRows);
-  } else {
-    AM::pHashMap()->vDropKeyLock(pPdsRowBuffer->oGetBufferId().m_pvAsAddress);
-  }
-
-  AM::pHashMap()->vDropKeyLock(pPdsRootBuffer->oGetBufferId().m_pvAsAddress);
-
-  EXIT();
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* MetaDataTable[].insertColumns --                                           */
-/*----------------------------------------------------------------------------*/
-void Step::vMetaDataTableColumnsInsert(void)
-{
-  ENTRY();
-  typedef struct {
-    i8 iKey;
-    BufferId oBufferId;
-  } PdsBufferIdItem;
-
-  Table* pColumnsTable = AM::pMetaDataTableColumns();
-  if(!pColumnsTable) {
-    EXIT();
-    return;
-  }
-
-  StreamDef* pColumnsStreamDef = pColumnsTable->pStreamDef();
-  TablePtn* pTablePtn = pColumnsTable->pTablePtn(0);
-  Pds* pPdsRootBuffer = _pPds(
-      AM::pHashMap()->pValueAt(
-          pTablePtn->oRootBufferId().m_pvAsAddress, true
-      ));
-
-  Pds* pPdsRowBuffer = nullptr;
-  bool bAppend = false;
-  if(pPdsRootBuffer->nItems() == 0) {
-    pPdsRowBuffer = new Pds(pColumnsStreamDef, false, BT_DATA);
-    bAppend = true;
-  } else {
-    i8 iSearchKey = C_INT_MAX;
-    SkipListBlock* pHead = pPdsRootBuffer->pFindLessThan((void*) &iSearchKey);
-    if(pHead != nullptr) {
-      // If the block is not null, extract the keys and values
-      PdsBufferIdItem* pBufferIdStruct = (PdsBufferIdItem*) pHead->aItem();
-
-      HashMapEntry* pEntry = AM::pHashMap()->pEntryAt(pBufferIdStruct->oBufferId.m_pvAsAddress, true);
-
-      pPdsRowBuffer = _pPds(pEntry->m_pValObject);
-    } else {
-      pPdsRowBuffer = new Pds(pColumnsStreamDef, false, BT_DATA);
-      bAppend = true;
-    }
-  }
-
-
-  // get current folder
-  i8 iDepth =  m_oDicStack.nItems();
-  Object* pPtrDic =  m_oDicStack.pPick(iDepth - 1);
-
-  // Get table dict
-  Dic* pDic = _pDic(pPtrDic);
-  Word* pTableFolderWord = pDic->pLastWord();
-
-  // get the schema name
-  i8 i = 2;
-  while( pDic->eDicKind() != DK_SCHEMA) {
-    pPtrDic = m_oDicStack.pPick(iDepth - i);
-    pDic = _pDic(pPtrDic);
-    i++;
-  }
-
-  s256 sSchemaNm(pDic->szDicNm());
-
-  // get the catalog name
-  while( pDic->eDicKind() != DK_CATALOG) {
-    pPtrDic = m_oDicStack.pPick(iDepth - i);
-    pDic = _pDic(pPtrDic);
-    i++;
-  }
-
-  s256 sCatalogNm(pDic->szDicNm());
-
-  // iterate dic table
-
-  while(pTableFolderWord) {
-    // get table name
-    s256 sTableNm(pTableFolderWord->szWordNm());
-
-    // find tableNm folder in current dic
-    Word *pWordTable = m_oDicStack.pFindWord(sTableNm);
-    Dic *pDicTable = _pDic(pWordTable->pObject());
-
-    // find actual table in this table dic
-    Word *pWord = pDicTable->pFindWord(sTableNm);
-    Table *pTableCur = _pTable(pWord->pObject());
-
-    if( ! pTableCur->bIsUserCreated()) {
-      pTableFolderWord = pTableFolderWord->pPrevWord();
-      continue;
-    }
-
-    StreamDef* pStreamDef = pTableCur->pStreamDef();
-
-    i8 nColumns = pStreamDef->nColumns();
-    i8 i_Col = 0;
-
-    while(i_Col < nColumns) {
-      Column* pColumn = pStreamDef->pGetColumn(i_Col);
-
-      // Add column info to pds
-      Row *pRow = pPdsRowBuffer->pAllotRow(C_VARGS_BEGIN,
-                                           sCatalogNm.szStz(),
-                                           sSchemaNm.szStz(),
-                                           pTableCur->szTableNm(),
-                                           pColumn->iColumnNo(),
-                                           pColumn->szColNm(),
-                                           (i8)pColumn->eColumnType(),
-                                           aCT[pColumn->eColumnType()],
-                                           pColumn->iColumnScale(),
-                                           pColumn->iColumnLength(),
-                                           pColumn->bIsNullable(),
-                                           (i8)pColumn->bIsPtnKey(),
-                                           C_VARGS_END);
-
-      if (!pRow) {
-        ASSERT(0);
-        break;
-      }
-      i_Col++;
-    }
-
-    pTableFolderWord = pTableFolderWord->pPrevWord();
   }
 
   if(bAppend) {
