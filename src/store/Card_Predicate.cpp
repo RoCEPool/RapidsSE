@@ -493,7 +493,7 @@ bool Card_Predicate::bIsBraced(void)
     return C_CONTINUE_RECURSION;
   };
 
-  bLambdaWalk(CK_NONE,bTestBraced);
+  bLambdaWalk(CK_TERM,bTestBraced);
 
   return bBraced;
 }

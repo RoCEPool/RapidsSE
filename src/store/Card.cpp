@@ -1011,20 +1011,20 @@ bool Card::bIsPeek(i8 i_Child, eCK eChild)
 }
 
 /*----------------------------------------------------------------------------*/
-/* visit all sub-cards of given eToSubs and apply lambda function             */
+/* visit all sub-cards of given eCardIf and apply lambda function             */
 /*----------------------------------------------------------------------------*/
-bool Card::bLambdaWalk(eCK eToSubs,
+bool Card::bLambdaWalk(eCK eCardIf,
                        std::function<bool(Card* pCard)> bfLambdaFn,
                        CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (CK_NONE == eToSubs || eToSubs == m_eCard) {
-    if (pCI)
-      pCI->vAncestorPush(this);
+  if (eCardIf == CK_NONE || eCardIf == m_eCard) {
+//    if (pCI)
+//      pCI->vAncestorPush(this);
     bool bContinue = bfLambdaFn(this);
-    if (pCI)
-      pCI->vAncestorPop();
+//    if (pCI)
+//      pCI->vAncestorPop();
     if (! bContinue)
       return C_TERMINATE_RECURSION;
   }
@@ -1032,7 +1032,7 @@ bool Card::bLambdaWalk(eCK eToSubs,
   for (Kid xCard(this); xCard.bEach_opaque(); /**/) {
     if (pCI)
       pCI->vAncestorPush(this);
-    bool bContinue = xCard.pChild()->bLambdaWalk(eToSubs, bfLambdaFn, pCI);
+    bool bContinue = xCard.pChild()->bLambdaWalk(eCardIf, bfLambdaFn, pCI);
     if (pCI)
       pCI->vAncestorPop();
     if (! bContinue)

@@ -352,7 +352,7 @@ namespace STORE
     bool bIsPeek(eCK eChild0, eCK eChild1);
     bool bIsPeek(i8 i_Child, eCK eChild);
 
-    bool bLambdaWalk(eCK eToSubs, std::function<bool(Card* pCard)> bfLambdaFn, CardIter* pCI=nullptr);
+    bool bLambdaWalk(eCK eCardIf, std::function<bool(Card* pCard)> bfLambdaFn, CardIter* pCI=nullptr);
     bool bLambdaWalk_term(std::function<bool(Card_Term* p_term)> bfLambdaFn);
 
     void vMark(Stz* szMark1, Stz* szMark2);

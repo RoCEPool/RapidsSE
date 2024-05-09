@@ -23,7 +23,6 @@ namespace STORE
 
   private:
     Footer* aFooter(void);
-
   };
 
   CardUte* _pCardUte(void* aAddr);
