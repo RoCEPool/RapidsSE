@@ -215,32 +215,56 @@ void Card_Predicate::vBump_expCol(i8 nBumpBy)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_CONJ* p_conj_ROOT = this->pRoot_conj();
+  //Card_CONJ* p_conj_ROOT = this->pRoot_conj();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  auto bfBump = [nBumpBy](Card_CONJ* p_conj, bool bUpwards)
+  auto bfBump = [nBumpBy](Card_Term *p_term)
   {
-    if (bUpwards)
-      return C_CONTINUE_RECURSION;
 
-    if (! p_conj->bIsCard(CK_TERM))
-      return C_CONTINUE_RECURSION;
-
-    Card_Term* p_term = _pCard_Term(p_conj);
-
-    if (p_term->pSymbol()->bHasFacet(SF_EXP_COL)) {
+    if (p_term->pSymbol()->bHasFacet(SF_EXP_COL))
       p_term->vBump_ordCol(SF_EXP_COL,nBumpBy);
-    }
 
-    return C_CONTINUE_RECURSION;
+    return true;
   };
 
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  bool bIgnore = p_conj_ROOT->bLambdaWalk_conj(bfBump);
+  bool bIgnore = bLambdaWalk_term(bfBump);
   UNUSED(bIgnore);
 }
+/*----------------------------------------------------------------------------*/
+//void Card_Predicate::vBump_expCol(i8 nBumpBy)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+//
+//  Card_CONJ* p_conj_ROOT = this->pRoot_conj();
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//
+//  auto bfBump = [nBumpBy](Card_CONJ* p_conj, bool bUpwards)
+//  {
+//    if (bUpwards)
+//      return C_CONTINUE_RECURSION;
+//
+//    if (! p_conj->bIsCard(CK_TERM))
+//      return C_CONTINUE_RECURSION;
+//
+//    Card_Term* p_term = _pCard_Term(p_conj);
+//
+//    if (p_term->pSymbol()->bHasFacet(SF_EXP_COL)) {
+//      p_term->vBump_ordCol(SF_EXP_COL,nBumpBy);
+//    }
+//
+//    return C_CONTINUE_RECURSION;
+//  };
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//
+//  bool bIgnore = p_conj_ROOT->bLambdaWalk_conj(bfBump);
+//  UNUSED(bIgnore);
+//}
 
 /*----------------------------------------------------------------------------*/
 /* does this boolPred contain given symbol?                                   */

@@ -84,19 +84,19 @@ void Card_Having::vCorrect_After_Inject(CardIter* pCI, bool bBump)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  auto bLambdaFn_cmp = [](Card_Term *p_term)
-  {
-
-    if (p_term->pSymbol()->bHasFacet(SF_EXP_COL))
-      p_term->vBump_ordCol(SF_EXP_COL);
-
-    return true;
-  };
+//  auto bLambdaFn_cmp = [](Card_Term *p_term)
+//  {
+//
+//    if (p_term->pSymbol()->bHasFacet(SF_EXP_COL))
+//      p_term->vBump_ordCol(SF_EXP_COL);
+//
+//    return true;
+//  };
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (bBump)
-    pCI->E.p_predicate->bLambdaWalk_term(bLambdaFn_cmp);
+    pCI->E.p_predicate->vBump_expCol();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
