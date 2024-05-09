@@ -240,7 +240,7 @@ function writeHarnessFailureJUnitResult() {
   cat << EOF > "${outputFile}"
 <?xml version="1.0" encoding="UTF-8"?>
   <testsuite name="Harness Execution" time="${elapsedTime}">
-      <testcase name="${harnessName} Harness Failure" classname="" time="${elapsedTime}">
+      <testcase name="${harnessName} Harness Failure" classname="Harness Execution" time="${elapsedTime}">
           <failure message="${failureSummary}" type="Execution Error">
               ${failureDetail}
           </failure>
@@ -308,6 +308,7 @@ function runAndMonitorTest() {
   if isClusterRunning; then
     # shellcheck disable=SC2119
     stopCluster
+#    sleep 5
   fi
 
   # Remove any SE log files from the install directories of each node
@@ -319,6 +320,12 @@ function runAndMonitorTest() {
     failureDetail="Check the log files for details"
     writeHarnessFailureJUnitResult "${harnessName}" 0 "${failureSummary}" "${failureDetail}"
     copyLogs "${CONFIG_FILE}" "${harnessLogOutputDir}" "${harnessResultsDir}" || true
+
+    echo ""
+    echo "Listing processes with active sockets:"
+    lsof -i 4TCP
+    echo ""
+
     false
     return
   fi
