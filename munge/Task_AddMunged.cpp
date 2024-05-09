@@ -11952,7 +11952,7 @@ void Task::vAddMunged(Task* )
     "  // remove the table\n"
     "  <tableNm> table::dropTable\n"
     "\n"
-    "  <tableNm> MetaDataTable[].deleteTables\n"
+    "  <tableNm> MetaDataTable[].dropTable\n"
     "\n"
     "  // delete the DESTROYMARKER\n"
     "  PipeIn[].delete\n"

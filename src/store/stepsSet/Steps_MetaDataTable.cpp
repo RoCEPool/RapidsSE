@@ -42,7 +42,7 @@ void Step::vAddSteps_MetaDataTable(void)
 
 
   vAddStep("MetaDataTable[].insertTables"_Stz,  &Step::vMetaDataTableTablesInsert);
-  vAddStep("MetaDataTable[].deleteTables"_Stz,  &Step::vMetaDataTableTablesDelete);
+  vAddStep("MetaDataTable[].dropTable"_Stz,  &Step::vMetaDataTableDropTable);
   vAddStep("MetaDataTable[].insertCatalog"_Stz,  &Step::vMetaDataTableCatalogInsert);
   vAddStep("MetaDataTable[].deleteCatalog"_Stz,  &Step::vMetaDataTableCatalogDelete);
 //  vAddStep("MetaDataTable[].insertCluster"_Stz,  &Step::vMetaDataTableClusterInsert);
@@ -512,20 +512,22 @@ void Step::vMetaDataTableTablesInsert(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* MetaDataTable[].deleteTables --                                            */
+/* MetaDataTable[].dropTable --                                               */
 /*----------------------------------------------------------------------------*/
-void Step::vMetaDataTableTablesDelete(void)
+void Step::vMetaDataTableDropTable(void)
 {
   ENTRY();
 
   s256 szTableNm;
   m_pDataStack->vPopStr(szTableNm,__func__);
 
+  HashMap* pHashMap = AM::pHashMap();
+
+  //------------------------------------------------------------------------
+  // Delete table row info from tableOfTables
+
   Table* pTable = AM::pMetaDataTableOfTables();
-  if(!pTable) {
-    EXIT();
-    return;
-  }
+
   TablePtn* pTablePtn = pTable->pTablePtn(0);
 
   BufferId oRootBufferId = pTablePtn->oRootBufferId();
@@ -533,11 +535,12 @@ void Step::vMetaDataTableTablesDelete(void)
 
   PdsCursor* pCursor = new PdsCursor(pRootPds);
 
-  while(! pCursor->bIsCurrNull()) {
+  bool bDeleted = false;
+  while(! pCursor->bIsCurrNull() && ! bDeleted) {
     SkipListBlock* pSLBlock = pCursor->m_pCurrentBlock;
 
     BufferId oBufferId = pTablePtn->oExtractBufferId((Object*)pSLBlock->aItem());
-    Pds* pPdsRowBuffer = _pPds(AM::pHashMap()->pValueAt(oBufferId.m_pvAsAddress, true));
+    Pds* pPdsRowBuffer = _pPds(pHashMap->pValueAt(oBufferId.m_pvAsAddress, true));
 
     PdsCursor* pRowCursor = new PdsCursor(pPdsRowBuffer);
 
@@ -552,23 +555,147 @@ void Step::vMetaDataTableTablesDelete(void)
         bool bResult = pPdsRowBuffer->bDelete(pKey);
         ASSERT(bResult);
         UNUSED(bResult);
-
-        delete pRowCursor;
-        delete pCursor;
-
-        AM::pHashMap()->vDropKeyLock(pPdsRowBuffer->oGetBufferId().m_pvAsAddress);
-        AM::pHashMap()->vDropKeyLock(oRootBufferId.m_pvAsAddress);
-        EXIT();
-        return;
+        bDeleted = true;
+        break;
       }
       pRowCursor->vNext();
     }
     delete pRowCursor;
-    AM::pHashMap()->vDropKeyLock(pPdsRowBuffer->oGetBufferId().m_pvAsAddress);
+    pHashMap->vDropKeyLock(pPdsRowBuffer->oGetBufferId().m_pvAsAddress);
     pCursor->vNext();
   }
   delete pCursor;
-  AM::pHashMap()->vDropKeyLock(oRootBufferId.m_pvAsAddress);
+  pHashMap->vDropKeyLock(oRootBufferId.m_pvAsAddress);
+
+  //------------------------------------------------------------------------
+  // Delete table row info from columns
+
+  pTable = AM::pMetaDataTableColumns();
+
+  pTablePtn = pTable->pTablePtn(0);
+
+  oRootBufferId = pTablePtn->oRootBufferId();
+  pRootPds = _pPds(pHashMap->pValueAt(oRootBufferId.m_pvAsAddress));
+
+  pCursor = new PdsCursor(pRootPds);
+
+  while(! pCursor->bIsCurrNull()) {
+    SkipListBlock* pSLBlock = pCursor->m_pCurrentBlock;
+
+    BufferId oBufferId = pTablePtn->oExtractBufferId((Object*)pSLBlock->aItem());
+    Pds* pPdsRowBuffer = _pPds(pHashMap->pValueAt(oBufferId.m_pvAsAddress, true));
+
+    PdsCursor* pRowCursor = new PdsCursor(pPdsRowBuffer);
+
+    while(! pRowCursor->bIsCurrNull()) {
+      Row* pRow = pRowCursor->pCurrRow();
+
+      Stz* szRowTableNm = pRow->szColVal_ofs(2);
+
+      if(szRowTableNm->bSame(szTableNm)) {
+        i8* pKey = (i8*)pRowCursor->pCurrKey();
+
+        pRowCursor->vNext();
+        bool bResult = pPdsRowBuffer->bDelete(pKey);
+        ASSERT(bResult);
+        UNUSED(bResult);
+        continue;
+      }
+      pRowCursor->vNext();
+    }
+    delete pRowCursor;
+    pHashMap->vDropKeyLock(pPdsRowBuffer->oGetBufferId().m_pvAsAddress);
+    pCursor->vNext();
+  }
+  delete pCursor;
+  pHashMap->vDropKeyLock(oRootBufferId.m_pvAsAddress);
+
+  //------------------------------------------------------------------------
+  // Delete table index info from indexes
+
+  pTable = AM::pMetaDataTableIndexes();
+
+  pTablePtn = pTable->pTablePtn(0);
+
+  oRootBufferId = pTablePtn->oRootBufferId();
+  pRootPds = _pPds(pHashMap->pValueAt(oRootBufferId.m_pvAsAddress));
+
+  pCursor = new PdsCursor(pRootPds);
+
+  while(! pCursor->bIsCurrNull()) {
+    SkipListBlock* pSLBlock = pCursor->m_pCurrentBlock;
+
+    BufferId oBufferId = pTablePtn->oExtractBufferId((Object*)pSLBlock->aItem());
+    Pds* pPdsRowBuffer = _pPds(pHashMap->pValueAt(oBufferId.m_pvAsAddress, true));
+
+    PdsCursor* pRowCursor = new PdsCursor(pPdsRowBuffer);
+
+    while(! pRowCursor->bIsCurrNull()) {
+      Row* pRow = pRowCursor->pCurrRow();
+
+      Stz* szRowTableNm = pRow->szColVal_ofs(2);
+
+      if(szRowTableNm->bSame(szTableNm)) {
+        i8* pKey = (i8*)pRowCursor->pCurrKey();
+
+        pRowCursor->vNext();
+        bool bResult = pPdsRowBuffer->bDelete(pKey);
+        ASSERT(bResult);
+        UNUSED(bResult);
+        continue;
+      }
+      pRowCursor->vNext();
+    }
+    delete pRowCursor;
+    pHashMap->vDropKeyLock(pPdsRowBuffer->oGetBufferId().m_pvAsAddress);
+    pCursor->vNext();
+  }
+  delete pCursor;
+  pHashMap->vDropKeyLock(oRootBufferId.m_pvAsAddress);
+
+  //------------------------------------------------------------------------
+  // Delete table index info from indexColumns
+
+  pTable = AM::pMetaDataTableIndexColumns();
+
+  pTablePtn = pTable->pTablePtn(0);
+
+  oRootBufferId = pTablePtn->oRootBufferId();
+  pRootPds = _pPds(pHashMap->pValueAt(oRootBufferId.m_pvAsAddress));
+
+  pCursor = new PdsCursor(pRootPds);
+
+  while(! pCursor->bIsCurrNull()) {
+    SkipListBlock* pSLBlock = pCursor->m_pCurrentBlock;
+
+    BufferId oBufferId = pTablePtn->oExtractBufferId((Object*)pSLBlock->aItem());
+    Pds* pPdsRowBuffer = _pPds(pHashMap->pValueAt(oBufferId.m_pvAsAddress, true));
+
+    PdsCursor* pRowCursor = new PdsCursor(pPdsRowBuffer);
+
+    while(! pRowCursor->bIsCurrNull()) {
+      Row* pRow = pRowCursor->pCurrRow();
+
+      Stz* szRowTableNm = pRow->szColVal_ofs(2);
+
+      if(szRowTableNm->bSame(szTableNm)) {
+        i8* pKey = (i8*)pRowCursor->pCurrKey();
+
+        pRowCursor->vNext();
+        bool bResult = pPdsRowBuffer->bDelete(pKey);
+        ASSERT(bResult);
+        UNUSED(bResult);
+        continue;
+      }
+      pRowCursor->vNext();
+    }
+    delete pRowCursor;
+    pHashMap->vDropKeyLock(pPdsRowBuffer->oGetBufferId().m_pvAsAddress);
+    pCursor->vNext();
+  }
+  delete pCursor;
+  pHashMap->vDropKeyLock(oRootBufferId.m_pvAsAddress);
+
   EXIT();
 }
 
