@@ -567,7 +567,7 @@ void XF_Flatten_24_W_A_C_ro::vPromote_aggreg_To_gbyAgg(CardIter* pCI)
   // ???
 
   RASSERT(pCI->bEachOp(CK_o_WHERE, CK_PREDICATE));
-  pCI->E.p_predicate->vBump_expCol(2);
+  pCI->E.p_predicate->vBump_ordCol(SF_EXP_COL, 2);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append correlation key conjunction onto the OQ:<where>/<filter>/<boolPred>

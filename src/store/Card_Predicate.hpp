@@ -21,7 +21,7 @@ namespace STORE
 
     void vAppend_and_rlnConj(Card_RlnConj *p_rlnConj);
     void vApplyCast(CardIter* pCI, Card_Emit* p_Dic_expr);
-    void vBump_expCol(i8 bBumpBy=1);
+    void vBump_ordCol(eSF eFacet, i8 nBumpBy=1);
     bool bContains(Symbol* pGivenSymbol);
     void vCopyMarked_rlnConj_To_table_filter(CardIter* pCI, Stz* szWithMark);
     void vUpdate_expCol(CardIter* pCI, Card_Emit* p_Dic_expr, bool bAlt=false);
