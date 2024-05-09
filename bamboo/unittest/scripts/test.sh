@@ -234,6 +234,8 @@ function writeHarnessFailureJUnitResult() {
   local failureDetail="$4"
 
   local outputFile="${RESULTS_DIR}/harnessFailure-${harnessName// /}-${TARGET}.xml"
+  local outputDir="$(dirname "${outputFile}")"
+  mkdir -p "${outputDir}"
 
   cat << EOF > "${outputFile}"
 <?xml version="1.0" encoding="UTF-8"?>
@@ -512,7 +514,11 @@ function runAndMonitorTest() {
     return
   fi
 
-  echo "${harnessName} has completed its execution. Logs have not been copied."
+  # Seth writes its log into the results directory. It also prints to the Bamboo log too,
+  # so we don't need both.
+  removeSethLog "${harnessResultsDir}"
+
+  echo "${harnessName} has completed its execution. SE logs have NOT been copied."
   true
 }
 

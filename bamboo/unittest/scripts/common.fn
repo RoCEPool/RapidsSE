@@ -436,3 +436,12 @@ function removeLogs() {
     done
   )
 }
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Remove the Seth log file from the results directory
+## Params:
+##  $1 - path of results directory
+function removeSethLog() {
+
+  local bambooResultsDir="$1"
+  rm -f "${bambooResultsDir}"/seth-log-* &>/dev/null || true
+}
