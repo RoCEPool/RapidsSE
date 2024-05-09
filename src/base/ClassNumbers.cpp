@@ -65,6 +65,7 @@ Stz* BASE::aCN[CN_ENUMS+1]
     /* */ "CARD"_Stz,                 // CN_CARD
     /* */ "CARDITER"_Stz,             // CN_CARDITER
     /* */ "CARDUSAGE"_Stz,            // CN_CARDUSAGE
+    /* */ "CARDUTE"_Stz,              // CN_CARDUTE
     /* */ "CATALOG"_Stz,              // CN_CATALOG
     /* */ "CHARSER"_Stz,              // CN_CHARSER
     /* */ "CHILDEXIT"_Stz,            // CN_CHILDEXIT
