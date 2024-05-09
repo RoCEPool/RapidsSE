@@ -95,14 +95,14 @@ void Step::vPortNewListen_reg(void)
   
   if ( ! bResult ) {
     if (oSysCall.iError() == EADDRINUSE) {
-      vThrow(FK_CHECK,__func__,__FILE__,__LINE__,
-             "Address in use (port: %lld). "
-             "Check if another instance of RAPIDSSE is running!"_Stz,
+      vTrace("Address in use (port: %lld). "
+             "Check if another instance of RAPIDSSE is running!\n"_Stz,
              iPortNo);
     }
     else
-      vThrow(FK_CHECK,__func__,__FILE__,__LINE__,
-             "Unable to listen for connections: errno=%d"_Stz, oSysCall.iError());
+      vTrace("Unable to listen for connections: errno=%d\n"_Stz, oSysCall.iError());
+
+    Process::vExitFailure();
   }
   
   //- - - - - - - - - - - - - - - - - - -  - - - - - - - - - - - - - - - - - - -

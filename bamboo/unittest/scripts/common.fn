@@ -393,11 +393,16 @@ function copyLogs() {
 
     # Move Seth log files from the results directory to the logs directory.
     # Seth writes them out to the results directory automatically.
-    if [ -n "${bambooResultsDir}" ] && compgen -G "${bambooResultsDir}/seth-log-*" >/dev/null; then
+    local sethLogGlobPattern="${bambooResultsDir}/seth-log-*"
+    if [ -n "${bambooResultsDir}" ] && compgen -G "${sethLogGlobPattern}" >/dev/null; then
       src="${bambooResultsDir}/seth-log-*"
       dest="${logOutputDir}"
       echo "Copying logs: ${src} --> ${dest}"
       mv "${bambooResultsDir}"/seth-log-* "${dest}" || true
+    elif [ -z "${bambooResultsDir:-}" ]; then
+      echo "Result directory does not exist: ${bambooResultsDir}"
+    elif compgen -G "${sethLogGlobPattern}" >/dev/null; then
+      echo "No matching seth logs found against the glob pattern: ${sethLogGlobPattern}"
     fi
   )
 }

@@ -653,6 +653,11 @@ fi
 i=0
 while [ "${i}" -lt "${#TEST_TO_RUN[@]}" ]; do
 
+  if [ "${i}" -gt 0 ]; then
+    # Give a small pause between running subsequent tests
+    sleep 5
+  fi
+
   TEST_NAME="${TEST_TO_RUN[$i]}"
   i=$((i+1))
   TEST_FUNC="${TEST_TO_RUN[$i]}"

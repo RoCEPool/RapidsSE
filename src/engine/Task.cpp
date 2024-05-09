@@ -372,6 +372,10 @@ void Task::vTaskLoop(void)
       if (AM::SHOW::bException()) {
         vDumpOnException();
       }
+
+//      if (xException.eFailure() == FK_FATAL) {
+//        Process::vExitFailure();
+//      }
       
       vExceptionHandler();
             
