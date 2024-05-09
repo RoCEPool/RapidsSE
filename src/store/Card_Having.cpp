@@ -84,7 +84,7 @@ void Card_Having::vCorrect_After_Inject(CardIter* pCI, bool bBump)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (bBump)
-    pCI->E.p_predicate->vBump_ordCol(SF_EXP_COL);
+    pCI->E.p_predicate->vBump_term_ordCol(SF_EXP_COL);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

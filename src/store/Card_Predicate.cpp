@@ -209,9 +209,9 @@ void Card_Predicate::vAppend_and_rlnConj(Card_RlnConj *p_rlnConj)
 }
 
 /*----------------------------------------------------------------------------*/
-/* increment all ordCol:eFacet by given nBumpBy                               */
+/* increment all term:ordCol:eFacet by given nBumpBy                          */
 /*----------------------------------------------------------------------------*/
-void Card_Predicate::vBump_ordCol(eSF eFacet, i8 nBumpBy)
+void Card_Predicate::vBump_term_ordCol(eSF eFacet, i8 nBumpBy)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
