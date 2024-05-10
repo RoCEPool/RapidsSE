@@ -1667,8 +1667,17 @@ void Job::vPipeoutResponse(Operand* pOperand)
     m_pOutput->vPipeToThis(pOperand);
   }
   else {
+    // Ignore child exit events if there is no output operator. This largely
+    // occurs with external clients because the parent job (the OP_answerWL)
+    // doesn't set itself as the output operator because it runs in a dedicated
+    // thread so it can block on an accept() call. Therefore it cannot run the
+    // usual operator loop where it will respond to events like this.
+    if (pOperand->bIsMarker() && _pMarker(pOperand)->eOpMarker() == OM_CHILDEXIT) {
+      AM::vDeleteOperand(pOperand, nullptr);
+      return;
+    }
 
-    // nowhere to go, just print response
+      // nowhere to go, just print response
     vTrace("Job sending response (operand): %s\n"_Stz, aCN[pOperand->eGetClassNo()]);
   }
 }
