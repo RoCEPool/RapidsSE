@@ -275,7 +275,9 @@ function checkForJobCrash() {
 # Parameters:
 #   $1      : A name of the test harness
 #   $2      : A timeout in seconds for running the harness
-#   $3..$n  : The test harness command line arguments
+#   $3      : A boolean value whether logs should be collected on a successful
+#             run. 1=yes, 0=no (only on failure)
+#   $4..$n  : The test harness command line arguments
 #
 # Returns: exit code 0 if the harness completed successfully or
 #          non-zero if it aborted due to an error.
@@ -292,6 +294,8 @@ function runAndMonitorTest() {
   local harnessName="$1"
   shift
   local harnessTimeout="$1"
+  shift
+  local collectLogsOnSuccess="$1"
   shift
   local harnessCmdLine=("$@")
 
@@ -486,6 +490,7 @@ function runAndMonitorTest() {
       writeHarnessFailureJUnitResult "${harnessName}" "${elapsedTime}" "${failureSummary}" "${failureDetail}"
 
       # Stop SE
+      sleep 2
       stopCluster || true
 
       # Copy the logs
@@ -525,7 +530,12 @@ function runAndMonitorTest() {
   # so we don't need both.
   removeSethLog "${harnessResultsDir}"
 
-  echo "${harnessName} has completed its execution. SE logs have NOT been copied."
+  if [ "${collectLogsOnSuccess}" -eq 1 ]; then
+    copyLogs "${CONFIG_FILE}" "${harnessLogOutputDir}" "${harnessResultsDir}" || true
+    echo "${harnessName} has completed its execution. SE logs HAVE been copied."
+  else
+    echo "${harnessName} has completed its execution. SE logs have NOT been copied."
+  fi
   true
 }
 
@@ -536,6 +546,10 @@ function runAndMonitorTest() {
 #
 # shellcheck disable=SC2317
 function runSethTest() {
+  # Normally SE logs are only collected on a harness failure. Set this variable
+  # to 1 to always collect SE logs or 0 to only collect on a harness failure.
+  local -r copySeLogsOnSuccess=0
+
   # Classpath of invoking SETH and the corresponding JDBC driver (in the shell directory).
   # (yes, this will also load the SE Shell jar files, but this way is simpler).
   # SETH is not installed so we must invoke it from the current repository.
@@ -559,7 +573,7 @@ function runSethTest() {
   sethCmdLine+=("-f" "${TESTLIST_FILE}")
   echo "SETH will run with the testlist file: ${TESTLIST_FILE}"
 
-  runAndMonitorTest "SETH" "${SETH_TIMEOUT}" "${sethCmdLine[@]}"
+  runAndMonitorTest "SETH" "${SETH_TIMEOUT}" "${copySeLogsOnSuccess}" "${sethCmdLine[@]}"
 }
 
 
@@ -569,6 +583,10 @@ function runSethTest() {
 #
 # shellcheck disable=SC2317
 function runConnectionStormTest() {
+  # Normally SE logs are only collected on a harness failure. Set this variable
+  # to 1 to always collect SE logs or 0 to only collect on a harness failure.
+  local -r copySeLogsOnSuccess=1
+
   local -r runtimeSec=20
   local -r numConnections=50
   local -r connStormTimeoutSec=60
@@ -581,7 +599,7 @@ function runConnectionStormTest() {
     "-d" "${RESULTS_DIR}/connectionStorm-${TARGET}.xml"
   )
 
-  runAndMonitorTest "Connection Storm" "${connStormTimeoutSec}" "${connStormCmdLine[@]}"
+  runAndMonitorTest "Connection Storm" "${connStormTimeoutSec}" "${copySeLogsOnSuccess}" "${connStormCmdLine[@]}"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
