@@ -127,6 +127,7 @@
   Path[].popSchemaFolder
 
   sSchemaNm folder::remove
+  sSchemaNm MetaDataTable[].deleteSchema
 ;
 /*============================================================================*/
 /* end                                                                        */

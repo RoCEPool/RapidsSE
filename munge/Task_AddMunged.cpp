@@ -23285,6 +23285,7 @@ void Task::vAddMunged(Task* )
     "  Path[].popSchemaFolder\n"
     "\n"
     "  sSchemaNm folder::remove\n"
+    "  sSchemaNm MetaDataTable[].deleteSchema\n"
     " ;\n"
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
