@@ -123,7 +123,8 @@ void XF_Epilog_Cull_facet::vCull_facet(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pCI->bLambdaWalk(pCI->E.p_deck, CK_TERM, bLambdaFn);
+  //pCI->bLambdaWalk(pCI->E.p_deck, CK_TERM, bLambdaFn);
+  pCI->E.p_deck->bLambdaWalk(CK_TERM, bLambdaFn,pCI);
 
   m_pCI->vEndTransform(__LINE__);
 }

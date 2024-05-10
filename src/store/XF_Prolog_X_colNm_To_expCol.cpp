@@ -122,7 +122,8 @@ void XF_Prolog_X_colNm_To_expCol::vX_colNm_To_expCol(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pCI->bLambdaWalk(pCI->E.p_Op, CK_TERM, fb_colNm_To_expCol);
+  //pCI->bLambdaWalk(pCI->E.p_Op, CK_TERM, fb_colNm_To_expCol);
+  pCI->E.p_Op->bLambdaWalk(CK_TERM, fb_colNm_To_expCol,pCI);
 }
 
 /*============================================================================*/

@@ -1020,27 +1020,62 @@ bool Card::bLambdaWalk(eCK eCardIf,
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   if (eCardIf == CK_NONE || eCardIf == m_eCard) {
-//    if (pCI)
-//      pCI->vAncestorPush(this);
     bool bContinue = bfLambdaFn(this);
-//    if (pCI)
-//      pCI->vAncestorPop();
     if (! bContinue)
       return C_TERMINATE_RECURSION;
   }
 
+  if (pCI) {
+    pCI->vAncestorPush(this);
+    pCI->vAncestorCounterReset();
+  }
+
   for (Kid xCard(this); xCard.bEach_opaque(); /**/) {
-    if (pCI)
-      pCI->vAncestorPush(this);
     bool bContinue = xCard.pChild()->bLambdaWalk(eCardIf, bfLambdaFn, pCI);
-    if (pCI)
-      pCI->vAncestorPop();
-    if (! bContinue)
+    if (! bContinue) {
+      if (pCI) {
+        pCI->vAncestorPop();
+      }
       return C_TERMINATE_RECURSION;
+    }
+  }
+
+  if (pCI) {
+    pCI->vAncestorCounterReset();
+    pCI->vAncestorPop();
   }
 
   return C_CONTINUE_RECURSION;
 }
+/*----------------------------------------------------------------------------*/
+//bool Card::bLambdaWalk(eCK eCardIf,
+//                       std::function<bool(Card* pCard)> bfLambdaFn,
+//                       CardIter* pCI)
+//{
+//  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+//
+//  if (eCardIf == CK_NONE || eCardIf == m_eCard) {
+////    if (pCI)
+////      pCI->vAncestorPush(this);
+//    bool bContinue = bfLambdaFn(this);
+////    if (pCI)
+////      pCI->vAncestorPop();
+//    if (! bContinue)
+//      return C_TERMINATE_RECURSION;
+//  }
+//
+//  for (Kid xCard(this); xCard.bEach_opaque(); /**/) {
+//    if (pCI)
+//      pCI->vAncestorPush(this);
+//    bool bContinue = xCard.pChild()->bLambdaWalk(eCardIf, bfLambdaFn, pCI);
+//    if (pCI)
+//      pCI->vAncestorPop();
+//    if (! bContinue)
+//      return C_TERMINATE_RECURSION;
+//  }
+//
+//  return C_CONTINUE_RECURSION;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* visit all term sub-cards and apply lambda function                         */
