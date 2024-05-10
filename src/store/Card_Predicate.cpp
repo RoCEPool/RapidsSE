@@ -276,31 +276,30 @@ void Card_Predicate::vCopyMarked_rlnConj_To_table_filter(CardIter* pCI, Stz* szW
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_Deck* pDeck = pCI->E.p_deck;
-  Card *pMainCard;
 
-  pCI->vRecurseBegin(this);
+  auto bfDerive = [pCI,szWithMark](Card* p_card)
+  {
+    if (! p_card->bMark1(szWithMark))
+      return C_CONTINUE_RECURSION;
 
-  while (Card_CONJ* p_conj = (Card_CONJ*)pCI->pRecurseEach()) {
-    if (! p_conj->bMark1(szWithMark))
-      continue;
+    Card_RlnConj* p_rlnConj = _pCard_RlnConj(p_card);
 
-    RASSERT(p_conj->bIsCard(CK_RLNCONJ));
-    Card_RlnConj* p_rlnConj = _pCard_RlnConj(p_conj);
-
+    Card *pMainCard;
     char cTableSyn = p_rlnConj->cMark2();
-    Card_Table *p_table = pDeck->pFind_table(cTableSyn, pMainCard);
+    Card_Table *p_table = pCI->E.p_deck->pFind_table(cTableSyn, pMainCard);
     if (! p_table)
-      continue;
+      return C_CONTINUE_RECURSION;
 
     pCI->E.p_filter = ((Card_OP *) pMainCard)->pEnsure_filter();
     pCI->E.p_filter->pSub_predicate()->vAppend_and_rlnConj(p_rlnConj->pClone());
 
     pCI->E.p_filter->vMark1(p_table->cMark1());
     pCI->E.p_filter->vMark2(p_table->cMark2());
-  }
 
-  pCI->vRecurseEnd();
+    return C_CONTINUE_RECURSION;
+  };
+
+  (void)bLambdaWalk(CK_NONE, bfDerive, pCI);
 
   vDebugPoint();
 }
