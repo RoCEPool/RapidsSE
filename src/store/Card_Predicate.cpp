@@ -587,6 +587,57 @@ void Card_Predicate::vMark_rlnConj_Wrt_table(CardIter* pCI, Stz* szWithMark)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
+#if 1
+  auto bfDerive = [pCI,szWithMark](Card* p_card)
+  {
+    //p_card->vDump(__func__);
+    UNUSED(pCI);
+    UNUSED(szWithMark);
+
+
+    if (p_card->bIsCard(CK_ANDCONJ)) {
+      p_card->vMark1(MARK_AND);
+      return C_CONTINUE_RECURSION;
+    }
+
+    if (p_card->bIsCard(CK_NOTCONJ)) {
+      p_card->vMark1(MARK_NOT);
+      return C_CONTINUE_RECURSION;
+    }
+    if (pCI->pAncestor(CK_NOTCONJ))
+      return C_CONTINUE_RECURSION;
+
+    if (p_card->bIsCard(CK_ORCONJ)) {
+      p_card->vMark1(MARK_OR);
+      return C_CONTINUE_RECURSION;
+    }
+    if (pCI->pAncestor(CK_ORCONJ))
+      return C_CONTINUE_RECURSION;
+
+    if (p_card->bIsCard(CK_TERM))
+      return C_CONTINUE_RECURSION;
+
+    if (p_card->bIsCard(CK_RLNCONJ)) {
+      p_card->vMark1(MARK_COMPARE);
+      if (!((Card_CONJ *) p_card)->bHasChildFacet(SF_SQY_NO)) {
+        Symbol *pWhichTable = ((Card_CONJ *) p_card)->pTable_WhichTableFor_Conj(pCI);
+        if (pWhichTable) {
+          p_card->vMark1(szWithMark);
+          p_card->vMark2(pWhichTable->cTblSyn());
+        }
+        return C_CONTINUE_RECURSION;
+      }
+    }
+
+    return C_CONTINUE_RECURSION;
+
+  };
+
+  (void)bLambdaWalk(CK_NONE, bfDerive, pCI);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#else
+
   pCI->vRecurseBegin(this);
   while (Card* p_card = pCI->pRecurseEach()) {
 
@@ -629,6 +680,8 @@ void Card_Predicate::vMark_rlnConj_Wrt_table(CardIter* pCI, Stz* szWithMark)
   }
 
   pCI->vRecurseEnd();
+#endif
+
 }
 
 /*----------------------------------------------------------------------------*/
