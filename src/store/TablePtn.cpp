@@ -412,6 +412,19 @@ BufferId TablePtn::oRootBufferId(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Root Pds                                                                   */
+/*----------------------------------------------------------------------------*/
+Pds* TablePtn::pRootPds(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
+  switch (m_eKind) {
+    case CN_CRWTABLEPTN:
+      return _pPds(AM::pHashMap()->pValueAt(m_pCrwTablePtn->oRootCrwBufferId().m_pvAsAddress, true));
+    default: NEVER_REACH;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* truncate the table data                                                    */
 /*----------------------------------------------------------------------------*/
 void TablePtn::vTruncate(void)

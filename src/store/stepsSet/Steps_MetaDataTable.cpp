@@ -27,6 +27,7 @@
 #include "Grid.hpp"
 #include "CmdLineArgs.hpp"
 #include "AttachMap.hpp"
+#include "MetaDataTables.hpp"
 
 extern CmdLineArgs  gxCmdLineArgs;
 extern AttachMap*   gpAttachMap;
@@ -514,180 +515,36 @@ void Step::vMetaDataTableDropTable(void)
   s256 szTableNm;
   m_pDataStack->vPopStr(szTableNm,__func__);
 
-  HashMap* pHashMap = AM::pHashMap();
-
   //------------------------------------------------------------------------
   // Delete table row info from tableOfTables
 
   Table* pTable = AM::pMetaDataTableOfTables();
 
-  TablePtn* pTablePtn = pTable->pTablePtn(0);
-
-  BufferId oRootBufferId = pTablePtn->oRootBufferId();
-  Pds* pRootPds = _pPds(AM::pHashMap()->pValueAt(oRootBufferId.m_pvAsAddress));
-
-  PdsCursor* pCursor = new PdsCursor(pRootPds);
-
-  bool bDeleted = false;
-  while(! pCursor->bIsCurrNull() && ! bDeleted) {
-    SkipListBlock* pSLBlock = pCursor->m_pCurrentBlock;
-
-    BufferId oBufferId = pTablePtn->oExtractBufferId((Object*)pSLBlock->aItem());
-    Pds* pPdsRowBuffer = _pPds(pHashMap->pValueAt(oBufferId.m_pvAsAddress, true));
-
-    PdsCursor* pRowCursor = new PdsCursor(pPdsRowBuffer);
-
-    while(! pRowCursor->bIsCurrNull()) {
-      Row* pRow = pRowCursor->pCurrRow();
-
-      Stz* szRowTableNm = pRow->szColVal_ofs(2);
-
-      if(szRowTableNm->bSame(szTableNm)) {
-        i8* pKey = (i8*)pRowCursor->pCurrKey();
-
-        bool bResult = pPdsRowBuffer->bDelete(pKey);
-        ASSERT(bResult);
-        UNUSED(bResult);
-        bDeleted = true;
-        break;
-      }
-      pRowCursor->vNext();
-    }
-    delete pRowCursor;
-    pHashMap->vDropKeyLock(pPdsRowBuffer->oGetBufferId().m_pvAsAddress);
-    pCursor->vNext();
-  }
-  delete pCursor;
-  pHashMap->vDropKeyLock(oRootBufferId.m_pvAsAddress);
+  // This fn deletes all rows from the table
+  // We KNOW that there should exist only one row with this table name
+  // TODO: Arjun - Break out of searching for the table name once we found
+  // a match.
+  MetaDataTables::vDeleteRowFromTable(pTable, 2, szTableNm);
 
   //------------------------------------------------------------------------
   // Delete table row info from columns
 
   pTable = AM::pMetaDataTableColumns();
 
-  pTablePtn = pTable->pTablePtn(0);
-
-  oRootBufferId = pTablePtn->oRootBufferId();
-  pRootPds = _pPds(pHashMap->pValueAt(oRootBufferId.m_pvAsAddress));
-
-  pCursor = new PdsCursor(pRootPds);
-
-  while(! pCursor->bIsCurrNull()) {
-    SkipListBlock* pSLBlock = pCursor->m_pCurrentBlock;
-
-    BufferId oBufferId = pTablePtn->oExtractBufferId((Object*)pSLBlock->aItem());
-    Pds* pPdsRowBuffer = _pPds(pHashMap->pValueAt(oBufferId.m_pvAsAddress, true));
-
-    PdsCursor* pRowCursor = new PdsCursor(pPdsRowBuffer);
-
-    while(! pRowCursor->bIsCurrNull()) {
-      Row* pRow = pRowCursor->pCurrRow();
-
-      Stz* szRowTableNm = pRow->szColVal_ofs(2);
-
-      if(szRowTableNm->bSame(szTableNm)) {
-        i8* pKey = (i8*)pRowCursor->pCurrKey();
-
-        pRowCursor->vNext();
-        bool bResult = pPdsRowBuffer->bDelete(pKey);
-        ASSERT(bResult);
-        UNUSED(bResult);
-        continue;
-      }
-      pRowCursor->vNext();
-    }
-    delete pRowCursor;
-    pHashMap->vDropKeyLock(pPdsRowBuffer->oGetBufferId().m_pvAsAddress);
-    pCursor->vNext();
-  }
-  delete pCursor;
-  pHashMap->vDropKeyLock(oRootBufferId.m_pvAsAddress);
+  // More than one row can match this table name, so delete all of them
+  MetaDataTables::vDeleteRowFromTable(pTable, 2, szTableNm);
 
   //------------------------------------------------------------------------
   // Delete table index info from indexes
 
   pTable = AM::pMetaDataTableIndexes();
-
-  pTablePtn = pTable->pTablePtn(0);
-
-  oRootBufferId = pTablePtn->oRootBufferId();
-  pRootPds = _pPds(pHashMap->pValueAt(oRootBufferId.m_pvAsAddress));
-
-  pCursor = new PdsCursor(pRootPds);
-
-  while(! pCursor->bIsCurrNull()) {
-    SkipListBlock* pSLBlock = pCursor->m_pCurrentBlock;
-
-    BufferId oBufferId = pTablePtn->oExtractBufferId((Object*)pSLBlock->aItem());
-    Pds* pPdsRowBuffer = _pPds(pHashMap->pValueAt(oBufferId.m_pvAsAddress, true));
-
-    PdsCursor* pRowCursor = new PdsCursor(pPdsRowBuffer);
-
-    while(! pRowCursor->bIsCurrNull()) {
-      Row* pRow = pRowCursor->pCurrRow();
-
-      Stz* szRowTableNm = pRow->szColVal_ofs(2);
-
-      if(szRowTableNm->bSame(szTableNm)) {
-        i8* pKey = (i8*)pRowCursor->pCurrKey();
-
-        pRowCursor->vNext();
-        bool bResult = pPdsRowBuffer->bDelete(pKey);
-        ASSERT(bResult);
-        UNUSED(bResult);
-        continue;
-      }
-      pRowCursor->vNext();
-    }
-    delete pRowCursor;
-    pHashMap->vDropKeyLock(pPdsRowBuffer->oGetBufferId().m_pvAsAddress);
-    pCursor->vNext();
-  }
-  delete pCursor;
-  pHashMap->vDropKeyLock(oRootBufferId.m_pvAsAddress);
+  MetaDataTables::vDeleteRowFromTable(pTable, 2, szTableNm);
 
   //------------------------------------------------------------------------
   // Delete table index info from indexColumns
 
   pTable = AM::pMetaDataTableIndexColumns();
-
-  pTablePtn = pTable->pTablePtn(0);
-
-  oRootBufferId = pTablePtn->oRootBufferId();
-  pRootPds = _pPds(pHashMap->pValueAt(oRootBufferId.m_pvAsAddress));
-
-  pCursor = new PdsCursor(pRootPds);
-
-  while(! pCursor->bIsCurrNull()) {
-    SkipListBlock* pSLBlock = pCursor->m_pCurrentBlock;
-
-    BufferId oBufferId = pTablePtn->oExtractBufferId((Object*)pSLBlock->aItem());
-    Pds* pPdsRowBuffer = _pPds(pHashMap->pValueAt(oBufferId.m_pvAsAddress, true));
-
-    PdsCursor* pRowCursor = new PdsCursor(pPdsRowBuffer);
-
-    while(! pRowCursor->bIsCurrNull()) {
-      Row* pRow = pRowCursor->pCurrRow();
-
-      Stz* szRowTableNm = pRow->szColVal_ofs(2);
-
-      if(szRowTableNm->bSame(szTableNm)) {
-        i8* pKey = (i8*)pRowCursor->pCurrKey();
-
-        pRowCursor->vNext();
-        bool bResult = pPdsRowBuffer->bDelete(pKey);
-        ASSERT(bResult);
-        UNUSED(bResult);
-        continue;
-      }
-      pRowCursor->vNext();
-    }
-    delete pRowCursor;
-    pHashMap->vDropKeyLock(pPdsRowBuffer->oGetBufferId().m_pvAsAddress);
-    pCursor->vNext();
-  }
-  delete pCursor;
-  pHashMap->vDropKeyLock(oRootBufferId.m_pvAsAddress);
+  MetaDataTables::vDeleteRowFromTable(pTable, 2, szTableNm);
 
   EXIT();
 }

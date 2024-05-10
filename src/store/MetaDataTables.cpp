@@ -1,10 +1,11 @@
 /*============================================================================*/
-/* MetaDataTables.cpp -- Internal Tables                                      */
+/* MetaDataTables.cpp -- MetaData Tables                                      */
 /*============================================================================*/
 
 #include "BASE.h"
 
 #include "MetaDataTables.hpp"
+#include "Table.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -38,6 +39,67 @@ MetaDataTables::~MetaDataTables(void) noexcept(false)
 {
 _precondition_(_ADDRESS_,_MAGIC_,CN_METADATATABLES,_FOOTER_);
 }
+
+/*----------------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* Delete ALL rows that match this col value                                  */
+/*----------------------------------------------------------------------------*/
+void MetaDataTables::vDeleteRowFromTable(Table *pTable, i8 iCol, Stz *szColVal)
+{
+  _static_
+
+  HashMap* pHashMap = AM::pHashMap();
+
+  TablePtn* pTablePtn = pTable->pTablePtn(0);
+
+  BufferId oRootBufferId = pTablePtn->oRootBufferId();
+  Pds* pRootPds = pTablePtn->pRootPds();
+
+  PdsCursor* pCursor = new PdsCursor(pRootPds);
+
+  // Iterate this table ptn root pds buffer that contains bufferId's of PdsRowBuffers
+
+  while(! pCursor->bIsCurrNull()) {
+    SkipListBlock* pSLBlock = pCursor->m_pCurrentBlock;
+
+    BufferId oBufferId = pTablePtn->oExtractBufferId((Object*)pSLBlock->aItem());
+    Pds* pPdsRowBuffer = _pPds(pHashMap->pValueAt(oBufferId.m_pvAsAddress, true));
+
+    PdsCursor* pRowCursor = new PdsCursor(pPdsRowBuffer);
+
+    // Iterate this PdsRowBuffer, searching for the rows which match this col value
+    while(! pRowCursor->bIsCurrNull()) {
+      Row* pRow = pRowCursor->pCurrRow();
+
+      Stz* szRowTableNm = pRow->szColVal_ofs(iCol);
+
+      if(szRowTableNm->bSame(szColVal)) {
+        i8* pKey = (i8*)pRowCursor->pCurrKey();
+
+        // Found a match. Shift the cursor to the next entry and delete this entry
+        pRowCursor->vNext();
+        bool bResult = pPdsRowBuffer->bDelete(pKey);
+        ASSERT(bResult);
+        UNUSED(bResult);
+        continue;
+      }
+      pRowCursor->vNext();
+    }
+
+    // Finished with this buffer, delete the cursor and release the lock in the hashmap
+    delete pRowCursor;
+    pHashMap->vDropKeyLock(pPdsRowBuffer->oGetBufferId().m_pvAsAddress);
+
+    // Get the next PdsRowBuffer
+    pCursor->vNext();
+  }
+  delete pCursor;
+  pHashMap->vDropKeyLock(oRootBufferId.m_pvAsAddress);
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/

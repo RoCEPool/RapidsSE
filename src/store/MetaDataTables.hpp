@@ -23,6 +23,8 @@ namespace STORE
     MetaDataTables(void);
     ~MetaDataTables(void) noexcept(false);
 
+    static void vDeleteRowFromTable(Table* pTable, i8 iCol, Stz* szColVal);
+
     StreamDef* pStreamDef(eMD eTable);
     void vStreamDef(eMD eTable, StreamDef* pStreamDef);
 
