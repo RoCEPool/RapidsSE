@@ -89,12 +89,20 @@ void MetaDataTables::vDeleteRowFromTable(Table *pTable, i8 iCol, Stz *szColVal)
       pRowCursor->vNext();
     }
 
-    // Finished with this buffer, delete the cursor and release the lock in the hashmap
-    delete pRowCursor;
-    pHashMap->vDropKeyLock(pPdsRowBuffer->oGetBufferId().m_pvAsAddress);
+    // If the pds row buffer is now empty, we can delete it
+    if(pPdsRowBuffer->nItems() == 0) {
+      void* pKey = pCursor->pCurrKey();
+      pCursor->vNext();
+      pRootPds->bDelete(pKey);
+      delete pPdsRowBuffer;
+    } else {
+      pHashMap->vDropKeyLock(pPdsRowBuffer->oGetBufferId().m_pvAsAddress);
 
-    // Get the next PdsRowBuffer
-    pCursor->vNext();
+      // Get the next PdsRowBuffer
+      pCursor->vNext();
+    }
+
+    delete pRowCursor;
   }
   delete pCursor;
   pHashMap->vDropKeyLock(oRootBufferId.m_pvAsAddress);

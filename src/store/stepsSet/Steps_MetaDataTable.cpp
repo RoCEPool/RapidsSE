@@ -936,6 +936,46 @@ void Step::vMetaDataTableInit(void)
     AM::pHashMap()->vDropKeyLock(pPdsRowBuffer->oGetBufferId().m_pvAsAddress);
   }
 
+  //------------------------------------------------------------------------
+  // Init indexes table
+
+//  Table* pTableIndexes = AM::pMetaDataTableIndexes();
+//  StreamDef* pIndexesStreamDef = pTableIndexes->pStreamDef();
+//  pTablePtn = pTableIndexes->pTablePtn(0);
+//
+//  pPdsRowBuffer = new Pds(pIndexesStreamDef, false, BT_DATA);
+//  Row* pRow = pPdsRowBuffer->pAllotRow(C_VARGS_BEGIN,
+//                                  "rapids"_Stz,
+//                                  "public"_Stz,
+//                                  "dummy"_Stz,
+//                                  "dummy"_Stz,
+//                                  C_VARGS_END);
+//
+//  i8 nRows = 0;
+//  pTablePtn->vAppendBuffer(pPdsRowBuffer, nRows);
+//  UNUSED(pRow);
+
+  //------------------------------------------------------------------------
+  // Init indexes table
+
+//  Table* pTableIndexColumns = AM::pMetaDataTableIndexColumns();
+//  StreamDef* pIndexColumnsStreamDef = pTableIndexColumns->pStreamDef();
+//  pTablePtn = pTableIndexColumns->pTablePtn(0);
+//
+//  pPdsRowBuffer = new Pds(pIndexColumnsStreamDef, false, BT_DATA);
+//  pRow = pPdsRowBuffer->pAllotRow(C_VARGS_BEGIN,
+//                                       "rapids"_Stz,
+//                                       "public"_Stz,
+//                                       "dummy"_Stz,
+//                                       "dummy"_Stz,
+//                                       "dummy"_Stz,
+//                                       2,
+//                                       C_VARGS_END);
+//
+//  nRows = 0;
+//  pTablePtn->vAppendBuffer(pPdsRowBuffer, nRows);
+//  UNUSED(pRow);
+
   EXIT();
 }
 

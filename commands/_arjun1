@@ -1,4 +1,4 @@
-
+/*
 _nation;
 create index nation_idx1 ON nation(N_NATIONKEY);
 create index nation_R_REGIONKEY on nation(N_REGIONKEY);
@@ -18,7 +18,7 @@ select * from columns;
 select * from tableIndexes;
 select * from indexColumns;
 
-/*
+
 trackMemory;
 _nation;
 
@@ -39,7 +39,7 @@ memoryLeaks;
 */
 
 
-/*
+
 trackmemory force;
 
 create table Lineitem
@@ -62,39 +62,11 @@ create table Lineitem
  L_COMMENT       VARCHAR(44)   NOT NULL
  );
 
-//CREATE INDEX IxL_ORDERKEY ON Lineitem(L_ORDERKEY);
+CREATE INDEX IxL_ORDERKEY ON Lineitem(L_ORDERKEY);
 
 load Lineitem "../TPCH/SF_0001/lineitem.tbl";
-
-
-pipeline Q
-begin
-  stage stageStart on origin :
-    start
-    | pulse once
-    | next
-  stage stageA on all partitions :
-    indexScan Lineitem IxL_ORDERKEY "lbound $I1 0 >="
-    | project " type integer ( 19 ) as orderkey l_orderkey "
-    | top "type integer ( 19 ) orderkey" 2
-    | combined 0
-    | next
-stage stageA on all nodes :
-    top "type integer ( 19 ) orderkey" 2
-    | combined 0
-    | next
-stage stageA on origin :
-    top "type integer ( 19 ) orderkey" 2
-    | combined 0
-    | next
-  stage stageLast on origin :
-    output
-    | sink
-    | first
-  end ;
-
 
 drop table Lineitem;
 
 memoryleaks;
-*/
+
