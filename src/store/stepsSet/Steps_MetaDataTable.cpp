@@ -39,9 +39,12 @@ void Step::vAddSteps_MetaDataTable(void)
 {
   vAddStep("MetaDataTable[].select"_Stz,        &Step::vMetaDataTableSelect);
   vAddStep("MetaDataTable[].createTable"_Stz,  &Step::vMetaDataTableCreateTable);
-  vAddStep("MetaDataTable[].createIndex"_Stz,  &Step::vMetaDataTableCreateIndex);
-  vAddStep("MetaDataTable[].insertTables"_Stz,  &Step::vMetaDataTableTablesInsert);
   vAddStep("MetaDataTable[].dropTable"_Stz,  &Step::vMetaDataTableDropTable);
+
+  vAddStep("MetaDataTable[].createIndex"_Stz,  &Step::vMetaDataTableCreateIndex);
+  vAddStep("MetaDataTable[].dropIndex"_Stz,  &Step::vMetaDataTableDropIndex);
+
+  vAddStep("MetaDataTable[].insertTables"_Stz,  &Step::vMetaDataTableTablesInsert);
 
   vAddStep("MetaDataTable[].insertCatalog"_Stz,  &Step::vMetaDataTableCatalogInsert);
   vAddStep("MetaDataTable[].deleteCatalog"_Stz,  &Step::vMetaDataTableCatalogDelete);
@@ -430,6 +433,34 @@ void Step::vMetaDataTableCreateIndex(void)
   } else {
     AM::pHashMap()->vDropKeyLock(pPdsRowBuffer->oGetBufferId().m_pvAsAddress);
   }
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* MetaDataTable[].dropIndex --                                               */
+/*----------------------------------------------------------------------------*/
+void Step::vMetaDataTableDropIndex(void)
+{
+  ENTRY();
+
+  s256 szTableNm;
+  m_pDataStack->vPopStr(szTableNm,__func__);
+
+  s256 szIndexNm;
+  m_pDataStack->vPopStr(szIndexNm,__func__);
+
+  //------------------------------------------------------------------------
+  // Delete table index info from indexes
+
+  Table* pTable = AM::pMetaDataTableIndexes();
+  MetaDataTables::vDeleteRowFromTable(pTable, 2, szTableNm);
+
+  //------------------------------------------------------------------------
+  // Delete table index info from indexColumns
+
+  pTable = AM::pMetaDataTableIndexColumns();
+  MetaDataTables::vDeleteRowFromTable(pTable, 2, szTableNm);
 
   EXIT();
 }
