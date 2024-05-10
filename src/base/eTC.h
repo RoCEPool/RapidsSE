@@ -9,6 +9,7 @@ enum eTC
 
   /* */ TC_VERBOSE,
   /* */ TC_WLP,
+  /* */ TC_CONNECTIONS,
 
   /* */ TC_ENUMS
 };

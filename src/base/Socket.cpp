@@ -570,9 +570,10 @@ bool Socket::bWLHeaderRecv(void)
       sClientAddr.vSprint("[inet_ntop error]: %s"_Stz, strerror(errno));
     }
 
-    vTrace("Client %s:%lld has disconnected\n"_Stz,
-           sClientAddr.szStz(),
-           ntohs(this->m_xClientAddr.sin_port));
+    vTraceComponent(TC_CONNECTIONS,
+                    "Client %s:%lld has disconnected\n"_Stz,
+                    sClientAddr.szStz(),
+                    ntohs(this->m_xClientAddr.sin_port));
     vSuccess(false);
     return false;
   }

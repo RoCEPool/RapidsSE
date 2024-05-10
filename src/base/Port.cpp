@@ -236,29 +236,14 @@ bool Port::bAcceptClient(int& iSocketId, SysCall& roSysCall)
     return false;
   }
 
-  vTrace("Client connected on %s:%d from %s:%d\n"_Stz,
-         sServerAddr.szStz(),
-         ntohs(this->m_xServerAddr.sin_port),
-         sClientAddr.szStz(),
-         ntohs(this->m_xClientAddr.sin_port));
+  vTraceComponent(TC_CONNECTIONS,
+                  "Client connected on %s:%d from %s:%d\n"_Stz,
+                  sServerAddr.szStz(),
+                  ntohs(this->m_xServerAddr.sin_port),
+                  sClientAddr.szStz(),
+                  ntohs(this->m_xClientAddr.sin_port));
   
   if (AM::bAttached()) AM::pResources()->vIncSocketOpen();
-
-//  // Turn off socket address reuse on the accepted socket
-//  int iOpt = 0;
-//  int iResult = setsockopt(m_iSocketFd
-//      ,SOL_SOCKET     // setting socket-level option
-//      ,SO_REUSEADDR
-//      ,(void*)&iOpt
-//      ,sizeof(iOpt)
-//  );
-//
-//  if (C_UNKNOWN == iResult) {
-//    roSysCall.vError(errno);
-//    close(iSocketId);
-//    iSocketId = C_UNKNOWN;
-//    return false;
-//  }
   
   roSysCall.vSuccess();
   return true;

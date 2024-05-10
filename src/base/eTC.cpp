@@ -10,6 +10,7 @@ Stz* aTC[TC_ENUMS]
 
   /*  */ "TC_VERBOSE"_Stz,
   /*  */ "TC_WLP"_Stz,
+  /*  */ "TC_CONNECTIONS"_Stz,
 
 //  /*  */ "TC_ENUMS"_Stz
 };
@@ -20,6 +21,7 @@ Stz* aTCDesc[TC_ENUMS]
 
     /*  */ "VERBOSE"_Stz,
     /*  */ "WLP"_Stz,
+    /*  */ "CONNECTIONS"_Stz,
 
 //  /*  */ "TC_ENUMS"_Stz
 };
