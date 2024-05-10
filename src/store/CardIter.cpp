@@ -2060,106 +2060,6 @@ void CardIter::vPushEach(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool CardIter::bRecurseActive(void)
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-
-  EachMembers* pPeg = pPeek(0);
-  if (! pPeg)
-    return false;
-  if (pPeg->m_i_RecursionDepth != m_i_RecursionDepth)
-    return false;
-
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void CardIter::vRecurseBegin(Card* pCard)
-{
-  _precondition_(_MAGIC_, _FOOTER_);
-
-  vPushEach();
-
-  m_i_RecursionDepth++;
-  E.m_i_RecursionDepth = m_i_RecursionDepth;
-
-  vUseCard(pCard);
-  vDontDescend(false);
-
-  //E.xEachOp.vForwards(true);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card* CardIter::pRecurseEach(void)
-{
-  _precondition_( _MAGIC_, _FOOTER_);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // descend into current child
-
-  if (E.p_Op && (! E.m_bDontDescend) ) {
-    if (E.p_Op->nChildCards()) {
-
-      vPushEach();
-      vUseCard(E.p_Op);
-      bEachOp();
-
-      return E.p_Op;
-    }
-  }
-
-  E.m_bDontDescend = false;
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // visit next child
-
-  if (bEachOp())
-    return E.p_Op;
-
-  while (bRecurseActive()) {
-    vPopEach();
-    if (bEachOp())
-      return E.p_Op;
-  }
-
-  return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card* CardIter::pRecurseEach(eCK eCard)
-{
-  _precondition_( _MAGIC_, _FOOTER_);
-
-  while (Card* p_card = pRecurseEach())
-    if (p_card->bIsCard(eCard))
-      return p_card;
-
-  return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void CardIter::vRecurseEnd(void)
-{
-  _precondition_(_MAGIC_, _FOOTER_);
-
-  vPopEach();
-
-  m_i_RecursionDepth--;
-
-  RASSERT(E.m_i_RecursionDepth == m_i_RecursionDepth);
-}
-
-/*----------------------------------------------------------------------------*/
 /* remove main card from deck and delete it; clear M member to null           */
 /*----------------------------------------------------------------------------*/
 void CardIter::vRemoveDeleteMain(eCK eCrossCheck)
@@ -2187,7 +2087,6 @@ void CardIter::vRemoveDeleteMain(eCK eCrossCheck)
 void CardIter::vResetMembers(void)
 {
   _precondition_( _MAGIC_, _FOOTER_);
-
 
   E.p_absJoin          = nullptr;
   E.p_address          = nullptr;

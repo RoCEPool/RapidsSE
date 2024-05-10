@@ -241,11 +241,6 @@ namespace STORE
     void vPushChild(Card* pParent, eCK eChild);
     void vPushEach(void);
 
-    bool bRecurseActive(void);
-    void vRecurseBegin(Card* pCard);
-    Card* pRecurseEach(void);
-    Card* pRecurseEach(eCK eCard);
-    void vRecurseEnd(void);
     void vRemoveDeleteMain(eCK eCrossCheck);
     void vResetMembers(void);
     void vRepositionOp(void);
