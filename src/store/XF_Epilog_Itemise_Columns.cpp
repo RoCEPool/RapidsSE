@@ -85,7 +85,6 @@ void XF_Epilog_Itemise_Columns::vItemise_Columns(void)
     return C_CONTINUE_RECURSION;
   };
 
-  //pCI->bLambdaWalk(pCI->E.p_deck, CK_NONE, bfItemise_colNm);
   pCI->E.p_deck->bLambdaWalk(CK_NONE, bfItemise_colNm,pCI);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -131,7 +130,6 @@ void XF_Epilog_Itemise_Columns::vItemise_Columns(void)
     return C_CONTINUE_RECURSION;
   };
 
-  //pCI->bLambdaWalk(pCI->E.p_deck, CK_NONE, bfItemise_colNm2);
   pCI->E.p_deck->bLambdaWalk(CK_NONE, bfItemise_colNm2,pCI);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

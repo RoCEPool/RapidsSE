@@ -1471,39 +1471,6 @@ void CardIter::vInsertBefore(Card* pCard, Card* pBefore)
 }
 
 /*----------------------------------------------------------------------------*/
-/* visit all sub-cards of given eToSubs and apply lambda function             */
-/*----------------------------------------------------------------------------*/
-bool CardIter::bLambdaWalk(Card* pCard, eCK eToSubs,
-                           std::function<bool(Card* pCard)> bfLambdaFn)
-{
-  _precondition_( _MAGIC_, _FOOTER_);
-
-  if (CK_NONE == eToSubs || eToSubs == pCard->eCard()) {
-    bool bContinue = bfLambdaFn(pCard);
-    if (! bContinue)
-      return C_TERMINATE_RECURSION;
-  }
-
-  vAncestorPush(pCard);
-  vAncestorCounterReset();
-
-  Kid xCard(pCard);
-  while (xCard.bEach_opaque()) {
-    bool bContinue = bLambdaWalk(xCard.pChild(), eToSubs, bfLambdaFn);
-    if (! bContinue) {
-      vAncestorPop();
-      return C_TERMINATE_RECURSION;
-    }
-    else
-      vDebugPoint();
-  }
-
-  vAncestorCounterReset();
-  vAncestorPop();
-  return C_CONTINUE_RECURSION;
-}
-
-/*----------------------------------------------------------------------------*/
 /* fetch M member by decoding given eCard                                   */
 /*----------------------------------------------------------------------------*/
 Card* CardIter::pMember(eCK eCard)

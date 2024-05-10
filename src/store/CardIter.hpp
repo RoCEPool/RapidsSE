@@ -220,8 +220,6 @@ namespace STORE
     void vInsertAfter(Card* pCard, Card* pAfter);
     void vInsertBefore(Card* pCard, Card* pBefore);
 
-    bool bLambdaWalk(Card* pCard, eCK eToSubs, std::function<bool(Card* pCard)> bfLambdaFn);
-
     Card* pMember(eCK eCard);
     void vMember(eCK eCard, Card* pCard);
     bool bMore(void);
