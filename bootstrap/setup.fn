@@ -11,7 +11,7 @@ fi
 
 # Load other common functions. Order is important.
 INCLUDES=("common.fn" "envCheck.fn")
-INC_SYMBOLS=("__COMMON_FN" "__ENVCHECK_FN")
+INC_SYMBOLS=("__BOOTSTRAP_COMMON_FN" "__ENVCHECK_FN")
 
 for ((i=0 ; i<${#INCLUDES[@]} ; i++)); do
 

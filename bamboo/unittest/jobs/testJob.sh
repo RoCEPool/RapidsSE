@@ -23,7 +23,7 @@ readonly BIN_DIR="${PROJ_ROOT}/bin"
 readonly SRC_DIR="${PROJ_ROOT}/src"
 readonly BOOTSTRAP_DIR="${PROJ_ROOT}/bootstrap"
 
-readonly COMMON_FN="${SCRIPTS_DIR}/common.fn"
+readonly BAMBOO_COMMON_FN="${SCRIPTS_DIR}/common.fn"
 readonly BOOTSTRAP_COMMON_FN="${BOOTSTRAP_DIR}/common.fn"
 
 readonly RELATIVE_BAMBOO_DIR="${DIR}/.."
@@ -39,12 +39,12 @@ readonly BAMBOO_TESTLISTS_DIR="${RELATIVE_BAMBOO_DIR}/testlists"
 
 # Load other common functions
 
-if [ -z "${__COMMON_FN:-}" ] ; then
+if [ -z "${__BAMBOO_COMMON_FN:-}" ] ; then
   #shellcheck source=../scripts/common.fn
-  source "${COMMON_FN}" || { >&2 echo "Could not load ${COMMON_FN}"; exit 1; }
+  source "${BAMBOO_COMMON_FN}" || { >&2 echo "Could not load ${BAMBOO_COMMON_FN}"; exit 1; }
 fi
 
-if [ -z "${__COMMON_FN:-}" ] ; then
+if [ -z "${__BOOTSTRAP_COMMON_FN:-}" ] ; then
   #shellcheck source=../../../bootstrap/common.fn
   source "${BOOTSTRAP_COMMON_FN}" || { >&2 echo "Could not load ${BOOTSTRAP_COMMON_FN}"; exit 1; }
 fi

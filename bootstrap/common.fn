@@ -14,7 +14,7 @@ fi
 ### Constants                                                               ###
 ###############################################################################
 # Variable that can be tested to see if we have already sourced this file
-readonly __COMMON_FN=1
+readonly __BOOTSTRAP_COMMON_FN=1
 
 #shellcheck disable=SC2034
 readonly VERSION_FILE="version"

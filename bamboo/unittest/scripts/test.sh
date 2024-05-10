@@ -26,7 +26,7 @@ SHELL_DIR="${PROJ_ROOT}/shell"
 RESULTS_DIR="${DIR}/../results"
 CONN_STORM_SH="${DIR}/../harnesses/connectionStorm/connectionStorm.sh"
 
-COMMON_FN="${DIR}/common.fn"
+BAMBOO_COMMON_FN="${DIR}/common.fn"
 BOOTSTRAP_COMMON_FN="${BOOTSTRAP_DIR}/common.fn"
 BOOTSTRAP_BOOT_FN="${BOOTSTRAP_DIR}/boot.fn"
 
@@ -38,7 +38,7 @@ readonly SETH_BIN_DIR
 readonly SHELL_DIR
 readonly RESULTS_DIR
 
-readonly COMMON_FN
+readonly BAMBOO_COMMON_FN
 readonly BOOTSTRAP_COMMON_FN
 readonly BOOTSTRAP_BOOT_FN
 
@@ -68,10 +68,10 @@ readonly LOG_FILE_LINES_TO_SHOW=250
 
 if [ -z "${__BAMBOO_COMMON_FN:-}" ] ; then
   #shellcheck source=common.fn
-  source "${COMMON_FN}" || { >&2 echo "Could not load ${COMMON_FN}"; exit 1; }
+  source "${BAMBOO_COMMON_FN}" || { >&2 echo "Could not load ${BAMBOO_COMMON_FN}"; exit 1; }
 fi
 
-if [ -z "${__COMMON_FN:-}" ] ; then
+if [ -z "${__BOOTSTRAP_COMMON_FN:-}" ] ; then
   #shellcheck source=../../../bootstrap/common.fn
   source "${BOOTSTRAP_COMMON_FN}" || { >&2 echo "Could not load ${BOOTSTRAP_COMMON_FN}"; exit 1; }
 fi

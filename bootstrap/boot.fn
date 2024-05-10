@@ -10,15 +10,15 @@ then
 fi
 
 # Load other common functions
-COMMON_FN="common.fn"
+BOOTSTRAP_COMMON_FN="common.fn"
 
 if [ -n "${DIR:-}" ]; then
-  COMMON_FN="${DIR}/${COMMON_FN}"
+  BOOTSTRAP_COMMON_FN="${DIR}/${BOOTSTRAP_COMMON_FN}"
 fi
 
-if [ -z "${__COMMON_FN:-}" ] ; then
+if [ -z "${__BOOTSTRAP_COMMON_FN:-}" ] ; then
   #shellcheck source=common.fn
-  source "${COMMON_FN}" || { >&2 echo "Could not load ${COMMON_FN}"; exit 1; }
+  source "${BOOTSTRAP_COMMON_FN}" || { >&2 echo "Could not load ${BOOTSTRAP_COMMON_FN}"; exit 1; }
 fi
 
 ###############################################################################
