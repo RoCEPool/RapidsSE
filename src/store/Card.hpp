@@ -355,8 +355,6 @@ namespace STORE
     bool bLambdaWalk(eCK eCardIf, std::function<bool(Card* pCard)> bfLambdaFn, CardIter* pCI=nullptr);
     bool bLambdaWalk_term(std::function<bool(Card_Term* p_term)> bfLambdaFn);
 
-    void vMark(Stz* szMark1, Stz* szMark2);
-
     bool bMark1(Stz* szArg);
     char cMark1(void);
     Stz* szMark1(void);
@@ -377,6 +375,7 @@ namespace STORE
     void vMark2RecursiveIf(char cMark, char cIf);
     void vMark2RecursiveIf(Stz* szMark2, Stz* szIf);
 
+    void vMarks(Stz* szMark1, Stz* szMark2);
     void vMarksClearRecursive(void);
     void vMarksTestRecursive(void);
 

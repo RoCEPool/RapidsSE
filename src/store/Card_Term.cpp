@@ -463,16 +463,16 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   if (pCI->E.pBoard->pState()->bHasName(aXF[XF_EPILOG_TYPE_CAST])) {
     if (m_xSymbol.bIs_Col() && ! pCI->bAncestor(CK_p_NEEDED)) {
       if (!m_xSymbol.bValidType()) {
-         vMark("?"_Stz,"t"_Stz);
-         pCI->pAncestorParent()->vMark("?"_Stz,"t"_Stz);
+         vMarks("?"_Stz,"t"_Stz);
+         pCI->pAncestorParent()->vMarks("?"_Stz,"t"_Stz);
          pCI->PRINTBOARD_dbg();
          vDump(__func__);
          vValidationFailed("Type Missing : %p"_Stz,this);
       }
       if (m_xSymbol.xTypeId() == TypeId::xIdOf(CT_DECIMAL)) {
         if (m_xSymbol.nTypeLength() == 0) {
-          vMark("?"_Stz,"l"_Stz);
-          pCI->pAncestorParent()->vMark("?"_Stz,"l"_Stz);
+          vMarks("?"_Stz,"l"_Stz);
+          pCI->pAncestorParent()->vMarks("?"_Stz,"l"_Stz);
           pCI->PRINTBOARD_dbg();
           vDump(__func__);
           vValidationFailed("Decimal length is 0 : %p"_Stz, this);

@@ -637,8 +637,8 @@ void Card_Expr::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   RASSERT(pSymbol_expr->xCast().m_xTypeId.bIsValid());
   if (m_xSymbol.xTypeId() == TypeId::xIdOf(CT_DECIMAL)) {
     if (m_xSymbol.nTypeLength() == 0) {
-      vMark("?"_Stz,"l"_Stz);
-      pCI->pAncestorParent()->vMark("?"_Stz,"l"_Stz);
+      vMarks("?"_Stz,"l"_Stz);
+      pCI->pAncestorParent()->vMarks("?"_Stz,"l"_Stz);
       pCI->PRINTBOARD_dbg();
       vDump(__func__);
       vValidationFailed("Decimal length is 0 : %p"_Stz, this);

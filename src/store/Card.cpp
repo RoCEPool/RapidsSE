@@ -1070,17 +1070,6 @@ bool Card::bLambdaWalk_term(std::function<bool(Card_Term* p_term)> bfLambdaFn)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set mark 1                                                                 */
-/*----------------------------------------------------------------------------*/
-void Card::vMark(Stz* szMark1, Stz* szMark2)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  vMark1(szMark1);
-  vMark2(szMark2);
-}
-
-/*----------------------------------------------------------------------------*/
 /* test mark 1                                                                */
 /*----------------------------------------------------------------------------*/
 bool Card::bMark1(Stz* szArg)
@@ -1320,6 +1309,17 @@ void Card::vMark2RecursiveIf(Stz* szMark2, Stz* szIf)
 
     pSubCard->vMark2RecursiveIf(szMark2,szIf);
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* set marks 1&2                                                              */
+/*----------------------------------------------------------------------------*/
+void Card::vMarks(Stz* szMark1, Stz* szMark2)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  vMark1(szMark1);
+  vMark2(szMark2);
 }
 
 /*----------------------------------------------------------------------------*/
