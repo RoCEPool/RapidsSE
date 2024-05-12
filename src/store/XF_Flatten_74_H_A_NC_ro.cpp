@@ -38,7 +38,7 @@ XF_Flatten_74_H_A_NC_ro::~XF_Flatten_74_H_A_NC_ro(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Flatten_74_H_A_NC_ro::vFlatten(CardIter* pCI)
+void XF_Flatten_74_H_A_NC_ro::v74_H_A_NC_ro(CardIter* pCI)
 {
   _static_
 

@@ -39,7 +39,7 @@ XF_Flatten_32_W_A_NC_I::~XF_Flatten_32_W_A_NC_I(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Flatten_32_W_A_NC_I::vFlatten(CardIter* pCI)
+void XF_Flatten_32_W_A_NC_I::v32_W_A_NC_I(CardIter* pCI)
 {
   _static_
 

@@ -41,11 +41,11 @@ XF_Flatten_52_W_L_NC_I_exists::~XF_Flatten_52_W_L_NC_I_exists(void) noexcept(fal
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Flatten_52_W_L_NC_I_exists::vFlatten(CardIter* pCI)
+void XF_Flatten_52_W_L_NC_I_exists::vW_L_NC_I_exists(CardIter* pCI)
 {
   _static_
 
-  XF_Flatten_53_W_L_NC_NI_exists::vFlatten(pCI);
+  XF_Flatten_53_W_L_NC_NI_exists::v53_W_L_NC_NI_exists(pCI);
 }
 
 

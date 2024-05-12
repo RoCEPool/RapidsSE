@@ -42,16 +42,16 @@ XF_Flatten_52_W_L_NC_I_join::~XF_Flatten_52_W_L_NC_I_join(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Flatten_52_W_L_NC_I_join::vFlatten(CardIter* pCI)
+void XF_Flatten_52_W_L_NC_I_join::v52_W_L_NC_I_join(CardIter* pCI)
 {
   _static_
 
   i8 nTables = nTables_In_SubQuery(pCI, "52_W_L_NC_I_join"_Stz, CK_o_WHERE);
 
   if (1 == nTables)
-    XF_Flatten_53_W_L_NC_NI_join::vFlatten(pCI);
+    XF_Flatten_53_W_L_NC_NI_join::v53_W_L_NC_NI_join(pCI);
   else
-    XF_Flatten_53_W_L_NC_NI_exists::vFlatten(pCI);
+    XF_Flatten_53_W_L_NC_NI_exists::v53_W_L_NC_NI_exists(pCI);
 }
 
 
