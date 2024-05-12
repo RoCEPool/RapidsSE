@@ -46,7 +46,7 @@ void XF_Flatten_24_W_A_C_ro::v24_W_A_C_ro(CardIter* pCI)
 
   XF_Flatten_24_W_A_C_ro* pXF_Flatten_24_W_A_C_ro = new XF_Flatten_24_W_A_C_ro(pCI);
 
-  pXF_Flatten_24_W_A_C_ro->vFlatten();
+  pXF_Flatten_24_W_A_C_ro->v24_W_A_C_ro();
 
   delete pXF_Flatten_24_W_A_C_ro;
 }
@@ -59,7 +59,7 @@ void XF_Flatten_24_W_A_C_ro::v24_W_A_C_ro(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* flatten                                                                    */
 /*----------------------------------------------------------------------------*/
-void XF_Flatten_24_W_A_C_ro::vFlatten(void)
+void XF_Flatten_24_W_A_C_ro::v24_W_A_C_ro(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_24_W_A_C_RO, _FOOTER_);
 

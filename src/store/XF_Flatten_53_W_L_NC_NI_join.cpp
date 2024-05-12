@@ -44,7 +44,7 @@ void XF_Flatten_53_W_L_NC_NI_join::v53_W_L_NC_NI_join(CardIter* pCI)
 
   XF_Flatten_53_W_L_NC_NI_join* pXF_Flatten_53_W_L_NC_NI_join = new XF_Flatten_53_W_L_NC_NI_join(pCI);
 
-  pXF_Flatten_53_W_L_NC_NI_join->vFlatten();
+  pXF_Flatten_53_W_L_NC_NI_join->v53_W_L_NC_NI_join();
 
   delete pXF_Flatten_53_W_L_NC_NI_join;
 }
@@ -57,7 +57,7 @@ void XF_Flatten_53_W_L_NC_NI_join::v53_W_L_NC_NI_join(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* add level to op                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Flatten_53_W_L_NC_NI_join::vFlatten(void)
+void XF_Flatten_53_W_L_NC_NI_join::v53_W_L_NC_NI_join(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_53_W_L_NC_NI_JOIN, _FOOTER_);
 

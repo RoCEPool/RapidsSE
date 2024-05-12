@@ -22,7 +22,7 @@ namespace STORE
 
     static void v24_W_A_C_ro(CardIter* pCI);
 
-    void vFlatten(void);
+    void v24_W_A_C_ro(void);
 
   private:
 

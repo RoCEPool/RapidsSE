@@ -22,7 +22,7 @@ namespace STORE
 
     static void v53_W_L_NC_NI_exists(CardIter* pCI);
 
-    void vFlatten(void);
+    void v53_W_L_NC_NI_exists(void);
 
   private:
     Footer* aFooter(void);

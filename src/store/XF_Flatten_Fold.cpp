@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* XF_Flatten_10_F.cpp -- Flatten                                             */
+/* XF_Flatten_Fold.cpp -- Flatten                                             */
 /*============================================================================*/
 
-#include "XF_Flatten_10_F.hpp"
+#include "XF_Flatten_Fold.hpp"
 
 #include "XF_Prolog_Analyse_emit.hpp"
 
@@ -10,16 +10,16 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_Flatten_10_F, CN_XF_FLATTEN_10_F)
-__aNewFunction(XF_Flatten_10_F, CN_XF_FLATTEN_10_F)
-__vDeleteFunction(XF_Flatten_10_F, CN_XF_FLATTEN_10_F)
-__aFooterFunction(XF_Flatten_10_F)
+__pCastFunction(STORE, XF_Flatten_Fold, CN_XF_FLATTEN_10_F)
+__aNewFunction(XF_Flatten_Fold, CN_XF_FLATTEN_10_F)
+__vDeleteFunction(XF_Flatten_Fold, CN_XF_FLATTEN_10_F)
+__aFooterFunction(XF_Flatten_Fold)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-XF_Flatten_10_F::XF_Flatten_10_F(CardIter* pCI)
+XF_Flatten_Fold::XF_Flatten_Fold(CardIter* pCI)
 : XF_FLATTEN(CN_XF_FLATTEN_10_F, pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_10_F, _FOOTER_);
@@ -32,7 +32,7 @@ XF_Flatten_10_F::XF_Flatten_10_F(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-XF_Flatten_10_F::~XF_Flatten_10_F(void) noexcept(false)
+XF_Flatten_Fold::~XF_Flatten_Fold(void) noexcept(false)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_10_F, _FOOTER_);
 }
@@ -40,13 +40,13 @@ XF_Flatten_10_F::~XF_Flatten_10_F(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Flatten_10_F::v10_F(CardIter* pCI)
+void XF_Flatten_Fold::v10_F(CardIter* pCI)
 {
   _static_
 
-  XF_Flatten_10_F* pXF_Flatten_10_F = new XF_Flatten_10_F(pCI);
+  XF_Flatten_Fold* pXF_Flatten_10_F = new XF_Flatten_Fold(pCI);
 
-  pXF_Flatten_10_F->vFlatten();
+  pXF_Flatten_10_F->v10_F();
 
   delete pXF_Flatten_10_F;
 }
@@ -59,7 +59,7 @@ void XF_Flatten_10_F::v10_F(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* add level to op                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Flatten_10_F::vFlatten(void)
+void XF_Flatten_Fold::v10_F(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_10_F, _FOOTER_);
 

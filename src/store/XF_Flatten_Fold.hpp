@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* XF_Flatten_10_F.hpp -- Flatten                                             */
+/* XF_Flatten_Fold.hpp -- Flatten                                             */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class XF_Flatten_10_F : public XF_FLATTEN
+  class XF_Flatten_Fold : public XF_FLATTEN
   {
   private:
     // must be last
@@ -17,18 +17,18 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    XF_Flatten_10_F(CardIter* pCI);
-   ~XF_Flatten_10_F(void) noexcept(false);
+    XF_Flatten_Fold(CardIter* pCI);
+   ~XF_Flatten_Fold(void) noexcept(false);
 
     static void v10_F(CardIter* pCI);
 
-    void vFlatten(void);
+    void v10_F(void);
 
   private:
     Footer* aFooter(void);
   };
 
-  XF_Flatten_10_F* _pXF_Flatten_10_F(void* aAddr);
+  XF_Flatten_Fold* _pXF_Flatten_Fold(void* aAddr);
 }
 
 /*============================================================================*/

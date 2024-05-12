@@ -45,7 +45,7 @@ void XF_Flatten_53_W_L_NC_NI_exists::v53_W_L_NC_NI_exists(CardIter* pCI)
 
   XF_Flatten_53_W_L_NC_NI_exists* pXF_Flatten_53_W_L_NC_NI_exists = new XF_Flatten_53_W_L_NC_NI_exists(pCI);
 
-  pXF_Flatten_53_W_L_NC_NI_exists->vFlatten();
+  pXF_Flatten_53_W_L_NC_NI_exists->v53_W_L_NC_NI_exists();
 
   delete pXF_Flatten_53_W_L_NC_NI_exists;
 }
@@ -58,7 +58,7 @@ void XF_Flatten_53_W_L_NC_NI_exists::v53_W_L_NC_NI_exists(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* add level to op                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Flatten_53_W_L_NC_NI_exists::vFlatten(void)
+void XF_Flatten_53_W_L_NC_NI_exists::v53_W_L_NC_NI_exists(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_53_W_L_NC_NI_EXISTS, _FOOTER_);
 

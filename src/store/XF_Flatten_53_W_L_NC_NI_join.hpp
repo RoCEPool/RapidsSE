@@ -22,7 +22,7 @@ namespace STORE
 
     static void v53_W_L_NC_NI_join(CardIter* pCI);
 
-    void vFlatten(void);
+    void v53_W_L_NC_NI_join(void);
 
   private:
 

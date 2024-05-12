@@ -259,7 +259,7 @@
 #include "XF_Epilog_Type_Cast.hpp"
 #include "XF_Epilog_X_stmCol_To_colNm.hpp"
 #include "XF_Epilog_X_tblCol_To_expCol.hpp"
-#include "XF_Flatten_10_F.hpp"
+#include "XF_Flatten_Fold.hpp"
 #include "XF_Flatten_24_W_A_C_ro.hpp"
 #include "XF_Flatten_32_W_A_NC_I.hpp"
 #include "XF_Flatten_34_W_A_NC_ro.hpp"
@@ -797,17 +797,17 @@ SizeHeap gxaSizeHeap[]
   {CN_XF_EPILOG_X_STMCOL_TO_COLNM,    sizeof(XF_Epilog_X_stmCol_To_colNm),    HT_T_TINY    , FILL },
   {CN_XF_EPILOG_X_TBLCOL_TO_EXPCOL,   sizeof(XF_Epilog_X_tblCol_To_expCol),   HT_T_TINY    , FILL },
   {CN_XF_FLATTEN_SUBQUERY,            sizeof(XF_Flatten_subquery),            HT_T_TINY    , FILL },
-  {CN_XF_FLATTEN_10_F,                sizeof(XF_Flatten_10_F),                HT_T_TINY    , FILL },
-  {CN_XF_FLATTEN_24_W_A_C_RO,         sizeof(XF_Flatten_24_W_A_C_ro),               HT_T_TINY    , FILL },
-  {CN_XF_FLATTEN_32_W_A_NC_I,         sizeof(XF_Flatten_32_W_A_NC_I),               HT_T_TINY    , FILL },
-  {CN_XF_FLATTEN_34_W_A_NC_RO,        sizeof(XF_Flatten_34_W_A_NC_ro),              HT_T_TINY    , FILL },
-  {CN_XF_FLATTEN_40_W_L_C_E,          sizeof(XF_Flatten_40_W_L_C_E),                HT_T_TINY    , FILL },
-  {CN_XF_FLATTEN_52_W_L_NC_I_EXISTS,  sizeof(XF_Flatten_52_W_L_NC_I_exists),        HT_T_TINY    , FILL },
-  {CN_XF_FLATTEN_52_W_L_NC_I_JOIN,    sizeof(XF_Flatten_52_W_L_NC_I_join),          HT_T_TINY    , FILL },
-  {CN_XF_FLATTEN_53_W_L_NC_NI_EXISTS, sizeof(XF_Flatten_53_W_L_NC_NI_exists),       HT_T_TINY    , FILL },
-  {CN_XF_FLATTEN_53_W_L_NC_NI_JOIN,   sizeof(XF_Flatten_53_W_L_NC_NI_join),         HT_T_TINY    , FILL },
-  {CN_XF_FLATTEN_74_H_A_NC_RO,        sizeof(XF_Flatten_74_H_A_NC_ro),              HT_T_TINY    , FILL },
-  {CN_XF_FLATTEN_PURGE_WHERE,            sizeof(XF_Flatten_Purge_where),            HT_T_TINY    , FILL },
+  {CN_XF_FLATTEN_10_F,                sizeof(XF_Flatten_Fold),                HT_T_TINY    , FILL },
+  {CN_XF_FLATTEN_24_W_A_C_RO,         sizeof(XF_Flatten_24_W_A_C_ro),         HT_T_TINY    , FILL },
+  {CN_XF_FLATTEN_32_W_A_NC_I,         sizeof(XF_Flatten_32_W_A_NC_I),         HT_T_TINY    , FILL },
+  {CN_XF_FLATTEN_34_W_A_NC_RO,        sizeof(XF_Flatten_34_W_A_NC_ro),        HT_T_TINY    , FILL },
+  {CN_XF_FLATTEN_40_W_L_C_E,          sizeof(XF_Flatten_40_W_L_C_E),          HT_T_TINY    , FILL },
+  {CN_XF_FLATTEN_52_W_L_NC_I_EXISTS,  sizeof(XF_Flatten_52_W_L_NC_I_exists),  HT_T_TINY    , FILL },
+  {CN_XF_FLATTEN_52_W_L_NC_I_JOIN,    sizeof(XF_Flatten_52_W_L_NC_I_join),    HT_T_TINY    , FILL },
+  {CN_XF_FLATTEN_53_W_L_NC_NI_EXISTS, sizeof(XF_Flatten_53_W_L_NC_NI_exists), HT_T_TINY    , FILL },
+  {CN_XF_FLATTEN_53_W_L_NC_NI_JOIN,   sizeof(XF_Flatten_53_W_L_NC_NI_join),   HT_T_TINY    , FILL },
+  {CN_XF_FLATTEN_74_H_A_NC_RO,        sizeof(XF_Flatten_74_H_A_NC_ro),        HT_T_TINY    , FILL },
+  {CN_XF_FLATTEN_PURGE_WHERE,            sizeof(XF_Flatten_Purge_where),      HT_T_TINY    , FILL },
   {CN_XF_FLATTEN_DELETE_FLAT,            sizeof(XF_Flatten_Delete_fold),            HT_T_TINY    , FILL },
   {CN_XF_FLATTEN_DERIVE_BOUNDS,          sizeof(XF_Flatten_Derive_bounds),          HT_T_TINY    , FILL },
   {CN_XF_FLATTEN_ANCHOR_TABLE,           sizeof(XF_Flatten_Anchor_table),           HT_T_TINY    , FILL },

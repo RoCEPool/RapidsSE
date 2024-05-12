@@ -45,7 +45,7 @@ void XF_Flatten_32_W_A_NC_I::v32_W_A_NC_I(CardIter* pCI)
 
   XF_Flatten_32_W_A_NC_I* pXF_Flatten_32_W_A_NC_I = new XF_Flatten_32_W_A_NC_I(pCI);
 
-  pXF_Flatten_32_W_A_NC_I->vFlatten();
+  pXF_Flatten_32_W_A_NC_I->v32_W_A_NC_I();
 
   delete pXF_Flatten_32_W_A_NC_I;
 }
@@ -58,7 +58,7 @@ void XF_Flatten_32_W_A_NC_I::v32_W_A_NC_I(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* add level to op                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Flatten_32_W_A_NC_I::vFlatten(void)
+void XF_Flatten_32_W_A_NC_I::v32_W_A_NC_I(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_32_W_A_NC_I, _FOOTER_);
 

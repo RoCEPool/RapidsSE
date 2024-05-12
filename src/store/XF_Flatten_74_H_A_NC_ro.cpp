@@ -44,7 +44,7 @@ void XF_Flatten_74_H_A_NC_ro::v74_H_A_NC_ro(CardIter* pCI)
 
   XF_Flatten_74_H_A_NC_ro* pXF_Flatten_74_H_A_NC_ro = new XF_Flatten_74_H_A_NC_ro(pCI);
 
-  pXF_Flatten_74_H_A_NC_ro->vFlatten();
+  pXF_Flatten_74_H_A_NC_ro->v74_H_A_NC_ro();
 
   delete pXF_Flatten_74_H_A_NC_ro;
 }
@@ -57,7 +57,7 @@ void XF_Flatten_74_H_A_NC_ro::v74_H_A_NC_ro(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* add level to op                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Flatten_74_H_A_NC_ro::vFlatten(void)
+void XF_Flatten_74_H_A_NC_ro::v74_H_A_NC_ro(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_74_H_A_NC_RO, _FOOTER_);
 
