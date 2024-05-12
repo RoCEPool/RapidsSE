@@ -11,7 +11,7 @@
 #include "eXF.h"
 #include "XF_Flatten_Join_Ordering.hpp"
 
-#include "XF_Flatten_Fold.hpp"
+#include "XF_Flatten_Fold_subquery.hpp"
 #include "XF_Flatten_24_W_A_C_ro.hpp"
 #include "XF_Flatten_32_W_A_NC_I.hpp"
 #include "XF_Flatten_34_W_A_NC_ro.hpp"
@@ -230,7 +230,7 @@ void XF_Flatten_subquery::vFlattenByDecisionTree(Symbol* pSym_sqyNo_inner)
   m_pCI->Flat.m_pSqy_inner = m_pCI->m_pBench->pFindSubQuery(pSym_sqyNo_inner);
   SubQuery* pIQ_called = m_pCI->Flat.m_pSqy_inner;
 
-  if (pIQ_called->bViaFrom())                /* F       Q7,8,9 */ XF_Flatten_Fold::v10_F(m_pCI);
+  if (pIQ_called->bViaFrom())                /* F       Q7,8,9 */ XF_Flatten_Fold_subquery::v10_F(m_pCI);
   else
   if (pIQ_called->bViaWhere()) {
     if (pIQ_called->bIsAggregation()) {

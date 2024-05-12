@@ -259,7 +259,7 @@
 #include "XF_Epilog_Type_Cast.hpp"
 #include "XF_Epilog_X_stmCol_To_colNm.hpp"
 #include "XF_Epilog_X_tblCol_To_expCol.hpp"
-#include "XF_Flatten_Fold.hpp"
+#include "XF_Flatten_Fold_subquery.hpp"
 #include "XF_Flatten_24_W_A_C_ro.hpp"
 #include "XF_Flatten_32_W_A_NC_I.hpp"
 #include "XF_Flatten_34_W_A_NC_ro.hpp"
@@ -797,7 +797,7 @@ SizeHeap gxaSizeHeap[]
   {CN_XF_EPILOG_X_STMCOL_TO_COLNM,    sizeof(XF_Epilog_X_stmCol_To_colNm),    HT_T_TINY    , FILL },
   {CN_XF_EPILOG_X_TBLCOL_TO_EXPCOL,   sizeof(XF_Epilog_X_tblCol_To_expCol),   HT_T_TINY    , FILL },
   {CN_XF_FLATTEN_SUBQUERY,            sizeof(XF_Flatten_subquery),            HT_T_TINY    , FILL },
-  {CN_XF_FLATTEN_10_F,                sizeof(XF_Flatten_Fold),                HT_T_TINY    , FILL },
+  {CN_XF_FLATTEN_10_F,                sizeof(XF_Flatten_Fold_subquery),       HT_T_TINY    , FILL },
   {CN_XF_FLATTEN_24_W_A_C_RO,         sizeof(XF_Flatten_24_W_A_C_ro),         HT_T_TINY    , FILL },
   {CN_XF_FLATTEN_32_W_A_NC_I,         sizeof(XF_Flatten_32_W_A_NC_I),         HT_T_TINY    , FILL },
   {CN_XF_FLATTEN_34_W_A_NC_RO,        sizeof(XF_Flatten_34_W_A_NC_ro),        HT_T_TINY    , FILL },
