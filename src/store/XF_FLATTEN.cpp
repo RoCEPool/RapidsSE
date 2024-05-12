@@ -16,7 +16,6 @@
 XF_FLATTEN::XF_FLATTEN(eCN eClass, CardIter* pCI)
 : XF_TRANSFORM(eClass, pCI)
 {
-  m_eFlatten = QF_NONE;
 }
 
 /*----------------------------------------------------------------------------*/

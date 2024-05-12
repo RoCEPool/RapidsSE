@@ -24,8 +24,6 @@ XF_Flatten_24_W_A_C_ro::XF_Flatten_24_W_A_C_ro(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_24_W_A_C_RO, _FOOTER_);
 
-  m_eFlatten = QF_24_W_A_C_ro;
-
   _checkInitialised_(CN_XF_FLATTEN_24_W_A_C_RO);
   
   _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_24_W_A_C_RO, _FOOTER_);
