@@ -37,7 +37,11 @@ XF_Flatten_Fold_subquery::~XF_Flatten_Fold_subquery(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/*-- static ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* decide how to fold inner subquery into outer subquery                      */
 /*----------------------------------------------------------------------------*/
 void XF_Flatten_Fold_subquery::vDecisionTree(CardIter* pCI, Symbol* pSym_sqyNo)
 {
@@ -125,7 +129,7 @@ void XF_Flatten_Fold_subquery::vDecisionTree(CardIter* pCI, Symbol* pSym_sqyNo)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* add level to op                                                            */
+/* 10 F                                                                       */
 /*----------------------------------------------------------------------------*/
 void XF_Flatten_Fold_subquery::v10_F(void)
 {
@@ -149,37 +153,19 @@ void XF_Flatten_Fold_subquery::v10_F(void)
 
   vFold_from("From"_Stz,m_pCI);
   vSmooth(m_pCI);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   m_pCI->E.p_deck->vMarksClearRecursive();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  // todo: discuss with Alka
-//  m_pCI->vClearRegisters();
-//  m_pCI->vBeginEach();
-//  if (m_pCI->bEachOp(CK_o_FOLD)) {
-//    if (m_pCI->bEachOp(CK_o_WHERE)) {
-//      Card_Level* p_level_where = m_pCI->E.p_where->pSub_level();
-//      if (m_pCI->bEachOp(CK_o_PROJECT, CK_p_LEVEL)) {
-//        p_level_where->pSymbol()->Y_vSet(P_Level, m_pCI->E.p_level->pSymbol()->Y_iGet(P_Level));
-//      }
-//    }
-//  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
   m_pCI->vEndTransform(__LINE__);
-
-//  XF_Prolog_Analyse_emit::vAnalyse(m_pCI);
 }
 
 /*----------------------------------------------------------------------------*/
-/* flatten                                                                    */
+/* 24 W_A_C_ro                                                                */
 /*----------------------------------------------------------------------------*/
 void XF_Flatten_Fold_subquery::v24_W_A_C_ro(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_FOLD_SUBQUERY, _FOOTER_);
-
-  // m_pCI->PRINTBOARD_dbg();
 
   // W A C ro
 
@@ -206,18 +192,15 @@ void XF_Flatten_Fold_subquery::v24_W_A_C_ro(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   m_pCI->E.p_deck->vMarksClearRecursive();
-
   m_pCI->vEndTransform(__LINE__);
 }
 
 /*----------------------------------------------------------------------------*/
-/* add level to op                                                            */
+/* 32 W_A_NC_I                                                                */
 /*----------------------------------------------------------------------------*/
 void XF_Flatten_Fold_subquery::v32_W_A_NC_I(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_FOLD_SUBQUERY, _FOOTER_);
-
-  // m_pCI->PRINTBOARD_dbg();
 
   // W A NC I
   // push a (single-value aggregate non-correlated in) sub-query before the main-query
@@ -248,18 +231,15 @@ void XF_Flatten_Fold_subquery::v32_W_A_NC_I(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   m_pCI->E.p_deck->vMarksClearRecursive();
-
   m_pCI->vEndTransform(__LINE__);
 }
 
 /*----------------------------------------------------------------------------*/
-/* add level to op                                                            */
+/* 34 W_A_NC_ro                                                               */
 /*----------------------------------------------------------------------------*/
 void XF_Flatten_Fold_subquery::v34_W_A_NC_ro(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_FOLD_SUBQUERY, _FOOTER_);
-
-  // m_pCI->PRINTBOARD_dbg();
 
   // W A NC ro
   // push a (single-value aggregate non-correlated in) sub-query before the main-query
@@ -281,18 +261,15 @@ void XF_Flatten_Fold_subquery::v34_W_A_NC_ro(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   m_pCI->E.p_deck->vMarksClearRecursive();
-
   m_pCI->vEndTransform(__LINE__);
 }
 
 /*----------------------------------------------------------------------------*/
-/* add level to op                                                            */
+/* 40 W_L_C_E                                                                 */
 /*----------------------------------------------------------------------------*/
 void XF_Flatten_Fold_subquery::v40_W_L_C_E(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_FOLD_SUBQUERY, _FOOTER_);
-
-  //// m_pCI->PRINTBOARD_dbg();
 
   /* ARCHETYPE :
       select count(*)
@@ -315,12 +292,11 @@ void XF_Flatten_Fold_subquery::v40_W_L_C_E(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   m_pCI->E.p_deck->vMarksClearRecursive();
-
   m_pCI->vEndTransform(__LINE__);
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* 52 W_L_NC_I_join                                                           */
 /*----------------------------------------------------------------------------*/
 void XF_Flatten_Fold_subquery::v52_W_L_NC_I_join(void)
 {
@@ -335,13 +311,11 @@ void XF_Flatten_Fold_subquery::v52_W_L_NC_I_join(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add level to op                                                            */
+/* 53 W_L_NC_NI_exists                                                        */
 /*----------------------------------------------------------------------------*/
 void XF_Flatten_Fold_subquery::v53_W_L_NC_NI_exists(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_FOLD_SUBQUERY, _FOOTER_);
-
-  // m_pCI->PRINTBOARD_dbg();
 
   // W L NC NI
   // push a (linear non-correlated not in) sub-query before the main-query
@@ -370,18 +344,15 @@ void XF_Flatten_Fold_subquery::v53_W_L_NC_NI_exists(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   m_pCI->E.p_deck->vMarksClearRecursive();
-
   m_pCI->vEndTransform(__LINE__);
 }
 
 /*----------------------------------------------------------------------------*/
-/* add level to op                                                            */
+/* 53 W_L_NC_NI_join                                                          */
 /*----------------------------------------------------------------------------*/
 void XF_Flatten_Fold_subquery::v53_W_L_NC_NI_join(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_FOLD_SUBQUERY, _FOOTER_);
-
-  // m_pCI->PRINTBOARD_dbg();
 
   // W L NC NI
   // (refer: Q16)
@@ -408,18 +379,15 @@ void XF_Flatten_Fold_subquery::v53_W_L_NC_NI_join(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   m_pCI->E.p_deck->vMarksClearRecursive();
-
   m_pCI->vEndTransform(__LINE__);
 }
 
 /*----------------------------------------------------------------------------*/
-/* add level to op                                                            */
+/* 74 H_A_NC_ro                                                               */
 /*----------------------------------------------------------------------------*/
 void XF_Flatten_Fold_subquery::v74_H_A_NC_ro(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_FOLD_SUBQUERY, _FOOTER_);
-
-  // m_pCI->PRINTBOARD_dbg();
 
   // H A NC ro (refer: Q11)
   // - the nc subquery produces a single nc result, such as avg(col)
@@ -447,7 +415,6 @@ void XF_Flatten_Fold_subquery::v74_H_A_NC_ro(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   m_pCI->E.p_deck->vMarksClearRecursive();
-
   m_pCI->vEndTransform(__LINE__);
 }
 
