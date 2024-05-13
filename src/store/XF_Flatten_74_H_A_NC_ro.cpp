@@ -35,63 +35,10 @@ XF_Flatten_74_H_A_NC_ro::~XF_Flatten_74_H_A_NC_ro(void) noexcept(false)
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_74_H_A_NC_RO, _FOOTER_);
 }
 
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void XF_Flatten_74_H_A_NC_ro::v74_H_A_NC_ro(CardIter* pCI)
-{
-  _static_
-
-  XF_Flatten_74_H_A_NC_ro* pXF_Flatten_74_H_A_NC_ro = new XF_Flatten_74_H_A_NC_ro(pCI);
-
-  pXF_Flatten_74_H_A_NC_ro->v74_H_A_NC_ro();
-
-  delete pXF_Flatten_74_H_A_NC_ro;
-}
-
 
 /*----------------------------------------------------------------------------*/
 /*-- public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* add level to op                                                            */
-/*----------------------------------------------------------------------------*/
-void XF_Flatten_74_H_A_NC_ro::v74_H_A_NC_ro(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_74_H_A_NC_RO, _FOOTER_);
-
- // m_pCI->PRINTBOARD_dbg();
-
-  // H A NC ro (refer: Q11)
-  // - the nc subquery produces a single nc result, such as avg(col)
-  // - that SQ result needs to be in every OQ row so the Having clause
-  //     can use it to filter rows
-
-  /* ARCHETYPE _r_a_b_HAVING:
-      select l_orderkey, sum(l_quantity)
-        from lineitem
-       group by l_orderkey
-      having sum(l_quantity) > (select avg(l_quantity)
-                                  from lineitem);
-  */
-
-  m_pCI->vTransform(__FILE__, __func__, XF_FLATTEN_74_H_A_NC_RO);
-  //m_pCI->PRINTBOARD_dbg();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  vFold_subQuery(m_pCI, "H_A_NC_ro"_Stz, CK_o_HAVING);
-  vSet_smooth(m_pCI, CK_o_HAVING, QO_RELN_OP);
-  vRotate_Next();
-  vSmooth(m_pCI);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  m_pCI->E.p_deck->vMarksClearRecursive();
-
-  m_pCI->vEndTransform(__LINE__);
-}
 
 /*============================================================================*/
 /* end                                                                        */

@@ -37,58 +37,10 @@ XF_Flatten_40_W_L_C_E::~XF_Flatten_40_W_L_C_E(void) noexcept(false)
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_40_W_L_C_E, _FOOTER_);
 }
 
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void XF_Flatten_40_W_L_C_E::v40_W_L_C_E(CardIter* pCI)
-{
-  _static_
-
-  XF_Flatten_40_W_L_C_E* pXF_Flatten_40_W_L_C_E = new XF_Flatten_40_W_L_C_E(pCI);
-
-  pXF_Flatten_40_W_L_C_E->v40_W_L_C_E();
-
-  delete pXF_Flatten_40_W_L_C_E;
-}
-
 
 /*----------------------------------------------------------------------------*/
 /*-- public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* add level to op                                                            */
-/*----------------------------------------------------------------------------*/
-void XF_Flatten_40_W_L_C_E::v40_W_L_C_E(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_40_W_L_C_E, _FOOTER_);
-
- //// m_pCI->PRINTBOARD_dbg();
-
-  /* ARCHETYPE :
-      select count(*)
-        from orders
-       where exists (select *
-                       from lineitem
-                      where L_ORDERKEY = O_ORDERKEY
-                        and l_commitdate < l_receiptdate)
-      ;
-   */
-
-  m_pCI->vTransform(__FILE__, __func__, XF_FLATTEN_40_W_L_C_E);
-  //m_pCI->PRINTBOARD_dbg();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  vFold_subQuery(m_pCI, "40_W_L_C_E"_Stz, CK_o_WHERE);
-  vInto_KEYnotEXISTS(m_pCI);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  m_pCI->E.p_deck->vMarksClearRecursive();
-
-  m_pCI->vEndTransform(__LINE__);
-}
 
 /*============================================================================*/
 /* end                                                                        */

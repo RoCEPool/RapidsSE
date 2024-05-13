@@ -20,10 +20,6 @@ namespace STORE
     XF_Flatten_40_W_L_C_E(CardIter* pCI);
    ~XF_Flatten_40_W_L_C_E(void) noexcept(false);
 
-    static void v40_W_L_C_E(CardIter* pCI);
-
-    void v40_W_L_C_E(void);
-
   private:
     Footer* aFooter(void);
   };
