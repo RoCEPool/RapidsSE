@@ -53,7 +53,7 @@
 #include "XF_Prolog_X_sqyNm_To_sqyNo.hpp"
 #include "XF_Prolog_X_colNm_To_expCol.hpp"
 #include "XF_Prolog_X_scan_To_from.hpp"
-#include "XF_Synthesise_code.hpp"
+#include "XF_Synthesise_Cut_code.hpp"
 #include "XF_Synthesise_Craft_pipelineDef.hpp"
 #include "XF_Utility.hpp"
 
@@ -276,8 +276,8 @@ void XF::vTransform(void)
   m_pCI->vBeginBoard();                            //
   RASSERT(m_pCI->bEachBoard());                        //
                                                        //
-  XF_Synthesise_Craft_pipelineDef::vSynthesise(m_pCI);       //
-  XF_Synthesise_code::vSynthesise(m_pCI);              //
+  XF_Synthesise_Craft_pipelineDef::vCraft(m_pCI);       //
+  XF_Synthesise_Cut_code::vCut(m_pCI);              //
                                                        //
 //XF_Epilog_ItemStrip_colNm::vItemise_Columns(m_pCI);
                                                        //
@@ -389,9 +389,9 @@ void XF::vTransform_passThru(void)
 
   XF_Utility::vRemove_LeftMost(m_pCI);
 
-  XF_Synthesise_Craft_pipelineDef::vSynthesise(m_pCI);
+  XF_Synthesise_Craft_pipelineDef::vCraft(m_pCI);
 
-  XF_Synthesise_code::vSynthesise(m_pCI);
+  XF_Synthesise_Cut_code::vCut(m_pCI);
 }
 
 /*----------------------------------------------------------------------------*/

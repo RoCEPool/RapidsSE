@@ -239,7 +239,7 @@
 #include "OpDef.hpp"
 #include "PipelineDef.hpp"
 #include "StageDef.hpp"
-#include "XF_Synthesise_code.hpp"
+#include "XF_Synthesise_Cut_code.hpp"
 #include "Ppy.hpp"
 #include "Symbol.hpp"
 #include "Weaver.hpp"
@@ -827,7 +827,7 @@ SizeHeap gxaSizeHeap[]
   {CN_XF_PROLOG_X_SQYNM_TO_SQYNO,      sizeof(XF_Prolog_X_sqyNm_To_sqyNo),      HT_T_TINY    , FILL },
   {CN_XF_PROLOG_X_COLNM_TO_EXPCOL,     sizeof(XF_Prolog_X_colNm_To_expCol),     HT_T_TINY    , FILL },
   {CN_XF_PROLOG_X_SCAN_TO_FROM,        sizeof(XF_Prolog_X_scan_To_from),        HT_T_TINY    , FILL },
-  {CN_XF_SYNTHESISE_CODE,              sizeof(XF_Synthesise_code),              HT_T_TINY    , FILL },
+  {CN_XF_SYNTHESISE_CODE,              sizeof(XF_Synthesise_Cut_code),          HT_T_TINY    , FILL },
   {CN_XF_SYNTHESISE_CRAFT_PIPELINEDEF, sizeof(XF_Synthesise_Craft_pipelineDef), HT_T_TINY    , FILL },
   {CN_XF_UTILITY_VERIFY_DIC,           sizeof(XF_Utility),                      HT_T_TINY    , FILL },
 

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* XF_Synthesise_Craft_pipelineDef.cpp -- Synthesise PipelineDef                    */
+/* XF_Synthesise_Craft_pipelineDef.cpp -- Craft PipelineDef                   */
 /*============================================================================*/
 
 #include "XF_Synthesise_Craft_pipelineDef.hpp"
@@ -67,7 +67,7 @@ XF_Synthesise_Craft_pipelineDef::~XF_Synthesise_Craft_pipelineDef(void) noexcept
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Synthesise_Craft_pipelineDef::vSynthesise(CardIter* pCI)
+void XF_Synthesise_Craft_pipelineDef::vCraft(CardIter* pCI)
 {
   _static_
 
@@ -77,7 +77,7 @@ void XF_Synthesise_Craft_pipelineDef::vSynthesise(CardIter* pCI)
 
   try {
     pXF_Synthesise_pipelineDef = new XF_Synthesise_Craft_pipelineDef(pCI);
-    pXF_Synthesise_pipelineDef->vSynthesise();
+    pXF_Synthesise_pipelineDef->vCraft();
 
     PipelineDef *pPipelineDef = pXF_Synthesise_pipelineDef->pPipelineDef();
     pXF_Synthesise_pipelineDef->vPipelineDef(nullptr);
@@ -125,7 +125,7 @@ void XF_Synthesise_Craft_pipelineDef::vPipelineDef(PipelineDef* pPipelineDef)
 /*----------------------------------------------------------------------------*/
 /* call synthesiser                                                           */
 /*----------------------------------------------------------------------------*/
-void XF_Synthesise_Craft_pipelineDef::vSynthesise(void)
+void XF_Synthesise_Craft_pipelineDef::vCraft(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_CRAFT_PIPELINEDEF, _FOOTER_);
 

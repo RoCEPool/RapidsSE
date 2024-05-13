@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* XF_Synthesise_code.hpp -- Call Synthesiser                                           */
+/* XF_Synthesise_Cut_code.hpp -- Cut Code                                     */
 /*============================================================================*/
 #pragma once
 
@@ -12,12 +12,8 @@
 
 namespace STORE
 {
-  class XF_Synthesise_code : public XF_SYNTHESISE
+  class XF_Synthesise_Cut_code : public XF_SYNTHESISE
   {
-  private:
-
-    CardIter*    m_pCI;
-
   protected:
     // must be last
     Footer m_xFooter;
@@ -26,18 +22,18 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    XF_Synthesise_code(CardIter* pCI);
-   ~XF_Synthesise_code(void) noexcept(false);
+    XF_Synthesise_Cut_code(CardIter* pCI);
+   ~XF_Synthesise_Cut_code(void) noexcept(false);
 
-    static void vSynthesise(CardIter* pCI);
+    static void vCut(CardIter* pCI);
 
-    void vSynthesise(void);
+    void vCut(void);
 
   protected:
     Footer* aFooter(void);
   };
 
-  XF_Synthesise_code* _pXF_Synthesise_code(void* aAddr);
+  XF_Synthesise_Cut_code* _pXF_Synthesise_Cut_code(void* aAddr);
 }
 
 /*============================================================================*/

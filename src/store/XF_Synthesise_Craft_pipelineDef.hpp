@@ -16,8 +16,6 @@ namespace STORE
   {
   private:
 
-    CardIter*    m_pCI;
-
     PipelineDef*  m_pPipelineDef;
     StageDef*     m_pStageDef;
     OpDef*        m_pOpDef;
@@ -35,12 +33,12 @@ namespace STORE
     XF_Synthesise_Craft_pipelineDef(CardIter* pCI);
    ~XF_Synthesise_Craft_pipelineDef(void) noexcept(false);
 
-    static void vSynthesise(CardIter* pCI);
+    static void vCraft(CardIter* pCI);
+
+    void vCraft(void);
 
     PipelineDef* pPipelineDef(void);
     void vPipelineDef(PipelineDef* pPipelineDef);
-
-    void vSynthesise(void);
 
   private:
     void vCraftPipelineDef(void);
