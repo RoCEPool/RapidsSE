@@ -364,7 +364,7 @@ SizeHeap gxaSizeHeap[]
   {CN__A__,                     'A' - ('A' - 1),                HT_INVALID   , FILL },
   {CN_ACCESSPATH,               sizeof(AccessPath),             HT_T_MEDIUM  , FILL },
   {CN_ACTION,                   sizeof(Action),                 HT_T_TINY    , FILL },
-  {CN_ADAPTORWL,                sizeof(AdaptorWL),              HT_T_MEDIUM ,  FILL },
+  {CN_ADAPTORWL,                sizeof(AdaptorWL),              HT_T_TINY    , FILL },
   {CN_AGGTIMER,                 sizeof(AggTimer),               HT_T_TINY    , FILL },
   {CN_AM,                       0,                              HT_INVALID   , FILL },
   {CN_ANSWERWL,                 sizeof(AnswerWL),               HT_T_TINY    , FILL },
@@ -469,7 +469,7 @@ SizeHeap gxaSizeHeap[]
   {CN_GRID,                     sizeof(Grid),                   HT_T_TINY    , FILL },
 
   { CN__H__,                     'H' - ('A' - 1),            HT_INVALID   ,FILL },
-  { CN_HASHMAP,                  sizeof(HashMap),            HT_T_LARGE   ,FILL },
+  { CN_HASHMAP,                  sizeof(HashMap),            HT_T_SMALL   ,FILL },
   { CN_HASHMAPENTRY,             sizeof(HashMapEntry),       HT_T_TINY    ,FILL },
   { CN_HASHMAPSLOT,              sizeof(HashMapSlot),        HT_T_TINY   ,FILL },
   { CN_HEAPBUFFER,               sizeof(HeapBuffer),         HT_INVALID   ,FILL },
@@ -620,7 +620,7 @@ SizeHeap gxaSizeHeap[]
   { CN_QUERYNODELIST,            sizeof(QueryNodeList),          HT_T_TINY    , FILL },
   { CN_QUERYNODESTACK,           sizeof(QueryNodeStack),         HT_T_MEDIUM  , FILL },
   { CN_QUEUE,                    sizeof(Queue),                  HT_T_TINY    , FILL },
-  { CN_QUEUEBUFFER,              sizeof(QueueBuffer),            HT_INVALID   , FILL },
+  { CN_QUEUEBUFFER,              sizeof(QueueBuffer),            HT_T_TINY    , FILL },
 
   {CN__R__,                     'R' - ('A' - 1),                HT_INVALID   , FILL },
   {CN_READER,                   sizeof(Reader),                 HT_T_TINY    , FILL },
@@ -731,7 +731,7 @@ SizeHeap gxaSizeHeap[]
   { CN_SYSREPORT,                sizeof(SysReport),          HT_T_TINY    ,FILL },
 
   { CN__T__,                     'T' - ('A' - 1),            HT_INVALID   ,FILL },
-  { CN_TABLE,                    sizeof(Table),              HT_T_LARGE   ,FILL },
+  { CN_TABLE,                    sizeof(Table),              HT_T_MEDIUM  ,FILL },
   { CN_TABLEDEF,                 sizeof(Table),              HT_T_MEDIUM  ,FILL },
   { CN_TABLEPTN,                 sizeof(TablePtn),           HT_T_TINY    ,FILL },
   { CN_TABLEPTNVEC,              sizeof(TablePtnVec),        HT_T_TINY    ,FILL },

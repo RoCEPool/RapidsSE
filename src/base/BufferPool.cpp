@@ -4,6 +4,7 @@
 
 #include "BASE.h"
 
+extern AttachMap*    gpAttachMap;
 extern BufferPool* gpBufferPool;
 
 SubSysFn __BufferPool("BufferPool"_Stz,(fpSELFFN*)BufferPool::vSubSystem,
@@ -910,6 +911,11 @@ FreePoolBuffer* BufferPool::pPopFreePoolBuffer(void)
   m_okLock.vGrabWrite();                                                  // 🔴
 
   //vVerifyPool();
+
+  if (m_iFreeHead == 1 && gpAttachMap) {
+    PoolHelper::vRegionSummary();
+    PoolHelper::vObjectSummary();
+  }
   
   // test for empty free chain
   if (C_NIL == m_iFreeHead) {

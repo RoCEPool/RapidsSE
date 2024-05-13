@@ -8,43 +8,16 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* safe cast                                                                  */
-/*----------------------------------------------------------------------------*/
-QueueBuffer* BASE::_pQueueBuffer(void* aAddr)
-{
-  QueueBuffer* pQueueBuffer = reinterpret_cast<QueueBuffer*>(aAddr);
-  
-  RASSERT_TYPE(pQueueBuffer,CN_QUEUEBUFFER);
-  
-  return pQueueBuffer;
-}
-
-/*----------------------------------------------------------------------------*/
-/* operator new                                                               */
-/*----------------------------------------------------------------------------*/
-void* QueueBuffer::operator new(size_t)
-{
-  QueueBuffer* pQueueBuffer = (QueueBuffer*)gpBufferPool->pAllocOtherBuffer();
-  
-  return pPoolCheck<void*>(pQueueBuffer,__func__);
-}
-
-/*----------------------------------------------------------------------------*/
-/* operator delete                                                            */
-/*----------------------------------------------------------------------------*/
-void QueueBuffer::operator delete(void* pQueueBufferAddress)
-{
-  QueueBuffer* pQueueBuffer = static_cast<QueueBuffer*>(pQueueBufferAddress);
-  
-  gpBufferPool->vFreeOtherBuffer((PoolBuffer*)pQueueBuffer);
-}
+__pCastFunction(BASE, QueueBuffer, CN_QUEUEBUFFER)
+__aNewFunction(QueueBuffer, CN_QUEUEBUFFER)
+__vDeleteFunction(QueueBuffer, CN_QUEUEBUFFER)
+__aFooterFunction(QueueBuffer)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 QueueBuffer::QueueBuffer(void)
-: PoolBuffer(CN_QUEUEBUFFER)
+: Object(CN_QUEUEBUFFER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUEBUFFER,_FOOTER_);
   
@@ -52,6 +25,8 @@ QueueBuffer::QueueBuffer(void)
   m_ppTopObject = ppFirstPointer();
   m_ppNextFree  = m_ppTopObject;
   m_pNext       = nullptr;
+
+  MemLib::vSet(m_pArea, 0, C_SIZE_AREA * sizeof(Object*), CN_QUEUEBUFFER);
   
   _checkInitialised_(CN_QUEUEBUFFER);
   
@@ -79,9 +54,9 @@ bool QueueBuffer::bAppend(Object* pObject)
   
   i8 nBytes = sizeof(Object*);
   
-  Stz* aFinalByteOfValue = aAdd<Stz*>(m_ppNextFree,nBytes-1);
+  char* aFinalByteOfValue = aAdd<char*>(m_ppNextFree,nBytes-1);
   
-  if (aFinalByteOfValue > PoolBuffer::aLastUsableByte())
+  if (aFinalByteOfValue > aAdd<char*>(m_pArea, C_SIZE_AREA * sizeof(Object*)))
     return false;
   
   * m_ppNextFree = pObject;
@@ -219,10 +194,8 @@ Object* QueueBuffer::pPop(bool& bDiscardable)
 Object** QueueBuffer::ppFirstPointer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUEBUFFER,_FOOTER_);
-  
-  Object** ppFirstPointer = aAdd<Object**>(this,sizeof(QueueBuffer));
-  
-  return ppFirstPointer;
+
+  return m_pArea;
 }
 
 /*----------------------------------------------------------------------------*/
