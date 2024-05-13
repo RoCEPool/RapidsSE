@@ -232,7 +232,7 @@
 #include "Scope.hpp"
 #include "XF_Flatten_subquery.hpp"
 #include "Equivalence.hpp"
-#include "XF_Flatten_Join_Ordering.hpp"
+#include "XF_Flatten_Reorder_join.hpp"
 #include "SawOpCards.hpp"
 
 #include "ArgDef.hpp"
@@ -793,7 +793,7 @@ SizeHeap gxaSizeHeap[]
   {CN_XF_FLATTEN_DELETE_FLAT,            sizeof(XF_Flatten_Delete_fold),            HT_T_TINY    , FILL },
   {CN_XF_FLATTEN_DERIVE_BOUNDS,          sizeof(XF_Flatten_Derive_bounds),          HT_T_TINY    , FILL },
   {CN_XF_FLATTEN_ANCHOR_TABLE,           sizeof(XF_Flatten_Anchor_table),           HT_T_TINY    , FILL },
-  {CN_XF_FLATTEN_JOIN_ORDERING,          sizeof(XF_Flatten_Join_Ordering),          HT_T_TINY    , FILL },
+  {CN_XF_FLATTEN_JOIN_ORDERING,          sizeof(XF_Flatten_Reorder_join),           HT_T_TINY    , FILL },
   {CN_XF_FLATTEN_REPOSITION_PREDICATE,   sizeof(XF_Flatten_Reposition_predicate),   HT_T_TINY    , FILL },
   {CN_XF_FLATTEN_PULLUP_RLNCONJ,         sizeof(XF_Flatten_Pullup_rlnConj),         HT_T_TINY    , FILL },
   {CN_XF_FLATTEN_X_EXPCOL_TO_TBLCOL,     sizeof(XF_Flatten_X_expCol_To_tblCol),     HT_T_TINY    , FILL },
