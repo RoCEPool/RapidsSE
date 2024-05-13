@@ -51,6 +51,20 @@ void XF_Flatten_Fold_subquery::v10_F(CardIter* pCI)
   delete pXF_Flatten_10_F;
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void XF_Flatten_Fold_subquery::v24_W_A_C_ro(CardIter* pCI)
+{
+  _static_
+
+  XF_Flatten_Fold_subquery* pXF_Flatten_24_W_A_C_ro = new XF_Flatten_Fold_subquery(pCI);
+
+  pXF_Flatten_24_W_A_C_ro->v24_W_A_C_ro();
+
+  delete pXF_Flatten_24_W_A_C_ro;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- public ------------------------------------------------------------------*/
@@ -104,6 +118,86 @@ void XF_Flatten_Fold_subquery::v10_F(void)
   m_pCI->vEndTransform(__LINE__);
 
 //  XF_Prolog_Analyse_emit::vAnalyse(m_pCI);
+}
+
+/*----------------------------------------------------------------------------*/
+/* flatten                                                                    */
+/*----------------------------------------------------------------------------*/
+void XF_Flatten_Fold_subquery::v24_W_A_C_ro(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_10_F, _FOOTER_);
+
+  // m_pCI->PRINTBOARD_dbg();
+
+  // W A C ro
+
+  /* ARCHETYPE :
+    select count(*)
+      from Lineitem, Part, PartSupp
+     where P_PARTKEY  = L_PARTKEY
+       and PS_PARTKEY = P_PARTKEY
+       and l_quantity < (select avg(l_quantity)
+                           from lineitem
+                          where L_PARTKEY = P_PARTKEY)
+    ;
+ */
+
+  m_pCI->vTransform(__FILE__, __func__, XF_FLATTEN_24_W_A_C_RO);
+  //m_pCI->PRINTBOARD_dbg();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  vFold_subQuery(m_pCI, "24_W_A_C_ro"_Stz, CK_o_WHERE);
+  vPromote_aggreg_To_gbyAgg(m_pCI);
+  vRestate_emit_fold(m_pCI);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  m_pCI->E.p_deck->vMarksClearRecursive();
+
+  m_pCI->vEndTransform(__LINE__);
+}
+
+/*----------------------------------------------------------------------------*/
+/* add level to op                                                            */
+/*----------------------------------------------------------------------------*/
+void XF_Flatten_Fold_subquery::v32_W_A_NC_I(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_10_F, _FOOTER_);
+
+  // m_pCI->PRINTBOARD_dbg();
+
+  // W A NC I
+  // push a (single-value aggregate non-correlated in) sub-query before the main-query
+  // as an aggregation-fan (projecting a single aggregated value)
+  // (refer: Q18)
+
+  /* ARCHETYPE :
+      select count(*)
+        from orders, lineitem
+       where O_ORDERKEY = L_ORDERKEY
+         and O_ORDERKEY in (select L_ORDERKEY
+                              from lineitem
+                             group by L_ORDERKEY
+                            having sum(l_quantity) > 100)
+      ;
+   */
+
+  m_pCI->vTransform(__FILE__, __func__, XF_FLATTEN_32_W_A_NC_I);
+  //m_pCI->PRINTBOARD_dbg();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  vFold_subQuery(m_pCI, "W_A_NC_I"_Stz, CK_o_WHERE);
+  vSet_smooth(m_pCI, CK_o_WHERE, QO_IN_OP);
+  vRotate_Next();
+  vSmooth(m_pCI);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  m_pCI->E.p_deck->vMarksClearRecursive();
+
+  m_pCI->vEndTransform(__LINE__);
 }
 
 /*============================================================================*/

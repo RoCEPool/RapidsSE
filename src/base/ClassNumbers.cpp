@@ -477,7 +477,6 @@ Stz* BASE::aCN[CN_ENUMS+1]
 		/* */ "XF_EPILOG_X_TBLCOL_TO_EXPCOL"_Stz,// CN_XF_EPILOG_X_TBLCOL_TO_EXPCOL
 		/* */ "XF_FLATTEN_SUBQUERY"_Stz,         // CN_XF_FLATTEN_SUBQUERY
 		/* */ "XF_FLATTEN_10_F"_Stz,             // CN_XF_FLATTEN_10_F
-		/* */ "XF_FLATTEN_24_W_A_C_RO"_Stz,      // CN_XF_FLATTEN_24_W_A_C_RO
 		/* */ "XF_FLATTEN_32_W_A_NC_I"_Stz,      // CN_XF_FLATTEN_32_W_A_NC_I
 		/* */ "XF_FLATTEN_34_W_A_NC_RO"_Stz,     // CN_XF_FLATTEN_34_W_A_NC_RO
 		/* */ "XF_FLATTEN_40_W_L_C_E"_Stz,       // CN_XF_FLATTEN_40_W_L_C_E
