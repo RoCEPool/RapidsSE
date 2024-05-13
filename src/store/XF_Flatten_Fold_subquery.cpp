@@ -11,9 +11,9 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_Flatten_Fold_subquery, CN_XF_FLATTEN_10_F)
-__aNewFunction(XF_Flatten_Fold_subquery, CN_XF_FLATTEN_10_F)
-__vDeleteFunction(XF_Flatten_Fold_subquery, CN_XF_FLATTEN_10_F)
+__pCastFunction(STORE, XF_Flatten_Fold_subquery, CN_XF_FLATTEN_FOLD_SUBQUERY)
+__aNewFunction(XF_Flatten_Fold_subquery, CN_XF_FLATTEN_FOLD_SUBQUERY)
+__vDeleteFunction(XF_Flatten_Fold_subquery, CN_XF_FLATTEN_FOLD_SUBQUERY)
 __aFooterFunction(XF_Flatten_Fold_subquery)
 
 
@@ -21,13 +21,13 @@ __aFooterFunction(XF_Flatten_Fold_subquery)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Flatten_Fold_subquery::XF_Flatten_Fold_subquery(CardIter* pCI)
-: XF_FLATTEN(CN_XF_FLATTEN_10_F, pCI)
+: XF_FLATTEN(CN_XF_FLATTEN_FOLD_SUBQUERY, pCI)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_10_F, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_FOLD_SUBQUERY, _FOOTER_);
 
-  _checkInitialised_(CN_XF_FLATTEN_10_F);
+  _checkInitialised_(CN_XF_FLATTEN_FOLD_SUBQUERY);
   
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_10_F, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_FOLD_SUBQUERY, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -35,7 +35,7 @@ XF_Flatten_Fold_subquery::XF_Flatten_Fold_subquery(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 XF_Flatten_Fold_subquery::~XF_Flatten_Fold_subquery(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_10_F, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_FOLD_SUBQUERY, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -179,7 +179,7 @@ void XF_Flatten_Fold_subquery::v74_H_A_NC_ro(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 void XF_Flatten_Fold_subquery::v10_F(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_10_F, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_FOLD_SUBQUERY, _FOOTER_);
 
  // m_pCI->PRINTBOARD_dbg();
 
@@ -229,7 +229,7 @@ void XF_Flatten_Fold_subquery::v10_F(void)
 /*----------------------------------------------------------------------------*/
 void XF_Flatten_Fold_subquery::v24_W_A_C_ro(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_10_F, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_FOLD_SUBQUERY, _FOOTER_);
 
   // m_pCI->PRINTBOARD_dbg();
 
@@ -267,7 +267,7 @@ void XF_Flatten_Fold_subquery::v24_W_A_C_ro(void)
 /*----------------------------------------------------------------------------*/
 void XF_Flatten_Fold_subquery::v32_W_A_NC_I(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_10_F, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_FOLD_SUBQUERY, _FOOTER_);
 
   // m_pCI->PRINTBOARD_dbg();
 
@@ -309,7 +309,7 @@ void XF_Flatten_Fold_subquery::v32_W_A_NC_I(void)
 /*----------------------------------------------------------------------------*/
 void XF_Flatten_Fold_subquery::v34_W_A_NC_ro(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_10_F, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_FOLD_SUBQUERY, _FOOTER_);
 
   // m_pCI->PRINTBOARD_dbg();
 
@@ -342,7 +342,7 @@ void XF_Flatten_Fold_subquery::v34_W_A_NC_ro(void)
 /*----------------------------------------------------------------------------*/
 void XF_Flatten_Fold_subquery::v40_W_L_C_E(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_10_F, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_FOLD_SUBQUERY, _FOOTER_);
 
   //// m_pCI->PRINTBOARD_dbg();
 
@@ -376,7 +376,7 @@ void XF_Flatten_Fold_subquery::v40_W_L_C_E(void)
 /*----------------------------------------------------------------------------*/
 void XF_Flatten_Fold_subquery::v53_W_L_NC_NI_exists(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_10_F, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_FOLD_SUBQUERY, _FOOTER_);
 
   // m_pCI->PRINTBOARD_dbg();
 
@@ -416,7 +416,7 @@ void XF_Flatten_Fold_subquery::v53_W_L_NC_NI_exists(void)
 /*----------------------------------------------------------------------------*/
 void XF_Flatten_Fold_subquery::v53_W_L_NC_NI_join(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_10_F, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_FOLD_SUBQUERY, _FOOTER_);
 
   // m_pCI->PRINTBOARD_dbg();
 
@@ -454,7 +454,7 @@ void XF_Flatten_Fold_subquery::v53_W_L_NC_NI_join(void)
 /*----------------------------------------------------------------------------*/
 void XF_Flatten_Fold_subquery::v74_H_A_NC_ro(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_10_F, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_FOLD_SUBQUERY, _FOOTER_);
 
   // m_pCI->PRINTBOARD_dbg();
 
