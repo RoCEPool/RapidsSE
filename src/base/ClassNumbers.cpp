@@ -460,7 +460,6 @@ Stz* BASE::aCN[CN_ENUMS+1]
     /* */ "WSPCONVERGENT_t"_Stz,      // CN_WSPCONVERGENT_t
 
     /* */ "_X__"_Stz,                   // CN__X__
-    /* */ "XC"_Stz,                     // CN_XC
     /* */ "XF"_Stz,                     // CN_XF
 		/* */ "XF_EPILOG_ADD_HASH_CAST"_Stz,     // CN_XF_EPILOG_ADD_HASH_CAST
 		/* */ "XF_EPILOG_ADD_INFLATE"_Stz,       // CN_XF_EPILOG_ADD_INFLATE

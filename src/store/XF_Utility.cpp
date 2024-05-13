@@ -20,7 +20,7 @@ __aFooterFunction(XF_Utility)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Utility::XF_Utility(CardIter* pCI)
-: XF_PROLOG(CN_XF_UTILITY, pCI)
+: XF_TRANSFORM(CN_XF_UTILITY, pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_UTILITY, _FOOTER_);
 

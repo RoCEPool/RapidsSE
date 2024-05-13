@@ -441,7 +441,6 @@ enum eCN : u2 // Class Number
   /* */ CN_WSPCONVERGENT_t,
 
   /* */ CN__X__,
-  /* */ CN_XC,
   /* */ CN_XF,
   /* */ CN_XF_EPILOG_ADD_HASH_CAST,
   /* */ CN_XF_EPILOG_ADD_INFLATE,

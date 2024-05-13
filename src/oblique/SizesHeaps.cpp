@@ -300,8 +300,6 @@
 #include "XF_Synthesise_Craft_pipelineDef.hpp"
 #include "XF_Utility.hpp"
 
-#include "XC.hpp"
-
 #include "CardUsage.hpp"
 #include "CardUte.hpp"
 #include "ColMap.hpp"
@@ -771,7 +769,6 @@ SizeHeap gxaSizeHeap[]
   {CN_WSPCONVERGENT_t,             0,                                   HT_INVALID   , FILL },
 
   {CN__X__,                    'X' - ('A' - 1),                         HT_INVALID   , FILL },
-  {CN_XC,                                sizeof(XC),                                HT_T_TINY    , FILL },
   {CN_XF,                                sizeof(XF),                                HT_T_TINY    , FILL },
   {CN_XF_EPILOG_ADD_HASH_CAST,           sizeof(XF_Epilog_Add_hash_cast),           HT_T_TINY    , FILL },
   {CN_XF_EPILOG_ADD_INFLATE,             sizeof(XF_Epilog_Add_inflate),             HT_T_TINY    , FILL },
