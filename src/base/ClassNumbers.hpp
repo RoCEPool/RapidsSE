@@ -458,8 +458,6 @@ enum eCN : u2 // Class Number
   /* */ CN_XF_EPILOG_X_TBLCOL_TO_EXPCOL,
   /* */ CN_XF_FLATTEN_SUBQUERY,
   /* */ CN_XF_FLATTEN_10_F,
-  /* */ CN_XF_FLATTEN_32_W_A_NC_I,
-  /* */ CN_XF_FLATTEN_34_W_A_NC_RO,
   /* */ CN_XF_FLATTEN_40_W_L_C_E,
   /* */ CN_XF_FLATTEN_52_W_L_NC_I_EXISTS,
   /* */ CN_XF_FLATTEN_52_W_L_NC_I_JOIN,

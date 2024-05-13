@@ -12,8 +12,6 @@
 #include "XF_Flatten_Join_Ordering.hpp"
 
 #include "XF_Flatten_Fold_subquery.hpp"
-#include "XF_Flatten_32_W_A_NC_I.hpp"
-#include "XF_Flatten_34_W_A_NC_ro.hpp"
 #include "XF_Flatten_40_W_L_C_E.hpp"
 #include "XF_Flatten_52_W_L_NC_I_exists.hpp"
 #include "XF_Flatten_52_W_L_NC_I_join.hpp"
@@ -242,9 +240,9 @@ void XF_Flatten_subquery::vFlattenByDecisionTree(Symbol* pSym_sqyNo_inner)
       } else {                               /* 30_ */
              if (pIQ_called->bByExists())    /* W_A_NC_E       */ NEVER_REACH
         else if (pIQ_called->bByNotExists()) /* W_A_NC_NE      */ NEVER_REACH
-        else if (pIQ_called->bByIn())        /* W_A_NC_I   Q18 */ XF_Flatten_32_W_A_NC_I::v32_W_A_NC_I(m_pCI);
+        else if (pIQ_called->bByIn())        /* W_A_NC_I   Q18 */ XF_Flatten_Fold_subquery::v32_W_A_NC_I(m_pCI);
         else if (pIQ_called->bByNotIn())     /* W_A_NC_NI      */ NEVER_REACH
-        else                                 /* W_A_NC_ro  Q15 */ XF_Flatten_34_W_A_NC_ro::v34_W_A_NC_ro(m_pCI);
+        else                                 /* W_A_NC_ro  Q15 */ XF_Flatten_Fold_subquery::v34_W_A_NC_ro(m_pCI);
       }
     } else {
       if (pIQ_called->bIsCorrelated()) {     /* 40_ */

@@ -65,6 +65,34 @@ void XF_Flatten_Fold_subquery::v24_W_A_C_ro(CardIter* pCI)
   delete pXF_Flatten_24_W_A_C_ro;
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void XF_Flatten_Fold_subquery::v32_W_A_NC_I(CardIter* pCI)
+{
+  _static_
+
+  XF_Flatten_Fold_subquery* pXF_Flatten_32_W_A_NC_I = new XF_Flatten_Fold_subquery(pCI);
+
+  pXF_Flatten_32_W_A_NC_I->v32_W_A_NC_I();
+
+  delete pXF_Flatten_32_W_A_NC_I;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void XF_Flatten_Fold_subquery::v34_W_A_NC_ro(CardIter* pCI)
+{
+  _static_
+
+  XF_Flatten_Fold_subquery* pXF_Flatten_34_W_A_NC_ro = new XF_Flatten_Fold_subquery(pCI);
+
+  pXF_Flatten_34_W_A_NC_ro->v34_W_A_NC_ro();
+
+  delete pXF_Flatten_34_W_A_NC_ro;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- public ------------------------------------------------------------------*/
@@ -199,6 +227,40 @@ void XF_Flatten_Fold_subquery::v32_W_A_NC_I(void)
 
   m_pCI->vEndTransform(__LINE__);
 }
+
+/*----------------------------------------------------------------------------*/
+/* add level to op                                                            */
+/*----------------------------------------------------------------------------*/
+void XF_Flatten_Fold_subquery::v34_W_A_NC_ro(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_10_F, _FOOTER_);
+
+  // m_pCI->PRINTBOARD_dbg();
+
+  // W A NC ro
+  // push a (single-value aggregate non-correlated in) sub-query before the main-query
+  // as an aggregation-fan (projecting a single aggregated value)
+  // (refer: Q15)
+
+  /*
+   */
+
+  m_pCI->vTransform(__FILE__, __func__, XF_FLATTEN_34_W_A_NC_RO);
+  //m_pCI->PRINTBOARD_dbg();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  vFold_subQuery(m_pCI, "W_A_NC_ro"_Stz, CK_o_WHERE);
+  vSet_smooth(m_pCI, CK_o_WHERE, QO_RELN_OP);
+  vSmooth(m_pCI);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  m_pCI->E.p_deck->vMarksClearRecursive();
+
+  m_pCI->vEndTransform(__LINE__);
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

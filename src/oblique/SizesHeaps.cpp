@@ -260,8 +260,6 @@
 #include "XF_Epilog_X_stmCol_To_colNm.hpp"
 #include "XF_Epilog_X_tblCol_To_expCol.hpp"
 #include "XF_Flatten_Fold_subquery.hpp"
-#include "XF_Flatten_32_W_A_NC_I.hpp"
-#include "XF_Flatten_34_W_A_NC_ro.hpp"
 #include "XF_Flatten_40_W_L_C_E.hpp"
 #include "XF_Flatten_52_W_L_NC_I_exists.hpp"
 #include "XF_Flatten_52_W_L_NC_I_join.hpp"
@@ -797,8 +795,6 @@ SizeHeap gxaSizeHeap[]
   {CN_XF_EPILOG_X_TBLCOL_TO_EXPCOL,   sizeof(XF_Epilog_X_tblCol_To_expCol),   HT_T_TINY    , FILL },
   {CN_XF_FLATTEN_SUBQUERY,            sizeof(XF_Flatten_subquery),            HT_T_TINY    , FILL },
   {CN_XF_FLATTEN_10_F,                sizeof(XF_Flatten_Fold_subquery),       HT_T_TINY    , FILL },
-  {CN_XF_FLATTEN_32_W_A_NC_I,         sizeof(XF_Flatten_32_W_A_NC_I),         HT_T_TINY    , FILL },
-  {CN_XF_FLATTEN_34_W_A_NC_RO,        sizeof(XF_Flatten_34_W_A_NC_ro),        HT_T_TINY    , FILL },
   {CN_XF_FLATTEN_40_W_L_C_E,          sizeof(XF_Flatten_40_W_L_C_E),          HT_T_TINY    , FILL },
   {CN_XF_FLATTEN_52_W_L_NC_I_EXISTS,  sizeof(XF_Flatten_52_W_L_NC_I_exists),  HT_T_TINY    , FILL },
   {CN_XF_FLATTEN_52_W_L_NC_I_JOIN,    sizeof(XF_Flatten_52_W_L_NC_I_join),    HT_T_TINY    , FILL },
