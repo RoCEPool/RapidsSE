@@ -129,6 +129,7 @@ cmd::fillOut_allCmds
   "it_analyzeIndex.sen"     include
   "it_analyzeTable.sen"     include
   "it_bpaObjects.sen"       include
+  "it_bpaPool.sen"          include
   "it_bpaRegions.sen"       include
   "it_columnDefs.sen"       include
   "it_command.sen"          include

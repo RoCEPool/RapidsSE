@@ -1622,6 +1622,7 @@ void vJobIdLastJobIdFetch(void);
   void vPdsAddAnalyzeIndex(void);
   void vPdsAddAnalyzeTable(void);
   void vPdsAddBpaObjects(void);
+  void vPdsAddBpaPool(void);
   void vPdsAddBpaRegions(void);
   void vPdsAddColumnDef(void);
   void vPdsAddGridSanity(void);

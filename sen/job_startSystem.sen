@@ -48,6 +48,7 @@
   start::it_analyzeIndex
   start::it_analyzeTable
   start::it_bpaObjects
+  start::it_bpaPool
   start::it_bpaRegions
   start::it_columnDefs
   start::it_command

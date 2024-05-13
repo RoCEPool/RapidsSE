@@ -149,7 +149,7 @@ anidxCmd          : (ANIDX | ( (ANALYZE | ANALYSE) TABLE)) tableName indexName ;
 antblCmd          : (ANTBL | ( (ANALYZE | ANALYSE) INDEX)) tableName ;
 
 // B
-bpaCmd            : BPA type=(REGIONS | OBJECTS | ALL)?;
+bpaCmd            : BPA type=(POOL | REGIONS | OBJECTS | ALL)?;
 
 // C
 compactIdxCmd     : (COMPACTIDX | (COMPACT INDEX)) tableName indexName ;
@@ -625,7 +625,7 @@ nonReservedWord   :
                   | MONOTONIC | MONTHS | MS
                   | NODE | NODES | NOOP | NOP | NOW
                   | OBJECTS | OFF | OFFSET | ORIGIN
-                  | PARTITIONS | PATHS | PIPELINE | PLACING | PRETTY
+                  | PARTITIONS | PATHS | PIPELINE | PLACING | POOL | PRETTY
                   | QUARTER| QUARTERS
                   | RECORD_ENDS | RECORD_TERMINATOR | REFERENCE | REGIONS | REPLICATED | ROWSIZE
                   | S_ONLY | SCHEMA | SEC | SECONDS | SKIPLIST | SLEEP | SPACE | STAGE | STATS
@@ -796,6 +796,7 @@ PARTITION             : P A R T I T I O N;
 PATHS                 : P A T H S;
 PIPELINE              : P I P E L I N E;
 PLACING               : P L A C I N G;
+POOL                  : P O O L;
 POSITION              : P O S I T I O N;
 PRETTY                : P R E T T Y;
 PRIMARY               : P R I M A R Y;

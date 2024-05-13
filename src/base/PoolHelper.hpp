@@ -25,6 +25,7 @@ namespace BASE
     static void vPoolAnalyze(void);
     static void vPoolDump(void);
     static i8   iPoolFree(void);
+    static void vPoolSummary(Pds* pPds, Pds* pPdsWarn, StreamDef* pWarnDef);
     static void vRegionSummary(void);
     static void vRegionSummary(Pds* pPds, Pds* pPdsWarn, StreamDef* pWarnDef);
     static void vValidateEnums(void);

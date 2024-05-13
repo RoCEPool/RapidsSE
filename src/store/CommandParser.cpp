@@ -522,7 +522,7 @@ antlrcpp::Any CommandParser::visitBpaCmd(Parser::sqlParser::BpaCmdContext *pCtx)
     CommandParser* nestedParser = new CommandParser(m_pCurStmtTagSet, m_pParentTask);
 
     try {
-      Stz* szBpaAllCmd = "bpa regions; bpa objects;"_Stz;
+      Stz* szBpaAllCmd = "bpa pool; bpa regions; bpa objects;"_Stz;
       m_pChildTasks = nestedParser->pParseCommand(szBpaAllCmd);
 
     } catch (Parser::SyntaxException& e) {

@@ -207,6 +207,7 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("C_TDEF_ANALYZEINDEX"_Stz,  C_TDEF_ANALYZEINDEX);
   vAddConstant("C_TDEF_ANALYZETABLE"_Stz,  C_TDEF_ANALYZETABLE);
   vAddConstant("C_TDEF_BPAOBJECTS"_Stz,    C_TDEF_BPAOBJECTS);
+  vAddConstant("C_TDEF_BPAPOOL"_Stz,       C_TDEF_BPAPOOL);
   vAddConstant("C_TDEF_BPAREGIONS"_Stz,    C_TDEF_BPAREGIONS);
   vAddConstant("C_TDEF_COLUMNDEFS"_Stz,    C_TDEF_COLUMNDEFS);
   vAddConstant("C_TDEF_COMMAND"_Stz,       C_TDEF_COMMAND);
