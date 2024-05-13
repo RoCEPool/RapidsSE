@@ -6,7 +6,6 @@
 
 #include "XF_Prolog_Analyse_emit.hpp"
 
-#include "XF_Flatten_53_W_L_NC_NI_join.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -120,7 +119,7 @@ void XF_Flatten_Fold_subquery::v52_W_L_NC_I_join(CardIter* pCI)
   i8 nTables = nTables_In_SubQuery(pCI, "52_W_L_NC_I_join"_Stz, CK_o_WHERE);
 
   if (1 == nTables)
-    XF_Flatten_53_W_L_NC_NI_join::v53_W_L_NC_NI_join(pCI);
+    XF_Flatten_Fold_subquery::v53_W_L_NC_NI_join(pCI);
   else
     XF_Flatten_Fold_subquery::v53_W_L_NC_NI_exists(pCI);
 }
@@ -140,6 +139,20 @@ void XF_Flatten_Fold_subquery::v53_W_L_NC_NI_exists(CardIter* pCI)
   delete pXF_Flatten_53_W_L_NC_NI_exists;
 }
 
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void XF_Flatten_Fold_subquery::v53_W_L_NC_NI_join(CardIter* pCI)
+{
+  _static_
+
+  XF_Flatten_Fold_subquery* pXF_Flatten_53_W_L_NC_NI_join = new XF_Flatten_Fold_subquery(pCI);
+
+  pXF_Flatten_53_W_L_NC_NI_join->v53_W_L_NC_NI_join();
+
+  delete pXF_Flatten_53_W_L_NC_NI_join;
+}
 
 
 /*----------------------------------------------------------------------------*/

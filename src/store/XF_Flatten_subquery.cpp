@@ -12,7 +12,6 @@
 #include "XF_Flatten_Join_Ordering.hpp"
 
 #include "XF_Flatten_Fold_subquery.hpp"
-#include "XF_Flatten_53_W_L_NC_NI_join.hpp"
 
 #include "XF_Flatten_Delete_fold.hpp"
 
@@ -250,8 +249,7 @@ void XF_Flatten_subquery::vFlattenByDecisionTree(Symbol* pSym_sqyNo_inner)
              if (pIQ_called->bByExists())    /* W_L_NC_E       */ NEVER_REACH
         else if (pIQ_called->bByNotExists()) /* W_L_NC_NE      */ NEVER_REACH
         else if (pIQ_called->bByIn())        /* W_L_NC_I       */ XF_Flatten_Fold_subquery::v52_W_L_NC_I_join(m_pCI);
-        else if (pIQ_called->bByNotIn())     /* W_L_NC_NI  Q16 */ XF_Flatten_53_W_L_NC_NI_join::v53_W_L_NC_NI_join(
-                   m_pCI);
+        else if (pIQ_called->bByNotIn())     /* W_L_NC_NI  Q16 */ XF_Flatten_Fold_subquery::v53_W_L_NC_NI_join(m_pCI);
         else                                 /* W_L_NC_ro      */ NEVER_REACH
       }
     }

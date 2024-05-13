@@ -260,7 +260,6 @@
 #include "XF_Epilog_X_stmCol_To_colNm.hpp"
 #include "XF_Epilog_X_tblCol_To_expCol.hpp"
 #include "XF_Flatten_Fold_subquery.hpp"
-#include "XF_Flatten_53_W_L_NC_NI_join.hpp"
 #include "XF_Flatten_Purge_where.hpp"
 #include "XF_Flatten_Delete_fold.hpp"
 #include "XF_Flatten_Derive_bounds.hpp"
@@ -790,7 +789,6 @@ SizeHeap gxaSizeHeap[]
   {CN_XF_EPILOG_X_TBLCOL_TO_EXPCOL,   sizeof(XF_Epilog_X_tblCol_To_expCol),   HT_T_TINY    , FILL },
   {CN_XF_FLATTEN_SUBQUERY,            sizeof(XF_Flatten_subquery),            HT_T_TINY    , FILL },
   {CN_XF_FLATTEN_10_F,                sizeof(XF_Flatten_Fold_subquery),       HT_T_TINY    , FILL },
-  {CN_XF_FLATTEN_53_W_L_NC_NI_JOIN,   sizeof(XF_Flatten_53_W_L_NC_NI_join),   HT_T_TINY    , FILL },
   {CN_XF_FLATTEN_PURGE_WHERE,            sizeof(XF_Flatten_Purge_where),      HT_T_TINY    , FILL },
   {CN_XF_FLATTEN_DELETE_FLAT,            sizeof(XF_Flatten_Delete_fold),            HT_T_TINY    , FILL },
   {CN_XF_FLATTEN_DERIVE_BOUNDS,          sizeof(XF_Flatten_Derive_bounds),          HT_T_TINY    , FILL },
