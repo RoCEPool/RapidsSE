@@ -21,7 +21,7 @@
 #include "XF_Epilog_Type_Cast.hpp"
 #include "XF_Epilog_X_stmCol_To_colNm.hpp"
 #include "XF_Epilog_X_tblCol_To_expCol.hpp"
-#include "XF_Flatten_subquery.hpp"
+#include "XF_Flatten_Flatten_pipeline.hpp"
 #include "XF_Flatten_X_expCol_To_tblCol.hpp"
 #include "XF_Optimise_Cull_bound.hpp"
 #include "XF_Optimise_Cut_sort.hpp"
@@ -195,7 +195,7 @@ void XF::vTransform(void)
 
   m_pCI->m_pBench->vPhase(m_pCI,OH_FLATTEN);                         //
                                                      //
-  XF_Flatten_subquery::vFlatten(m_pCI);                       //
+  XF_Flatten_Flatten_pipeline::vFlatten(m_pCI);                       //
                                                      //
   XF_Utility::vRemove_LeftMost(m_pCI); //
                                                      //

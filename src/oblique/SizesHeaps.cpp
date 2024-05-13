@@ -230,7 +230,7 @@
 #include "ParamSpec.hpp"
 #include "ParamsSpec.hpp"
 #include "Scope.hpp"
-#include "XF_Flatten_subquery.hpp"
+#include "XF_Flatten_Flatten_pipeline.hpp"
 #include "Equivalence.hpp"
 #include "XF_Flatten_Reorder_join.hpp"
 #include "SawOpCards.hpp"
@@ -788,7 +788,7 @@ SizeHeap gxaSizeHeap[]
   {CN_XF_EPILOG_X_STMCOL_TO_COLNM,       sizeof(XF_Epilog_X_stmCol_To_colNm),       HT_T_TINY    , FILL },
   {CN_XF_EPILOG_X_TBLCOL_TO_EXPCOL,      sizeof(XF_Epilog_X_tblCol_To_expCol),      HT_T_TINY    , FILL },
   {CN_XF_FLATTEN_FOLD_SUBQUERY,          sizeof(XF_Flatten_Fold_subquery),          HT_T_TINY    , FILL },
-  {CN_XF_FLATTEN_SUBQUERY,               sizeof(XF_Flatten_subquery),               HT_T_TINY    , FILL },
+  {CN_XF_FLATTEN_FLATTEN_PIPELINE,       sizeof(XF_Flatten_Flatten_pipeline),       HT_T_TINY    , FILL },
   {CN_XF_FLATTEN_PURGE_WHERE,            sizeof(XF_Flatten_Purge_where),            HT_T_TINY    , FILL },
   {CN_XF_FLATTEN_DELETE_FLAT,            sizeof(XF_Flatten_Delete_fold),            HT_T_TINY    , FILL },
   {CN_XF_FLATTEN_DERIVE_BOUNDS,          sizeof(XF_Flatten_Derive_bounds),          HT_T_TINY    , FILL },

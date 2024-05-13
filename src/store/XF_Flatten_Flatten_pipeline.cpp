@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* XF_Flatten_subquery.cpp -- Flatten SubQueries                                */
+/* XF_Flatten_Flatten_pipeline.cpp -- Flatten Pipeline of SubQueries          */
 /*============================================================================*/
 
-#include "XF_Flatten_subquery.hpp"
+#include "XF_Flatten_Flatten_pipeline.hpp"
 
 #include "Board.hpp"
 #include "CardIter.hpp"
@@ -22,35 +22,35 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_Flatten_subquery, CN_XF_FLATTEN_SUBQUERY)
-__aNewFunction(XF_Flatten_subquery, CN_XF_FLATTEN_SUBQUERY)
-__vDeleteFunction(XF_Flatten_subquery, CN_XF_FLATTEN_SUBQUERY)
-__aFooterFunction(XF_Flatten_subquery)
+__pCastFunction(STORE, XF_Flatten_Flatten_pipeline, CN_XF_FLATTEN_FLATTEN_PIPELINE)
+__aNewFunction(XF_Flatten_Flatten_pipeline, CN_XF_FLATTEN_FLATTEN_PIPELINE)
+__vDeleteFunction(XF_Flatten_Flatten_pipeline, CN_XF_FLATTEN_FLATTEN_PIPELINE)
+__aFooterFunction(XF_Flatten_Flatten_pipeline)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-XF_Flatten_subquery::XF_Flatten_subquery(CardIter* pCI)
-: XF_FLATTEN(CN_XF_FLATTEN_SUBQUERY,pCI)
+XF_Flatten_Flatten_pipeline::XF_Flatten_Flatten_pipeline(CardIter* pCI)
+: XF_FLATTEN(CN_XF_FLATTEN_FLATTEN_PIPELINE, pCI)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_SUBQUERY, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_FLATTEN_PIPELINE, _FOOTER_);
 
   m_pCI = pCI;
 
-  _checkInitialised_(CN_XF_FLATTEN_SUBQUERY);
+  _checkInitialised_(CN_XF_FLATTEN_FLATTEN_PIPELINE);
 
   m_pCI->vUseBoard(nullptr);
 
 
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_SUBQUERY, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_FLATTEN_PIPELINE, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-XF_Flatten_subquery::~XF_Flatten_subquery(void) noexcept(false)
+XF_Flatten_Flatten_pipeline::~XF_Flatten_Flatten_pipeline(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_SUBQUERY, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_FLATTEN_PIPELINE, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -60,16 +60,15 @@ XF_Flatten_subquery::~XF_Flatten_subquery(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Flatten_subquery::vFlatten(CardIter* pCI)
+void XF_Flatten_Flatten_pipeline::vFlatten(CardIter* pCI)
 {
   _static_
 
-  XF_Flatten_subquery* pMakeFlat = new XF_Flatten_subquery(pCI);
+  XF_Flatten_Flatten_pipeline* pMakeFlat = new XF_Flatten_Flatten_pipeline(pCI);
 
   pMakeFlat->vFlatten();
 
   delete pMakeFlat;
-
 }
 
 
@@ -80,9 +79,9 @@ void XF_Flatten_subquery::vFlatten(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Flatten_subquery::vFlatten(void)
+void XF_Flatten_Flatten_pipeline::vFlatten(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_SUBQUERY, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_FLATTEN_PIPELINE, _FOOTER_);
 
   m_pCI->vUseBoard(nullptr);
 
@@ -94,9 +93,9 @@ void XF_Flatten_subquery::vFlatten(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Flatten_subquery::vFlatten_recurse(Symbol* pSym_sqyNo_inner, i8 iDepth)
+void XF_Flatten_Flatten_pipeline::vFlatten_recurse(Symbol* pSym_sqyNo_inner, i8 iDepth)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_SUBQUERY, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_FLATTEN_PIPELINE, _FOOTER_);
 
   Board *pBoard_outer = nullptr;
   if (iDepth) {
