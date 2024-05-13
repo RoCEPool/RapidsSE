@@ -330,6 +330,84 @@ void XF_Flatten_Fold_subquery::v40_W_L_C_E(void)
 /*----------------------------------------------------------------------------*/
 /* add level to op                                                            */
 /*----------------------------------------------------------------------------*/
+void XF_Flatten_Fold_subquery::v53_W_L_NC_NI_exists(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_10_F, _FOOTER_);
+
+  // m_pCI->PRINTBOARD_dbg();
+
+  // W L NC NI
+  // push a (linear non-correlated not in) sub-query before the main-query
+  // as a keyExists
+  // (refer: Q16)
+
+  /* ARCHETYPE :
+      select count(*)
+        from partsupp, part
+       where PS_PARTKEY = P_PARTKEY
+         and PS_SUPPKEY not in (select S_SUPPKEY
+                                  from supplier
+                                 where s_comment like '%Customer%Complaints%')
+      ;
+ */
+
+  m_pCI->vTransform(__FILE__, __func__, XF_FLATTEN_53_W_L_NC_NI_EXISTS);
+  //m_pCI->PRINTBOARD_dbg();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  vFold_subQuery(m_pCI, "W_L_NC_NI_exists"_Stz, CK_o_WHERE);
+  vSet_smooth(m_pCI, CK_o_WHERE, QO_IN_OP);
+  vSmooth(m_pCI);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  m_pCI->E.p_deck->vMarksClearRecursive();
+
+  m_pCI->vEndTransform(__LINE__);
+}
+
+/*----------------------------------------------------------------------------*/
+/* add level to op                                                            */
+/*----------------------------------------------------------------------------*/
+void XF_Flatten_Fold_subquery::v53_W_L_NC_NI_join(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_10_F, _FOOTER_);
+
+  // m_pCI->PRINTBOARD_dbg();
+
+  // W L NC NI
+  // (refer: Q16)
+
+  /* ARCHETYPE :
+      select count(*)
+        from partsupp, part
+       where PS_PARTKEY = P_PARTKEY
+         and PS_SUPPKEY not in (select S_SUPPKEY
+                                  from supplier
+                                 where s_comment like '%Customer%Complaints%')
+      ;
+ */
+
+  m_pCI->vTransform(__FILE__, __func__, XF_FLATTEN_53_W_L_NC_NI_JOIN);
+  //m_pCI->PRINTBOARD_dbg();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  vFold_subQuery(m_pCI, "53_W_L_NC_NI_join"_Stz, CK_o_WHERE);
+  vInto_KEYnotEXISTS(m_pCI);
+  vSmooth(m_pCI);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  m_pCI->E.p_deck->vMarksClearRecursive();
+
+  m_pCI->vEndTransform(__LINE__);
+}
+
+/*----------------------------------------------------------------------------*/
+/* add level to op                                                            */
+/*----------------------------------------------------------------------------*/
 void XF_Flatten_Fold_subquery::v74_H_A_NC_ro(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_10_F, _FOOTER_);
