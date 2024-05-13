@@ -10,9 +10,9 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_Utility, CN_XF_PROLOG_VALIDATE_BOARD)
-__aNewFunction(XF_Utility, CN_XF_PROLOG_VALIDATE_BOARD)
-__vDeleteFunction(XF_Utility, CN_XF_PROLOG_VALIDATE_BOARD)
+__pCastFunction(STORE, XF_Utility, CN_XF_UTILITY)
+__aNewFunction(XF_Utility, CN_XF_UTILITY)
+__vDeleteFunction(XF_Utility, CN_XF_UTILITY)
 __aFooterFunction(XF_Utility)
 
 
@@ -20,13 +20,13 @@ __aFooterFunction(XF_Utility)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Utility::XF_Utility(CardIter* pCI)
-: XF_PROLOG(CN_XF_PROLOG_VALIDATE_BOARD, pCI)
+: XF_PROLOG(CN_XF_UTILITY, pCI)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_VALIDATE_BOARD, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_UTILITY, _FOOTER_);
 
-  _checkInitialised_(CN_XF_PROLOG_VALIDATE_BOARD);
+  _checkInitialised_(CN_XF_UTILITY);
   
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_VALIDATE_BOARD, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_UTILITY, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -34,7 +34,7 @@ XF_Utility::XF_Utility(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 XF_Utility::~XF_Utility(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_VALIDATE_BOARD, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_UTILITY, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -66,7 +66,7 @@ void XF_Utility::vValidate_board(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 void XF_Utility::vValidate_board(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_VALIDATE_BOARD, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_UTILITY, _FOOTER_);
 
   m_pCI->vTransform(__FILE__, __func__, XF_PROLOG_VALIDATE_BOARD);
 
@@ -137,7 +137,7 @@ void XF_Utility::vVerify_dic(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 void XF_Utility::vVerify_dic_loop(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_VALIDATE_BOARD, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_UTILITY, _FOOTER_);
 
   m_pCI->vTransform(__FILE__, __func__, XF_UTILITY_VERIFY_DIC);
 
@@ -159,7 +159,7 @@ void XF_Utility::vVerify_dic_loop(void)
 /*----------------------------------------------------------------------------*/
 void XF_Utility::vVerify_dic_OP(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_VALIDATE_BOARD, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_UTILITY, _FOOTER_);
 
   //===========================================================================
   // phase 1 : aspects
@@ -1195,7 +1195,7 @@ void XF_Utility::vRemove_LeftMost(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 void XF_Utility::vRemove_LeftMost(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_VALIDATE_BOARD, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_UTILITY, _FOOTER_);
 
   m_pCI->vTransform(__FILE__, __func__, XF_FLATTEN_DELETE_LEFT_SUBQUERY);
 

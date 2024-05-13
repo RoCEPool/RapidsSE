@@ -49,7 +49,6 @@
 #include "XF_Prolog_Erase_construction.hpp"
 #include "XF_Prolog_Move_on.hpp"
 #include "XF_Prolog_Reduce_not.hpp"
-#include "XF_Prolog_Validate_Board.hpp"
 #include "XF_Prolog_X_sqyNm_To_sqyNo.hpp"
 #include "XF_Prolog_X_colNm_To_expCol.hpp"
 #include "XF_Prolog_X_scan_To_from.hpp"
