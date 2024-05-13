@@ -40,6 +40,77 @@ XF_Utility::~XF_Utility(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void XF_Utility::vValidate_board(CardIter* pCI)
+{
+  _static_
+
+  XF_Utility* pXF_Validate = new XF_Utility(pCI);
+
+  try {
+    pXF_Validate->vValidate_board();
+  }
+  catch (Error xError) {
+    delete pXF_Validate;
+    throw xError;
+  }
+  delete pXF_Validate;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*-- public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* ensure each op has a level                                                 */
+/*----------------------------------------------------------------------------*/
+void XF_Utility::vValidate_board(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_VALIDATE_BOARD, _FOOTER_);
+
+  m_pCI->vTransform(__FILE__, __func__, XF_PROLOG_VALIDATE_BOARD);
+
+  Card* p_OP = nullptr;
+  //Card_Scan* p_scan = nullptr;
+
+  m_pCI->vClearRegisters();
+  m_pCI->vBeginEach();
+  while (m_pCI->bEachOp()) {
+    switch (m_pCI->E.e_Op) {
+
+      //case CK_o_SCAN: p_scan = m_pCI->G.p_scan; break;
+
+      case CK_o_SEND:
+        if (! p_OP) {
+          Error xError(EC_MISSING_OP,(Stz*)__FILE__,__LINE__);
+          throw xError;
+        }
+        break;
+
+      case CK_o_STAGE:
+        //p_scan = nullptr;
+        //p_OP   = nullptr;
+        break;
+
+      default:
+        if (m_pCI->E.p_Op->Card::bIsOp())
+          p_OP = m_pCI->E.p_Op;
+        break;
+    }
+  }
+
+//  if (! p_scan) {
+//    Error xError(EC_MISSING_SCAN_OP,(Stz*)__FILE__,__LINE__);
+//    throw xError;
+//  }
+
+  m_pCI->vEndTransform(__LINE__);
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void XF_Utility::vVerify_dic(CardIter* pCI)
 {
   _static_

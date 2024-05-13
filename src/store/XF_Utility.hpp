@@ -20,14 +20,21 @@ namespace STORE
     XF_Utility(CardIter* pCI);
    ~XF_Utility(void) noexcept(false);
 
-    static void vVerify_dic(CardIter* pCI);
-    void vVerify_dic_loop(void);
-    void vVerify_dic_OP(void);
-
     // - - - - - - - - - - - - - - - - - - - - - -
 
     static void vRemove_LeftMost(CardIter* pCI);
     void vRemove_LeftMost(void);
+
+    // - - - - - - - - - - - - - - - - - - - - - -
+
+    static void vValidate_board(CardIter* pCI);
+    void vValidate_board(void);
+
+    // - - - - - - - - - - - - - - - - - - - - - -
+
+    static void vVerify_dic(CardIter* pCI);
+    void vVerify_dic_loop(void);
+    void vVerify_dic_OP(void);
 
   private:
     Footer* aFooter(void);

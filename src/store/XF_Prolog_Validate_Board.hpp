@@ -20,9 +20,6 @@ namespace STORE
     XF_Prolog_Validate_Board(CardIter* pCI);
    ~XF_Prolog_Validate_Board(void) noexcept(false);
 
-    static void vValidate(CardIter* pCI);
-
-    void vValidate(void);
 
   private:
     Footer* aFooter(void);

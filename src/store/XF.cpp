@@ -158,7 +158,7 @@ void XF::vTransform(void)
   }
   m_pCI->vBeginBoard();                        //
   while (m_pCI->bEachBoard()) {                    //
-    XF_Prolog_Validate_Board::vValidate(m_pCI);    //
+    XF_Utility::vValidate_board(m_pCI);    //
   }                                                //
   if (AM::JOB::bHasTag(C_OPTIMISER_TRACE)) {
     m_pCI->m_pBench->vDump(__func__);
@@ -296,7 +296,7 @@ void XF::vTransform_passThru(void)
   while (m_pCI->bEachBoard()) {
     m_pCI->E.pBoard->vPhase(OH_PASS_THRU);
     //XF_Prolog_X_sqyNm_To_sqyNo::vConvert_board(m_pCI);
-    XF_Prolog_Validate_Board::vValidate(m_pCI);
+    XF_Utility::vValidate_board(m_pCI);
   }
 
   m_pCI->vBeginBoard();
