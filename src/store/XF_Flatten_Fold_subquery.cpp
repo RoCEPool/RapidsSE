@@ -1,10 +1,8 @@
 /*============================================================================*/
-/* XF_Flatten_Fold_subquery.cpp -- Flatten                                             */
+/* XF_Flatten_Fold_subquery.cpp -- Flatten                                    */
 /*============================================================================*/
 
 #include "XF_Flatten_Fold_subquery.hpp"
-
-#include "XF_Prolog_Analyse_emit.hpp"
 
 
 /*----------------------------------------------------------------------------*/
@@ -41,132 +39,84 @@ XF_Flatten_Fold_subquery::~XF_Flatten_Fold_subquery(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Flatten_Fold_subquery::v10_F(CardIter* pCI)
+void XF_Flatten_Fold_subquery::vDecisionTree(CardIter* pCI, Symbol* pSym_sqyNo)
 {
   _static_
 
-  XF_Flatten_Fold_subquery* pXF_Flatten_10_F = new XF_Flatten_Fold_subquery(pCI);
+  XF_Flatten_Fold_subquery* pFoldBy = new XF_Flatten_Fold_subquery(pCI);
 
-  pXF_Flatten_10_F->v10_F();
+  pCI->Flat.m_pSqy_inner = pCI->m_pBench->pFindSubQuery(pSym_sqyNo);
+  SubQuery* pInner = pCI->Flat.m_pSqy_inner;
 
-  delete pXF_Flatten_10_F;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void XF_Flatten_Fold_subquery::v24_W_A_C_ro(CardIter* pCI)
-{
-  _static_
-
-  XF_Flatten_Fold_subquery* pXF_Flatten_24_W_A_C_ro = new XF_Flatten_Fold_subquery(pCI);
-
-  pXF_Flatten_24_W_A_C_ro->v24_W_A_C_ro();
-
-  delete pXF_Flatten_24_W_A_C_ro;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void XF_Flatten_Fold_subquery::v32_W_A_NC_I(CardIter* pCI)
-{
-  _static_
-
-  XF_Flatten_Fold_subquery* pXF_Flatten_32_W_A_NC_I = new XF_Flatten_Fold_subquery(pCI);
-
-  pXF_Flatten_32_W_A_NC_I->v32_W_A_NC_I();
-
-  delete pXF_Flatten_32_W_A_NC_I;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void XF_Flatten_Fold_subquery::v34_W_A_NC_ro(CardIter* pCI)
-{
-  _static_
-
-  XF_Flatten_Fold_subquery* pXF_Flatten_34_W_A_NC_ro = new XF_Flatten_Fold_subquery(pCI);
-
-  pXF_Flatten_34_W_A_NC_ro->v34_W_A_NC_ro();
-
-  delete pXF_Flatten_34_W_A_NC_ro;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void XF_Flatten_Fold_subquery::v40_W_L_C_E(CardIter* pCI)
-{
-  _static_
-
-  XF_Flatten_Fold_subquery* pXF_Flatten_40_W_L_C_E = new XF_Flatten_Fold_subquery(pCI);
-
-  pXF_Flatten_40_W_L_C_E->v40_W_L_C_E();
-
-  delete pXF_Flatten_40_W_L_C_E;
-}
-
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void XF_Flatten_Fold_subquery::v52_W_L_NC_I_join(CardIter* pCI)
-{
-  _static_
-
-  i8 nTables = nTables_In_SubQuery(pCI, "52_W_L_NC_I_join"_Stz, CK_o_WHERE);
-
-  if (1 == nTables)
-    XF_Flatten_Fold_subquery::v53_W_L_NC_NI_join(pCI);
+  if (pInner->bViaFrom())                /* F       Q7,8,9 */ pFoldBy->v10_F();
   else
-    XF_Flatten_Fold_subquery::v53_W_L_NC_NI_exists(pCI);
-}
+  if (pInner->bViaWhere()) {
+    if (pInner->bIsAggregation()) {
+      if (pInner->bIsCorrelated()) {     /* 20_ */
+        if (pInner->bByExists())         /* W_A_C_E        */ NEVER_REACH
+        else if (pInner->bByNotExists()) /* W_A_C_NE       */ NEVER_REACH
+        else if (pInner->bByIn())        /* W_A_C_I        */ NEVER_REACH
+        else if (pInner->bByNotIn())     /* W_A_C_NI       */ NEVER_REACH
+        else                             /* W_A_C_ro Q2,17 */ pFoldBy->v24_W_A_C_ro();
+      } else {                           /* 30_ */
+        if (pInner->bByExists())         /* W_A_NC_E       */ NEVER_REACH
+        else if (pInner->bByNotExists()) /* W_A_NC_NE      */ NEVER_REACH
+        else if (pInner->bByIn())        /* W_A_NC_I   Q18 */ pFoldBy->v32_W_A_NC_I();
+        else if (pInner->bByNotIn())     /* W_A_NC_NI      */ NEVER_REACH
+        else                             /* W_A_NC_ro  Q15 */ pFoldBy->v34_W_A_NC_ro();
+      }
+    } else {
+      if (pInner->bIsCorrelated()) {     /* 40_ */
+        if (pInner->bByExists())         /* W_L_C_E     Q4 */ pFoldBy->v40_W_L_C_E();
+        else if (pInner->bByNotExists()) /* W_L_C_NE       */ NEVER_REACH
+        else if (pInner->bByIn())        /* W_L_C_I        */ NEVER_REACH
+        else if (pInner->bByNotIn())     /* W_L_C_NI       */ NEVER_REACH
+        else                             /* W_L_C_ro       */ NEVER_REACH
+      } else {                           /* 50_ */
+        if (pInner->bByExists())         /* W_L_NC_E       */ NEVER_REACH
+        else if (pInner->bByNotExists()) /* W_L_NC_NE      */ NEVER_REACH
+        else if (pInner->bByIn())        /* W_L_NC_I       */ pFoldBy->v52_W_L_NC_I_join();
+        else if (pInner->bByNotIn())     /* W_L_NC_NI  Q16 */ pFoldBy->v53_W_L_NC_NI_join();
+        else                             /* W_L_NC_ro      */ NEVER_REACH
+      }
+    }
+  }
+  else
+  if (pInner->bViaHaving()) {
+    if (pInner->bIsAggregation()) {
+      if (pInner->bIsCorrelated()) {     /* 60_ */
+        if (pInner->bByExists())         /* H_A_C_E        */ NEVER_REACH
+        else if (pInner->bByNotExists()) /* H_A_C_NE       */ NEVER_REACH
+        else if (pInner->bByIn())        /* H_A_C_I        */ NEVER_REACH
+        else if (pInner->bByNotIn())     /* H_A_C_NI       */ NEVER_REACH
+        else                             /* H_A_C_ro       */ NEVER_REACH
+      } else {                           /* 70_ */
+        if (pInner->bByExists())         /* H_A_NC_E       */ NEVER_REACH
+        else if (pInner->bByNotExists()) /* H_A_NC_NE      */ NEVER_REACH
+        else if (pInner->bByIn())        /* H_A_NC_I       */ NEVER_REACH
+        else if (pInner->bByNotIn())     /* H_A_NC_NI      */ NEVER_REACH
+        else                             /* H_A_NC_ro  Q11 */ pFoldBy->v74_H_A_NC_ro();
+      }
+    } else {
+      if (pInner->bIsCorrelated()) {     /* 80_ */
+        if (pInner->bByExists())         /* H_L_C_E        */ NEVER_REACH
+        else if (pInner->bByNotExists()) /* H_L_C_NE       */ NEVER_REACH
+        else if (pInner->bByIn())        /* H_L_C_I        */ NEVER_REACH
+        else if (pInner->bByNotIn())     /* H_L_C_NI       */ NEVER_REACH
+        else                             /* H_L_C_ro       */ NEVER_REACH
+      } else {                           /* 90_ */
+        if (pInner->bByExists())         /* H_L_NC_E       */ NEVER_REACH
+        else if (pInner->bByNotExists()) /* H_L_NC_NE      */ NEVER_REACH
+        else if (pInner->bByIn())        /* H_L_NC_I       */ NEVER_REACH
+        else if (pInner->bByNotIn())     /* H_L_NC_NI      */ NEVER_REACH
+        else                             /* H_L_NC_ro      */ NEVER_REACH
+      }
+    }
+  }
+  else
+    NEVER_REACH;
 
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void XF_Flatten_Fold_subquery::v53_W_L_NC_NI_exists(CardIter* pCI)
-{
-  _static_
-
-  XF_Flatten_Fold_subquery* pXF_Flatten_53_W_L_NC_NI_exists = new XF_Flatten_Fold_subquery(pCI);
-
-  pXF_Flatten_53_W_L_NC_NI_exists->v53_W_L_NC_NI_exists();
-
-  delete pXF_Flatten_53_W_L_NC_NI_exists;
-}
-
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void XF_Flatten_Fold_subquery::v53_W_L_NC_NI_join(CardIter* pCI)
-{
-  _static_
-
-  XF_Flatten_Fold_subquery* pXF_Flatten_53_W_L_NC_NI_join = new XF_Flatten_Fold_subquery(pCI);
-
-  pXF_Flatten_53_W_L_NC_NI_join->v53_W_L_NC_NI_join();
-
-  delete pXF_Flatten_53_W_L_NC_NI_join;
-}
-
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void XF_Flatten_Fold_subquery::v74_H_A_NC_ro(CardIter* pCI)
-{
-  _static_
-
-  XF_Flatten_Fold_subquery* pXF_Flatten_74_H_A_NC_ro = new XF_Flatten_Fold_subquery(pCI);
-
-  pXF_Flatten_74_H_A_NC_ro->v74_H_A_NC_ro();
-
-  delete pXF_Flatten_74_H_A_NC_ro;
+  delete pFoldBy;
 }
 
 
@@ -180,8 +130,6 @@ void XF_Flatten_Fold_subquery::v74_H_A_NC_ro(CardIter* pCI)
 void XF_Flatten_Fold_subquery::v10_F(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_FOLD_SUBQUERY, _FOOTER_);
-
- // m_pCI->PRINTBOARD_dbg();
 
   // F
   // (refer: Q7,8,9)
@@ -372,6 +320,21 @@ void XF_Flatten_Fold_subquery::v40_W_L_C_E(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void XF_Flatten_Fold_subquery::v52_W_L_NC_I_join(void)
+{
+  _static_
+
+  i8 nTables = nTables_In_SubQuery(m_pCI, "52_W_L_NC_I_join"_Stz, CK_o_WHERE);
+
+  if (1 == nTables)
+    v53_W_L_NC_NI_join();
+  else
+    v53_W_L_NC_NI_exists();
+}
+
+/*----------------------------------------------------------------------------*/
 /* add level to op                                                            */
 /*----------------------------------------------------------------------------*/
 void XF_Flatten_Fold_subquery::v53_W_L_NC_NI_exists(void)
@@ -487,7 +450,6 @@ void XF_Flatten_Fold_subquery::v74_H_A_NC_ro(void)
 
   m_pCI->vEndTransform(__LINE__);
 }
-
 
 /*============================================================================*/
 /* end                                                                        */
