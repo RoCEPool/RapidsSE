@@ -12,7 +12,7 @@
 #include "XF_Flatten_Derive_bounds.hpp"
 #include "XF_Flatten_Purge_where.hpp"
 #include "XF_Flatten_Pullup_rlnConj.hpp"
-#include "XF_Flatten_Predicate_Reposition.hpp"
+#include "XF_Flatten_Reposition_predicate.hpp"
 #include "XF_Prolog_Analyse_emit.hpp"
 #include "eOT.h"
 
@@ -132,7 +132,7 @@ void XF_Flatten_Join_Ordering::vJoinOrdering(void)
 
   XF_Prolog_Analyse_emit::vAnalyse(m_pCI);
 
-  XF_Flatten_Predicate_Reposition::vXF_Predicate_Reposition(m_pCI);
+  XF_Flatten_Reposition_predicate::vXF_Predicate_Reposition(m_pCI);
   m_pCI->vValidateBench();
 
   XF_Flatten_Pullup_rlnConj::vXF_Pullup_rlnConj(m_pCI);

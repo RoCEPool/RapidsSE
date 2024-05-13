@@ -265,7 +265,7 @@
 #include "XF_Flatten_Derive_bounds.hpp"
 #include "XF_Flatten_Anchor_table.hpp"
 #include "XF_Flatten_Pullup_rlnConj.hpp"
-#include "XF_Flatten_Predicate_Reposition.hpp"
+#include "XF_Flatten_Reposition_predicate.hpp"
 #include "XF_Flatten_X_expCol_To_tblCol.hpp"
 #include "XF_Optimise_Cull_bound.hpp"
 #include "XF_Optimise_Cut_sort.hpp"
@@ -794,7 +794,7 @@ SizeHeap gxaSizeHeap[]
   {CN_XF_FLATTEN_DERIVE_BOUNDS,          sizeof(XF_Flatten_Derive_bounds),          HT_T_TINY    , FILL },
   {CN_XF_FLATTEN_ANCHOR_TABLE,           sizeof(XF_Flatten_Anchor_table),           HT_T_TINY    , FILL },
   {CN_XF_FLATTEN_JOIN_ORDERING,          sizeof(XF_Flatten_Join_Ordering),          HT_T_TINY    , FILL },
-  {CN_XF_FLATTEN_PREDICATE_REPOSITION,   sizeof(XF_Flatten_Predicate_Reposition),   HT_T_TINY    , FILL },
+  {CN_XF_FLATTEN_PREDICATE_REPOSITION,   sizeof(XF_Flatten_Reposition_predicate),   HT_T_TINY    , FILL },
   {CN_XF_FLATTEN_PULLUP_RLNCONJ,         sizeof(XF_Flatten_Pullup_rlnConj),         HT_T_TINY    , FILL },
   {CN_XF_FLATTEN_X_EXPCOL_TO_TBLCOL,     sizeof(XF_Flatten_X_expCol_To_tblCol),     HT_T_TINY    , FILL },
   {CN_XF_OPTIMISE_AGGREG_TO_SORT_ORDAGG, sizeof(XF_Optimise_aggreg_To_sort_ordAgg), HT_T_TINY    , FILL },
