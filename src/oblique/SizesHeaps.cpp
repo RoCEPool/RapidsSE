@@ -298,7 +298,7 @@
 #include "XF_Prolog_X_sqyNm_To_sqyNo.hpp"
 #include "XF_Prolog_X_colNm_To_expCol.hpp"
 #include "XF_Prolog_X_scan_To_from.hpp"
-#include "XF_Synthesise_pipelineDef.hpp"
+#include "XF_Synthesise_Craft_pipelineDef.hpp"
 #include "XF_Utility.hpp"
 
 #include "XC.hpp"
@@ -819,23 +819,23 @@ SizeHeap gxaSizeHeap[]
   {CN_XF_PROLOG_ANALYSE_INJECTABLE,    sizeof(XF_Prolog_Analyse_injectable),    HT_T_TINY    , FILL },
   {CN_XF_PROLOG_ANALYSE_SUBQUERY,      sizeof(XF_Prolog_Analyse_subQuery),      HT_T_TINY    , FILL },
   {CN_XF_PROLOG_ANALYSE_TABLE,         sizeof(XF_Prolog_Analyse_table),         HT_T_TINY    , FILL },
-  {CN_XF_PROLOG_ENSURE_LEVEL,          sizeof(XF_Prolog_Ensure_level),       HT_T_TINY    , FILL },
-  {CN_XF_PROLOG_ERASE_CONSTRUCTION,    sizeof(XF_Prolog_Erase_construction), HT_T_TINY    , FILL },
-  {CN_XF_PROLOG_MOVE_ON,               sizeof(XF_Prolog_Move_on),            HT_T_TINY    , FILL },
-  {CN_XF_PROLOG_REDUCE_NOT,            sizeof(XF_Prolog_Reduce_not),         HT_T_TINY    , FILL },
-  {CN_XF_PROLOG_VALIDATE_BOARD,        sizeof(XF_Prolog_Validate_Board),     HT_T_TINY    , FILL },
-  {CN_XF_PROLOG_X_SQYNM_TO_SQYNO,      sizeof(XF_Prolog_X_sqyNm_To_sqyNo),   HT_T_TINY    , FILL },
-  {CN_XF_PROLOG_X_COLNM_TO_EXPCOL,     sizeof(XF_Prolog_X_colNm_To_expCol),  HT_T_TINY    , FILL },
-  {CN_XF_PROLOG_X_SCAN_TO_FROM,        sizeof(XF_Prolog_X_scan_To_from),     HT_T_TINY    , FILL },
-  {CN_XF_SYNTHESISE_CODE,              sizeof(XF_Synthesise_code),           HT_T_TINY    , FILL },
-  {CN_XF_SYNTHESISE_PIPELINEDEF,       sizeof(XF_Synthesise_pipelineDef),    HT_T_TINY    , FILL },
-  {CN_XF_UTILITY_VERIFY_DIC,           sizeof(XF_Utility),                   HT_T_TINY    , FILL },
+  {CN_XF_PROLOG_ENSURE_LEVEL,          sizeof(XF_Prolog_Ensure_level),          HT_T_TINY    , FILL },
+  {CN_XF_PROLOG_ERASE_CONSTRUCTION,    sizeof(XF_Prolog_Erase_construction),    HT_T_TINY    , FILL },
+  {CN_XF_PROLOG_MOVE_ON,               sizeof(XF_Prolog_Move_on),               HT_T_TINY    , FILL },
+  {CN_XF_PROLOG_REDUCE_NOT,            sizeof(XF_Prolog_Reduce_not),            HT_T_TINY    , FILL },
+  {CN_XF_PROLOG_VALIDATE_BOARD,        sizeof(XF_Prolog_Validate_Board),        HT_T_TINY    , FILL },
+  {CN_XF_PROLOG_X_SQYNM_TO_SQYNO,      sizeof(XF_Prolog_X_sqyNm_To_sqyNo),      HT_T_TINY    , FILL },
+  {CN_XF_PROLOG_X_COLNM_TO_EXPCOL,     sizeof(XF_Prolog_X_colNm_To_expCol),     HT_T_TINY    , FILL },
+  {CN_XF_PROLOG_X_SCAN_TO_FROM,        sizeof(XF_Prolog_X_scan_To_from),        HT_T_TINY    , FILL },
+  {CN_XF_SYNTHESISE_CODE,              sizeof(XF_Synthesise_code),              HT_T_TINY    , FILL },
+  {CN_XF_SYNTHESISE_CRAFT_PIPELINEDEF, sizeof(XF_Synthesise_Craft_pipelineDef), HT_T_TINY    , FILL },
+  {CN_XF_UTILITY_VERIFY_DIC,           sizeof(XF_Utility),                      HT_T_TINY    , FILL },
 
-  {CN__Y__,                    'Y' - ('A' - 1),                              HT_INVALID   , FILL },
+  {CN__Y__,                    'Y' - ('A' - 1),                                 HT_INVALID   , FILL },
 
-  {CN__Z__,                    'Z' - ('A' - 1),                              HT_INVALID   , FILL },
+  {CN__Z__,                    'Z' - ('A' - 1),                                 HT_INVALID   , FILL },
 
-  {CN_ENUMS,                           C_VARGS_END,                          HT_INVALID   , FILL }
+  {CN_ENUMS,                           C_VARGS_END,                             HT_INVALID   , FILL }
 };
 
 #undef FILL
