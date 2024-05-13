@@ -6,6 +6,9 @@
 
 #include "XF_Prolog_Analyse_emit.hpp"
 
+#include "XF_Flatten_53_W_L_NC_NI_exists.hpp"
+#include "XF_Flatten_53_W_L_NC_NI_join.hpp"
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -107,6 +110,21 @@ void XF_Flatten_Fold_subquery::v40_W_L_C_E(CardIter* pCI)
   delete pXF_Flatten_40_W_L_C_E;
 }
 
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void XF_Flatten_Fold_subquery::v52_W_L_NC_I_join(CardIter* pCI)
+{
+  _static_
+
+  i8 nTables = nTables_In_SubQuery(pCI, "52_W_L_NC_I_join"_Stz, CK_o_WHERE);
+
+  if (1 == nTables)
+    XF_Flatten_53_W_L_NC_NI_join::v53_W_L_NC_NI_join(pCI);
+  else
+    XF_Flatten_53_W_L_NC_NI_exists::v53_W_L_NC_NI_exists(pCI);
+}
 
 
 
