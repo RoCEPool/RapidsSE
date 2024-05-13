@@ -6,7 +6,6 @@
 
 #include "XF_Prolog_Analyse_emit.hpp"
 
-#include "XF_Flatten_53_W_L_NC_NI_exists.hpp"
 #include "XF_Flatten_53_W_L_NC_NI_join.hpp"
 
 /*----------------------------------------------------------------------------*/
@@ -123,9 +122,23 @@ void XF_Flatten_Fold_subquery::v52_W_L_NC_I_join(CardIter* pCI)
   if (1 == nTables)
     XF_Flatten_53_W_L_NC_NI_join::v53_W_L_NC_NI_join(pCI);
   else
-    XF_Flatten_53_W_L_NC_NI_exists::v53_W_L_NC_NI_exists(pCI);
+    XF_Flatten_Fold_subquery::v53_W_L_NC_NI_exists(pCI);
 }
 
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void XF_Flatten_Fold_subquery::v53_W_L_NC_NI_exists(CardIter* pCI)
+{
+  _static_
+
+  XF_Flatten_Fold_subquery* pXF_Flatten_53_W_L_NC_NI_exists = new XF_Flatten_Fold_subquery(pCI);
+
+  pXF_Flatten_53_W_L_NC_NI_exists->v53_W_L_NC_NI_exists();
+
+  delete pXF_Flatten_53_W_L_NC_NI_exists;
+}
 
 
 
