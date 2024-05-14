@@ -240,6 +240,8 @@ namespace STORE
     Card_Expr* pPrior_expr(Symbol* pSymbol_arg);
     void vPushChild(Card* pParent, eCK eChild);
     void vPushEach(void);
+    void vPushEach(Board* pBoard);
+    void vPushEach(Card* pParent);
 
     void vRemoveDeleteMain(eCK eCrossCheck);
     void vResetMembers(void);

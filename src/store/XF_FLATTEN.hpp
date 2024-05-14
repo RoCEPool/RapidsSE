@@ -29,6 +29,8 @@ namespace STORE
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+    void vPromote_aggreg_To_gbyAgg(CardIter* pCI);
+
     bool bSnap_IQ_crlKey(CardIter* pCI);
     void vPromote_IQ_aggreg_To_gbyAgg_crlKey(CardIter* pCI);
     void vEnhance_IQ_emit_project_Add_crlKey(CardIter* pCI);
@@ -36,7 +38,6 @@ namespace STORE
     void vConvert_OQ_sqyPrm_Into_expCol(CardIter* pCI, Card_Predicate* p_predicate);
     void vMove_OQ_rlnConj_rslTest_To_from_filter(CardIter* pCI, Card_Predicate* p_predicate);
     void vRestate_emit_fold(CardIter* pCI);
-    void vPromote_aggreg_To_gbyAgg(CardIter* pCI);
 
   };
 
