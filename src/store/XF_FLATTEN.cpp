@@ -938,7 +938,6 @@ void XF_FLATTEN::vConvert_OQ_sqyNo_Into_expCol(CardIter* pCI,
 /*----------------------------------------------------------------------------*/
 void XF_FLATTEN::vMove_OQ_rlnConj_rslTest_To_from_filter(CardIter* pCI, Card_Predicate *p_predicate)
 {
-
   p_predicate->vRemove_rlnConj(pCI->Flat.m_p_conj_rslTest);
 
   //p_rlnConj_sqyRslTest->vDump();
@@ -957,17 +956,7 @@ void XF_FLATTEN::vMove_OQ_rlnConj_rslTest_To_from_filter(CardIter* pCI, Card_Pre
 /*----------------------------------------------------------------------------*/
 void XF_FLATTEN::vRestate_emit_fold(CardIter* pCI)
 {
-
-  pCI->vBeginEach();
-
-  while (pCI->bEachOp()) {
-
-    if (CK_o_FOLD == pCI->E.e_Op)
-      break;
-
-    pCI->vSnapIf_arriving();
-  }
-
+  pCI->vSnapIf_arriving_till(CK_o_FOLD);
   RASSERT(CK_o_FOLD == pCI->E.e_Op);
 
   pCI->E.p_fold->vAppendChild(pCI->Arriving.m_pEmitted_prior->pDupCardRecursive());

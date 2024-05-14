@@ -2319,6 +2319,24 @@ void CardIter::vSnapIf_arriving(bool bSub_emit)
 }
 
 /*----------------------------------------------------------------------------*/
+/* snap emit                                                                  */
+/*----------------------------------------------------------------------------*/
+void CardIter::vSnapIf_arriving_till(eCK eTill)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  for (vBeginEach(); bEachOp(); /**/) {
+
+    if (eTill == E.e_Op)
+      break;
+
+    vSnapIf_arriving();
+  }
+
+  RASSERT(eTill == E.e_Op);
+}
+
+/*----------------------------------------------------------------------------*/
 /* begin and record transformation information                                */
 /*----------------------------------------------------------------------------*/
 void CardIter::vTransform(const char* azXfile, const char* azXfunc, eXF eXform)

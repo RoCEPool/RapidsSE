@@ -252,6 +252,7 @@ namespace STORE
     void vSnap_arriving(Card_Emit* p_emit, Card_StreamKey * pStreamKey);
     void vSnapIf_arriving(Card_Emit* p_emit, Card_StreamKey * pStreamKey);
     void vSnapIf_arriving(bool bSub_emit=true);
+    void vSnapIf_arriving_till(eCK eTill);
 
     i8   i_Target(void);
     void vTransform(const char* azXfile, const char* azFunc, eXF eXform);
