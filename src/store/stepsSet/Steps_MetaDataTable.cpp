@@ -105,6 +105,7 @@ void Step::vMetaDataTableCreateTable(void)
 
   Table* pNewTable = _pTable(*m_pLogicUnit->m_xpTable);
   szTableNm = pNewTable->szTableNm();
+  i8 iTableAddr = (i8) pNewTable;
   StreamDef* pNewStreamDef = pNewTable->pStreamDef();
 
   //------------------------------------------------------------------------
@@ -146,6 +147,7 @@ void Step::vMetaDataTableCreateTable(void)
                                        "rapids"_Stz,
                                        "public"_Stz,
                                        szTableNm.szStz(),
+                                       iTableAddr,
                                        C_VARGS_END);
 
   if(!pRow) {
@@ -481,6 +483,7 @@ void Step::vMetaDataTableTablesInsert(void)
 //  m_pDataStack->vPopStr(szTableNm,__func__);
 
   Table* pNewTable = _pTable(*m_pLogicUnit->m_xpTable);
+  i8 iTableAddr = (i8) pNewTable;
   szTableNm = pNewTable->szTableNm();
 
   Table* pTable = AM::pMetaDataTableOfTables();
@@ -520,6 +523,7 @@ void Step::vMetaDataTableTablesInsert(void)
                                        "rapids"_Stz,
                                        "public"_Stz,
                                        szTableNm.szStz(),
+                                       iTableAddr,
                                        C_VARGS_END);
 
   if(!pRow) {

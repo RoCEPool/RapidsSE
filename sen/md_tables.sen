@@ -13,7 +13,8 @@
   define metadata table tableOfTables (
     catalogName   VARCHAR NOT NULL ,
     schemaName    VARCHAR NOT NULL ,
-    tableName     VARCHAR NOT NULL
+    tableName     VARCHAR NOT NULL ,
+    tableAddr     INTEGER NOT NULL
   ) < metaData > = 1 ;
   "
   nullptr api::forkChild  api:executeCheck
