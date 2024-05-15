@@ -731,7 +731,7 @@ SizeHeap gxaSizeHeap[]
   { CN_SYSREPORT,                sizeof(SysReport),          HT_T_TINY    ,FILL },
 
   { CN__T__,                     'T' - ('A' - 1),            HT_INVALID   ,FILL },
-  { CN_TABLE,                    sizeof(Table),              HT_T_MEDIUM  ,FILL },
+  { CN_TABLE,                    sizeof(Table),              HT_T_SMALL   ,FILL },
   { CN_TABLEDEF,                 sizeof(Table),              HT_T_MEDIUM  ,FILL },
   { CN_TABLEPTN,                 sizeof(TablePtn),           HT_T_TINY    ,FILL },
   { CN_TABLEPTNVEC,              sizeof(TablePtnVec),        HT_T_TINY    ,FILL },
