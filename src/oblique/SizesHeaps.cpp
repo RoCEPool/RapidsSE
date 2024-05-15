@@ -231,17 +231,16 @@
 #include "ParamSpec.hpp"
 #include "ParamsSpec.hpp"
 #include "Scope.hpp"
-#include "XF_Flatten_subquery.hpp"
+#include "XF_Flatten_Flatten_pipeline.hpp"
 #include "Equivalence.hpp"
-#include "XF_Flatten_Join_Ordering.hpp"
+#include "XF_Flatten_Reorder_join.hpp"
 #include "SawOpCards.hpp"
-#include "XF_Flatten_Left_subQuery.hpp"
 
 #include "ArgDef.hpp"
 #include "OpDef.hpp"
 #include "PipelineDef.hpp"
 #include "StageDef.hpp"
-#include "XF_Synthesise_code.hpp"
+#include "XF_Synthesise_Cut_code.hpp"
 #include "Ppy.hpp"
 #include "Symbol.hpp"
 #include "Weaver.hpp"
@@ -261,22 +260,13 @@
 #include "XF_Epilog_Type_Cast.hpp"
 #include "XF_Epilog_X_stmCol_To_colNm.hpp"
 #include "XF_Epilog_X_tblCol_To_expCol.hpp"
-#include "XF_Flatten_10_F.hpp"
-#include "XF_Flatten_24_W_A_C_ro.hpp"
-#include "XF_Flatten_32_W_A_NC_I.hpp"
-#include "XF_Flatten_34_W_A_NC_ro.hpp"
-#include "XF_Flatten_40_W_L_C_E.hpp"
-#include "XF_Flatten_52_W_L_NC_I_exists.hpp"
-#include "XF_Flatten_52_W_L_NC_I_join.hpp"
-#include "XF_Flatten_53_W_L_NC_NI_exists.hpp"
-#include "XF_Flatten_53_W_L_NC_NI_join.hpp"
-#include "XF_Flatten_74_H_A_NC_ro.hpp"
+#include "XF_Flatten_Fold_subquery.hpp"
 #include "XF_Flatten_Purge_where.hpp"
-#include "XF_Flatten_Delete_flat.hpp"
+#include "XF_Flatten_Delete_fold.hpp"
 #include "XF_Flatten_Derive_bounds.hpp"
 #include "XF_Flatten_Anchor_table.hpp"
 #include "XF_Flatten_Pullup_rlnConj.hpp"
-#include "XF_Flatten_Predicate_Reposition.hpp"
+#include "XF_Flatten_Reposition_predicate.hpp"
 #include "XF_Flatten_X_expCol_To_tblCol.hpp"
 #include "XF_Optimise_Cull_bound.hpp"
 #include "XF_Optimise_Cut_sort.hpp"
@@ -305,16 +295,14 @@
 #include "XF_Prolog_Move_on.hpp"
 #include "XF_Flatten_Pullup_rlnConj.hpp"
 #include "XF_Prolog_Reduce_not.hpp"
-#include "XF_Prolog_Validate_Board.hpp"
 #include "XF_Prolog_X_sqyNm_To_sqyNo.hpp"
 #include "XF_Prolog_X_colNm_To_expCol.hpp"
 #include "XF_Prolog_X_scan_To_from.hpp"
-#include "XF_Synthesise_pipelineDef.hpp"
-#include "XF_Utility_Verify_dic.hpp"
-
-#include "XC.hpp"
+#include "XF_Synthesise_Craft_pipelineDef.hpp"
+#include "XF_Utility.hpp"
 
 #include "CardUsage.hpp"
+#include "CardUte.hpp"
 #include "ColMap.hpp"
 #include "SketchTkn.hpp"
 #include "ColHsh.hpp"
@@ -387,6 +375,7 @@ SizeHeap gxaSizeHeap[]
   {CN_CARD,                     sizeof(Card),             HT_T_SMALL   , FILL },
   {CN_CARDITER,                 sizeof(CardIter),         HT_T_MEDIUM  , FILL },
   {CN_CARDUSAGE,                sizeof(CardUsage),        HT_T_SMALL   , FILL },
+  {CN_CARDUTE,                  sizeof(CardUte),          HT_T_TINY    , FILL },
   {CN_CATALOG,                  sizeof(Catalog),          HT_INVALID   , FILL },
   {CN_CHARSER,                  sizeof(Charser),          HT_T_LARGE   , FILL },
   {CN_CHILDEXIT,                sizeof(ChildExit),        HT_T_TINY    , FILL },
@@ -782,39 +771,28 @@ SizeHeap gxaSizeHeap[]
   {CN_WSPCONVERGENT_t,             0,                                   HT_INVALID   , FILL },
 
   {CN__X__,                    'X' - ('A' - 1),                         HT_INVALID   , FILL },
-  {CN_XC,                                sizeof(XC),                                HT_T_TINY    , FILL },
   {CN_XF,                                sizeof(XF),                                HT_T_TINY    , FILL },
   {CN_XF_EPILOG_ADD_HASH_CAST,           sizeof(XF_Epilog_Add_hash_cast),           HT_T_TINY    , FILL },
   {CN_XF_EPILOG_ADD_INFLATE,             sizeof(XF_Epilog_Add_inflate),             HT_T_TINY    , FILL },
   {CN_XF_EPILOG_CULL_FACET,           sizeof(XF_Epilog_Cull_facet),           HT_T_TINY    , FILL },
   {CN_XF_EPILOG_DETERMINE_COLUMNS,    sizeof(XF_Epilog_Determine_Columns),    HT_T_TINY    , FILL },
-  {CN_XF_EPILOG_FUSE_PROJECT,         sizeof(XF_Epilog_Fuse_project),         HT_T_TINY    , FILL },
-  {CN_XF_EPILOG_HASH_COLUMNS,         sizeof(XF_Epilog_Hash_Columns),         HT_T_TINY    , FILL },
-  {CN_XF_EPILOG_ITEMISE_COLUMNS,      sizeof(XF_Epilog_Itemise_Columns),      HT_T_TINY    , FILL },
-  {CN_XF_EPILOG_MAP_COLUMNS,          sizeof(XF_Epilog_Map_Columns),          HT_T_TINY    , FILL },
-  {CN_XF_EPILOG_PROMOTE_FILTER,       sizeof(XF_Epilog_Promote_filter),       HT_T_TINY    , FILL },
-  {CN_XF_EPILOG_REINSTATE_STAGE,      sizeof(XF_Epilog_Reinstate_stage),      HT_T_TINY    , FILL },
-  {CN_XF_EPILOG_TYPE_CAST,            sizeof(XF_Epilog_Type_Cast),            HT_T_TINY    , FILL },
-  {CN_XF_EPILOG_X_STMCOL_TO_COLNM,    sizeof(XF_Epilog_X_stmCol_To_colNm),    HT_T_TINY    , FILL },
-  {CN_XF_EPILOG_X_TBLCOL_TO_EXPCOL,   sizeof(XF_Epilog_X_tblCol_To_expCol),   HT_T_TINY    , FILL },
-  {CN_XF_FLATTEN_SUBQUERY,            sizeof(XF_Flatten_subquery),            HT_T_TINY    , FILL },
-  {CN_XF_FLATTEN_10_F,                sizeof(XF_Flatten_10_F),                HT_T_TINY    , FILL },
-  {CN_XF_FLATTEN_24_W_A_C_RO,         sizeof(XF_Flatten_24_W_A_C_ro),         HT_T_TINY    , FILL },
-  {CN_XF_FLATTEN_32_W_A_NC_I,         sizeof(XF_Flatten_32_W_A_NC_I),         HT_T_TINY    , FILL },
-  {CN_XF_FLATTEN_34_W_A_NC_RO,        sizeof(XF_Flatten_34_W_A_NC_ro),        HT_T_TINY    , FILL },
-  {CN_XF_FLATTEN_40_W_L_C_E,          sizeof(XF_Flatten_40_W_L_C_E),          HT_T_TINY    , FILL },
-  {CN_XF_FLATTEN_52_W_L_NC_I_EXISTS,  sizeof(XF_Flatten_52_W_L_NC_I_exists),  HT_T_TINY    , FILL },
-  {CN_XF_FLATTEN_52_W_L_NC_I_JOIN,    sizeof(XF_Flatten_52_W_L_NC_I_join),    HT_T_TINY    , FILL },
-  {CN_XF_FLATTEN_53_W_L_NC_NI_EXISTS, sizeof(XF_Flatten_53_W_L_NC_NI_exists), HT_T_TINY    , FILL },
-  {CN_XF_FLATTEN_53_W_L_NC_NI_JOIN,   sizeof(XF_Flatten_53_W_L_NC_NI_join),   HT_T_TINY    , FILL },
-  {CN_XF_FLATTEN_74_H_A_NC_RO,        sizeof(XF_Flatten_74_H_A_NC_ro),        HT_T_TINY    , FILL },
+  {CN_XF_EPILOG_FUSE_PROJECT,            sizeof(XF_Epilog_Fuse_project),            HT_T_TINY    , FILL },
+  {CN_XF_EPILOG_HASH_COLUMNS,            sizeof(XF_Epilog_Hash_Columns),            HT_T_TINY    , FILL },
+  {CN_XF_EPILOG_ITEMISE_COLUMNS,         sizeof(XF_Epilog_Itemise_Columns),         HT_T_TINY    , FILL },
+  {CN_XF_EPILOG_MAP_COLUMNS,             sizeof(XF_Epilog_Map_Columns),             HT_T_TINY    , FILL },
+  {CN_XF_EPILOG_PROMOTE_FILTER,          sizeof(XF_Epilog_Promote_filter),          HT_T_TINY    , FILL },
+  {CN_XF_EPILOG_REINSTATE_STAGE,         sizeof(XF_Epilog_Reinstate_stage),         HT_T_TINY    , FILL },
+  {CN_XF_EPILOG_TYPE_CAST,               sizeof(XF_Epilog_Type_Cast),               HT_T_TINY    , FILL },
+  {CN_XF_EPILOG_X_STMCOL_TO_COLNM,       sizeof(XF_Epilog_X_stmCol_To_colNm),       HT_T_TINY    , FILL },
+  {CN_XF_EPILOG_X_TBLCOL_TO_EXPCOL,      sizeof(XF_Epilog_X_tblCol_To_expCol),      HT_T_TINY    , FILL },
+  {CN_XF_FLATTEN_FOLD_SUBQUERY,          sizeof(XF_Flatten_Fold_subquery),          HT_T_TINY    , FILL },
+  {CN_XF_FLATTEN_FLATTEN_PIPELINE,       sizeof(XF_Flatten_Flatten_pipeline),       HT_T_TINY    , FILL },
   {CN_XF_FLATTEN_PURGE_WHERE,            sizeof(XF_Flatten_Purge_where),            HT_T_TINY    , FILL },
-  {CN_XF_FLATTEN_DELETE_FLAT,            sizeof(XF_Flatten_Delete_flat),            HT_T_TINY    , FILL },
+  {CN_XF_FLATTEN_DELETE_FLAT,            sizeof(XF_Flatten_Delete_fold),            HT_T_TINY    , FILL },
   {CN_XF_FLATTEN_DERIVE_BOUNDS,          sizeof(XF_Flatten_Derive_bounds),          HT_T_TINY    , FILL },
   {CN_XF_FLATTEN_ANCHOR_TABLE,           sizeof(XF_Flatten_Anchor_table),           HT_T_TINY    , FILL },
-  {CN_XF_FLATTEN_JOIN_ORDERING,          sizeof(XF_Flatten_Join_Ordering),          HT_T_TINY    , FILL },
-  {CN_XF_FLATTEN_LEFT_SUBQUERY,          sizeof(XF_Flatten_Left_subQuery),          HT_T_TINY    , FILL },
-  {CN_XF_FLATTEN_PREDICATE_REPOSITION,   sizeof(XF_Flatten_Predicate_Reposition),   HT_T_TINY    , FILL },
+  {CN_XF_FLATTEN_JOIN_ORDERING,          sizeof(XF_Flatten_Reorder_join),           HT_T_TINY    , FILL },
+  {CN_XF_FLATTEN_REPOSITION_PREDICATE,   sizeof(XF_Flatten_Reposition_predicate),   HT_T_TINY    , FILL },
   {CN_XF_FLATTEN_PULLUP_RLNCONJ,         sizeof(XF_Flatten_Pullup_rlnConj),         HT_T_TINY    , FILL },
   {CN_XF_FLATTEN_X_EXPCOL_TO_TBLCOL,     sizeof(XF_Flatten_X_expCol_To_tblCol),     HT_T_TINY    , FILL },
   {CN_XF_OPTIMISE_AGGREG_TO_SORT_ORDAGG, sizeof(XF_Optimise_aggreg_To_sort_ordAgg), HT_T_TINY    , FILL },
@@ -843,13 +821,12 @@ SizeHeap gxaSizeHeap[]
   {CN_XF_PROLOG_ERASE_CONSTRUCTION,    sizeof(XF_Prolog_Erase_construction),    HT_T_TINY    , FILL },
   {CN_XF_PROLOG_MOVE_ON,               sizeof(XF_Prolog_Move_on),               HT_T_TINY    , FILL },
   {CN_XF_PROLOG_REDUCE_NOT,            sizeof(XF_Prolog_Reduce_not),            HT_T_TINY    , FILL },
-  {CN_XF_PROLOG_VALIDATE_BOARD,        sizeof(XF_Prolog_Validate_Board),        HT_T_TINY    , FILL },
   {CN_XF_PROLOG_X_SQYNM_TO_SQYNO,      sizeof(XF_Prolog_X_sqyNm_To_sqyNo),      HT_T_TINY    , FILL },
   {CN_XF_PROLOG_X_COLNM_TO_EXPCOL,     sizeof(XF_Prolog_X_colNm_To_expCol),     HT_T_TINY    , FILL },
   {CN_XF_PROLOG_X_SCAN_TO_FROM,        sizeof(XF_Prolog_X_scan_To_from),        HT_T_TINY    , FILL },
-  {CN_XF_SYNTHESISE_CODE,              sizeof(XF_Synthesise_code),              HT_T_TINY    , FILL },
-  {CN_XF_SYNTHESISE_PIPELINEDEF,       sizeof(XF_Synthesise_pipelineDef),       HT_T_TINY    , FILL },
-  {CN_XF_UTILITY_VERIFY_DIC,           sizeof(XF_Utility_Verify_dic),           HT_T_TINY    , FILL },
+  {CN_XF_SYNTHESISE_CODE,              sizeof(XF_Synthesise_Cut_code),          HT_T_TINY    , FILL },
+  {CN_XF_SYNTHESISE_CRAFT_PIPELINEDEF, sizeof(XF_Synthesise_Craft_pipelineDef), HT_T_TINY    , FILL },
+  {CN_XF_UTILITY,                      sizeof(XF_Utility),                      HT_T_TINY    , FILL },
 
   {CN__Y__,                    'Y' - ('A' - 1),                                 HT_INVALID   , FILL },
 

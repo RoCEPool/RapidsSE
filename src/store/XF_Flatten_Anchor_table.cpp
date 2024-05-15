@@ -68,7 +68,6 @@ void XF_Flatten_Anchor_table::vAnchor(void)
   Card_Table::vFixTablePos(m_pCI);
 
   m_pCI->vEndTransform(__LINE__);
-//vValidateBench();
 }
 
 /*============================================================================*/

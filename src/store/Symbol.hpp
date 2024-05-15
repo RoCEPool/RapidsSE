@@ -102,15 +102,16 @@ namespace STORE
     static bool bIs_Null(Stz* szArg);            // NULL
     static bool bIs_Parenthesis(Stz* szArg);     // ( or )
     static bool bIs_Rln_Op(Stz* szArg);          // <, <=, ... >
+    static bool bIs_Sqy_Cky(Stz* szArg);         // $SCn
     static bool bIs_Sqy_Nm(Stz* szArg);          // bIsName() but not bIs_Agg_Fn() etc
     static bool bIs_Sqy_No(Stz* szArg);          // $Qn (or __subqueryN)
     static bool bIs_Sqy_Op(Stz* szArg);          // exists, in, notExists, notIn
     static bool bIs_Sqy_Prm(Stz* szArg);         // %n
-    static bool bIs_Sqy_Rsl(Stz* szArg);         // __n
+    static bool bIs_Sqy_Rsl(Stz* szArg);         // $SRn
     static bool bIs_Stg_Cast(Stz* szArg);        // BROADCAST, HASHCAST
     static bool bIs_Stg_Nm(Stz* szArg);          // Sn
     static bool bIs_Str_Fn(Stz* szArg);          // SUBSTRING2 ... SUBSTRING3
-    static bool bIs_Str_Lit(Stz* szArg);          // 'abc'
+    static bool bIs_Str_Lit(Stz* szArg);         // 'abc'
     static bool bIs_Tbl_Col(Stz* szArg);         // $c.n
     static bool bIs_Tbl_Nm(Stz* szArg);          // bIsName() but not bIs_Agg_Fn() etc
     static bool bIs_Tbl_Syn(Stz* szArg);         // $c
@@ -287,6 +288,8 @@ namespace STORE
     void vFacet_Null(Stz* szNull);
     void vFacet_Parenthesis(Stz* szParenthesis);
     void vFacet_Rln_Op(Stz* szRlnOp);
+    void vFacet_Sqy_Cky(i8 iOrdinal);
+    void vFacet_Sqy_Cky(Stz* szSqyRsl);
     void vFacet_Sqy_Nm(Stz* szPpeNm);
     void vFacet_Sqy_No(i8 iSqyNo);
     void vFacet_Sqy_No(Stz* szSqyNo);

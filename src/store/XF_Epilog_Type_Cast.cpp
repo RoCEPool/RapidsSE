@@ -113,7 +113,7 @@ void XF_Epilog_Type_Cast::vCast(void)
     } // switch
 
     if ((m_pCI->E.p_key = m_pCI->E.p_Op->pSub_key())) {
-      m_pCI->E.p_key->vApplyCast(m_pCI,/*??*/m_pCI->Arriving.m_pEmit);
+      m_pCI->E.p_key->vApplyCast(m_pCI,/*??*/m_pCI->Arriving.m_pEmitted_prior);
       m_pCI->E.p_key->vRenumberAll_expr(SF_KEY_COL);
       m_pCI->E.p_key = nullptr;
     }
@@ -127,12 +127,12 @@ void XF_Epilog_Type_Cast::vCast(void)
 
         m_pCI->vSnapIf_arriving();
 
-        m_pCI->E.p_emit->vApplyCast(m_pCI,/*??*/m_pCI->Arriving.m_pEmit);
+        m_pCI->E.p_emit->vApplyCast(m_pCI,/*??*/m_pCI->Arriving.m_pEmitted_prior);
         m_pCI->E.p_emit->vRenumberAll_expr();
       }
-      else if (m_pCI->Arriving.m_pEmit) {
+      else if (m_pCI->Arriving.m_pEmitted_prior) {
         if ((m_pCI->E.p_key = m_pCI->E.p_Op->pSub_key())) {
-          m_pCI->E.p_key->vApplyCast(m_pCI,/*??*/m_pCI->Arriving.m_pEmit);
+          m_pCI->E.p_key->vApplyCast(m_pCI,/*??*/m_pCI->Arriving.m_pEmitted_prior);
         }
 
         if (m_pCI->m_pBench->eXform() == XF_EPILOG_TYPE_CAST &&
@@ -141,7 +141,7 @@ void XF_Epilog_Type_Cast::vCast(void)
           vDebugPoint();
         }
 
-        m_pCI->E.p_emit->vApplyCast(m_pCI,/*??*/m_pCI->Arriving.m_pEmit);
+        m_pCI->E.p_emit->vApplyCast(m_pCI,/*??*/m_pCI->Arriving.m_pEmitted_prior);
         m_pCI->E.p_emit->vRenumberAll_expr();
         m_pCI->vSnapIf_arriving();
          m_pCI->E.p_key = nullptr;
@@ -151,18 +151,18 @@ void XF_Epilog_Type_Cast::vCast(void)
       }
 
       if ((m_pCI->E.p_streamKey = m_pCI->E.p_Op->pSub_streamKey()))
-        m_pCI->E.p_streamKey->vApplyCast(m_pCI,/*??*/m_pCI->Arriving.m_pEmit);
+        m_pCI->E.p_streamKey->vApplyCast(m_pCI,/*??*/m_pCI->Arriving.m_pEmitted_prior);
 
       if ((m_pCI->E.p_predicate = m_pCI->E.p_Op->pSub_predicate())) {
         //m_pCI->G.p_predicate->vDump(__func__);
-        m_pCI->E.p_predicate->vApplyCast(m_pCI,/*??*/m_pCI->Arriving.m_pEmit);
+        m_pCI->E.p_predicate->vApplyCast(m_pCI,/*??*/m_pCI->Arriving.m_pEmitted_prior);
       }
 
       if ((m_pCI->E.p_indexList = m_pCI->E.p_Op->pSub_indexList()))
-        m_pCI->E.p_indexList->vApplyCast(m_pCI,/*??*/m_pCI->Arriving.m_pEmit);
+        m_pCI->E.p_indexList->vApplyCast(m_pCI,/*??*/m_pCI->Arriving.m_pEmitted_prior);
 
       if ((m_pCI->E.p_constraint = m_pCI->E.p_Op->pSub_constraint()))
-        m_pCI->E.p_constraint->vApplyCast(m_pCI,/*??*/m_pCI->Arriving.m_pEmit);
+        m_pCI->E.p_constraint->vApplyCast(m_pCI,/*??*/m_pCI->Arriving.m_pEmitted_prior);
     }
     else {
 

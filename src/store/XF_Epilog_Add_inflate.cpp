@@ -117,8 +117,8 @@ void XF_Epilog_Add_inflate::vBifurcate_inflate(void)
 
     m_pCI->vBurst(m_pCI->E.p_Op);
 
-    if (m_pCI->Arriving.m_pEmit)
-      m_pCI->E.p_pdsRow->vAppendChild(m_pCI->Arriving.m_pEmit->pDupCardRecursive());
+    if (m_pCI->Arriving.m_pEmitted_prior)
+      m_pCI->E.p_pdsRow->vAppendChild(m_pCI->Arriving.m_pEmitted_prior->pDupCardRecursive());
 
     m_pCI->vSnapIf_arriving();
   }

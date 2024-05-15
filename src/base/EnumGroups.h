@@ -113,6 +113,7 @@ enum eEG // enum groups
   EG_WK,
 
   EG_XA,
+  EG_XD,
   EG_XK,
   EG_XP,
 

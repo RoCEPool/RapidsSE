@@ -22,9 +22,8 @@ namespace STORE
 
     void vDerive_streamKey(CardIter* pCI);
 
-    void vEarlyProject_add_transients(CardIter* pCI);
+    void vAdd_transients(CardIter* pCI);
 
-    bool bEarlyProject_root(CardIter* pCI);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };

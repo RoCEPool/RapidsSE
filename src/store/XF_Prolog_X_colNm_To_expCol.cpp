@@ -66,14 +66,13 @@ void XF_Prolog_X_colNm_To_expCol::vXF_colNm_To_expCol(void)
 
   m_pCI->vClearRegisters();
   for (m_pCI->vBeginEach(); m_pCI->bEachOp(); m_pCI->vSnapIf_arriving()) {
-    if (! m_pCI->Arriving.m_pEmit)
+    if (! m_pCI->Arriving.m_pEmitted_prior)
       continue;
 
     vX_colNm_To_expCol();
   }
 
   m_pCI->vEndTransform(__LINE__);
-//vValidateBench();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -90,7 +89,7 @@ void XF_Prolog_X_colNm_To_expCol::vX_colNm_To_expCol(void)
   if (m_pCI->E.p_Op->pSymbol()->Y_bHas(P_BreakPt))
     vDebugPoint();
 
-  RASSERT(m_pCI->Arriving.m_pEmit);
+  RASSERT(m_pCI->Arriving.m_pEmitted_prior);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -123,7 +122,7 @@ void XF_Prolog_X_colNm_To_expCol::vX_colNm_To_expCol(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pCI->bLambdaWalk(pCI->E.p_Op, CK_TERM, fb_colNm_To_expCol);
+  pCI->E.p_Op->bLambdaWalk(CK_TERM, fb_colNm_To_expCol,pCI);
 }
 
 /*============================================================================*/

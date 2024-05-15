@@ -57,18 +57,6 @@ Card_Fold* Card_Fold::pCraft_fold(Stz* szFoldNm, i8 i_SqyNo)
   return p_fold;
 }
 
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_Fold::vMorph_to_flat(CardIter* pCI)
-{
-  _static_
-
-  pCI->vBeginEach();
-  while (pCI->bEachOp(CK_o_FOLD))
-    pCI->E.p_fold->vCard(CK_o_FLAT);
-}
-
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
@@ -84,6 +72,7 @@ void Card_Fold::vDerive_emit_fold(CardIter *pCI, SubQuery *pSubQuery_leftmost)
   bool bCorrelated = pSubQuery_leftmost->nCorrCols();
   UNUSED(bCorrelated);
 
+  i8 i_Board = pCI->Flat.m_pSqy_inner->pBoard()->i_Board();
 
   pCI->E.p_emit = nullptr;
   for (i8 i_Main = pCI->Flat.m_i_fold - 1; i_Main >= 0; i_Main--) {
@@ -97,6 +86,9 @@ void Card_Fold::vDerive_emit_fold(CardIter *pCI, SubQuery *pSubQuery_leftmost)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   Card_Expr* p_expr_result = pCI->Dic.m_p_expr->pGet_expr((i8) 0);
+  if (! p_expr_result->pSymbol()->Y_bHas(P_FixedNm))
+    p_expr_result->pSymbol()->vApplyFacet_varg(SF_NMD_COL, C_CRLKEY, i_Board);
+  p_expr_result->pSymbol()->vApplyFacet(SF_SQY_RSL, i_Board);
 
   pCI->vAppendNewChild(pCI->E.p_fold, CK_p_EMIT);
   pCI->vAppendNewChild(pCI->E.p_emit, CK_EXPR);
@@ -106,7 +98,7 @@ void Card_Fold::vDerive_emit_fold(CardIter *pCI, SubQuery *pSubQuery_leftmost)
   pCI->E.p_term->vApplyCast_x(p_expr_result->xCast());
 
 
-  pCI->E.p_expr->pSymbol()->vApplyFacet(SF_SQY_RSL, pSubQuery_leftmost->pBoard()->i_Board());
+  pCI->E.p_expr->pSymbol()->vApplyFacet(SF_SQY_RSL, i_Board);
   pCI->E.p_expr->pSymbol()->vApplyFacet(SF_EXP_COL, (i8) 1);
   if (p_expr_result->pSymbol()->bHasFacet(SF_NMD_COL))
     pCI->E.p_expr->pSymbol()->vApplyFacet(SF_NMD_COL, p_expr_result->pSymbol());

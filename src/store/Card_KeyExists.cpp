@@ -71,7 +71,7 @@ void Card_KeyExists::vMorph_from_To_keyExists(CardIter *pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_KeyExists::vEarlyProject_add_transients(CardIter* pCI)
+void Card_KeyExists::vAdd_transients(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 

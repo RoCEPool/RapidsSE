@@ -17,7 +17,6 @@ Stz* aCK[CK_ENUMS]
   /* */ "CK_o_CORRELATION"_Stz,  // CK_o_CORRELATION
   /* */ "CK_o_CROSSJOIN"_Stz,    // CK_o_CROSSJOIN
   /* */ "CK_o_FILTER"_Stz,       // CK_o_FILTER
-  /* */ "CK_o_FLAT"_Stz,         // CK_o_FLAT
   /* */ "CK_o_FOLD"_Stz,         // CK_o_FOLD
   /* */ "CK_o_FROM"_Stz,         // CK_o_FROM
   /* */ "CK_o_GBYAGG"_Stz,       // CK_o_GBYAGG
@@ -40,6 +39,7 @@ Stz* aCK[CK_ENUMS]
   /* */ "CK_o_WHERE"_Stz,        // CK_o_WHERE
 
   /* */ "CK_p_CONSTRAINT"_Stz,   // CK_p_CONSTRAINT
+  /* */ "CK_p_DECISION"_Stz,     // CK_p_DECISION
   /* */ "CK_p_EMIT"_Stz,         // CK_p_EMIT
   /* */ "CK_p_HASHING"_Stz,      // CK_p_HASHING
   /* */ "CK_p_HSHCOLLIST"_Stz,   // CK_p_HSHCOLLIST
@@ -70,7 +70,6 @@ Stz* aCK[CK_ENUMS]
 
   /* */ "CK_DEBUG"_Stz,        // CK_DEBUG
   /* */ "CK_DECK"_Stz,         // CK_DECK
-  /* */ "CK_DECISION"_Stz,     // CK_DECISION
   /* */ "CK_DISPOSITION"_Stz,  // CK_DISPOSITION
 
   /* */ "CK_EXPR"_Stz,         // CK_EXPR
@@ -155,7 +154,6 @@ Stz* aCK_short[CK_ENUMS]
   /* */ "Correlation"_Stz,     // CK_o_CORRELATION
   /* */ "CrossJoin"_Stz,       // CK_o_CROSSJOIN
   /* */ "Filter"_Stz,          // CK_o_FILTER
-  /* */ "Flat"_Stz,            // CK_o_FLAT
   /* */ "Fold"_Stz,            // CK_o_FOLD
   /* */ "From"_Stz,            // CK_o_FROM
   /* */ "GbyAgg"_Stz,          // CK_o_GBYAGG
@@ -178,6 +176,7 @@ Stz* aCK_short[CK_ENUMS]
   /* */ "Where"_Stz,           // CK_o_WHERE
 
   /* */ "Constraint"_Stz,      // CK_p_CONSTRAINT
+  /* */ "Decision"_Stz,        // CK_p_DECISION
   /* */ "Emit"_Stz,            // CK_p_EMIT
   /* */ "Hashing"_Stz,         // CK_p_HASHING
   /* */ "HshColList"_Stz,      // CK_p_HSHCOLLIST
@@ -207,7 +206,6 @@ Stz* aCK_short[CK_ENUMS]
   /* */ "Count"_Stz,           // CK_COUNT
 
   /* */ "Debug"_Stz,           // CK_DEBUG
-  /* */ "Decision"_Stz,        // CK_DECISION
   /* */ "Deck"_Stz,            // CK_DECK
   /* */ "Disp"_Stz,            // CK_DISPOSITION
 

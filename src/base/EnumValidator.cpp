@@ -90,7 +90,6 @@
 #include "ePT.h"
 #include "eQC.h"
 #include "eQD.h"
-#include "eQF.h"
 #include "eQK.h"
 #include "eQN.h"
 #include "eQO.h"
@@ -129,6 +128,7 @@
 #include "eWK.h"
 #include "eXA.h"
 #include "eXC.h"
+#include "eXD.h"
 #include "eXF.h"
 #include "eXK.h"
 #include "eXP.h"
@@ -261,7 +261,6 @@ void EnumValidator::vValidateEnumStzArrays(void)
       {           aPT[PT_ENUMS - 1],          "aPT[]"_Stz,     "ePT"_Stz },
       {           aQC[QC_ENUMS - 1],          "aQC[]"_Stz,     "eQC"_Stz },
       {           aQD[QD_ENUMS - 1],          "aQD[]"_Stz,     "eQD"_Stz },
-      {           aQF[QF_ENUMS - 1],          "aQF[]"_Stz,     "eQF"_Stz },
       {           aQK[QK_ENUMS - 1],          "aQK[]"_Stz,     "eQK"_Stz },
       {           aQN[QN_ENUMS - 1],          "aQN[]"_Stz,     "eQN"_Stz },
       {           aQO[QO_ENUMS - 1],          "aQO[]"_Stz,     "eQO"_Stz },
@@ -309,6 +308,7 @@ void EnumValidator::vValidateEnumStzArrays(void)
       { aXA_short[XA_TSK_ENUMS - 1],    "aXA_short[]"_Stz,     "eXA"_Stz },
       {           aXC[XC_ENUMS - 1],          "aXC[]"_Stz,     "eXC"_Stz },
       {      aXC_note[XC_ENUMS - 1],     "aXC_note[]"_Stz,     "eXC"_Stz },
+      {           aXD[XD_ENUMS - 1],          "aXD[]"_Stz,     "eXD"_Stz },
       {           aXF[XF_ENUMS - 1],          "aXF[]"_Stz,     "eXF"_Stz },
       {           aXK[XK_ENUMS - 1],          "aXK[]"_Stz,     "eXK"_Stz },
       {           aXP[XP_ENUMS - 1],          "aXP[]"_Stz,     "eXP"_Stz },

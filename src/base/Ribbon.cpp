@@ -22,7 +22,7 @@ Ribbon::Ribbon(i8 nMaxLanesAcross)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
 
-  m_pLaneTabs = new IntSet(C_RIBBON_MAX_LANES);
+  m_pLaneTabs = new IntSet(C_RIBBON_LANES);
   vInitTabs(0, C_RIBBON_LANE_WIDTH + C_RIBBON_LANE_GAP);
 
   m_nMaxLanesAcross = nMaxLanesAcross;
@@ -31,8 +31,6 @@ Ribbon::Ribbon(i8 nMaxLanesAcross)
   m_i_Lane = 0;
   m_i_Line = 0;
   m_i_Char = m_pLaneTabs->iInt(m_i_Lane) ;
-
-  m_sRightFormat.vSprint("%%%llds"_Stz, C_RIBBON_LANE_WIDTH);
 
   _checkInitialised_(CN_RIBBON);
   
@@ -230,7 +228,7 @@ void Ribbon::vPinSubRibbon(i8 i_Line, i8 i_Char, Ribbon* pSubRibbon)
 /*----------------------------------------------------------------------------*/
 /* print all the lines of this ribbon                                         */
 /*----------------------------------------------------------------------------*/
-void Ribbon::vPrintRibbon(Stz* szQueryNm, i8 iBenchNo, eOH ePhase, i8 iPrintNo)
+void Ribbon::vPrintRibbon(Stz* szQueryNm, i8 iBenchNo, i8 iXform, eOH ePhase, i8 iPrintNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
 
@@ -245,11 +243,12 @@ void Ribbon::vPrintRibbon(Stz* szQueryNm, i8 iBenchNo, eOH ePhase, i8 iPrintNo)
     Stz* szText_ribbon = pRibbonLine->szText();
     if (C_UNKNOWN != iPrintNo)
 
-      vTrace("%lld %s %2lld %s %2lld %s\n"_Stz,
+      vTrace("%lld %s %2lld %s x%2lld %2lld %s\n"_Stz,
              iBenchNo,
              szQueryNm,
              iPrintNo,
              aOH_short[ePhase],
+             iXform,
              i_RibbonLine+1,
              szText_ribbon);
     else
@@ -309,7 +308,7 @@ i8 Ribbon::nRibbonWidth(i8 i_FromLine)
     RibbonLine* pRibbonLine = pGet(i_Line);
     
     Stz* szText = pRibbonLine->szText();
-    i8 nWidthLine = StrLib::nLengthNonBlank(szText->azChar(), '\0', C_RIBBON_MAX_TEXT);
+    i8 nWidthLine = StrLib::nLengthNonBlank(szText->azChar(), '\0', C_RIBBON_TEXT);
     if (nWidthLine > nMaxWidth)
       nMaxWidth = nWidthLine;
   }
@@ -346,19 +345,6 @@ void Ribbon::vFormatLeft(String* pString, Stz* szFormat, va_list args)
 }
 
 /*----------------------------------------------------------------------------*/
-/* formatted concatenated sprint                                              */
-/*----------------------------------------------------------------------------*/
-void Ribbon::vFormatRight(String* pString, Stz* szFormat, va_list args)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
-
-  s256 sTemp;
-  StrLib::vSprint(sTemp.azChar(), sTemp.nAreaBytes(), args, (const char*)szFormat);
-
-  StrLib::vSprint(pString->azStr(), pString->nAreaBytes(), nullptr, m_sRightFormat.szStz(), sTemp.azChar());
-}
-
-/*----------------------------------------------------------------------------*/
 /* set columns tabs                                                           */
 /*----------------------------------------------------------------------------*/
 void Ribbon::vInitTabs(i8 i_Start, i8 nEach)
@@ -366,7 +352,7 @@ void Ribbon::vInitTabs(i8 i_Start, i8 nEach)
   _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
 
   i8 iAt = i_Start;
-  for (i8 i_Col = 0; i_Col < C_RIBBON_MAX_LANES; i_Col++) {
+  for (i8 i_Col = 0; i_Col < C_RIBBON_LANES; i_Col++) {
     m_pLaneTabs->vInt(i_Col, iAt);
     iAt += nEach;
   }

@@ -21,8 +21,7 @@
 #include "XF_Epilog_Type_Cast.hpp"
 #include "XF_Epilog_X_stmCol_To_colNm.hpp"
 #include "XF_Epilog_X_tblCol_To_expCol.hpp"
-#include "XF_Flatten_subquery.hpp"
-#include "XF_Flatten_Left_subQuery.hpp"
+#include "XF_Flatten_Flatten_pipeline.hpp"
 #include "XF_Flatten_X_expCol_To_tblCol.hpp"
 #include "XF_Optimise_Cull_bound.hpp"
 #include "XF_Optimise_Cut_sort.hpp"
@@ -30,7 +29,6 @@
 #include "XF_Optimise_Duplicate_filter.hpp"
 #include "XF_Optimise_Early_filter.hpp"
 #include "XF_Optimise_Early_projection.hpp"
-#include "XF_Optimise_Early_projectionv2.hpp"
 #include "XF_Optimise_Late_projection.hpp"
 #include "XF_Optimise_Reduce_gbyAgg_key.hpp"
 #include "XF_Optimise_Factor_boolPred.hpp"
@@ -51,13 +49,12 @@
 #include "XF_Prolog_Erase_construction.hpp"
 #include "XF_Prolog_Move_on.hpp"
 #include "XF_Prolog_Reduce_not.hpp"
-#include "XF_Prolog_Validate_Board.hpp"
 #include "XF_Prolog_X_sqyNm_To_sqyNo.hpp"
 #include "XF_Prolog_X_colNm_To_expCol.hpp"
 #include "XF_Prolog_X_scan_To_from.hpp"
-#include "XF_Synthesise_code.hpp"
-#include "XF_Synthesise_pipelineDef.hpp"
-#include "XF_Utility_Verify_dic.hpp"
+#include "XF_Synthesise_Cut_code.hpp"
+#include "XF_Synthesise_Craft_pipelineDef.hpp"
+#include "XF_Utility.hpp"
 
 #include "Job.hpp"
 
@@ -160,7 +157,7 @@ void XF::vTransform(void)
   }
   m_pCI->vBeginBoard();                        //
   while (m_pCI->bEachBoard()) {                    //
-    XF_Prolog_Validate_Board::vValidate(m_pCI);    //
+    XF_Utility::vValidate_board(m_pCI);    //
   }                                                //
   if (AM::JOB::bHasTag(C_OPTIMISER_TRACE)) {
     m_pCI->m_pBench->vDump(__func__);
@@ -197,9 +194,9 @@ void XF::vTransform(void)
 
   m_pCI->m_pBench->vPhase(m_pCI,OH_FLATTEN);                         //
                                                      //
-  XF_Flatten_subquery::vFlatten(m_pCI);                       //
+  XF_Flatten_Flatten_pipeline::vFlatten(m_pCI);                       //
                                                      //
-  XF_Flatten_Left_subQuery::vRemove_LeftMost(m_pCI); //
+  XF_Utility::vRemove_LeftMost(m_pCI); //
                                                      //
   RASSERT(0 == m_pCI->pBoard()->pDeck()->nChildCards(CK_SUBQUERY));
                                                      //
@@ -221,11 +218,8 @@ void XF::vTransform(void)
   //XF_Optimise_gbyAgg_To_ordAgg::vOptimise(m_pCI);    //
   XF_Optimise_Cull_bound::vOptimise(m_pCI);            //
   XF_Prolog_Analyse_emit::vAnalyse(m_pCI);             //
-  XF_Utility_Verify_dic::vVerify(m_pCI);               //
+  XF_Utility::vVerify_dic(m_pCI);               //
   XF_Optimise_Early_projection::vOptimise(m_pCI);      //
-#ifdef Z_NEEDEDv2
-  XF_Optimise_Early_projectionv2::vOptimise(m_pCI);    //
-#endif
   XF_Optimise_Reduce_gbyAgg_key::vOptimise(m_pCI);     //
   XF_Optimise_Static_calc::vOptimise(m_pCI);           //
   XF_Optimise_max_To_top::vOptimise(m_pCI);            //
@@ -281,8 +275,8 @@ void XF::vTransform(void)
   m_pCI->vBeginBoard();                            //
   RASSERT(m_pCI->bEachBoard());                        //
                                                        //
-  XF_Synthesise_pipelineDef::vSynthesise(m_pCI);       //
-  XF_Synthesise_code::vSynthesise(m_pCI);              //
+  XF_Synthesise_Craft_pipelineDef::vCraft(m_pCI);       //
+  XF_Synthesise_Cut_code::vCut(m_pCI);              //
                                                        //
 //XF_Epilog_ItemStrip_colNm::vItemise_Columns(m_pCI);
                                                        //
@@ -301,7 +295,7 @@ void XF::vTransform_passThru(void)
   while (m_pCI->bEachBoard()) {
     m_pCI->E.pBoard->vPhase(OH_PASS_THRU);
     //XF_Prolog_X_sqyNm_To_sqyNo::vConvert_board(m_pCI);
-    XF_Prolog_Validate_Board::vValidate(m_pCI);
+    XF_Utility::vValidate_board(m_pCI);
   }
 
   m_pCI->vBeginBoard();
@@ -392,11 +386,11 @@ void XF::vTransform_passThru(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //
 
-  XF_Flatten_Left_subQuery::vRemove_LeftMost(m_pCI);
+  XF_Utility::vRemove_LeftMost(m_pCI);
 
-  XF_Synthesise_pipelineDef::vSynthesise(m_pCI);
+  XF_Synthesise_Craft_pipelineDef::vCraft(m_pCI);
 
-  XF_Synthesise_code::vSynthesise(m_pCI);
+  XF_Synthesise_Cut_code::vCut(m_pCI);
 }
 
 /*----------------------------------------------------------------------------*/

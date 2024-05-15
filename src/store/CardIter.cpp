@@ -6,6 +6,7 @@
 #include "Cue.hpp"
 #include "OptimiserFun.hpp"
 #include "OptimiserCatalog.hpp"
+#include "Optimiser.hpp"
 
 #include "eOT.h"
 
@@ -86,51 +87,6 @@ CardIter::~CardIter(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* advance                                                                    */
-/*----------------------------------------------------------------------------*/
-Card* CardIter::pAdvanceChild(void)
-{
-  _precondition_( _MAGIC_, _FOOTER_);
-
-  E.xEachOp.bEach();
-
-  return E.xEachOp.pChild();
-}
-
-/*----------------------------------------------------------------------------*/
-/* visit all sub-cards of given eToSubs and apply lambda function             */
-/*----------------------------------------------------------------------------*/
-bool CardIter::bLambdaWalk(Card* pCard, eCK eToSubs,
-                               std::function<bool(Card* pCard)> bfLambdaFn)
-{
-  _precondition_( _MAGIC_, _FOOTER_);
-
-  if (CK_NONE == eToSubs || eToSubs == pCard->eCard()) {
-    bool bContinue = bfLambdaFn(pCard);
-    if (! bContinue)
-      return C_TERMINATE_RECURSION;
-  }
-
-  vAncestorPush(pCard);
-  vAncestorCounterReset();
-
-  Kid xCard(pCard);
-  while (xCard.bEach_opaque()) {
-    bool bContinue = bLambdaWalk(xCard.pChild(), eToSubs, bfLambdaFn);
-    if (! bContinue) {
-      vAncestorPop();
-      return C_TERMINATE_RECURSION;
-    }
-    else
-      vDebugPoint();
-  }
-
-  vAncestorCounterReset();
-  vAncestorPop();
-  return C_CONTINUE_RECURSION;
-}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -644,6 +600,12 @@ void CardIter::vClearRegisters(void)
 
   MemLib::vZero(E.md_Coord, sizeof(E.md_Coord), CN_CARDITER);
 
+  Arriving.m_pEmitted_prior = nullptr;
+  Arriving.m_pStreamKey = nullptr;
+
+  Dic.m_p_expr = nullptr;
+  Dic.m_p_key = nullptr;
+
   E.p_Op   = nullptr;
   E.e_Op   = CK_NONE;
   E.i_Op   = C_UNKNOWN;
@@ -651,79 +613,41 @@ void CardIter::vClearRegisters(void)
   E.p_Sub2 = nullptr;
   E.p_Sub3 = nullptr;
 
-  //Flat.m_p_term_crlKey  = nullptr;
+  E.Iter.ePrimary = CK_NONE;
+  E.Iter.eTarget = CK_NONE;
+  E.Iter.eSecondary = CK_NONE;
+  E.Iter.eTertiary = CK_NONE;
 
-  Arriving.m_pEmit = nullptr;
-  Arriving.m_pStreamKey = nullptr;
-  Dic.m_p_expr     = nullptr;
-  Dic.m_p_key      = nullptr;
-
-  Next.m_pProject   = nullptr;
-  Next.m_pEmitted   = nullptr;
-
+  Early.m_pOp_tip = nullptr;
   Early.m_pNeeded_later = nullptr;
 
+  Flat.m_i_fold = C_UNKNOWN;
+  //Flat.m_p_term_crlKey  = nullptr;
+
+  Next.m_pProject = nullptr;
+  Next.m_pEmitted = nullptr;
+
   StreamOrder.m_pStreamKey = nullptr;
-  StreamOrder.m_pEmit   = nullptr;
+  StreamOrder.m_pEmit = nullptr;
 
   X.m_pExprList_a = nullptr;
   X.m_pExprList_i = nullptr;
   X.m_pExprList_k = nullptr;
 
-  Flat.m_i_fold = C_UNKNOWN;
+  Smooth.Where_preAgg.m_bMorph_sqlOp_To_EQ = false;
+  Smooth.Where_preAgg.bReplace_sqCall_With_result = false;
 
-  E.Iter.ePrimary   = CK_NONE;
-  E.Iter.eTarget    = CK_NONE;
-  E.Iter.eSecondary = CK_NONE;
-  E.Iter.eTertiary  = CK_NONE;
+  Smooth.Aggreg.m_bMorph_To_gbyAgg = false;
 
-  Carry.Table.m_bSeen      = false;
-  Carry.Table.m_nTables    = 0;
-  Carry.Table.m_bReproject = false;
+  Smooth.GbyAgg.m_bInject_foldExpr = false;
 
-  Carry.Where_preAgg.m_bSeen  = false;
-  Carry.Where_preAgg.m_bMorph_sqlOp_To_EQ = false;
-  Carry.Where_preAgg.bReplace_sqCall_With_result = false;
+  Smooth.Project_postAgg.m_bSeen = false;
 
-  Carry.Aggreg.m_bSeen   = false;
-  Carry.Aggreg.m_bMorph_To_gbyAgg = false;
+  Smooth.Having.m_bCorrect_After_Inject = false;
 
-  Carry.GbyAgg.m_bSeen   = false;
-  Carry.GbyAgg.m_bInject_foldExpr = false;
+  Smooth.Sort.m_bCorrect_After_Inject = false;
 
-  Carry.Project_postAgg.m_bSeen   = false;
-
-  Carry.Having.m_bSeen                 = false;
-  Carry.Having.m_bCorrect_After_Inject = false;
-
-  Carry.Sort.m_bSeen                 = false;
-  Carry.Sort.m_bCorrect_After_Inject = false;
-
-  Carry.Unproject.m_bSeen               = false;
-  Carry.Unproject.m_bUnproject_foldExpr = false;
-
-}
-
-/*----------------------------------------------------------------------------*/
-/* clear the general M registers if they match given pointer                  */
-/*----------------------------------------------------------------------------*/
-void CardIter::vClearRegistersIf(Card* pCard)
-{
-  _precondition_(_MAGIC_, _FOOTER_);
-
-  if (pCard == E.p_Op) {
-    E.p_Op = nullptr;
-    E.e_Op = CK_NONE;
-  }
-  if (pCard == E.p_Sub) {
-    E.p_Sub = nullptr;
-  }
-  if (pCard == E.p_Sub2) {
-    E.p_Sub2 = nullptr;
-  }
-  if (pCard == E.p_Sub3) {
-    E.p_Sub3 = nullptr;
-  }
+  Smooth.Unproject.m_bUnproject_foldExpr = false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1361,6 +1285,32 @@ bool CardIter::bEachTarget(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set early tip                                                              */
+/*----------------------------------------------------------------------------*/
+Card_OP* CardIter::pEarlyTip(void)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  return Early.m_pOp_tip;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set early tip                                                              */
+/*----------------------------------------------------------------------------*/
+void CardIter::vEarlyTip(Card_OP* p_Op_tip)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  if (! p_Op_tip) {
+    Early.m_pOp_tip = nullptr;
+    return;
+  }
+
+  RASSERT(! Early.m_pOp_tip);
+  Early.m_pOp_tip = p_Op_tip;
+}
+
+/*----------------------------------------------------------------------------*/
 /* end of phase                                                               */
 /*----------------------------------------------------------------------------*/
 void CardIter::vEndPhase(void)
@@ -1490,6 +1440,19 @@ Card* CardIter::pChild(i8 i_Child)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+bool CardIter::bIsQuery(BASE::Stz *szQueryNm)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  if (m_pBench->pOptimiser()->szQueryNm()->bSame(szQueryNm))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void CardIter::vInsertAfter(Card* pCard, Card* pAfter)
 {
   _precondition_(_MAGIC_, _FOOTER_);
@@ -1540,7 +1503,7 @@ Card* CardIter::pMember(eCK eCard)
     case CK_COUNT:          return E.p_count;
     case CK_o_CROSSJOIN:    return E.p_crossJoin;
 
-    case CK_DECISION:       return E.p_decision;
+    case CK_p_DECISION:       return E.p_decision;
     case CK_DISPOSITION:    return E.p_disposition;
 
     case CK_p_EMIT:         return E.p_emit;
@@ -1549,7 +1512,6 @@ Card* CardIter::pMember(eCK eCard)
     case CK_o_FILTER:       return E.p_filter;
     case CK_FILTPRED:       return E.p_filtPred;
     case CK_FILTPREDLIST:   return E.p_filtPredList;
-    case CK_o_FLAT:         return E.p_flat;
     case CK_o_FOLD:         return E.p_fold;
     case CK_o_FROM:         return E.p_from;
 
@@ -1589,6 +1551,7 @@ Card* CardIter::pMember(eCK eCard)
     case CK_p_MAPPING:      return E.p_mapping;
 
     case CK_p_NEEDED:       return E.p_needed;
+    case CK_p_NEEDEDv2:     return E.p_neededv2;
     case CK_NOTE:           return E.p_note;
     case CK_NOTCONJ:        return E.p_notConj;
 
@@ -1659,130 +1622,130 @@ void CardIter::vMember(eCK eCard, Card* pCard)
     case CK_NONE: break;
 
     case CK_o_ABSJOIN: E.p_absJoin           = _pCard_AbsJoin(pCard); break;
-    case CK_ADDRESS: E.p_address           = _pCard_Address(pCard); break;
-    case CK_o_AGGREG: E.p_aggreg            = _pCard_Aggreg(pCard);  break;
-    case CK_ANDCONJ: E.p_andConj           = _pCard_AndConj(pCard);break;
+    case CK_ADDRESS: E.p_address             = _pCard_Address(pCard); break;
+    case CK_o_AGGREG: E.p_aggreg             = _pCard_Aggreg(pCard);  break;
+    case CK_ANDCONJ: E.p_andConj             = _pCard_AndConj(pCard);break;
 
-    case CK_PREDICATE: E.p_predicate          = _pCard_Predicate(pCard); break;
-    case CK_BOUND: E.p_bound             = _pCard_Bound(pCard); break;
-    case CK_BOUNDS: E.p_bounds            = _pCard_Bounds(pCard); break;
+    case CK_PREDICATE: E.p_predicate         = _pCard_Predicate(pCard); break;
+    case CK_BOUND: E.p_bound                 = _pCard_Bound(pCard); break;
+    case CK_BOUNDS: E.p_bounds               = _pCard_Bounds(pCard); break;
 
-    case CK_o_CALL: E.p_call              = _pCard_Call(pCard); break;
-    case CK_CALLER: E.p_caller            = _pCard_Caller(pCard); break;
-    case CK_CALLOP: E.p_callOp            = _pCard_CallOp(pCard); break;
-    case CK_o_CAST: E.p_cast              = _pCard_Cast(pCard); break;
-    case CK_CLAUSE: E.p_clause            = _pCard_Clause(pCard); break;
+    case CK_o_CALL: E.p_call                 = _pCard_Call(pCard); break;
+    case CK_CALLER: E.p_caller               = _pCard_Caller(pCard); break;
+    case CK_CALLOP: E.p_callOp               = _pCard_CallOp(pCard); break;
+    case CK_o_CAST: E.p_cast                 = _pCard_Cast(pCard); break;
+    case CK_CLAUSE: E.p_clause               = _pCard_Clause(pCard); break;
 
-    case CK_p_CONSTRAINT: E.p_constraint        = _pCard_Constraint(pCard); break;
-    case CK_CORRCOLS: E.p_corrCols          = _pCard_CorrCols(pCard); break;
-    case CK_o_CORRELATION: E.p_correlation       = _pCard_Correlation(pCard); break;
-    case CK_COSTJOINING: E.p_costJoining       = _pCard_CostJoining(pCard); break;
-    case CK_COSTNETWORK: E.p_costNetwork       = _pCard_CostNetwork(pCard); break;
-    case CK_COSTSTREAM: E.p_costQuery         = _pCard_CostStream(pCard); break;
-    case CK_COSTUNICAST: E.p_costUnicast       = _pCard_CostUnicast(pCard); break;
-    case CK_COUNT: E.p_count             = _pCard_Count(pCard); break;
-    case CK_o_CROSSJOIN: E.p_crossJoin         = _pCard_CrossJoin(pCard); break;
+    case CK_p_CONSTRAINT: E.p_constraint     = _pCard_Constraint(pCard); break;
+    case CK_CORRCOLS: E.p_corrCols           = _pCard_CorrCols(pCard); break;
+    case CK_o_CORRELATION: E.p_correlation   = _pCard_Correlation(pCard); break;
+    case CK_COSTJOINING: E.p_costJoining     = _pCard_CostJoining(pCard); break;
+    case CK_COSTNETWORK: E.p_costNetwork     = _pCard_CostNetwork(pCard); break;
+    case CK_COSTSTREAM: E.p_costQuery        = _pCard_CostStream(pCard); break;
+    case CK_COSTUNICAST: E.p_costUnicast     = _pCard_CostUnicast(pCard); break;
+    case CK_COUNT: E.p_count                 = _pCard_Count(pCard); break;
+    case CK_o_CROSSJOIN: E.p_crossJoin       = _pCard_CrossJoin(pCard); break;
 
-    case CK_DECK: E.p_deck               = _pCard_Deck(pCard); break;
-    case CK_DECISION: E.p_decision          = _pCard_Decision(pCard); break;
-    case CK_DISPOSITION: E.p_disposition       = _pCard_Disposition(pCard); break;
+    case CK_DECK: E.p_deck                   = _pCard_Deck(pCard); break;
+    case CK_p_DECISION: E.p_decision         = _pCard_Decision(pCard); break;
+    case CK_DISPOSITION: E.p_disposition     = _pCard_Disposition(pCard); break;
 
-    case CK_p_EMIT: E.p_emit              = _pCard_Emit(pCard); break;
-    case CK_EXPR: E.p_expr              = _pCard_Expr(pCard); break;
+    case CK_p_EMIT: E.p_emit                 = _pCard_Emit(pCard); break;
+    case CK_EXPR: E.p_expr                   = _pCard_Expr(pCard); break;
 
-    case CK_o_FILTER: E.p_filter            = _pCard_Filter(pCard); break;
-    case CK_FILTPRED: E.p_filtPred          = _pCard_FiltPred(pCard); break;
-    case CK_FILTPREDLIST: E.p_filtPredList      = _pCard_FiltPredList(pCard); break;
-    case CK_o_FLAT: E.p_flat              = _pCard_Flat(pCard); break;
-    case CK_o_FOLD: E.p_fold              = _pCard_Fold(pCard); break;
-    case CK_o_FROM: E.p_from              = _pCard_From(pCard); break;
+    case CK_o_FILTER: E.p_filter             = _pCard_Filter(pCard); break;
+    case CK_FILTPRED: E.p_filtPred           = _pCard_FiltPred(pCard); break;
+    case CK_FILTPREDLIST: E.p_filtPredList   = _pCard_FiltPredList(pCard); break;
+    case CK_o_FOLD: E.p_fold                 = _pCard_Fold(pCard); break;
+    case CK_o_FROM: E.p_from                 = _pCard_From(pCard); break;
 
-    case CK_o_GBYAGG: E.p_gbyAgg            = _pCard_GbyAgg(pCard); break;
+    case CK_o_GBYAGG: E.p_gbyAgg             = _pCard_GbyAgg(pCard); break;
 
-    case CK_o_HASH: E.p_hash              = _pCard_Hash(pCard); break;
+    case CK_o_HASH: E.p_hash                 = _pCard_Hash(pCard); break;
     case CK_p_HASHING: E.p_hashing           = _pCard_Hashing(pCard); break;
-    case CK_o_HAVING: E.p_having            = _pCard_Having(pCard); break;
-    case CK_HSHCOL: E.p_hshCol            = _pCard_HshCol(pCard); break;
-    case CK_p_HSHCOLLIST: E.p_hshColList        = _pCard_HshColList(pCard); break;
+    case CK_o_HAVING: E.p_having             = _pCard_Having(pCard); break;
+    case CK_HSHCOL: E.p_hshCol               = _pCard_HshCol(pCard); break;
+    case CK_p_HSHCOLLIST: E.p_hshColList     = _pCard_HshColList(pCard); break;
 
-    case CK_IDXCOL: E.p_idxCol            = _pCard_IdxCol(pCard); break;
-    case CK_IDXCOLLIST: E.p_idxColList        = _pCard_IdxColList(pCard); break;
-    case CK_INDEX: E.p_index             = _pCard_Index(pCard); break;
-    case CK_o_INDEXJOIN: E.p_indexJoin         = _pCard_IndexJoin(pCard); break;
+    case CK_IDXCOL: E.p_idxCol               = _pCard_IdxCol(pCard); break;
+    case CK_IDXCOLLIST: E.p_idxColList       = _pCard_IdxColList(pCard); break;
+    case CK_INDEX: E.p_index                 = _pCard_Index(pCard); break;
+    case CK_o_INDEXJOIN: E.p_indexJoin       = _pCard_IndexJoin(pCard); break;
     case CK_INDEXLIST: E.p_indexList         = _pCard_IndexList(pCard); break;
-    case CK_INDEXNM: E.p_indexNm           = _pCard_IndexNm(pCard); break;
-    case CK_o_INDEXSCAN: E.p_indexScan         = _pCard_IndexScan(pCard); break;
-    case CK_p_INJECTABLE: E.p_injectable        = _pCard_Injectable(pCard); break;
+    case CK_INDEXNM: E.p_indexNm             = _pCard_IndexNm(pCard); break;
+    case CK_o_INDEXSCAN: E.p_indexScan       = _pCard_IndexScan(pCard); break;
+    case CK_p_INJECTABLE: E.p_injectable     = _pCard_Injectable(pCard); break;
     case CK_o_INFLATE: E.p_inflate           = _pCard_Inflate(pCard); break;
 
-    case CK_JOINCAST: E.p_joinCast          = _pCard_JoinCast(pCard); break;
-    case CK_JOINESTIMATE: E.p_joinEstimate      = _pCard_JoinEstimate(pCard); break;
+    case CK_JOINCAST: E.p_joinCast           = _pCard_JoinCast(pCard); break;
+    case CK_JOINESTIMATE: E.p_joinEstimate   = _pCard_JoinEstimate(pCard); break;
     case CK_JOINORDER: E.p_joinOrder         = _pCard_JoinOrder(pCard); break;
-    case CK_JOINORDERING: E.p_joinOrdering      = _pCard_JoinOrdering(pCard); break;
-    case CK_JOINPREDLIST: E.p_joinPredList      = _pCard_JoinPredList(pCard); break;
+    case CK_JOINORDERING: E.p_joinOrdering   = _pCard_JoinOrdering(pCard); break;
+    case CK_JOINPREDLIST: E.p_joinPredList   = _pCard_JoinPredList(pCard); break;
 
-    case CK_p_KEY: E.p_key               = _pCard_Key(pCard); break;
-    case CK_KEYCELLS: E.p_keyCells          = _pCard_KeyCells(pCard); break;
-    case CK_o_KEYEXISTS: E.p_keyExists         = _pCard_KeyExists(pCard); break;
-    case CK_o_KEYNOTEXISTS:E.p_keyNotExists      = _pCard_KeyNotExists(pCard); break;
+    case CK_p_KEY: E.p_key                   = _pCard_Key(pCard); break;
+    case CK_KEYCELLS: E.p_keyCells           = _pCard_KeyCells(pCard); break;
+    case CK_o_KEYEXISTS: E.p_keyExists       = _pCard_KeyExists(pCard); break;
+    case CK_o_KEYNOTEXISTS:E.p_keyNotExists  = _pCard_KeyNotExists(pCard); break;
 
-    case CK_p_LEVEL: E.p_level             = _pCard_Level(pCard); break;
-    case CK_o_LIMIT: E.p_limit             = _pCard_Limit(pCard); break;
+    case CK_p_LEVEL: E.p_level               = _pCard_Level(pCard); break;
+    case CK_o_LIMIT: E.p_limit               = _pCard_Limit(pCard); break;
 
-    case CK_MAP: E.p_map               = _pCard_Map(pCard); break;
+    case CK_MAP: E.p_map                     = _pCard_Map(pCard); break;
     case CK_p_MAPPING: E.p_mapping           = _pCard_Mapping(pCard); break;
 
-    case CK_p_NEEDED: E.p_needed            = _pCard_Needed(pCard); break;
-    case CK_NOTE: E.p_note              = _pCard_Note(pCard); break;
-    case CK_NOTCONJ: E.p_notConj           = _pCard_NotConj(pCard);break;
+    case CK_p_NEEDED: E.p_needed             = _pCard_Needed(pCard); break;
+    case CK_p_NEEDEDv2: E.p_neededv2         = _pCard_Neededv2(pCard); break;
+    case CK_NOTE: E.p_note                   = _pCard_Note(pCard); break;
+    case CK_NOTCONJ: E.p_notConj             = _pCard_NotConj(pCard);break;
 
-    case CK_ON: E.p_on                = _pCard_On(pCard); break;
-    case CK_ORCONJ: E.p_orConj            = _pCard_OrConj(pCard);break;
-    case CK_o_ORDAGG: E.p_ordAgg            = _pCard_OrdAgg(pCard); break;
-    case CK_OUTERCOLNM: E.p_outerColNm        = _pCard_OuterColNm(pCard); break;
+    case CK_ON: E.p_on                       = _pCard_On(pCard); break;
+    case CK_ORCONJ: E.p_orConj               = _pCard_OrConj(pCard);break;
+    case CK_o_ORDAGG: E.p_ordAgg             = _pCard_OrdAgg(pCard); break;
+    case CK_OUTERCOLNM: E.p_outerColNm       = _pCard_OuterColNm(pCard); break;
     case CK_OUTERJOIN: E.p_outerJoin         = _pCard_OuterJoin(pCard); break;
 
-    case CK_PAYLOADCELLS: E.p_payloadCells      = _pCard_PayloadCells(pCard); break;
-    case CK_o_PDSROW: E.p_pdsRow           = _pCard_PdsRow(pCard); break;
+    case CK_PAYLOADCELLS: E.p_payloadCells   = _pCard_PayloadCells(pCard); break;
+    case CK_o_PDSROW: E.p_pdsRow             = _pCard_PdsRow(pCard); break;
     case CK_o_PROJECT: E.p_project           = _pCard_Project(pCard); break;
 
-    case CK_RELNOP: E.p_relnOp            = _pCard_RelnOp(pCard); break;
-    case CK_RLNCONJ: E.p_rlnConj           = _pCard_RlnConj(pCard);break;
-    case CK_ROWCOUNT: E.p_rowCount          = _pCard_RowCount(pCard); break;
-    case CK_ROWSIZE: E.p_rowSize           = _pCard_RowSize(pCard); break;
+    case CK_RELNOP: E.p_relnOp               = _pCard_RelnOp(pCard); break;
+    case CK_RLNCONJ: E.p_rlnConj             = _pCard_RlnConj(pCard);break;
+    case CK_ROWCOUNT: E.p_rowCount           = _pCard_RowCount(pCard); break;
+    case CK_ROWSIZE: E.p_rowSize             = _pCard_RowSize(pCard); break;
 
-    case CK_o_SCAN: E.p_scan              = _pCard_Scan(pCard); break;
-    case CK_SECTION: E.p_section           = _pCard_Section(pCard); break;
-    case CK_o_SEND: E.p_send              = _pCard_Send(pCard); break;
-    case CK_o_SORT: E.p_sort              = _pCard_Sort(pCard); break;
-    case CK_SPARE: E.p_spare             = _pCard_Spare(pCard); break;
-    case CK_SQYCALLS: E.p_sqyCalls          = _pCard_SqyCalls(pCard); break;
-    case CK_SQYINFO: E.p_sqyInfo           = _pCard_SqyInfo(pCard); break;
-    case CK_SQYNO: E.p_sqyNo             = _pCard_SqyNo(pCard); break;
-    case CK_o_STAGE: E.p_stage             = _pCard_Stage(pCard); break;
-    case CK_STREAMHEAD: E.p_streamHead        = _pCard_StreamHead(pCard); break;
-    case CK_STREAMJOIN: E.p_streamJoin        = _pCard_StreamJoin(pCard); break;
-    case CK_p_STREAMKEY: E.p_streamKey         = _pCard_StreamKey(pCard); break;
+    case CK_o_SCAN: E.p_scan                 = _pCard_Scan(pCard); break;
+    case CK_SECTION: E.p_section             = _pCard_Section(pCard); break;
+    case CK_o_SEND: E.p_send                 = _pCard_Send(pCard); break;
+    case CK_o_SORT: E.p_sort                 = _pCard_Sort(pCard); break;
+    case CK_SPARE: E.p_spare                 = _pCard_Spare(pCard); break;
+    case CK_SQYCALLS: E.p_sqyCalls           = _pCard_SqyCalls(pCard); break;
+    case CK_SQYINFO: E.p_sqyInfo             = _pCard_SqyInfo(pCard); break;
+    case CK_SQYNO: E.p_sqyNo                 = _pCard_SqyNo(pCard); break;
+    case CK_o_STAGE: E.p_stage               = _pCard_Stage(pCard); break;
+    case CK_STREAMHEAD: E.p_streamHead       = _pCard_StreamHead(pCard); break;
+    case CK_STREAMJOIN: E.p_streamJoin       = _pCard_StreamJoin(pCard); break;
+    case CK_p_STREAMKEY: E.p_streamKey       = _pCard_StreamKey(pCard); break;
     case CK_STREAMPER: E.p_streamPer         = _pCard_StreamPer(pCard); break;
     case CK_STREAMPTN: E.p_streamPtn         = _pCard_StreamPtn(pCard); break;
     case CK_STREAMSET: E.p_streamSet         = _pCard_StreamSet(pCard); break;
-    case CK_SUBQUERY: E.p_subQuery          = _pCard_SubQuery(pCard); break;
-    case CK_SUBSET: E.p_subSet            = _pCard_SubSet(pCard); break;
+    case CK_SUBQUERY: E.p_subQuery           = _pCard_SubQuery(pCard); break;
+    case CK_SUBSET: E.p_subSet               = _pCard_SubSet(pCard); break;
 
-    case CK_p_TABLE: E.p_table             = _pCard_Table(pCard); break;
+    case CK_p_TABLE: E.p_table               = _pCard_Table(pCard); break;
     case CK_TABLELIST: E.p_tableList         = _pCard_TableList(pCard); break;
-    case CK_TABLENM: E.p_tableNm           = _pCard_TableNm(pCard); break;
-    case CK_TABLEPTN: E.p_tablePtn          = _pCard_TablePtn(pCard); break;
+    case CK_TABLENM: E.p_tableNm             = _pCard_TableNm(pCard); break;
+    case CK_TABLEPTN: E.p_tablePtn           = _pCard_TablePtn(pCard); break;
     case CK_TABLESIZE: E.p_tableSize         = _pCard_TableSize(pCard); break;
-    case CK_TERM: E.p_term              = _pCard_Term(pCard); break;
-    case CK_o_TOP: E.p_top               = _pCard_Top(pCard); break;
-    case CK_TOPOLOGY: E.p_topology          = _pCard_Topology(pCard); break;
+    case CK_TERM: E.p_term                   = _pCard_Term(pCard); break;
+    case CK_o_TOP: E.p_top                   = _pCard_Top(pCard); break;
+    case CK_TOPOLOGY: E.p_topology           = _pCard_Topology(pCard); break;
 
-    case CK_UNIQUE: E.p_unique            = _pCard_Unique(pCard); break;
+    case CK_UNIQUE: E.p_unique               = _pCard_Unique(pCard); break;
 
-    case CK_o_WHERE: E.p_where             = _pCard_Where(pCard); break;
+    case CK_o_WHERE: E.p_where               = _pCard_Where(pCard); break;
 
-    case CK_XCARD: E.p_xcard             = _pCard_XCard(pCard); break;
+    case CK_XCARD: E.p_xcard                 = _pCard_XCard(pCard); break;
 
     default:
       NEVER_REACH
@@ -1882,11 +1845,25 @@ Card* CardIter::pPeekNextIf(eCK eCard)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  Card* pNextMain = this->pPeekNext();
-  if (! pNextMain || eCard != pNextMain->eCard())
+  Card* pNextChild = this->pPeekNext();
+  if (! pNextChild || eCard != pNextChild->eCard())
     return nullptr;
 
-  return pNextMain;
+  return pNextChild;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card* CardIter::pPeekPrevIf(eCK eCard)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  Card* pPrevChild = this->pPeekPrev();
+  if (! pPrevChild || eCard != pPrevChild->eCard())
+    return nullptr;
+
+  return pPrevChild;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2051,7 +2028,7 @@ Card_Expr* CardIter::pPrior_expr(Symbol* pSymbol_arg)
   if (! p_arriving)
     return nullptr;
 
-  //RASSERT(p_arriving == this->Arriving.m_pEmit);
+  //RASSERT(p_arriving == this->Arriving.m_pEmitted_prior);
 
   Card_Expr* p_expr_resolved = p_arriving->pFind_expr(pSymbol_arg);
   return p_expr_resolved;
@@ -2085,101 +2062,19 @@ void CardIter::vPushEach(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool CardIter::bRecurseActive(void)
+void CardIter::vPushEach(Board* pBoard)
 {
-  _precondition_(_MAGIC_,_FOOTER_);
-
-  EachMembers* pPeg = pPeek(0);
-  if (! pPeg)
-    return false;
-  if (pPeg->m_i_RecursionDepth != m_i_RecursionDepth)
-    return false;
-
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void CardIter::vRecurseBegin(Card* pCard)
-{
-  _precondition_(_MAGIC_, _FOOTER_);
-
   vPushEach();
-
-  m_i_RecursionDepth++;
-  E.m_i_RecursionDepth = m_i_RecursionDepth;
-
-  vUseCard(pCard);
-  vDontDescend(false);
-
-  //E.xEachOp.vForwards(true);
+  vUseBoard(pBoard);
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card* CardIter::pRecurseEach(void)
+void CardIter::vPushEach(Card* pParent)
 {
-  _precondition_( _MAGIC_, _FOOTER_);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // descend into current child
-
-  if (E.p_Op && (! E.m_bDontDescend) ) {
-    if (E.p_Op->nChildCards()) {
-
-      vPushEach();
-      vUseCard(E.p_Op);
-      bEachOp();
-
-      return E.p_Op;
-    }
-  }
-
-  E.m_bDontDescend = false;
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // visit next child
-
-  if (bEachOp())
-    return E.p_Op;
-
-  while (bRecurseActive()) {
-    vPopEach();
-    if (bEachOp())
-      return E.p_Op;
-  }
-
-  return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card* CardIter::pRecurseEach(eCK eCard)
-{
-  _precondition_( _MAGIC_, _FOOTER_);
-
-  while (Card* p_card = pRecurseEach())
-    if (p_card->bIsCard(eCard))
-      return p_card;
-
-  return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void CardIter::vRecurseEnd(void)
-{
-  _precondition_(_MAGIC_, _FOOTER_);
-
-  vPopEach();
-
-  m_i_RecursionDepth--;
-
-  RASSERT(E.m_i_RecursionDepth == m_i_RecursionDepth);
+  vPushEach();
+  vUseCard(pParent);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2211,13 +2106,11 @@ void CardIter::vResetMembers(void)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-
   E.p_absJoin          = nullptr;
   E.p_address          = nullptr;
   E.p_aggreg           = nullptr;
   E.p_andConj          = nullptr;
 
-  E.p_predicate         = nullptr;
   E.p_bound            = nullptr;
   E.p_bounds           = nullptr;
 
@@ -2243,7 +2136,6 @@ void CardIter::vResetMembers(void)
   E.p_filter           = nullptr;
   E.p_filtPred         = nullptr;
   E.p_filtPredList     = nullptr;
-  E.p_flat             = nullptr;
   E.p_fold             = nullptr;
   E.p_from             = nullptr;
 
@@ -2284,6 +2176,7 @@ void CardIter::vResetMembers(void)
   E.p_mapping          = nullptr;
 
   E.p_needed           = nullptr;
+  E.p_neededv2         = nullptr;
   E.p_note             = nullptr;
   E.p_notConj          = nullptr;
 
@@ -2296,6 +2189,7 @@ void CardIter::vResetMembers(void)
   E.p_payload          = nullptr;
   E.p_payloadCells     = nullptr;
   E.p_pdsRow           = nullptr;
+  E.p_predicate        = nullptr;
   E.p_project          = nullptr;
 
   E.p_relnOp           = nullptr;
@@ -2385,7 +2279,7 @@ void CardIter::vSnap_arriving(Card_Emit* p_emit, Card_StreamKey* pStreamKey)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  Arriving.m_pEmit = p_emit;
+  Arriving.m_pEmitted_prior = p_emit;
   Dic.m_p_expr = p_emit;
 
   Arriving.m_pStreamKey = pStreamKey;
@@ -2399,7 +2293,7 @@ void CardIter::vSnapIf_arriving(Card_Emit* p_emit, Card_StreamKey * pStreamKey)
   _precondition_(_MAGIC_, _FOOTER_);
 
   if (p_emit) {
-    Arriving.m_pEmit = p_emit;
+    Arriving.m_pEmitted_prior = p_emit;
     Dic.m_p_expr = p_emit;
 
     Arriving.m_pStreamKey = pStreamKey;
@@ -2413,12 +2307,33 @@ void CardIter::vSnapIf_arriving(bool bSub_emit)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
+  if (E.p_Op->bIsCard(CK_o_FOLD))
+    return;
+
   if (bSub_emit) {
     vSnapIf_arriving(E.p_Op->pSub_emit(),E.p_Op->pSub_streamKey());
   }
   else {
     vSnapIf_arriving(E.p_emit,E.p_Op->pSub_streamKey());
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* snap emit                                                                  */
+/*----------------------------------------------------------------------------*/
+void CardIter::vSnapIf_arriving_till(eCK eTill)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  for (vBeginEach(); bEachOp(); /**/) {
+
+    if (eTill == E.e_Op)
+      break;
+
+    vSnapIf_arriving();
+  }
+
+  RASSERT(eTill == E.e_Op);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2521,7 +2436,7 @@ void CardIter::vValidateChildren(Card* pCard, i8 iDepth)
       case CK_COUNT:          E.p_count->vValidate(this, iDepth, pCard);  break;
       case CK_o_CROSSJOIN:    E.p_crossJoin->vValidate(this, iDepth, pCard);  break;
 
-      case CK_DECISION:       E.p_decision->vValidate(this, iDepth, pCard);  break;
+      case CK_p_DECISION:       E.p_decision->vValidate(this, iDepth, pCard);  break;
       case CK_DISPOSITION:    E.p_disposition->vValidate(this, iDepth, pCard);  break;
 
       case CK_p_EMIT:         E.p_emit->vValidate(this, iDepth, pCard);  break;
@@ -2530,7 +2445,6 @@ void CardIter::vValidateChildren(Card* pCard, i8 iDepth)
       case CK_o_FILTER:       E.p_filter->vValidate(this, iDepth, pCard);  break;
       case CK_FILTPRED:       E.p_filtPred->vValidate(this, iDepth, pCard);  break;
       case CK_FILTPREDLIST:   E.p_filtPredList->vValidate(this, iDepth, pCard);  break;
-      case CK_o_FLAT:         E.p_flat->vValidate(this, iDepth, pCard);  break;
       case CK_o_FOLD:         E.p_fold->vValidate(this, iDepth, pCard);  break;
       case CK_o_FROM:         E.p_from->vValidate(this, iDepth, pCard);  break;
 
@@ -2570,6 +2484,7 @@ void CardIter::vValidateChildren(Card* pCard, i8 iDepth)
       case CK_p_MAPPING:      E.p_mapping->vValidate(this, iDepth, pCard);  break;
 
       case CK_p_NEEDED:       E.p_needed->vValidate(this, iDepth, pCard);  break;
+      case CK_p_NEEDEDv2:     E.p_neededv2->vValidate(this, iDepth, pCard);  break;
       case CK_NOTE:           E.p_note->vValidate(this, iDepth, pCard);  break;
       case CK_NOTCONJ:        E.p_notConj->vValidate(this, iDepth, pCard);  break;
 

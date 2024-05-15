@@ -93,7 +93,6 @@ void XF_Epilog_Promote_filter::vPromote_filter(void)
   }
 
   m_pCI->vEndTransform(__LINE__);
-//vValidateBench();
 }
 
 /*============================================================================*/

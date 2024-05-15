@@ -54,28 +54,6 @@ void Card_Aggreg::vDerive_streamKey(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
-/* early project                                                              */
-/*----------------------------------------------------------------------------*/
-bool Card_Aggreg::bEarlyProject_root(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  RASSERT(bIsPartitionLevel());
-
-  RASSERT(! pCI->Early.m_pNeeded_later);
-
-  // get the root needed form of ordAgg's projection
-  pCI->Early.m_pNeeded_later  = pCI->E.p_emit->pCraftRoot_needed(pCI);
-
-  if (0 == pCI->Early.m_pNeeded_later->nChildCards()) {
-    DELETE_CARD(pCI->Early.m_pNeeded_later);
-    return false;
-  }
-
- return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* smooth                                                                     */
 /*----------------------------------------------------------------------------*/
 void Card_Aggreg::vSmooth(CardIter* pCI)

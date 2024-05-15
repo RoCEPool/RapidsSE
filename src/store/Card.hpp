@@ -10,6 +10,7 @@
 #include "eQO.h"
 #include "eRO.h"
 #include "eTE.h"
+#include "eXD.h"
 #include "eXK.h"
 #include "eYG.h"
 
@@ -18,7 +19,7 @@
 #include "Ribbon.hpp"
 #include "Symbol.hpp"
 
-//#define Z_NEEDEDv2
+#define Z_NO_ADDRESSES
 
 namespace STORE
 {
@@ -56,7 +57,6 @@ namespace STORE
   class Card_Filter;
   class Card_FiltPred;
   class Card_FiltPredList;
-  class Card_Flat;
   class Card_Fold;
   class Card_From;
 
@@ -97,6 +97,7 @@ namespace STORE
 
   class Card_Disposition;
   class Card_Needed;
+  class Card_Neededv2;
   class Card_Cast;
   class Card_Note;
   class Card_NotConj;
@@ -172,9 +173,11 @@ extern Stz* P_CrlKeyTerm;
 extern Stz* P_CrlKeyTest;
 extern Stz* P_DebugOption;
 extern Stz* P_Early;
+extern Stz* P_EarlyArc;
 extern Stz* P_EmittedCol;
 extern Stz* P_FixedNm;
 extern Stz* P_FixedPos;
+extern Stz* P_Fn;
 extern Stz* P_FusedProject;
 extern Stz* P_HashOf;
 extern Stz* P_InjCrlKey;
@@ -182,11 +185,12 @@ extern Stz* P_Injected;
 extern Stz* P_Invalid;
 extern Stz* P_Key;
 extern Stz* P_Level;
+extern Stz* P_Line;
+extern Stz* P_Note;
 extern Stz* P_PrmOdn;
 extern Stz* P_Payload;
 extern Stz* P_Permutation;
 extern Stz* P_Pointer;
-extern Stz* P_ProjBumped;
 extern Stz* P_SendKind;
 extern Stz* P_Smoothed;
 extern Stz* P_StageTopo;
@@ -195,6 +199,9 @@ extern Stz* P_SqyCall;
 extern Stz* P_SqyRslTest;
 extern Stz* P_Threads;
 extern Stz* P_Unproject;
+extern Stz* P_Xaction;
+extern Stz* P_Xdecision;
+extern Stz* P_Xform;
 
 extern Stz* C_CARD_HISTORY;
 extern Stz* C_CODE_BLOCK;
@@ -307,9 +314,11 @@ namespace STORE
 
     eCT  eCTVal(void);
 
+    void  vDecision(CardIter* pCI, eXD eDecision, const char* azFn, i8 iLine);
     void  vDeleteFacetRecursive(eSF eFacet);
     void  vDump(const char* azFunc, Stz* szTitle=nullptr, i8 iDepth=0);
-    void  vDumpShort(const char* azFunc, Stz* szTitle);
+    void  vDumpCaller(const char* azFunc, Stz* szTitle, const char* azCaller, i8 iLine);
+    void  vDumpShort(const char* azFunc, i8 iLine, Stz* szTitle, i8 iArg1=C_UNKNOWN, i8 iArg2=C_UNKNOWN);
     Card* pDupCard(void);
     Card* pDupCardRecursive(void);
     Card_SubSet* pDupSubCardsRecursive(i8 i_From, i8 i_Till=C_UNKNOWN);
@@ -324,8 +333,6 @@ namespace STORE
     Card* pFindPpyRecursive(Stz* szPpy, eCK eCard=CK_NONE);
     Card* pFindMark1Recursive(char cMark1, eCK eCard=CK_NONE);
     Card* pFindMark1Recursive(Stz* szMark1, eCK eCard=CK_NONE);
-    Card* pFindMark2Recursive(char cMark2, eCK eCard=CK_NONE);
-    Card* pFindMark2Recursive(Stz* szMark2, eCK eCard=CK_NONE);
     Card* pFindCard_WithSubFacet(eCK eCard, eSF eFacet);
     Card* pFindSymbolRecursive(eCK eCard, Symbol* pSymbol, Card*& rpParent, Card* _opaque_=nullptr);
     bool  bFixedDepth(i8 iDepth);
@@ -345,10 +352,8 @@ namespace STORE
     bool bIsPeek(eCK eChild0, eCK eChild1);
     bool bIsPeek(i8 i_Child, eCK eChild);
 
-    bool bLambdaWalk(eCK eToSubs, std::function<bool(Card* pCard)> bfLambdaFn, CardIter* pCI=nullptr);
+    bool bLambdaWalk(eCK eCardIf, std::function<bool(Card* pCard)> bfLambdaFn, CardIter* pCI=nullptr);
     bool bLambdaWalk_term(std::function<bool(Card_Term* p_term)> bfLambdaFn);
-
-    void vMark(Stz* szMark1, Stz* szMark2);
 
     bool bMark1(Stz* szArg);
     char cMark1(void);
@@ -370,6 +375,7 @@ namespace STORE
     void vMark2RecursiveIf(char cMark, char cIf);
     void vMark2RecursiveIf(Stz* szMark2, Stz* szIf);
 
+    void vMarks(Stz* szMark1, Stz* szMark2);
     void vMarksClearRecursive(void);
     void vMarksTestRecursive(void);
 
@@ -416,43 +422,48 @@ namespace STORE
     void vCoord(void);
     void vCoord(Card* pParentCard);
 
-    void vPrint_card(CardIter* pCI, Ribbon* pRibbon, i8 iDepth);
-    void vPrint_depth0(CardIter* pCI, Ribbon* pRibbon, i8 iDepth);
-    void vPrint_depth1(CardIter* pCI, Ribbon* pRibbon, i8 iDepth);
-    void vPrint_depth2(CardIter* pCI, Ribbon* pRibbon, i8 iDepth);
-    void vPrint_depthN(CardIter* pCI, Ribbon* pRibbon, i8 iDepth);
-    void vPrint_enum(CardIter* pCI, Ribbon* pRibbon, i8 iDepth);
-    void vPrint_expr(CardIter* pCI, Ribbon* pRibbon, i8 iDepth);
-    void vPrint_table(CardIter* pCI, Ribbon* pRibbon, i8 iDepth);
-    void vPrint_term(CardIter* pCI, Ribbon* pRibbon, i8 iDepth);
-    void vPrintFacets(CardIter* pCI, Ribbon* pRibbon, i8 iDepth);
-    void vPrintHeader(CardIter* pCI, Ribbon* pRibbon);
+    void vPrint_card     (CardIter* pCI, Ribbon* pRibbon, i8 iDepth);
+    void vPrint_depth0   (CardIter* pCI, Ribbon* pRibbon, i8 iDepth);
+    void vPrint_depth1   (CardIter* pCI, Ribbon* pRibbon, i8 iDepth);
+    void vPrint_depth2   (CardIter* pCI, Ribbon* pRibbon, i8 iDepth);
+    void vPrint_depthN   (CardIter* pCI, Ribbon* pRibbon, i8 iDepth);
+    void vPrint_enum     (CardIter* pCI, Ribbon* pRibbon, i8 iDepth);
+    void vPrint_expr     (CardIter* pCI, Ribbon* pRibbon, i8 iDepth);
+    void vPrint_table    (CardIter* pCI, Ribbon* pRibbon, i8 iDepth);
+    void vPrint_term     (CardIter* pCI, Ribbon* pRibbon, i8 iDepth);
+    void vPrintFacets    (CardIter* pCI, Ribbon* pRibbon, i8 iDepth);
+    void vPrintHeader    (CardIter* pCI, Ribbon* pRibbon);
     void vPrintProperties(CardIter* pCI, Ribbon* pRibbon, i8 iDepth);
 
-    void vCat(i8& ri_Char, Ribbon* pRibbon, Stz* szStr, bool bRight=false);
-    void vCatBlank(i8& ri_Char, Ribbon* pRibbon);
-    void vCatBracket(i8& ri_Char, Ribbon* pRibbon, CardIter* pCI);
-    void vCatDots(i8& ri_Char, Ribbon* pRibbon, i8 iDepth);
-    void vCatEnum(i8& ri_Char, Ribbon* pRibbon);
-    void vCatFacet(i8& ri_Char, Ribbon* pRibbon, i8 i_Facet, bool bSecondary, bool bRight=false);
-    void vCatName(i8& ri_Char, Ribbon* pRibbon, i8 iDepth);
-    void vCatMarks(i8& ri_Char, Ribbon* pRibbon);
-    void vCatProperty(i8& ri_Char, Ribbon* pRibbon, i8 i_Property);
-    void vCatSequence(i8& ri_Char, Ribbon* pRibbon);
-    void vCatTblSyn(i8& ri_Char, Ribbon* pRibbon);
-    void vCatText(i8& ri_Char, Ribbon* pRibbon, Stz* szStr);
-    void vCatTypeLength(i8& ri_Char, Ribbon* pRibbon, i8 i_Facet);
+    void vCat             (CardIter* pCI, i8& ri_Char, Ribbon* pRibbon, Stz* szStr, bool bRight=false);
+    void vCatAsterisk     (CardIter* pCI, i8& ri_Char, Ribbon* pRibbon);
+    void vCatBlank        (CardIter* pCI, i8& ri_Char, Ribbon* pRibbon);
+    void vCatBracket      (CardIter* pCI, i8& ri_Char, Ribbon* pRibbon);
+    void vCatDash         (CardIter* pCI, i8& ri_Char, Ribbon* pRibbon);
+    void vCatDots         (CardIter* pCI, i8& ri_Char, Ribbon* pRibbon, i8 iDepth);
+    void vCatEnum         (CardIter* pCI, i8& ri_Char, Ribbon* pRibbon);
+    void vCatFacet        (CardIter* pCI, i8& ri_Char, Ribbon* pRibbon, i8 i_Facet, bool bSecondary, bool bRight=false);
+    void vCatMarks        (CardIter* pCI, i8& ri_Char, Ribbon* pRibbon);
+    void vCatName         (CardIter* pCI, i8& ri_Char, Ribbon* pRibbon, i8 iDepth);
+    void vCatPlus         (CardIter* pCI, i8& ri_Char, Ribbon* pRibbon);
+    void vCatProperty     (CardIter* pCI, i8& ri_Char, Ribbon* pRibbon, i8 i_Property);
+    void vCatSequence     (CardIter* pCI, i8& ri_Char, Ribbon* pRibbon);
+    void vCatSpaces       (CardIter* pCI, i8& ri_Char, Ribbon* pRibbon, i8 nSpaces);
+    void vCatTblSyn       (CardIter* pCI, i8& ri_Char, Ribbon* pRibbon);
+    void vCatText         (CardIter* pCI, i8& ri_Char, Ribbon* pRibbon, Stz* szStr);
+    void vCatTypeLength   (CardIter* pCI, i8& ri_Char, Ribbon* pRibbon, i8 i_Facet);
 
-    void vFormatDots(String* pString, i8 iDepth);
-    void vFormatEnum(String* pString);
-    void vFormatFacet(String* pString, i8 i_Facet, bool bSecondary=false);
-    void vFormatHeader(String* pString);
-    void vFormatMarks(String* pString);
-    void vFormatName(String* pString, i8 iDepth, bool bRight=false);
-    void vFormatProperty(String* pString, i8 i_Property);
-    void vFormatSequence(String* pString);
-    void vFormatTblSyn(String* pString);
-    void vFormatTypeLength(String* pString, i8 i_Facet);
+    void vFormatDots      (CardIter* pCI, String* pString, i8 iDepth);
+    void vFormatEnum      (CardIter* pCI, String* pString);
+    void vFormatFacet     (CardIter* pCI, String* pString, i8 i_Facet, bool bSecondary=false, bool bFacetNo=false);
+    void vFormatHeader    (CardIter* pCI, String* pString);
+    void vFormatMarks     (CardIter* pCI, String* pString);
+    void vFormatName      (CardIter* pCI, String* pString, i8 iDepth, bool bRight=false);
+    void vFormatProperty  (CardIter* pCI, String* pString, i8 i_Property);
+    void vFormatSequence  (CardIter* pCI, String* pString);
+    void vFormatSpaces    (CardIter* pCI, String* pString, i8 nSpaces);
+    void vFormatTblSyn    (CardIter* pCI, String* pString);
+    void vFormatTypeLengthScale(CardIter* pCI, String* pString, i8 i_Facet);
 
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
@@ -485,7 +496,6 @@ namespace STORE
     Card_FiltPred*      pSub_filtPred(bool bNotNull=false);
     Card_FiltPredList*  pSub_filtPredList(bool bNotNull=false);
     Card_Filter*        pSub_filter(bool bNotNull=false);
-    Card_Flat*          pSub_flat(bool bNotNull=false);
     Card_Fold*          pSub_fold(bool bNotNull=false);
     Card_From*          pSub_from(bool bNotNull=false);
     Card_GbyAgg*        pSub_gbyAgg(bool bNotNull=false);
@@ -511,6 +521,7 @@ namespace STORE
     Card_Map*           pSub_map(bool bNotNull=false);
     Card_Mapping*       pSub_mapping(bool bNotNull=false);
     Card_Needed*        pSub_needed(bool bNotNull=false);
+    Card_Neededv2*      pSub_neededv2(bool bNotNull=false);
     Card_NotConj*       pSub_notConj(bool bNotNull=false);
     Card_Note*          pSub_note(bool bNotNull=false);
     Card_On*            pSub_on(bool bNotNull=false);
@@ -598,6 +609,18 @@ EndDefine
     delete __pCard;          \
     __pCard = nullptr;       \
   }                          \
+EndDefine
+
+/*----------------------------------------------------------------------------*/
+/* macro for deleting card                                                    */
+/*----------------------------------------------------------------------------*/
+#define DELETEIF_CARD(__pCard) \
+  {                            \
+    if (__pCard) {             \
+      delete __pCard;          \
+      __pCard = nullptr;       \
+    }                          \
+  }                            \
 EndDefine
 
 /*============================================================================*/

@@ -72,7 +72,6 @@ void Card_Expr::vAssemble_injCrlRsl(CardIter* pCI)
     pCI->E.p_expr->vApplyCast_x(pCI->E.p_key->xCast());
 
     pCI->E.p_emit->vBump_expCol(pCI);
-    pCI->E.p_key->pSymbol()->Y_vSet(P_ProjBumped);
   }
 
   pCI->E.p_expr->pSymbol()->Y_vSet(P_InjCrlKey);
@@ -638,8 +637,8 @@ void Card_Expr::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   RASSERT(pSymbol_expr->xCast().m_xTypeId.bIsValid());
   if (m_xSymbol.xTypeId() == TypeId::xIdOf(CT_DECIMAL)) {
     if (m_xSymbol.nTypeLength() == 0) {
-      vMark("?"_Stz,"l"_Stz);
-      pCI->pAncestorParent()->vMark("?"_Stz,"l"_Stz);
+      vMarks("?"_Stz,"l"_Stz);
+      pCI->pAncestorParent()->vMarks("?"_Stz,"l"_Stz);
       pCI->PRINTBOARD_dbg();
       vDump(__func__);
       vValidationFailed("Decimal length is 0 : %p"_Stz, this);
@@ -652,7 +651,6 @@ void Card_Expr::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
                                      CK_p_EMIT,
                                      CK_p_KEY,
 
-                                     CK_o_FLAT,
                                      CK_o_FOLD,
                                      CK_p_INJECTABLE,
                                      CK_p_NEEDED,

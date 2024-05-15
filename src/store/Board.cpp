@@ -211,9 +211,8 @@ void Board::vDump(i8 iDepth)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
 
-  vTrace("%sBoard %p %lld %s\n"_Stz,
+  vTrace("%sBoard %lld %s\n"_Stz,
          Stz::szTab(iDepth),
-         this,
          m_i_Board,
          aBK[m_eBoard]
   );
@@ -281,16 +280,17 @@ void Board::vPrintBoard(CardIter* pCI)
 
   vPinCards(pCI, pRibbon);
 
-  pRibbon->vDrawH('-',0);
-  pRibbon->vDrawH('-',2);
+  pRibbon->vDrawH('=',0);
+  pRibbon->vDrawH('=',2);
   pRibbon->vDrawH('=');
 
   vPinMargin(pRibbon);
 
   i8 iBenchNo = m_pBench->iBenchNo();
+  i8 iXform   = m_pBench->iXform();
   eOH ePhase  = this->ePhase();
   i8 iPrintNo = m_pBench->nPrintBoard_inc();
-  pRibbon->vPrintRibbon(szQueryNm, iBenchNo, ePhase, iPrintNo);
+  pRibbon->vPrintRibbon(szQueryNm, iBenchNo, iXform, ePhase, iPrintNo);
 
   delete pRibbon;
 }
@@ -445,7 +445,8 @@ void Board::vPinTitle(Ribbon* pRibbon)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   i8 i_Char = C_UNKNOWN;
-  pRibbon->vSprint(i_Char, "PrintBoard: %s/%lld -- %s"_Stz,
+  pRibbon->vSprint(i_Char, "PrintBoard: x%lld %s/%lld -- %s"_Stz,
+                     m_pBench->iXform(),
                      aXF[m_pBench->eXform()],
                      m_pBench->nTransformPrint_inc(),
                      aXF_desc[m_pBench->eXform()]);

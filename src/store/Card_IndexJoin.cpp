@@ -76,7 +76,7 @@ void Card_IndexJoin::vDerive_streamKey(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_IndexJoin::vEarlyProject_add_transients(CardIter* pCI)
+void Card_IndexJoin::vAdd_transients(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -147,28 +147,6 @@ void Card_IndexJoin::vEarlyProject_add_transients(CardIter* pCI)
   if ((pCI->E.p_predicate = pCI->E.p_filter->pSub_predicate()))
     pCI->E.p_predicate->bLambdaWalk_term(bLambda);
 
-}
-/*----------------------------------------------------------------------------*/
-/* early project                                                              */
-/*----------------------------------------------------------------------------*/
-bool Card_IndexJoin::bEarlyProject_root(CardIter* pCI)
-{
-  //vDump(0,(Stz*)__func__);
-
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  RASSERT(bIsPartitionLevel());
-
-  RASSERT(! pCI->Early.m_pNeeded_later);
-
-  if (pCI->pPeekPrev()->bIsCard(CK_o_PROJECT))
-    return false;
-
-  // get the root needed form of ordAgg's projection
-  pCI->Early.m_pNeeded_later  = pCI->E.p_emit->pCraftRoot_needed(pCI);
-
-
-  return true;
 }
 
 /*----------------------------------------------------------------------------*/

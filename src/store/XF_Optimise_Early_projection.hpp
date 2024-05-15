@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* XF_Optimise_Early_projection.hpp -- Early projection                                */
+/* XF_Optimise_Early_projection.hpp -- Early projection                       */
 /*============================================================================*/
 #pragma once
 
@@ -17,21 +17,26 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    static void vBackstep(CardIter* pCI);
-    static void vRoots(CardIter* pCI);
-
     XF_Optimise_Early_projection(CardIter* pCI);
    ~XF_Optimise_Early_projection(void) noexcept(false);
 
     static void vOptimise(CardIter* pCI);
 
-    bool bOptimise(void);
+    bool bEarly_rloop(void);
+    bool bPriorRoot(void);
+
+    void vEarly_root(i8 iRoot);
+    void vEarly_body(i8 iRoot, i8 iDepth,
+                     const char* azCaller, i8 iLine);
+    void vEarly_tip(i8 iRoot);
+
+    void vInsert_project_early(void);
+
+    bool bIsRoot(void);
+    bool bIsTip(void);
 
   private:
-
-
     Footer* aFooter(void);
-
   };
 
   XF_Optimise_Early_projection* _pXF_Optimise_Early_projection(void* aAddr);

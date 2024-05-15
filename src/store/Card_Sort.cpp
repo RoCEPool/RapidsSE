@@ -64,19 +64,12 @@ void Card_Sort::vSmooth(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
+  RASSERT(pCI->E.p_Op == pCI->E.p_sort);
+
   pCI->E.p_key = pCI->E.p_sort->pSub_key();
 
-//Z_KEY_DIRECTION
-  if (pCI->Carry.Sort.m_bCorrect_After_Inject) {
-    for (pCI->vBeginTarget(pCI->E.p_key,CK_EXPR); pCI->bEachTarget(); /**/) {
-      for (pCI->vBeginTarget(pCI->E.xTarget.p_expr(),CK_TERM); pCI->bEachTarget(); /**/) {
-        pCI->E.p_term = pCI->E.xTarget.p_term();
-        if (pCI->E.p_term->pSymbol()->bHasFacet(SF_EXP_COL)) {
-          pCI->E.p_term->vBump_ordCol(SF_EXP_COL);
-        }
-      }
-    }
-  }
+  if (pCI->Smooth.Sort.m_bCorrect_After_Inject)
+    pCI->E.p_key->vBump_expCol(pCI);
 
   if ((pCI->E.p_emit = pCI->E.p_sort->pSub_emit()))
     pCI->E.p_emit->vDeleteAllChildren();
@@ -85,7 +78,7 @@ void Card_Sort::vSmooth(CardIter* pCI)
     pCI->E.p_sort->vAppendChild(pCI->E.p_emit);
   }
 
-  pCI->Arriving.m_pEmit->vInduct(pCI);
+  pCI->Arriving.m_pEmitted_prior->vInduct(pCI);
 
   for (Kid xEmit_sort(pCI->E.p_emit); xEmit_sort.bEach(); /**/) {
     Card_Expr* p_expr_emit_sort = xEmit_sort.p_expr();
@@ -95,8 +88,6 @@ void Card_Sort::vSmooth(CardIter* pCI)
     Symbol* pSym_expr_key = p_expr_key->pSymbol();
     p_expr_emit_sort->pGet_term(0)->pSymbol()->vApplyFacets(pSym_expr_key);
    }
-
-  pCI->vSnapIf_arriving();
 }
 
 /*----------------------------------------------------------------------------*/

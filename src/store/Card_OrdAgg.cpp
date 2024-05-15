@@ -42,30 +42,6 @@ Card_OrdAgg::~Card_OrdAgg(void) noexcept(false)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* early project                                                              */
-/*----------------------------------------------------------------------------*/
-bool Card_OrdAgg::bEarlyProject_root(CardIter* pCI)
-{
-  vDump(__func__);
-
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  RASSERT(bIsPartitionLevel());
-
-  RASSERT(! pCI->Early.m_pNeeded_later);
-
-  if (pCI->pPeekPrev()->bIsCard(CK_o_PROJECT))
-    return false;
-
-  // get the root needed form of ordAgg's projection
-  pCI->Early.m_pNeeded_later  = pCI->E.p_emit->pCraftRoot_needed(pCI);
-
-
- // pCI->PRINTBOARD_dbg();
-
-  return true;
-}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */

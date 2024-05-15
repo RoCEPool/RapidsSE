@@ -38,7 +38,7 @@ Card_CONDITION::~Card_CONDITION(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* add transients to needed                                                   */
 /*----------------------------------------------------------------------------*/
-void Card_CONDITION::vAddTransients(CardIter* pCI)
+void Card_CONDITION::vAdd_transients(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 

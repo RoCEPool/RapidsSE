@@ -25,7 +25,6 @@ namespace STORE
     static void vMoveWhereConjToTableFilter(CardIter* pCI, Stz* szWithMark);
     static Card_Where* pNewAssembly(CardIter* pCI=nullptr);
 
-    void vEarlyProject_add_transients(CardIter* pCI);
     void vSmooth(CardIter* pCI);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);

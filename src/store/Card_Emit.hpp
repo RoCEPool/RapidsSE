@@ -20,7 +20,6 @@ namespace STORE
     static Card_Emit* pPrior_emit(CardIter* pCI);
 
     Card_Emit* pClone(void);
-    Card_Needed* pCraftRoot_needed(CardIter* pCI);
     Card_Needed* pCraft_needed_root(CardIter* pCI);
 
     void vDerive_streamKey(CardIter* pCI);

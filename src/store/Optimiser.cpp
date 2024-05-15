@@ -8,7 +8,7 @@
 
 #include "SP_PipeSpec.hpp"
 #include "Job.hpp"
-#include "XF_Synthesise_code.hpp"
+#include "XF_Synthesise_Cut_code.hpp"
 #include "CardIter.hpp"
 
 #include "Error.hpp"
@@ -60,12 +60,6 @@ Optimiser::Optimiser(TagSet* p_JobTags)
 //  MY::pJob()->pJobTags()->vAppend(C_OPTIMISER_TRACE);
 //  MY::pJob()->pJobTags()->vAppend(C_PIPELINE_DEF);
 //  MY::pJob()->pJobTags()->vAppend(C_WEAVED);
-
-#ifdef Z_NEEDEDv2
-  MY::pJob()->pJobTags()->vAppend(C_OPTIMISER_TRACE);
-  MY::pJob()->pJobTags()->vAppend(C_PIPELINE_DEF);
-  MY::pJob()->pJobTags()->vAppend(C_WEAVED);
-#endif
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
 }
