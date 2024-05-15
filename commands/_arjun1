@@ -1,4 +1,4 @@
-/*
+
 _nation;
 create index nation_idx1 ON nation(N_NATIONKEY);
 create index nation_R_REGIONKEY on nation(N_REGIONKEY);
@@ -36,7 +36,7 @@ select * from tableIndexes;
 select * from indexColumns;
 drop table Nation;
 memoryLeaks;
-*/
+
 
 
 

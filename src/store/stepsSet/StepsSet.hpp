@@ -1187,7 +1187,7 @@ void vJobIdLastJobIdFetch(void);
   void vMetaDataTableCreateIndex(void);
   void vMetaDataTableDropIndex(void);
 
-  void vMetaDataTableTablesInsert(void);
+  void vMetaDataTableInitTables(void);
   void vMetaDataTableDropTable(void);
   void vMetaDataTableCatalogInsert(void);
   void vMetaDataTableCatalogDelete(void);

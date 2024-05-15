@@ -44,7 +44,7 @@ void Step::vAddSteps_MetaDataTable(void)
   vAddStep("MetaDataTable[].createIndex"_Stz,  &Step::vMetaDataTableCreateIndex);
   vAddStep("MetaDataTable[].dropIndex"_Stz,  &Step::vMetaDataTableDropIndex);
 
-  vAddStep("MetaDataTable[].insertTables"_Stz,  &Step::vMetaDataTableTablesInsert);
+  vAddStep("MetaDataTable[].initTables"_Stz,  &Step::vMetaDataTableInitTables);
 
   vAddStep("MetaDataTable[].insertCatalog"_Stz,  &Step::vMetaDataTableCatalogInsert);
   vAddStep("MetaDataTable[].deleteCatalog"_Stz,  &Step::vMetaDataTableCatalogDelete);
@@ -468,9 +468,11 @@ void Step::vMetaDataTableDropIndex(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* MetaDataTable[].insertTables --                                            */
+/* MetaDataTable[].initTables -- First step in initializing metaData tables.
+ * This is triggered during a define metadata table command.
+ * Insert a row in TableOfTables with info about a metadata table.            */
 /*----------------------------------------------------------------------------*/
-void Step::vMetaDataTableTablesInsert(void)
+void Step::vMetaDataTableInitTables(void)
 {
   ENTRY();
 
@@ -480,7 +482,6 @@ void Step::vMetaDataTableTablesInsert(void)
   } PdsBufferIdItem;
 
   s256 szTableNm;
-//  m_pDataStack->vPopStr(szTableNm,__func__);
 
   Table* pNewTable = _pTable(*m_pLogicUnit->m_xpTable);
   i8 iTableAddr = (i8) pNewTable;
@@ -767,7 +768,9 @@ void Step::vMetaDataTableCatalogDelete(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* MetaDataTable[].init -- Init all metadata tables                           */
+/* MetaDataTable[].init -- Init all metadata tables.
+ * This is called after MetaDataTable[].initTables.
+ * This step adds info into metadata tables about the metadata tables themselves*/
 /*----------------------------------------------------------------------------*/
 void Step::vMetaDataTableInit(void)
 {

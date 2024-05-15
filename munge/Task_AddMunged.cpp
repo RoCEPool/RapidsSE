@@ -1513,7 +1513,7 @@ void Task::vAddMunged(Task* )
     "  MetaDataTable[].setAM\n"
     "\n"
     "  // create row in metadata table with catalogNm, schemaNm, tableNm\n"
-    "  MetaDataTable[].insertTables\n"
+    "  MetaDataTable[].initTables\n"
     "\n"
     "  nullptr to StreamDefLft[]\n"
     " ;\n"
