@@ -3131,8 +3131,11 @@ void AM::SYSTEM::vSystemOpen(bool bSystemOpen)
 bool AM::SYSTEM::bReady(void)
 {
   _static_
+  if (gpAttachMap) {
+    return gpAttachMap->m_bReady;
+  }
 
-  return gpAttachMap->m_bReady;
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
