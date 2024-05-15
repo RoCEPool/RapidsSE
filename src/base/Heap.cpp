@@ -189,9 +189,6 @@ Object* Heap::pAllocObject(eCN eAllocClass)
       //vTrace("************************************************\n"_Stz);
       //vTrace("LOW MEMORY encountered : %s %s %lld %s!!!\n"_Stz,
       //       __FILE__,__func__,(i8)__LINE__, aCN[eAllocClass]);
-      PoolHelper::vRegionSummary();
-      PoolHelper::vObjectSummary();
-      vThreadCallStackDump();
       //vTrace("************************************************\n"_Stz);
       m_okLock.vDropWrite();
       //PoolHelper::vPoolAnalyze();
