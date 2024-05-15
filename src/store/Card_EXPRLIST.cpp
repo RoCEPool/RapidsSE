@@ -329,9 +329,6 @@ Card_Expr* Card_EXPRLIST::pFind_expr_key_Matches(CardIter *pCI, eSF eFacet_arg, 
   return nullptr;
 }
 
-
-
-
 /*----------------------------------------------------------------------------*/
 /* get a particular expr                                                      */
 /*----------------------------------------------------------------------------*/

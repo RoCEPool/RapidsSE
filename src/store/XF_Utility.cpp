@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* XF_Utility_Verify_dic.cpp -- Verify dic                                    */
+/* XF_Utility.cpp -- Verify dic                                    */
 /*============================================================================*/
 
-#include "XF_Utility_Verify_dic.hpp"
+#include "XF_Utility.hpp"
 
 #include "Error.hpp"
 
@@ -10,44 +10,44 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_Utility_Verify_dic, CN_XF_PROLOG_VALIDATE_BOARD)
-__aNewFunction(XF_Utility_Verify_dic, CN_XF_PROLOG_VALIDATE_BOARD)
-__vDeleteFunction(XF_Utility_Verify_dic, CN_XF_PROLOG_VALIDATE_BOARD)
-__aFooterFunction(XF_Utility_Verify_dic)
+__pCastFunction(STORE, XF_Utility, CN_XF_UTILITY)
+__aNewFunction(XF_Utility, CN_XF_UTILITY)
+__vDeleteFunction(XF_Utility, CN_XF_UTILITY)
+__aFooterFunction(XF_Utility)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-XF_Utility_Verify_dic::XF_Utility_Verify_dic(CardIter* pCI)
-: XF_PROLOG(CN_XF_PROLOG_VALIDATE_BOARD, pCI)
+XF_Utility::XF_Utility(CardIter* pCI)
+: XF_TRANSFORM(CN_XF_UTILITY, pCI)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_VALIDATE_BOARD, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_UTILITY, _FOOTER_);
 
-  _checkInitialised_(CN_XF_PROLOG_VALIDATE_BOARD);
+  _checkInitialised_(CN_XF_UTILITY);
   
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_VALIDATE_BOARD, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_UTILITY, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-XF_Utility_Verify_dic::~XF_Utility_Verify_dic(void) noexcept(false)
+XF_Utility::~XF_Utility(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_VALIDATE_BOARD, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_UTILITY, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Utility_Verify_dic::vVerify(CardIter* pCI)
+void XF_Utility::vValidate_board(CardIter* pCI)
 {
   _static_
 
-  XF_Utility_Verify_dic* pXF_Validate = new XF_Utility_Verify_dic(pCI);
+  XF_Utility* pXF_Validate = new XF_Utility(pCI);
 
   try {
-    pXF_Validate->vVerify_dic_loop();
+    pXF_Validate->vValidate_board();
   }
   catch (Error xError) {
     delete pXF_Validate;
@@ -62,11 +62,82 @@ void XF_Utility_Verify_dic::vVerify(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* ensure each op has a level                                                 */
+/*----------------------------------------------------------------------------*/
+void XF_Utility::vValidate_board(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_UTILITY, _FOOTER_);
+
+  m_pCI->vTransform(__FILE__, __func__, XF_PROLOG_VALIDATE_BOARD);
+
+  Card* p_OP = nullptr;
+  //Card_Scan* p_scan = nullptr;
+
+  m_pCI->vClearRegisters();
+  m_pCI->vBeginEach();
+  while (m_pCI->bEachOp()) {
+    switch (m_pCI->E.e_Op) {
+
+      //case CK_o_SCAN: p_scan = m_pCI->G.p_scan; break;
+
+      case CK_o_SEND:
+        if (! p_OP) {
+          Error xError(EC_MISSING_OP,(Stz*)__FILE__,__LINE__);
+          throw xError;
+        }
+        break;
+
+      case CK_o_STAGE:
+        //p_scan = nullptr;
+        //p_OP   = nullptr;
+        break;
+
+      default:
+        if (m_pCI->E.p_Op->Card::bIsOp())
+          p_OP = m_pCI->E.p_Op;
+        break;
+    }
+  }
+
+//  if (! p_scan) {
+//    Error xError(EC_MISSING_SCAN_OP,(Stz*)__FILE__,__LINE__);
+//    throw xError;
+//  }
+
+  m_pCI->vEndTransform(__LINE__);
+}
+
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Utility_Verify_dic::vVerify_dic_loop(void)
+void XF_Utility::vVerify_dic(CardIter* pCI)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_VALIDATE_BOARD, _FOOTER_);
+  _static_
+
+  XF_Utility* pXF_Utility = new XF_Utility(pCI);
+
+  try {
+    pXF_Utility->vVerify_dic_loop();
+  }
+  catch (Error xError) {
+    delete pXF_Utility;
+    throw xError;
+  }
+  delete pXF_Utility;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*-- public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void XF_Utility::vVerify_dic_loop(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_UTILITY, _FOOTER_);
 
   m_pCI->vTransform(__FILE__, __func__, XF_UTILITY_VERIFY_DIC);
 
@@ -86,9 +157,9 @@ void XF_Utility_Verify_dic::vVerify_dic_loop(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Utility_Verify_dic::vVerify_dic_OP(void)
+void XF_Utility::vVerify_dic_OP(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_VALIDATE_BOARD, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_UTILITY, _FOOTER_);
 
   //===========================================================================
   // phase 1 : aspects
@@ -444,10 +515,10 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
       for (m_pCI->vBeginTarget(m_pCI->E.p_expr,CK_TERM); m_pCI->bEachTarget(); /**/) {
         m_pCI->E.p_term = m_pCI->E.xTarget.p_term();
 
-        if (m_pCI->Arriving.m_pEmit->pFind_expr(m_pCI->E.p_term->pSymbol()))
+        if (m_pCI->Arriving.m_pEmitted_prior->pFind_expr(m_pCI->E.p_term->pSymbol()))
           continue;
 
-        m_pCI->Arriving.m_pEmit->vDump(__func__);
+        m_pCI->Arriving.m_pEmitted_prior->vDump(__func__);
         m_pCI->E.p_term->vDump(__func__);
         NEVER_REACH
       }
@@ -468,8 +539,8 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
       if (! p_term->pSymbol()->bIs_Col())
         return C_CONTINUE_RECURSION;
 
-      if (pCI->Arriving.m_pEmit) {
-        if (pCI->Arriving.m_pEmit->pFind_expr(p_term->pSymbol())) {
+      if (pCI->Arriving.m_pEmitted_prior) {
+        if (pCI->Arriving.m_pEmitted_prior->pFind_expr(p_term->pSymbol())) {
           return C_CONTINUE_RECURSION;
         }
       }
@@ -549,8 +620,8 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
           m_pCI->E.p_term = xBound.p_term();
           if (! m_pCI->E.p_term->pSymbol()->bIs_Col())
             continue;
-          if (m_pCI->Arriving.m_pEmit) {
-            if (m_pCI->Arriving.m_pEmit->pFind_expr(m_pCI->E.p_term->pSymbol()))
+          if (m_pCI->Arriving.m_pEmitted_prior) {
+            if (m_pCI->Arriving.m_pEmitted_prior->pFind_expr(m_pCI->E.p_term->pSymbol()))
               continue;
           }
 
@@ -586,8 +657,8 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
         if (! m_pCI->E.p_term->pSymbol()->bIs_Col())
           continue;
 
-        if (m_pCI->Arriving.m_pEmit) {
-          if (m_pCI->Arriving.m_pEmit->pFind_expr(m_pCI->E.p_term->pSymbol()))
+        if (m_pCI->Arriving.m_pEmitted_prior) {
+          if (m_pCI->Arriving.m_pEmitted_prior->pFind_expr(m_pCI->E.p_term->pSymbol()))
             continue;
         }
 
@@ -654,7 +725,7 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
         if (m_pCI->E.p_term->pSymbol()->bValidCast())
           continue;
 
-        m_pCI->Arriving.m_pEmit->vDump(__func__);
+        m_pCI->Arriving.m_pEmitted_prior->vDump(__func__);
         m_pCI->E.p_term->vDump(__func__);
         NEVER_REACH
       }
@@ -883,12 +954,12 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
       for (m_pCI->vBeginTarget(m_pCI->E.p_expr,CK_TERM); m_pCI->bEachTarget(); /**/) {
         m_pCI->E.p_term = m_pCI->E.xTarget.p_term();
 
-        if (Card_Expr* p_expr_f = m_pCI->Arriving.m_pEmit->pFind_expr(m_pCI->E.p_term->pSymbol())) {
+        if (Card_Expr* p_expr_f = m_pCI->Arriving.m_pEmitted_prior->pFind_expr(m_pCI->E.p_term->pSymbol())) {
           if (p_expr_f->pSymbol()->bSameCast(m_pCI->E.p_term->pSymbol()))
             continue;
         }
 
-        m_pCI->Arriving.m_pEmit->vDump(__func__);
+        m_pCI->Arriving.m_pEmitted_prior->vDump(__func__);
         m_pCI->E.p_term->vDump(__func__);
         NEVER_REACH
       }
@@ -909,8 +980,8 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
       if (! p_term->pSymbol()->bIs_Col())
         return C_CONTINUE_RECURSION;
 
-      if (pCI->Arriving.m_pEmit) {
-        if (Card_Expr* p_expr_f = pCI->Arriving.m_pEmit->pFind_expr(p_term->pSymbol())) {
+      if (pCI->Arriving.m_pEmitted_prior) {
+        if (Card_Expr* p_expr_f = pCI->Arriving.m_pEmitted_prior->pFind_expr(p_term->pSymbol())) {
           if (p_expr_f->pSymbol()->bSameCast(p_term->pSymbol()))
             return C_CONTINUE_RECURSION;
         }
@@ -1000,8 +1071,8 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
           if (! m_pCI->E.p_term->pSymbol()->bIs_Col())
             continue;
 
-          if (m_pCI->Arriving.m_pEmit) {
-            if (Card_Expr* p_expr_f = m_pCI->Arriving.m_pEmit->pFind_expr(m_pCI->E.p_term->pSymbol()))
+          if (m_pCI->Arriving.m_pEmitted_prior) {
+            if (Card_Expr* p_expr_f = m_pCI->Arriving.m_pEmitted_prior->pFind_expr(m_pCI->E.p_term->pSymbol()))
               if (p_expr_f->pSymbol()->bSameCast(m_pCI->E.p_term->pSymbol()))
               continue;
           }
@@ -1038,13 +1109,13 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
         if (! m_pCI->E.p_term->pSymbol()->bIs_Col())
           continue;
 
-        if (m_pCI->Arriving.m_pEmit) {
-          if (Card_Expr* p_expr_f = m_pCI->Arriving.m_pEmit->pFind_expr(m_pCI->E.p_term->pSymbol())) {
+        if (m_pCI->Arriving.m_pEmitted_prior) {
+          if (Card_Expr* p_expr_f = m_pCI->Arriving.m_pEmitted_prior->pFind_expr(m_pCI->E.p_term->pSymbol())) {
             if (p_expr_f->pSymbol()->bSameCast(m_pCI->E.p_term->pSymbol())) {
               continue;
             }
             else {
-              //m_pCI->Arriving.m_pEmit->vDump(__func__);
+              //m_pCI->Arriving.m_pEmitted_prior->vDump(__func__);
               vDebugPoint();
             }
           }
@@ -1092,6 +1163,52 @@ void XF_Utility_Verify_dic::vVerify_dic_OP(void)
 
   vDebugPoint();
 }
+
+
+/*============================================================================*/
+/*============================================================================*/
+/*============================================================================*/
+
+
+/*----------------------------------------------------------------------------*/
+/* remove left-most subquery and rotate next sub-query to be first card       */
+/*----------------------------------------------------------------------------*/
+void XF_Utility::vRemove_LeftMost(CardIter* pCI)
+{
+  _static_
+
+  XF_Utility* pXF_Utility = new XF_Utility(pCI);
+
+  pXF_Utility->vRemove_LeftMost();
+
+  delete pXF_Utility;
+}
+
+
+
+/*----------------------------------------------------------------------------*/
+/*-- public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* remove left-most subquery and rotate next sub-query to be first card       */
+/*----------------------------------------------------------------------------*/
+void XF_Utility::vRemove_LeftMost(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_UTILITY, _FOOTER_);
+
+  m_pCI->vTransform(__FILE__, __func__, XF_FLATTEN_DELETE_LEFT_SUBQUERY);
+
+  Kid xDeck(m_pCI->E.p_deck);
+  if (xDeck.bEach()) {
+    if (CK_SUBQUERY == xDeck.eChild()) {
+      xDeck.vDelete();
+    }
+  }
+
+  m_pCI->vEndTransform(__LINE__);
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

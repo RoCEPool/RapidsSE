@@ -82,10 +82,6 @@ void Card_Stage::vReinstate_stages_v0(CardIter* pCI)
   pCI->vBeginEach();
   while (pCI->bEachOp(CK_o_FOLD))
     pCI->vRemoveDeleteMain(CK_o_FOLD);
-  pCI->vClearRegisters();
-  pCI->vBeginEach();
-  while (pCI->bEachOp(CK_o_FLAT))
-    pCI->vRemoveDeleteMain(CK_o_FLAT);
 
   Card* p_main = p_stage;
   eCK   e_main = p_main->eCard();

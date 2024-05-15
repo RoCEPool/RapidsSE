@@ -10,7 +10,7 @@ namespace STORE
   class Mark : public Object
   {
   private:
-    s256    m_sChrSeq;
+    s32    m_sChrSeq;
 
   protected:
     // must be last

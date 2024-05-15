@@ -306,7 +306,6 @@ void Card_Deck::vValidate(CardIter* pCI)
       case CK_o_FILTER:       pCI->E.p_filter->vValidate(pCI, 1, this); break;
       case CK_FILTPRED:     pCI->E.p_filtPred->vValidate(pCI, 1, this); break;
       case CK_FILTPREDLIST: pCI->E.p_filtPredList->vValidate(pCI, 1, this); break;
-      case CK_o_FLAT:         pCI->E.p_flat->vValidate(pCI, 1, this); break;
       case CK_o_FOLD:         pCI->E.p_fold->vValidate(pCI, 1, this); break;
       case CK_o_FROM:         pCI->E.p_from->vValidate(pCI, 1, this); break;
 
@@ -330,61 +329,61 @@ void Card_Deck::vValidate(CardIter* pCI)
       case CK_JOINESTIMATE: pCI->E.p_joinEstimate->vValidate(pCI, 1, this); break;
       case CK_JOINORDER:    pCI->E.p_joinOrder->vValidate(pCI, 1, this); break;
       case CK_JOINORDERING: pCI->E.p_joinOrdering->vValidate(pCI, 1, this); break;
-      case CK_JOINPREDLIST: pCI->E.p_joinPredList->vValidate(pCI, 1, this); break;
+      case CK_JOINPREDLIST:   pCI->E.p_joinPredList->vValidate(pCI, 1, this); break;
 
       case CK_p_KEY:          pCI->E.p_key->vValidate(pCI, 1, this); break;
-      case CK_KEYCELLS:     pCI->E.p_keyCells->vValidate(pCI, 1, this); break;
+      case CK_KEYCELLS:       pCI->E.p_keyCells->vValidate(pCI, 1, this); break;
       case CK_o_KEYEXISTS:    pCI->E.p_keyExists->vValidate(pCI, 1, this); break;
       case CK_o_KEYNOTEXISTS: pCI->E.p_keyNotExists->vValidate(pCI, 1, this); break;
 
       case CK_p_LEVEL:        pCI->E.p_level->vValidate(pCI, 1, this); break;
       case CK_o_LIMIT:        pCI->E.p_limit->vValidate(pCI, 1, this); break;
 
-      case CK_MAP:          pCI->E.p_map->vValidate(pCI, 1, this); break;
+      case CK_MAP:            pCI->E.p_map->vValidate(pCI, 1, this); break;
       case CK_p_MAPPING:      pCI->E.p_mapping->vValidate(pCI, 1, this); break;
 
       case CK_p_NEEDED:       pCI->E.p_needed->vValidate(pCI, 1, this); break;
-      case CK_NOTE:         pCI->E.p_note->vValidate(pCI, 1, this); break;
-      case CK_NOTCONJ:      pCI->E.p_notConj->vValidate(pCI, 1, this); break;
+      case CK_NOTE:           pCI->E.p_note->vValidate(pCI, 1, this); break;
+      case CK_NOTCONJ:        pCI->E.p_notConj->vValidate(pCI, 1, this); break;
 
-      case CK_ON:           pCI->E.p_on->vValidate(pCI, 1, this); break;
+      case CK_ON:             pCI->E.p_on->vValidate(pCI, 1, this); break;
       case CK_o_ORDAGG:       pCI->E.p_ordAgg->vValidate(pCI, 1, this); break;
-      case CK_ORCONJ:       pCI->E.p_orConj->vValidate(pCI, 1, this); break;
-      case CK_OUTERCOLNM:   pCI->E.p_outerColNm->vValidate(pCI, 1, this); break;
-      case CK_OUTERJOIN:    pCI->E.p_outerJoin->vValidate(pCI, 1, this); break;
+      case CK_ORCONJ:         pCI->E.p_orConj->vValidate(pCI, 1, this); break;
+      case CK_OUTERCOLNM:     pCI->E.p_outerColNm->vValidate(pCI, 1, this); break;
+      case CK_OUTERJOIN:      pCI->E.p_outerJoin->vValidate(pCI, 1, this); break;
 
-      case CK_PAYLOADCELLS: pCI->E.p_payloadCells->vValidate(pCI, 1, this); break;
-      case CK_o_PDSROW:      pCI->E.p_pdsRow->vValidate(pCI, 1, this); break;
+      case CK_PAYLOADCELLS:   pCI->E.p_payloadCells->vValidate(pCI, 1, this); break;
+      case CK_o_PDSROW:       pCI->E.p_pdsRow->vValidate(pCI, 1, this); break;
       case CK_o_PROJECT:      pCI->E.p_project->vValidate(pCI, 1, this); break;
 
-      case CK_RLNCONJ:      pCI->E.p_rlnConj->vValidate(pCI, 1, this); break;
-      case CK_ROWCOUNT:     pCI->E.p_rowCount->vValidate(pCI, 1, this); break;
-      case CK_ROWSIZE:      pCI->E.p_rowSize->vValidate(pCI, 1, this); break;
+      case CK_RLNCONJ:        pCI->E.p_rlnConj->vValidate(pCI, 1, this); break;
+      case CK_ROWCOUNT:       pCI->E.p_rowCount->vValidate(pCI, 1, this); break;
+      case CK_ROWSIZE:        pCI->E.p_rowSize->vValidate(pCI, 1, this); break;
 
       case CK_o_SCAN:         pCI->E.p_scan->vValidate(pCI, 1, this); break;
-      case CK_SECTION:      pCI->E.p_section->vValidate(pCI, 1, this); break;
+      case CK_SECTION:        pCI->E.p_section->vValidate(pCI, 1, this); break;
       case CK_o_SEND:         pCI->E.p_send->vValidate(pCI, 1, this); break;
       case CK_o_SORT:         pCI->E.p_sort->vValidate(pCI, 1, this); break;
       case CK_o_STAGE:        pCI->E.p_stage->vValidate(pCI, 1, this); break;
-      case CK_STREAMHEAD:   pCI->E.p_streamHead->vValidate(pCI, 1, this); break;
-      case CK_STREAMJOIN:   pCI->E.p_streamJoin->vValidate(pCI, 1, this); break;
+      case CK_STREAMHEAD:     pCI->E.p_streamHead->vValidate(pCI, 1, this); break;
+      case CK_STREAMJOIN:     pCI->E.p_streamJoin->vValidate(pCI, 1, this); break;
       case CK_p_STREAMKEY:    pCI->E.p_streamKey->vValidate(pCI, 1, this); break;
-      case CK_STREAMPER:    pCI->E.p_streamPer->vValidate(pCI, 1, this); break;
-      case CK_STREAMPTN:    pCI->E.p_streamPtn->vValidate(pCI, 1, this); break;
-      case CK_STREAMSET:    pCI->E.p_streamSet->vValidate(pCI, 1, this); break;
-      case CK_SUBQUERY:     pCI->E.p_subQuery->vValidate(pCI, 1, this); break;
-      case CK_SUBSET:       pCI->E.p_subSet->vValidate(pCI, 1, this); break;
+      case CK_STREAMPER:      pCI->E.p_streamPer->vValidate(pCI, 1, this); break;
+      case CK_STREAMPTN:      pCI->E.p_streamPtn->vValidate(pCI, 1, this); break;
+      case CK_STREAMSET:      pCI->E.p_streamSet->vValidate(pCI, 1, this); break;
+      case CK_SUBQUERY:       pCI->E.p_subQuery->vValidate(pCI, 1, this); break;
+      case CK_SUBSET:         pCI->E.p_subSet->vValidate(pCI, 1, this); break;
 
       case CK_p_TABLE:        pCI->E.p_table->vValidate(pCI, 1, this); break;
-      case CK_TABLELIST:    pCI->E.p_tableList->vValidate(pCI, 1, this); break;
-      case CK_TABLENM:      pCI->E.p_tableNm->vValidate(pCI, 1, this); break;
-      case CK_TABLEPTN:     pCI->E.p_tablePtn->vValidate(pCI, 1, this); break;
-      case CK_TABLESIZE:    pCI->E.p_tableSize->vValidate(pCI, 1, this); break;
-      case CK_TERM:         pCI->E.p_term->vValidate(pCI, 1, this); break;
+      case CK_TABLELIST:      pCI->E.p_tableList->vValidate(pCI, 1, this); break;
+      case CK_TABLENM:        pCI->E.p_tableNm->vValidate(pCI, 1, this); break;
+      case CK_TABLEPTN:       pCI->E.p_tablePtn->vValidate(pCI, 1, this); break;
+      case CK_TABLESIZE:      pCI->E.p_tableSize->vValidate(pCI, 1, this); break;
+      case CK_TERM:           pCI->E.p_term->vValidate(pCI, 1, this); break;
       case CK_o_TOP:          pCI->E.p_top->vValidate(pCI, 1, this); break;
-      case CK_TOPOLOGY:     pCI->E.p_topology->vValidate(pCI, 1, this); break;
+      case CK_TOPOLOGY:       pCI->E.p_topology->vValidate(pCI, 1, this); break;
 
-      case CK_UNIQUE:       pCI->E.p_unique->vValidate(pCI, 1, this); break;
+      case CK_UNIQUE:         pCI->E.p_unique->vValidate(pCI, 1, this); break;
 
       case CK_o_WHERE:        pCI->E.p_where->vValidate(pCI, 1, this); break;
 

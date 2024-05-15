@@ -1,13 +1,13 @@
 /*============================================================================*/
-/* XF_Flatten_52_W_L_NC_I_exists.hpp -- As Review                                              */
+/* XF_Flatten_Reposition_predicate.hpp -- Predicate Reposition                        */
 /*============================================================================*/
 #pragma once
 
-#include "XF_FLATTEN.hpp"
+#include "XF_TRANSFORM.hpp"
 
 namespace STORE
 {
-  class XF_Flatten_52_W_L_NC_I_exists : public XF_FLATTEN
+  class XF_Flatten_Reposition_predicate : public XF_TRANSFORM
   {
   private:
     // must be last
@@ -17,16 +17,18 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    XF_Flatten_52_W_L_NC_I_exists(CardIter* pCI);
-   ~XF_Flatten_52_W_L_NC_I_exists(void) noexcept(false);
+    XF_Flatten_Reposition_predicate(CardIter* pCI);
+   ~XF_Flatten_Reposition_predicate(void) noexcept(false);
 
-    static void vFlatten(CardIter* pCI);
+    static void vXF_Predicate_Reposition(CardIter* pCI);
+
+    void vXF_Predicate_Reposition(void);
 
   private:
     Footer* aFooter(void);
   };
 
-  XF_Flatten_52_W_L_NC_I_exists* _pXF_Flatten_52_W_L_NC_I_exists(void* aAddr);
+  XF_Flatten_Reposition_predicate* _pXF_Flatten_Reposition_predicate(void* aAddr);
 }
 
 /*============================================================================*/

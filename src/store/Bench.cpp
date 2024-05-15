@@ -7,7 +7,6 @@
 #include "Optimiser.hpp"
 #include "CardIter.hpp"
 
-#include "XC.hpp"
 #include "eOH.h"
 
 /*----------------------------------------------------------------------------*/
@@ -95,9 +94,8 @@ void Bench::vDump(const char* azFunc)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
-  vTrace("Bench Dump [%s]: %p %lld PipelineNm %s\n"_Stz,
+  vTrace("Bench Dump [%s]: %lld PipelineNm %s\n"_Stz,
          azFunc,
-         this,
          m_iBenchNo,
          m_sPipelineNm.szStz()
   );
@@ -483,16 +481,7 @@ void Bench::vValidate(CardIter* pCI)
   }
 
   pCI->vPopEach();
-
-
-  XC::vXC(pCI);
 }
-
-
-/*----------------------------------------------------------------------------*/
-/*-- Private -----------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
 
 /*============================================================================*/
 /* end                                                                        */

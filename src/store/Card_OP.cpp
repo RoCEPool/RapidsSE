@@ -74,7 +74,6 @@ bool Card_OP::bIsOp(eCK eCard)
       return true;
 
     case CK_o_ABSJOIN:
-    case CK_o_FLAT:
     case CK_o_FOLD:
     case CK_o_SEND:
     case CK_o_STAGE:
@@ -200,84 +199,6 @@ void Card_OP::vFuse_project_Viable(CardIter *pCI)
   pCI->E.p_table = pCI->E.p_Op->pSub_table();
   char cTblSyn = pCI->E.p_table->pSymbol()->cTblSyn();
   pCI->E.p_emit->vDeleteIf_facet(pCI, SF_EXP_COL, SF_TBL_COL, cTblSyn);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool Card_OP::bIsEarlyLeaf(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-//  eCK eCard = this->eCard();
-
-  Card* pChild_prev = pCI->pPeekPrev();
-  eCK   eChild_prev = pChild_prev ? pChild_prev->eCard() : CK_NONE;
-
-  if (CK_NONE      == eChild_prev ||
-      CK_o_CROSSJOIN == eChild_prev ||
-      CK_o_GBYAGG == eChild_prev ||
-      CK_o_ORDAGG == eChild_prev ||
-      (CK_o_PROJECT == eChild_prev && ! pChild_prev->pSub_needed()))
-    return true;
-
-  return false;
-//  switch (eCard) {
-//
-//    case CK_o_INDEXJOIN:
-//      if (CK_o_INDEXSCAN == eChild_prev || CK_o_SCAN == eChild_prev)
-//        return true;
-//      return false;
-//
-//    case CK_o_INDEXSCAN:
-//    case CK_o_SCAN:
-//      return true;
-//
-//
-//
-//    default:
-//      return false;
-//  }
-
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool Card_OP::bIsEarlyRoot(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  eCK eCard = this->eCard();
-
-  switch (eCard) {
-
-    case CK_o_AGGREG:
-      if (bIsPartitionLevel())
-        return true;
-      return false;
-
-    case CK_o_GBYAGG:
-      if (bIsPartitionLevel())
-        return true;
-      return false;
-
-    case CK_o_ORDAGG:
-      return true;
-
-    case CK_o_PROJECT:
-      if (bIsPartitionLevel())
-        return true;
-      return false;
-
-    case CK_o_INDEXJOIN:
-      return true;
-
-      // -- -- -- -- -- --
-    default:
-      return false;
-  }
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -422,8 +343,8 @@ void Card_OP::vRestate_emit(CardIter* pCI)
     case CK_o_ORDAGG:
       pCI->E.p_emit = pCI->E.p_Op->pSub_emit(C_NOT_NULL);
       pCI->E.p_emit->vEnsureAll_expr_Have_nmdCol();
-      if (pCI->Arriving.m_pEmit) {
-        pCI->Dic.m_p_expr = pCI->Arriving.m_pEmit;
+      if (pCI->Arriving.m_pEmitted_prior) {
+        pCI->Dic.m_p_expr = pCI->Arriving.m_pEmitted_prior;
         pCI->E.p_key = pCI->E.p_Op->pSub_key();
         if (pCI->E.p_key)
           pCI->E.p_key->vApplyCast(pCI,/*??*/pCI->Dic.m_p_expr);
@@ -439,8 +360,8 @@ void Card_OP::vRestate_emit(CardIter* pCI)
 
       pCI->E.p_emit = pCI->E.p_Op->pSub_emit(C_NOT_NULL);
       pCI->E.p_emit->vEnsureAll_expr_Have_nmdCol();
-      if (pCI->Arriving.m_pEmit) {
-        pCI->Dic.m_p_expr = pCI->Arriving.m_pEmit;
+      if (pCI->Arriving.m_pEmitted_prior) {
+        pCI->Dic.m_p_expr = pCI->Arriving.m_pEmitted_prior;
         pCI->E.p_emit->vApplyCast(pCI,/*??*/pCI->Dic.m_p_expr);
       }
       break;
@@ -460,15 +381,15 @@ void Card_OP::vRestate_emit(CardIter* pCI)
         pCI->E.p_Op->vAppendChild(pCI->E.p_emit);
       }
 
-      if (pCI->Arriving.m_pEmit)
-        pCI->Arriving.m_pEmit->vInduct(pCI);
+      if (pCI->Arriving.m_pEmitted_prior)
+        pCI->Arriving.m_pEmitted_prior->vInduct(pCI);
 
       pCI->E.p_table = pCI->E.p_Op->pSub_table(C_NOT_NULL);
       pCI->E.p_emit->vInject_expr_nmdCol_table(pCI);
 
       if ((pCI->E.p_filter = pCI->E.p_Op->pSub_filter()) &&
           (pCI->E.p_predicate = pCI->E.p_filter->pSub_predicate())) {
-        pCI->Dic.m_p_expr = pCI->Arriving.m_pEmit;
+        pCI->Dic.m_p_expr = pCI->Arriving.m_pEmitted_prior;
         pCI->E.p_predicate->vApplyCast(pCI,/*??*/pCI->Dic.m_p_expr);
       }
 
@@ -495,7 +416,7 @@ void Card_OP::vRestate_emit(CardIter* pCI)
         pCI->E.p_Op->vAppendChild(pCI->E.p_emit);
       }
 
-      pCI->Arriving.m_pEmit->vInduct(pCI);
+      pCI->Arriving.m_pEmitted_prior->vInduct(pCI);
 
       break;
 
@@ -532,14 +453,14 @@ void Card_OP::vRestate_emit(CardIter* pCI)
                                  CK_o_WHERE,
                                  CK_NONE));
     if (pCI->E.p_Op->bEither(CK_o_KEYEXISTS, CK_o_KEYNOTEXISTS, CK_NONE)) {
-      if (pCI->Arriving.m_pEmit) {
+      if (pCI->Arriving.m_pEmitted_prior) {
         pCI->Dic.m_p_expr = _pCard_Emit(pCI->E.p_Op->pSub_injectable());
         pCI->E.p_filter->vUpdate_expCol(pCI,pCI->Dic.m_p_expr, true);
       }
     }
     else {
-      if (pCI->Arriving.m_pEmit) {
-        pCI->Dic.m_p_expr = pCI->Arriving.m_pEmit;
+      if (pCI->Arriving.m_pEmitted_prior) {
+        pCI->Dic.m_p_expr = pCI->Arriving.m_pEmitted_prior;
         if (pCI->E.p_Op->bIsCard(CK_o_HAVING))
           pCI->E.p_filter->vUpdate_expCol(pCI,pCI->Dic.m_p_expr, true);
         else
@@ -580,7 +501,6 @@ void Card_OP::vRestate_emit(CardIter* pCI)
     pCI->Dic.m_p_expr = pCI->E.p_emit;
     pCI->E.p_key->vApplyCast(pCI,/*??*/pCI->Dic.m_p_expr);
   }
-  pCI->vSnapIf_arriving();
 
   RASSERT(pCI->E.p_Op->pSub_emit() == pCI->E.p_emit);
 }

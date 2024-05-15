@@ -131,26 +131,24 @@ void Card_Where::vSmooth(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
+  RASSERT(pCI->E.p_Op == pCI->E.p_where);
+
   pCI->E.p_where->pSymbol()->Y_vSet(P_Smoothed);
 
-  if (pCI->Carry.Where_preAgg.m_bMorph_sqlOp_To_EQ) {
+  if (pCI->Smooth.Where_preAgg.m_bMorph_sqlOp_To_EQ) {
     pCI->Flat.m_p_conj_iqyCall->vMorph_sqlOp_To_EQ(pCI);
   }
 
-  if (pCI->Carry.Where_preAgg.bReplace_sqCall_With_result) {
+  if (pCI->Smooth.Where_preAgg.bReplace_sqCall_With_result) {
 
     // replace sqCall with sqResult
     pCI->Flat.m_p_term_sqyCall->pSymbol()->vDeleteFacet(SF_SQY_NO);
     pCI->Flat.m_p_term_sqyCall->SYM(SF_SQY_RSL, (i8)1);
     pCI->Flat.m_p_term_sqyCall->SYM(SF_EXP_COL, (i8)1);
 
-    Card_Expr* p_expr_0 = pCI->Arriving.m_pEmit->pGet_expr((i8) 0);
+    Card_Expr* p_expr_0 = pCI->Arriving.m_pEmitted_prior->pGet_expr((i8) 0);
     pCI->Flat.m_p_term_sqyCall->vApplyCast_x(p_expr_0->xCast());
-
   }
-
-  RASSERT(pCI->E.p_Op == pCI->E.p_where);
-  pCI->E.p_where->vRestate_emit(pCI);
 }
 
 /*----------------------------------------------------------------------------*/

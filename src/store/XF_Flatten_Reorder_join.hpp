@@ -1,22 +1,18 @@
 /*============================================================================*/
-/* XF_Synthesise_code.hpp -- Call Synthesiser                                           */
+/* XF_Flatten_Reorder_join.hpp -- Join Ordering                                          */
 /*============================================================================*/
 #pragma once
 
-#include "XF_SYNTHESISE.hpp"
-
 #include "Bench.hpp"
-#include "CardIter.hpp"
 
-#include "PipelineDef.hpp"
 
 namespace STORE
 {
-  class XF_Synthesise_code : public XF_SYNTHESISE
+  class XF_Flatten_Reorder_join : public Object
   {
   private:
 
-    CardIter*    m_pCI;
+    CardIter* m_pCI;
 
   protected:
     // must be last
@@ -26,18 +22,22 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    XF_Synthesise_code(CardIter* pCI);
-   ~XF_Synthesise_code(void) noexcept(false);
+    XF_Flatten_Reorder_join(CardIter* pCI);
+   ~XF_Flatten_Reorder_join(void) noexcept(false);
 
-    static void vSynthesise(CardIter* pCI);
+    static void vXF_Reorder_join(CardIter* pCI);
 
-    void vSynthesise(void);
+    void vJoinOrdering(void);
+
+  private:
+
+    void vReorderTables(void);
 
   protected:
     Footer* aFooter(void);
   };
 
-  XF_Synthesise_code* _pXF_Synthesise_code(void* aAddr);
+  XF_Flatten_Reorder_join* _pXF_Flatten_Reorder_join(void* aAddr);
 }
 
 /*============================================================================*/

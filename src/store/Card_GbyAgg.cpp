@@ -67,17 +67,8 @@ void Card_GbyAgg::vInject_foldExpr(CardIter* pCI)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   pCI->E.p_key = pCI->E.p_gbyAgg->pSub_key();
-//Z_KEY_DIRECTION
-  for (pCI->vBeginTarget(pCI->E.p_key,CK_EXPR); pCI->bEachTarget(); /**/) {
-    Card_Expr* p_expr = pCI->E.xTarget.p_expr();
-    for (pCI->vBeginTarget(p_expr,CK_TERM); pCI->bEachTarget(); /**/) {
-      Card_Term* p_term = pCI->E.xTarget.p_term();
-      if (p_term->pSymbol()->bHasFacet(SF_EXP_COL)) {
-        p_term->vBump_ordCol(SF_EXP_COL);
-      }
-    }
-  }
 
+  pCI->E.p_key->vBump_expCol(pCI);
 
   pCI->E.p_emit = pCI->E.p_gbyAgg->pSub_emit();
   pCI->E.p_emit->vBump_keyCol(pCI);
@@ -125,11 +116,11 @@ void Card_GbyAgg::vSmooth(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
- // pCI->PRINTBOARD_dbg();
+  RASSERT(pCI->E.p_Op == pCI->E.p_gbyAgg);
 
   pCI->E.p_gbyAgg->pSymbol()->Y_vSet(P_Smoothed);
 
-  if (pCI->Carry.GbyAgg.m_bInject_foldExpr) {
+  if (pCI->Smooth.GbyAgg.m_bInject_foldExpr) {
     pCI->E.p_gbyAgg->vInject_foldExpr(pCI);
   }
 

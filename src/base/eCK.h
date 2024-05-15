@@ -15,7 +15,6 @@ enum eCK : i8 // card kind
   /* */ CK_o_CORRELATION,
   /* */ CK_o_CROSSJOIN,
   /* */ CK_o_FILTER,
-  /* */ CK_o_FLAT,
   /* */ CK_o_FOLD,
   /* */ CK_o_FROM,
   /* */ CK_o_GBYAGG,

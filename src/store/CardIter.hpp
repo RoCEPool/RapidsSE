@@ -29,7 +29,7 @@ namespace STORE
     EachMembers E;
 
     struct {
-      Card_Emit *      m_pEmit;
+      Card_Emit *      m_pEmitted_prior;
       Card_StreamKey * m_pStreamKey;
     } Arriving;
 
@@ -84,27 +84,17 @@ namespace STORE
     {
       struct
       {
-        bool m_bSeen;
-        i8 m_nTables;
-        bool m_bReproject;
-      } Table;
-
-      struct
-      {
-        bool m_bSeen;
         bool m_bMorph_sqlOp_To_EQ;
         bool bReplace_sqCall_With_result;
       } Where_preAgg;
 
       struct
       {
-        bool m_bSeen;
         bool m_bMorph_To_gbyAgg;
       } Aggreg;
 
       struct
       {
-        bool m_bSeen;
         bool m_bInject_foldExpr;
       } GbyAgg;
 
@@ -115,27 +105,22 @@ namespace STORE
 
       struct
       {
-        bool m_bSeen;
         bool m_bCorrect_After_Inject;
       } Having;
 
       struct
       {
-        bool m_bSeen;
         bool m_bCorrect_After_Inject;
       } Sort;
 
       struct
       {
-        bool m_bSeen;
         bool m_bUnproject_foldExpr;
       } Unproject;
 
-    } Carry;
+    } Smooth;
 
-
-
-    i8 m_nAncestors;
+    i8    m_nAncestors;
     Card* m_paAncestry[C_CARD_ANCESTRY];
     i8    m_iaAncestry[C_CARD_ANCESTRY];
 
@@ -150,7 +135,6 @@ namespace STORE
     CardIter(Bench* pBench);
    ~CardIter(void) noexcept(false);
 
-    Card* pAdvanceChild(void);
     void vAppendChild(eCK eParent, Card* pChild);
     void vAppendNewChild(eCK eParent, eCK eChild);
     void vAppendNewChild(Card* pParent, eCK eChild);
@@ -192,10 +176,8 @@ namespace STORE
     Card* pChild(i8 i_Child);
     void vChild(Card* pChild);
     void vClearRegisters(void);
-    void vClearRegistersIf(Card* pCard);
     eOA  eCueUser(String* psPrompt);
 
-    bool bDebugQuery(Stz* szQueryNm);
     void vDeleteWhenEmptySub(eCK eOp, eCK eSub);
     void vDontDescend(bool bDontDescend);
 
@@ -238,8 +220,6 @@ namespace STORE
     void vInsertAfter(Card* pCard, Card* pAfter);
     void vInsertBefore(Card* pCard, Card* pBefore);
 
-    bool bLambdaWalk(Card* pCard, eCK eToSubs, std::function<bool(Card* pCard)> bfLambdaFn);
-
     Card* pMember(eCK eCard);
     void vMember(eCK eCard, Card* pCard);
     bool bMore(void);
@@ -252,6 +232,7 @@ namespace STORE
     Card* pPeekNext(void);
     Card* pPeekNextIf(eCK eCard);
     Card* pPeekPrev(void);
+    Card* pPeekPrevIf(eCK eCard);
     void vPopEach(void);
     bool bPositionAt(eCK eKind_at, i8 /* eCK */ iKind_First, ...);
     void vPrintBoard(const char* azFunc, const char* azFile, i8 iLineNo, bool bForce=false);
@@ -259,12 +240,9 @@ namespace STORE
     Card_Expr* pPrior_expr(Symbol* pSymbol_arg);
     void vPushChild(Card* pParent, eCK eChild);
     void vPushEach(void);
+    void vPushEach(Board* pBoard);
+    void vPushEach(Card* pParent);
 
-    bool bRecurseActive(void);
-    void vRecurseBegin(Card* pCard);
-    Card* pRecurseEach(void);
-    Card* pRecurseEach(eCK eCard);
-    void vRecurseEnd(void);
     void vRemoveDeleteMain(eCK eCrossCheck);
     void vResetMembers(void);
     void vRepositionOp(void);
@@ -274,6 +252,7 @@ namespace STORE
     void vSnap_arriving(Card_Emit* p_emit, Card_StreamKey * pStreamKey);
     void vSnapIf_arriving(Card_Emit* p_emit, Card_StreamKey * pStreamKey);
     void vSnapIf_arriving(bool bSub_emit=true);
+    void vSnapIf_arriving_till(eCK eTill);
 
     i8   i_Target(void);
     void vTransform(const char* azXfile, const char* azFunc, eXF eXform);
@@ -283,6 +262,28 @@ namespace STORE
 
     void vValidateBench(void);
     void vValidateChildren(Card* pCard, i8 iDepth);
+
+    Stz* szFMT_CAT_LEFT           (void) { return "%s"_Stz; }
+    Stz* szFMT_CAT_RIGHT          (void) { return "%18s"_Stz; }
+    Stz* szFMT_DOTS               (void) { return "%s%lld"_Stz; }
+    Stz* szFMT_ENUM               (void) { return "%s"_Stz; }
+    Stz* szFMT_FACET_UNKNOWN      (void) { return "%s"_Stz; }
+    Stz* szFMT_FACET_SECONDARY    (void) { return "<%s"_Stz; }
+    Stz* szFMT_FACET_PRIMARY      (void) { return "%s"_Stz; }
+    Stz* szFMT_FACET_HEADER       (void) { return "===%02lld-%c--------------"_Stz; }
+    Stz* szFMT_FACET_NO           (void) { return "~%lld"_Stz; }
+    Stz* szFMT_MARKS              (void) { return "%2s%s"_Stz; }
+    Stz* szFMT_NAME_LEFT          (void) { return "%s"_Stz; }
+    Stz* szFMT_NAME_RIGHT         (void) { return "%18s"_Stz; }
+    Stz* szFMT_PPY_INTEGER        (void) { return "}%s=%lld"_Stz; }
+    Stz* szFMT_PPY_INTEGER_decode (void) { return "}%s"_Stz; }
+    Stz* szFMT_PPY_STRING         (void) { return "}%s=%s"_Stz; }
+    Stz* szFMT_PPY_STRING_decode  (void) { return "}%s"_Stz; }
+    Stz* szFMT_PPY_SEQUENCE       (void) { return "#%lld"_Stz; }
+    Stz* szFMT_SPACES             (void) { return "%s"_Stz; }
+    Stz* szFMT_TYPE               (void) { return "%s"_Stz; }
+    Stz* szFMT_TYPE_LENGTH        (void) { return "%s(%lld)"_Stz; }
+    Stz* szFMT_TYPE_LENGTH_SCALE  (void) { return "%s(%lld,%lld)"_Stz; }
 
   private:
     Footer* aFooter(void);

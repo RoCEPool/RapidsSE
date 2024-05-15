@@ -5,12 +5,12 @@
 
 namespace BASE
 {
-  static const i8 C_RIBBON_MAX_LANES  = 64;
-  static const i8 C_RIBBON_LANE_WIDTH = 20;
+  static const i8 C_RIBBON_LANES      = 64;
+  static const i8 C_RIBBON_LANE_WIDTH = 21;
   static const i8 C_RIBBON_LANE_GAP   = 1;
 
-  static const i8 C_RIBBON_MAX_TEXT   = 1 + (C_RIBBON_MAX_LANES
-                                              * (C_RIBBON_LANE_WIDTH + C_RIBBON_LANE_GAP));
+  static const i8 C_RIBBON_TEXT = 1 + (C_RIBBON_LANES
+                                        * (C_RIBBON_LANE_WIDTH + C_RIBBON_LANE_GAP));
 
   class RibbonLine : public Object
   {
@@ -18,7 +18,7 @@ namespace BASE
 
     s32   m_sMargin;
 
-    char  m_caText[C_RIBBON_MAX_TEXT];
+    char  m_caText[C_RIBBON_TEXT];
     
     // must be last
     Footer m_xFooter;

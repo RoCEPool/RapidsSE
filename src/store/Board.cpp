@@ -211,9 +211,8 @@ void Board::vDump(i8 iDepth)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
 
-  vTrace("%sBoard %p %lld %s\n"_Stz,
+  vTrace("%sBoard %lld %s\n"_Stz,
          Stz::szTab(iDepth),
-         this,
          m_i_Board,
          aBK[m_eBoard]
   );
@@ -281,8 +280,8 @@ void Board::vPrintBoard(CardIter* pCI)
 
   vPinCards(pCI, pRibbon);
 
-  pRibbon->vDrawH('-',0);
-  pRibbon->vDrawH('-',2);
+  pRibbon->vDrawH('=',0);
+  pRibbon->vDrawH('=',2);
   pRibbon->vDrawH('=');
 
   vPinMargin(pRibbon);

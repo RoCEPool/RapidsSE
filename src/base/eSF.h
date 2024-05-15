@@ -59,6 +59,7 @@ enum eSF // symbol facet
 
   /* */ SF_RLN_OP,      // Relational Op       : <, <=, ... >
 
+  /* */ SF_SQY_CKY,     // Sqy Correlation Key : $SCn
   /* */ SF_SQY_NM,      // Subquery name       : bIsName
   /* */ SF_SQY_NO,      // SubQuery No         : $Qn
   /* */ SF_SQY_OP,      // SubQuery Op         :

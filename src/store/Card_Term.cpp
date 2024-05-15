@@ -206,18 +206,18 @@ eTE Card_Term::eEvalTerm(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (1 == pSymbol()->nFacets()) {
-         if (pSymbol()->bHasFacet("and"_Stz)) return TE_AND;
-    else if (pSymbol()->bHasFacet("or"_Stz)) return TE_OR;
-    else if (pSymbol()->bHasFacet("not"_Stz)) return TE_NOT;
-    else if (pSymbol()->bHasFacet("}"_Stz)) return TE_EXECUTE;
-    else if (pSymbol()->bHasFacet("exists"_Stz)) return TE_EXISTS;
-    else if (pSymbol()->bHasFacet("in"_Stz)) return TE_IN;
+         if (pSymbol()->bHasFacet("and"_Stz))       return TE_AND;
+    else if (pSymbol()->bHasFacet("or"_Stz))        return TE_OR;
+    else if (pSymbol()->bHasFacet("not"_Stz))       return TE_NOT;
+    else if (pSymbol()->bHasFacet("}"_Stz))         return TE_EXECUTE;
+    else if (pSymbol()->bHasFacet("exists"_Stz))    return TE_EXISTS;
+    else if (pSymbol()->bHasFacet("in"_Stz))        return TE_IN;
     else if (pSymbol()->bHasFacet("notExists"_Stz)) return TE_NOTEXISTS;
-    else if (pSymbol()->bHasFacet("notIn"_Stz)) return TE_NOTIN;
+    else if (pSymbol()->bHasFacet("notIn"_Stz))     return TE_NOTIN;
   }
 
-       if (pSymbol()->bHasFacet(SF_RLN_OP))     return TE_RELNOP;
-  else if (pSymbol()->bHasFacet(SF_BOL_FN))     return TE_BOOLFN;
+       if (pSymbol()->bHasFacet(SF_RLN_OP))         return TE_RELNOP;
+  else if (pSymbol()->bHasFacet(SF_BOL_FN))         return TE_BOOLFN;
 
   else return TE_OTHER;
 }
@@ -299,8 +299,8 @@ void Card_Term::vX_expCol_To_tblCol(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  if (Card_Term* p_term0 = pCI->Arriving.m_pEmit->pFind_term0_Of_expr(pSymbol_this)) {
-    Card_Expr* p_expr = pCI->Arriving.m_pEmit->pGet_expr(pSymbol_this);
+  if (Card_Term* p_term0 = pCI->Arriving.m_pEmitted_prior->pFind_term0_Of_expr(pSymbol_this)) {
+    Card_Expr* p_expr = pCI->Arriving.m_pEmitted_prior->pGet_expr(pSymbol_this);
     Symbol* pSymbol_term0 = p_term0->pSymbol();
 
     if (pSymbol_term0->bHasFacet(SF_TBL_COL)) {
@@ -463,16 +463,16 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   if (pCI->E.pBoard->pState()->bHasName(aXF[XF_EPILOG_TYPE_CAST])) {
     if (m_xSymbol.bIs_Col() && ! pCI->bAncestor(CK_p_NEEDED)) {
       if (!m_xSymbol.bValidType()) {
-         vMark("?"_Stz,"t"_Stz);
-         pCI->pAncestorParent()->vMark("?"_Stz,"t"_Stz);
+         vMarks("?"_Stz,"t"_Stz);
+         pCI->pAncestorParent()->vMarks("?"_Stz,"t"_Stz);
          pCI->PRINTBOARD_dbg();
          vDump(__func__);
          vValidationFailed("Type Missing : %p"_Stz,this);
       }
       if (m_xSymbol.xTypeId() == TypeId::xIdOf(CT_DECIMAL)) {
         if (m_xSymbol.nTypeLength() == 0) {
-          vMark("?"_Stz,"l"_Stz);
-          pCI->pAncestorParent()->vMark("?"_Stz,"l"_Stz);
+          vMarks("?"_Stz,"l"_Stz);
+          pCI->pAncestorParent()->vMarks("?"_Stz,"l"_Stz);
           pCI->PRINTBOARD_dbg();
           vDump(__func__);
           vValidationFailed("Decimal length is 0 : %p"_Stz, this);

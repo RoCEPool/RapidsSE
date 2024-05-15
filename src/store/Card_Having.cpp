@@ -62,14 +62,14 @@ void Card_Having::vSmooth(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
+  RASSERT(pCI->E.p_Op == pCI->E.p_having);
+
   pCI->E.p_having->pSymbol()->Y_vSet(P_Smoothed);
 
-  bool bBump = ! pCI->Carry.Project_postAgg.m_bSeen;
+  bool bBump = ! pCI->Smooth.Project_postAgg.m_bSeen;
 
-  if (pCI->Carry.Having.m_bCorrect_After_Inject)
+  if (pCI->Smooth.Having.m_bCorrect_After_Inject)
     vCorrect_After_Inject(pCI, bBump);
-
-  pCI->vSnapIf_arriving();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -81,22 +81,10 @@ void Card_Having::vCorrect_After_Inject(CardIter* pCI, bool bBump)
 
   pCI->E.p_predicate = pSub_predicate();
 
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  auto bLambdaFn_cmp = [](Card_Term *p_term)
-  {
-
-    if (p_term->pSymbol()->bHasFacet(SF_EXP_COL))
-      p_term->vBump_ordCol(SF_EXP_COL);
-
-    return true;
-  };
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (bBump)
-    pCI->E.p_predicate->bLambdaWalk_term(bLambdaFn_cmp);
+    pCI->E.p_predicate->vBump_term_ordCol(SF_EXP_COL);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

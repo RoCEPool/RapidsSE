@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class XF_Flatten_subquery;
+  class XF_Flatten_Flatten_pipeline;
   class XF_Fold;
 
   class Bench : public Object

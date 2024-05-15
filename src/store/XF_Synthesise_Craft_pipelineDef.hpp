@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* XF_Synthesise_pipelineDef.hpp -- Synthesise PipelineDef                    */
+/* XF_Synthesise_Craft_pipelineDef.hpp -- Craft PipelineDef                   */
 /*============================================================================*/
 #pragma once
 
@@ -12,11 +12,9 @@
 
 namespace STORE
 {
-  class XF_Synthesise_pipelineDef : public XF_SYNTHESISE
+  class XF_Synthesise_Craft_pipelineDef : public XF_SYNTHESISE
   {
   private:
-
-    CardIter*    m_pCI;
 
     PipelineDef*  m_pPipelineDef;
     StageDef*     m_pStageDef;
@@ -32,15 +30,15 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    XF_Synthesise_pipelineDef(CardIter* pCI);
-   ~XF_Synthesise_pipelineDef(void) noexcept(false);
+    XF_Synthesise_Craft_pipelineDef(CardIter* pCI);
+   ~XF_Synthesise_Craft_pipelineDef(void) noexcept(false);
 
-    static void vSynthesise(CardIter* pCI);
+    static void vCraft(CardIter* pCI);
+
+    void vCraft(void);
 
     PipelineDef* pPipelineDef(void);
     void vPipelineDef(PipelineDef* pPipelineDef);
-
-    void vSynthesise(void);
 
   private:
     void vCraftPipelineDef(void);
@@ -61,7 +59,7 @@ namespace STORE
     Footer* aFooter(void);
   };
 
-  XF_Synthesise_pipelineDef* _pXF_Synthesise_pipelineDef(void* aAddr);
+  XF_Synthesise_Craft_pipelineDef* _pXF_Synthesise_Craft_pipelineDef(void* aAddr);
 }
 
 /*============================================================================*/

@@ -70,7 +70,7 @@ void Card_KeyNotExists::vMorph_from_To_keyNotExists(CardIter *pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_KeyNotExists::vEarlyProject_add_transients(CardIter* pCI)
+void Card_KeyNotExists::vAdd_transients(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 

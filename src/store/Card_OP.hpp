@@ -31,8 +31,6 @@ namespace STORE
 
     void vFuse_project_Viable(CardIter* pCI);
 
-    bool bIsEarlyLeaf(CardIter* pCI);
-    bool bIsEarlyRoot(void);
     bool bIsNodeLevel(void);
     bool bIsOriginLevel(void);
     bool bIsPartitionLevel(void);

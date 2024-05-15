@@ -1,19 +1,19 @@
 /*============================================================================*/
-/* XF_Flatten_subquery.hpp -- Flatten SubQueries                                         */
+/* XF_Synthesise_Cut_code.hpp -- Cut Code                                     */
 /*============================================================================*/
 #pragma once
 
-#include "XF_TRANSFORM.hpp"
+#include "XF_SYNTHESISE.hpp"
 
+#include "Bench.hpp"
+#include "CardIter.hpp"
+
+#include "PipelineDef.hpp"
 
 namespace STORE
 {
-  class XF_Flatten_subquery : public XF_TRANSFORM
+  class XF_Synthesise_Cut_code : public XF_SYNTHESISE
   {
-  private:
-
-    CardIter* m_pCI;
-
   protected:
     // must be last
     Footer m_xFooter;
@@ -22,24 +22,18 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    XF_Flatten_subquery(CardIter* pCI);
-   ~XF_Flatten_subquery(void) noexcept(false);
+    XF_Synthesise_Cut_code(CardIter* pCI);
+   ~XF_Synthesise_Cut_code(void) noexcept(false);
 
-    static void vFlatten(CardIter* pCI);
+    static void vCut(CardIter* pCI);
 
-    void vFlatten(void);
-
-  private:
-
-    void vFlatten_recurse(Symbol* pSym_sqyNo_inner, i8 iDepth);
-
-    void vFlattenByDecisionTree(Symbol* pSym_term_sqyNo);
+    void vCut(void);
 
   protected:
     Footer* aFooter(void);
   };
 
-  XF_Flatten_subquery* _pXF_Flatten_subquery(void* aAddr);
+  XF_Synthesise_Cut_code* _pXF_Synthesise_Cut_code(void* aAddr);
 }
 
 /*============================================================================*/

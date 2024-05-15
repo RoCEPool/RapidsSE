@@ -1,61 +1,44 @@
 /*============================================================================*/
-/* Card_Flat.cpp -- old (delineates the two halves after flattening)          */
+/* CardUte.cpp -- Card Utility                                                */
 /*============================================================================*/
 
-#include "Card_Flat.hpp"
-#include "CardIter.hpp"
+#include "CardUte.hpp"
+#include "Card.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE, Card_Flat, CK_o_FLAT)
-__aNewFunction(Card_Flat,CN_CARD)
-__vDeleteFunction(Card_Flat,CN_CARD)
-
+__pCastFunction(STORE,CardUte,CN_CARDUTE)
+__aNewFunction(CardUte,CN_CARDUTE)
+__vDeleteFunction(CardUte,CN_CARDUTE)
+__aFooterFunction(CardUte)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Flat::Card_Flat(void)
-: Card_CONSTRUCTION(CK_o_FLAT, 1)
+CardUte::CardUte(void)
+: Object(CN_CARDUTE)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDUTE,_FOOTER_);
 
-  _checkInitialised_(CN_CARD);
-
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+ 
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARDUTE,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_Flat::~Card_Flat(void) noexcept(false)
+CardUte::~CardUte(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_Flat::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-  UNUSED(pCI);
-  UNUSED(iDepth);
-  UNUSED(pParent);
-
-  Card::vValidate(pCI,iDepth,pParent);
-  Card_CONSTRUCTION::vValidate(pCI,iDepth,pParent);
-  pCI->vValidateChildren(this,iDepth+1);
-
-  vValidationPassed();
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDUTE,_FOOTER_);
 }
 
 
 /*----------------------------------------------------------------------------*/
-/*-- Static ------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
 
 /*============================================================================*/
 /* end                                                                        */

@@ -54,7 +54,7 @@ void Card_Project::vUnproject_foldExpr(CardIter* pCI)
 {
   _static_
 
-  RASSERT(pCI->Carry.Unproject.m_bUnproject_foldExpr);
+  RASSERT(pCI->Smooth.Unproject.m_bUnproject_foldExpr);
 
   Card_Project* p_project_unproject = new Card_Project(CK_o_PROJECT);
   pCI->E.p_deck->vAppendChild(p_project_unproject);
@@ -111,7 +111,7 @@ Card_Emit* Card_Project::pCraft_emit_early(CardIter* pCI)
   Card_Emit* p_emit_early = new Card_Emit;
 
 //  pCI->Early.m_pNeeded_later->vDump(__func__);
-//  pCI->Arriving.m_pEmit->vDump(__func__);
+//  pCI->Arriving.m_pEmitted_prior->vDump(__func__);
 
   for (Kid x_needed(pCI->Early.m_pNeeded_later); x_needed.bEach(CK_EXPR); /**/) {
     Card_Expr* p_expr_needed = x_needed.p_expr();
@@ -120,8 +120,8 @@ Card_Emit* Card_Project::pCraft_emit_early(CardIter* pCI)
       vDebugPoint();
     }
 
-      //RASSERT(pCI->Dic.m_p_expr == pCI->Arriving.m_pEmit);
-    Card_Expr* p_expr_arriving = pCI->Arriving.m_pEmit->pFind_expr(p_expr_needed);
+      //RASSERT(pCI->Dic.m_p_expr == pCI->Arriving.m_pEmitted_prior);
+    Card_Expr* p_expr_arriving = pCI->Arriving.m_pEmitted_prior->pFind_expr(p_expr_needed);
     if (! p_expr_arriving) {
       //vTrace("NOT MATCHING\n"_Stz);
       continue;
@@ -187,9 +187,9 @@ void Card_Project::vSmooth_postAgg(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  pCI->E.p_project->pSymbol()->Y_vSet(P_Smoothed);
+  RASSERT(pCI->E.p_Op == pCI->E.p_project);
 
-  pCI->vSnapIf_arriving();
+  pCI->E.p_project->pSymbol()->Y_vSet(P_Smoothed);
 
 }
 

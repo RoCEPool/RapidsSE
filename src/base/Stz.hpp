@@ -27,6 +27,7 @@ namespace BASE
   
     static Stz* szDots(i8 nDots);
     static Stz* szPluses(i8 nPluses);
+    static Stz* szMinuses(i8 nPluses);
     static Stz* szSpaces(i8 nSpaces);
     static Stz* szTab(i8 iDepth);
     static Stz* szHeight(i8 iHeight);

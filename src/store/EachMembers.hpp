@@ -80,7 +80,6 @@ namespace STORE
     Card_Filter *        p_filter;
     Card_FiltPred *      p_filtPred;
     Card_FiltPredList *  p_filtPredList;
-    Card_Flat *          p_flat;
     Card_Fold *          p_fold;
     Card_From *          p_from;
 
@@ -120,6 +119,7 @@ namespace STORE
     Card_Mapping *       p_mapping;
 
     Card_Needed *        p_needed;
+    Card_Neededv2 *      p_neededv2;
     Card_Note *          p_note;
     Card_NotConj *       p_notConj;
 

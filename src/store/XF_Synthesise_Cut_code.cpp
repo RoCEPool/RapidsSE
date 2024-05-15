@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* XF_Synthesise_code.cpp -- Make Simpler                                            */
+/* XF_Synthesise_Cut_code.cpp -- Cut Code                                     */
 /*============================================================================*/
 
-#include "XF_Synthesise_code.hpp"
+#include "XF_Synthesise_Cut_code.hpp"
 
 #include "Bench.hpp"
 #include "Board.hpp"
@@ -20,15 +20,15 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_Synthesise_code, CN_XF_SYNTHESISE_CODE)
-__aNewFunction(XF_Synthesise_code, CN_XF_SYNTHESISE_CODE)
-__vDeleteFunction(XF_Synthesise_code, CN_XF_SYNTHESISE_CODE)
-__aFooterFunction(XF_Synthesise_code)
+__pCastFunction(STORE, XF_Synthesise_Cut_code, CN_XF_SYNTHESISE_CODE)
+__aNewFunction(XF_Synthesise_Cut_code, CN_XF_SYNTHESISE_CODE)
+__vDeleteFunction(XF_Synthesise_Cut_code, CN_XF_SYNTHESISE_CODE)
+__aFooterFunction(XF_Synthesise_Cut_code)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-XF_Synthesise_code::XF_Synthesise_code(CardIter* pCI)
+XF_Synthesise_Cut_code::XF_Synthesise_Cut_code(CardIter* pCI)
 : XF_SYNTHESISE(CN_XF_SYNTHESISE_CODE,pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_CODE, _FOOTER_);
@@ -43,7 +43,7 @@ XF_Synthesise_code::XF_Synthesise_code(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-XF_Synthesise_code::~XF_Synthesise_code(void) noexcept(false)
+XF_Synthesise_Cut_code::~XF_Synthesise_Cut_code(void) noexcept(false)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_CODE, _FOOTER_);
 
@@ -56,12 +56,12 @@ XF_Synthesise_code::~XF_Synthesise_code(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Synthesise_code::vSynthesise(CardIter* pCI)
+void XF_Synthesise_Cut_code::vCut(CardIter* pCI)
 {
   _static_
 
-  XF_Synthesise_code* pXF_Make_Code = new XF_Synthesise_code(pCI);
-  pXF_Make_Code->vSynthesise();
+  XF_Synthesise_Cut_code* pXF_Make_Code = new XF_Synthesise_Cut_code(pCI);
+  pXF_Make_Code->vCut();
 
   delete pXF_Make_Code;
 }
@@ -79,7 +79,7 @@ void XF_Synthesise_code::vSynthesise(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* call synthesiser                                                           */
 /*----------------------------------------------------------------------------*/
-void XF_Synthesise_code::vSynthesise(void)
+void XF_Synthesise_Cut_code::vCut(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_CODE, _FOOTER_);
 
