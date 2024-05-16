@@ -1505,7 +1505,8 @@ void PoolHelper::vRegionSummary(Pds* pPds, StreamDef* pPdsDef, Pds* pPdsWarn, St
   iWastageKb = (iSumChunksUsed == 0 ? 0 : (pHeap->nBufferCount() - (iSumChunksUsed * C_1KB / C_SIZE_POOL_BUFFER) - 1) * C_SIZE_POOL_BUFFER / C_1KB);
   iWastagePct = (iSumBufsUsed  == 0 ? 0 : 100 * iWastageKb / iSumBufsUsed);
 
-	pRow = pPds->pAllotRow(C_VARGS_BEGIN,
+	pRow = pPds->pAllotRow(pPdsDef,
+                         C_VARGS_BEGIN,
                         "transient"_Stz,
                         "small"_Stz,
                         iChunkSize / C_1KB,
@@ -1527,7 +1528,8 @@ void PoolHelper::vRegionSummary(Pds* pPds, StreamDef* pPdsDef, Pds* pPdsWarn, St
   iWastageKb = (iSumChunksUsed == 0 ? 0 : (pHeap->nBufferCount() - (iSumChunksUsed * C_1KB / C_SIZE_POOL_BUFFER) - 1) * C_SIZE_POOL_BUFFER / C_1KB);
   iWastagePct = (iSumBufsUsed  == 0 ? 0 : 100 * iWastageKb / iSumBufsUsed);
 
-	pRow = pPds->pAllotRow(C_VARGS_BEGIN,
+	pRow = pPds->pAllotRow(pPdsDef,
+                         C_VARGS_BEGIN,
                         "transient"_Stz,
                         "medium"_Stz,
                         iChunkSize / C_1KB,
@@ -1549,7 +1551,8 @@ void PoolHelper::vRegionSummary(Pds* pPds, StreamDef* pPdsDef, Pds* pPdsWarn, St
   iWastageKb = (iSumChunksUsed == 0 ? 0 : (pHeap->nBufferCount() - (iSumChunksUsed * C_1KB / C_SIZE_POOL_BUFFER) - 1) * C_SIZE_POOL_BUFFER / C_1KB);
   iWastagePct = (iSumBufsUsed  == 0 ? 0 : 100 * iWastageKb / iSumBufsUsed);
 
-	pRow = pPds->pAllotRow(C_VARGS_BEGIN,
+	pRow = pPds->pAllotRow(pPdsDef,
+                         C_VARGS_BEGIN,
                         "transient"_Stz,
                         "large"_Stz,
                         iChunkSize / C_1KB,
@@ -1571,7 +1574,8 @@ void PoolHelper::vRegionSummary(Pds* pPds, StreamDef* pPdsDef, Pds* pPdsWarn, St
   iWastageKb = (iSumChunksUsed == 0 ? 0 : (pHeap->nBufferCount() - (iSumChunksUsed * C_1KB / C_SIZE_POOL_BUFFER) - 1) * C_SIZE_POOL_BUFFER / C_1KB);
   iWastagePct = (iSumBufsUsed  == 0 ? 0 : 100 * iWastageKb / iSumBufsUsed);
 
-	pRow = pPds->pAllotRow(C_VARGS_BEGIN,
+	pRow = pPds->pAllotRow(pPdsDef,
+                         C_VARGS_BEGIN,
                         "persistent"_Stz,
                         "tiny"_Stz,
                         iChunkSize / C_1KB,
@@ -1593,7 +1597,8 @@ void PoolHelper::vRegionSummary(Pds* pPds, StreamDef* pPdsDef, Pds* pPdsWarn, St
   iWastageKb = (iSumChunksUsed == 0 ? 0 : (pHeap->nBufferCount() - (iSumChunksUsed * C_1KB / C_SIZE_POOL_BUFFER) - 1) * C_SIZE_POOL_BUFFER / C_1KB);
   iWastagePct = (iSumBufsUsed  == 0 ? 0 : 100 * iWastageKb / iSumBufsUsed);
 
-	pRow = pPds->pAllotRow(C_VARGS_BEGIN,
+	pRow = pPds->pAllotRow(pPdsDef,
+                         C_VARGS_BEGIN,
                         "persistent"_Stz,
                         "small"_Stz,
                         iChunkSize / C_1KB,
@@ -1615,7 +1620,8 @@ void PoolHelper::vRegionSummary(Pds* pPds, StreamDef* pPdsDef, Pds* pPdsWarn, St
   iWastageKb = (iSumChunksUsed == 0 ? 0 : (pHeap->nBufferCount() - (iSumChunksUsed * C_1KB / C_SIZE_POOL_BUFFER) - 1) * C_SIZE_POOL_BUFFER / C_1KB);
   iWastagePct = (iSumBufsUsed  == 0 ? 0 : 100 * iWastageKb / iSumBufsUsed);
 
-	pRow = pPds->pAllotRow(C_VARGS_BEGIN,
+	pRow = pPds->pAllotRow(pPdsDef,
+                         C_VARGS_BEGIN,
                         "persistent"_Stz,
                         "medium"_Stz,
                         iChunkSize / C_1KB,
@@ -1638,7 +1644,8 @@ void PoolHelper::vRegionSummary(Pds* pPds, StreamDef* pPdsDef, Pds* pPdsWarn, St
   iWastageKb = (iSumChunksUsed == 0 ? 0 : (pHeap->nBufferCount() - (iSumChunksUsed * C_1KB / C_SIZE_POOL_BUFFER) - 1) * C_SIZE_POOL_BUFFER / C_1KB);
   iWastagePct = (iSumBufsUsed  == 0 ? 0 : 100 * iWastageKb / iSumBufsUsed);
 
-	pRow = pPds->pAllotRow(C_VARGS_BEGIN,
+	pRow = pPds->pAllotRow(pPdsDef,
+                         C_VARGS_BEGIN,
                         "persistent"_Stz,
                         "large"_Stz,
                         iChunkSize / C_1KB,
@@ -1681,7 +1688,8 @@ void PoolHelper::vRegionSummary(Pds* pPds, StreamDef* pPdsDef, Pds* pPdsWarn, St
     }
   }
 
-  pRow = pPds->pAllotRow(C_VARGS_BEGIN,
+  pRow = pPds->pAllotRow(pPdsDef,
+                         C_VARGS_BEGIN,
                          "bufferPool"_Stz,
                          0,
                          iChunkSize / C_1KB,
