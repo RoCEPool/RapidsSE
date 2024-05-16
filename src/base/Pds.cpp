@@ -455,6 +455,61 @@ Row* Pds::pAllotRow(i8 iVArgsBegin, ...)
 }
 
 /*----------------------------------------------------------------------------*/
+/* allot a row copying the rowSingle into it                                  */
+/*----------------------------------------------------------------------------*/
+Row* Pds::pAllotRow(StreamDef* pStreamDef, i8 iVArgsBegin, ...)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
+
+  RowPix* pRowPix = pStreamDef->pRowPix();
+
+  // allot a row
+  Row* pRow = pAllotRow();
+
+  if ( ! pRow )
+    return nullptr;
+
+  ASSERT(C_VARGS_BEGIN == iVArgsBegin);
+
+  va_list xVarArgs;
+
+  va_start(xVarArgs,iVArgsBegin);
+
+  for (i8 i_Col = 0; i_Col < pRowPix->m_nColumns; i_Col++) {
+
+    eDM eDatum = (eDM)pRowPix->m_xaColPix[i_Col].m_uDatum;
+
+    if (DM_VCH == eDatum) {
+      // STRING_DEPOSIT
+      Stz* szVal = va_arg(xVarArgs,Stz*);
+      if (szVal) {
+        bool bResult = bDepositColVal(szVal);
+        if( ! bResult ) {
+          vDiscardInvalidRow();
+          return nullptr;
+        }
+      }
+      else {
+        vDepositColVal(C_DATUM_NULL);
+      }
+      // END STRING_DEPOSIT
+    }
+    else {
+      i8 iVal = va_arg(xVarArgs,i8);
+      vDepositColVal(iVal);
+    }
+  }
+
+  i8 iVArgsEnd = va_arg(xVarArgs,i8);
+  ASSERT(C_VARGS_END == iVArgsEnd);
+  UNUSED(iVArgsEnd);
+
+  va_end(xVarArgs);
+
+  return pRow;
+}
+
+/*----------------------------------------------------------------------------*/
 /* Allot a row and the string set space. Init the string set space and return addr */
 /*----------------------------------------------------------------------------*/
 //Row* Pds::pAllotRowFull(char** aaStzSet)
