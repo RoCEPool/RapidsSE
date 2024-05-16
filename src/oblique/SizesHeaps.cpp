@@ -602,7 +602,7 @@ SizeHeap gxaSizeHeap[]
   { CN_QUERYNODELIST,            sizeof(QueryNodeList),          HT_T_TINY    , FILL },
   { CN_QUERYNODESTACK,           sizeof(QueryNodeStack),         HT_T_MEDIUM  , FILL },
   { CN_QUEUE,                    sizeof(Queue),                  HT_T_TINY    , FILL },
-  { CN_QUEUEBUFFER,              sizeof(QueueBuffer),            HT_T_TINY    , FILL },
+  { CN_QUEUEBUFFER,              sizeof(QueueBuffer),            HT_T_SMALL   , FILL },
 
   {CN__R__,                     'R' - ('A' - 1),                HT_INVALID   , FILL },
   {CN_READER,                   sizeof(Reader),                 HT_T_TINY    , FILL },
