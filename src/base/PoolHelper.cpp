@@ -612,7 +612,7 @@ void PoolHelper::vObjectSummary(void)
 /*----------------------------------------------------------------------------*/
 /* summary report on objects in the pool and heaps                            */
 /*----------------------------------------------------------------------------*/
-void PoolHelper::vObjectSummary(Pds* pPds, Pds* pPdsWarn)
+void PoolHelper::vObjectSummary(Pds* pPds, StreamDef* pPdsDef, Pds* pPdsWarn, StreamDef* pPdsWarnDef)
 {
   _static_
 
@@ -647,17 +647,18 @@ void PoolHelper::vObjectSummary(Pds* pPds, Pds* pPdsWarn)
 
     MagLib::vByteMag(nSumObjSize,sMagObj);
 
-    Row* pRow = pPds->pAllotRow(C_VARGS_BEGIN,
-                                      "persistent"_Stz,
-                                      "tiny"_Stz,
-                                      aCN[eClass],
-                                      nCntObj,
-                                      nObjSize,
-                                      nSumObjSize,
-                                      sMagObj.szStz(),
-                                      iPctUse,
-                                      false,    // tiny heap is always the smallest
-                                      C_VARGS_END);
+    Row* pRow = pPds->pAllotRow(pPdsDef,
+                                C_VARGS_BEGIN,
+                                "persistent"_Stz,
+                                "tiny"_Stz,
+                                aCN[eClass],
+                                nCntObj,
+                                nObjSize,
+                                nSumObjSize,
+                                sMagObj.szStz(),
+                                iPctUse,
+                                false,    // tiny heap is always the smallest
+                                C_VARGS_END);
     ASSERT(pRow);
     UNUSED(pRow);
   }
@@ -669,7 +670,8 @@ void PoolHelper::vObjectSummary(Pds* pPds, Pds* pPdsWarn)
                     nObjInHeap,
                     AM::pHeaps()->Persistent.m_pTiny->nCurrAllocated());
 
-		Row* pRowWarn = pPdsWarn->pAllotRow(C_VARGS_BEGIN,
+		Row* pRowWarn = pPdsWarn->pAllotRow(pPdsWarnDef,
+                            C_VARGS_BEGIN,
                             sReason.szStz(),
                             nullptr,
                             nullptr,
@@ -700,17 +702,18 @@ void PoolHelper::vObjectSummary(Pds* pPds, Pds* pPdsWarn)
 
     bool bChgHeap = (nObjSize < C_SIZE_TINY_OBJECT);
 
-    Row* pRow = pPds->pAllotRow(C_VARGS_BEGIN,
-                                      "persistent"_Stz,
-                                      "small"_Stz,
-                                      aCN[eClass],
-                                      nCntObj,
-                                      nObjSize,
-                                      nSumObjSize,
-                                      sMagObj.szStz(),
-                                      iPctUse,
-                                      bChgHeap,
-                                      C_VARGS_END);
+    Row* pRow = pPds->pAllotRow(pPdsDef,
+                                C_VARGS_BEGIN,
+                                "persistent"_Stz,
+                                "small"_Stz,
+                                aCN[eClass],
+                                nCntObj,
+                                nObjSize,
+                                nSumObjSize,
+                                sMagObj.szStz(),
+                                iPctUse,
+                                bChgHeap,
+                                C_VARGS_END);
     ASSERT(pRow);
     UNUSED(pRow);
   }
@@ -722,11 +725,12 @@ void PoolHelper::vObjectSummary(Pds* pPds, Pds* pPdsWarn)
                     nObjInHeap,
                     AM::pHeaps()->Persistent.m_pSmall->nCurrAllocated());
 
-		Row* pRowWarn = pPdsWarn->pAllotRow(C_VARGS_BEGIN,
-                            sReason.szStz(),
-                            nullptr,
-                            nullptr,
-                            C_VARGS_END);
+		Row* pRowWarn = pPdsWarn->pAllotRow(pPdsWarnDef,
+                                        C_VARGS_BEGIN,
+                                        sReason.szStz(),
+                                        nullptr,
+                                        nullptr,
+                                        C_VARGS_END);
     ASSERT(pRowWarn);
     UNUSED(pRowWarn);
   }
@@ -754,17 +758,18 @@ void PoolHelper::vObjectSummary(Pds* pPds, Pds* pPdsWarn)
 
     bool bChgHeap = (nObjSize < C_SIZE_TINY_OBJECT);
 
-    Row* pRow = pPds->pAllotRow(C_VARGS_BEGIN,
-                                      "persistent"_Stz,
-                                      "medium"_Stz,
-                                      aCN[eClass],
-                                      nCntObj,
-                                      nObjSize,
-                                      nSumObjSize,
-                                      sMagObj.szStz(),
-                                      iPctUse,
-                                      bChgHeap,
-                                      C_VARGS_END);
+    Row* pRow = pPds->pAllotRow(pPdsDef,
+                                C_VARGS_BEGIN,
+                                "persistent"_Stz,
+                                "medium"_Stz,
+                                aCN[eClass],
+                                nCntObj,
+                                nObjSize,
+                                nSumObjSize,
+                                sMagObj.szStz(),
+                                iPctUse,
+                                bChgHeap,
+                                C_VARGS_END);
     ASSERT(pRow);
     UNUSED(pRow);
   }
@@ -776,11 +781,12 @@ void PoolHelper::vObjectSummary(Pds* pPds, Pds* pPdsWarn)
                     nObjInHeap,
                     AM::pHeaps()->Persistent.m_pMedium->nCurrAllocated());
 
-		Row* pRowWarn = pPdsWarn->pAllotRow(C_VARGS_BEGIN,
-                            sReason.szStz(),
-                            nullptr,
-                            nullptr,
-                            C_VARGS_END);
+		Row* pRowWarn = pPdsWarn->pAllotRow(pPdsWarnDef,
+                                        C_VARGS_BEGIN,
+                                        sReason.szStz(),
+                                        nullptr,
+                                        nullptr,
+                                        C_VARGS_END);
     ASSERT(pRowWarn);
     UNUSED(pRowWarn);
   }
@@ -808,17 +814,18 @@ void PoolHelper::vObjectSummary(Pds* pPds, Pds* pPdsWarn)
 
     bool bChgHeap = (nObjSize < C_SIZE_TINY_OBJECT);
 
-    Row* pRow = pPds->pAllotRow(C_VARGS_BEGIN,
-                                      "persistent"_Stz,
-                                      "large"_Stz,
-                                      aCN[eClass],
-                                      nCntObj,
-                                      nObjSize,
-                                      nSumObjSize,
-                                      sMagObj.szStz(),
-                                      iPctUse,
-                                      bChgHeap,
-                                      C_VARGS_END);
+    Row* pRow = pPds->pAllotRow(pPdsDef,
+                                C_VARGS_BEGIN,
+                                "persistent"_Stz,
+                                "large"_Stz,
+                                aCN[eClass],
+                                nCntObj,
+                                nObjSize,
+                                nSumObjSize,
+                                sMagObj.szStz(),
+                                iPctUse,
+                                bChgHeap,
+                                C_VARGS_END);
     ASSERT(pRow);
     UNUSED(pRow);
   }
@@ -830,11 +837,12 @@ void PoolHelper::vObjectSummary(Pds* pPds, Pds* pPdsWarn)
                     nObjInHeap,
                     AM::pHeaps()->Persistent.m_pLarge->nCurrAllocated());
 
-		Row* pRowWarn = pPdsWarn->pAllotRow(C_VARGS_BEGIN,
-                            sReason.szStz(),
-                            nullptr,
-                            nullptr,
-                            C_VARGS_END);
+		Row* pRowWarn = pPdsWarn->pAllotRow(pPdsWarnDef,
+                                        C_VARGS_BEGIN,
+                                        sReason.szStz(),
+                                        nullptr,
+                                        nullptr,
+                                        C_VARGS_END);
     ASSERT(pRowWarn);
     UNUSED(pRowWarn);
   }
@@ -860,17 +868,18 @@ void PoolHelper::vObjectSummary(Pds* pPds, Pds* pPdsWarn)
 
     MagLib::vByteMag(nSumObjSize,sMagObj);
 
-    Row* pRow = pPds->pAllotRow(C_VARGS_BEGIN,
-                                      "transient"_Stz,
-                                      "tiny"_Stz,
-                                      aCN[eClass],
-                                      nCntObj,
-                                      nObjSize,
-                                      nSumObjSize,
-                                      sMagObj.szStz(),
-                                      iPctUse,
-                                      false,      // tiny heap is the smallest
-                                      C_VARGS_END);
+    Row* pRow = pPds->pAllotRow(pPdsDef,
+                                C_VARGS_BEGIN,
+                                "transient"_Stz,
+                                "tiny"_Stz,
+                                aCN[eClass],
+                                nCntObj,
+                                nObjSize,
+                                nSumObjSize,
+                                sMagObj.szStz(),
+                                iPctUse,
+                                false,      // tiny heap is the smallest
+                                C_VARGS_END);
     ASSERT(pRow);
     UNUSED(pRow);
   }
@@ -882,11 +891,12 @@ void PoolHelper::vObjectSummary(Pds* pPds, Pds* pPdsWarn)
                     nObjInHeap,
                     AM::pHeaps()->Transient.m_pTiny->nCurrAllocated());
 
-		Row* pRowWarn = pPdsWarn->pAllotRow(C_VARGS_BEGIN,
-                            sReason.szStz(),
-                            nullptr,
-                            nullptr,
-                            C_VARGS_END);
+		Row* pRowWarn = pPdsWarn->pAllotRow(pPdsWarnDef,
+                                        C_VARGS_BEGIN,
+                                        sReason.szStz(),
+                                        nullptr,
+                                        nullptr,
+                                        C_VARGS_END);
     ASSERT(pRowWarn);
     UNUSED(pRowWarn);
   }
@@ -914,17 +924,18 @@ void PoolHelper::vObjectSummary(Pds* pPds, Pds* pPdsWarn)
 
     bool bChgHeap = (nObjSize < C_SIZE_TINY_OBJECT);
 
-    Row* pRow = pPds->pAllotRow(C_VARGS_BEGIN,
-                                      "transient"_Stz,
-                                      "small"_Stz,
-                                      aCN[eClass],
-                                      nCntObj,
-                                      nObjSize,
-                                      nSumObjSize,
-                                      sMagObj.szStz(),
-                                      iPctUse,
-                                      bChgHeap,
-                                      C_VARGS_END);
+    Row* pRow = pPds->pAllotRow(pPdsDef,
+                                C_VARGS_BEGIN,
+                                "transient"_Stz,
+                                "small"_Stz,
+                                aCN[eClass],
+                                nCntObj,
+                                nObjSize,
+                                nSumObjSize,
+                                sMagObj.szStz(),
+                                iPctUse,
+                                bChgHeap,
+                                C_VARGS_END);
     ASSERT(pRow);
     UNUSED(pRow);
   }
@@ -936,11 +947,12 @@ void PoolHelper::vObjectSummary(Pds* pPds, Pds* pPdsWarn)
                     nObjInHeap,
                     AM::pHeaps()->Transient.m_pSmall->nCurrAllocated());
 
-		Row* pRowWarn = pPdsWarn->pAllotRow(C_VARGS_BEGIN,
-                            sReason.szStz(),
-                            nullptr,
-                            nullptr,
-                            C_VARGS_END);
+		Row* pRowWarn = pPdsWarn->pAllotRow(pPdsWarnDef,
+                                        C_VARGS_BEGIN,
+                                        sReason.szStz(),
+                                        nullptr,
+                                        nullptr,
+                                        C_VARGS_END);
     ASSERT(pRowWarn);
     UNUSED(pRowWarn);
   }
@@ -968,17 +980,18 @@ void PoolHelper::vObjectSummary(Pds* pPds, Pds* pPdsWarn)
 
     bool bChgHeap = (nObjSize < C_SIZE_TINY_OBJECT);
 
-    Row* pRow = pPds->pAllotRow(C_VARGS_BEGIN,
-                                      "transient"_Stz,
-                                      "medium"_Stz,
-                                      aCN[eClass],
-                                      nCntObj,
-                                      nObjSize,
-                                      nSumObjSize,
-                                      sMagObj.szStz(),
-                                      iPctUse,
-                                      bChgHeap,
-                                      C_VARGS_END);
+    Row* pRow = pPds->pAllotRow(pPdsDef,
+                                C_VARGS_BEGIN,
+                                "transient"_Stz,
+                                "medium"_Stz,
+                                aCN[eClass],
+                                nCntObj,
+                                nObjSize,
+                                nSumObjSize,
+                                sMagObj.szStz(),
+                                iPctUse,
+                                bChgHeap,
+                                C_VARGS_END);
     ASSERT(pRow);
     UNUSED(pRow);
   }
@@ -990,11 +1003,12 @@ void PoolHelper::vObjectSummary(Pds* pPds, Pds* pPdsWarn)
                     nObjInHeap,
                     AM::pHeaps()->Transient.m_pMedium->nCurrAllocated());
 
-		Row* pRowWarn = pPdsWarn->pAllotRow(C_VARGS_BEGIN,
-                            sReason.szStz(),
-                            nullptr,
-                            nullptr,
-                            C_VARGS_END);
+		Row* pRowWarn = pPdsWarn->pAllotRow(pPdsWarnDef,
+                                        C_VARGS_BEGIN,
+                                        sReason.szStz(),
+                                        nullptr,
+                                        nullptr,
+                                        C_VARGS_END);
     ASSERT(pRowWarn);
     UNUSED(pRowWarn);
   }
@@ -1022,17 +1036,18 @@ void PoolHelper::vObjectSummary(Pds* pPds, Pds* pPdsWarn)
 
     bool bChgHeap = (nObjSize < C_SIZE_TINY_OBJECT);
 
-    Row* pRow = pPds->pAllotRow(C_VARGS_BEGIN,
-                                      "transient"_Stz,
-                                      "large"_Stz,
-                                      aCN[eClass],
-                                      nCntObj,
-                                      nObjSize,
-                                      nSumObjSize,
-                                      sMagObj.szStz(),
-                                      iPctUse,
-                                      bChgHeap,
-                                      C_VARGS_END);
+    Row* pRow = pPds->pAllotRow(pPdsDef,
+                                C_VARGS_BEGIN,
+                                "transient"_Stz,
+                                "large"_Stz,
+                                aCN[eClass],
+                                nCntObj,
+                                nObjSize,
+                                nSumObjSize,
+                                sMagObj.szStz(),
+                                iPctUse,
+                                bChgHeap,
+                                C_VARGS_END);
     ASSERT(pRow);
     UNUSED(pRow);
   }
@@ -1044,11 +1059,12 @@ void PoolHelper::vObjectSummary(Pds* pPds, Pds* pPdsWarn)
                     nObjInHeap,
                     AM::pHeaps()->Transient.m_pLarge->nCurrAllocated());
 
-		Row* pRowWarn = pPdsWarn->pAllotRow(C_VARGS_BEGIN,
-                            sReason.szStz(),
-                            nullptr,
-                            nullptr,
-                            C_VARGS_END);
+		Row* pRowWarn = pPdsWarn->pAllotRow(pPdsWarnDef,
+                                        C_VARGS_BEGIN,
+                                        sReason.szStz(),
+                                        nullptr,
+                                        nullptr,
+                                        C_VARGS_END);
     ASSERT(pRowWarn);
     UNUSED(pRowWarn);
   }
@@ -1082,17 +1098,18 @@ void PoolHelper::vObjectSummary(Pds* pPds, Pds* pPdsWarn)
 
     MagLib::vByteMag(nSumObjSize,sMagObj);
 
-    Row* pRow = pPds->pAllotRow(C_VARGS_BEGIN,
-                                      "bufferpool"_Stz,
-                                      0,
-                                      aCN[eClass],
-                                      iCountObjects[eClass],
-                                      nObjSize,
-                                      nSumObjSize,
-                                      sMagObj.szStz(),
-                                      iPctUse,
-                                      false,
-                                      C_VARGS_END);
+    Row* pRow = pPds->pAllotRow(pPdsDef,
+                                C_VARGS_BEGIN,
+                                "bufferpool"_Stz,
+                                0,
+                                aCN[eClass],
+                                iCountObjects[eClass],
+                                nObjSize,
+                                nSumObjSize,
+                                sMagObj.szStz(),
+                                iPctUse,
+                                false,
+                                C_VARGS_END);
     ASSERT(pRow);
     UNUSED(pRow);
   }
@@ -1335,16 +1352,17 @@ i8 PoolHelper::iPoolFree(void)
 /*----------------------------------------------------------------------------*/
 /* report on buffer pool allocations                                          */
 /*----------------------------------------------------------------------------*/
-void PoolHelper::vPoolSummary(Pds* pPds, Pds* pPdsWarn, StreamDef* pWarnDef)
+void PoolHelper::vPoolSummary(Pds* pPds, StreamDef* pPdsDef, Pds* pPdsWarn, StreamDef* pPdsWarnDef)
 {
   _static_
+  UNUSED(pPdsWarnDef);
   UNUSED(pPdsWarn);
-  UNUSED(pWarnDef);
 
   s32 sBaseAddr;
   sBaseAddr.vSprint("%p"_Stz, gpBufferPool->pBase());
 
-  Row* pRow = pPds->pAllotRow(C_VARGS_BEGIN,
+  Row* pRow = pPds->pAllotRow(pPdsDef,
+                              C_VARGS_BEGIN,
                               gpBufferPool->szShmNm(),
                               sBaseAddr.szStz(),
                               gpBufferPool->iTotalSpace(),
@@ -1440,11 +1458,12 @@ void PoolHelper::vRegionSummary()
 /*----------------------------------------------------------------------------*/
 /* report on shm region                                                       */
 /*----------------------------------------------------------------------------*/
-void PoolHelper::vRegionSummary(Pds* pPds, Pds* pPdsWarn, StreamDef* pWarnDef)
+void PoolHelper::vRegionSummary(Pds* pPds, StreamDef* pPdsDef, Pds* pPdsWarn, StreamDef* pPdsWarnDef )
 {
   _static_
+
   UNUSED(pPdsWarn);
-  UNUSED(pWarnDef);
+  UNUSED(pPdsWarnDef);
 
   Heap* pHeap;
   i8 iChunkSize;
@@ -1462,18 +1481,19 @@ void PoolHelper::vRegionSummary(Pds* pPds, Pds* pPdsWarn, StreamDef* pWarnDef)
   // Wastage is the size of the extra buffers that were needed when the chunks could have been packed
   // into a smaller number of buffers.
 
-	Row* pRow = pPds->pAllotRow(C_VARGS_BEGIN,
-                        "transient"_Stz,
-                        "tiny"_Stz,
-                        iChunkSize / C_1KB,
-                        pHeap->nBufferCount(),
-                        iSumBufsUsed,
-                        pHeap->nCurrAllocated(),
-                        pHeap->nFreeChunks(),
-                        iSumChunksUsed,
-                        iWastageKb,
-                        iWastagePct,
-                        C_VARGS_END);
+	Row* pRow = pPds->pAllotRow(pPdsDef,
+                              C_VARGS_BEGIN,
+                              "transient"_Stz,
+                              "tiny"_Stz,
+                              iChunkSize / C_1KB,
+                              pHeap->nBufferCount(),
+                              iSumBufsUsed,
+                              pHeap->nCurrAllocated(),
+                              pHeap->nFreeChunks(),
+                              iSumChunksUsed,
+                              iWastageKb,
+                              iWastagePct,
+                              C_VARGS_END);
   ASSERT(pRow);
   UNUSED(pRow);
 

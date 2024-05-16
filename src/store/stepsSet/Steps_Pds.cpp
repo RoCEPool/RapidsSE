@@ -153,9 +153,12 @@ void Step::vPdsAddBpaObjects(void)
   ASSERT(pPdsWarn);
   ASSERT(pPdsWarn->eBufferType() == BT_WARNINGS);
 
-  Pds* pPds = _pPds(*m_pLogicUnit->m_xpPds);
+  Table* pTableDefWarn = * m_pLogicUnit->m_xpTableDefWarn;
 
-  PoolHelper::vObjectSummary(pPds, pPdsWarn);
+  Pds* pPds = _pPds(*m_pLogicUnit->m_xpPds);
+  Table* pTableDef = * m_pLogicUnit->m_xpTableDef;
+
+  PoolHelper::vObjectSummary(pPds, pTableDef->pStreamDef(), pPdsWarn, pTableDefWarn->pStreamDef());
 
   EXIT();
 }
@@ -175,12 +178,17 @@ void Step::vPdsAddBpaPool(void)
   // Get the warning TableDef
   Table* pWarnTable = _pTable(* m_pLogicUnit->m_xpTableDefWarn);
   ASSERT(pWarnTable);
-  StreamDef* pWarnDef = pWarnTable->pStreamDef();
-  ASSERT(pWarnDef);
+  StreamDef* pPdsWarnDef = pWarnTable->pStreamDef();
+  ASSERT(pPdsWarnDef);
 
   Pds* pPdsRowBuffer = _pPds(*m_pLogicUnit->m_xpPds);
 
-  PoolHelper::vPoolSummary(pPdsRowBuffer, pPdsWarn, pWarnDef);
+  Table* pPdsTableDef = _pTable(* m_pLogicUnit->m_xpTableDef);
+  ASSERT(pPdsTableDef);
+  StreamDef* pPdsDef = pPdsTableDef->pStreamDef();
+  ASSERT(pPdsDef);
+
+  PoolHelper::vPoolSummary(pPdsRowBuffer, pPdsDef, pPdsWarn, pPdsWarnDef);
 
   EXIT();
 }
@@ -200,12 +208,17 @@ void Step::vPdsAddBpaRegions(void)
   // Get the warning TableDef
   Table* pWarnTable = _pTable(* m_pLogicUnit->m_xpTableDefWarn);
   ASSERT(pWarnTable);
-  StreamDef* pWarnDef = pWarnTable->pStreamDef();
-  ASSERT(pWarnDef);
+  StreamDef* pPdsWarnDef = pWarnTable->pStreamDef();
+  ASSERT(pPdsWarnDef);
 
   Pds* pPdsRowBuffer = _pPds(*m_pLogicUnit->m_xpPds);
 
-  PoolHelper::vRegionSummary(pPdsRowBuffer, pPdsWarn, pWarnDef);
+  Table* pPdsTableDef = _pTable(* m_pLogicUnit->m_xpTableDef);
+  ASSERT(pPdsTableDef);
+  StreamDef* pPdsDef = pPdsTableDef->pStreamDef();
+  ASSERT(pPdsDef);
+
+  PoolHelper::vRegionSummary(pPdsRowBuffer, pPdsDef, pPdsWarn, pPdsWarnDef);
 
   EXIT();
 }
