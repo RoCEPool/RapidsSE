@@ -328,6 +328,11 @@ version : FORCE
 # Rules to build the parser/lexers for the various grammar if the .g4 files change
 grammar : $(SQL_GRAMMAR_CPP) $(JSON5_GRAMMAR_CPP)
 
+# Rule to forcibly invoke the grammar generation
+grammarForce :
+	@-../thirdparty/antlr/generate.sh $(SQL_GRAMMAR)
+	@-../thirdparty/antlr/generate.sh $(JSON5_GRAMMAR)
+
 # This is a hack to avoid make from invoking the generate.sh script for each input file
 $(firstword $(SQL_GRAMMAR_CPP)) : $(SQL_GRAMMAR)
 	@-../thirdparty/antlr/generate.sh $(SQL_GRAMMAR)
