@@ -626,7 +626,7 @@ class InstanceRunner:
         src = f"{self.ip_addrs[0]}:{str(self.remote_repo_dir / C_SETH_LOG_PATH)}"
 
         try:
-            ssh.run_scp(src, dest, C_SE_COPY_LOGS_TIMEOUT_SEC, ctx=self.op_ctx)
+            ssh.run_scp(src, dest, C_SE_COPY_LOGS_TIMEOUT_SEC, True, ctx=self.op_ctx)
         except subprocess.TimeoutExpired as e:
             msg = f"Test {self.test_name}: Copying of logs from {src} to {dest} timed out " \
                   f"after {e.timeout} seconds." \
