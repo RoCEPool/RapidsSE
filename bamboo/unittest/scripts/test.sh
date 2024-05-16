@@ -89,8 +89,8 @@ fi
 # TODO: Add any other tests here
 # The array of unit test harnesses to run. The format here is:
 #  <testName> <testFunctionToCall>
-#  "ConnectionStorm" "runConnectionStormTest"
 TEST_TO_RUN=(
+  "ConnectionStorm" "runConnectionStormTest"
   "SETH"            "runSethTest"
 )
 
