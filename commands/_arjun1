@@ -1,7 +1,7 @@
-/*
+
 file _lineitem;
-load LineItem "../TPCH/SF0001/lineitem.tbl" ;
-*/
+load LineItem "../TPCH/SF10/lineitem.tbl" ;
+/*
 create table uniqueTable (
   int_col0   INTEGER NOT NULL,
   int_col1   INTEGER,
@@ -21,3 +21,4 @@ create table uniqueTable (
   vch_col15  VARCHAR(32)
 );
 load uniqueTable "../DATA/Datums/datums.csv" ;
+*/

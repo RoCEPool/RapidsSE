@@ -1006,6 +1006,9 @@ void RowBox_t<AREA>::vResetRow(void)
 {
   _poolAddress_(this); _footer_();
 
+  m_i_ColCrs = 0;
+  m_nRowStringBytes = 0;
+
   WspConvergent_t<AREA,Stz,Row>::vResetHeads();
 }
 
