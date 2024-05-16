@@ -2087,7 +2087,6 @@ void vTest33(void)
 void vTest34(void)
 {
 	Pds* pPdsBuffer;
-	RowPix* pRowPix;
 	Row* pRow;
 	ColumnInfo aColumnInfo[16];
 
@@ -2102,14 +2101,15 @@ void vTest34(void)
 		aColumnInfo[iIndex].m_bIsAscending = true;
 	}
 
-	//StreamDef* pStreamDef = StreamDef::pStreamDefNew(16, aColumnInfo);
-	pRowPix = RowPix::pRowPixNew(16, aColumnInfo);
+	StreamDef* pStreamDef = StreamDef::pStreamDefNew(16, aColumnInfo);
+	//pRowPix = RowPix::pRowPixNew(16, aColumnInfo);
 
 	for (i8 iIndex = 0; iIndex < 10000; iIndex++) {
-		pPdsBuffer = new Pds(pRowPix);
+		pPdsBuffer = new Pds(pStreamDef);
 
 		do {
-			pRow = pPdsBuffer->pAllotRow(C_VARGS_BEGIN,
+			pRow = pPdsBuffer->pAllotRow(pStreamDef,
+                                   C_VARGS_BEGIN,
 																	 1,
 																	 2,
 																	 3,

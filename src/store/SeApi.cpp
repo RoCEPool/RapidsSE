@@ -475,7 +475,7 @@ Pds* SeApi::pSearchCatalogs(Stz* szCatalogName)
 
   Pds* pPds = new Pds(pLookupStreamDef);
 
-  pMetadata->vSearch(pPds,1,szCatalogName,nullptr,nullptr,nullptr,nullptr,nullptr);
+  pMetadata->vSearch(pPds,pLookupStreamDef,1,szCatalogName,nullptr,nullptr,nullptr,nullptr,nullptr);
 
   delete pMetadata;
   
@@ -499,7 +499,7 @@ Pds* SeApi::pSearchColumns(Stz* szCatalogName,
 
   Pds* pPds = new Pds(pLookupStreamDef);
 
-  pMetadata->vSearch(pPds,4,szCatalogName,szSchemaName,szTableName,szColumnName,nullptr,nullptr);
+  pMetadata->vSearch(pPds,pLookupStreamDef,4,szCatalogName,szSchemaName,szTableName,szColumnName,nullptr,nullptr);
 
   delete pMetadata;
 
@@ -523,7 +523,7 @@ Pds* SeApi::pSearchIndexes(Stz* szCatalogName,
 
   Pds* pPds = new Pds(pLookupStreamDef);
 
-  pMetadata->vSearch(pPds,5,szCatalogName,szSchemaName,szTableName,nullptr,szIndexName,nullptr);
+  pMetadata->vSearch(pPds,pLookupStreamDef,5,szCatalogName,szSchemaName,szTableName,nullptr,szIndexName,nullptr);
 
   delete pMetadata;
 
@@ -548,7 +548,7 @@ Pds* SeApi::pSearchIndexColumns(Stz* szCatalogName,
 
   Pds* pPds = new Pds(pLookupStreamDef);
 
-  pMetadata->vSearch(pPds,6,szCatalogName,szSchemaName,szTableName,nullptr,szIndexName,szColumnName);
+  pMetadata->vSearch(pPds,pLookupStreamDef,6,szCatalogName,szSchemaName,szTableName,nullptr,szIndexName,szColumnName);
 
   delete pMetadata;
 
@@ -559,7 +559,7 @@ Pds* SeApi::pSearchIndexColumns(Stz* szCatalogName,
 /* search schemas for matching name (or nullptr for all)                      */
 /*----------------------------------------------------------------------------*/
 Pds* SeApi::pSearchSchemas(Stz* szCatalogName,
-                               Stz* szSchemaName)
+                           Stz* szSchemaName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEAPI,_FOOTER_);
     
@@ -570,7 +570,7 @@ Pds* SeApi::pSearchSchemas(Stz* szCatalogName,
 
   Pds* pPds = new Pds(pLookupStreamDef);
 
-  pMetadata->vSearch(pPds,2,szCatalogName,szSchemaName,nullptr,nullptr,nullptr,nullptr);
+  pMetadata->vSearch(pPds,pLookupStreamDef,2,szCatalogName,szSchemaName,nullptr,nullptr,nullptr,nullptr);
 
   delete pMetadata;
   
@@ -593,7 +593,7 @@ Pds* SeApi::pSearchTables(Stz* szCatalogName,
 
 	Pds* pPds = new Pds(pLookupStreamDef);
 
-  pMetadata->vSearch(pPds,3,szCatalogName,szSchemaName,szTableName,nullptr,nullptr,nullptr);
+  pMetadata->vSearch(pPds,pLookupStreamDef,3,szCatalogName,szSchemaName,szTableName,nullptr,nullptr,nullptr);
 
   delete pMetadata;
   
