@@ -197,10 +197,16 @@ void ToKeyHshRow::vNewPdsRowBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKEYHSHROW,_FOOTER_);
 
+  RowPix* pRowPix = new RowPix;
+
+  m_pStreamDef->vToRowPix(pRowPix, true);
+
   //  create a new buffer
-  Pds* pNewPdsRowBuffer = new Pds(m_pStreamDef,true);
+  Pds* pNewPdsRowBuffer = new Pds(pRowPix);
 
   m_pBufferAddrQueue->vAddBuffer(pNewPdsRowBuffer);
+
+  delete pRowPix;
 
   return;
 }
