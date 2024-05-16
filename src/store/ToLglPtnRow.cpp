@@ -97,22 +97,22 @@ void ToLglPtnRow::vConvert(Table* pTable, Pds* pPdsRowBuffer)
 //  vTrace("ToLglPtnRow\n"_Stz);
 //  pPdsRowBuffer->vPrintRows(nullptr, nullptr);
   RowPix* pRowPix = pPdsRowBuffer->pRowPix();
-  i8 i_KeyHshCol = pRowPix->i_KeyHsh();
+//  i8 i_KeyHshCol = pRowPix->i_KeyHsh();
 
-  LglPtnMap* pPtnMap = AM::pLglPtnMap();
+//  LglPtnMap* pPtnMap = AM::pLglPtnMap();
   PdsCursor* pCursor = new PdsCursor(pPdsRowBuffer);
 
   //vTrace("ToBktRow::vConvert2 table:%s Total Rows:%lld \n"_Stz,pTable->szTableNm()->azChar(), nRows);
   while( ! pCursor->bIsCurrNull()) {
     Row* aRowSrc = pCursor->pCurrRow();
 
-    KeyHsh tKeyHsh = aRowSrc->tKeyHsh(i_KeyHshCol);
+//    KeyHsh tKeyHsh = aRowSrc->tKeyHsh(i_KeyHshCol);
 
     // determine which lglPtn the KeyHsh is currently mapped to
-    LglPtn tLglPtn = pPtnMap->tHashToLglPtnId(tKeyHsh);
+//    LglPtn tLglPtn = pPtnMap->tHashToLglPtnId(tKeyHsh);
 
 //    vTrace("ToBktRow::vConvert2 KeyHsh: %lld Ptn:%lld\n"_Stz, tKeyHsh.iAsI8(), tLglPtn.iAsI8());
-    vCopyRow(tLglPtn, aRowSrc, pRowPix);
+    vCopyRow(0, aRowSrc, pRowPix);
 
     pCursor->vNext();
   }
@@ -157,7 +157,7 @@ void ToLglPtnRow::vCopyRow(LglPtn tLglPtn, Row* aRowSrc, RowPix* pFromRowPix)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOLGLPTNROW,_FOOTER_);
 
   // copy that
-  bool bSrcHasPtnHash = true;
+  bool bSrcHasPtnHash = false;
   bool bCopyPtnHash   = false;
 
   // get pds row buffer for given partition (new a first buffer if ncessary)

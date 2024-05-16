@@ -80,6 +80,8 @@ ToKeyHshRow::ToKeyHshRow(StreamDef* pStreamDef, Format* pFmt)
   m_iRowsInvalid   = 0;
   m_iRowsSkipped   = 0;
 
+  m_pRowSingle = new RowSingle(m_pStreamDef);
+
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TOKEYHSHROW,_FOOTER_);
   
   vNewPdsRowBuffer();
@@ -198,7 +200,7 @@ void ToKeyHshRow::vNewPdsRowBuffer(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKEYHSHROW,_FOOTER_);
 
   //  create a new buffer
-  Pds* pNewPdsRowBuffer = new Pds(m_pStreamDef,true);
+  Pds* pNewPdsRowBuffer = new Pds(m_pStreamDef,false);
 
   m_pBufferAddrQueue->vAddBuffer(pNewPdsRowBuffer);
 
@@ -639,7 +641,7 @@ void ToKeyHshRow::vNewPdsRowBuffer(void)
 
 #define vDEPOSIT_VALUE(_colVal) \
   \
-  pPdsRowBuffer()->vDepositColVal(_colVal); \
+  m_pRowSingle->vDepositColVal(_colVal); \
   \
   if (xColPix.m_bPtnKey) \
     tKeyHsh.vRunningHash((byte*)&_colVal, sizeof(i8));
@@ -649,7 +651,7 @@ void ToKeyHshRow::vNewPdsRowBuffer(void)
   if (! bPixNullable) \
     vFIELD_ERROR(_errorCode); \
   \
-  pPdsRowBuffer()->vDepositColVal(C_DATUM_NULL); \
+  m_pRowSingle->vDepositColVal(C_DATUM_NULL); \
   \
   if (xColPix.m_bPtnKey) \
     tKeyHsh.vRunningHash((byte*)&C_DATUM_NULL,sizeof(i8));
@@ -681,7 +683,8 @@ bool ToKeyHshRow::bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
 
   // change this to some no longer strib function
   ASSERT(StrLib::nSize(azCsvChunk) < C_1MB);
-  
+
+  Row* aNewRow;
   char *azRecordStart;
   char *azFieldStart;
   
@@ -954,15 +957,15 @@ L_AdvanceNextRecord:
   // reset field cursor
   i_Fld = -1;
 
-  nMaxFreeBytes = pPdsRowBuffer()->nFreeBytes();
-  // allot a new row (new another PdsRowBuffer if necessary)
-  if ( (nMaxFreeBytes < C_2KB) || (! pPdsRowBuffer()->pAllotRow())) {    // ? inline ?
-    vNewPdsRowBuffer();
-    Row* aNewRow = pPdsRowBuffer()->pAllotRow();
-    nMaxFreeBytes = pPdsRowBuffer()->nFreeBytes();
-    ASSERT(aNewRow);
-    UNUSED(aNewRow);
-  }
+//  nMaxFreeBytes = pPdsRowBuffer()->nFreeBytes();
+//  // allot a new row (new another PdsRowBuffer if necessary)
+//  if ( (nMaxFreeBytes < C_2KB) || (! pPdsRowBuffer()->pAllotRow())) {    // ? inline ?
+//    vNewPdsRowBuffer();
+//    Row* aNewRow = pPdsRowBuffer()->pAllotRow();
+//    nMaxFreeBytes = pPdsRowBuffer()->nFreeBytes();
+//    ASSERT(aNewRow);
+//    UNUSED(aNewRow);
+//  }
 
   //                                                      end of testMoreRecords
 
@@ -1010,6 +1013,7 @@ L_NextFieldInRecord:
                       - xColPix.m_uScale;
   nPixFracDigits  = xColPix.m_uScale;         // max number digits to right of .
   bPixNullable    = xColPix.m_bNullable;      // can field be a null?
+  xColPix.m_bPtnKey = 0;
   
   // debug
   //pCol = m_pStreamDef->pGetColumn(i_Fld);
@@ -1466,7 +1470,7 @@ L_Float:
   // ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡
   //                                                              deposit float
 
-  pPdsRowBuffer()->vDepositColVal(dColVal_float);
+  m_pRowSingle->vDepositColVal(dColVal_float);
   
   goto L_FieldEnd;
 
@@ -2094,7 +2098,7 @@ L_Varchar_unquoted:
 	else
     aStzSet = pPdsRowBuffer()->azDepositString_begin();
 #else
-	aStzSet = pPdsRowBuffer()->azDepositString_begin();
+	aStzSet = m_pRowSingle->azDepositString_begin();
 #endif
 
   azColVal_varchar = (char*)aStzSet;
@@ -2160,7 +2164,7 @@ L_Varchar_singleQuoted:
   if(nMaxFreeBytes < nPixLength)
     nPixLength = nMaxFreeBytes;
 
-  aStzSet = pPdsRowBuffer()->azDepositString_begin();
+  aStzSet = m_pRowSingle->azDepositString_begin();
 
   azColVal_varchar = (char*)aStzSet;
   acVchDst  = azColVal_varchar;
@@ -2281,7 +2285,7 @@ L_Varchar_doubleQuoted:
   if(nMaxFreeBytes < nPixLength)
     nPixLength = nMaxFreeBytes;
 
-  aStzSet = pPdsRowBuffer()->azDepositString_begin();
+  aStzSet = m_pRowSingle->azDepositString_begin();
 
   azColVal_varchar = (char*)aStzSet;
   acVchDst  = azColVal_varchar;
@@ -2401,7 +2405,7 @@ L_Varchar_userEnclosed:
   if(nMaxFreeBytes < nPixLength)
     nPixLength = nMaxFreeBytes;
 
-  aStzSet = pPdsRowBuffer()->azDepositString_begin();
+  aStzSet = m_pRowSingle->azDepositString_begin();
 
   azColVal_varchar = (char*)aStzSet;
   acVchDst  = azColVal_varchar;
@@ -2479,7 +2483,8 @@ L_Varchar_depositValue:
     goto L_FieldError;
 
   // Store len of string
-  pPdsRowBuffer()->vDepositString_end(nVchChars + 1);
+//  pPdsRowBuffer()->vDepositString_end(nVchChars + 1);
+  m_pRowSingle->vDepositString_end(nVchChars + 1);
 
 	if (xColPix.m_bPtnKey)
 		tKeyHsh.vRunningHash((byte*)azColVal_varchar, nVchChars);
@@ -2620,7 +2625,8 @@ L_FieldError:
   vSKIP_LINE_END();
   
   // discard partial row in row slab
-  pPdsRowBuffer()->vDiscardInvalidRow();
+  delete m_pRowSingle;
+  m_pRowSingle = new RowSingle(m_pStreamDef);
 
   goto L_AdvanceNextRecord;                                   // end of fieldError
   
@@ -2657,9 +2663,11 @@ L_RecordEndLineEnd:
   
   // deposit key hash
 
-  pPdsRowBuffer()->vDepositColVal(tKeyHsh);
+//  pPdsRowBuffer()->vDepositColVal(tKeyHsh);
     
   tKeyHsh = 0;
+
+  UNUSED(tKeyHsh);
 
   if (iTraceBits & C_BIT_EndRecord) {
     HV_Record hvRecord(m_pStreamDef->pRowPix());
@@ -2667,6 +2675,18 @@ L_RecordEndLineEnd:
            m_i_Rec,
            hvRecord->sz(pPdsRowBuffer()->m_aRowCur));
   }
+
+  nMaxFreeBytes = pPdsRowBuffer()->nFreeBytes();
+  // allot a new row (new another PdsRowBuffer if necessary)
+  aNewRow = pPdsRowBuffer()->pCopyRow(m_pRowSingle->m_pRow, false, false);
+  if(!aNewRow) {
+    vNewPdsRowBuffer();
+    aNewRow = pPdsRowBuffer()->pCopyRow(m_pRowSingle->m_pRow, false, false);
+    ASSERT(aNewRow);
+    UNUSED(aNewRow);
+  }
+  delete m_pRowSingle;
+  m_pRowSingle = new RowSingle(m_pStreamDef);
 
   // increment records processed
   m_iRowsProcessed++;

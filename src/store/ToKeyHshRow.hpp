@@ -19,6 +19,8 @@ namespace STORE
     i8         m_i_Rec;
 
     PdsBufferQueue* m_pBufferAddrQueue;
+
+    RowSingle* m_pRowSingle;
   
     //--
   
