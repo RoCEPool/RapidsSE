@@ -132,7 +132,7 @@ begin
       | stageMarker0212
     
     stage stageMarker0212 on all partitions :
-        scan rapidsse public lineitem
+        scan rapids public lineitem
       | aggreg 0 " type INTEGER as l_orderkey $1 , type DECIMAL )  $5 sum  , type DECIMAL )  $5 min  , type INTEGER as l_linenumber $4 groupBy  type INTEGER as l_orderkey $1 , type INTEGER as l_linenumber $4 "
       | stageMarker0215
     
@@ -158,7 +158,7 @@ begin
     | stageMarker0774
     
   stage stageMarker0774 on all partitions :
-      scan rapidsse public customer
+      scan rapids public customer
     | stageMarker0777 broadcast
     
   stage stageMarker0777 on all partitions :
@@ -195,7 +195,7 @@ begin
     | pulse once
     | stageMarker0477
   stage stageMarker0477 on all partitions :
-    scan rapidsse public lineitem
+    scan rapids public lineitem
     | filter 1 " type BOOLEAN  $1 10  >  $4 20  <  and  $2 30  ==  and  $1 40  <  or  "
     | aggreg 0 " type DECIMAL )  $5 sum  , type INTEGER as l_suppkey $3 groupBy  type INTEGER as l_suppkey $3 "
     | stageMarker0480
@@ -223,7 +223,7 @@ begin
     | stageMarker0154
     
   stage stageMarker0154 on all partitions :
-    scan rapidsse public customer
+    scan rapids public customer
     | project 0 " type INTEGER )  $1 sum  "
     | stageMarker0157
     
@@ -255,7 +255,7 @@ begin
     | stageMarker0198
     
   stage stageMarker0198 on all partitions :
-    scan rapidsse public customer
+    scan rapids public customer
     | project 0 " type INTEGER as C_CUSTKEY $1 , type VARCHAR ( 0 ) as C_NAME $2 , type VARCHAR ( 0 ) as C_ADDRESS $3 , type INTEGER as C_NATIONKEY $4 , type VARCHAR ( 0 ) as C_PHONE $5 , type DECIMAL as C_ACCTBAL $6 , type VARCHAR ( 0 ) as C_MKTSEGMENT $7 , type VARCHAR ( 0 ) as C_COMMENT $8 "
     | limit 2 100
     | stageLast

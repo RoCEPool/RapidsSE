@@ -8,9 +8,10 @@ enum eTT // Table Type
   /* 0 */ TT_NONE=0,
   /* 1 */ TT_INFOSET,
   /* 2 */ TT_INTERNAL,
-  /* 3 */ TT_NORMAL,
-  /* 4 */ TT_REPLICATED,
-  /* 5 */ TT_ENUMS
+  /* 3 */ TT_METADATA,
+  /* 4 */ TT_NORMAL,
+  /* 5 */ TT_REPLICATED,
+  /* 6 */ TT_ENUMS
 };
 
 extern Stz* aTT[TT_ENUMS];

@@ -20,14 +20,12 @@ namespace STORE
 
     void vDerive_streamKey(CardIter* pCI);
 
-    void vEarlyProject_root(CardIter* pCI);
-    void vCraft_needed_root(CardIter* pCI);
 
     void vInject_foldExpr(CardIter* pCI);
 
     bool bMorph_gbyAgg_To_ordAgg(CardIter* pCI);
 
-    void vSmooth(CardIter* pCI, CarryForward* pCarryForward);
+    void vSmooth(CardIter* pCI);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };

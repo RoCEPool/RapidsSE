@@ -45,6 +45,7 @@
 #include "TagConstants.h"
 
 #include "InternalTables.hpp"
+#include "MetaDataTables.hpp"
 #include "Parcel.hpp"
 
 #include "Api.hpp"
@@ -930,8 +931,8 @@ void Engine::vLoadTables(void)
   RASSERT(pWord->pObject());
 
   pDic = _pDic(pWord->pObject());
-  pSearchWord = new(nullptr) Word("rapidsse"_Stz);
-  pWord = pDic->pFindWord(pSearchWord, "rapidsse"_Stz);
+  pSearchWord = new(nullptr) Word("rapids"_Stz);
+  pWord = pDic->pFindWord(pSearchWord, "rapids"_Stz);
   delete pSearchWord;
   RASSERT(pWord->pObject());
 
@@ -1005,6 +1006,44 @@ void Engine::vLowMemoryDiscard(void)
   gxaSizeHeap[CN_CSVBUFFER].m_bLowMemoryDiscard = true;
   gxaSizeHeap[CN_PROFILE].m_bLowMemoryDiscard   = true;
   gxaSizeHeap[CN_PDS].m_bLowMemoryDiscard = true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find and set stream def for metadata tables                                */
+/*----------------------------------------------------------------------------*/
+void Engine::vMetaDataTables(void)
+{
+  StreamDef* pStreamDef;
+
+  pStreamDef = AM::pStreamDefFind(C_TDEF_CATALOG);
+  gpAttachMap->m_pMetaDataTables->vStreamDef(MD_CATALOG,pStreamDef);
+
+  pStreamDef = AM::pStreamDefFind(C_TDEF_CLUSTER);
+  gpAttachMap->m_pMetaDataTables->vStreamDef(MD_CLUSTER,pStreamDef);
+
+  pStreamDef = AM::pStreamDefFind(C_TDEF_COLUMNS);
+  gpAttachMap->m_pMetaDataTables->vStreamDef(MD_COLUMNS,pStreamDef);
+
+  pStreamDef = AM::pStreamDefFind(C_TDEF_INDEXCOLUMNS);
+  gpAttachMap->m_pMetaDataTables->vStreamDef(MD_INDEXCOLUMNS,pStreamDef);
+
+  pStreamDef = AM::pStreamDefFind(C_TDEF_INDEXES);
+  gpAttachMap->m_pMetaDataTables->vStreamDef(MD_INDEXES,pStreamDef);
+
+  pStreamDef = AM::pStreamDefFind(C_TDEF_NODES);
+  gpAttachMap->m_pMetaDataTables->vStreamDef(MD_NODES,pStreamDef);
+
+  pStreamDef = AM::pStreamDefFind(C_TDEF_QUERIES);
+  gpAttachMap->m_pMetaDataTables->vStreamDef(MD_QUERIES,pStreamDef);
+
+  pStreamDef = AM::pStreamDefFind(C_TDEF_SCHEMA);
+  gpAttachMap->m_pMetaDataTables->vStreamDef(MD_SCHEMA,pStreamDef);
+
+  pStreamDef = AM::pStreamDefFind(C_TDEF_SESSIONS);
+  gpAttachMap->m_pMetaDataTables->vStreamDef(MD_SESSIONS,pStreamDef);
+
+  pStreamDef = AM::pStreamDefFind(C_TDEF_TABLES);
+  gpAttachMap->m_pMetaDataTables->vStreamDef(MD_TABLES,pStreamDef);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1908,6 +1947,13 @@ void Engine::vStartSystem(void)
   vInternalTables();
 
    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+   // metadata tables
+
+  if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
+    vTrace("  MetaData Tables\n"_Stz);
+  vMetaDataTables();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT)) {
     vTrace("Engine Instance %s started\n"_Stz,gxCmdLineArgs.m_xSysArgs.m_sRegionName.azChar());

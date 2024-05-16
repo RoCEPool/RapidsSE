@@ -157,10 +157,10 @@ rows: (*,'explainPlan',
 » queryText: "SELECT n_name, r_name, s_name, ps_suppkey FROM ${testName2}_Region, ${testName2}_Nation, ${testName2}_Supplier, ${testName2}_Partsupp"
 
 -> projectOp
-   » column: (Expr = rapidsse.public.${testName2}_Nation.n_name ; Ordinal Expr = $5)
-   » column: (Expr = rapidsse.public.${testName2}_Region.r_name ; Ordinal Expr = $2)
-   » column: (Expr = rapidsse.public.${testName2}_Supplier.s_name ; Ordinal Expr = $9)
-   » column: (Expr = rapidsse.public.${testName2}_Partsupp.ps_suppkey ; Ordinal Expr = $16)
+   » column: (Expr = rapids.public.${testName2}_Nation.n_name ; Ordinal Expr = $5)
+   » column: (Expr = rapids.public.${testName2}_Region.r_name ; Ordinal Expr = $2)
+   » column: (Expr = rapids.public.${testName2}_Supplier.s_name ; Ordinal Expr = $9)
+   » column: (Expr = rapids.public.${testName2}_Partsupp.ps_suppkey ; Ordinal Expr = $16)
 
 -> -> abstractJoinOp
       » join type: Cross Join
@@ -178,16 +178,16 @@ rows: (*,'explainPlan',
             » ordinal predicate: (true)
 
 -> -> -> -> -> tableScanOp
-               » table: (rapidsse.public.${testName2}_Region)
+               » table: (rapids.public.${testName2}_Region)
 
 -> -> -> -> -> tableScanOp
-               » table: (rapidsse.public.${testName2}_Nation)
+               » table: (rapids.public.${testName2}_Nation)
 
 -> -> -> -> tableScanOp
-            » table: (rapidsse.public.${testName2}_Supplier)
+            » table: (rapids.public.${testName2}_Supplier)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_Partsupp)'
+         » table: (rapids.public.${testName2}_Partsupp)'
 )
 */
 
@@ -362,19 +362,19 @@ rows: (*,'explainPlan',
 » queryText: "SELECT n_name, r_name FROM ${testName2}_Region LEFT OUTER JOIN ${testName2}_Nation ON r_regionkey = n_regionkey"
 
 -> projectOp
-   » column: (Expr = rapidsse.public.${testName2}_Nation.n_name ; Ordinal Expr = $5)
-   » column: (Expr = rapidsse.public.${testName2}_Region.r_name ; Ordinal Expr = $2)
+   » column: (Expr = rapids.public.${testName2}_Nation.n_name ; Ordinal Expr = $5)
+   » column: (Expr = rapids.public.${testName2}_Region.r_name ; Ordinal Expr = $2)
 
 -> -> abstractJoinOp
       » join type: Left Outer Join
-      » predicate: (rapidsse.public.${testName2}_Region.r_regionkey = rapidsse.public.${testName2}_Nation.n_regionkey)
+      » predicate: (rapids.public.${testName2}_Region.r_regionkey = rapids.public.${testName2}_Nation.n_regionkey)
       » ordinal predicate: ($1 = $6)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_Region)
+         » table: (rapids.public.${testName2}_Region)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_Nation)'
+         » table: (rapids.public.${testName2}_Nation)'
 )
 
 */
@@ -497,27 +497,27 @@ rows: (*,'explainPlan',
 » queryText: "SELECT * FROM ${testName2}_t1 LEFT OUTER JOIN ${testName2}_t2 ON ${testName2}_t1.colA = ${testName2}_t2.colA"
 
 -> projectOp
-   » column: (Alias = colA ; Expr = rapidsse.public.${testName2}_t1.colA ; Ordinal Expr = $1)
-   » column: (Alias = colB ; Expr = rapidsse.public.${testName2}_t1.colB ; Ordinal Expr = $2)
-   » column: (Alias = colC ; Expr = rapidsse.public.${testName2}_t1.colC ; Ordinal Expr = $3)
-   » column: (Alias = colD ; Expr = rapidsse.public.${testName2}_t1.colD ; Ordinal Expr = $4)
-   » column: (Alias = colA ; Expr = rapidsse.public.${testName2}_t2.colA ; Ordinal Expr = $5)
-   » column: (Alias = colB ; Expr = rapidsse.public.${testName2}_t2.colB ; Ordinal Expr = $6)
-   » column: (Alias = colC ; Expr = rapidsse.public.${testName2}_t2.colC ; Ordinal Expr = $7)
-   » column: (Alias = colX ; Expr = rapidsse.public.${testName2}_t2.colX ; Ordinal Expr = $8)
-   » column: (Alias = colY ; Expr = rapidsse.public.${testName2}_t2.colY ; Ordinal Expr = $9)
-   » column: (Alias = colZ ; Expr = rapidsse.public.${testName2}_t2.colZ ; Ordinal Expr = $10)
+   » column: (Alias = colA ; Expr = rapids.public.${testName2}_t1.colA ; Ordinal Expr = $1)
+   » column: (Alias = colB ; Expr = rapids.public.${testName2}_t1.colB ; Ordinal Expr = $2)
+   » column: (Alias = colC ; Expr = rapids.public.${testName2}_t1.colC ; Ordinal Expr = $3)
+   » column: (Alias = colD ; Expr = rapids.public.${testName2}_t1.colD ; Ordinal Expr = $4)
+   » column: (Alias = colA ; Expr = rapids.public.${testName2}_t2.colA ; Ordinal Expr = $5)
+   » column: (Alias = colB ; Expr = rapids.public.${testName2}_t2.colB ; Ordinal Expr = $6)
+   » column: (Alias = colC ; Expr = rapids.public.${testName2}_t2.colC ; Ordinal Expr = $7)
+   » column: (Alias = colX ; Expr = rapids.public.${testName2}_t2.colX ; Ordinal Expr = $8)
+   » column: (Alias = colY ; Expr = rapids.public.${testName2}_t2.colY ; Ordinal Expr = $9)
+   » column: (Alias = colZ ; Expr = rapids.public.${testName2}_t2.colZ ; Ordinal Expr = $10)
 
 -> -> abstractJoinOp
       » join type: Left Outer Join
-      » predicate: (rapidsse.public.${testName2}_t1.colA = rapidsse.public.${testName2}_t2.colA)
+      » predicate: (rapids.public.${testName2}_t1.colA = rapids.public.${testName2}_t2.colA)
       » ordinal predicate: ($1 = $5)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_t1)
+         » table: (rapids.public.${testName2}_t1)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_t2)'
+         » table: (rapids.public.${testName2}_t2)'
 )
 */
 

@@ -7,7 +7,6 @@
 
 #include "RibbonLine.hpp"
 #include "StzList.hpp"
-#include "CardCtl.hpp"
 #include "eOH.h"
 
 namespace BASE
@@ -18,7 +17,7 @@ namespace BASE
   {
   private:
 
-    CardCtl* m_pCardCtl;
+    s32   m_sMargin;
 
     i8 m_nMaxLanesAcross;  // maximum number of lanes across
 
@@ -29,8 +28,6 @@ namespace BASE
 
     IntSet* m_pLaneTabs; // lane tabs
 
-    s32 m_sRightFormat; // format for vSprintRight() based on C_RIBBON_LANE_WIDTH
-
     // must be last
     Footer m_xFooter;    
     
@@ -38,11 +35,10 @@ namespace BASE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Ribbon(CardCtl* pCardCtl, i8 nMaxLanesAcross=C_RIBBON_ACROSS);
+    Ribbon(i8 nMaxLanesAcross=C_RIBBON_ACROSS);
    ~Ribbon(void) noexcept(false);
 
     i8   i_Char(void);
-    CardCtl* pCardCtl(void);
 
     void vDrawH(char cChr, i8 i_Line=C_UNKNOWN);
     void vDrawV(i8 i_Line, i8 i_Char, Stz* szBar);
@@ -56,13 +52,16 @@ namespace BASE
     void vLaneFirst(void);
     void vLaneNext(void);
 
-    void vPinSubRibbon(i8 i_Line, i8 i_Char, Ribbon* pSubRibbon);
-    void vPrintRibbon(Stz* szQueryNm, i8 BenchNo, eOH ePhase, i8 iPrintNo=C_UNKNOWN);
-    void vPutData(i8 i_Line, i8 i_Char, Stz* szData);
-    void vPutOther(i8 i_Line, i8 i_Char, Stz* szOther);
-    void vPutText(i8 i_Line, i8 i_Char, Stz* szText2);
+    Stz* szMargin(void);
+    void vMargin(Stz* szMargin);
 
-    void vSprintSnippet(bool bRight, Stz* szFormat, ...);
+    void vNewLine(void);
+
+    void vPinSubRibbon(i8 i_Line, i8 i_Char, Ribbon* pSubRibbon);
+    void vPrintRibbon(Stz* szQueryNm, i8 BenchNo, i8 iXform, eOH ePhase, i8 iPrintNo=C_UNKNOWN);
+    void vPutText(i8 i_Line, i8 i_Char, Stz* szText);
+
+    void vSprint(i8& ri_Char, Stz* szFormat, ...);
 
     void vTrim(void);
 
@@ -70,10 +69,10 @@ namespace BASE
 
   private:
     void vAddLine(void);
-    void vInitTabs(i8 i_Start, i8 nEach);
 
-    void vSprintSnippetLeft(va_list args, const char* sFormat);
-    void vSprintSnippetRight(va_list args, const char* sFormat);
+    void vFormatLeft(String* pString, Stz* szFormat, va_list xArgs);
+
+    void vInitTabs(i8 i_Start, i8 nEach);
 
     void vSufficientLines(i8 i_Line);
 

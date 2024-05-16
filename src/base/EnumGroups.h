@@ -1,6 +1,7 @@
 /*============================================================================*/
 /* EnumGroups.h -- the master list of all enums in the system                 */
 /*============================================================================*/
+#pragma once
 
 /*----------------------------------------------------------------------------*/
 /* enum groups                                                                */
@@ -12,6 +13,7 @@ enum eEG // enum groups
   EG_AA,
   EG_AC,
   EG_AK,
+  EG_AL,
   EG_AN,
   EG_AT,
 
@@ -92,6 +94,7 @@ enum eEG // enum groups
   EG_RU,
   
   EG_SC,
+  EG_SF,
   EG_SI,
 
 
@@ -110,6 +113,7 @@ enum eEG // enum groups
   EG_WK,
 
   EG_XA,
+  EG_XD,
   EG_XK,
   EG_XP,
 

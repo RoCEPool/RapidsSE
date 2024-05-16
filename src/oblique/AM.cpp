@@ -34,6 +34,7 @@
 #include "eTP.h"
 #include "eTT.h"
 #include "eUK.h"
+#include "eXD.h"
 
 #include "CmdLineArgs.hpp"
 
@@ -109,6 +110,7 @@
 
 #include "TraceLock.hpp"
 #include "InternalTables.hpp"
+#include "MetaDataTables.hpp"
 
 #include "Version.h"
 
@@ -170,6 +172,81 @@ SysMetrics* AM::ATTACHMAP::pSysMetricsChain(void)
   SysMetrics* pSysMetricsChain = gpAttachMap->pSysMetricsChain();
   
   return pSysMetricsChain;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set metadata table pointer in AM                                           */
+/*----------------------------------------------------------------------------*/
+void AM::ATTACHMAP::vMetaDataTables(Table* pTable)
+{
+  _static_
+
+  eMD eMetaDataKind = pTable->eMetaDataKind();
+  switch(eMetaDataKind) {
+    case MD_CATALOG: {
+      gpAttachMap->m_mdCatalog      = pTable;
+      break;
+    }
+    case MD_CLUSTER: {
+      gpAttachMap->m_mdCluster      = pTable;
+      break;
+    }
+    case MD_COLUMNS: {
+      gpAttachMap->m_mdColumns      = pTable;
+      break;
+    }
+    case MD_INDEXCOLUMNS: {
+      gpAttachMap->m_mdIndexColumns = pTable;
+      break;
+    }
+    case MD_INDEXES: {
+      gpAttachMap->m_mdIndexes      = pTable;
+      break;
+    }
+    case MD_NODES: {
+      gpAttachMap->m_mdNodes        = pTable;
+      break;
+    }
+    case MD_QUERIES: {
+      gpAttachMap->m_mdQueries      = pTable;
+      break;
+    }
+    case MD_SCHEMA: {
+      gpAttachMap->m_mdSchema       = pTable;
+      break;
+    }
+    case MD_SESSIONS: {
+      gpAttachMap->m_mdSessions     = pTable;
+      break;
+    }
+    case MD_TABLES: {
+      gpAttachMap->m_mdTables       = pTable;
+      break;
+    }
+    default: {
+      break;
+    }
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* set metadata table pointer in AM                                           */
+/*----------------------------------------------------------------------------*/
+Table* AM::ATTACHMAP::pMetaDataTables(Stz* szMDKind)
+{
+  _static_
+
+  if      (szMDKind->bSame("MD_CATALOG"_Stz))       { return gpAttachMap->m_mdCatalog; }
+  else if (szMDKind->bSame("MD_CLUSTER"_Stz))       { return gpAttachMap->m_mdCluster; }
+  else if (szMDKind->bSame("MD_COLUMNS"_Stz))       { return gpAttachMap->m_mdColumns; }
+  else if (szMDKind->bSame("MD_INDEXCOLUMNS"_Stz))  { return gpAttachMap->m_mdIndexColumns; }
+  else if (szMDKind->bSame("MD_INDEXES"_Stz))       { return gpAttachMap->m_mdIndexes; }
+  else if (szMDKind->bSame("MD_NODES"_Stz))         { return gpAttachMap->m_mdNodes; }
+  else if (szMDKind->bSame("MD_QUERIES"_Stz))       { return gpAttachMap->m_mdQueries; }
+  else if (szMDKind->bSame("MD_SCHEMA"_Stz))        { return gpAttachMap->m_mdSchema; }
+  else if (szMDKind->bSame("MD_SESSIONS"_Stz))      { return gpAttachMap->m_mdSessions; }
+  else if (szMDKind->bSame("MD_TABLES"_Stz))        { return gpAttachMap->m_mdTables; }
+  else return nullptr;
 }
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
@@ -1835,6 +1912,17 @@ void AM::OP::vPipeToNextOp(Op* pCurrOp, Operand* pOperand,
   _static_
 
   pCurrOp->vPipeToNextOp(pOperand,pTriggeringTask);
+}
+
+/*----------------------------------------------------------------------------*/
+/* append operand onto next operator in pipeline                              */
+/*----------------------------------------------------------------------------*/
+void AM::OP::vPipeToNextOpTasks(Op* pCurrOp, Operand* pOperand,
+													 Task* pTriggeringTask)
+{
+	_static_
+
+	pCurrOp->vPipeToNextOpTasks(pOperand,pTriggeringTask);
 }
 
 
@@ -3695,6 +3783,17 @@ i8   AM::iResidentSize(void)  { return Process::iResidentSize();  };
 bool AM::bProgress(void)      { return gpAttachMap->m_xSysArgs.m_bProgress;              }
 bool AM::bMetadata(void)      { return gpAttachMap->m_xSysArgs.m_bMetadata;          }
 
+Table* AM::pMetaDataTableCatalog     (void)      { return gpAttachMap->m_mdCatalog;               }
+Table* AM::pMetaDataTableCluster     (void)      { return gpAttachMap->m_mdCluster;               }
+Table* AM::pMetaDataTableColumns     (void)      { return gpAttachMap->m_mdColumns;               }
+Table* AM::pMetaDataTableIndexColumns(void)      { return gpAttachMap->m_mdIndexColumns;          }
+Table* AM::pMetaDataTableIndexes     (void)      { return gpAttachMap->m_mdIndexes;               }
+Table* AM::pMetaDataTableNodes       (void)      { return gpAttachMap->m_mdNodes;                 }
+Table* AM::pMetaDataTableQueries     (void)      { return gpAttachMap->m_mdQueries;               }
+Table* AM::pMetaDataTableSchema      (void)      { return gpAttachMap->m_mdSchema;                }
+Table* AM::pMetaDataTableSessions    (void)      { return gpAttachMap->m_mdSessions;              }
+Table* AM::pMetaDataTableOfTables    (void)      { return gpAttachMap->m_mdTables;                }
+
 i8   AM::iNextTxId(void)      { return gpAttachMap->m_pTxSet->iNextTxId();    }
 
 Schedule* AM::pSchedule(void)     { return gpAttachMap->m_pSchedule;                }
@@ -4010,7 +4109,7 @@ Table* AM::pTableFind(Stz* szTableNm)
   else {
     pDicStack = new DicStack;
     
-    if (pDicStack->bTest("rapidsse"_Stz,"public"_Stz,szTableNm))
+    if (pDicStack->bTest("rapids"_Stz,"public"_Stz,szTableNm))
       pTable = pDicStack->pTable();
     
     delete pDicStack;
@@ -5028,6 +5127,7 @@ static Stz* aEG[]
   "EG_RU"_Stz,
   
   "EG_SC"_Stz,
+  "EG_SF"_Stz,
   "EG_SI"_Stz,
 
   "EG_TA"_Stz,
@@ -5045,6 +5145,7 @@ static Stz* aEG[]
   "EG_WK"_Stz,
 
   "EG_XA"_Stz,
+  "EG_XD"_Stz,
   "EG_XK"_Stz,
   "EG_XP"_Stz,
   
@@ -5064,6 +5165,7 @@ Stz* AM::szEnumText(i8 i_EnumGroup, i8 i_Enum)
     case EG_AA: return aAA[i_Enum];
     case EG_AC: return aAC[i_Enum];
     case EG_AK: return aAK[i_Enum];
+    case EG_AL: return aAL[i_Enum];
     //case EG_AN: return aAN[i_Enum];
     case EG_AT: return aAT[i_Enum];
              
@@ -5138,6 +5240,7 @@ Stz* AM::szEnumText(i8 i_EnumGroup, i8 i_Enum)
     case EG_RU: return aRU[i_Enum];
       
     case EG_SC: return aSC[i_Enum];
+    case EG_SF: return aSF[i_Enum];
     case EG_SI: return aSI[i_Enum];
 
     case EG_TA: return aTA[i_Enum];
@@ -5155,6 +5258,7 @@ Stz* AM::szEnumText(i8 i_EnumGroup, i8 i_Enum)
     case EG_WK: return aWK[i_Enum];
 
     case EG_XA: return aXA[i_Enum];
+    case EG_XD: return aXD[i_Enum];
     case EG_XK: return aXK[i_Enum];
     case EG_XP: return aXP[i_Enum];
 

@@ -56,31 +56,13 @@ void Card_Scan::vMorph_table_To_scan(STORE::CardIter *pCI)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* early project                                                              */
-/*----------------------------------------------------------------------------*/
- void Card_Scan::vEarlyProject_leaf(CardIter* pCI)
- {
-   //vDump(0,(Stz*)__func__);
-
-   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-   pCI->Early.m_pOP_leaf = this;
-
-   pCI->Dic.m_p_expr = pCI->Flux.m_pArriving = pSub_emit();
-
-  // pCI->PRINTBOARD_dbg();
-
-   vDebugPoint();
-}
-
-/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Card_Scan::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  vValidate_mustHave(CK_s_LEVEL, CK_s_TABLE, CK_NONE);
+  vValidate_child_mustBe(CK_p_LEVEL, CK_p_TABLE, CK_NONE);
 
   UNUSED(pParent);
   Card::vValidate(pCI,iDepth,pParent);

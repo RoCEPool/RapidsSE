@@ -59,10 +59,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT SUBSTRING(n_name, 1, 2) FROM ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = SUBSTRING(rapidsse.public.${testName2}_nation.n_name, 1, 2) ; Ordinal Expr = SUBSTRING($2, 1, 2))
+      » column: (Expr = SUBSTRING(rapids.public.${testName2}_nation.n_name, 1, 2) ; Ordinal Expr = SUBSTRING($2, 1, 2))
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 
 // Extract from a literal
@@ -79,7 +79,7 @@ rows: (*,'explainPlan','
       » column: (Expr = SUBSTRING(''abcdef'', 1, 2) ; Ordinal Expr = SUBSTRING(''abcdef'', 1, 2))
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 
 // Extract from a subquery
@@ -100,10 +100,10 @@ rows: (*,'explainPlan','
          » limit: (1)
 
 -> -> -> -> projectOp
-            » column: (Expr = rapidsse.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
+            » column: (Expr = rapids.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> -> -> tableScanOp
-               » table: (rapidsse.public.${testName2}_nation)
+               » table: (rapids.public.${testName2}_nation)
 
 ∆ mainSubquery
   » table alias: __subquery0004
@@ -116,7 +116,7 @@ rows: (*,'explainPlan','
       » column: (Expr = SUBSTRING(__subquery0003(), 1, 2) ; Ordinal Expr = SUBSTRING(__subquery0003(), 1, 2))
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 // Extract from a boolean
 EXPLAIN SELECT SUBSTRING(true, 1, 2) FROM ${testName2}_nation;
@@ -132,7 +132,7 @@ rows: (*,'explainPlan','
       » column: (Expr = SUBSTRING(''TRUE'', 1, 2) ; Ordinal Expr = SUBSTRING(''TRUE'', 1, 2))
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 // Substring from a integer
 EXPLAIN SELECT SUBSTRING(42, 1, 2) FROM ${testName2}_nation;
@@ -172,7 +172,7 @@ rows: (*,'explainPlan','
       » column: (Expr = SUBSTRING(''abcdef'', 1, 2) ; Ordinal Expr = SUBSTRING(''abcdef'', 1, 2))
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 // Extract from a null
 EXPLAIN SELECT SUBSTRING(NULL, 1, 2) FROM ${testName2}_nation;
@@ -188,12 +188,12 @@ rows: (*,'explainPlan','
       » column: (Expr = SUBSTRING(NULL, 1, 2) ; Ordinal Expr = SUBSTRING(NULL, 1, 2))
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 
 // Extract with a boolean   FROM argument
 EXPLAIN SELECT SUBSTRING(n_name, true, 2) FROM ${testName2}_nation;
-failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (SUBSTRING(VARCHAR, BOOLEAN, INTEGER)) in expression (SUBSTRING(rapidsse.public.${testName2}_nation.n_name, true, 2))'
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (SUBSTRING(VARCHAR, BOOLEAN, INTEGER)) in expression (SUBSTRING(rapids.public.${testName2}_nation.n_name, true, 2))'
 
 // Extract with a integer   FROM argument
 EXPLAIN SELECT SUBSTRING(n_name, 1, 2) FROM ${testName2}_nation;
@@ -206,34 +206,34 @@ rows: (*,'explainPlan','
    » queryText: "SELECT SUBSTRING(n_name, 1, 2) FROM ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = SUBSTRING(rapidsse.public.${testName2}_nation.n_name, 1, 2) ; Ordinal Expr = SUBSTRING($2, 1, 2))
+      » column: (Expr = SUBSTRING(rapids.public.${testName2}_nation.n_name, 1, 2) ; Ordinal Expr = SUBSTRING($2, 1, 2))
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 // Extract with a float     FROM argument
 EXPLAIN SELECT SUBSTRING(n_name, 1.0e0, 2) FROM ${testName2}_nation;
-failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (SUBSTRING(VARCHAR, FLOAT, INTEGER)) in expression (SUBSTRING(rapidsse.public.${testName2}_nation.n_name, 1.0000000000e+00, 2))'
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (SUBSTRING(VARCHAR, FLOAT, INTEGER)) in expression (SUBSTRING(rapids.public.${testName2}_nation.n_name, 1.0000000000e+00, 2))'
 
 // Extract with a decimal   FROM argument
 EXPLAIN SELECT SUBSTRING(n_name, 1.0, 2) FROM ${testName2}_nation;
-failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (SUBSTRING(VARCHAR, DECIMAL, INTEGER)) in expression (SUBSTRING(rapidsse.public.${testName2}_nation.n_name, 1.0, 2))'
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (SUBSTRING(VARCHAR, DECIMAL, INTEGER)) in expression (SUBSTRING(rapids.public.${testName2}_nation.n_name, 1.0, 2))'
 
 // Extract with a date      FROM argument
 EXPLAIN SELECT SUBSTRING(n_name, DATE '2021-11-09', 2) FROM ${testName2}_nation;
-failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (SUBSTRING(VARCHAR, DATE, INTEGER)) in expression (SUBSTRING(rapidsse.public.${testName2}_nation.n_name, DATE ''2021-11-09'', 2))'
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (SUBSTRING(VARCHAR, DATE, INTEGER)) in expression (SUBSTRING(rapids.public.${testName2}_nation.n_name, DATE ''2021-11-09'', 2))'
 
 // Extract with a time      FROM argument
 EXPLAIN SELECT SUBSTRING(n_name, TIME '16:58:23', 2) FROM ${testName2}_nation;
-failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (SUBSTRING(VARCHAR, TIME, INTEGER)) in expression (SUBSTRING(rapidsse.public.${testName2}_nation.n_name, TIME ''16:58:23'', 2))'
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (SUBSTRING(VARCHAR, TIME, INTEGER)) in expression (SUBSTRING(rapids.public.${testName2}_nation.n_name, TIME ''16:58:23'', 2))'
 
 // Extract with a timestamp FROM argument
 EXPLAIN SELECT SUBSTRING(n_name, TIMESTAMP '2021-11-09 16:58:23.123', 2) FROM ${testName2}_nation;
-failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (SUBSTRING(VARCHAR, TIMESTAMP, INTEGER)) in expression (SUBSTRING(rapidsse.public.${testName2}_nation.n_name, TIMESTAMP ''2021-11-09 16:58:23.123000'', 2))'
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (SUBSTRING(VARCHAR, TIMESTAMP, INTEGER)) in expression (SUBSTRING(rapids.public.${testName2}_nation.n_name, TIMESTAMP ''2021-11-09 16:58:23.123000'', 2))'
 
 // Extract with a string    FROM argument
 EXPLAIN SELECT SUBSTRING(n_name, 'abcdef', 2) FROM ${testName2}_nation;
-failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (SUBSTRING(VARCHAR, VARCHAR, INTEGER)) in expression (SUBSTRING(rapidsse.public.${testName2}_nation.n_name, ''abcdef'', 2))'
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (SUBSTRING(VARCHAR, VARCHAR, INTEGER)) in expression (SUBSTRING(rapids.public.${testName2}_nation.n_name, ''abcdef'', 2))'
 
 // Extract with a null      FROM argument
 EXPLAIN SELECT SUBSTRING(n_name, NULL, 2) FROM ${testName2}_nation;
@@ -246,15 +246,15 @@ rows: (*,'explainPlan','
    » queryText: "SELECT SUBSTRING(n_name, NULL, 2) FROM ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = SUBSTRING(rapidsse.public.${testName2}_nation.n_name, NULL, 2) ; Ordinal Expr = SUBSTRING($2, NULL, 2))
+      » column: (Expr = SUBSTRING(rapids.public.${testName2}_nation.n_name, NULL, 2) ; Ordinal Expr = SUBSTRING($2, NULL, 2))
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 
 // Extract with a boolean   LENGTH argument
 EXPLAIN SELECT SUBSTRING(n_name, 1, true) FROM ${testName2}_nation;
-failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (SUBSTRING(VARCHAR, INTEGER, BOOLEAN)) in expression (SUBSTRING(rapidsse.public.${testName2}_nation.n_name, 1, true))'
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (SUBSTRING(VARCHAR, INTEGER, BOOLEAN)) in expression (SUBSTRING(rapids.public.${testName2}_nation.n_name, 1, true))'
 
 // Extract with a integer   LENGTH argument
 EXPLAIN SELECT SUBSTRING(n_name, 1, 2) FROM ${testName2}_nation;
@@ -267,34 +267,34 @@ rows: (*,'explainPlan','
    » queryText: "SELECT SUBSTRING(n_name, 1, 2) FROM ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = SUBSTRING(rapidsse.public.${testName2}_nation.n_name, 1, 2) ; Ordinal Expr = SUBSTRING($2, 1, 2))
+      » column: (Expr = SUBSTRING(rapids.public.${testName2}_nation.n_name, 1, 2) ; Ordinal Expr = SUBSTRING($2, 1, 2))
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 // Extract with a float     LENGTH argument
 EXPLAIN SELECT SUBSTRING(n_name, 1, 2.0e0) FROM ${testName2}_nation;
-failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (SUBSTRING(VARCHAR, INTEGER, FLOAT)) in expression (SUBSTRING(rapidsse.public.${testName2}_nation.n_name, 1, 2.0000000000e+00))'
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (SUBSTRING(VARCHAR, INTEGER, FLOAT)) in expression (SUBSTRING(rapids.public.${testName2}_nation.n_name, 1, 2.0000000000e+00))'
 
 // Extract with a decimal   LENGTH argument
 EXPLAIN SELECT SUBSTRING(n_name, 1, 2.0) FROM ${testName2}_nation;
-failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (SUBSTRING(VARCHAR, INTEGER, DECIMAL)) in expression (SUBSTRING(rapidsse.public.${testName2}_nation.n_name, 1, 2.0))'
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (SUBSTRING(VARCHAR, INTEGER, DECIMAL)) in expression (SUBSTRING(rapids.public.${testName2}_nation.n_name, 1, 2.0))'
 
 // Extract with a date      LENGTH argument
 EXPLAIN SELECT SUBSTRING(n_name, 1, DATE '2021-11-09') FROM ${testName2}_nation;
-failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (SUBSTRING(VARCHAR, INTEGER, DATE)) in expression (SUBSTRING(rapidsse.public.${testName2}_nation.n_name, 1, DATE ''2021-11-09''))'
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (SUBSTRING(VARCHAR, INTEGER, DATE)) in expression (SUBSTRING(rapids.public.${testName2}_nation.n_name, 1, DATE ''2021-11-09''))'
 
 // Extract with a time      LENGTH argument
 EXPLAIN SELECT SUBSTRING(n_name, 1, TIME '16:58:23') FROM ${testName2}_nation;
-failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (SUBSTRING(VARCHAR, INTEGER, TIME)) in expression (SUBSTRING(rapidsse.public.${testName2}_nation.n_name, 1, TIME ''16:58:23''))'
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (SUBSTRING(VARCHAR, INTEGER, TIME)) in expression (SUBSTRING(rapids.public.${testName2}_nation.n_name, 1, TIME ''16:58:23''))'
 
 // Extract with a timestamp LENGTH argument
 EXPLAIN SELECT SUBSTRING(n_name, 1, TIMESTAMP '2021-11-09 16:58:23.123') FROM ${testName2}_nation;
-failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (SUBSTRING(VARCHAR, INTEGER, TIMESTAMP)) in expression (SUBSTRING(rapidsse.public.${testName2}_nation.n_name, 1, TIMESTAMP ''2021-11-09 16:58:23.123000''))'
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (SUBSTRING(VARCHAR, INTEGER, TIMESTAMP)) in expression (SUBSTRING(rapids.public.${testName2}_nation.n_name, 1, TIMESTAMP ''2021-11-09 16:58:23.123000''))'
 
 // Extract with a string    LENGTH argument
 EXPLAIN SELECT SUBSTRING(n_name, 1, 'abcdef') FROM ${testName2}_nation;
-failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (SUBSTRING(VARCHAR, INTEGER, VARCHAR)) in expression (SUBSTRING(rapidsse.public.${testName2}_nation.n_name, 1, ''abcdef''))'
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (SUBSTRING(VARCHAR, INTEGER, VARCHAR)) in expression (SUBSTRING(rapids.public.${testName2}_nation.n_name, 1, ''abcdef''))'
 
 // Extract with a null      LENGTH argument
 EXPLAIN SELECT SUBSTRING(n_name, 1, NULL) FROM ${testName2}_nation;
@@ -307,10 +307,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT SUBSTRING(n_name, 1, NULL) FROM ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = SUBSTRING(rapidsse.public.${testName2}_nation.n_name, 1, NULL) ; Ordinal Expr = SUBSTRING($2, 1, NULL))
+      » column: (Expr = SUBSTRING(rapids.public.${testName2}_nation.n_name, 1, NULL) ; Ordinal Expr = SUBSTRING($2, 1, NULL))
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 // Extract with a NULL FROM argument
 // TODO: Enable when SUBSTRING is supported in the execution engine
@@ -334,10 +334,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT SUBSTRING(n_name, 1) FROM ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = SUBSTRING(rapidsse.public.${testName2}_nation.n_name, 1) ; Ordinal Expr = SUBSTRING($2, 1))
+      » column: (Expr = SUBSTRING(rapids.public.${testName2}_nation.n_name, 1) ; Ordinal Expr = SUBSTRING($2, 1))
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 
 // Use a negative value for the FROM parameter

@@ -16,7 +16,7 @@ namespace STORE
     Card_OP(eCK eCard, i8 iFixedDepth);
    ~Card_OP(void) noexcept(false);
 
-    static bool bIsOp(Card* pCard);
+     static bool bIsOp(eCK eCard);
 
     void vAnalyse_injectable(CardIter* pCI);
     void vApply_lambdaFn_ToAll_term(CardIter* pCI,
@@ -26,14 +26,11 @@ namespace STORE
 
     void vCull_filter_IfEmpty(Card_Filter* p_filter);
 
-    void vEarlyProject_root(CardIter* pCI);
-    void vEarlyProject_backstep(CardIter* pCI);
 
     Card_Filter* pEnsure_filter(void);
-    void vEnsure_stream(CardIter* pCI);
 
-    bool bIsEarlyLeaf(CardIter* pCI);
-    bool bIsEarlyRoot(void);
+    void vFuse_project_Viable(CardIter* pCI);
+
     bool bIsNodeLevel(void);
     bool bIsOriginLevel(void);
     bool bIsPartitionLevel(void);
@@ -62,6 +59,7 @@ namespace STORE
     void vRpn_keyNotExists_constraint(CardIter* pCI, String* psRpnExpr, Card_KeyNotExists* p_keyNotExists);
     void vRpn_limit       (CardIter* pCI, String* psRpnExpr, Card_Limit*     p_limit);
     void vRpn_ordAgg      (CardIter* pCI, String* psRpnExpr, Card_OrdAgg*    p_ordAgg);
+    void vRpn_pdsRow      (CardIter* pCI, String* psRpnExpr, Card_PdsRow*    p_pdsRow);
     void vRpn_project     (CardIter* pCI, String* psRpnExpr, Card_Project*   p_project);
     void vRpn_scan        (CardIter* pCI, String* psRpnExpr, Card_Scan*      p_scan);
     void vRpn_sort        (CardIter* pCI, String* psRpnExpr, Card_Sort*      p_sort);

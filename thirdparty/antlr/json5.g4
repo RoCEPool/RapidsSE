@@ -3,6 +3,7 @@
 //
 // Used to parse the planner graph definitions and primitives from a file.
 
+
 grammar json5;
 
 json5

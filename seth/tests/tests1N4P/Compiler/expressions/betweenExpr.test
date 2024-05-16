@@ -44,14 +44,14 @@ rows: (*,'explainPlan','
    » queryText: "SELECT n_name FROM ${testName2}_nation WHERE n_nationkey BETWEEN 1 AND 2"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
+      » column: (Expr = rapids.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> filterOp
-         » expr: (rapidsse.public.${testName2}_nation.n_nationkey BETWEEN 1 AND 2)
+         » expr: (rapids.public.${testName2}_nation.n_nationkey BETWEEN 1 AND 2)
          » ordinal expr: ($1 BETWEEN 1 AND 2)
 
 -> -> -> -> tableScanOp
-            » table: (rapidsse.public.${testName2}_nation)')
+            » table: (rapids.public.${testName2}_nation)')
 
 
 -- Test explain of a simple BETWEEN expr in SELECT list
@@ -65,10 +65,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT n_nationkey BETWEEN 1 AND 2 FROM ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.${testName2}_nation.n_nationkey BETWEEN 1 AND 2 ; Ordinal Expr = $1 BETWEEN 1 AND 2)
+      » column: (Expr = rapids.public.${testName2}_nation.n_nationkey BETWEEN 1 AND 2 ; Ordinal Expr = $1 BETWEEN 1 AND 2)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 
 -- Test runtime of a simple positive BETWEEN expr (1)
@@ -95,10 +95,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT n_nationkey BETWEEN -2 AND -1 FROM ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.${testName2}_nation.n_nationkey BETWEEN -2 AND -1 ; Ordinal Expr = $1 BETWEEN -2 AND -1)
+      » column: (Expr = rapids.public.${testName2}_nation.n_nationkey BETWEEN -2 AND -1 ; Ordinal Expr = $1 BETWEEN -2 AND -1)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 
 -- Test runtime of a simple BETWEEN expr with negative ranges (1)
@@ -143,14 +143,14 @@ rows: (*,'explainPlan','
    » queryText: "SELECT n_name FROM ${testName2}_nation WHERE 1 BETWEEN 0 AND 9"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
+      » column: (Expr = rapids.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> filterOp
          » expr: (1 BETWEEN 0 AND 9)
          » ordinal expr: (1 BETWEEN 0 AND 9)
 
 -> -> -> -> tableScanOp
-            » table: (rapidsse.public.${testName2}_nation)')
+            » table: (rapids.public.${testName2}_nation)')
 
 
 -- Test explain of a BETWEEN expr with valid types using floats
@@ -164,14 +164,14 @@ rows: (*,'explainPlan','
    » queryText: "SELECT n_name FROM ${testName2}_nation WHERE 1.23e0 BETWEEN 0.1e0 AND 1.5e0"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
+      » column: (Expr = rapids.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> filterOp
          » expr: (1.2300000000e+00 BETWEEN 1.0000000000e-01 AND 1.5000000000e+00)
          » ordinal expr: (1.2300000000e+00 BETWEEN 1.0000000000e-01 AND 1.5000000000e+00)
 
 -> -> -> -> tableScanOp
-            » table: (rapidsse.public.${testName2}_nation)')
+            » table: (rapids.public.${testName2}_nation)')
 
 
 -- Test explain of a BETWEEN expr with valid types using decimals
@@ -185,14 +185,14 @@ rows: (*,'explainPlan','
    » queryText: "SELECT n_name FROM ${testName2}_nation WHERE 1.23 BETWEEN 0.1 AND 1.5"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
+      » column: (Expr = rapids.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> filterOp
          » expr: (1.23 BETWEEN 0.1 AND 1.5)
          » ordinal expr: (1.23 BETWEEN 0.1 AND 1.5)
 
 -> -> -> -> tableScanOp
-            » table: (rapidsse.public.${testName2}_nation)')
+            » table: (rapids.public.${testName2}_nation)')
 
 
 -- Test explain of a BETWEEN expr with valid types using dates
@@ -206,14 +206,14 @@ rows: (*,'explainPlan','
    » queryText: "SELECT n_name FROM ${testName2}_nation WHERE DATE ''2000-01-01'' BETWEEN DATE ''1999-12-31'' AND DATE ''2000-01-02''"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
+      » column: (Expr = rapids.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> filterOp
          » expr: (DATE ''2000-01-01'' BETWEEN DATE ''1999-12-31'' AND DATE ''2000-01-02'')
          » ordinal expr: (DATE ''2000-01-01'' BETWEEN DATE ''1999-12-31'' AND DATE ''2000-01-02'')
 
 -> -> -> -> tableScanOp
-            » table: (rapidsse.public.${testName2}_nation)')
+            » table: (rapids.public.${testName2}_nation)')
 
 
 -- Test explain of a BETWEEN expr with valid types using times
@@ -227,14 +227,14 @@ rows: (*,'explainPlan','
    » queryText: "SELECT n_name FROM ${testName2}_nation WHERE TIME ''12:00:00'' BETWEEN TIME ''11:00:00'' AND TIME ''13:00:00''"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
+      » column: (Expr = rapids.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> filterOp
          » expr: (TIME ''12:00:00'' BETWEEN TIME ''11:00:00'' AND TIME ''13:00:00'')
          » ordinal expr: (TIME ''12:00:00'' BETWEEN TIME ''11:00:00'' AND TIME ''13:00:00'')
 
 -> -> -> -> tableScanOp
-            » table: (rapidsse.public.${testName2}_nation)')
+            » table: (rapids.public.${testName2}_nation)')
 
 
 -- Test explain of a BETWEEN expr with valid types using timestamps
@@ -248,14 +248,14 @@ rows: (*,'explainPlan','
    » queryText: "SELECT n_name FROM ${testName2}_nation WHERE TIMESTAMP ''2000-01-01 12:00:00'' BETWEEN TIMESTAMP ''1999-12-31 12:00:00'' AND TIMESTAMP ''2000-01-02 12:00:00''"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
+      » column: (Expr = rapids.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> filterOp
          » expr: (TIMESTAMP ''2000-01-01 12:00:00'' BETWEEN TIMESTAMP ''1999-12-31 12:00:00'' AND TIMESTAMP ''2000-01-02 12:00:00'')
          » ordinal expr: (TIMESTAMP ''2000-01-01 12:00:00'' BETWEEN TIMESTAMP ''1999-12-31 12:00:00'' AND TIMESTAMP ''2000-01-02 12:00:00'')
 
 -> -> -> -> tableScanOp
-            » table: (rapidsse.public.${testName2}_nation)')
+            » table: (rapids.public.${testName2}_nation)')
 
 
 -- Test explain of a BETWEEN expr with valid types using strings
@@ -269,14 +269,14 @@ rows: (*,'explainPlan','
    » queryText: "SELECT n_name FROM ${testName2}_nation WHERE ''aa'' BETWEEN ''a'' AND ''aaa''"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
+      » column: (Expr = rapids.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> filterOp
          » expr: (''aa'' BETWEEN ''a'' AND ''aaa'')
          » ordinal expr: (''aa'' BETWEEN ''a'' AND ''aaa'')
 
 -> -> -> -> tableScanOp
-            » table: (rapidsse.public.${testName2}_nation)')
+            » table: (rapids.public.${testName2}_nation)')
 
 
 -- Test explain of a BETWEEN expr with valid types using nulls (1)
@@ -290,14 +290,14 @@ rows: (*,'explainPlan','
    » queryText: "SELECT n_name FROM ${testName2}_nation WHERE 1 BETWEEN 0 AND NULL"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
+      » column: (Expr = rapids.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> filterOp
          » expr: (1 BETWEEN 0 AND NULL)
          » ordinal expr: (1 BETWEEN 0 AND NULL)
 
 -> -> -> -> tableScanOp
-            » table: (rapidsse.public.${testName2}_nation)')
+            » table: (rapids.public.${testName2}_nation)')
 
 
 -- Test explain of a BETWEEN expr with valid types using nulls (2)
@@ -311,14 +311,14 @@ rows: (*,'explainPlan','
    » queryText: "SELECT n_name FROM ${testName2}_nation WHERE NULL BETWEEN 0 AND 9"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
+      » column: (Expr = rapids.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> filterOp
          » expr: (NULL BETWEEN 0 AND 9)
          » ordinal expr: (NULL BETWEEN 0 AND 9)
 
 -> -> -> -> tableScanOp
-            » table: (rapidsse.public.${testName2}_nation)')
+            » table: (rapids.public.${testName2}_nation)')
 
 
 -- Test explain of a BETWEEN expr using columnRefs for lower bound
@@ -332,14 +332,14 @@ rows: (*,'explainPlan','
    » queryText: "SELECT n_name FROM ${testName2}_nation WHERE n_nationkey BETWEEN n_nationkey - 1 + 1 AND 9"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
+      » column: (Expr = rapids.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> filterOp
-         » expr: (rapidsse.public.${testName2}_nation.n_nationkey BETWEEN ((rapidsse.public.${testName2}_nation.n_nationkey - 1) + 1) AND 9)
+         » expr: (rapids.public.${testName2}_nation.n_nationkey BETWEEN ((rapids.public.${testName2}_nation.n_nationkey - 1) + 1) AND 9)
          » ordinal expr: ($1 BETWEEN (($1 - 1) + 1) AND 9)
 
 -> -> -> -> tableScanOp
-            » table: (rapidsse.public.${testName2}_nation)')
+            » table: (rapids.public.${testName2}_nation)')
 
 
 -- Test explain of a BETWEEN expr using columnRefs for upper bound
@@ -353,14 +353,14 @@ rows: (*,'explainPlan','
    » queryText: "SELECT n_name FROM ${testName2}_nation WHERE n_nationkey BETWEEN 0 AND n_nationkey - 1 + 1"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
+      » column: (Expr = rapids.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> filterOp
-         » expr: (rapidsse.public.${testName2}_nation.n_nationkey BETWEEN 0 AND ((rapidsse.public.${testName2}_nation.n_nationkey - 1) + 1))
+         » expr: (rapids.public.${testName2}_nation.n_nationkey BETWEEN 0 AND ((rapids.public.${testName2}_nation.n_nationkey - 1) + 1))
          » ordinal expr: ($1 BETWEEN 0 AND (($1 - 1) + 1))
 
 -> -> -> -> tableScanOp
-            » table: (rapidsse.public.${testName2}_nation)')
+            » table: (rapids.public.${testName2}_nation)')
 
 
 -- Test explain of a BETWEEN expr using columnRefs for both lower and upper bound
@@ -374,14 +374,14 @@ rows: (*,'explainPlan','
    » queryText: "SELECT n_name FROM ${testName2}_nation WHERE n_nationkey BETWEEN n_regionkey / 2 AND n_regionkey * 2"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
+      » column: (Expr = rapids.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> filterOp
-         » expr: (rapidsse.public.${testName2}_nation.n_nationkey BETWEEN (rapidsse.public.${testName2}_nation.n_regionkey / 2) AND (rapidsse.public.${testName2}_nation.n_regionkey * 2))
+         » expr: (rapids.public.${testName2}_nation.n_nationkey BETWEEN (rapids.public.${testName2}_nation.n_regionkey / 2) AND (rapids.public.${testName2}_nation.n_regionkey * 2))
          » ordinal expr: ($1 BETWEEN ($3 / 2) AND ($3 * 2))
 
 -> -> -> -> tableScanOp
-            » table: (rapidsse.public.${testName2}_nation)')
+            » table: (rapids.public.${testName2}_nation)')
 
 
 -- Test explain of a BETWEEN expr using an expr subquery for lower bound
@@ -399,10 +399,10 @@ rows: (*,'explainPlan','
       » queryText: "SELECT MIN(r_regionkey) FROM region"
 
 -> -> -> projectOp
-         » column: (Expr = MIN(rapidsse.public.region.r_regionkey) ; Ordinal Expr = MIN($1))
+         » column: (Expr = MIN(rapids.public.region.r_regionkey) ; Ordinal Expr = MIN($1))
 
 -> -> -> -> tableScanOp
-            » table: (rapidsse.public.region)
+            » table: (rapids.public.region)
 
 ∆ mainSubquery
   » table alias: __subquery0004
@@ -412,14 +412,14 @@ rows: (*,'explainPlan','
    » queryText: "SELECT n_name FROM ${testName2}_nation WHERE n_nationkey BETWEEN (SELECT MIN(r_regionkey) FROM region) AND 9"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
+      » column: (Expr = rapids.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> filterOp
-         » expr: (rapidsse.public.${testName2}_nation.n_nationkey BETWEEN __subquery0003() AND 9)
+         » expr: (rapids.public.${testName2}_nation.n_nationkey BETWEEN __subquery0003() AND 9)
          » ordinal expr: ($1 BETWEEN __subquery0003() AND 9)
 
 -> -> -> -> tableScanOp
-            » table: (rapidsse.public.${testName2}_nation)')
+            » table: (rapids.public.${testName2}_nation)')
 
 
 -- Test explain of a BETWEEN expr using an expr subquery for upper bound
@@ -437,10 +437,10 @@ rows: (*,'explainPlan','
       » queryText: "SELECT MAX(r_regionkey) FROM region"
 
 -> -> -> projectOp
-         » column: (Expr = MAX(rapidsse.public.region.r_regionkey) ; Ordinal Expr = MAX($1))
+         » column: (Expr = MAX(rapids.public.region.r_regionkey) ; Ordinal Expr = MAX($1))
 
 -> -> -> -> tableScanOp
-            » table: (rapidsse.public.region)
+            » table: (rapids.public.region)
 
 ∆ mainSubquery
   » table alias: __subquery0004
@@ -450,14 +450,14 @@ rows: (*,'explainPlan','
    » queryText: "SELECT n_name FROM ${testName2}_nation WHERE n_nationkey BETWEEN 0 AND (SELECT MAX(r_regionkey) FROM region)"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
+      » column: (Expr = rapids.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> filterOp
-         » expr: (rapidsse.public.${testName2}_nation.n_nationkey BETWEEN 0 AND __subquery0003())
+         » expr: (rapids.public.${testName2}_nation.n_nationkey BETWEEN 0 AND __subquery0003())
          » ordinal expr: ($1 BETWEEN 0 AND __subquery0003())
 
 -> -> -> -> tableScanOp
-            » table: (rapidsse.public.${testName2}_nation)')
+            » table: (rapids.public.${testName2}_nation)')
 
 
 -- Test explain of a BETWEEN expr using an expr subquery for both lower and upper bound
@@ -475,10 +475,10 @@ rows: (*,'explainPlan','
       » queryText: "SELECT MIN(r_regionkey) FROM region"
 
 -> -> -> projectOp
-         » column: (Expr = MIN(rapidsse.public.region.r_regionkey) ; Ordinal Expr = MIN($1))
+         » column: (Expr = MIN(rapids.public.region.r_regionkey) ; Ordinal Expr = MIN($1))
 
 -> -> -> -> tableScanOp
-            » table: (rapidsse.public.region)
+            » table: (rapids.public.region)
 
 ∆ exprSubquery
   » table alias: __subquery0005
@@ -492,10 +492,10 @@ rows: (*,'explainPlan','
       » queryText: "SELECT MAX(r_regionkey) FROM region"
 
 -> -> -> projectOp
-         » column: (Expr = MAX(rapidsse.public.region.r_regionkey) ; Ordinal Expr = MAX($1))
+         » column: (Expr = MAX(rapids.public.region.r_regionkey) ; Ordinal Expr = MAX($1))
 
 -> -> -> -> tableScanOp
-            » table: (rapidsse.public.region)
+            » table: (rapids.public.region)
 
 ∆ mainSubquery
   » table alias: __subquery0006
@@ -505,14 +505,14 @@ rows: (*,'explainPlan','
    » queryText: "SELECT n_name FROM ${testName2}_nation WHERE n_nationkey BETWEEN (SELECT MIN(r_regionkey) FROM region) AND (SELECT MAX(r_regionkey) FROM region)"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
+      » column: (Expr = rapids.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> filterOp
-         » expr: (rapidsse.public.${testName2}_nation.n_nationkey BETWEEN __subquery0003() AND __subquery0005())
+         » expr: (rapids.public.${testName2}_nation.n_nationkey BETWEEN __subquery0003() AND __subquery0005())
          » ordinal expr: ($1 BETWEEN __subquery0003() AND __subquery0005())
 
 -> -> -> -> tableScanOp
-            » table: (rapidsse.public.${testName2}_nation)')
+            » table: (rapids.public.${testName2}_nation)')
 
 
 -- Test for an ambiguous AND operator (1)
@@ -529,14 +529,14 @@ rows: (*,'explainPlan','
    » queryText: "SELECT n_name FROM ${testName2}_nation WHERE n_nationkey BETWEEN 1 AND 2 AND true"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
+      » column: (Expr = rapids.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> filterOp
-         » expr: ((rapidsse.public.${testName2}_nation.n_nationkey BETWEEN 1 AND 2) AND true)
+         » expr: ((rapids.public.${testName2}_nation.n_nationkey BETWEEN 1 AND 2) AND true)
          » ordinal expr: (($1 BETWEEN 1 AND 2) AND true)
 
 -> -> -> -> tableScanOp
-            » table: (rapidsse.public.${testName2}_nation)')
+            » table: (rapids.public.${testName2}_nation)')
 
 
 -- Test for an ambiguous AND operator (2)
@@ -550,14 +550,14 @@ rows: (*,'explainPlan','
    » queryText: "SELECT n_name FROM ${testName2}_nation WHERE true AND n_nationkey BETWEEN 1 AND 2 AND true"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
+      » column: (Expr = rapids.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> filterOp
-         » expr: ((true AND (rapidsse.public.${testName2}_nation.n_nationkey BETWEEN 1 AND 2)) AND true)
+         » expr: ((true AND (rapids.public.${testName2}_nation.n_nationkey BETWEEN 1 AND 2)) AND true)
          » ordinal expr: ((true AND ($1 BETWEEN 1 AND 2)) AND true)
 
 -> -> -> -> tableScanOp
-            » table: (rapidsse.public.${testName2}_nation)')
+            » table: (rapids.public.${testName2}_nation)')
 
 
 -- Test for an ambiguous OR operator
@@ -575,14 +575,14 @@ rows: (*,'explainPlan','
    » queryText: "SELECT n_name FROM ${testName2}_nation WHERE (n_nationkey BETWEEN 1 AND 2) OR true"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
+      » column: (Expr = rapids.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> filterOp
-         » expr: ((rapidsse.public.${testName2}_nation.n_nationkey BETWEEN 1 AND 2) OR true)
+         » expr: ((rapids.public.${testName2}_nation.n_nationkey BETWEEN 1 AND 2) OR true)
          » ordinal expr: (($1 BETWEEN 1 AND 2) OR true)
 
 -> -> -> -> tableScanOp
-            » table: (rapidsse.public.${testName2}_nation)')
+            » table: (rapids.public.${testName2}_nation)')
 
 
 -- Test explain of a NOT BETWEEN
@@ -596,14 +596,14 @@ rows: (*,'explainPlan','
    » queryText: "SELECT n_name FROM ${testName2}_nation WHERE 1 NOT BETWEEN 0 AND 9"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
+      » column: (Expr = rapids.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> filterOp
          » expr: (NOT (1 BETWEEN 0 AND 9))
          » ordinal expr: (NOT (1 BETWEEN 0 AND 9))
 
 -> -> -> -> tableScanOp
-            » table: (rapidsse.public.${testName2}_nation)')
+            » table: (rapids.public.${testName2}_nation)')
 
 
 -- Test runtime of a NOT BETWEEN (1)
@@ -628,14 +628,14 @@ rows: (*,'explainPlan','
    » queryText: "SELECT n_name FROM ${testName2}_NATION WHERE INTERVAL ''13'' MONTH BETWEEN INTERVAL ''1'' YEAR AND INTERVAL ''14'' MONTH"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
+      » column: (Expr = rapids.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> filterOp
          » expr: (INTERVAL ''13'' MONTH BETWEEN INTERVAL ''1'' YEAR AND INTERVAL ''14'' MONTH)
          » ordinal expr: (INTERVAL ''13'' MONTH BETWEEN INTERVAL ''1'' YEAR AND INTERVAL ''14'' MONTH)
 
 -> -> -> -> tableScanOp
-            » table: (rapidsse.public.${testName2}_nation)')
+            » table: (rapids.public.${testName2}_nation)')
 
 -- Mixed DT intervals
 EXPLAIN SELECT n_name FROM ${testName2}_NATION WHERE INTERVAL '1 2:3:4.5' DAY TO SECOND BETWEEN INTERVAL '2' MINUTE AND INTERVAL '27' HOUR;
@@ -648,14 +648,14 @@ rows: (*,'explainPlan','
    » queryText: "SELECT n_name FROM ${testName2}_NATION WHERE INTERVAL ''1 2:3:4.5'' DAY TO SECOND BETWEEN INTERVAL ''2'' MINUTE AND INTERVAL ''27'' HOUR"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
+      » column: (Expr = rapids.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> filterOp
          » expr: (INTERVAL ''1 2:3:4.500000'' DAY TO SECOND BETWEEN INTERVAL ''2'' MINUTE AND INTERVAL ''27'' HOUR)
          » ordinal expr: (INTERVAL ''1 2:3:4.500000'' DAY TO SECOND BETWEEN INTERVAL ''2'' MINUTE AND INTERVAL ''27'' HOUR)
 
 -> -> -> -> tableScanOp
-            » table: (rapidsse.public.${testName2}_nation)')
+            » table: (rapids.public.${testName2}_nation)')
 
 
 -- Mixed YM and DT intervals

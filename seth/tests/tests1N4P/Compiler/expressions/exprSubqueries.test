@@ -77,18 +77,18 @@ unordered rows:
 
 -> -> -> projectOp
          » location: origin
-         » column: (Expr = MIN(MIN(MIN(rapidsse.public.${testName2}_nation.n_nationkey))) ; Ordinal Expr = MIN($1))
+         » column: (Expr = MIN(MIN(MIN(rapids.public.${testName2}_nation.n_nationkey))) ; Ordinal Expr = MIN($1))
 
 -> -> -> -> projectOp
             » location: all nodes
-            » column: (Expr = MIN(MIN(rapidsse.public.${testName2}_nation.n_nationkey)) ; Ordinal Expr = MIN($1))
+            » column: (Expr = MIN(MIN(rapids.public.${testName2}_nation.n_nationkey)) ; Ordinal Expr = MIN($1))
 
 -> -> -> -> -> projectOp
-               » column: (Expr = MIN(rapidsse.public.${testName2}_nation.n_nationkey) ; Ordinal Expr = MIN($1))
+               » column: (Expr = MIN(rapids.public.${testName2}_nation.n_nationkey) ; Ordinal Expr = MIN($1))
 
 -> -> -> -> -> -> tableScanOp
                   » location: all partitions
-                  » table: (rapidsse.public.${testName2}_nation)
+                  » table: (rapids.public.${testName2}_nation)
 
 ∆ mainSubquery
   » table alias: __subquery0004
@@ -98,18 +98,18 @@ unordered rows:
    » queryText: "SELECT * FROM ${testName2}_nation WHERE n_nationkey > ( SELECT MIN(n_nationkey) FROM ${testName2}_nation )"
 
 -> -> projectOp
-      » column: (Alias = N_NATIONKEY ; Expr = rapidsse.public.${testName2}_nation.N_NATIONKEY ; Ordinal Expr = $1)
-      » column: (Alias = N_NAME ; Expr = rapidsse.public.${testName2}_nation.N_NAME ; Ordinal Expr = $2)
-      » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.${testName2}_nation.N_REGIONKEY ; Ordinal Expr = $3)
-      » column: (Alias = N_COMMENT ; Expr = rapidsse.public.${testName2}_nation.N_COMMENT ; Ordinal Expr = $4)
+      » column: (Alias = N_NATIONKEY ; Expr = rapids.public.${testName2}_nation.N_NATIONKEY ; Ordinal Expr = $1)
+      » column: (Alias = N_NAME ; Expr = rapids.public.${testName2}_nation.N_NAME ; Ordinal Expr = $2)
+      » column: (Alias = N_REGIONKEY ; Expr = rapids.public.${testName2}_nation.N_REGIONKEY ; Ordinal Expr = $3)
+      » column: (Alias = N_COMMENT ; Expr = rapids.public.${testName2}_nation.N_COMMENT ; Ordinal Expr = $4)
 
 -> -> -> filterOp
-         » expr: (rapidsse.public.${testName2}_nation.n_nationkey > __subquery0003())
+         » expr: (rapids.public.${testName2}_nation.n_nationkey > __subquery0003())
          » ordinal expr: ($1 > __subquery0003())
 
 -> -> -> -> tableScanOp
             » location: all partitions
-            » table: (rapidsse.public.${testName2}_nation)' )
+            » table: (rapids.public.${testName2}_nation)' )
 
 
 // Multiple expr subqueries in WHERE clause
@@ -132,18 +132,18 @@ unordered rows:
 
 -> -> -> projectOp
          » location: origin
-         » column: (Expr = MIN(MIN(MIN(rapidsse.public.${testName2}_nation.n_nationkey))) ; Ordinal Expr = MIN($1))
+         » column: (Expr = MIN(MIN(MIN(rapids.public.${testName2}_nation.n_nationkey))) ; Ordinal Expr = MIN($1))
 
 -> -> -> -> projectOp
             » location: all nodes
-            » column: (Expr = MIN(MIN(rapidsse.public.${testName2}_nation.n_nationkey)) ; Ordinal Expr = MIN($1))
+            » column: (Expr = MIN(MIN(rapids.public.${testName2}_nation.n_nationkey)) ; Ordinal Expr = MIN($1))
 
 -> -> -> -> -> projectOp
-               » column: (Expr = MIN(rapidsse.public.${testName2}_nation.n_nationkey) ; Ordinal Expr = MIN($1))
+               » column: (Expr = MIN(rapids.public.${testName2}_nation.n_nationkey) ; Ordinal Expr = MIN($1))
 
 -> -> -> -> -> -> tableScanOp
                   » location: all partitions
-                  » table: (rapidsse.public.${testName2}_nation)
+                  » table: (rapids.public.${testName2}_nation)
 
 ∆ exprSubquery
   » table alias: __subquery0005
@@ -158,18 +158,18 @@ unordered rows:
 
 -> -> -> projectOp
          » location: origin
-         » column: (Expr = MAX(MAX(MAX(rapidsse.public.${testName2}_nation.n_nationkey))) ; Ordinal Expr = MAX($1))
+         » column: (Expr = MAX(MAX(MAX(rapids.public.${testName2}_nation.n_nationkey))) ; Ordinal Expr = MAX($1))
 
 -> -> -> -> projectOp
             » location: all nodes
-            » column: (Expr = MAX(MAX(rapidsse.public.${testName2}_nation.n_nationkey)) ; Ordinal Expr = MAX($1))
+            » column: (Expr = MAX(MAX(rapids.public.${testName2}_nation.n_nationkey)) ; Ordinal Expr = MAX($1))
 
 -> -> -> -> -> projectOp
-               » column: (Expr = MAX(rapidsse.public.${testName2}_nation.n_nationkey) ; Ordinal Expr = MAX($1))
+               » column: (Expr = MAX(rapids.public.${testName2}_nation.n_nationkey) ; Ordinal Expr = MAX($1))
 
 -> -> -> -> -> -> tableScanOp
                   » location: all partitions
-                  » table: (rapidsse.public.${testName2}_nation)
+                  » table: (rapids.public.${testName2}_nation)
 
 ∆ mainSubquery
   » table alias: __subquery0006
@@ -179,18 +179,18 @@ unordered rows:
    » queryText: "SELECT * FROM ${testName2}_nation WHERE n_nationkey > ( SELECT MIN(n_nationkey) FROM ${testName2}_nation ) AND n_nationkey < ( SELECT MAX(n_nationkey) FROM ${testName2}_nation )"
 
 -> -> projectOp
-      » column: (Alias = N_NATIONKEY ; Expr = rapidsse.public.${testName2}_nation.N_NATIONKEY ; Ordinal Expr = $1)
-      » column: (Alias = N_NAME ; Expr = rapidsse.public.${testName2}_nation.N_NAME ; Ordinal Expr = $2)
-      » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.${testName2}_nation.N_REGIONKEY ; Ordinal Expr = $3)
-      » column: (Alias = N_COMMENT ; Expr = rapidsse.public.${testName2}_nation.N_COMMENT ; Ordinal Expr = $4)
+      » column: (Alias = N_NATIONKEY ; Expr = rapids.public.${testName2}_nation.N_NATIONKEY ; Ordinal Expr = $1)
+      » column: (Alias = N_NAME ; Expr = rapids.public.${testName2}_nation.N_NAME ; Ordinal Expr = $2)
+      » column: (Alias = N_REGIONKEY ; Expr = rapids.public.${testName2}_nation.N_REGIONKEY ; Ordinal Expr = $3)
+      » column: (Alias = N_COMMENT ; Expr = rapids.public.${testName2}_nation.N_COMMENT ; Ordinal Expr = $4)
 
 -> -> -> filterOp
-         » expr: ((rapidsse.public.${testName2}_nation.n_nationkey > __subquery0003()) AND (rapidsse.public.${testName2}_nation.n_nationkey < __subquery0005()))
+         » expr: ((rapids.public.${testName2}_nation.n_nationkey > __subquery0003()) AND (rapids.public.${testName2}_nation.n_nationkey < __subquery0005()))
          » ordinal expr: (($1 > __subquery0003()) AND ($1 < __subquery0005()))
 
 -> -> -> -> tableScanOp
             » location: all partitions
-            » table: (rapidsse.public.${testName2}_nation)' )
+            » table: (rapids.public.${testName2}_nation)' )
 
 
 // Single expr subquery in SELECT list
@@ -213,18 +213,18 @@ unordered rows:
 
 -> -> -> projectOp
          » location: origin
-         » column: (Expr = MIN(MIN(MIN(rapidsse.public.${testName2}_nation.n_nationkey))) ; Ordinal Expr = MIN($1))
+         » column: (Expr = MIN(MIN(MIN(rapids.public.${testName2}_nation.n_nationkey))) ; Ordinal Expr = MIN($1))
 
 -> -> -> -> projectOp
             » location: all nodes
-            » column: (Expr = MIN(MIN(rapidsse.public.${testName2}_nation.n_nationkey)) ; Ordinal Expr = MIN($1))
+            » column: (Expr = MIN(MIN(rapids.public.${testName2}_nation.n_nationkey)) ; Ordinal Expr = MIN($1))
 
 -> -> -> -> -> projectOp
-               » column: (Expr = MIN(rapidsse.public.${testName2}_nation.n_nationkey) ; Ordinal Expr = MIN($1))
+               » column: (Expr = MIN(rapids.public.${testName2}_nation.n_nationkey) ; Ordinal Expr = MIN($1))
 
 -> -> -> -> -> -> tableScanOp
                   » location: all partitions
-                  » table: (rapidsse.public.${testName2}_nation)
+                  » table: (rapids.public.${testName2}_nation)
 
 ∆ mainSubquery
   » table alias: __subquery0004
@@ -234,12 +234,12 @@ unordered rows:
    » queryText: "SELECT n_nationkey, ( SELECT MIN(n_nationkey) FROM ${testName2}_nation ) FROM ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.${testName2}_nation.n_nationkey ; Ordinal Expr = $1)
+      » column: (Expr = rapids.public.${testName2}_nation.n_nationkey ; Ordinal Expr = $1)
       » column: (Expr = __subquery0003() ; Ordinal Expr = __subquery0003())
 
 -> -> -> tableScanOp
          » location: all partitions
-         » table: (rapidsse.public.${testName2}_nation)' )
+         » table: (rapids.public.${testName2}_nation)' )
 
 
 // Multiple expr subqueries in SELECT list
@@ -262,18 +262,18 @@ unordered rows:
 
 -> -> -> projectOp
          » location: origin
-         » column: (Expr = MIN(MIN(MIN(rapidsse.public.${testName2}_nation.n_nationkey))) ; Ordinal Expr = MIN($1))
+         » column: (Expr = MIN(MIN(MIN(rapids.public.${testName2}_nation.n_nationkey))) ; Ordinal Expr = MIN($1))
 
 -> -> -> -> projectOp
             » location: all nodes
-            » column: (Expr = MIN(MIN(rapidsse.public.${testName2}_nation.n_nationkey)) ; Ordinal Expr = MIN($1))
+            » column: (Expr = MIN(MIN(rapids.public.${testName2}_nation.n_nationkey)) ; Ordinal Expr = MIN($1))
 
 -> -> -> -> -> projectOp
-               » column: (Expr = MIN(rapidsse.public.${testName2}_nation.n_nationkey) ; Ordinal Expr = MIN($1))
+               » column: (Expr = MIN(rapids.public.${testName2}_nation.n_nationkey) ; Ordinal Expr = MIN($1))
 
 -> -> -> -> -> -> tableScanOp
                   » location: all partitions
-                  » table: (rapidsse.public.${testName2}_nation)
+                  » table: (rapids.public.${testName2}_nation)
 
 ∆ exprSubquery
   » table alias: __subquery0005
@@ -288,18 +288,18 @@ unordered rows:
 
 -> -> -> projectOp
          » location: origin
-         » column: (Expr = MAX(MAX(MAX(rapidsse.public.${testName2}_nation.n_nationkey))) ; Ordinal Expr = MAX($1))
+         » column: (Expr = MAX(MAX(MAX(rapids.public.${testName2}_nation.n_nationkey))) ; Ordinal Expr = MAX($1))
 
 -> -> -> -> projectOp
             » location: all nodes
-            » column: (Expr = MAX(MAX(rapidsse.public.${testName2}_nation.n_nationkey)) ; Ordinal Expr = MAX($1))
+            » column: (Expr = MAX(MAX(rapids.public.${testName2}_nation.n_nationkey)) ; Ordinal Expr = MAX($1))
 
 -> -> -> -> -> projectOp
-               » column: (Expr = MAX(rapidsse.public.${testName2}_nation.n_nationkey) ; Ordinal Expr = MAX($1))
+               » column: (Expr = MAX(rapids.public.${testName2}_nation.n_nationkey) ; Ordinal Expr = MAX($1))
 
 -> -> -> -> -> -> tableScanOp
                   » location: all partitions
-                  » table: (rapidsse.public.${testName2}_nation)
+                  » table: (rapids.public.${testName2}_nation)
 
 ∆ mainSubquery
   » table alias: __subquery0006
@@ -309,13 +309,13 @@ unordered rows:
    » queryText: "SELECT n_nationkey, ( SELECT MIN(n_nationkey) FROM ${testName2}_nation ) AS nationMin, ( SELECT MAX(n_nationkey) FROM ${testName2}_nation ) AS nationMax FROM ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.${testName2}_nation.n_nationkey ; Ordinal Expr = $1)
+      » column: (Expr = rapids.public.${testName2}_nation.n_nationkey ; Ordinal Expr = $1)
       » column: (Alias = nationMin ; Expr = __subquery0003() ; Ordinal Expr = __subquery0003())
       » column: (Alias = nationMax ; Expr = __subquery0005() ; Ordinal Expr = __subquery0005())
 
 -> -> -> tableScanOp
          » location: all partitions
-         » table: (rapidsse.public.${testName2}_nation)' )
+         » table: (rapids.public.${testName2}_nation)' )
 
 
 // Error - expr subquery in WHERE predicate trying to return multiple columns
@@ -351,18 +351,18 @@ unordered rows:
 
 -> -> -> projectOp
          » location: origin
-         » column: (Expr = MIN(MIN(MIN(rapidsse.public.${testName2}_nation.n_nationkey))) ; Ordinal Expr = MIN($1))
+         » column: (Expr = MIN(MIN(MIN(rapids.public.${testName2}_nation.n_nationkey))) ; Ordinal Expr = MIN($1))
 
 -> -> -> -> projectOp
             » location: all nodes
-            » column: (Expr = MIN(MIN(rapidsse.public.${testName2}_nation.n_nationkey)) ; Ordinal Expr = MIN($1))
+            » column: (Expr = MIN(MIN(rapids.public.${testName2}_nation.n_nationkey)) ; Ordinal Expr = MIN($1))
 
 -> -> -> -> -> projectOp
-               » column: (Expr = MIN(rapidsse.public.${testName2}_nation.n_nationkey) ; Ordinal Expr = MIN($1))
+               » column: (Expr = MIN(rapids.public.${testName2}_nation.n_nationkey) ; Ordinal Expr = MIN($1))
 
 -> -> -> -> -> -> tableScanOp
                   » location: all partitions
-                  » table: (rapidsse.public.${testName2}_nation)
+                  » table: (rapids.public.${testName2}_nation)
 
 ∆ exprSubquery
   » table alias: __subquery0005
@@ -377,18 +377,18 @@ unordered rows:
 
 -> -> -> projectOp
          » location: origin
-         » column: (Expr = MIN(MIN(MIN(rapidsse.public.${testName2}_nation.n_nationkey))) ; Ordinal Expr = MIN($1))
+         » column: (Expr = MIN(MIN(MIN(rapids.public.${testName2}_nation.n_nationkey))) ; Ordinal Expr = MIN($1))
 
 -> -> -> -> projectOp
             » location: all nodes
-            » column: (Expr = MIN(MIN(rapidsse.public.${testName2}_nation.n_nationkey)) ; Ordinal Expr = MIN($1))
+            » column: (Expr = MIN(MIN(rapids.public.${testName2}_nation.n_nationkey)) ; Ordinal Expr = MIN($1))
 
 -> -> -> -> -> projectOp
-               » column: (Expr = MIN(rapidsse.public.${testName2}_nation.n_nationkey) ; Ordinal Expr = MIN($1))
+               » column: (Expr = MIN(rapids.public.${testName2}_nation.n_nationkey) ; Ordinal Expr = MIN($1))
 
 -> -> -> -> -> -> tableScanOp
                   » location: all partitions
-                  » table: (rapidsse.public.${testName2}_nation)
+                  » table: (rapids.public.${testName2}_nation)
 
 ∆ mainSubquery
   » table alias: __subquery0006
@@ -398,16 +398,16 @@ unordered rows:
    » queryText: "SELECT n_nationkey, ( SELECT MIN(n_nationkey) FROM ${testName2}_nation ) FROM ${testName2}_nation WHERE n_nationkey > ( SELECT MIN(n_nationkey) FROM ${testName2}_nation )"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.${testName2}_nation.n_nationkey ; Ordinal Expr = $1)
+      » column: (Expr = rapids.public.${testName2}_nation.n_nationkey ; Ordinal Expr = $1)
       » column: (Expr = __subquery0003() ; Ordinal Expr = __subquery0003())
 
 -> -> -> filterOp
-         » expr: (rapidsse.public.${testName2}_nation.n_nationkey > __subquery0005())
+         » expr: (rapids.public.${testName2}_nation.n_nationkey > __subquery0005())
          » ordinal expr: ($1 > __subquery0005())
 
 -> -> -> -> tableScanOp
             » location: all partitions
-            » table: (rapidsse.public.${testName2}_nation)' )
+            » table: (rapids.public.${testName2}_nation)' )
 
 
 // Ensure basic statements work right up to transliteration
@@ -442,14 +442,14 @@ unordered rows:
                » routing: unicast
 
 -> -> -> -> -> -> projectOp
-                  » column: (Alias = N_NATIONKEY ; Expr = rapidsse.public.${testName2}_nation.N_NATIONKEY ; Ordinal Expr = $1)
-                  » column: (Alias = N_NAME ; Expr = rapidsse.public.${testName2}_nation.N_NAME ; Ordinal Expr = $2)
-                  » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.${testName2}_nation.N_REGIONKEY ; Ordinal Expr = $3)
-                  » column: (Alias = N_COMMENT ; Expr = rapidsse.public.${testName2}_nation.N_COMMENT ; Ordinal Expr = $4)
+                  » column: (Alias = N_NATIONKEY ; Expr = rapids.public.${testName2}_nation.N_NATIONKEY ; Ordinal Expr = $1)
+                  » column: (Alias = N_NAME ; Expr = rapids.public.${testName2}_nation.N_NAME ; Ordinal Expr = $2)
+                  » column: (Alias = N_REGIONKEY ; Expr = rapids.public.${testName2}_nation.N_REGIONKEY ; Ordinal Expr = $3)
+                  » column: (Alias = N_COMMENT ; Expr = rapids.public.${testName2}_nation.N_COMMENT ; Ordinal Expr = $4)
 
 -> -> -> -> -> -> -> tableScanOp
                      » location: all partitions
-                     » table: (rapidsse.public.${testName2}_nation)
+                     » table: (rapids.public.${testName2}_nation)
 
 -> -> mainSubquery
       » table alias: __subquery0003
@@ -513,14 +513,14 @@ unordered rows:
       » queryText: "SELECT AVG(n_nationkey) FROM ${testName2}_nation WHERE n_regionkey = n1.n_regionkey"
 
 -> -> -> projectOp
-         » column: (Expr = AVG(rapidsse.public.${testName2}_nation.n_nationkey) ; Ordinal Expr = AVG($1))
+         » column: (Expr = AVG(rapids.public.${testName2}_nation.n_nationkey) ; Ordinal Expr = AVG($1))
 
 -> -> -> -> filterOp
-            » expr: (rapidsse.public.${testName2}_nation.n_regionkey = n1.n_regionkey)
+            » expr: (rapids.public.${testName2}_nation.n_regionkey = n1.n_regionkey)
             » ordinal expr: ($3 = %1)
 
 -> -> -> -> -> tableScanOp
-               » table: (rapidsse.public.${testName2}_nation)
+               » table: (rapids.public.${testName2}_nation)
 
 ∆ mainSubquery
   » table alias: __subquery0004
@@ -541,7 +541,7 @@ unordered rows:
 
 -> -> -> -> tableScanOp
             » alias: (n1)
-            » table: (rapidsse.public.${testName2}_nation)' )
+            » table: (rapids.public.${testName2}_nation)' )
 
 
 // Correlated subquery in WHERE clause with one *unqualified* correlated column
@@ -551,24 +551,24 @@ unordered rows:
   (*, 'explainPlan', '
 ∆ exprSubquery
   » table alias: __subquery0003
-  » correlated columns: (rapidsse.public.${testName2}_nation.n_regionkey)
+  » correlated columns: (rapids.public.${testName2}_nation.n_regionkey)
 
 -> mainSubquery
    » table alias: __subquery0002
-   » correlated columns: (rapidsse.public.${testName2}_nation.n_regionkey)
+   » correlated columns: (rapids.public.${testName2}_nation.n_regionkey)
 
 -> -> statementMarker: select
       » queryText: "SELECT AVG(r_regionkey) FROM ${testName2}_region WHERE r_regionkey = n_regionkey"
 
 -> -> -> projectOp
-         » column: (Expr = AVG(rapidsse.public.${testName2}_region.r_regionkey) ; Ordinal Expr = AVG($1))
+         » column: (Expr = AVG(rapids.public.${testName2}_region.r_regionkey) ; Ordinal Expr = AVG($1))
 
 -> -> -> -> filterOp
-            » expr: (rapidsse.public.${testName2}_region.r_regionkey = rapidsse.public.${testName2}_nation.n_regionkey)
+            » expr: (rapids.public.${testName2}_region.r_regionkey = rapids.public.${testName2}_nation.n_regionkey)
             » ordinal expr: ($1 = %1)
 
 -> -> -> -> -> tableScanOp
-               » table: (rapidsse.public.${testName2}_region)
+               » table: (rapids.public.${testName2}_region)
 
 ∆ mainSubquery
   » table alias: __subquery0004
@@ -578,17 +578,17 @@ unordered rows:
    » queryText: "SELECT * FROM ${testName2}_nation WHERE n_nationkey > ( SELECT AVG(r_regionkey) FROM ${testName2}_region WHERE r_regionkey = n_regionkey )"
 
 -> -> projectOp
-      » column: (Alias = N_NATIONKEY ; Expr = rapidsse.public.${testName2}_nation.N_NATIONKEY ; Ordinal Expr = $1)
-      » column: (Alias = N_NAME ; Expr = rapidsse.public.${testName2}_nation.N_NAME ; Ordinal Expr = $2)
-      » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.${testName2}_nation.N_REGIONKEY ; Ordinal Expr = $3)
-      » column: (Alias = N_COMMENT ; Expr = rapidsse.public.${testName2}_nation.N_COMMENT ; Ordinal Expr = $4)
+      » column: (Alias = N_NATIONKEY ; Expr = rapids.public.${testName2}_nation.N_NATIONKEY ; Ordinal Expr = $1)
+      » column: (Alias = N_NAME ; Expr = rapids.public.${testName2}_nation.N_NAME ; Ordinal Expr = $2)
+      » column: (Alias = N_REGIONKEY ; Expr = rapids.public.${testName2}_nation.N_REGIONKEY ; Ordinal Expr = $3)
+      » column: (Alias = N_COMMENT ; Expr = rapids.public.${testName2}_nation.N_COMMENT ; Ordinal Expr = $4)
 
 -> -> -> filterOp
-         » expr: ((CAST(rapidsse.public.${testName2}_nation.n_nationkey AS DECIMAL)) > __subquery0003(rapidsse.public.${testName2}_nation.n_regionkey))
+         » expr: ((CAST(rapids.public.${testName2}_nation.n_nationkey AS DECIMAL)) > __subquery0003(rapids.public.${testName2}_nation.n_regionkey))
          » ordinal expr: ((CAST($1 AS DECIMAL)) > __subquery0003($3))
 
 -> -> -> -> tableScanOp
-            » table: (rapidsse.public.${testName2}_nation)' )
+            » table: (rapids.public.${testName2}_nation)' )
 
 
 // Correlated subquery in WHERE clause with two unqualified correlated columns
@@ -598,24 +598,24 @@ unordered rows:
   (*, 'explainPlan', '
 ∆ exprSubquery
   » table alias: __subquery0003
-  » correlated columns: (rapidsse.public.${testName2}_nation.n_regionkey, rapidsse.public.${testName2}_nation.n_name)
+  » correlated columns: (rapids.public.${testName2}_nation.n_regionkey, rapids.public.${testName2}_nation.n_name)
 
 -> mainSubquery
    » table alias: __subquery0002
-   » correlated columns: (rapidsse.public.${testName2}_nation.n_regionkey, rapidsse.public.${testName2}_nation.n_name)
+   » correlated columns: (rapids.public.${testName2}_nation.n_regionkey, rapids.public.${testName2}_nation.n_name)
 
 -> -> statementMarker: select
       » queryText: "SELECT AVG(r_regionkey) FROM ${testName2}_region WHERE r_regionkey = n_regionkey and r_name != n_name"
 
 -> -> -> projectOp
-         » column: (Expr = AVG(rapidsse.public.${testName2}_region.r_regionkey) ; Ordinal Expr = AVG($1))
+         » column: (Expr = AVG(rapids.public.${testName2}_region.r_regionkey) ; Ordinal Expr = AVG($1))
 
 -> -> -> -> filterOp
-            » expr: ((rapidsse.public.${testName2}_region.r_regionkey = rapidsse.public.${testName2}_nation.n_regionkey) AND (rapidsse.public.${testName2}_region.r_name != rapidsse.public.${testName2}_nation.n_name))
+            » expr: ((rapids.public.${testName2}_region.r_regionkey = rapids.public.${testName2}_nation.n_regionkey) AND (rapids.public.${testName2}_region.r_name != rapids.public.${testName2}_nation.n_name))
             » ordinal expr: (($1 = %1) AND ($2 != %2))
 
 -> -> -> -> -> tableScanOp
-               » table: (rapidsse.public.${testName2}_region)
+               » table: (rapids.public.${testName2}_region)
 
 ∆ mainSubquery
   » table alias: __subquery0004
@@ -625,17 +625,17 @@ unordered rows:
    » queryText: "SELECT * FROM ${testName2}_nation WHERE n_nationkey > ( SELECT AVG(r_regionkey) FROM ${testName2}_region WHERE r_regionkey = n_regionkey and r_name != n_name )"
 
 -> -> projectOp
-      » column: (Alias = N_NATIONKEY ; Expr = rapidsse.public.${testName2}_nation.N_NATIONKEY ; Ordinal Expr = $1)
-      » column: (Alias = N_NAME ; Expr = rapidsse.public.${testName2}_nation.N_NAME ; Ordinal Expr = $2)
-      » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.${testName2}_nation.N_REGIONKEY ; Ordinal Expr = $3)
-      » column: (Alias = N_COMMENT ; Expr = rapidsse.public.${testName2}_nation.N_COMMENT ; Ordinal Expr = $4)
+      » column: (Alias = N_NATIONKEY ; Expr = rapids.public.${testName2}_nation.N_NATIONKEY ; Ordinal Expr = $1)
+      » column: (Alias = N_NAME ; Expr = rapids.public.${testName2}_nation.N_NAME ; Ordinal Expr = $2)
+      » column: (Alias = N_REGIONKEY ; Expr = rapids.public.${testName2}_nation.N_REGIONKEY ; Ordinal Expr = $3)
+      » column: (Alias = N_COMMENT ; Expr = rapids.public.${testName2}_nation.N_COMMENT ; Ordinal Expr = $4)
 
 -> -> -> filterOp
-         » expr: ((CAST(rapidsse.public.${testName2}_nation.n_nationkey AS DECIMAL)) > __subquery0003(rapidsse.public.${testName2}_nation.n_regionkey, rapidsse.public.${testName2}_nation.n_name))
+         » expr: ((CAST(rapids.public.${testName2}_nation.n_nationkey AS DECIMAL)) > __subquery0003(rapids.public.${testName2}_nation.n_regionkey, rapids.public.${testName2}_nation.n_name))
          » ordinal expr: ((CAST($1 AS DECIMAL)) > __subquery0003($3, $2))
 
 -> -> -> -> tableScanOp
-            » table: (rapidsse.public.${testName2}_nation)' )
+            » table: (rapids.public.${testName2}_nation)' )
 
 
 // Correlated subquery in WHERE clause with one correlated AliasRef
@@ -648,24 +648,24 @@ unordered rows:
   (*, 'explainPlan', '
 ∆ exprSubquery
   » table alias: __subquery0003
-  » correlated columns: (rapidsse.public.${testName2}_nation.n_regionkey, regionsum)
+  » correlated columns: (rapids.public.${testName2}_nation.n_regionkey, regionsum)
 
 -> mainSubquery
    » table alias: __subquery0002
-   » correlated columns: (rapidsse.public.${testName2}_nation.n_regionkey, regionsum)
+   » correlated columns: (rapids.public.${testName2}_nation.n_regionkey, regionsum)
 
 -> -> statementMarker: select
       » queryText: "SELECT AVG(r_regionkey) FROM ${testName2}_region WHERE r_regionkey = n_regionkey AND regionsum > 0"
 
 -> -> -> projectOp
-         » column: (Expr = AVG(rapidsse.public.${testName2}_region.r_regionkey) ; Ordinal Expr = AVG($1))
+         » column: (Expr = AVG(rapids.public.${testName2}_region.r_regionkey) ; Ordinal Expr = AVG($1))
 
 -> -> -> -> filterOp
-            » expr: ((rapidsse.public.${testName2}_region.r_regionkey = rapidsse.public.${testName2}_nation.n_regionkey) AND (regionsum > 0))
+            » expr: ((rapids.public.${testName2}_region.r_regionkey = rapids.public.${testName2}_nation.n_regionkey) AND (regionsum > 0))
             » ordinal expr: (($1 = %1) AND (%2 > 0))
 
 -> -> -> -> -> tableScanOp
-               » table: (rapidsse.public.${testName2}_region)
+               » table: (rapids.public.${testName2}_region)
 
 ∆ mainSubquery
   » table alias: __subquery0004
@@ -675,22 +675,22 @@ unordered rows:
    » queryText: "SELECT n_nationkey, SUM(n_regionkey) AS regionsum FROM ${testName2}_nation GROUP BY n_nationkey, n_regionkey HAVING regionsum >= ( SELECT AVG(r_regionkey) FROM ${testName2}_region WHERE r_regionkey = n_regionkey AND regionsum > 0 )"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.${testName2}_nation.n_nationkey ; Ordinal Expr = $1)
-      » column: (Alias = regionsum ; Expr = SUM(rapidsse.public.${testName2}_nation.n_regionkey) ; Ordinal Expr = $2)
+      » column: (Expr = rapids.public.${testName2}_nation.n_nationkey ; Ordinal Expr = $1)
+      » column: (Alias = regionsum ; Expr = SUM(rapids.public.${testName2}_nation.n_regionkey) ; Ordinal Expr = $2)
 
 -> -> -> filterOp
-         » expr: ((CAST(regionsum AS DECIMAL)) >= __subquery0003(rapidsse.public.${testName2}_nation.n_regionkey, regionsum))
+         » expr: ((CAST(regionsum AS DECIMAL)) >= __subquery0003(rapids.public.${testName2}_nation.n_regionkey, regionsum))
          » ordinal expr: ((CAST($2 AS DECIMAL)) >= __subquery0003($3, $2))
 
 -> -> -> -> aggregateOp
-            » column: (Expr = rapidsse.public.${testName2}_nation.n_nationkey ; Ordinal Expr = $1)
-            » column: (Alias = regionsum ; Expr = SUM(rapidsse.public.${testName2}_nation.n_regionkey) ; Ordinal Expr = SUM($3))
-            » column: (Expr = rapidsse.public.${testName2}_nation.n_regionkey ; Ordinal Expr = $3)
-            » group by: (Expr = rapidsse.public.${testName2}_nation.n_nationkey ; Ordinal Expr = $1)
-            » group by: (Expr = rapidsse.public.${testName2}_nation.n_regionkey ; Ordinal Expr = $3)
+            » column: (Expr = rapids.public.${testName2}_nation.n_nationkey ; Ordinal Expr = $1)
+            » column: (Alias = regionsum ; Expr = SUM(rapids.public.${testName2}_nation.n_regionkey) ; Ordinal Expr = SUM($3))
+            » column: (Expr = rapids.public.${testName2}_nation.n_regionkey ; Ordinal Expr = $3)
+            » group by: (Expr = rapids.public.${testName2}_nation.n_nationkey ; Ordinal Expr = $1)
+            » group by: (Expr = rapids.public.${testName2}_nation.n_regionkey ; Ordinal Expr = $3)
 
 -> -> -> -> -> tableScanOp
-               » table: (rapidsse.public.${testName2}_nation)' )
+               » table: (rapids.public.${testName2}_nation)' )
 
 
 // Cannot correlate an aggregate expression unless it has an alias
@@ -716,7 +716,7 @@ SELECT n_nationkey, SUM(n_regionkey)
 FROM ${testName2}_nation
 GROUP BY n_nationkey
 HAVING SUM(n_regionkey) >= ( SELECT AVG(r_regionkey) FROM ${testName2}_region HAVING SUM(n_regionkey) > 0 );
-failure contains: 'Expression does not appear in the GROUP BY list or as part of an aggregate: rapidsse.public.${testName2}_nation.n_regionkey'
+failure contains: 'Expression does not appear in the GROUP BY list or as part of an aggregate: rapids.public.${testName2}_nation.n_regionkey'
 
 
 // Correlated subquery in SELECT list
@@ -740,14 +740,14 @@ unordered rows:
       » queryText: "SELECT AVG(n_nationkey) FROM ${testName2}_nation WHERE n_regionkey = n1.n_regionkey"
 
 -> -> -> projectOp
-         » column: (Expr = AVG(rapidsse.public.${testName2}_nation.n_nationkey) ; Ordinal Expr = AVG($1))
+         » column: (Expr = AVG(rapids.public.${testName2}_nation.n_nationkey) ; Ordinal Expr = AVG($1))
 
 -> -> -> -> filterOp
-            » expr: (rapidsse.public.${testName2}_nation.n_regionkey = n1.n_regionkey)
+            » expr: (rapids.public.${testName2}_nation.n_regionkey = n1.n_regionkey)
             » ordinal expr: ($3 = %1)
 
 -> -> -> -> -> tableScanOp
-               » table: (rapidsse.public.${testName2}_nation)
+               » table: (rapids.public.${testName2}_nation)
 
 ∆ mainSubquery
   » table alias: __subquery0004
@@ -762,7 +762,7 @@ unordered rows:
 
 -> -> -> tableScanOp
          » alias: (n1)
-         » table: (rapidsse.public.${testName2}_nation)' )
+         » table: (rapids.public.${testName2}_nation)' )
 
 
 
@@ -789,14 +789,14 @@ rows: (*,'explainPlan','
          » limit: (2)
 
 -> -> -> -> orderOp
-            » order expr: ((rapidsse.public.${testName2}_region.r_regionkey) DESC)
+            » order expr: ((rapids.public.${testName2}_region.r_regionkey) DESC)
             » ordinal order expr: (($1) DESC)
 
 -> -> -> -> -> projectOp
-               » column: (Expr = rapidsse.public.${testName2}_region.r_regionkey ; Ordinal Expr = $1)
+               » column: (Expr = rapids.public.${testName2}_region.r_regionkey ; Ordinal Expr = $1)
 
 -> -> -> -> -> -> tableScanOp
-                  » table: (rapidsse.public.${testName2}_region)
+                  » table: (rapids.public.${testName2}_region)
 
 ∆ mainSubquery
   » table alias: __subquery0004
@@ -806,17 +806,17 @@ rows: (*,'explainPlan','
    » queryText: "SELECT * FROM ${testName2}_nation WHERE n_regionkey IN ( SELECT r_regionkey FROM ${testName2}_region ORDER BY r_regionkey DESC LIMIT 2 )"
 
 -> -> projectOp
-      » column: (Alias = N_NATIONKEY ; Expr = rapidsse.public.${testName2}_nation.N_NATIONKEY ; Ordinal Expr = $1)
-      » column: (Alias = N_NAME ; Expr = rapidsse.public.${testName2}_nation.N_NAME ; Ordinal Expr = $2)
-      » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.${testName2}_nation.N_REGIONKEY ; Ordinal Expr = $3)
-      » column: (Alias = N_COMMENT ; Expr = rapidsse.public.${testName2}_nation.N_COMMENT ; Ordinal Expr = $4)
+      » column: (Alias = N_NATIONKEY ; Expr = rapids.public.${testName2}_nation.N_NATIONKEY ; Ordinal Expr = $1)
+      » column: (Alias = N_NAME ; Expr = rapids.public.${testName2}_nation.N_NAME ; Ordinal Expr = $2)
+      » column: (Alias = N_REGIONKEY ; Expr = rapids.public.${testName2}_nation.N_REGIONKEY ; Ordinal Expr = $3)
+      » column: (Alias = N_COMMENT ; Expr = rapids.public.${testName2}_nation.N_COMMENT ; Ordinal Expr = $4)
 
 -> -> -> filterOp
-         » expr: (rapidsse.public.${testName2}_nation.n_regionkey IN __subquery0003())
+         » expr: (rapids.public.${testName2}_nation.n_regionkey IN __subquery0003())
          » ordinal expr: ($3 IN __subquery0003())
 
 -> -> -> -> tableScanOp
-            » table: (rapidsse.public.${testName2}_nation)')
+            » table: (rapids.public.${testName2}_nation)')
 
 
 // Correlated subquery in WHERE clause
@@ -835,14 +835,14 @@ rows: (*,'explainPlan','
       » queryText: "SELECT r_regionkey FROM ${testName2}_region WHERE n1.n_name != r_name"
 
 -> -> -> projectOp
-         » column: (Expr = rapidsse.public.${testName2}_region.r_regionkey ; Ordinal Expr = $1)
+         » column: (Expr = rapids.public.${testName2}_region.r_regionkey ; Ordinal Expr = $1)
 
 -> -> -> -> filterOp
-            » expr: (n1.n_name != rapidsse.public.${testName2}_region.r_name)
+            » expr: (n1.n_name != rapids.public.${testName2}_region.r_name)
             » ordinal expr: (%1 != $2)
 
 -> -> -> -> -> tableScanOp
-               » table: (rapidsse.public.${testName2}_region)
+               » table: (rapids.public.${testName2}_region)
 
 ∆ mainSubquery
   » table alias: __subquery0004
@@ -863,7 +863,7 @@ rows: (*,'explainPlan','
 
 -> -> -> -> tableScanOp
             » alias: (n1)
-            » table: (rapidsse.public.${testName2}_nation)')
+            » table: (rapids.public.${testName2}_nation)')
 
 
 // Uncorrelated subquery in SELECT list
@@ -889,14 +889,14 @@ rows: (*,'explainPlan','
          » limit: (3)
 
 -> -> -> -> orderOp
-            » order expr: ((rapidsse.public.${testName2}_nation.n_nationkey) ASC)
+            » order expr: ((rapids.public.${testName2}_nation.n_nationkey) ASC)
             » ordinal order expr: (($1) ASC)
 
 -> -> -> -> -> projectOp
-               » column: (Expr = rapidsse.public.${testName2}_nation.n_nationkey ; Ordinal Expr = $1)
+               » column: (Expr = rapids.public.${testName2}_nation.n_nationkey ; Ordinal Expr = $1)
 
 -> -> -> -> -> -> tableScanOp
-                  » table: (rapidsse.public.${testName2}_nation)
+                  » table: (rapids.public.${testName2}_nation)
 
 ∆ mainSubquery
   » table alias: __subquery0004
@@ -911,7 +911,7 @@ rows: (*,'explainPlan','
 
 -> -> -> tableScanOp
          » alias: (n1)
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 
 // Correlated subquery in SELECT list
@@ -937,18 +937,18 @@ rows: (*,'explainPlan','
          » limit: (3)
 
 -> -> -> -> orderOp
-            » order expr: ((rapidsse.public.${testName2}_nation.n_nationkey) ASC)
+            » order expr: ((rapids.public.${testName2}_nation.n_nationkey) ASC)
             » ordinal order expr: (($1) ASC)
 
 -> -> -> -> -> projectOp
-               » column: (Expr = rapidsse.public.${testName2}_nation.n_nationkey ; Ordinal Expr = $1)
+               » column: (Expr = rapids.public.${testName2}_nation.n_nationkey ; Ordinal Expr = $1)
 
 -> -> -> -> -> -> filterOp
                   » expr: ((n1.n_regionkey % 2) = 0)
                   » ordinal expr: ((%1 % 2) = 0)
 
 -> -> -> -> -> -> -> tableScanOp
-                     » table: (rapidsse.public.${testName2}_nation)
+                     » table: (rapids.public.${testName2}_nation)
 
 ∆ mainSubquery
   » table alias: __subquery0004
@@ -963,7 +963,7 @@ rows: (*,'explainPlan','
 
 -> -> -> tableScanOp
          » alias: (n1)
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 
 // Test that projecting more than 1 column is an error (non-correlated, WHERE predicate)
@@ -1013,10 +1013,10 @@ rows: (*,'explainPlan','
       » queryText: "SELECT r_name FROM ${testName2}_region"
 
 -> -> -> projectOp
-         » column: (Expr = rapidsse.public.${testName2}_region.r_name ; Ordinal Expr = $2)
+         » column: (Expr = rapids.public.${testName2}_region.r_name ; Ordinal Expr = $2)
 
 -> -> -> -> tableScanOp
-            » table: (rapidsse.public.${testName2}_region)
+            » table: (rapids.public.${testName2}_region)
 
 ∆ mainSubquery
   » table alias: __subquery0004
@@ -1026,17 +1026,17 @@ rows: (*,'explainPlan','
    » queryText: "SELECT * FROM ${testName2}_nation WHERE EXISTS ( SELECT r_name FROM ${testName2}_region )"
 
 -> -> projectOp
-      » column: (Alias = N_NATIONKEY ; Expr = rapidsse.public.${testName2}_nation.N_NATIONKEY ; Ordinal Expr = $1)
-      » column: (Alias = N_NAME ; Expr = rapidsse.public.${testName2}_nation.N_NAME ; Ordinal Expr = $2)
-      » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.${testName2}_nation.N_REGIONKEY ; Ordinal Expr = $3)
-      » column: (Alias = N_COMMENT ; Expr = rapidsse.public.${testName2}_nation.N_COMMENT ; Ordinal Expr = $4)
+      » column: (Alias = N_NATIONKEY ; Expr = rapids.public.${testName2}_nation.N_NATIONKEY ; Ordinal Expr = $1)
+      » column: (Alias = N_NAME ; Expr = rapids.public.${testName2}_nation.N_NAME ; Ordinal Expr = $2)
+      » column: (Alias = N_REGIONKEY ; Expr = rapids.public.${testName2}_nation.N_REGIONKEY ; Ordinal Expr = $3)
+      » column: (Alias = N_COMMENT ; Expr = rapids.public.${testName2}_nation.N_COMMENT ; Ordinal Expr = $4)
 
 -> -> -> filterOp
          » expr: (EXISTS __subquery0003())
          » ordinal expr: (EXISTS __subquery0003())
 
 -> -> -> -> tableScanOp
-            » table: (rapidsse.public.${testName2}_nation)')
+            » table: (rapids.public.${testName2}_nation)')
             
             
 // Uncorrelated subquery in WHERE clause, multiple columns selected
@@ -1055,12 +1055,12 @@ rows: (*,'explainPlan','
       » queryText: "SELECT * FROM ${testName2}_region"
 
 -> -> -> projectOp
-         » column: (Alias = R_REGIONKEY ; Expr = rapidsse.public.${testName2}_region.R_REGIONKEY ; Ordinal Expr = $1)
-         » column: (Alias = R_NAME ; Expr = rapidsse.public.${testName2}_region.R_NAME ; Ordinal Expr = $2)
-         » column: (Alias = R_COMMENT ; Expr = rapidsse.public.${testName2}_region.R_COMMENT ; Ordinal Expr = $3)
+         » column: (Alias = R_REGIONKEY ; Expr = rapids.public.${testName2}_region.R_REGIONKEY ; Ordinal Expr = $1)
+         » column: (Alias = R_NAME ; Expr = rapids.public.${testName2}_region.R_NAME ; Ordinal Expr = $2)
+         » column: (Alias = R_COMMENT ; Expr = rapids.public.${testName2}_region.R_COMMENT ; Ordinal Expr = $3)
 
 -> -> -> -> tableScanOp
-            » table: (rapidsse.public.${testName2}_region)
+            » table: (rapids.public.${testName2}_region)
 
 ∆ mainSubquery
   » table alias: __subquery0004
@@ -1070,17 +1070,17 @@ rows: (*,'explainPlan','
    » queryText: "SELECT * FROM ${testName2}_nation WHERE EXISTS ( SELECT * FROM ${testName2}_region )"
 
 -> -> projectOp
-      » column: (Alias = N_NATIONKEY ; Expr = rapidsse.public.${testName2}_nation.N_NATIONKEY ; Ordinal Expr = $1)
-      » column: (Alias = N_NAME ; Expr = rapidsse.public.${testName2}_nation.N_NAME ; Ordinal Expr = $2)
-      » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.${testName2}_nation.N_REGIONKEY ; Ordinal Expr = $3)
-      » column: (Alias = N_COMMENT ; Expr = rapidsse.public.${testName2}_nation.N_COMMENT ; Ordinal Expr = $4)
+      » column: (Alias = N_NATIONKEY ; Expr = rapids.public.${testName2}_nation.N_NATIONKEY ; Ordinal Expr = $1)
+      » column: (Alias = N_NAME ; Expr = rapids.public.${testName2}_nation.N_NAME ; Ordinal Expr = $2)
+      » column: (Alias = N_REGIONKEY ; Expr = rapids.public.${testName2}_nation.N_REGIONKEY ; Ordinal Expr = $3)
+      » column: (Alias = N_COMMENT ; Expr = rapids.public.${testName2}_nation.N_COMMENT ; Ordinal Expr = $4)
 
 -> -> -> filterOp
          » expr: (EXISTS __subquery0003())
          » ordinal expr: (EXISTS __subquery0003())
 
 -> -> -> -> tableScanOp
-            » table: (rapidsse.public.${testName2}_nation)')
+            » table: (rapids.public.${testName2}_nation)')
 
 
 // Uncorrelated subquery in WHERE clause, nested table subquery
@@ -1104,12 +1104,12 @@ rows: (*,'explainPlan','
          » queryText: "SELECT * FROM ${testName2}_region"
 
 -> -> -> -> projectOp
-            » column: (Alias = R_REGIONKEY ; Expr = rapidsse.public.${testName2}_region.R_REGIONKEY ; Ordinal Expr = $1)
-            » column: (Alias = R_NAME ; Expr = rapidsse.public.${testName2}_region.R_NAME ; Ordinal Expr = $2)
-            » column: (Alias = R_COMMENT ; Expr = rapidsse.public.${testName2}_region.R_COMMENT ; Ordinal Expr = $3)
+            » column: (Alias = R_REGIONKEY ; Expr = rapids.public.${testName2}_region.R_REGIONKEY ; Ordinal Expr = $1)
+            » column: (Alias = R_NAME ; Expr = rapids.public.${testName2}_region.R_NAME ; Ordinal Expr = $2)
+            » column: (Alias = R_COMMENT ; Expr = rapids.public.${testName2}_region.R_COMMENT ; Ordinal Expr = $3)
 
 -> -> -> -> -> tableScanOp
-               » table: (rapidsse.public.${testName2}_region)
+               » table: (rapids.public.${testName2}_region)
 
 -> mainSubquery
    » table alias: __subquery0003
@@ -1136,17 +1136,17 @@ rows: (*,'explainPlan','
    » queryText: "SELECT * FROM ${testName2}_nation WHERE EXISTS ( WITH t1 AS (SELECT * FROM ${testName2}_region) SELECT * FROM t1 )"
 
 -> -> projectOp
-      » column: (Alias = N_NATIONKEY ; Expr = rapidsse.public.${testName2}_nation.N_NATIONKEY ; Ordinal Expr = $1)
-      » column: (Alias = N_NAME ; Expr = rapidsse.public.${testName2}_nation.N_NAME ; Ordinal Expr = $2)
-      » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.${testName2}_nation.N_REGIONKEY ; Ordinal Expr = $3)
-      » column: (Alias = N_COMMENT ; Expr = rapidsse.public.${testName2}_nation.N_COMMENT ; Ordinal Expr = $4)
+      » column: (Alias = N_NATIONKEY ; Expr = rapids.public.${testName2}_nation.N_NATIONKEY ; Ordinal Expr = $1)
+      » column: (Alias = N_NAME ; Expr = rapids.public.${testName2}_nation.N_NAME ; Ordinal Expr = $2)
+      » column: (Alias = N_REGIONKEY ; Expr = rapids.public.${testName2}_nation.N_REGIONKEY ; Ordinal Expr = $3)
+      » column: (Alias = N_COMMENT ; Expr = rapids.public.${testName2}_nation.N_COMMENT ; Ordinal Expr = $4)
 
 -> -> -> filterOp
          » expr: (EXISTS __subquery0004())
          » ordinal expr: (EXISTS __subquery0004())
 
 -> -> -> -> tableScanOp
-            » table: (rapidsse.public.${testName2}_nation)')
+            » table: (rapids.public.${testName2}_nation)')
 
 
 // Correlated subquery in WHERE clause
@@ -1165,16 +1165,16 @@ rows: (*,'explainPlan','
       » queryText: "SELECT * FROM ${testName2}_region WHERE n1.n_name != r_name"
 
 -> -> -> projectOp
-         » column: (Alias = R_REGIONKEY ; Expr = rapidsse.public.${testName2}_region.R_REGIONKEY ; Ordinal Expr = $1)
-         » column: (Alias = R_NAME ; Expr = rapidsse.public.${testName2}_region.R_NAME ; Ordinal Expr = $2)
-         » column: (Alias = R_COMMENT ; Expr = rapidsse.public.${testName2}_region.R_COMMENT ; Ordinal Expr = $3)
+         » column: (Alias = R_REGIONKEY ; Expr = rapids.public.${testName2}_region.R_REGIONKEY ; Ordinal Expr = $1)
+         » column: (Alias = R_NAME ; Expr = rapids.public.${testName2}_region.R_NAME ; Ordinal Expr = $2)
+         » column: (Alias = R_COMMENT ; Expr = rapids.public.${testName2}_region.R_COMMENT ; Ordinal Expr = $3)
 
 -> -> -> -> filterOp
-            » expr: (n1.n_name != rapidsse.public.${testName2}_region.r_name)
+            » expr: (n1.n_name != rapids.public.${testName2}_region.r_name)
             » ordinal expr: (%1 != $2)
 
 -> -> -> -> -> tableScanOp
-               » table: (rapidsse.public.${testName2}_region)
+               » table: (rapids.public.${testName2}_region)
 
 ∆ mainSubquery
   » table alias: __subquery0004
@@ -1195,7 +1195,7 @@ rows: (*,'explainPlan','
 
 -> -> -> -> tableScanOp
             » alias: (n1)
-            » table: (rapidsse.public.${testName2}_nation)')
+            » table: (rapids.public.${testName2}_nation)')
 
 
 // Transitive correlated subquery in WHERE clause
@@ -1219,16 +1219,16 @@ rows: (*,'explainPlan','
          » queryText: "SELECT * FROM ${testName2}_region WHERE n1.n_name != r_name"
 
 -> -> -> -> projectOp
-            » column: (Alias = R_REGIONKEY ; Expr = rapidsse.public.${testName2}_region.R_REGIONKEY ; Ordinal Expr = $1)
-            » column: (Alias = R_NAME ; Expr = rapidsse.public.${testName2}_region.R_NAME ; Ordinal Expr = $2)
-            » column: (Alias = R_COMMENT ; Expr = rapidsse.public.${testName2}_region.R_COMMENT ; Ordinal Expr = $3)
+            » column: (Alias = R_REGIONKEY ; Expr = rapids.public.${testName2}_region.R_REGIONKEY ; Ordinal Expr = $1)
+            » column: (Alias = R_NAME ; Expr = rapids.public.${testName2}_region.R_NAME ; Ordinal Expr = $2)
+            » column: (Alias = R_COMMENT ; Expr = rapids.public.${testName2}_region.R_COMMENT ; Ordinal Expr = $3)
 
 -> -> -> -> -> filterOp
-               » expr: (n1.n_name != rapidsse.public.${testName2}_region.r_name)
+               » expr: (n1.n_name != rapids.public.${testName2}_region.r_name)
                » ordinal expr: (%1 != $2)
 
 -> -> -> -> -> -> tableScanOp
-                  » table: (rapidsse.public.${testName2}_region)
+                  » table: (rapids.public.${testName2}_region)
 
 -> mainSubquery
    » table alias: __subquery0003
@@ -1266,7 +1266,7 @@ rows: (*,'explainPlan','
 
 -> -> -> -> tableScanOp
             » alias: (n1)
-            » table: (rapidsse.public.${testName2}_nation)')
+            » table: (rapids.public.${testName2}_nation)')
 
 
 // Uncorrelated subquery in SELECT list
@@ -1289,13 +1289,13 @@ rows: (*,'explainPlan','
       » queryText: "SELECT * FROM ${testName2}_nation"
 
 -> -> -> projectOp
-         » column: (Alias = N_NATIONKEY ; Expr = rapidsse.public.${testName2}_nation.N_NATIONKEY ; Ordinal Expr = $1)
-         » column: (Alias = N_NAME ; Expr = rapidsse.public.${testName2}_nation.N_NAME ; Ordinal Expr = $2)
-         » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.${testName2}_nation.N_REGIONKEY ; Ordinal Expr = $3)
-         » column: (Alias = N_COMMENT ; Expr = rapidsse.public.${testName2}_nation.N_COMMENT ; Ordinal Expr = $4)
+         » column: (Alias = N_NATIONKEY ; Expr = rapids.public.${testName2}_nation.N_NATIONKEY ; Ordinal Expr = $1)
+         » column: (Alias = N_NAME ; Expr = rapids.public.${testName2}_nation.N_NAME ; Ordinal Expr = $2)
+         » column: (Alias = N_REGIONKEY ; Expr = rapids.public.${testName2}_nation.N_REGIONKEY ; Ordinal Expr = $3)
+         » column: (Alias = N_COMMENT ; Expr = rapids.public.${testName2}_nation.N_COMMENT ; Ordinal Expr = $4)
 
 -> -> -> -> tableScanOp
-            » table: (rapidsse.public.${testName2}_nation)
+            » table: (rapids.public.${testName2}_nation)
 
 ∆ mainSubquery
   » table alias: __subquery0004
@@ -1310,7 +1310,7 @@ rows: (*,'explainPlan','
 
 -> -> -> tableScanOp
          » alias: (n1)
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 
 // Correlated subquery in SELECT list
@@ -1333,17 +1333,17 @@ rows: (*,'explainPlan','
       » queryText: "SELECT * FROM ${testName2}_nation WHERE n1.n_regionkey % 2 = 0"
 
 -> -> -> projectOp
-         » column: (Alias = N_NATIONKEY ; Expr = rapidsse.public.${testName2}_nation.N_NATIONKEY ; Ordinal Expr = $1)
-         » column: (Alias = N_NAME ; Expr = rapidsse.public.${testName2}_nation.N_NAME ; Ordinal Expr = $2)
-         » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.${testName2}_nation.N_REGIONKEY ; Ordinal Expr = $3)
-         » column: (Alias = N_COMMENT ; Expr = rapidsse.public.${testName2}_nation.N_COMMENT ; Ordinal Expr = $4)
+         » column: (Alias = N_NATIONKEY ; Expr = rapids.public.${testName2}_nation.N_NATIONKEY ; Ordinal Expr = $1)
+         » column: (Alias = N_NAME ; Expr = rapids.public.${testName2}_nation.N_NAME ; Ordinal Expr = $2)
+         » column: (Alias = N_REGIONKEY ; Expr = rapids.public.${testName2}_nation.N_REGIONKEY ; Ordinal Expr = $3)
+         » column: (Alias = N_COMMENT ; Expr = rapids.public.${testName2}_nation.N_COMMENT ; Ordinal Expr = $4)
 
 -> -> -> -> filterOp
             » expr: ((n1.n_regionkey % 2) = 0)
             » ordinal expr: ((%1 % 2) = 0)
 
 -> -> -> -> -> tableScanOp
-               » table: (rapidsse.public.${testName2}_nation)
+               » table: (rapids.public.${testName2}_nation)
 
 ∆ mainSubquery
   » table alias: __subquery0004
@@ -1358,7 +1358,7 @@ rows: (*,'explainPlan','
 
 -> -> -> tableScanOp
          » alias: (n1)
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Nested expression subqueries
@@ -1391,7 +1391,7 @@ unordered rows:
                » column: (Expr = 12 ; Ordinal Expr = 12)
 
 -> -> -> -> -> -> tableScanOp
-                  » table: (rapidsse.public.${testName2}_nation)
+                  » table: (rapids.public.${testName2}_nation)
 
 -> mainSubquery
    » table alias: __subquery0004
@@ -1401,14 +1401,14 @@ unordered rows:
       » queryText: "SELECT n_name FROM ${testName2}_nation WHERE n_nationkey = (SELECT 12 FROM ${testName2}_nation LIMIT 1)"
 
 -> -> -> projectOp
-         » column: (Expr = rapidsse.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
+         » column: (Expr = rapids.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> -> filterOp
-            » expr: (rapidsse.public.${testName2}_nation.n_nationkey = __subquery0003())
+            » expr: (rapids.public.${testName2}_nation.n_nationkey = __subquery0003())
             » ordinal expr: ($1 = __subquery0003())
 
 -> -> -> -> -> tableScanOp
-               » table: (rapidsse.public.${testName2}_nation)
+               » table: (rapids.public.${testName2}_nation)
 
 ∆ mainSubquery
   » table alias: __subquery0006
@@ -1418,17 +1418,17 @@ unordered rows:
    » queryText: "SELECT * FROM ${testName2}_nation WHERE n_name = (SELECT n_name FROM ${testName2}_nation WHERE n_nationkey = (SELECT 12 FROM ${testName2}_nation LIMIT 1))"
 
 -> -> projectOp
-      » column: (Alias = N_NATIONKEY ; Expr = rapidsse.public.${testName2}_nation.N_NATIONKEY ; Ordinal Expr = $1)
-      » column: (Alias = N_NAME ; Expr = rapidsse.public.${testName2}_nation.N_NAME ; Ordinal Expr = $2)
-      » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.${testName2}_nation.N_REGIONKEY ; Ordinal Expr = $3)
-      » column: (Alias = N_COMMENT ; Expr = rapidsse.public.${testName2}_nation.N_COMMENT ; Ordinal Expr = $4)
+      » column: (Alias = N_NATIONKEY ; Expr = rapids.public.${testName2}_nation.N_NATIONKEY ; Ordinal Expr = $1)
+      » column: (Alias = N_NAME ; Expr = rapids.public.${testName2}_nation.N_NAME ; Ordinal Expr = $2)
+      » column: (Alias = N_REGIONKEY ; Expr = rapids.public.${testName2}_nation.N_REGIONKEY ; Ordinal Expr = $3)
+      » column: (Alias = N_COMMENT ; Expr = rapids.public.${testName2}_nation.N_COMMENT ; Ordinal Expr = $4)
 
 -> -> -> filterOp
-         » expr: (rapidsse.public.${testName2}_nation.n_name = __subquery0005())
+         » expr: (rapids.public.${testName2}_nation.n_name = __subquery0005())
          » ordinal expr: ($2 = __subquery0005())
 
 -> -> -> -> tableScanOp
-            » table: (rapidsse.public.${testName2}_nation)' )
+            » table: (rapids.public.${testName2}_nation)' )
 
 
 // Nested uncorrelated in WHERE predicate with WITH clause
@@ -1459,7 +1459,7 @@ unordered rows:
                » column: (Expr = 12 ; Ordinal Expr = 12)
 
 -> -> -> -> -> -> tableScanOp
-                  » table: (rapidsse.public.${testName2}_nation)
+                  » table: (rapids.public.${testName2}_nation)
 
 -> exprSubquery
    » table alias: __subquery0004
@@ -1488,14 +1488,14 @@ unordered rows:
       » queryText: "SELECT n_name FROM ${testName2}_nation WHERE n_nationkey = (SELECT * FROM t1)"
 
 -> -> -> projectOp
-         » column: (Expr = rapidsse.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
+         » column: (Expr = rapids.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> -> filterOp
-            » expr: (rapidsse.public.${testName2}_nation.n_nationkey = __subquery0004())
+            » expr: (rapids.public.${testName2}_nation.n_nationkey = __subquery0004())
             » ordinal expr: ($1 = __subquery0004())
 
 -> -> -> -> -> tableScanOp
-               » table: (rapidsse.public.${testName2}_nation)
+               » table: (rapids.public.${testName2}_nation)
 
 ∆ mainSubquery
   » table alias: __subquery0007
@@ -1505,17 +1505,17 @@ unordered rows:
    » queryText: "SELECT * FROM ${testName2}_nation WHERE n_name = (WITH t1 AS (SELECT 12 FROM ${testName2}_nation LIMIT 1) SELECT n_name FROM ${testName2}_nation WHERE n_nationkey = (SELECT * FROM t1))"
 
 -> -> projectOp
-      » column: (Alias = N_NATIONKEY ; Expr = rapidsse.public.${testName2}_nation.N_NATIONKEY ; Ordinal Expr = $1)
-      » column: (Alias = N_NAME ; Expr = rapidsse.public.${testName2}_nation.N_NAME ; Ordinal Expr = $2)
-      » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.${testName2}_nation.N_REGIONKEY ; Ordinal Expr = $3)
-      » column: (Alias = N_COMMENT ; Expr = rapidsse.public.${testName2}_nation.N_COMMENT ; Ordinal Expr = $4)
+      » column: (Alias = N_NATIONKEY ; Expr = rapids.public.${testName2}_nation.N_NATIONKEY ; Ordinal Expr = $1)
+      » column: (Alias = N_NAME ; Expr = rapids.public.${testName2}_nation.N_NAME ; Ordinal Expr = $2)
+      » column: (Alias = N_REGIONKEY ; Expr = rapids.public.${testName2}_nation.N_REGIONKEY ; Ordinal Expr = $3)
+      » column: (Alias = N_COMMENT ; Expr = rapids.public.${testName2}_nation.N_COMMENT ; Ordinal Expr = $4)
 
 -> -> -> filterOp
-         » expr: (rapidsse.public.${testName2}_nation.n_name = __subquery0006())
+         » expr: (rapids.public.${testName2}_nation.n_name = __subquery0006())
          » ordinal expr: ($2 = __subquery0006())
 
 -> -> -> -> tableScanOp
-            » table: (rapidsse.public.${testName2}_nation)' )
+            » table: (rapids.public.${testName2}_nation)' )
 
 
 // Nested uncorrelated in SELECT list
@@ -1542,10 +1542,10 @@ unordered rows:
             » limit: (1)
 
 -> -> -> -> -> projectOp
-               » column: (Expr = rapidsse.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
+               » column: (Expr = rapids.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> -> -> -> tableScanOp
-                  » table: (rapidsse.public.${testName2}_nation)
+                  » table: (rapids.public.${testName2}_nation)
 
 -> mainSubquery
    » table alias: __subquery0004
@@ -1561,7 +1561,7 @@ unordered rows:
             » column: (Expr = __subquery0003() ; Ordinal Expr = __subquery0003())
 
 -> -> -> -> -> tableScanOp
-               » table: (rapidsse.public.${testName2}_nation)
+               » table: (rapids.public.${testName2}_nation)
 
 ∆ mainSubquery
   » table alias: __subquery0006
@@ -1574,7 +1574,7 @@ unordered rows:
       » column: (Expr = __subquery0005() ; Ordinal Expr = __subquery0005())
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)' )
+         » table: (rapids.public.${testName2}_nation)' )
 
 
 // Nested uncorrelated in SELECT list with WITH clause
@@ -1602,10 +1602,10 @@ unordered rows:
             » limit: (1)
 
 -> -> -> -> -> projectOp
-               » column: (Expr = rapidsse.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
+               » column: (Expr = rapids.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> -> -> -> tableScanOp
-                  » table: (rapidsse.public.${testName2}_nation)
+                  » table: (rapids.public.${testName2}_nation)
 
 -> exprSubquery
    » table alias: __subquery0004
@@ -1640,7 +1640,7 @@ unordered rows:
             » column: (Expr = __subquery0004() ; Ordinal Expr = __subquery0004())
 
 -> -> -> -> -> tableScanOp
-               » table: (rapidsse.public.${testName2}_nation)
+               » table: (rapids.public.${testName2}_nation)
 
 ∆ mainSubquery
   » table alias: __subquery0007
@@ -1653,7 +1653,7 @@ unordered rows:
       » column: (Expr = __subquery0006() ; Ordinal Expr = __subquery0006())
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)' )
+         » table: (rapids.public.${testName2}_nation)' )
 
 
 
@@ -1683,37 +1683,37 @@ unordered rows:
   (*, 'explainPlan', '
 ∆ exprSubquery
   » table alias: __subquery0004
-  » correlated columns: (rapidsse.public.${testName2}_nation.n_regionkey)
+  » correlated columns: (rapids.public.${testName2}_nation.n_regionkey)
 
 -> tableSubquery
    » table alias: t1
-   » correlated columns: (rapidsse.public.${testName2}_nation.n_regionkey)
+   » correlated columns: (rapids.public.${testName2}_nation.n_regionkey)
    » recursive: false
 
 -> -> mainSubquery
       » table alias: __subquery0002
-      » correlated columns: (rapidsse.public.${testName2}_nation.n_regionkey)
+      » correlated columns: (rapids.public.${testName2}_nation.n_regionkey)
 
 -> -> -> statementMarker: select
          » queryText: "SELECT AVG(r_regionkey) FROM ${testName2}_region HAVING SUM(n_regionkey) > 0"
 
 -> -> -> -> projectOp
-            » column: (Expr = AVG(rapidsse.public.${testName2}_region.r_regionkey) ; Ordinal Expr = $1)
+            » column: (Expr = AVG(rapids.public.${testName2}_region.r_regionkey) ; Ordinal Expr = $1)
 
 -> -> -> -> -> filterOp
-               » expr: ((SUM(rapidsse.public.${testName2}_nation.n_regionkey)) > 0)
+               » expr: ((SUM(rapids.public.${testName2}_nation.n_regionkey)) > 0)
                » ordinal expr: ($2 > 0)
 
 -> -> -> -> -> -> projectOp
-                  » column: (Expr = AVG(rapidsse.public.${testName2}_region.r_regionkey) ; Ordinal Expr = AVG($1))
-                  » column: (Expr = SUM(rapidsse.public.${testName2}_nation.n_regionkey) ; Ordinal Expr = SUM(%1))
+                  » column: (Expr = AVG(rapids.public.${testName2}_region.r_regionkey) ; Ordinal Expr = AVG($1))
+                  » column: (Expr = SUM(rapids.public.${testName2}_nation.n_regionkey) ; Ordinal Expr = SUM(%1))
 
 -> -> -> -> -> -> -> tableScanOp
-                     » table: (rapidsse.public.${testName2}_region)
+                     » table: (rapids.public.${testName2}_region)
 
 -> mainSubquery
    » table alias: __subquery0003
-   » correlated columns: (rapidsse.public.${testName2}_nation.n_regionkey)
+   » correlated columns: (rapids.public.${testName2}_nation.n_regionkey)
 
 -> -> statementMarker: select
       » queryText: "SELECT * FROM t1"
@@ -1723,7 +1723,7 @@ unordered rows:
 
 -> -> -> -> subqueryRefOp
             » alias: (t1)
-            » params: t1(rapidsse.public.${testName2}_nation.n_regionkey)
+            » params: t1(rapids.public.${testName2}_nation.n_regionkey)
             » ordinal params: t1(%1)
 
 ∆ mainSubquery
@@ -1734,23 +1734,23 @@ unordered rows:
    » queryText: "SELECT n_nationkey, SUM(n_regionkey) FROM ${testName2}_nation GROUP BY n_nationkey, n_regionkey HAVING SUM(n_regionkey) >= (   WITH t1 AS ( SELECT AVG(r_regionkey) FROM ${testName2}_region HAVING SUM(n_regionkey) > 0 )   SELECT * FROM t1 )"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.${testName2}_nation.n_nationkey ; Ordinal Expr = $1)
-      » column: (Expr = SUM(rapidsse.public.${testName2}_nation.n_regionkey) ; Ordinal Expr = $2)
+      » column: (Expr = rapids.public.${testName2}_nation.n_nationkey ; Ordinal Expr = $1)
+      » column: (Expr = SUM(rapids.public.${testName2}_nation.n_regionkey) ; Ordinal Expr = $2)
 
 -> -> -> filterOp
-         » expr: ((CAST(SUM(rapidsse.public.${testName2}_nation.n_regionkey) AS DECIMAL)) >= __subquery0004(rapidsse.public.${testName2}_nation.n_regionkey))
+         » expr: ((CAST(SUM(rapids.public.${testName2}_nation.n_regionkey) AS DECIMAL)) >= __subquery0004(rapids.public.${testName2}_nation.n_regionkey))
          » ordinal expr: ((CAST($2 AS DECIMAL)) >= __subquery0004($4))
 
 -> -> -> -> aggregateOp
-            » column: (Expr = rapidsse.public.${testName2}_nation.n_nationkey ; Ordinal Expr = $1)
-            » column: (Expr = SUM(rapidsse.public.${testName2}_nation.n_regionkey) ; Ordinal Expr = SUM($3))
-            » column: (Expr = __subquery0004(rapidsse.public.${testName2}_nation.n_regionkey) ; Ordinal Expr = __subquery0004($3))
-            » column: (Expr = rapidsse.public.${testName2}_nation.n_regionkey ; Ordinal Expr = $3)
-            » group by: (Expr = rapidsse.public.${testName2}_nation.n_nationkey ; Ordinal Expr = $1)
-            » group by: (Expr = rapidsse.public.${testName2}_nation.n_regionkey ; Ordinal Expr = $3)
+            » column: (Expr = rapids.public.${testName2}_nation.n_nationkey ; Ordinal Expr = $1)
+            » column: (Expr = SUM(rapids.public.${testName2}_nation.n_regionkey) ; Ordinal Expr = SUM($3))
+            » column: (Expr = __subquery0004(rapids.public.${testName2}_nation.n_regionkey) ; Ordinal Expr = __subquery0004($3))
+            » column: (Expr = rapids.public.${testName2}_nation.n_regionkey ; Ordinal Expr = $3)
+            » group by: (Expr = rapids.public.${testName2}_nation.n_nationkey ; Ordinal Expr = $1)
+            » group by: (Expr = rapids.public.${testName2}_nation.n_regionkey ; Ordinal Expr = $3)
 
 -> -> -> -> -> tableScanOp
-               » table: (rapidsse.public.${testName2}_nation)' )
+               » table: (rapids.public.${testName2}_nation)' )
 
 
 // Nested correlated subquery in a SELECT list
@@ -1793,14 +1793,14 @@ unordered rows: (*,'explainPlan','
          » queryText: "SELECT AVG(salary)       FROM ${testName2}_employees       WHERE       department_id = e.department_id"
 
 -> -> -> -> projectOp
-            » column: (Expr = AVG(rapidsse.public.${testName2}_employees.salary) ; Ordinal Expr = AVG($8))
+            » column: (Expr = AVG(rapids.public.${testName2}_employees.salary) ; Ordinal Expr = AVG($8))
 
 -> -> -> -> -> filterOp
-               » expr: (rapidsse.public.${testName2}_employees.department_id = e.department_id)
+               » expr: (rapids.public.${testName2}_employees.department_id = e.department_id)
                » ordinal expr: ($10 = %1)
 
 -> -> -> -> -> -> tableScanOp
-                  » table: (rapidsse.public.${testName2}_employees)
+                  » table: (rapids.public.${testName2}_employees)
 
 -> mainSubquery
    » table alias: __subquery0003
@@ -1843,11 +1843,11 @@ unordered rows: (*,'explainPlan','
 
 -> -> -> -> -> tableScanOp
                » alias: (e)
-               » table: (rapidsse.public.${testName2}_employees)
+               » table: (rapids.public.${testName2}_employees)
 
 -> -> -> -> -> tableScanOp
                » alias: (d)
-               » table: (rapidsse.public.${testName2}_departments)')
+               » table: (rapids.public.${testName2}_departments)')
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1879,10 +1879,10 @@ unordered rows:
          » limit: (1)
 
 -> -> -> -> projectOp
-            » column: (Expr = rapidsse.public.${testName2}_region.r_regionkey ; Ordinal Expr = $1)
+            » column: (Expr = rapids.public.${testName2}_region.r_regionkey ; Ordinal Expr = $1)
 
 -> -> -> -> -> tableScanOp
-               » table: (rapidsse.public.${testName2}_region)
+               » table: (rapids.public.${testName2}_region)
 
 ∆ exprSubquery
   » table alias: __subquery0004
@@ -1911,17 +1911,17 @@ unordered rows:
    » queryText: "SELECT * FROM ${testName2}_nation WHERE n_regionkey = ( SELECT * FROM t1 )"
 
 -> -> projectOp
-      » column: (Alias = N_NATIONKEY ; Expr = rapidsse.public.${testName2}_nation.N_NATIONKEY ; Ordinal Expr = $1)
-      » column: (Alias = N_NAME ; Expr = rapidsse.public.${testName2}_nation.N_NAME ; Ordinal Expr = $2)
-      » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.${testName2}_nation.N_REGIONKEY ; Ordinal Expr = $3)
-      » column: (Alias = N_COMMENT ; Expr = rapidsse.public.${testName2}_nation.N_COMMENT ; Ordinal Expr = $4)
+      » column: (Alias = N_NATIONKEY ; Expr = rapids.public.${testName2}_nation.N_NATIONKEY ; Ordinal Expr = $1)
+      » column: (Alias = N_NAME ; Expr = rapids.public.${testName2}_nation.N_NAME ; Ordinal Expr = $2)
+      » column: (Alias = N_REGIONKEY ; Expr = rapids.public.${testName2}_nation.N_REGIONKEY ; Ordinal Expr = $3)
+      » column: (Alias = N_COMMENT ; Expr = rapids.public.${testName2}_nation.N_COMMENT ; Ordinal Expr = $4)
 
 -> -> -> filterOp
-         » expr: (rapidsse.public.${testName2}_nation.n_regionkey = __subquery0004())
+         » expr: (rapids.public.${testName2}_nation.n_regionkey = __subquery0004())
          » ordinal expr: ($3 = __subquery0004())
 
 -> -> -> -> tableScanOp
-            » table: (rapidsse.public.${testName2}_nation)' )
+            » table: (rapids.public.${testName2}_nation)' )
 
 // Negative case - expression subquery refers to a table subquery not in scope
 EXPLAIN

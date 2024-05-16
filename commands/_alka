@@ -2,37 +2,58 @@
 /* _alka                                                                      */
 /*============================================================================*/
 
-create table score(s_id varchar(6),c_id varchar(6),cj decimal(5,1));
-load score "../DATA/PartitionKey/score.csv";
-create index score_idx1 on score(s_id);
-create index score_idx2 on score(c_id);
+// create the tables
+create table TABLE1 (
+  pcol1   INTEGER NOT NULL,
+  tcol1   INTEGER NOT NULL,
+  cola1   INTEGER,
+  colb1   VARCHAR(20),
+  colc1   TIMESTAMP,
+  cold1   FLOAT,
+  cole1   DECIMAL(15, 2),
+  colf1   INTEGER,
+  colg1   INTEGER,
+  ucol    INTEGER,
+  ucolvc  VARCHAR(5)
+);
 
+create index TABLE1_PCOL1 on table1(pcol1);
+create index TABLE1_COLA1 on table1(cola1);
+create index TABLE1_COLB1 on table1(colb1);
+create index TABLE1_UCOL on table1(ucol);
+create index TABLE1_UCOLVC on table1(ucolvc);
 
-create table student(s_id varchar(6),s_name varchar(50),s_csrq date,s_sex varchar(10));
-load student "../DATA/PartitionKey/student.csv";
-create index student_idx1 on student(s_id);
+load TABLE1 "../DATA/Load/tbl1data.csv" ;
 
-
-create table course(c_id varchar(6),c_name varchar(50),t_id varchar(6));
-load course "../DATA/PartitionKey/course.csv";
-create index course_idx1 on course(c_id);
-create index course_idx2 on course(t_id);
-
-
-create table teacher(t_id varchar(6),t_name varchar(50));
-load teacher "../DATA/PartitionKey/teacher.csv";
-create index teacher_idx1 on teacher(t_id);
-
-
-/keepcodefile
-/hasCodeFile
-/useCodeFile = "VARCHAR_2_NODE1_2"
-/pipeline_def
-/transliterated
 /weaved
-/pipelineName = "VARCHAR_2"
-select * from score js
-inner join student js2 on js.s_id =js2.s_id
-inner join course jc on js.c_id =jc.c_id
-inner join teacher jt on jc.t_id =jt.t_id;
-//rows: 5
+/keepCodeFile
+select sum(cola1) as ColA, avg(ucol), colb1, ucolvc from table1 group by colb1, ucolvc having avg(ucol) < 200 order by colb1, ColA;
+/*
+ordered rows:
+  (62, 128.00, 'BLACK', 'ttt')
+  (243, 132.00, 'ORANGE', 'nnn')
+  (201, 122.00, 'PINK', 'vvv')
+  (457, 109.00, 'PURPLE', 'www')
+  (213, 93.00, 'RED', 'ccc')
+  (402, 172.00, 'TEAL', 'ccc')
+  (46, 106.00, 'aqua', 'nnn')
+  (74, 101.00, 'aqua', 'bbb')
+  (5, 123.00, 'black', 'iii')
+  (124, 144.00, 'black', 'mmm')
+  (235, 158.00, 'black', 'bbb')
+  (336, 40.00, 'blue', 'ppp')
+  (303, 62.00, 'gold', 'ccc')
+  (222, 62.00, 'green', 'yyy')
+  (415, 30.00, 'green', 'uuu')
+  (260, 81.00, 'grey', 'lll')
+  (380, 129.00, 'maroon', 'xxx')
+  (141, 31.00, 'orange', 'aaa')
+  (467, 57.00, 'orange', 'kkk')
+  (26, 86.00, 'peach', 'ooo')
+  (215, 140.00, 'purple', 'rrr')
+  (154, 178.00, 'violet', 'ddd')
+  */
+
+  type DECIMAL ( 19 2 ) as C1_COL1
+  $5 casttype DECIMAL ( 19 2 ) casttype DECIMAL ( 19 2 ) CAST
+  $4 casttype DECIMAL ( 19 2 ) casttype DECIMAL ( 19 2 ) CAST /

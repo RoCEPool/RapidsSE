@@ -93,12 +93,27 @@ void CrwTablePtn::vAnalyze(i8& nBuffers, i8& nRows, i8& jSumRowBytes)
 #else
     HashMapEntry* pEntry = pHashMap->pEntryAt(pBufferIdStruct->oBufferId.m_pvAsAddress);
 
-    CrwBuffer* pCrwBuffer = _pCrwBuffer(pEntry->m_pValObject);
-    nBuffers++;
+    DataBuffer* pDataBuffer = _pDataBuffer(pEntry->m_pValObject);
+    eCN eClass = pDataBuffer->eGetClassNo();
+    switch(eClass) {
+      case CN_PDS: {
+        Pds* pPds = _pPds(pDataBuffer);
+        nBuffers++;
 
-    //pCrwBuffer->vShow();
-    nRows += (pCrwBuffer->nRows());
-    jSumRowBytes += pCrwBuffer->nAllotedBytes();
+        nRows += (pPds->nItems());
+        jSumRowBytes += pPds->m_xWsp.nUsedBytes();
+        break;
+      }
+      default: {
+        CrwBuffer* pCrwBuffer = _pCrwBuffer(pEntry->m_pValObject);
+        nBuffers++;
+
+        //pCrwBuffer->vShow();
+        nRows += (pCrwBuffer->nRows());
+        jSumRowBytes += pCrwBuffer->nAllotedBytes();
+        break;
+      }
+    }
 
     pEntry->vDropLock();
 #endif
@@ -153,6 +168,49 @@ void CrwTablePtn::vAppendBuffer(CrwBuffer* pCrwBuffer)
   // the lock
 
   AM::pHashMap()->vDropKeyLock(pCrwBuffer->oGetBufferId().m_pvAsAddress);
+}
+
+/*----------------------------------------------------------------------------*/
+/* append a pds buffer into the CrwTablePtn                                   */
+/*----------------------------------------------------------------------------*/
+void CrwTablePtn::vAppendBuffer(Pds* pPds)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTABLEPTN,_FOOTER_);
+
+#ifdef WITH_STATISTICS_COUNTERS
+  gpAttachMap->m_oStatistics.IndexTree.m_nAppendBuffers++;
+#endif
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // if buffer has 0 entries (only head) then should be last buffer
+  if (pPds->nItems() == 0) {
+    delete pPds;
+    return;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // mark crwBuffer as permanent
+  pPds->vIsPermanent(true);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Append a new Skip List Block to the PDS
+  SkipListBlock* pSLBlock = m_pPdsOfBufferIds->pAppend((void*)&(m_iSynthKey));
+  RASSERT(pSLBlock != nullptr);
+
+  PdsBufferIdItem oBufferIdStruct;
+  oBufferIdStruct.iKey = m_iSynthKey;
+  oBufferIdStruct.oBufferId = pPds->oGetBufferId();
+
+  m_iSynthKey++;
+
+  // Update the contents of SkipListBlock Item with the key and bufferId
+  *(PdsBufferIdItem*)(pSLBlock->aItem()) = oBufferIdStruct;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // we are done with the current buffer, allow it to be paged out by dropping
+  // the lock
+
+  AM::pHashMap()->vDropKeyLock(pPds->oGetBufferId().m_pvAsAddress);
 }
 
 /*----------------------------------------------------------------------------*/

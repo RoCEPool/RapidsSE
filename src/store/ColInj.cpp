@@ -17,8 +17,8 @@ __aFooterFunction(ColInj)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-ColInj::ColInj(i8 nCrwCols)
-    : Object(CN_COLINJ)
+ColInj::ColInj(i8 nCrwCols, const char* azFile, i8 iLine)
+    : AbstractDef(CN_COLINJ, azFile, iLine)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_COLINJ, _FOOTER_);
 
@@ -89,6 +89,7 @@ void ColInj::vDump(i8 i_Tab)
 
   s256 sNotes;
 
+  vTrace("               %s:%lld\n"_Stz,m_sFile.szStz(),m_iLine);
   vTrace("%s%snCrwCols %lld\n"_Stz,
          Stz::szTab(i_Tab),
          Stz::szSpaces(7),

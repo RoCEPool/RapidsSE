@@ -1,10 +1,6 @@
 // Source file: ../queries/having/rhaving2.sql
 // Result file: ../queries/having/results/having2.res
 
-/optimiser_trace
-/transliterated
-/weaved
-/pipeline_Def
 /pipelineName = "Having2"
 select sum(cola1) as ColA, avg(ucol), colb1, ucolvc from ${testName2}_table1 group by colb1, ucolvc having avg(ucol) < 200 order by colb1, ColA;
 ordered rows:
@@ -30,9 +26,6 @@ ordered rows:
   (26, 86.00, 'peach', 'ooo')
   (215, 140.00, 'purple', 'rrr')
   (154, 178.00, 'violet', 'ddd')
-
-
-
 
 
 

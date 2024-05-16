@@ -158,6 +158,8 @@ void Dissector::vStage(i8 i_StageSpec)
   Card_Stage* p_stage = new Card_Stage;
   p_stage->SYM(SF_STG_NM,i_StageSpec);
 
+	p_stage->pSymbol()->Y_vSet(P_Threads, m_pStageSpec->iThreadsPerPtn());
+
   Card_Topology* p_stageTopo = new Card_Topology(eStageTopo);
   p_stage->vAppendChild(p_stageTopo);
 
@@ -208,7 +210,7 @@ void Dissector::vOp(i8 i_OpSpec)
        if (m_szOpNm->bSame("abstractJoin"_Stz)) pCard = pOp_absJoin     ();
   else if (m_szOpNm->bSame("aggreg"_Stz))       pCard = pOp_aggreg      ();
   else if (m_szOpNm->bSame("call"_Stz))         pCard = pOp_call        ();
-  else if (m_szOpNm->bSame("combined"_Stz))     pCard = pOp_combined    ();
+  else if (m_szOpNm->bSame("combined"_Stz))     return;
   else if (m_szOpNm->bSame("consumeOp"_Stz))    pCard = pOp_consume     ();
   else if (m_szOpNm->bSame("debug"_Stz))        pCard = pOp_debug       ();
   else if (m_szOpNm->bSame("filter"_Stz))       pCard = pOp_filter      ();
@@ -299,13 +301,11 @@ Card* Dissector::pOp_aggreg(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // aggElist : aggregate expression list
 
-  Card_Stream* p_stream = new Card_Stream;
-  p_aggreg->vAppendChild(p_stream);
-
   Card_Emit* p_emit = pPop_emit(p_termSeq);
-  p_emit->pSymbol()->Y_vSet(P_BreakPt);
+  //p_emit->pSymbol()->Y_vSet(P_BreakPt);
 
-  p_stream->vAppendChild(p_emit);
+  p_aggreg->vAppendChild(p_emit);
+
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -339,20 +339,6 @@ Card* Dissector::pOp_call(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   return p_call;
-}
-
-/*----------------------------------------------------------------------------*/
-/* dissect : combined <iGenerate>                                             */
-/*----------------------------------------------------------------------------*/
-Card* Dissector::pOp_combined(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
-      
-  Card_Combined* p_combine = new Card_Combined;
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  return p_combine;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -411,8 +397,8 @@ Card* Dissector::pOp_filter(void)
   Card_Expr* p_expr = pPop_expr4(p_termSeq);
   p_expr->pSymbol()->vApplyFacet(SF_EXP_COL, (i8)1);
 
-  Card_BoolPred* p_boolPred = Card_BoolPred::pTo_boolPred(m_pCI,p_expr);
-  p_filter->vAppendChild(p_boolPred);
+  Card_Predicate* p_predicate = Card_Predicate::pTo_boolPred(m_pCI, p_expr);
+  p_filter->vAppendChild(p_predicate);
   DELETE_CARD(p_expr);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -481,12 +467,8 @@ Card* Dissector::pOp_gbyAgg(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // aggElist : aggregate expression list
 
-  Card_Stream* p_stream = new Card_Stream;
-  p_aggreg->vAppendChild(p_stream);
-
   Card_Emit* p_emit = pPop_emit(p_termSeq);
-  p_stream->vAppendChild(p_emit);
-
+  p_aggreg->vAppendChild(p_emit);
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   delete p_termSeq;
@@ -867,11 +849,8 @@ Card* Dissector::pOp_ordAgg(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // aggElist : aggregate expression list
 
-  Card_Stream* p_stream = new Card_Stream;
-  p_ordAgg->vAppendChild(p_stream);
-
   Card_Emit* p_emit = pPop_emit(p_termSeq);
-  p_stream->vAppendChild(p_emit);
+  p_ordAgg->vAppendChild(p_emit);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -929,14 +908,11 @@ Card* Dissector::pOp_project(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Card_Stream* p_stream = new Card_Stream;
-  p_project->vAppendChild(p_stream);
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // projElist : project expression list
 
   Card_Emit* p_emit = pPop_emit(p_termSeq);
-  p_stream->vAppendChild(p_emit);
+  p_project->vAppendChild(p_emit);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -1310,9 +1286,9 @@ Card_Constraint* Dissector::pPop_constraint(Card_TermSeq* p_termSeq)
   Card_Expr* p_expr = pPop_expr4(p_termSeq);
   p_expr->pSymbol()->vApplyFacet(SF_EXP_COL,(i8)1);
 
-  Card_BoolPred* p_boolPred = Card_BoolPred::pTo_boolPred(m_pCI,p_expr);
+  Card_Predicate* p_predicate = Card_Predicate::pTo_boolPred(m_pCI, p_expr);
   DELETE_CARD(p_expr);
-  p_constraint->vAppendChild(p_boolPred);
+  p_constraint->vAppendChild(p_predicate);
 
   return p_constraint;
 }

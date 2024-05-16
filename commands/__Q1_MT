@@ -1,0 +1,117 @@
+/*============================================================================*/
+/* __Q1_MT                                                                    */
+/*============================================================================*/
+
+// optimizer generates L_TAX instead of L_QUANTITY
+
+file _lineitem;
+/time load lineitem           "../TPCH/SF_0001/lineitem.tbl" ;
+//settrace verbose true;
+
+
+trackMemory;
+
+/pipeline_def
+/weaved
+/optimise_passthru
+pipeline Query1
+begin
+
+  stage S00 on origin :
+      start
+    | pulse     once
+    | next
+
+  stage S01 on all partitions multiple threads 2:
+    scan      Lineitem
+  | project   "   type VARCHAR ( 0 ) as L_RETURNFLAG L_RETURNFLAG
+                , type VARCHAR ( 0 ) as L_LINESTATUS L_LINESTATUS
+                , type DECIMAL as L_QUANTITY L_QUANTITY
+                , type DECIMAL as L_EXTENDEDPRICE L_EXTENDEDPRICE
+                , type DECIMAL as L_DISCOUNT L_DISCOUNT
+                , type DECIMAL as L_TAX L_TAX
+                , type DATE $11"
+  | filter    " type BOOLEAN $7 DATE '1998-09-01' <="
+  | gbyAgg    " groupBy
+                  type VARCHAR ( 0 ) as L_RETURNFLAG L_RETURNFLAG
+                , type VARCHAR ( 0 ) as L_LINESTATUS L_LINESTATUS
+                aggregates
+                  type VARCHAR ( 0 ) as COL0 $K1
+                , type VARCHAR ( 0 ) as COL1 $K2
+                , type DECIMAL as C2_COL2 ) $3 sum
+                , type DECIMAL as C3_COL3 ) $4 sum
+                , type DECIMAL as C4_COL4 ) $4 1.00 $5 - * sum
+                , type DECIMAL as C5_COL5 ) $4 1.00 $5 - * 1.00 $6 + * sum
+                , type INTEGER as C6_COL6 ) $3 count
+                , type INTEGER as C7_COL7 ) $4 count
+                , type DECIMAL as C8_COL8 ) $5 sum
+                , type INTEGER as C9_COL9 ) $5 count
+                , type INTEGER as C10_COL10 ) countAll "
+    | dynamic
+    | next
+
+  stage S02 on all nodes :
+    gbyAgg    " groupBy
+                  type VARCHAR ( 0 ) $1
+                , type VARCHAR ( 0 ) $2
+                aggregates
+                  type VARCHAR ( 0 ) as C0_COL0 $K1
+                , type VARCHAR ( 0 ) as C1_COL1 $K2
+                , type DECIMAL as C2_COL2 ) $3 sum
+                , type DECIMAL as C3_COL3 ) $4 sum
+                , type DECIMAL as C4_COL4 ) $5 sum
+                , type DECIMAL as C5_COL5 ) $6 sum
+                , type INTEGER as C6_COL6 ) $7 sum
+                , type INTEGER as C7_COL7 ) $8 sum
+                , type DECIMAL as C8_COL8 ) $9 sum
+                , type INTEGER as C9_COL9 ) $10 sum
+                , type INTEGER as C10_COL10 ) $11 sum "
+    |  dynamic
+    | next
+
+  stage S03 on origin :
+    gbyAgg    " groupBy
+                  type VARCHAR ( 0 ) $1
+                , type VARCHAR ( 0 ) $2
+                aggregates
+                  type VARCHAR ( 0 ) as C0_COL0 $K1
+                , type VARCHAR ( 0 ) as C1_COL1 $K2
+                , type DECIMAL as C2_sum_qty ) $3 sum
+                , type DECIMAL as C3_sum_base_price ) $4 sum
+                , type DECIMAL as C4_sum_disc_price ) $5 sum
+                , type DECIMAL as C5_sum_charge ) $6 sum
+                , type INTEGER as C6_count_order ) $11 sum
+                , type INTEGER as C7_COL7 ) $7 sum
+                , type INTEGER as C8_COL8 ) $8 sum
+                , type INTEGER as C9_COL9 ) $10 sum
+                , type DECIMAL as C10_COL10 ) $9 sum "
+    |  dynamic
+    | next
+
+  stage S04 on origin :
+    project   "   type VARCHAR ( 0 ) as C0_l_returnflag $1
+                , type VARCHAR ( 0 ) as C1_l_linestatus $2
+                , type DECIMAL as C2_sum_qty $3
+                , type DECIMAL as C3_sum_base_price $4
+                , type DECIMAL as C4_sum_disc_price $5
+                , type DECIMAL as C5_sum_charge $6
+                , type DECIMAL as C6_avg_qty $3 $8 casttype DECIMAL CAST /
+                , type DECIMAL as C7_avg_price $4 $9 casttype DECIMAL CAST /
+                , type DECIMAL as C8_avg_disc $11 $10 casttype DECIMAL CAST /
+                , type INTEGER as C9_count_order $7 "
+    |  dynamic
+    | next
+
+stage S07 on origin :
+      output
+    | sink
+    | first
+
+end ;
+
+sleep 5;
+MemoryLeaks;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

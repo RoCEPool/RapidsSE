@@ -6,7 +6,7 @@
 
 #include "CardIter.hpp"
 
-#include "Card_BoolPred.hpp"
+#include "Card_Predicate.hpp"
 #include "Card_RlnConj.hpp"
 #include "Card_Deck.hpp"
 #include "Card_Filter.hpp"
@@ -68,14 +68,14 @@ Card_FiltPredList* Card_FiltPredList::pExtractList(Card_Deck* p_deck)
   Card_FiltPredList* p_filtPredList = new Card_FiltPredList;
 
   Kid xDeck(p_deck);
-  while (xDeck.bEach(CK_s_TABLE, CK_o_FILTER)) {
+  while (xDeck.bEach(CK_p_TABLE, CK_o_FILTER)) {
 
     Card_Filter* p_filter = _pCard_Filter(xDeck.pSub1());
 
-    Card_BoolPred* p_boolPred = p_filter->pSub_boolPred();
+    Card_Predicate* p_predicate = p_filter->pSub_predicate();
 
     nFilters = 0;
-    p_boolPred->bLambdaWalk(CK_RLNCONJ, bLambda);
+    p_predicate->bLambdaWalk(CK_RLNCONJ, bLambda);
 
     if (nFilters) {
       Card_FiltPred* p_filtPred = new Card_FiltPred;

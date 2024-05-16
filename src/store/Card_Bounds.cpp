@@ -35,8 +35,6 @@ Card_Bounds::Card_Bounds(void)
 Card_Bounds::~Card_Bounds(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  vDumpShort(__func__,"BOUNDS"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -151,10 +149,10 @@ void Card_Bounds::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  vValidate_mayHave(CK_BOUND,CK_NONE);
-  //vValidate_mustHave(CK_BOUND,CK_NONE);
+  vValidate_child_mayBe(CK_BOUND,CK_NONE);
+  //vValidate_child_mustBe(CK_BOUND,CK_NONE);
 
-  (void)Card::eValidate_parentEither(pCI, CK_INDEX, CK_NONE);
+  (void)Card::eValidate_parent_either(pCI, CK_INDEX, CK_NONE);
 
   UNUSED(pParent);
   Card::vValidate(pCI,iDepth,pParent);

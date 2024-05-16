@@ -40,18 +40,6 @@ Card_KeyCells::~Card_KeyCells(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get a particular expr                                                      */
-/*----------------------------------------------------------------------------*/
-Card_Map* Card_KeyCells::pGetMap(i8 i_Map)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Card_Map* p_map = _pCard_Map(pGetChild(i_Map));
-
-  return p_map;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get map referenced by ordinal symbol                                       */
 /*----------------------------------------------------------------------------*/
 Card_Map* Card_KeyCells::pGet_map(Symbol* pSym_keyCol)

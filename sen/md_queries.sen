@@ -1,0 +1,27 @@
+/*============================================================================*/
+/* md_queries.sen -- Define md__queries table                                   */
+/*============================================================================*/
+
+" md_queries.sen" .verbose
+
+: start::md_queries
+
+  // C_TDEF_QUERIES
+
+  STD_BOOTFORK_TAG
+  "
+  define metadata table queries (
+    QueryId          INTEGER NOT NULL ,
+    Timestamp       TIMESTAMP NOT NULL ,
+    SqlText         VARCHAR NOT NULL ,
+    SubmitTimeStamp TIMESTAMP NOT NULL ,
+    Status          VARCHAR NOT NULL
+  ) < metaData > = 1 ;
+  "
+  nullptr api::forkChild  api:executeCheck
+
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

@@ -41,6 +41,8 @@ StageSpec::StageSpec(VertexSpec* pVertextSpec,
   m_i_SpecificNode  = C_UNKNOWN;
   m_tSpecificPtnNo  = C_UNKNOWN;
 
+	m_iThreadsPerPtn  = 1;
+
   _checkInitialised_(CN_STAGESPEC);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
@@ -514,6 +516,26 @@ void StageSpec::vStreamTopology(eYS eStreamTopology)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
   
   m_eStreamTopology = eStreamTopology;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set stream topology                                                        */
+/*----------------------------------------------------------------------------*/
+void StageSpec::vThreadsPerPtn(i8 iThreads)
+{
+	_precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
+
+	m_iThreadsPerPtn = iThreads;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set stream topology                                                        */
+/*----------------------------------------------------------------------------*/
+i8 StageSpec::iThreadsPerPtn(void)
+{
+	_precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
+
+	return m_iThreadsPerPtn;
 }
 
 /*----------------------------------------------------------------------------*/

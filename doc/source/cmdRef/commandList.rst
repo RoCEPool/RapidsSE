@@ -151,7 +151,7 @@ Creates an index on a table.
 ``CREATE TABLE``
 ----------------
 
-Creates a table in the default catalog and schema (``rapidsse.public``).
+Creates a table in the default catalog and schema (``rapids.public``).
 
 If the ``PARTITION BY`` clause is not supplied then the table will
 automatically be partitioned across the cluster by the first column in the

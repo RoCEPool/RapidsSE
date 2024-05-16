@@ -12,7 +12,7 @@
   "metaScan_seapi" .
   
   // move to default tables folder
-  "/tenants/boray/catalogs/rapidsse/schemas/public/tables"
+  "/tenants/boray/catalogs/rapids/schemas/public/tables"
   str.toStrVec Path[].set
 
   // find the __ table
@@ -83,7 +83,7 @@
 : metaScan_StartMarker \handler
 
   // move to default tables folder
-  "/tenants/boray/catalogs/rapidsse/schemas/public/tables"
+  "/tenants/boray/catalogs/rapids/schemas/public/tables"
   str.toStrVec Path[].set
 
   // find the __ table

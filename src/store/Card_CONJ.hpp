@@ -28,7 +28,6 @@ namespace STORE
     bool bIsSqyOp(void);
     bool bLambdaWalk_conj(std::function<bool(Card_CONJ* p_pred, bool bUpwards)> bfLambdaFn);
     void vMorph_sqlOp_To_EQ(CardIter* pCI, Card_Term* p_term= nullptr);
-    void vPrint(Ribbon* pRibbon, i8 iDepth);
     Symbol* pTable_WhichTableFor_Conj(CardIter* pCI);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);

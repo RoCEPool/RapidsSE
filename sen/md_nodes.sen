@@ -1,0 +1,26 @@
+/*============================================================================*/
+/* md_nodes.sen -- Define md__nodes table                                   */
+/*============================================================================*/
+
+" md_nodes.sen" .verbose
+
+: start::md_nodes
+
+  // C_TDEF_NODES
+
+  STD_BOOTFORK_TAG
+  "
+  define metadata table nodes (
+    NodeId             INTEGER NOT NULL ,
+    Address           VARCHAR NOT NULL ,
+    Port               INTEGER NOT NULL ,
+    ConnectTimeStamp  TIMESTAMP  NOT NULL
+  ) < metaData > = 1 ;
+  "
+  nullptr api::forkChild  api:executeCheck
+
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

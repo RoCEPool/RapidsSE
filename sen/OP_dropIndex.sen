@@ -5,6 +5,14 @@
 " OP_dropIndex.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* drop an index entry in the metadata tables                                 */
+/*----------------------------------------------------------------------------*/
+: metadata_dropIndex params| sTableNm sIndexNm |
+
+  sIndexNm sTableNm MetaDataTable[].dropIndex
+;
+
+/*----------------------------------------------------------------------------*/
 /* handler for EV_M_DATAPULSE ...                                             */
 /*----------------------------------------------------------------------------*/
 : dropIndex_StartMarker
@@ -35,6 +43,10 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // remove the index
   <indexNm> <tableNm> index::dropIndex
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // remove the index from metadata tables
+  <indexNm> <tableNm> metadata_dropIndex
 
   // delete the DESTROYMARKER
   PipeIn[].delete

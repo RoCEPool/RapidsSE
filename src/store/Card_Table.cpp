@@ -7,7 +7,7 @@
 #include "Card_IdxColList.hpp"
 #include "Card_IndexList.hpp"
 #include "Card_Filter.hpp"
-#include "Card_BoolPred.hpp"
+#include "Card_Predicate.hpp"
 #include "CardIter.hpp"
 #include "Card_Index.hpp"
 #include "Card_RlnConj.hpp"
@@ -23,7 +23,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE, Card_Table, CK_s_TABLE)
+__pCastFunction_Card(STORE, Card_Table, CK_p_TABLE)
 __aNewFunction(Card_Table, CN_CARD)
 __vDeleteFunction(Card_Table, CN_CARD)
 
@@ -32,7 +32,7 @@ __vDeleteFunction(Card_Table, CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Table::Card_Table(void)
-: Card_symbol(CK_s_TABLE, 2)
+: Card_symbol(CK_p_TABLE, 2)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
@@ -89,7 +89,7 @@ void Card_Table::vAffixTableColOrd(CardIter* pCI) {
 
   _static_
 
-  while (pCI->bEachOp(CK_o_FROM, CK_s_TABLE, CK_s_INJECTABLE, CK_t_INDEXLIST)) {
+  while (pCI->bEachOp(CK_o_FROM, CK_p_TABLE, CK_p_INJECTABLE, CK_INDEXLIST)) {
 
     Kid xIndexList(pCI->E.p_indexList);
     while (xIndexList.bEach(CK_INDEX)) {
@@ -108,7 +108,7 @@ void Card_Table::vAffixTableSyn_passThru(CardIter* pCI, Symbol* pSymbol_tableSyn
   _static_
 
   pCI->vBeginEach();
-  while (pCI->bEachOp_bySub(CK_s_TABLE))  {
+  while (pCI->bEachOp_bySub(CK_p_TABLE))  {
     pCI->E.p_table->vSet_Syn(pSymbol_tableSyn);
   }
 }
@@ -121,13 +121,13 @@ void Card_Table::vAppendIndexList(CardIter* pCI) {
   _static_
 
   pCI->vBeginEach();
-  while (pCI->bEachOp(CK_o_FROM, CK_s_TABLE)) {
+  while (pCI->bEachOp(CK_o_FROM, CK_p_TABLE)) {
     pCI->E.p_tableNm = pCI->E.p_table->pSub_tableNm();
     Table* pTable = Card_Table::pAccess_Table(pCI->E.p_tableNm->szFacet(SF_TBL_NM));
 
     pCI->E.p_indexList = Card_IndexList::pDerive(pTable);
 
-    pCI->vAppendChild(CK_s_TABLE, pCI->E.p_indexList);
+    pCI->vAppendChild(CK_p_TABLE, pCI->E.p_indexList);
   }
 }
 
@@ -139,11 +139,11 @@ void Card_Table::vDeriveBoundsFromFilter(CardIter* pCI) {
   _static_
 
   pCI->vBeginEach();
-  while (pCI->bEachOp(CK_o_FROM, CK_s_TABLE, CK_t_INDEXLIST))
+  while (pCI->bEachOp(CK_o_FROM, CK_p_TABLE, CK_INDEXLIST))
     pCI->E.p_indexList->vDeleteAll_bounds();
 
   pCI->vBeginEach();
-  while (pCI->bEachOp(CK_o_FROM, CK_s_TABLE, CK_o_FILTER, CK_t_INDEXLIST))
+  while (pCI->bEachOp(CK_o_FROM, CK_p_TABLE, CK_o_FILTER, CK_INDEXLIST))
     pCI->E.p_table->vDerive_bounds_From_filter(pCI);
 }
 
@@ -173,7 +173,7 @@ i8 Card_Table::nTables(CardIter* pCI)
   i8 nTables = 0;
 
   pCI->vBeginEach();
-  while (pCI->bEachOp(CK_o_FROM, CK_s_TABLE))
+  while (pCI->bEachOp(CK_o_FROM, CK_p_TABLE))
     nTables++;
 
   return nTables;
@@ -188,7 +188,7 @@ i8 Card_Table::nTables_reverse_foldBreak(CardIter* pCI)
 
   i8 nTables = 0;
 
-  pCI->vBeginEach_reverse();
+  pCI->vBeginEach_tail();
   while (pCI->bEachOp_reverse_foldBreak(CK_o_FROM))
     nTables++;
 
@@ -269,9 +269,9 @@ void Card_Table::vDerive_bounds_From_filter(CardIter *pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_BoolPred* p_boolPred = pCI->E.p_filter->pSub_boolPred();
-  RASSERT(1 == p_boolPred->nChildCards());
-  Card_CONJ* p_conj_root = p_boolPred->pRoot_conj();
+  Card_Predicate* p_predicate = pCI->E.p_filter->pSub_predicate();
+  RASSERT(1 == p_predicate->nChildCards());
+  Card_CONJ* p_conj_root = p_predicate->pRoot_conj();
 
   Kid xIndexList(pCI->E.p_indexList);
   while (xIndexList.bEach(CK_INDEX)) {
@@ -376,25 +376,6 @@ void Card_Table::vMorph_table_To_EEop(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Table::vPrint(Ribbon* pRibbon, i8 iDepth)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  s256 sName;
-  sName = aCK_short[m_eCard];
-  if (0 == iDepth)
-    sName.vToUpper();
-
-  if (m_xSymbol.bHasFacets())
-    sName.vCatSprint(" %s"_Stz, pSymbol()->szFacet(SF_TBL_SYN));
-
-  vPrintCard_byCustomNm(pRibbon, iDepth, sName);
-}
-
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 bool Card_Table::bScopeContains_Conj(Card_CONJ* p_conj,
                                      Scope* pScope)
 {
@@ -453,7 +434,6 @@ void Card_Table::vSet_Syn(Symbol* pSymbol_tableSyn)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   SYM(pSymbol_tableSyn);
-  this->vMark1(MARK_CHANGED);
 
   Card_TableNm* p_tableNm = pSub_tableNm();
   Table* pTable = Card_Table::pAccess_Table(p_tableNm->szFacet(SF_TBL_NM));
@@ -470,7 +450,7 @@ void Card_Table::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  (void)Card::eValidate_parentEither(pCI,
+  (void)Card::eValidate_parent_either(pCI,
                                      CK_o_CROSSJOIN,
                                      CK_o_FROM,
                                      CK_o_INDEXJOIN,
@@ -485,7 +465,7 @@ void Card_Table::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
           ||
           pSymbol()->bHasFacet(SF_TBL_SYN_rep));
 
-  vValidate_mustHave(CK_t_TABLENM,CK_NONE);
+  vValidate_child_mustBe(CK_TABLENM, CK_NONE);
 
   Card::vValidate(pCI,iDepth,pParent);
   pCI->vValidateChildren(this,iDepth+1);

@@ -18,13 +18,12 @@ __aFooterFunction(OpDef)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-OpDef::OpDef(i8 i_Op, Card* pCard)
-    : Object(CN_OPDEF)
+OpDef::OpDef(i8 i_Op, Card* pCard, const char* azFile, i8 iLine)
+    : AbstractDef(CN_OPDEF,azFile,iLine)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_OPDEF, _FOOTER_);
 
   vOp(i_Op);
-  m_pCard = pCard;
 
   //vOpNm(szOpNm);
 
@@ -238,12 +237,14 @@ void OpDef::vDump(i8 i_Tab)
   _precondition_(_ADDRESS_, _MAGIC_, CN_OPDEF, _FOOTER_);
 
   i8 nTab_plus = 4;
-  vTrace("%sOpDef: [%lld] %s %s %s\n"_Stz,
+  vTrace("%sOpDef: [%lld] %s %s %s %s:%lld\n"_Stz,
          Stz::szTab(i_Tab),
          m_i_Op,
          m_sOpNm.szStz(),
          md_Coord,
-         m_sAlt.szStz());
+         m_sAlt.szStz(),
+         m_sFile.szStz(),
+         m_iLine);
 
   i8 nSpaces = 4;
   if (m_pStreamDef_arriving) {
@@ -311,14 +312,14 @@ void OpDef::vDump(i8 i_Tab)
   }
 
   if (m_pColPpg) {
-    vTrace("%s%s : ColPpg\n"_Stz,
-           Stz::szTab(i_Tab), Stz::szSpaces(nSpaces));
+    vTrace("%s%s : ColPpg %s\n"_Stz,
+           Stz::szTab(i_Tab), Stz::szSpaces(nSpaces), m_pColInj->m_sRefer.szStz());
     m_pColPpg->vDump(i_Tab + 1);
   }
 
   if (m_pColInj) {
-    vTrace("%s%s : ColInj\n"_Stz,
-           Stz::szTab(i_Tab), Stz::szSpaces(nSpaces));
+    vTrace("%s%s : ColInj %s\n"_Stz,
+           Stz::szTab(i_Tab), Stz::szSpaces(nSpaces), m_pColInj->m_sRefer.szStz());
     m_pColInj->vDump(i_Tab + 1);
   }
 
@@ -329,8 +330,8 @@ void OpDef::vDump(i8 i_Tab)
   }
 
   if (m_pKeyMap) {
-    vTrace("%s%s : KeyMap\n"_Stz,
-           Stz::szTab(i_Tab),Stz::szSpaces(nSpaces));
+    vTrace("%s%s : KeyMap %s\n"_Stz,
+           Stz::szTab(i_Tab),Stz::szSpaces(nSpaces), m_pKeyMap->m_sRefer.szStz());
     m_pKeyMap->vDump(i_Tab + 1);
   }
 
@@ -513,6 +514,14 @@ void OpDef::vValidate(void)
 
     RASSERT(m_pStreamDef_arriving);
     RASSERT(m_pStreamDef_emitted);
+  }
+  else
+  if (m_sOpNm.bSame("PDSROW"_Stz)) {
+    RASSERT(0 == nArgs());
+
+    RASSERT(m_pStreamDef_arriving);
+    RASSERT(m_pStreamDef_emitted);
+    RASSERT(!m_pColInj);
   }
   else
   if (m_sOpNm.bSame("PROJECT"_Stz)) {

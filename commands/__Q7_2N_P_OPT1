@@ -25,7 +25,7 @@ begin
     | dynamic
     | next
 
-  stage S03 on all partitions :
+  stage S03 on all partitions  multiple threads 4:
     indexJoin orders IxO_CUSTKEY " BOUND $I1 $2 == "
     | project   "   type VARCHAR ( 25 ) as C0_N_NAME $1
                 , type INTEGER ( 19 ) as C1_O_ORDERKEY $3 "
@@ -33,7 +33,7 @@ begin
     | dynamic
     | next      hashcast
 
-  stage S04 on all partitions :
+  stage S04 on all partitions  multiple threads 4:
     indexJoin lineitem IxL_ORDERKEY " BOUND $I1 $2 == "
     | filter    " type BOOLEAN $13 DATE '1995-01-01' >= $13 DATE '1996-12-31' <= and "
     | dynamic

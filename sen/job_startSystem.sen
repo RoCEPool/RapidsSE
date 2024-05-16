@@ -103,6 +103,33 @@
   start::it_verifyTable
   start::it_warnings
 
+  // define the system tables
+  "define the metadata tables" .verbose
+  start::md_tables
+  start::md_catalog
+  start::md_cluster
+  start::md_columns
+  start::md_indexColumns
+  start::md_tableIndexes
+  start::md_nodes
+  start::md_queries
+  start::md_schema
+  start::md_sessions
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Metadata table inserts
+
+  // Add the catalog to the metadata Catalog table
+  "rapids" MetaDataTable[].insertCatalog
+
+  // Add the schema to the metadata Schema table
+  "rapids" "public" MetaDataTable[].insertSchema
+
+  // Iterate TableOfTables and get Table Ptr from Row Data
+  // AM has all the info
+  // Insert Table Data into other metadata tables
+  MetaDataTable[].init
+
   // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   //
   // This point onwards the SE execution model has been fully booted

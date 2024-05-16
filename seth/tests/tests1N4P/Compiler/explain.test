@@ -32,10 +32,10 @@ rows:
    » queryText: "SELECT n_nationkey FROM ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.${testName2}_nation.n_nationkey ; Ordinal Expr = $1)
+      » column: (Expr = rapids.public.${testName2}_nation.n_nationkey ; Ordinal Expr = $1)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)' )
+         » table: (rapids.public.${testName2}_nation)' )
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Explain with errors
@@ -57,10 +57,10 @@ rows:
    » queryText: "SELECT n_nationkey FROM ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.${testName2}_nation.n_nationkey ; Ordinal Expr = $1)
+      » column: (Expr = rapids.public.${testName2}_nation.n_nationkey ; Ordinal Expr = $1)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)' )
+         » table: (rapids.public.${testName2}_nation)' )
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Explain single stage
@@ -353,10 +353,10 @@ rows:
             » queryText: "SELECT n_nationkey FROM ${testName2}_nation"
 
 -> -> -> -> -> projectOp
-               » column: (Expr = rapidsse.public.${testName2}_nation.n_nationkey ; Ordinal Expr = $1)
+               » column: (Expr = rapids.public.${testName2}_nation.n_nationkey ; Ordinal Expr = $1)
 
 -> -> -> -> -> -> tableScanOp
-                  » table: (rapidsse.public.${testName2}_nation)')
+                  » table: (rapids.public.${testName2}_nation)')
 
 
 EXPLAIN stage 1-3 EXPLAIN SELECT n_nationkey FROM ${testName2}_nation;

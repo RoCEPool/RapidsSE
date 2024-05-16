@@ -11,7 +11,7 @@ begin
     | pulse     once
     | next
 
-  stage S01 on all partitions : 
+  stage S01 on all partitions  multiple threads 4:
     scan      orders
     | project   " type DATE ( 0 ) as O_ORDERDATE O_ORDERDATE
                 , type VARCHAR ( 15 ) as O_ORDERPRIORITY O_ORDERPRIORITY
@@ -23,7 +23,7 @@ begin
     | dynamic
     | next      hashcast
 
-  stage S02 on all partitions :
+  stage S02 on all partitions multiple threads 4:
     keyExists lineitem IxL_ORDERKEY " BOUND $I1 $2 == " " type BOOLEAN L_COMMITDATE L_RECEIPTDATE < "
     | project   " type VARCHAR ( 15 ) as C0_O_ORDERPRIORITY $1 "
     | gbyAgg    " groupBy

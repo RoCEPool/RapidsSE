@@ -4,7 +4,7 @@
 
 #include "Card_CostUnicast.hpp"
 
-#include "Card_BoolPred.hpp"
+#include "Card_Predicate.hpp"
 #include "Card_RlnConj.hpp"
 #include "Card_TableSize.hpp"
 #include "Card_Table.hpp"

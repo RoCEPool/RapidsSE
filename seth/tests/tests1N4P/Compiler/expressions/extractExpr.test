@@ -56,14 +56,14 @@ rows: (*,'explainPlan','
    » queryText: "SELECT COL2 FROM ${testName2}_extractTest WHERE EXTRACT (YEAR FROM COL3) = 2021"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.${testName2}_extractTest.COL2 ; Ordinal Expr = $2)
+      » column: (Expr = rapids.public.${testName2}_extractTest.COL2 ; Ordinal Expr = $2)
 
 -> -> -> filterOp
-         » expr: ((EXTRACT (YEAR FROM rapidsse.public.${testName2}_extractTest.COL3)) = 2021)
+         » expr: ((EXTRACT (YEAR FROM rapids.public.${testName2}_extractTest.COL3)) = 2021)
          » ordinal expr: ((EXTRACT (YEAR FROM $3)) = 2021)
 
 -> -> -> -> tableScanOp
-            » table: (rapidsse.public.${testName2}_extractTest)')
+            » table: (rapids.public.${testName2}_extractTest)')
 
 // Extract MONTH
 EXPLAIN SELECT COL2 FROM ${testName2}_extractTest WHERE EXTRACT (MONTH FROM COL3) = 11;
@@ -76,14 +76,14 @@ rows: (*,'explainPlan','
    » queryText: "SELECT COL2 FROM ${testName2}_extractTest WHERE EXTRACT (MONTH FROM COL3) = 11"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.${testName2}_extractTest.COL2 ; Ordinal Expr = $2)
+      » column: (Expr = rapids.public.${testName2}_extractTest.COL2 ; Ordinal Expr = $2)
 
 -> -> -> filterOp
-         » expr: ((EXTRACT (MONTH FROM rapidsse.public.${testName2}_extractTest.COL3)) = 11)
+         » expr: ((EXTRACT (MONTH FROM rapids.public.${testName2}_extractTest.COL3)) = 11)
          » ordinal expr: ((EXTRACT (MONTH FROM $3)) = 11)
 
 -> -> -> -> tableScanOp
-            » table: (rapidsse.public.${testName2}_extractTest)')
+            » table: (rapids.public.${testName2}_extractTest)')
 
 // Extract DAY
 EXPLAIN SELECT COL2 FROM ${testName2}_extractTest WHERE EXTRACT (DAY FROM COL3) = 5;
@@ -96,14 +96,14 @@ rows: (*,'explainPlan','
    » queryText: "SELECT COL2 FROM ${testName2}_extractTest WHERE EXTRACT (DAY FROM COL3) = 5"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.${testName2}_extractTest.COL2 ; Ordinal Expr = $2)
+      » column: (Expr = rapids.public.${testName2}_extractTest.COL2 ; Ordinal Expr = $2)
 
 -> -> -> filterOp
-         » expr: ((EXTRACT (DAY FROM rapidsse.public.${testName2}_extractTest.COL3)) = 5)
+         » expr: ((EXTRACT (DAY FROM rapids.public.${testName2}_extractTest.COL3)) = 5)
          » ordinal expr: ((EXTRACT (DAY FROM $3)) = 5)
 
 -> -> -> -> tableScanOp
-            » table: (rapidsse.public.${testName2}_extractTest)')
+            » table: (rapids.public.${testName2}_extractTest)')
 
 // Extract HOUR
 EXPLAIN SELECT COL2 FROM ${testName2}_extractTest WHERE EXTRACT (HOUR FROM COL4) = 14;
@@ -116,14 +116,14 @@ rows: (*,'explainPlan','
    » queryText: "SELECT COL2 FROM ${testName2}_extractTest WHERE EXTRACT (HOUR FROM COL4) = 14"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.${testName2}_extractTest.COL2 ; Ordinal Expr = $2)
+      » column: (Expr = rapids.public.${testName2}_extractTest.COL2 ; Ordinal Expr = $2)
 
 -> -> -> filterOp
-         » expr: ((EXTRACT (HOUR FROM rapidsse.public.${testName2}_extractTest.COL4)) = 14)
+         » expr: ((EXTRACT (HOUR FROM rapids.public.${testName2}_extractTest.COL4)) = 14)
          » ordinal expr: ((EXTRACT (HOUR FROM $4)) = 14)
 
 -> -> -> -> tableScanOp
-            » table: (rapidsse.public.${testName2}_extractTest)')
+            » table: (rapids.public.${testName2}_extractTest)')
 
 // Extract MINUTE
 EXPLAIN SELECT COL2 FROM ${testName2}_extractTest WHERE EXTRACT (MINUTE FROM COL4) = 52;
@@ -136,14 +136,14 @@ rows: (*,'explainPlan','
    » queryText: "SELECT COL2 FROM ${testName2}_extractTest WHERE EXTRACT (MINUTE FROM COL4) = 52"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.${testName2}_extractTest.COL2 ; Ordinal Expr = $2)
+      » column: (Expr = rapids.public.${testName2}_extractTest.COL2 ; Ordinal Expr = $2)
 
 -> -> -> filterOp
-         » expr: ((EXTRACT (MINUTE FROM rapidsse.public.${testName2}_extractTest.COL4)) = 52)
+         » expr: ((EXTRACT (MINUTE FROM rapids.public.${testName2}_extractTest.COL4)) = 52)
          » ordinal expr: ((EXTRACT (MINUTE FROM $4)) = 52)
 
 -> -> -> -> tableScanOp
-            » table: (rapidsse.public.${testName2}_extractTest)')
+            » table: (rapids.public.${testName2}_extractTest)')
 
 // Extract SECOND
 EXPLAIN SELECT COL2 FROM ${testName2}_extractTest WHERE EXTRACT (SECOND FROM COL4) > 1.0e0;
@@ -156,14 +156,14 @@ rows: (*,'explainPlan','
    » queryText: "SELECT COL2 FROM ${testName2}_extractTest WHERE EXTRACT (SECOND FROM COL4) > 1.0e0"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.${testName2}_extractTest.COL2 ; Ordinal Expr = $2)
+      » column: (Expr = rapids.public.${testName2}_extractTest.COL2 ; Ordinal Expr = $2)
 
 -> -> -> filterOp
-         » expr: ((CAST(EXTRACT (SECOND FROM rapidsse.public.${testName2}_extractTest.COL4) AS FLOAT)) > 1.0000000000e+00)
+         » expr: ((CAST(EXTRACT (SECOND FROM rapids.public.${testName2}_extractTest.COL4) AS FLOAT)) > 1.0000000000e+00)
          » ordinal expr: ((CAST(EXTRACT (SECOND FROM $4) AS FLOAT)) > 1.0000000000e+00)
 
 -> -> -> -> tableScanOp
-            » table: (rapidsse.public.${testName2}_extractTest)')
+            » table: (rapids.public.${testName2}_extractTest)')
 
 
 // Extract from a literal
@@ -183,7 +183,7 @@ rows: (*,'explainPlan','
          » column: (Expr = EXTRACT (YEAR FROM TIMESTAMP ''2021-11-05 14:52:01.123000'') ; Ordinal Expr = EXTRACT (YEAR FROM TIMESTAMP ''2021-11-05 14:52:01.123000''))
 
 -> -> -> -> tableScanOp
-            » table: (rapidsse.public.${testName2}_extractTest)')
+            » table: (rapids.public.${testName2}_extractTest)')
 
 // Extract from a columnRef
 EXPLAIN SELECT EXTRACT (YEAR FROM COL3) FROM ${testName2}_extractTest;
@@ -196,10 +196,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT EXTRACT (YEAR FROM COL3) FROM ${testName2}_extractTest"
 
 -> -> projectOp
-      » column: (Expr = EXTRACT (YEAR FROM rapidsse.public.${testName2}_extractTest.COL3) ; Ordinal Expr = EXTRACT (YEAR FROM $3))
+      » column: (Expr = EXTRACT (YEAR FROM rapids.public.${testName2}_extractTest.COL3) ; Ordinal Expr = EXTRACT (YEAR FROM $3))
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_extractTest)')
+         » table: (rapids.public.${testName2}_extractTest)')
 
 // Extract from a computed expression
 EXPLAIN WITH_TYPES SELECT EXTRACT (YEAR FROM COL3 + (2 * INTERVAL '3' DAY)) FROM ${testName2}_extractTest;
@@ -212,10 +212,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT EXTRACT (YEAR FROM COL3 + (2 * INTERVAL ''3'' DAY)) FROM ${testName2}_extractTest"
 
 -> -> projectOp
-      » column: (Expr = EXTRACT (YEAR FROM (rapidsse.public.${testName2}_extractTest.COL3 + (2 * INTERVAL ''3'' DAY))) ; Ordinal Expr = EXTRACT (YEAR FROM ($3 + (2 * INTERVAL ''3'' DAY)))) ; type: INTEGER
+      » column: (Expr = EXTRACT (YEAR FROM (rapids.public.${testName2}_extractTest.COL3 + (2 * INTERVAL ''3'' DAY))) ; Ordinal Expr = EXTRACT (YEAR FROM ($3 + (2 * INTERVAL ''3'' DAY)))) ; type: INTEGER
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_extractTest)')
+         » table: (rapids.public.${testName2}_extractTest)')
 
 // Extract from a subquery
 EXPLAIN SELECT EXTRACT (YEAR FROM (SELECT col3 FROM ${testName2}_extractTest WHERE col1 = 0 LIMIT 1)) FROM ${testName2}_extractTest;
@@ -235,14 +235,14 @@ rows: (*,'explainPlan','
          » limit: (1)
 
 -> -> -> -> projectOp
-            » column: (Expr = rapidsse.public.${testName2}_extractTest.col3 ; Ordinal Expr = $3)
+            » column: (Expr = rapids.public.${testName2}_extractTest.col3 ; Ordinal Expr = $3)
 
 -> -> -> -> -> filterOp
-               » expr: (rapidsse.public.${testName2}_extractTest.col1 = 0)
+               » expr: (rapids.public.${testName2}_extractTest.col1 = 0)
                » ordinal expr: ($1 = 0)
 
 -> -> -> -> -> -> tableScanOp
-                  » table: (rapidsse.public.${testName2}_extractTest)
+                  » table: (rapids.public.${testName2}_extractTest)
 
 ∆ mainSubquery
   » table alias: __subquery0004
@@ -255,7 +255,7 @@ rows: (*,'explainPlan','
       » column: (Expr = EXTRACT (YEAR FROM __subquery0003()) ; Ordinal Expr = EXTRACT (YEAR FROM __subquery0003()))
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_extractTest)')
+         » table: (rapids.public.${testName2}_extractTest)')
 
 // -----
 // Can extract year from a date
@@ -269,10 +269,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT EXTRACT (YEAR FROM COL3) FROM ${testName2}_extractTest"
 
 -> -> projectOp
-      » column: (Expr = EXTRACT (YEAR FROM rapidsse.public.${testName2}_extractTest.COL3) ; Ordinal Expr = EXTRACT (YEAR FROM $3))
+      » column: (Expr = EXTRACT (YEAR FROM rapids.public.${testName2}_extractTest.COL3) ; Ordinal Expr = EXTRACT (YEAR FROM $3))
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_extractTest)')
+         » table: (rapids.public.${testName2}_extractTest)')
 
 // Can extract year from a timestamp
 EXPLAIN SELECT EXTRACT (YEAR FROM COL5) FROM ${testName2}_extractTest;
@@ -285,10 +285,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT EXTRACT (YEAR FROM COL5) FROM ${testName2}_extractTest"
 
 -> -> projectOp
-      » column: (Expr = EXTRACT (YEAR FROM rapidsse.public.${testName2}_extractTest.COL5) ; Ordinal Expr = EXTRACT (YEAR FROM $5))
+      » column: (Expr = EXTRACT (YEAR FROM rapids.public.${testName2}_extractTest.COL5) ; Ordinal Expr = EXTRACT (YEAR FROM $5))
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_extractTest)')
+         » table: (rapids.public.${testName2}_extractTest)')
 
 // Can extract year from an interval_ym
 EXPLAIN WITH_TYPES SELECT EXTRACT (YEAR FROM INTERVAL '3-2' YEAR TO MONTH) FROM ${testName2}_extractTest;
@@ -304,7 +304,7 @@ rows: (*,'explainPlan','
       » column: (Expr = EXTRACT (YEAR FROM INTERVAL ''3-2'' YEAR TO MONTH) ; Ordinal Expr = EXTRACT (YEAR FROM INTERVAL ''3-2'' YEAR TO MONTH)) ; type: INTEGER
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_extractTest)')
+         » table: (rapids.public.${testName2}_extractTest)')
 
 // Can extract year from a NULL literal
 EXPLAIN SELECT EXTRACT (YEAR FROM NULL) FROM ${testName2}_extractTest;
@@ -320,11 +320,11 @@ rows: (*,'explainPlan','
       » column: (Expr = EXTRACT (YEAR FROM NULL) ; Ordinal Expr = EXTRACT (YEAR FROM NULL))
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_extractTest)')
+         » table: (rapids.public.${testName2}_extractTest)')
 
 // Cannot extract year from a time
 EXPLAIN SELECT EXTRACT (YEAR FROM COL4) FROM ${testName2}_extractTest;
-failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (EXTRACT (YEAR FROM TIME)) in expression (EXTRACT (YEAR FROM rapidsse.public.${testName2}_extractTest.COL4))'
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (EXTRACT (YEAR FROM TIME)) in expression (EXTRACT (YEAR FROM rapids.public.${testName2}_extractTest.COL4))'
 
 // Cannot extract year from an interval_dt
 EXPLAIN SELECT EXTRACT (YEAR FROM INTERVAL '1 2' DAY TO HOUR) FROM ${testName2}_extractTest;
@@ -342,10 +342,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT EXTRACT (MONTH FROM COL3) FROM ${testName2}_extractTest"
 
 -> -> projectOp
-      » column: (Expr = EXTRACT (MONTH FROM rapidsse.public.${testName2}_extractTest.COL3) ; Ordinal Expr = EXTRACT (MONTH FROM $3))
+      » column: (Expr = EXTRACT (MONTH FROM rapids.public.${testName2}_extractTest.COL3) ; Ordinal Expr = EXTRACT (MONTH FROM $3))
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_extractTest)')
+         » table: (rapids.public.${testName2}_extractTest)')
 
 // Can extract month from a timestamp
 EXPLAIN SELECT EXTRACT (MONTH FROM COL5) FROM ${testName2}_extractTest;
@@ -358,10 +358,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT EXTRACT (MONTH FROM COL5) FROM ${testName2}_extractTest"
 
 -> -> projectOp
-      » column: (Expr = EXTRACT (MONTH FROM rapidsse.public.${testName2}_extractTest.COL5) ; Ordinal Expr = EXTRACT (MONTH FROM $5))
+      » column: (Expr = EXTRACT (MONTH FROM rapids.public.${testName2}_extractTest.COL5) ; Ordinal Expr = EXTRACT (MONTH FROM $5))
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_extractTest)')
+         » table: (rapids.public.${testName2}_extractTest)')
 
 // Can extract month from an interval_ym
 EXPLAIN WITH_TYPES SELECT EXTRACT (MONTH FROM INTERVAL '3-2' YEAR TO MONTH) FROM ${testName2}_extractTest;
@@ -377,7 +377,7 @@ rows: (*,'explainPlan','
       » column: (Expr = EXTRACT (MONTH FROM INTERVAL ''3-2'' YEAR TO MONTH) ; Ordinal Expr = EXTRACT (MONTH FROM INTERVAL ''3-2'' YEAR TO MONTH)) ; type: INTEGER
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_extractTest)')
+         » table: (rapids.public.${testName2}_extractTest)')
 
 // Can extract month from a NULL literal
 EXPLAIN SELECT EXTRACT (MONTH FROM NULL) FROM ${testName2}_extractTest;
@@ -393,11 +393,11 @@ rows: (*,'explainPlan','
       » column: (Expr = EXTRACT (MONTH FROM NULL) ; Ordinal Expr = EXTRACT (MONTH FROM NULL))
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_extractTest)')
+         » table: (rapids.public.${testName2}_extractTest)')
 
 // Cannot extract month from a time
 EXPLAIN SELECT EXTRACT (MONTH FROM COL4) FROM ${testName2}_extractTest;
-failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (EXTRACT (MONTH FROM TIME)) in expression (EXTRACT (MONTH FROM rapidsse.public.${testName2}_extractTest.COL4))'
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (EXTRACT (MONTH FROM TIME)) in expression (EXTRACT (MONTH FROM rapids.public.${testName2}_extractTest.COL4))'
 
 // Cannot extract month from an interval_dt
 EXPLAIN SELECT EXTRACT (MONTH FROM INTERVAL '1 2' DAY TO HOUR) FROM ${testName2}_extractTest;
@@ -415,10 +415,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT EXTRACT (DAY FROM COL3) FROM ${testName2}_extractTest"
 
 -> -> projectOp
-      » column: (Expr = EXTRACT (DAY FROM rapidsse.public.${testName2}_extractTest.COL3) ; Ordinal Expr = EXTRACT (DAY FROM $3))
+      » column: (Expr = EXTRACT (DAY FROM rapids.public.${testName2}_extractTest.COL3) ; Ordinal Expr = EXTRACT (DAY FROM $3))
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_extractTest)')
+         » table: (rapids.public.${testName2}_extractTest)')
 
 // Can extract day from a timestamp
 EXPLAIN SELECT EXTRACT (DAY FROM COL5) FROM ${testName2}_extractTest;
@@ -431,10 +431,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT EXTRACT (DAY FROM COL5) FROM ${testName2}_extractTest"
 
 -> -> projectOp
-      » column: (Expr = EXTRACT (DAY FROM rapidsse.public.${testName2}_extractTest.COL5) ; Ordinal Expr = EXTRACT (DAY FROM $5))
+      » column: (Expr = EXTRACT (DAY FROM rapids.public.${testName2}_extractTest.COL5) ; Ordinal Expr = EXTRACT (DAY FROM $5))
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_extractTest)')
+         » table: (rapids.public.${testName2}_extractTest)')
 
 // Can extract day from an interval_dt
 EXPLAIN WITH_TYPES SELECT EXTRACT (DAY FROM INTERVAL '1 2' DAY TO HOUR) FROM ${testName2}_extractTest;
@@ -450,7 +450,7 @@ rows: (*,'explainPlan','
       » column: (Expr = EXTRACT (DAY FROM INTERVAL ''1 2'' DAY TO HOUR) ; Ordinal Expr = EXTRACT (DAY FROM INTERVAL ''1 2'' DAY TO HOUR)) ; type: INTEGER
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_extractTest)')
+         » table: (rapids.public.${testName2}_extractTest)')
 
 // Can extract day from a NULL literal
 EXPLAIN SELECT EXTRACT (DAY FROM NULL) FROM ${testName2}_extractTest;
@@ -466,11 +466,11 @@ rows: (*,'explainPlan','
       » column: (Expr = EXTRACT (DAY FROM NULL) ; Ordinal Expr = EXTRACT (DAY FROM NULL))
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_extractTest)')
+         » table: (rapids.public.${testName2}_extractTest)')
 
 // Cannot extract day from a time
 EXPLAIN SELECT EXTRACT (DAY FROM COL4) FROM ${testName2}_extractTest;
-failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (EXTRACT (DAY FROM TIME)) in expression (EXTRACT (DAY FROM rapidsse.public.${testName2}_extractTest.COL4))'
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (EXTRACT (DAY FROM TIME)) in expression (EXTRACT (DAY FROM rapids.public.${testName2}_extractTest.COL4))'
 
 // Cannot extract day from an interval_ym
 EXPLAIN SELECT EXTRACT (DAY FROM INTERVAL '3-2' YEAR TO MONTH) FROM ${testName2}_extractTest;
@@ -488,10 +488,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT EXTRACT (HOUR FROM COL4) FROM ${testName2}_extractTest"
 
 -> -> projectOp
-      » column: (Expr = EXTRACT (HOUR FROM rapidsse.public.${testName2}_extractTest.COL4) ; Ordinal Expr = EXTRACT (HOUR FROM $4))
+      » column: (Expr = EXTRACT (HOUR FROM rapids.public.${testName2}_extractTest.COL4) ; Ordinal Expr = EXTRACT (HOUR FROM $4))
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_extractTest)')
+         » table: (rapids.public.${testName2}_extractTest)')
 
 // Can extract hour from a timestamp
 EXPLAIN SELECT EXTRACT (HOUR FROM COL5) FROM ${testName2}_extractTest;
@@ -504,10 +504,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT EXTRACT (HOUR FROM COL5) FROM ${testName2}_extractTest"
 
 -> -> projectOp
-      » column: (Expr = EXTRACT (HOUR FROM rapidsse.public.${testName2}_extractTest.COL5) ; Ordinal Expr = EXTRACT (HOUR FROM $5))
+      » column: (Expr = EXTRACT (HOUR FROM rapids.public.${testName2}_extractTest.COL5) ; Ordinal Expr = EXTRACT (HOUR FROM $5))
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_extractTest)')
+         » table: (rapids.public.${testName2}_extractTest)')
 
 // Can extract hour from an interval_dt
 EXPLAIN WITH_TYPES SELECT EXTRACT (HOUR FROM INTERVAL '1 2' DAY TO HOUR) FROM ${testName2}_extractTest;
@@ -523,7 +523,7 @@ rows: (*,'explainPlan','
       » column: (Expr = EXTRACT (HOUR FROM INTERVAL ''1 2'' DAY TO HOUR) ; Ordinal Expr = EXTRACT (HOUR FROM INTERVAL ''1 2'' DAY TO HOUR)) ; type: INTEGER
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_extractTest)')
+         » table: (rapids.public.${testName2}_extractTest)')
 
 // Can extract hour from a NULL literal
 EXPLAIN SELECT EXTRACT (HOUR FROM NULL) FROM ${testName2}_extractTest;
@@ -539,11 +539,11 @@ rows: (*,'explainPlan','
       » column: (Expr = EXTRACT (HOUR FROM NULL) ; Ordinal Expr = EXTRACT (HOUR FROM NULL))
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_extractTest)')
+         » table: (rapids.public.${testName2}_extractTest)')
 
 // Cannot extract hour from a date
 EXPLAIN SELECT EXTRACT (HOUR FROM COL3) FROM ${testName2}_extractTest;
-failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (EXTRACT (HOUR FROM DATE)) in expression (EXTRACT (HOUR FROM rapidsse.public.${testName2}_extractTest.COL3))'
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (EXTRACT (HOUR FROM DATE)) in expression (EXTRACT (HOUR FROM rapids.public.${testName2}_extractTest.COL3))'
 
 // Cannot extract hour from an interval_ym
 EXPLAIN SELECT EXTRACT (HOUR FROM INTERVAL '3-2' YEAR TO MONTH) FROM ${testName2}_extractTest;
@@ -561,10 +561,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT EXTRACT (MINUTE FROM COL4) FROM ${testName2}_extractTest"
 
 -> -> projectOp
-      » column: (Expr = EXTRACT (MINUTE FROM rapidsse.public.${testName2}_extractTest.COL4) ; Ordinal Expr = EXTRACT (MINUTE FROM $4))
+      » column: (Expr = EXTRACT (MINUTE FROM rapids.public.${testName2}_extractTest.COL4) ; Ordinal Expr = EXTRACT (MINUTE FROM $4))
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_extractTest)')
+         » table: (rapids.public.${testName2}_extractTest)')
 
 // Can extract minute from a timestamp
 EXPLAIN SELECT EXTRACT (MINUTE FROM COL5) FROM ${testName2}_extractTest;
@@ -577,10 +577,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT EXTRACT (MINUTE FROM COL5) FROM ${testName2}_extractTest"
 
 -> -> projectOp
-      » column: (Expr = EXTRACT (MINUTE FROM rapidsse.public.${testName2}_extractTest.COL5) ; Ordinal Expr = EXTRACT (MINUTE FROM $5))
+      » column: (Expr = EXTRACT (MINUTE FROM rapids.public.${testName2}_extractTest.COL5) ; Ordinal Expr = EXTRACT (MINUTE FROM $5))
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_extractTest)')
+         » table: (rapids.public.${testName2}_extractTest)')
 
 // Can extract minute from an interval_dt
 EXPLAIN WITH_TYPES SELECT EXTRACT (MINUTE FROM INTERVAL '1 2:3:4' DAY TO SECOND) FROM ${testName2}_extractTest;
@@ -596,7 +596,7 @@ rows: (*,'explainPlan','
       » column: (Expr = EXTRACT (MINUTE FROM INTERVAL ''1 2:3:4'' DAY TO SECOND) ; Ordinal Expr = EXTRACT (MINUTE FROM INTERVAL ''1 2:3:4'' DAY TO SECOND)) ; type: INTEGER
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_extractTest)')
+         » table: (rapids.public.${testName2}_extractTest)')
 
 // Cannot extract minute from a day to hour interval
 EXPLAIN WITH_TYPES SELECT EXTRACT (MINUTE FROM INTERVAL '1 2' DAY TO HOUR) FROM ${testName2}_extractTest;
@@ -616,11 +616,11 @@ rows: (*,'explainPlan','
       » column: (Expr = EXTRACT (MINUTE FROM NULL) ; Ordinal Expr = EXTRACT (MINUTE FROM NULL))
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_extractTest)')
+         » table: (rapids.public.${testName2}_extractTest)')
 
 // Cannot extract minute from a date
 EXPLAIN SELECT EXTRACT (MINUTE FROM COL3) FROM ${testName2}_extractTest;
-failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (EXTRACT (MINUTE FROM DATE)) in expression (EXTRACT (MINUTE FROM rapidsse.public.${testName2}_extractTest.COL3))'
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (EXTRACT (MINUTE FROM DATE)) in expression (EXTRACT (MINUTE FROM rapids.public.${testName2}_extractTest.COL3))'
 
 // Cannot extract minute from an interval_ym
 EXPLAIN SELECT EXTRACT (MINUTE FROM INTERVAL '1-2' YEAR TO MONTH) FROM ${testName2}_extractTest;
@@ -638,10 +638,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT EXTRACT (SECOND FROM COL4) FROM ${testName2}_extractTest"
 
 -> -> projectOp
-      » column: (Expr = EXTRACT (SECOND FROM rapidsse.public.${testName2}_extractTest.COL4) ; Ordinal Expr = EXTRACT (SECOND FROM $4))
+      » column: (Expr = EXTRACT (SECOND FROM rapids.public.${testName2}_extractTest.COL4) ; Ordinal Expr = EXTRACT (SECOND FROM $4))
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_extractTest)')
+         » table: (rapids.public.${testName2}_extractTest)')
 
 // Can extract second from a timestamp
 EXPLAIN SELECT EXTRACT (SECOND FROM COL5) FROM ${testName2}_extractTest;
@@ -654,10 +654,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT EXTRACT (SECOND FROM COL5) FROM ${testName2}_extractTest"
 
 -> -> projectOp
-      » column: (Expr = EXTRACT (SECOND FROM rapidsse.public.${testName2}_extractTest.COL5) ; Ordinal Expr = EXTRACT (SECOND FROM $5))
+      » column: (Expr = EXTRACT (SECOND FROM rapids.public.${testName2}_extractTest.COL5) ; Ordinal Expr = EXTRACT (SECOND FROM $5))
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_extractTest)')
+         » table: (rapids.public.${testName2}_extractTest)')
 
 // Can extract second from an interval_dt
 EXPLAIN WITH_TYPES SELECT EXTRACT (SECOND FROM INTERVAL '1 2:3:4.5' DAY TO SECOND) FROM ${testName2}_extractTest;
@@ -673,7 +673,7 @@ rows: (*,'explainPlan','
       » column: (Expr = EXTRACT (SECOND FROM INTERVAL ''1 2:3:4.500000'' DAY TO SECOND) ; Ordinal Expr = EXTRACT (SECOND FROM INTERVAL ''1 2:3:4.500000'' DAY TO SECOND)) ; type: DECIMAL
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_extractTest)')
+         » table: (rapids.public.${testName2}_extractTest)')
 
 // Can extract second from a NULL literal
 EXPLAIN SELECT EXTRACT (SECOND FROM NULL) FROM ${testName2}_extractTest;
@@ -689,11 +689,11 @@ rows: (*,'explainPlan','
       » column: (Expr = EXTRACT (SECOND FROM NULL) ; Ordinal Expr = EXTRACT (SECOND FROM NULL))
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_extractTest)')
+         » table: (rapids.public.${testName2}_extractTest)')
 
 // Cannot extract second from a date
 EXPLAIN SELECT EXTRACT (SECOND FROM COL3) FROM ${testName2}_extractTest;
-failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (EXTRACT (SECOND FROM DATE)) in expression (EXTRACT (SECOND FROM rapidsse.public.${testName2}_extractTest.COL3))'
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (EXTRACT (SECOND FROM DATE)) in expression (EXTRACT (SECOND FROM rapids.public.${testName2}_extractTest.COL3))'
 
 // Cannot extract second from an interval_ym
 EXPLAIN SELECT EXTRACT (SECOND FROM INTERVAL '1-2' YEAR TO MONTH) FROM ${testName2}_extractTest;
@@ -715,10 +715,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT EXTRACT (YEAR FROM COL5) FROM ${testName2}_extractTest"
 
 -> -> projectOp
-      » column: (Expr = EXTRACT (YEAR FROM rapidsse.public.${testName2}_extractTest.COL5) ; Ordinal Expr = EXTRACT (YEAR FROM $5)) ; type: INTEGER
+      » column: (Expr = EXTRACT (YEAR FROM rapids.public.${testName2}_extractTest.COL5) ; Ordinal Expr = EXTRACT (YEAR FROM $5)) ; type: INTEGER
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_extractTest)')
+         » table: (rapids.public.${testName2}_extractTest)')
 
 // Ensure extract of an month returns an integer
 EXPLAIN WITH_TYPES SELECT EXTRACT (MONTH FROM COL5) FROM ${testName2}_extractTest;
@@ -731,10 +731,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT EXTRACT (MONTH FROM COL5) FROM ${testName2}_extractTest"
 
 -> -> projectOp
-      » column: (Expr = EXTRACT (MONTH FROM rapidsse.public.${testName2}_extractTest.COL5) ; Ordinal Expr = EXTRACT (MONTH FROM $5)) ; type: INTEGER
+      » column: (Expr = EXTRACT (MONTH FROM rapids.public.${testName2}_extractTest.COL5) ; Ordinal Expr = EXTRACT (MONTH FROM $5)) ; type: INTEGER
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_extractTest)')
+         » table: (rapids.public.${testName2}_extractTest)')
 
 // Ensure extract of an day returns an integer
 EXPLAIN WITH_TYPES SELECT EXTRACT (DAY FROM COL5) FROM ${testName2}_extractTest;
@@ -747,10 +747,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT EXTRACT (DAY FROM COL5) FROM ${testName2}_extractTest"
 
 -> -> projectOp
-      » column: (Expr = EXTRACT (DAY FROM rapidsse.public.${testName2}_extractTest.COL5) ; Ordinal Expr = EXTRACT (DAY FROM $5)) ; type: INTEGER
+      » column: (Expr = EXTRACT (DAY FROM rapids.public.${testName2}_extractTest.COL5) ; Ordinal Expr = EXTRACT (DAY FROM $5)) ; type: INTEGER
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_extractTest)')
+         » table: (rapids.public.${testName2}_extractTest)')
 
 // Ensure extract of an hour returns an integer
 EXPLAIN WITH_TYPES SELECT EXTRACT (HOUR FROM COL5) FROM ${testName2}_extractTest;
@@ -763,10 +763,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT EXTRACT (HOUR FROM COL5) FROM ${testName2}_extractTest"
 
 -> -> projectOp
-      » column: (Expr = EXTRACT (HOUR FROM rapidsse.public.${testName2}_extractTest.COL5) ; Ordinal Expr = EXTRACT (HOUR FROM $5)) ; type: INTEGER
+      » column: (Expr = EXTRACT (HOUR FROM rapids.public.${testName2}_extractTest.COL5) ; Ordinal Expr = EXTRACT (HOUR FROM $5)) ; type: INTEGER
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_extractTest)')
+         » table: (rapids.public.${testName2}_extractTest)')
 
 // Ensure extract of an minute returns an integer
 EXPLAIN WITH_TYPES SELECT EXTRACT (MINUTE FROM COL5) FROM ${testName2}_extractTest;
@@ -779,10 +779,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT EXTRACT (MINUTE FROM COL5) FROM ${testName2}_extractTest"
 
 -> -> projectOp
-      » column: (Expr = EXTRACT (MINUTE FROM rapidsse.public.${testName2}_extractTest.COL5) ; Ordinal Expr = EXTRACT (MINUTE FROM $5)) ; type: INTEGER
+      » column: (Expr = EXTRACT (MINUTE FROM rapids.public.${testName2}_extractTest.COL5) ; Ordinal Expr = EXTRACT (MINUTE FROM $5)) ; type: INTEGER
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_extractTest)')
+         » table: (rapids.public.${testName2}_extractTest)')
 
 // Ensure extract of an second returns an decimal
 EXPLAIN WITH_TYPES SELECT EXTRACT (SECOND FROM COL5) FROM ${testName2}_extractTest;
@@ -795,31 +795,31 @@ rows: (*,'explainPlan','
    » queryText: "SELECT EXTRACT (SECOND FROM COL5) FROM ${testName2}_extractTest"
 
 -> -> projectOp
-      » column: (Expr = EXTRACT (SECOND FROM rapidsse.public.${testName2}_extractTest.COL5) ; Ordinal Expr = EXTRACT (SECOND FROM $5)) ; type: DECIMAL
+      » column: (Expr = EXTRACT (SECOND FROM rapids.public.${testName2}_extractTest.COL5) ; Ordinal Expr = EXTRACT (SECOND FROM $5)) ; type: DECIMAL
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_extractTest)')
+         » table: (rapids.public.${testName2}_extractTest)')
 
 // -----
 // Cannot extract from an integer
 EXPLAIN SELECT EXTRACT (YEAR FROM COL1) FROM ${testName2}_extractTest;
-failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (EXTRACT (YEAR FROM INTEGER)) in expression (EXTRACT (YEAR FROM rapidsse.public.${testName2}_extractTest.COL1))'
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (EXTRACT (YEAR FROM INTEGER)) in expression (EXTRACT (YEAR FROM rapids.public.${testName2}_extractTest.COL1))'
 
 // Cannot extract from an string
 EXPLAIN SELECT EXTRACT (YEAR FROM COL2) FROM ${testName2}_extractTest;
-failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (EXTRACT (YEAR FROM VARCHAR)) in expression (EXTRACT (YEAR FROM rapidsse.public.${testName2}_extractTest.COL2))'
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (EXTRACT (YEAR FROM VARCHAR)) in expression (EXTRACT (YEAR FROM rapids.public.${testName2}_extractTest.COL2))'
 
 // Cannot extract from an float
 EXPLAIN SELECT EXTRACT (YEAR FROM COL8) FROM ${testName2}_extractTest;
-failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (EXTRACT (YEAR FROM FLOAT)) in expression (EXTRACT (YEAR FROM rapidsse.public.${testName2}_extractTest.COL8))'
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (EXTRACT (YEAR FROM FLOAT)) in expression (EXTRACT (YEAR FROM rapids.public.${testName2}_extractTest.COL8))'
 
 // Cannot extract from an decimal
 EXPLAIN SELECT EXTRACT (YEAR FROM COL9) FROM ${testName2}_extractTest;
-failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (EXTRACT (YEAR FROM DECIMAL)) in expression (EXTRACT (YEAR FROM rapidsse.public.${testName2}_extractTest.COL9))'
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (EXTRACT (YEAR FROM DECIMAL)) in expression (EXTRACT (YEAR FROM rapids.public.${testName2}_extractTest.COL9))'
 
 // Cannot extract from an boolean
 EXPLAIN SELECT EXTRACT (YEAR FROM COL10) FROM ${testName2}_extractTest;
-failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (EXTRACT (YEAR FROM BOOLEAN)) in expression (EXTRACT (YEAR FROM rapidsse.public.${testName2}_extractTest.COL10))'
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (EXTRACT (YEAR FROM BOOLEAN)) in expression (EXTRACT (YEAR FROM rapids.public.${testName2}_extractTest.COL10))'
 
 
 // -----

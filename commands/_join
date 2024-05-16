@@ -26,8 +26,8 @@ row: (15,'aggregateSplit','
    » routing: unicast
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
-      » column: (Expr = rapidsse.public.region.r_name ; Ordinal Expr = $6)
+      » column: (Expr = rapids.public.nation.n_nationkey ; Ordinal Expr = $1)
+      » column: (Expr = rapids.public.region.r_name ; Ordinal Expr = $6)
 
 -> -> -> stageMarker
          » location: all partitions
@@ -37,7 +37,7 @@ row: (15,'aggregateSplit','
             » location: all partitions
             » hints: joinAlgorithm = ''index'', joinIndex = ''IxR_REGIONKEY'', joinRouting = ''unicast''
             » join type: Inner Join
-            » predicate: (rapidsse.public.nation.n_nationkey = rapidsse.public.region.r_regionkey)
+            » predicate: (rapids.public.nation.n_nationkey = rapids.public.region.r_regionkey)
             » ordinal predicate: ($1 = $5)
 
 -> -> -> -> -> stageMarker
@@ -46,11 +46,11 @@ row: (15,'aggregateSplit','
 
 -> -> -> -> -> -> tableScanOp
                   » location: all partitions
-                  » table: (rapidsse.public.nation)
+                  » table: (rapids.public.nation)
 
 -> -> -> -> -> tableScanOp
                » location: all partitions
-               » table: (rapidsse.public.region)')
+               » table: (rapids.public.region)')
 
 success: 1 rows fetched
 */

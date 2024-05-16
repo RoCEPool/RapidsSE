@@ -18,10 +18,12 @@ namespace STORE
     Card_StreamPer(void);
    ~Card_StreamPer(void) noexcept(false);
 
-     void vEstStreamCost(Card_TableList* p_tableList,
+     void vEstStreamCost(CardIter* pCI,
+                         Card_TableList* p_tableList,
                          Card_FiltPredList* p_filtPredList);
 
-     eXK eJoinCast(Card_StreamPtn*  p_streamPtn,
+     eXK eJoinCast(CardIter* pCI,
+                   Card_StreamPtn*  p_streamPtn,
                    Card_TableList*  p_tableList,
                    Card_StreamJoin* p_streamJoin);
 

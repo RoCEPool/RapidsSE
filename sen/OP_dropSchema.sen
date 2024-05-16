@@ -5,6 +5,14 @@
 " OP_dropSchema.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* drop a schema entry in the metadata tables                                 */
+/*----------------------------------------------------------------------------*/
+: metadata_dropSchema params| sSchemaNm |
+
+  sSchemaNm MetaDataTable[].deleteSchema
+;
+
+/*----------------------------------------------------------------------------*/
 /* handler for EV_M_DATAPULSE ...                                             */
 /*----------------------------------------------------------------------------*/
 : dropSchema_DataMarker
@@ -25,6 +33,8 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // remove the schema
   <schemaNm> removeSchema
+
+  <schemaNm> metadata_dropSchema
 
   true
 ;

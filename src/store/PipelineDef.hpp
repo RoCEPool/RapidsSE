@@ -3,12 +3,13 @@
 /*============================================================================*/
 #pragma once
 
+#include "AbstractDef.hpp"
 #include "StageDef.hpp"
 #include "ListExo2_t.hpp"
 
 namespace STORE
 {
-  class PipelineDef : public Object
+  class PipelineDef : public AbstractDef
                     , public ListExo2_t<StageDef>
   {
   public:
@@ -26,7 +27,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    PipelineDef(Stz* szPipelineNm);
+    PipelineDef(Stz* szPipelineNm, const char* azFile, i8 iLine);
 
     ~PipelineDef(void) noexcept(false);
 

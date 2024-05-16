@@ -56,9 +56,6 @@ Card_Hash* Card_Hash::pDerive(Card_Expr* p_expr,
 
   Card_Hash* p_hash = new Card_Hash;
 
-  Card_Stream* p_stream = new Card_Stream;
-  p_hash->vAppendChild(p_stream);
-
   Card_Level* p_level = new Card_Level(AL_PARTITION);
   p_hash->vAppendChild(p_level);
 
@@ -73,7 +70,7 @@ Card_Hash* Card_Hash::pDerive(Card_Expr* p_expr,
   p_hshCol->vAppendChild(p_card_term);
 
   if (p_emitted_prev)
-    p_stream->vAppendChild(p_emitted_prev->pClone());
+    p_hash->vAppendChild(p_emitted_prev->pClone());
 
   return p_hash;
 }

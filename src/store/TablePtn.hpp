@@ -56,6 +56,7 @@ namespace STORE
     bool bPopulateIndex(i8 iIndexNo);
     void vRemoveIndex(i8 iIndexNo);
     BufferId oRootBufferId(void);
+    Pds* pRootPds(void);
     void vAnalyze(i8& nBuffers, i8& nRows, i8& jSumRowBytes);
     void vTruncate(void);
     void vTruncateIndex(Index* pIndex);

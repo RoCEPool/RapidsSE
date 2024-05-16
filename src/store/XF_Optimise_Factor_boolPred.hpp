@@ -24,7 +24,7 @@ namespace STORE
 
     bool bOptimise(void);
 
-    void vFactor_boolPred(Card_BoolPred* p_boolPred);
+    void vFactor_boolPred(Card_Predicate* p_predicate);
 
   private:
     Footer* aFooter(void);

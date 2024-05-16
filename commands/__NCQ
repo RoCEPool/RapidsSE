@@ -24,7 +24,7 @@ pipeline __subquery0003
       | next
 
     stage stageMarker0889 on all partitions :
-      scan rapidsse public lineitem
+      scan rapids public lineitem
       | project " type INTEGER as l_orderkey $1 "
       | combined 0
       | next
@@ -94,7 +94,7 @@ begin
       | pulse once
       | stageMarker0889
     stage stageMarker0889 on all partitions :
-      scan rapidsse public lineitem
+      scan rapids public lineitem
       | project " type INTEGER as l_orderkey $1 "
       | combined 0
       | stageMarker0892
@@ -148,7 +148,7 @@ begin
               | next
 
             stage __subquery0003_b on all partitions :
-              scan rapidsse public lineitem
+              scan rapids public lineitem
               | project expr type INTEGER as l_orderkey $1
               | combined 0
               | next

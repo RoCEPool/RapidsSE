@@ -58,18 +58,18 @@ void Card_Having::vSmooth(CardIter* pCI, bool bSawProject)
 /*----------------------------------------------------------------------------*/
 /* smooth                                                                     */
 /*----------------------------------------------------------------------------*/
-void Card_Having::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
+void Card_Having::vSmooth(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
+  RASSERT(pCI->E.p_Op == pCI->E.p_having);
+
   pCI->E.p_having->pSymbol()->Y_vSet(P_Smoothed);
 
-  bool bBump = ! pCarryForward->Project_postAgg.m_bSeen;
+  bool bBump = ! pCI->Smooth.Project_postAgg.m_bSeen;
 
-  if (pCarryForward->Having.m_bCorrect_After_Inject)
+  if (pCI->Smooth.Having.m_bCorrect_After_Inject)
     vCorrect_After_Inject(pCI, bBump);
-
-  pCI->Dic.m_p_expr = pCI->Flux.m_pArriving = pSub_emit();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -79,24 +79,12 @@ void Card_Having::vCorrect_After_Inject(CardIter* pCI, bool bBump)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  pCI->E.p_boolPred = pSub_boolPred();
-
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  auto bLambdaFn_cmp = [](Card_Term *p_term)
-  {
-
-    if (p_term->pSymbol()->bHasFacet(SF_EXP_COL))
-      p_term->vBump_ordCol(SF_EXP_COL);
-
-    return true;
-  };
+  pCI->E.p_predicate = pSub_predicate();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (bBump)
-    pCI->E.p_boolPred->bLambdaWalk_term(bLambdaFn_cmp);
+    pCI->E.p_predicate->vBump_term_ordCol(SF_EXP_COL);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -124,7 +112,7 @@ void Card_Having::vCorrect_After_Inject(CardIter* pCI, bool bBump)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pCI->E.p_boolPred->bLambdaWalk(CK_RLNCONJ, bLambdaFn_ro);
+  pCI->E.p_predicate->bLambdaWalk(CK_RLNCONJ, bLambdaFn_ro);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -135,7 +123,7 @@ void Card_Having::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
   UNUSED(pParent);
 
-  vValidate_mustHave(CK_s_LEVEL, CK_NONE);
+  vValidate_child_mustBe(CK_p_LEVEL, CK_NONE);
   Card::vValidate(pCI,iDepth,pParent);
   pCI->vValidateChildren(this,iDepth+1);
   vValidationPassed();

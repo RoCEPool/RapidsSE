@@ -52,9 +52,7 @@ TablePtn::TablePtn(Table *pTable, LglPtn tLglPtn, PhyPtn tPhyPtn)
       NEVER_REACH;
       break;
     case TT_INTERNAL:
-      m_eKind = CN_CRWTABLEPTN;
-      m_pCrwTablePtn = new CrwTablePtn(m_pTable,m_tLglPtn);
-      break;
+    case TT_METADATA:
     case TT_NORMAL:
       m_eKind = CN_CRWTABLEPTN;
       m_pCrwTablePtn = new CrwTablePtn(m_pTable,m_tLglPtn);
@@ -219,8 +217,9 @@ void TablePtn::vAppendBuffer(DataBuffer* pDataBuffer, i8& nRowsInserted)
   // append buffer first, then
   // insert entries from the buffer into the indexes
 
-  switch (m_eKind) {
-    case CN_CRWTABLEPTN: {
+  eCN eClass = pDataBuffer->eGetClassNo();
+  switch (eClass) {
+    case BASE::CN_CRWBUFFER: {
       CrwBuffer *pCrwBuffer = _pCrwBuffer(pDataBuffer);
       if (pCrwBuffer->nRows() == 0) {
         delete pCrwBuffer;
@@ -230,6 +229,17 @@ void TablePtn::vAppendBuffer(DataBuffer* pDataBuffer, i8& nRowsInserted)
       nRowsInserted = pCrwBuffer->nRows();
       // TODO: Arjun - Update below for paging and bufferids
       vInsertIndexEntries(_pCrwBuffer(pDataBuffer));
+      break;
+    }
+
+    case CN_PDS: {
+      Pds* pPds = _pPds(pDataBuffer);
+      if (pPds->nItems() == 0) {
+        delete pPds;
+        return;
+      }
+      m_pCrwTablePtn->vAppendBuffer(pPds);
+      nRowsInserted = pPds->nItems();
       break;
     }
 
@@ -397,6 +407,19 @@ BufferId TablePtn::oRootBufferId(void)
   switch (m_eKind) {
     case CN_CRWTABLEPTN:
       return m_pCrwTablePtn->oRootCrwBufferId();
+    default: NEVER_REACH;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* Root Pds                                                                   */
+/*----------------------------------------------------------------------------*/
+Pds* TablePtn::pRootPds(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
+  switch (m_eKind) {
+    case CN_CRWTABLEPTN:
+      return _pPds(AM::pHashMap()->pValueAt(m_pCrwTablePtn->oRootCrwBufferId().m_pvAsAddress, true));
     default: NEVER_REACH;
   }
 }

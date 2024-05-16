@@ -34,10 +34,10 @@ rows: (*,'explainPlan','
    » queryText: "select n_name from ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
+      » column: (Expr = rapids.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 
 // Two hints in same hint block
@@ -53,10 +53,10 @@ rows: (*,'explainPlan','
    » queryText: "select n_name from ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
+      » column: (Expr = rapids.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 
 // Two hints in separate hint blocks
@@ -72,10 +72,10 @@ rows: (*,'explainPlan','
    » queryText: "select n_name from ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
+      » column: (Expr = rapids.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -94,10 +94,10 @@ rows: (*,'explainPlan','
    » queryText: "select n_name from ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
+      » column: (Expr = rapids.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 
 // String value
@@ -113,10 +113,10 @@ rows: (*,'explainPlan','
    » queryText: "select n_name from ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
+      » column: (Expr = rapids.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 
 // positive integer value
@@ -132,10 +132,10 @@ rows: (*,'explainPlan','
    » queryText: "select n_name from ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
+      » column: (Expr = rapids.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 
 // negative integer value
@@ -151,10 +151,10 @@ rows: (*,'explainPlan','
    » queryText: "select n_name from ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
+      » column: (Expr = rapids.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 
 // positive float value
@@ -170,10 +170,10 @@ rows: (*,'explainPlan','
    » queryText: "select n_name from ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
+      » column: (Expr = rapids.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 
 // negative integer value
@@ -189,10 +189,10 @@ rows: (*,'explainPlan','
    » queryText: "select n_name from ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
+      » column: (Expr = rapids.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 
 // positive decimal value
@@ -208,10 +208,10 @@ rows: (*,'explainPlan','
    » queryText: "select n_name from ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
+      » column: (Expr = rapids.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 
 // negative decimal value
@@ -227,10 +227,10 @@ rows: (*,'explainPlan','
    » queryText: "select n_name from ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
+      » column: (Expr = rapids.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 
 // boolean value
@@ -246,10 +246,10 @@ rows: (*,'explainPlan','
    » queryText: "select n_name from ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
+      » column: (Expr = rapids.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 
 // boolean value
@@ -265,10 +265,10 @@ rows: (*,'explainPlan','
    » queryText: "select n_name from ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
+      » column: (Expr = rapids.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 
 // boolean value
@@ -284,10 +284,10 @@ rows: (*,'explainPlan','
    » queryText: "select n_name from ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
+      » column: (Expr = rapids.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 
 // boolean value
@@ -303,10 +303,10 @@ rows: (*,'explainPlan','
    » queryText: "select n_name from ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
+      » column: (Expr = rapids.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 
 // null value
@@ -322,10 +322,10 @@ rows: (*,'explainPlan','
    » queryText: "select n_name from ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
+      » column: (Expr = rapids.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 
 // null value
@@ -341,10 +341,10 @@ rows: (*,'explainPlan','
    » queryText: "select n_name from ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
+      » column: (Expr = rapids.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -363,10 +363,10 @@ rows: (*,'explainPlan','
    » queryText: "select n_name from ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
+      » column: (Expr = rapids.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 
 explain /*+ hint1 = (id1, 'id2')  */ select n_name from ${testName2}_nation;
@@ -381,10 +381,10 @@ rows: (*,'explainPlan','
    » queryText: "select n_name from ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
+      » column: (Expr = rapids.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 
 explain /*+ hint1 = (42, -43)     */ select n_name from ${testName2}_nation;
@@ -399,10 +399,10 @@ rows: (*,'explainPlan','
    » queryText: "select n_name from ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
+      » column: (Expr = rapids.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 
 explain /*+ hint1 = (1.23, -1.23) */ select n_name from ${testName2}_nation;
@@ -417,10 +417,10 @@ rows: (*,'explainPlan','
    » queryText: "select n_name from ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
+      » column: (Expr = rapids.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 
 explain /*+ hint1 = (1.23e0, -1.23e0) */ select n_name from ${testName2}_nation;
@@ -435,10 +435,10 @@ rows: (*,'explainPlan','
    » queryText: "select n_name from ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
+      » column: (Expr = rapids.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 
 explain /*+ hint1 = (true, false) */ select n_name from ${testName2}_nation;
@@ -453,10 +453,10 @@ rows: (*,'explainPlan','
    » queryText: "select n_name from ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
+      » column: (Expr = rapids.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 
 explain /*+ hint1 = (null, NULL)  */ select n_name from ${testName2}_nation;
@@ -471,10 +471,10 @@ rows: (*,'explainPlan','
    » queryText: "select n_name from ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
+      » column: (Expr = rapids.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 
 
@@ -494,10 +494,10 @@ rows: (*,'explainPlan','
    » queryText: "select n_name from ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
+      » column: (Expr = rapids.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 
 explain /*+ hint1 = (42, 'id2')  */ select n_name from ${testName2}_nation;
@@ -512,10 +512,10 @@ rows: (*,'explainPlan','
    » queryText: "select n_name from ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
+      » column: (Expr = rapids.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 
 explain /*+ hint1 = (42, false)  */ select n_name from ${testName2}_nation;
@@ -530,10 +530,10 @@ rows: (*,'explainPlan','
    » queryText: "select n_name from ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
+      » column: (Expr = rapids.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 
 explain /*+ hint1 = (1.23, null) */ select n_name from ${testName2}_nation;
@@ -548,10 +548,10 @@ rows: (*,'explainPlan','
    » queryText: "select n_name from ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
+      » column: (Expr = rapids.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 
 explain /*+ hint1 = (1.23e0, null) */ select n_name from ${testName2}_nation;
@@ -566,10 +566,10 @@ rows: (*,'explainPlan','
    » queryText: "select n_name from ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
+      » column: (Expr = rapids.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 
 
@@ -589,10 +589,10 @@ rows: (*,'explainPlan','
    » queryText: "select n_name from ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
+      » column: (Expr = rapids.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 
 explain /*+ hint1 = true, hint2 = 1.23 */ select n_name from ${testName2}_nation;
@@ -607,10 +607,10 @@ rows: (*,'explainPlan','
    » queryText: "select n_name from ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
+      » column: (Expr = rapids.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 
 explain /*+ hint1 = 'str', hint2 = null */ select n_name from ${testName2}_nation;
@@ -625,10 +625,10 @@ rows: (*,'explainPlan','
    » queryText: "select n_name from ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
+      » column: (Expr = rapids.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 
 explain /*+ hint1 = 1.23e0 */ /*+ hint2 = -1 */ select n_name from ${testName2}_nation;
@@ -643,10 +643,10 @@ rows: (*,'explainPlan','
    » queryText: "select n_name from ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
+      » column: (Expr = rapids.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -665,10 +665,10 @@ rows: (*,'explainPlan','
    » queryText: "select n_name from ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
+      » column: (Expr = rapids.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
          
          
 explain /*+ hint1 = (1, -2, 3), hint2 = (null, 'str') */ select n_name from ${testName2}_nation;
@@ -683,10 +683,10 @@ rows: (*,'explainPlan','
    » queryText: "select n_name from ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
+      » column: (Expr = rapids.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
          
 
 explain /*+ hint1 = (1, -2, 3.141), hint2 = (null, 'str') */ select n_name from ${testName2}_nation;
@@ -701,10 +701,10 @@ rows: (*,'explainPlan','
    » queryText: "select n_name from ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
+      » column: (Expr = rapids.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -723,10 +723,10 @@ rows: (*,'explainPlan','
    » queryText: "select n_name from ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
+      » column: (Expr = rapids.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
          
 
 explain /*+ hint1 = (1), hint2 = (null, 'str') */ select n_name from ${testName2}_nation;
@@ -741,10 +741,10 @@ rows: (*,'explainPlan','
    » queryText: "select n_name from ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
+      » column: (Expr = rapids.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
          
 
 explain /*+ hint1, hint2 = (null, 'str') */ select n_name from ${testName2}_nation;
@@ -759,10 +759,10 @@ rows: (*,'explainPlan','
    » queryText: "select n_name from ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
+      » column: (Expr = rapids.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
          
 
 explain /*+ hint1, hint2 = (null, 'str'), hint3 */ select n_name from ${testName2}_nation;
@@ -777,10 +777,10 @@ rows: (*,'explainPlan','
    » queryText: "select n_name from ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
+      » column: (Expr = rapids.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 
 

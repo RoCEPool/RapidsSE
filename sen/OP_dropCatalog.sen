@@ -5,6 +5,14 @@
 " OP_dropCatalog.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* drop a catalog entry in the metadata tables                                */
+/*----------------------------------------------------------------------------*/
+: metadata_dropCatalog params| sCatalogNm |
+
+  sCatalogNm MetaDataTable[].deleteCatalog
+;
+
+/*----------------------------------------------------------------------------*/
 /* handler for EV_M_DATAPULSE ...                                             */
 /*----------------------------------------------------------------------------*/
 : dropCatalog_DataMarker
@@ -25,6 +33,8 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // remove the catalog
   <catalogNm> removeCatalog
+
+  <catalogNm> metadata_dropCatalog
 
   true
 ;

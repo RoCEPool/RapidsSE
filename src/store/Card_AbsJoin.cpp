@@ -9,7 +9,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE, Card_AbsJoin, CK_c_ABSJOIN)
+__pCastFunction_Card(STORE, Card_AbsJoin, CK_o_ABSJOIN)
 __aNewFunction(Card_AbsJoin, CN_CARD)
 __vDeleteFunction(Card_AbsJoin, CN_CARD)
 
@@ -18,7 +18,7 @@ __vDeleteFunction(Card_AbsJoin, CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_AbsJoin::Card_AbsJoin(void)
-: Card_CONSTRUCTION(CK_c_ABSJOIN, 1)
+: Card_CONSTRUCTION(CK_o_ABSJOIN, 1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

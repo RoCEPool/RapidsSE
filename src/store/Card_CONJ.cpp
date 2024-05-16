@@ -397,21 +397,6 @@ void Card_CONJ::vMorph_sqlOp_To_EQ(CardIter* pCI, Card_Term* p_term)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_CONJ::vPrint(Ribbon* pRibbon, i8 iDepth)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  pRibbon->vSprintSnippet(false, "%c%c%s%lld]"_Stz,
-                          cMark1(),
-                          cMark2(),
-                          Stz::szDots(iDepth - 1),
-                          m_i_Child);
-
-}
-
-/*----------------------------------------------------------------------------*/
 /* inspect <PRED>                                                             */
 /*----------------------------------------------------------------------------*/
 Symbol* Card_CONJ::pTable_WhichTableFor_Conj(CardIter* pCI)
@@ -426,7 +411,7 @@ Symbol* Card_CONJ::pTable_WhichTableFor_Conj(CardIter* pCI)
   for (i8 i_Test = 0 ; i_Test < pCI->E.p_deck->nChildCards() ; i_Test++) {
     Card *pTestCard = pCI->E.p_deck->pGetChild(i_Test);
 
-    if (pTestCard->bIsCard(CK_c_FOLD))
+    if (pTestCard->bIsCard(CK_o_FOLD))
       i_Fold = i_Test;
   }
 

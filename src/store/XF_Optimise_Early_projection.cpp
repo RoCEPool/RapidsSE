@@ -1,10 +1,11 @@
 /*============================================================================*/
-/* XF_Optimise_Early_projection.cpp -- Early projection                                */
+/* XF_Optimise_Early_projection.cpp -- Early projection                       */
 /*============================================================================*/
 
 #include "XF_Optimise_Early_projection.hpp"
 #include "eOT.h"
 
+#include "Card_OP.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -52,10 +53,7 @@ void XF_Optimise_Early_projection::vOptimise(CardIter* pCI)
 
   bool b1;
 
-  b1 = pXF_Early_projection->bEarly_needed_loop();
-  b1 = pXF_Early_projection->bEarly_projection_loop();
-
-  b1 = pXF_Early_projection->bOptimise();
+  b1 = pXF_Early_projection->bEarly_rloop();
 
   pXF_Early_projection->vOptimised(b1);
 
@@ -68,9 +66,9 @@ void XF_Optimise_Early_projection::vOptimise(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* reverse loop through deck creating early arc's                             */
 /*----------------------------------------------------------------------------*/
-bool XF_Optimise_Early_projection::bOptimise(void)
+bool XF_Optimise_Early_projection::bEarly_rloop(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_EARLY_PROJECTION, _FOOTER_);
 
@@ -83,35 +81,14 @@ bool XF_Optimise_Early_projection::bOptimise(void)
 
   RASSERT(nullptr == m_pCI->Early.m_pNeeded_later);
 
-  m_pCI->vForwards(false);
-  m_pCI->vBeginEach_reverse();
+  m_pCI->vClearRegisters();
+  m_pCI->vBeginEach_tail();
 
-  for (;;) {
-
-    m_pCI->Early.m_pOP_root = nullptr;
-    m_pCI->Early.m_pOP_leaf = nullptr;
-
-    bool bEarlyRoot = false;
-
-    while (m_pCI->bEachOp_reverse()) {
-      if (Card_OP::bIsOp(m_pCI->E.p_Op) && ((Card_OP*)m_pCI->E.p_Op)->bIsEarlyRoot()) {
-        bEarlyRoot = true;
-        break;
-      }
-    }
-    if (! bEarlyRoot)
-      break;
-
-    ((Card_OP*)m_pCI->E.p_Op)->vEarlyProject_root(m_pCI);
-
-    if (m_pCI->Early.m_pNeeded_later) {
-      DELETE_CARD(m_pCI->Early.m_pNeeded_later);
-    }
-
+  for (i8 iRoot = 0; bPriorRoot(); iRoot++) {
+    RASSERT(m_pCI->Early.m_pNeeded_later);
+    vEarly_root(iRoot);
+    vEarly_tip(iRoot);
     bOptRun = true;
-
-
-    m_pCI->vResynchOp(m_pCI->Early.m_pOP_leaf);
   }
 
   m_pCI->vEndTransform(__LINE__);
@@ -120,176 +97,306 @@ bool XF_Optimise_Early_projection::bOptimise(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* loop thru operators / early projection                                     */
+/* scan backward looking for prior arc root                                   */
 /*----------------------------------------------------------------------------*/
-bool XF_Optimise_Early_projection::bEarly_needed_loop(void)
+bool XF_Optimise_Early_projection::bPriorRoot(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_EARLY_PROJECTION, _FOOTER_);
 
-  bool bOptRun = false;
-
-  m_pCI->vTransform(__FILE__, __func__, XF_OPTIMISE_EARLY_PROJECTION);
-
-  RASSERT(nullptr == m_pCI->Early.m_pNeeded_later);
-
-  m_pCI->vForwards(false);
-  m_pCI->vBeginEach_reverse();
+  bool bFoundNextRoot = false;
 
   while (m_pCI->bEachOp_reverse()) {
-    bOptRun = bEarly_needed_OP();
-  }
-
-  m_pCI->vEndTransform(__LINE__);
-
-  m_pCI->Early.m_pNeeded_later = nullptr;
-
-  return bOptRun;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool XF_Optimise_Early_projection::bEarly_needed_OP(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_EARLY_PROJECTION, _FOOTER_);
-
-  bool bOptRun = false;
-
-  RASSERT(m_pCI->E.p_Op->bIsOp());
-  switch (m_pCI->E.e_Op) {
-
-    case CK_o_AGGREG:
-    case CK_o_CALL:
-    case CK_o_CAST:
-    case CK_c_COMBINED:
-    case CK_o_CORRELATION:
-    case CK_o_CROSSJOIN:
-    case CK_o_FILTER:
-    case CK_o_FROM:
-    case CK_o_GBYAGG:
-    case CK_o_HASH:
-    case CK_o_HAVING:
-    case CK_o_INDEXSCAN:
-    case CK_o_INDEXJOIN:
-    case CK_o_INFLATE:
-    case CK_o_KEYEXISTS:
-    case CK_o_KEYNOTEXISTS:
-    case CK_o_LIMIT:
-    case CK_o_ORDAGG:
-    case CK_o_PROJECT:
-    case CK_o_SCAN:
-    case CK_o_SORT:
-    case CK_o_TOP:
-    case CK_o_WHERE:
+    if (bIsRoot()) {
+      bFoundNextRoot = true;
       break;
-
-    default:
-      break;
-  }
-
-  if (((Card_OP*)m_pCI->E.p_Op)->bIsEarlyRoot()) {
-
-    m_pCI->E.p_emit = m_pCI->E.p_Op->pSub_emit();
-    m_pCI->E.p_key  = m_pCI->E.p_Op->pSub_key();
-
-    switch (m_pCI->E.e_Op) {
-      case CK_o_AGGREG:
-        m_pCI->E.p_aggreg->vCraft_needed_root(m_pCI);
-        break;
-
-      case CK_o_GBYAGG:
-        m_pCI->E.p_gbyAgg->vCraft_needed_root(m_pCI);
-        break;
-
-      case CK_o_ORDAGG:
-        m_pCI->E.p_ordAgg->vCraft_needed_root(m_pCI);
-        break;
-
-        // -- -- -- -- -- -- --
-      case CK_o_PROJECT:
-        m_pCI->E.p_project->vCraft_needed_root(m_pCI);
-        break;
-
-      case CK_o_INDEXJOIN:
-        m_pCI->E.p_indexJoin->vCraft_needed_root(m_pCI);
-        break;
-
-      default:
-        NEVER_REACH
     }
   }
 
-  return bOptRun;
+  return bFoundNextRoot;
 }
 
 /*----------------------------------------------------------------------------*/
-/* loop thru operators / early projection                                     */
+/* process an early arc from this root                                        */
 /*----------------------------------------------------------------------------*/
-bool XF_Optimise_Early_projection::bEarly_projection_loop(void)
+void XF_Optimise_Early_projection::vEarly_root(i8 iRoot)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_EARLY_PROJECTION, _FOOTER_);
 
-  bool bOptRun = false;
+  //m_pCI->E.p_Op->vDumpShort(__FUNCTION__,__LINE__,">> root"_Stz,iRoot);
+  RASSERT(! m_pCI->pEarlyTip());
+  RASSERT(m_pCI->Early.m_pNeeded_later);
+  RASSERT(! m_pCI->Arriving.m_pEmitted_prior);
 
-  m_pCI->vTransform(__FILE__, __func__, XF_OPTIMISE_EARLY_PROJECTION);
+  Card_Project* p_project_early;
 
-  RASSERT(nullptr == m_pCI->Early.m_pNeeded_later);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // where are starting?
 
-  m_pCI->vBeginEach();
+  if (m_pCI->E.p_Op->bIsCard(CK_o_PROJECT)) {
+    // - starting new arc from a project
 
-  while (m_pCI->bEachOp()) {
-    bOptRun = bEarly_projection_OP();
+    m_pCI->E.p_Op->vAppendChild(m_pCI->Early.m_pNeeded_later->pDupCardRecursive());
+  }
+  else {
+    // - starting new arc from some other op
+    m_pCI->E.p_Op->vDecision(m_pCI,XD_ADD_EARLY_PROJECT,__FUNCTION__ ,__LINE__);
+
+    p_project_early = m_pCI->Early.m_pNeeded_later->pNew_project_early(m_pCI);
+    p_project_early->pSymbol()->Y_vSet(P_Line,__LINE__);
+    m_pCI->vInsertBefore(p_project_early, m_pCI->E.p_Op);
+    m_pCI->vRepositionOp();
   }
 
-  m_pCI->vEndTransform(__LINE__);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // recursively process body of arc leftwards to tip
 
-  m_pCI->Early.m_pNeeded_later = nullptr;
+  vEarly_body(iRoot, 0, __FUNCTION__, __LINE__);
+  RASSERT(m_pCI->pEarlyTip());
+  RASSERT(m_pCI->Early.m_pNeeded_later);
+  RASSERT(m_pCI->Arriving.m_pEmitted_prior);
 
-  return bOptRun;
+  m_pCI->E.p_Op->vRestate_emit(m_pCI);
+  m_pCI->vSnapIf_arriving();
+
+  m_pCI->vSnap_arriving(nullptr,nullptr);
+
+  //m_pCI->E.p_Op->vDumpShort(__FUNCTION__,__LINE__,"<< root"_Stz,iRoot);
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* process non-root operator sequence of an early arc                         */
 /*----------------------------------------------------------------------------*/
-bool XF_Optimise_Early_projection::bEarly_projection_OP(void)
+void XF_Optimise_Early_projection::vEarly_body(i8 iRoot, i8 iDepth,
+                                               const char* azCaller, i8 iLine)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_EARLY_PROJECTION, _FOOTER_);
 
-  bool bOptRun = false;
+  RASSERT(m_pCI->Early.m_pNeeded_later);
+  RASSERT(! m_pCI->Arriving.m_pEmitted_prior);
 
-  RASSERT(m_pCI->E.p_Op->bIsOp());
+  m_pCI->E.p_deck->vRenumberRoot(0);
+  m_pCI->E.p_Op->vDumpCaller(__FUNCTION__,">>"_Stz,azCaller,iLine);
+
+  //m_pCI->E.p_Op->pSymbol()->Y_vSet(P_EarlyArc,iRoot);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // back step to prev op
+
+  if (!m_pCI->pPeekPrev()) {
+    m_pCI->vEarlyTip(m_pCI->E.p_Op);
+    return;
+  }
+
+  m_pCI->vPushEach();
+  RASSERT(m_pCI->bEachOp_reverse());
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // have we arrived at the tip of this arc?
+
+  if (bIsTip()) {
+    m_pCI->vSnapIf_arriving();
+    m_pCI->vPopEach();
+    //m_pCI->E.p_Op->vDumpShort(__FUNCTION__,__LINE__,"<< arcBody"_Stz,iRoot,iDepth);
+    m_pCI->vEarlyTip(m_pCI->E.p_Op);
+    return;
+  }
+
+  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+  
+  if (m_pCI->E.p_Op->bIsCard(CK_o_PROJECT)) {
+    RASSERT (m_pCI->E.p_project->pSymbol()->Y_bHas(P_Early));
+    RASSERT(m_pCI->E.p_project->pSub_needed());
+
+    vEarly_body(iRoot, iDepth + 1, __FUNCTION__, __LINE__);
+    RASSERT(m_pCI->pEarlyTip());
+
+    m_pCI->E.p_needed = m_pCI->E.p_project->pSub_needed();
+
+    m_pCI->E.p_emit = m_pCI->E.p_project->pCraft_emit_early(m_pCI);
+    m_pCI->E.p_project->vAppendChild(m_pCI->E.p_emit);
+
+    m_pCI->vSnapIf_arriving(false);
+    m_pCI->vPopEach();
+    return;
+  }
+
+  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+  Card_Needed* p_needed_save = m_pCI->Early.m_pNeeded_later->pClone();
+
+  // which card did we arrive at?
+  switch (m_pCI->E.e_Op) {
+
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    case CK_o_CROSSJOIN:
+      break;
+
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    case CK_o_FILTER:
+      m_pCI->E.p_filter->vAdd_transients(m_pCI);
+      break;
+
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    case CK_o_INDEXJOIN:
+      m_pCI->E.p_indexJoin->vAdd_transients(m_pCI);
+      vInsert_project_early();
+      m_pCI->vRepositionOp();
+      break;
+
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    case CK_o_KEYEXISTS:
+      m_pCI->E.p_keyExists->vAdd_transients(m_pCI);
+      vInsert_project_early();
+      m_pCI->vRepositionOp();
+      break;
+
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    case CK_o_KEYNOTEXISTS:
+      m_pCI->E.p_keyNotExists->vAdd_transients(m_pCI);
+      vInsert_project_early();
+      m_pCI->vRepositionOp();
+      break;
+
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    case CK_o_WHERE:
+      m_pCI->E.p_where->vAdd_transients(m_pCI);
+      break;
+
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    default:
+      m_pCI->E.p_Op->vDump(__func__);
+      NEVER_REACH
+  }
+
+  vEarly_body(iRoot, iDepth + 1, __FUNCTION__, __LINE__);
+  RASSERT(m_pCI->pEarlyTip());
+  RASSERT(m_pCI->Early.m_pNeeded_later);
+
+  m_pCI->E.p_Op->vRestate_emit(m_pCI);
+
+  m_pCI->vSnapIf_arriving();
+  m_pCI->vPopEach();
+
+  delete m_pCI->Early.m_pNeeded_later;
+  m_pCI->Early.m_pNeeded_later = p_needed_save;
+
+  //m_pCI->E.p_Op->vDumpShort(__FUNCTION__,__LINE__,"<< arcBody"_Stz,iRoot,iDepth);
+}
+
+/*----------------------------------------------------------------------------*/
+/* is operator the tip/end of an early needed arc?                            */
+/*----------------------------------------------------------------------------*/
+void XF_Optimise_Early_projection::vEarly_tip(i8 iRoot)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_EARLY_PROJECTION, _FOOTER_);
+
+  UNUSED(iRoot);
+
+  DELETEIF_CARD(m_pCI->Early.m_pNeeded_later);
+
+  if (m_pCI->pEarlyTip()) {
+    m_pCI->vRepositionOp(m_pCI->pEarlyTip());
+    m_pCI->vEarlyTip(nullptr);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* insert a new arly project                                                  */
+/*----------------------------------------------------------------------------*/
+void XF_Optimise_Early_projection::vInsert_project_early(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_EARLY_PROJECTION, _FOOTER_);
+
+  Card_Project* p_project_early;
+
+  m_pCI->E.p_Op->vDecision(m_pCI,XD_ADD_EARLY_PROJECT,__FUNCTION__ ,__LINE__);
+
+  p_project_early = m_pCI->Early.m_pNeeded_later->pNew_project_early(m_pCI);
+  p_project_early->pSymbol()->Y_vSet(P_Line,__LINE__);
+
+  m_pCI->vInsertBefore(p_project_early, m_pCI->E.p_Op);
+}
+
+/*----------------------------------------------------------------------------*/
+/* is operator a viable root of early needed arc?                             */
+/*----------------------------------------------------------------------------*/
+bool XF_Optimise_Early_projection::bIsRoot(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_EARLY_PROJECTION, _FOOTER_);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // operators which could be an early needed root
+
   switch (m_pCI->E.e_Op) {
 
     case CK_o_AGGREG:
-    case CK_o_CALL:
-    case CK_o_CAST:
-    case CK_c_COMBINED:
-    case CK_o_CORRELATION:
-    case CK_o_CROSSJOIN:
-    case CK_o_FILTER:
-    case CK_o_FROM:
+      if (! m_pCI->E.p_Op->bIsPartitionLevel())
+        return false;
+      break;
+
     case CK_o_GBYAGG:
-    case CK_o_HASH:
-    case CK_o_HAVING:
-    case CK_o_INDEXSCAN:
+      if (! m_pCI->E.p_Op->bIsPartitionLevel())
+        return false;
+      break;
+
     case CK_o_INDEXJOIN:
-    case CK_o_INFLATE:
-    case CK_o_KEYEXISTS:
-    case CK_o_KEYNOTEXISTS:
-    case CK_o_LIMIT:
+      RASSERT (m_pCI->E.p_Op->bIsPartitionLevel());
+      break;
+
     case CK_o_ORDAGG:
+      RASSERT (m_pCI->E.p_Op->bIsPartitionLevel());
+      break;
+
     case CK_o_PROJECT:
-    case CK_o_SCAN:
-    case CK_o_SORT:
-    case CK_o_TOP:
-    case CK_o_WHERE:
+      if (! m_pCI->E.p_Op->bIsPartitionLevel())
+        return false;
       break;
 
     default:
-      break;
+      return false;
   }
 
-  return bOptRun;
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // if the previous card is project, assume for the moment it's what's needed
+
+  if (m_pCI->pPeekPrevIf(CK_o_PROJECT)) {
+    RASSERT(! m_pCI->pPeekPrev()->pSymbol()->Y_bHas(P_Early));
+    return false;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // can a needed root be formed using the emit of this operator?
+
+  m_pCI->E.p_emit = m_pCI->E.p_Op->pSub_emit();
+  m_pCI->Early.m_pNeeded_later = m_pCI->E.p_emit->pCraft_needed_root(m_pCI);
+  if (! m_pCI->Early.m_pNeeded_later) {
+    return false;
+  }
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is operator the tip of an early needed arc?                                */
+/*----------------------------------------------------------------------------*/
+bool XF_Optimise_Early_projection::bIsTip(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_EARLY_PROJECTION, _FOOTER_);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // a scan/index-scan is the data source of a stream, so end of this arc
+
+  if (m_pCI->E.p_Op->bIsCard(CK_o_INDEXSCAN) ||
+      m_pCI->E.p_Op->bIsCard(CK_o_SCAN))
+    return true;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // a prev project is a new arc, so end of this arc
+
+  if (m_pCI->pPeekPrevIf(CK_o_PROJECT))
+    return true;
+
+  return false;
 }
 
 /*============================================================================*/

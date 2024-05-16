@@ -35,7 +35,7 @@ rows: (*,'explainPlan','
       » column: (Expr = 1 + NULL ; Ordinal Expr = 1 + NULL) ; type: NULL
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 
 EXPLAIN with_types SELECT 1 - NULL FROM ${testName2}_nation;
@@ -51,7 +51,7 @@ rows: (*,'explainPlan','
       » column: (Expr = 1 - NULL ; Ordinal Expr = 1 - NULL) ; type: NULL
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 
 EXPLAIN with_types SELECT 1 * NULL FROM ${testName2}_nation;
@@ -67,7 +67,7 @@ rows: (*,'explainPlan','
       » column: (Expr = 1 * NULL ; Ordinal Expr = 1 * NULL) ; type: NULL
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 
 EXPLAIN with_types SELECT 1 / NULL FROM ${testName2}_nation;
@@ -83,7 +83,7 @@ rows: (*,'explainPlan','
       » column: (Expr = 1 / NULL ; Ordinal Expr = 1 / NULL) ; type: NULL
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 
 EXPLAIN with_types SELECT NULL / 1 FROM ${testName2}_nation;
@@ -99,7 +99,7 @@ rows: (*,'explainPlan','
       » column: (Expr = NULL / 1 ; Ordinal Expr = NULL / 1) ; type: NULL
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 
 EXPLAIN with_types SELECT 3 % NULL FROM ${testName2}_nation;
@@ -115,7 +115,7 @@ rows: (*,'explainPlan','
       » column: (Expr = 3 % NULL ; Ordinal Expr = 3 % NULL) ; type: NULL
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 
 EXPLAIN with_types SELECT NULL % 3 FROM ${testName2}_nation;
@@ -131,7 +131,7 @@ rows: (*,'explainPlan','
       » column: (Expr = NULL % 3 ; Ordinal Expr = NULL % 3) ; type: NULL
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 
 EXPLAIN with_types SELECT -NULL FROM ${testName2}_nation;
@@ -147,7 +147,7 @@ rows: (*,'explainPlan','
       » column: (Expr = -NULL ; Ordinal Expr = -NULL) ; type: NULL
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -176,7 +176,7 @@ rows: (*,'partitionPlan','
 
 -> -> -> -> -> tableScanOp
                » location: all partitions
-               » table: (rapidsse.public.${testName2}_nation)')
+               » table: (rapids.public.${testName2}_nation)')
 
 
 EXPLAIN with_types stage partitionPlan SELECT COUNT(1 + NULL) FROM ${testName2}_nation;
@@ -201,7 +201,7 @@ rows: (*,'partitionPlan','
 
 -> -> -> -> -> tableScanOp
                » location: all partitions
-               » table: (rapidsse.public.${testName2}_nation)')
+               » table: (rapids.public.${testName2}_nation)')
 
 
 EXPLAIN with_types stage partitionPlan SELECT MIN(1 + NULL) FROM ${testName2}_nation;
@@ -226,7 +226,7 @@ rows: (*,'partitionPlan','
 
 -> -> -> -> -> tableScanOp
                » location: all partitions
-               » table: (rapidsse.public.${testName2}_nation)')
+               » table: (rapids.public.${testName2}_nation)')
 
 
 EXPLAIN with_types stage partitionPlan SELECT MAX(1 + NULL) FROM ${testName2}_nation;
@@ -251,7 +251,7 @@ rows: (*,'partitionPlan','
 
 -> -> -> -> -> tableScanOp
                » location: all partitions
-               » table: (rapidsse.public.${testName2}_nation)')
+               » table: (rapids.public.${testName2}_nation)')
 
 
 EXPLAIN with_types stage partitionPlan SELECT AVG(1 + NULL) FROM ${testName2}_nation;
@@ -278,7 +278,7 @@ rows: (*,'partitionPlan','
 
 -> -> -> -> -> tableScanOp
                » location: all partitions
-               » table: (rapidsse.public.${testName2}_nation)')
+               » table: (rapids.public.${testName2}_nation)')
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -22,7 +22,6 @@ namespace STORE
   public:
 
     Bench*      m_pBench;
-    CardCtl*    m_pCardCtl;
     Symbol      m_xSymbol_tableSyn;
 
     i8          m_i_RecursionDepth;
@@ -30,14 +29,9 @@ namespace STORE
     EachMembers E;
 
     struct {
-      Card_OP*      m_pOP_root;
-      Card_OP *     m_pOP_leaf;
-      Card_Needed * m_pNeeded_later;
-    } Early;
-
-    struct {
-      Card_Emit * m_pArriving;
-    } Flux;
+      Card_Emit *      m_pEmitted_prior;
+      Card_StreamKey * m_pStreamKey;
+    } Arriving;
 
     struct {
       Card_Emit * m_p_expr;
@@ -45,8 +39,13 @@ namespace STORE
     } Dic;
 
     struct {
+      Card_OP *     m_pOp_tip;
+      Card_Needed * m_pNeeded_later;
+    } Early;
+
+    struct {
       Card_Project * m_pProject;
-      Card_Emit * m_pEmitted;
+      Card_Emit *   m_pEmitted;
     } Next;
 
     struct {
@@ -71,8 +70,8 @@ namespace STORE
     } Flat;
 
     struct {
+      Card_Emit *      m_pEmit;
       Card_StreamKey * m_pStreamKey;
-      Card_Emit *   m_pEmitted;
     } StreamOrder;
 
     struct {
@@ -81,10 +80,49 @@ namespace STORE
       Card_EXPRLIST * m_pExprList_k;
     } X;
 
+    struct
+    {
+      struct
+      {
+        bool m_bMorph_sqlOp_To_EQ;
+        bool bReplace_sqCall_With_result;
+      } Where_preAgg;
 
+      struct
+      {
+        bool m_bMorph_To_gbyAgg;
+      } Aggreg;
 
-    i8 m_nAncestors;
-    Card* m_apAncestry[C_CARD_ANCESTRY];
+      struct
+      {
+        bool m_bInject_foldExpr;
+      } GbyAgg;
+
+      struct
+      {
+        bool m_bSeen;
+      } Project_postAgg;
+
+      struct
+      {
+        bool m_bCorrect_After_Inject;
+      } Having;
+
+      struct
+      {
+        bool m_bCorrect_After_Inject;
+      } Sort;
+
+      struct
+      {
+        bool m_bUnproject_foldExpr;
+      } Unproject;
+
+    } Smooth;
+
+    i8    m_nAncestors;
+    Card* m_paAncestry[C_CARD_ANCESTRY];
+    i8    m_iaAncestry[C_CARD_ANCESTRY];
 
   protected:
     // must be last
@@ -97,7 +135,6 @@ namespace STORE
     CardIter(Bench* pBench);
    ~CardIter(void) noexcept(false);
 
-    Card* pAdvanceChild(void);
     void vAppendChild(eCK eParent, Card* pChild);
     void vAppendNewChild(eCK eParent, eCK eChild);
     void vAppendNewChild(Card* pParent, eCK eChild);
@@ -105,6 +142,7 @@ namespace STORE
     void vAppendNewChild(Card* pParent, eCK eChild, Symbol xSymbol);
 
     bool  bAncestor(eCK eCard);
+    i8    i_Ancestor(Card* pAncestor);
     Card* pAncestor(i8 i_Ancestor);
     Card* pAncestor(eCK eCard, i8* ai_Ancestor= nullptr);
     void  vAncestorDump(Card* pCard = nullptr);
@@ -113,6 +151,13 @@ namespace STORE
     void  vAncestorPush(Card* pCard);
     i8    nAncestors(void);
 
+    i8    iAncestorCounter(i8 i_Ancestor);
+    i8    iAncestorCounter(Card* pAncestor);
+    i8    iAncestorCounterInc(Card* pAncestor, i8 iInc=1);
+    void  vAncestorCounterInc(Card* pAncestor, i8 iInc=1);
+    void  vAncestorCounterReset(i8 iTo=0);
+    void  vAncestorCounterResetAll(i8 iTo=0);
+
     // todo: merge these two [A294]
     Card_Expr* pBackSearch_expr_For_col(Symbol* pSym_term_arg, i8 i_Before);
     Card_Expr* pBackSearch_expr_For_colNm(Symbol* pSym_term, i8 i_Before=C_UNKNOWN);
@@ -120,8 +165,7 @@ namespace STORE
     void vBackstepTarget(void);
     void vBeginBoard(void);
     void vBeginEach(eCK eOp=CK_NONE);
-    void vBeginEach_reverse(void);
-    void vBeginMember(eCK eSub_Of_Op);
+    void vBeginEach_tail(void);
     void vBeginTarget(eCK ePrimary, eCK eTarget);
     void vBeginTarget(Card* pPrimary, eCK eTarget);
     Board* pBoard(void);
@@ -132,10 +176,8 @@ namespace STORE
     Card* pChild(i8 i_Child);
     void vChild(Card* pChild);
     void vClearRegisters(void);
-    void vClearRegistersIf(Card* pCard);
     eOA  eCueUser(String* psPrompt);
 
-    void vDeleteMember(Card* pMember);
     void vDeleteWhenEmptySub(eCK eOp, eCK eSub);
     void vDontDescend(bool bDontDescend);
 
@@ -143,11 +185,9 @@ namespace STORE
     Board* pEachBoard(void);
     Board* pEachBoard(i8& ri_Board);
 
-    bool bEachMember(void);
-    bool bEachMember(eCK eMember2, eCK eMember3);
     bool bEachOp(void);
     bool bEachOp(eCK eOp);
-    bool bEachOp_break(eCK eOp, eCK eBreak= CK_c_FOLD);
+    bool bEachOp_break(eCK eOp, eCK eBreak= CK_o_FOLD);
     bool bEachOp(eCK eOp, eCK eSub);
     bool bEachOp(eCK eOp, eCK eSub, Stz* szSubFacet);
     bool bEachOp(eCK eOp, eCK eSub1, eCK eSub2);
@@ -165,8 +205,9 @@ namespace STORE
 
     bool bEachTarget(void);
 
-    Card* pEndMember(eCK eMember);
-    void vEndMember(void);
+    Card_OP* pEarlyTip(void);
+    void vEarlyTip(Card_OP* p_Op_tip);
+
     void vEndPhase(void);
     Card* pEndTarget(void);
     void  vEndTarget(void);
@@ -174,13 +215,10 @@ namespace STORE
 
     Card_OP* pFind_from_By_tblSyn(Symbol* pSym_tblSyn, i8 i_Before);
     void vFocusOnOp(void);
-    bool bForwards(void);
-    void vForwards(bool bForward);
 
+    bool bIsQuery(Stz* szQueryNm);
     void vInsertAfter(Card* pCard, Card* pAfter);
     void vInsertBefore(Card* pCard, Card* pBefore);
-
-    bool bLambdaWalk(Card* pCard, eCK eToSubs, std::function<bool(Card* pCard)> bfLambdaFn);
 
     Card* pMember(eCK eCard);
     void vMember(eCK eCard, Card* pCard);
@@ -190,29 +228,31 @@ namespace STORE
     void  vNewMember(eCK eCard);
     void  vNewMember(eCK eCard, Symbol xSymbol);
 
+    eCK  ePeekNext(void);
     Card* pPeekNext(void);
     Card* pPeekNextIf(eCK eCard);
     Card* pPeekPrev(void);
+    Card* pPeekPrevIf(eCK eCard);
     void vPopEach(void);
     bool bPositionAt(eCK eKind_at, i8 /* eCK */ iKind_First, ...);
     void vPrintBoard(const char* azFunc, const char* azFile, i8 iLineNo, bool bForce=false);
+    Card_Emit* pPrior_emit(void);
+    Card_Expr* pPrior_expr(Symbol* pSymbol_arg);
     void vPushChild(Card* pParent, eCK eChild);
     void vPushEach(void);
+    void vPushEach(Board* pBoard);
+    void vPushEach(Card* pParent);
 
-    bool bRecurseActive(void);
-    void vRecurseBegin(Card* pCard);
-    Card* pRecurseEach(void);
-    Card* pRecurseEach(eCK eCard);
-    void vRecurseEnd(void);
     void vRemoveDeleteMain(eCK eCrossCheck);
     void vResetMembers(void);
-    Card_Emit* pResolvePrior_emit(void);
-    Card_Expr* pResolvePrior_expr(Card_Term* p_term);
-    void vResynchOp(void);
-    void vResynchOp(Card* pCard);
+    void vRepositionOp(void);
+    void vRepositionOp(Card_OP* p_Op);
     bool bRewindOp(void);
 
-    void vSnapArriving(void);
+    void vSnap_arriving(Card_Emit* p_emit, Card_StreamKey * pStreamKey);
+    void vSnapIf_arriving(Card_Emit* p_emit, Card_StreamKey * pStreamKey);
+    void vSnapIf_arriving(bool bSub_emit=true);
+    void vSnapIf_arriving_till(eCK eTill);
 
     i8   i_Target(void);
     void vTransform(const char* azXfile, const char* azFunc, eXF eXform);
@@ -222,6 +262,28 @@ namespace STORE
 
     void vValidateBench(void);
     void vValidateChildren(Card* pCard, i8 iDepth);
+
+    Stz* szFMT_CAT_LEFT           (void) { return "%s"_Stz; }
+    Stz* szFMT_CAT_RIGHT          (void) { return "%18s"_Stz; }
+    Stz* szFMT_DOTS               (void) { return "%s%lld"_Stz; }
+    Stz* szFMT_ENUM               (void) { return "%s"_Stz; }
+    Stz* szFMT_FACET_UNKNOWN      (void) { return "%s"_Stz; }
+    Stz* szFMT_FACET_SECONDARY    (void) { return "<%s"_Stz; }
+    Stz* szFMT_FACET_PRIMARY      (void) { return "%s"_Stz; }
+    Stz* szFMT_FACET_HEADER       (void) { return "===%02lld-%c--------------"_Stz; }
+    Stz* szFMT_FACET_NO           (void) { return "~%lld"_Stz; }
+    Stz* szFMT_MARKS              (void) { return "%2s%s"_Stz; }
+    Stz* szFMT_NAME_LEFT          (void) { return "%s"_Stz; }
+    Stz* szFMT_NAME_RIGHT         (void) { return "%18s"_Stz; }
+    Stz* szFMT_PPY_INTEGER        (void) { return "}%s=%lld"_Stz; }
+    Stz* szFMT_PPY_INTEGER_decode (void) { return "}%s"_Stz; }
+    Stz* szFMT_PPY_STRING         (void) { return "}%s=%s"_Stz; }
+    Stz* szFMT_PPY_STRING_decode  (void) { return "}%s"_Stz; }
+    Stz* szFMT_PPY_SEQUENCE       (void) { return "#%lld"_Stz; }
+    Stz* szFMT_SPACES             (void) { return "%s"_Stz; }
+    Stz* szFMT_TYPE               (void) { return "%s"_Stz; }
+    Stz* szFMT_TYPE_LENGTH        (void) { return "%s(%lld)"_Stz; }
+    Stz* szFMT_TYPE_LENGTH_SCALE  (void) { return "%s(%lld,%lld)"_Stz; }
 
   private:
     Footer* aFooter(void);

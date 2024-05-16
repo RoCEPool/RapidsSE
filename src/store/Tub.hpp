@@ -31,7 +31,6 @@ namespace STORE
     static void  vRowStrSize(Tub* pTub, i8 nRowStrSize);
     static void  vSetRowPix(Tub* pTub, RowPix* pRowPix);
     static void  vToCsv(Tub* pTub, Pds* pPds);
-		static void  vTubCreate(Dynamic_T* pDynamicT, i8 nCols, ColumnInfo* pColumnInfo);
 
   public:
   

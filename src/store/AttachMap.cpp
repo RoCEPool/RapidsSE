@@ -15,6 +15,7 @@
 #include "Numbering.hpp"
 #include "Jobs.hpp"
 #include "InternalTables.hpp"
+#include "MetaDataTables.hpp"
 #include "Step.hpp"
 
 #include "Resources.hpp" //?
@@ -89,6 +90,7 @@ AttachMap::AttachMap(bool bNoFree)
   m_pInternalTables = new InternalTables;
   m_pJobs           = new Jobs;
   m_pMarkerMgr      = new MarkerMgr;
+  m_pMetaDataTables = new MetaDataTables;
   m_pNumbering      = new Numbering;
   m_pLglPtnMap      = nullptr;
   m_pSnapshotAtTrackingMemory = nullptr;
@@ -107,6 +109,17 @@ AttachMap::AttachMap(bool bNoFree)
   Step::vAddStep("rootConstant"_Stz,nullptr);
   AM::vRootConstant(m_pDicRoot->pFindWord("rootConstant"_Stz));
   AM::pConstantRoot()->vCategoryEnum(WC_ROOTCONSTANT);
+
+  m_mdCatalog       = nullptr;
+  m_mdCluster       = nullptr;
+  m_mdColumns       = nullptr;
+  m_mdIndexColumns  = nullptr;
+  m_mdIndexes       = nullptr;
+  m_mdNodes         = nullptr;
+  m_mdQueries       = nullptr;
+  m_mdSchema        = nullptr;
+  m_mdSessions      = nullptr;
+  m_mdTables        = nullptr;
   
 
   _checkInitialised_(CN_ATTACHMAP);

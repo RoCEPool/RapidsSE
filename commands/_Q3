@@ -48,7 +48,7 @@ begin
     | pulse once
     | stageMarker1030
   stage stageMarker1030 on all partitions :
-    scan rapidsse public customer
+    scan rapids public customer
     | stageMarker1033 broadcast
   stage stageMarker1033 on all partitions :
     indexJoin 1 orders IxO_CUSTKEY "BOUND $I1 $2 =="

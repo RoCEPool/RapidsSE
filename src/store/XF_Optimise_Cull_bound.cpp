@@ -123,15 +123,20 @@ bool XF_Optimise_Cull_bound::bXF_Cull_Used_bound(void)
 
       // have <bounds> & <filter> under <main>
 
-      m_pCI->vRecurseBegin(m_pCI->E.p_filter);
-      while ((m_pCI->E.p_rlnConj = _pCard_RlnConj(m_pCI->pRecurseEach(CK_RLNCONJ)))) {
-        if (m_pCI->E.p_rlnConj->bSubsetOf_bounds(m_pCI->E.p_bounds) &&
-            ! m_pCI->E.p_rlnConj->pSymbol()->Y_bHas(P_CrlKeyTest)) {
+      CardIter* pCI = m_pCI;
+      auto bfDerive = [pCI](Card* p_card) {
+        Card_RlnConj* p_rlnConj = _pCard_RlnConj(p_card);
+        if (p_rlnConj->bSubsetOf_bounds(pCI->E.p_bounds) &&
+            ! p_rlnConj->pSymbol()->Y_bHas(P_CrlKeyTest)) {
           //RASSERT(m_pCI->G.p_rlnConj->bIsJoinConj());
-          m_pCI->E.p_rlnConj->vMark1(MARK_AT);
+          p_rlnConj->vMark1(MARK_AT);
         }
-      }
-      m_pCI->vRecurseEnd();
+
+        return C_CONTINUE_RECURSION;
+      };
+
+      m_pCI->E.p_filter->bLambdaWalk(CK_RLNCONJ, bfDerive, pCI);
+
       continue;
     }
 
@@ -139,14 +144,16 @@ bool XF_Optimise_Cull_bound::bXF_Cull_Used_bound(void)
 
       // have <bounds> & <filter> under <main>
 
-       m_pCI->vRecurseBegin(m_pCI->E.p_constraint);
-      while ((m_pCI->E.p_rlnConj = _pCard_RlnConj(m_pCI->pRecurseEach(CK_RLNCONJ)))) {
-        if (m_pCI->E.p_rlnConj->bSubsetOf_bounds(m_pCI->E.p_bounds)) {
-          m_pCI->E.p_rlnConj->vMark1(MARK_AT);
-        }
-      }
+      CardIter* pCI = m_pCI;
+      auto bfDerive = [pCI](Card* p_card) {
+        Card_RlnConj* p_rlnConj = _pCard_RlnConj(p_card);
+        if (p_rlnConj->bSubsetOf_bounds(pCI->E.p_bounds))
+          p_rlnConj->vMark1(MARK_AT);
 
-      m_pCI->vRecurseEnd();
+        return C_CONTINUE_RECURSION;
+      };
+      m_pCI->E.p_constraint->bLambdaWalk(CK_RLNCONJ, bfDerive, pCI);
+
       continue;
     }
 

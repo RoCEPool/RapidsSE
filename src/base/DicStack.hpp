@@ -51,7 +51,7 @@ namespace BASE
     bool  bPush_catalogs(void);
     bool  bPush_indexes(void);
     bool  bPush_public(void);
-    bool  bPush_rapidsse(void);
+    bool  bPush_rapids(void);
     bool  bPush_schemas(void);
     bool  bPush_tables(void);
     bool  bPush_tenants(void);

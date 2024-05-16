@@ -14,7 +14,7 @@
 #include "eAC.h"
 #include "eTC.h"
 
-namespace STORE { class InternalTables; class Jobs; class Numbering; }
+namespace STORE { class InternalTables; class MetaDataTables; class Jobs; class Numbering; }
 
 namespace STORE
 {
@@ -67,6 +67,7 @@ namespace STORE
     LglPtnMap*    m_pLglPtnMap;
     Locks         m_oLocks;
     MarkerMgr*    m_pMarkerMgr;
+    MetaDataTables* m_pMetaDataTables;
     Numbering*    m_pNumbering;
     ObjectSnapshot* m_pSnapshotAtTrackingMemory;  // object delta reporting
     ObjectSnapshot* m_pSnapshotAtMemoryLeaks;     // object delta reporting
@@ -110,6 +111,17 @@ namespace STORE
     JobId         m_tStatDemonJobId;
     JobId         m_tWakerDemonJobId;
     JobId         m_tSuperDemonJobId;
+
+    Table*        m_mdCatalog;
+    Table*        m_mdCluster;
+    Table*        m_mdColumns;
+    Table*        m_mdIndexColumns;
+    Table*        m_mdIndexes;
+    Table*        m_mdNodes;
+    Table*        m_mdQueries;
+    Table*        m_mdSchema;
+    Table*        m_mdSessions;
+    Table*        m_mdTables;
 
     // must be last
     Footer m_xFooter;

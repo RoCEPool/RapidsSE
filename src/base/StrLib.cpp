@@ -803,7 +803,7 @@ void StrLib::vConcat(char* psDst, i8 iDstBufSize, i8 iArg, bool* pbResult)
 }
 
 /*----------------------------------------------------------------------------*/
-/* bContains: test if arg is in substr                                        */
+/* bContains_term: test if arg is in substr                                        */
 /*----------------------------------------------------------------------------*/
 bool StrLib::bContains(const char* psSrc, const char cArg)
 {
@@ -815,7 +815,7 @@ bool StrLib::bContains(const char* psSrc, const char cArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* bContains: test if arg is in substr                                        */
+/* bContains_term: test if arg is in substr                                        */
 /*----------------------------------------------------------------------------*/
 bool StrLib::bContains(const char* psSrc, const char* sArg)
 {
@@ -5660,6 +5660,30 @@ char StrLib::cToHex(i8 i)
     c = '0' + i;
   
   return c;
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert char to i8                                                         */
+/*----------------------------------------------------------------------------*/
+i8 StrLib::iToI8(const char cArg)
+{
+  _static_
+
+  i8 i = C_UNKNOWN;
+
+  if (cArg >= '0' && cArg <= '9')
+    i = cArg - '0';
+  else
+  if (cArg >= 'a' && cArg <= 'f')
+    i = cArg - 'a';
+  else
+  if (cArg >= 'A' && cArg <= 'F')
+    i = cArg - 'A';
+  else {
+    NEVER_REACH
+  }
+
+  return i;
 }
 
 /*----------------------------------------------------------------------------*/

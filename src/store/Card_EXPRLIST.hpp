@@ -17,35 +17,41 @@ namespace STORE
     Card_EXPRLIST(eCK eCard, i8 iFixedDepth);
    ~Card_EXPRLIST(void) noexcept(false);
 
-    void vBump_KeyCol_In_rpnCalc(CardIter* pCI);
-    void vBump_expCol_In_rpnCalc(CardIter* pCI);
+    void vApplyCast(CardIter* pCI, Card_EXPRLIST* p_Dic_expr);
+    void vApplyFacets(CardIter* pCI, Card_EXPRLIST* p_key);
 
-    Card_Expr* pContains(CardIter* pCI, Symbol* pSymbol_arg);
-    Card_Expr* pContains(Card_Expr* p_expr_arg);
+    void vBump_expCol(CardIter* pCI);
+    void vBump_keyCol(CardIter* pCI);
 
-    Card_Expr* pDecode_expr(Symbol* pSymbol_expCol);
-    Card_Term* pDecode_expr_term0(Symbol* pSymbol_expCol);
+    void vDeleteIf_facet(CardIter* pCI, eSF eFacet, eSF eAlsoFacet, char cTblSyn);
 
-    void vDeleteFacetIf(CardIter* pCI, eSF eFacet, eSF eAlsoFacet, char cTblSyn);
-
-    void vEnsure_expr_Has_nmdCol(void);
-
+    void vEnsureAll_expr_Have_nmdCol(void);
+    bool bEqualTo(CardIter *pCI, Card_EXPRLIST* p_EXPRLIST);
     i8 nExpr(void);
 
-    Card_Expr* pFind_expr_Matches(Symbol* pSymbol_arg);
-    Card_Expr* pFind_expr_Matches(Symbol* pSymbol_arg, Kid* aKid);
-    Card_Expr* pFind_expr_Matches(eSF eFacet_arg, Symbol* pSymbol_arg);
-    Card_Expr* pFind_expr_Matches_ignoring(Symbol* pSymbol_arg, eSF eFacet_ignore);
+    Card_Expr* pFind_expr(Card_Expr* p_expr_arg);
+    Card_Expr* pFind_expr(Symbol* pSymbol_arg);
+    Card_Expr* pFind_expr(Symbol* pSymbol_arg, Kid* aKid);
+    Card_Expr* pFind_expr(eSF eFacet_arg, Symbol* pSymbol_arg);
+    Card_Expr* pFind_expr(CardIter *pCI, Symbol* pSymbol);
+    Card_Expr* pFind_expr_ignoring(Symbol* pSymbol_arg, eSF eFacet_ignore);
+    Card_Expr* pFind_term(CardIter* pCI, Symbol* pSymbol_arg);
+    Card_Term* pFind_term0_Of_expr(Symbol* pSymbol_expCol);
+    Card_Expr* pFind_expr_key_Matches(CardIter *pCI, Symbol *pSymbol_arg);
+    Card_Expr* pFind_expr_key_Matches(CardIter *pCI, eSF eFacet_arg, Symbol* pSymbol_arg);
+
 
     Card_Expr* pGet_expr(i8 i_Expr);
+    Card_Expr* pGet_expr(Symbol* pSymbol_expCol);
+
+    bool bIsCompound(void);
+    bool bIsLiterals(CardIter* pCI);
 
     void vRenumberAll_expr(eSF eFacet=SF_EXP_COL);
 
     StreamDef* pTo_StreamDef(ColMap* pColMap,
                              Card_Key* p_key,
                              Card* p_OP);
-
-    void vUpdate_cast(Card_EXPRLIST* p_exprList_ref);
 
     void vX_tblCol_To_expCol(CardIter* pCI);
     void vX_expCol_To_tblCol(CardIter* pCI);

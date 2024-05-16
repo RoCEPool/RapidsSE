@@ -619,12 +619,27 @@ bool Dynamo::bRecogniseOnAllPartitions(StageSpec *p_StageSpec)
     }
   }
 
-  if (pTkn()->bSame(":"_Stz)) {
-    vTokenAccept();
-    p_StageSpec->vStageTopology(YG_ALL_PARTITIONS);
-    p_StageSpec->vParcelForward(YF_ALL_PARTITIONS);
-    return true;
-  }
+	if (pTkn()->bSame("multiple"_Stz)) {
+		vTokenAccept();
+		if (pTkn()->bSame("threads"_Stz)) {
+			vTokenAccept();
+			if (pTkn()->bIsInteger()) {
+				// set no of threads per partition for this stage
+				p_StageSpec->vThreadsPerPtn(pTkn()->iToI8());
+				vTokenAccept();
+			}
+		} else {
+			return false;
+		}
+	}
+
+	if (pTkn()->bSame(":"_Stz)) {
+		vTokenAccept();
+		p_StageSpec->vStageTopology(YG_ALL_PARTITIONS);
+		p_StageSpec->vParcelForward(YF_ALL_PARTITIONS);
+
+		return true;
+	}
 
   return false;
 }

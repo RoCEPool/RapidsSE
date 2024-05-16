@@ -9,7 +9,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE, Card_HshCol, CK_t_HSHCOL)
+__pCastFunction_Card(STORE, Card_HshCol, CK_HSHCOL)
 __aNewFunction(Card_HshCol, CN_CARD)
 __vDeleteFunction(Card_HshCol, CN_CARD)
 
@@ -18,7 +18,7 @@ __vDeleteFunction(Card_HshCol, CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_HshCol::Card_HshCol(void)
-: Card_COLUMN(CK_t_HSHCOL, 3)
+: Card_COLUMN(CK_HSHCOL, 3)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
           
@@ -68,11 +68,11 @@ void Card_HshCol::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 
   RASSERT(! pSymbol()->nFacets());
 
-  (void)Card::eValidate_parentEither(pCI,
-                                     CK_s_HSHCOLLIST,
+  (void)Card::eValidate_parent_either(pCI,
+                                     CK_p_HSHCOLLIST,
                                      CK_NONE);
 
-  vValidate_mustHave(CK_TERM,CK_NONE);
+  vValidate_child_mustBe(CK_TERM,CK_NONE);
 
   Card::vValidate(pCI,iDepth,pParent);
   pCI->vValidateChildren(this,iDepth+1);

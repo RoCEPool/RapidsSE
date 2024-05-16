@@ -32,6 +32,8 @@
   // remove the table
   <tableNm> table::dropTable
 
+  <tableNm> MetaDataTable[].dropTable
+
   // delete the DESTROYMARKER
   PipeIn[].delete
 
