@@ -8,7 +8,7 @@ typedef void (Step::*fpSTEPFN)(void);
 
 namespace BASE
 {
-  static const i8 C_WSP_CODEBLOCK = C_SIZE_MEDIUM_OBJECT - 128;
+  static const i8 C_WSP_CODEBLOCK = C_SIZE_SMALL_OBJECT - 128;
 
   class CodeBlock : public Object
   {

@@ -401,7 +401,7 @@ SizeHeap gxaSizeHeap[]
   {CN_CHILDEXIT,                sizeof(ChildExit),        HT_T_TINY    , FILL },
   {CN_CLASSPLACEHOLDER,         sizeof(ClassPlaceHolder), HT_T_LARGE   , FILL },
   {CN_CMDLINEARGS,              sizeof(CmdLineArgs),      HT_INVALID   , FILL },
-  {CN_CODEBLOCK,                sizeof(CodeBlock),        HT_T_MEDIUM  , FILL },
+  {CN_CODEBLOCK,                sizeof(CodeBlock),        HT_T_SMALL   , FILL },
   {CN_COLHSH,                   sizeof(ColHsh),           HT_T_MEDIUM  , FILL },
   {CN_COLINJ,                   sizeof(ColInj),           HT_T_MEDIUM  , FILL },
   {CN_COLMAP,                   sizeof(ColMap),                   HT_T_MEDIUM  , FILL },
