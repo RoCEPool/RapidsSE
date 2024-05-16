@@ -19,40 +19,42 @@ import pyutils.clusterops as clusterops
 
 LOG = logging.getLogger(__name__)
 
-C_TEST_NAME = "Test Release"
-C_INSTANCE_NAME_PREFIX = "ReleaseTest"
-C_INSTANCE_START_TIMEOUT = 600.0
+C_TEST_NAME: str = "Test Release"
+C_INSTANCE_NAME_PREFIX: str = "ReleaseTest"
+C_INSTANCE_START_TIMEOUT: float = 600.0
 
 # How long should we wait for all of the EC2 instances to be started
 # and be ready to use?
-C_SE_TEST_TIMEOUT_SEC = 1200
-C_SE_INSTALL_TIMEOUT_SEC = 120
-C_TEST_MONITORING_SLEEP_IVL = 10
+C_SE_TEST_TIMEOUT_SEC: int = 1200
+C_SE_INSTALL_TIMEOUT_SEC: int = 120
+C_TEST_MONITORING_SLEEP_IVL: int = 10
 
-C_SE_START_CMD = "startSE.sh"
-C_SE_START_TIMEOUT_SEC = 90
+C_SE_START_CMD: str = "startSE.sh"
+C_SE_START_TIMEOUT_SEC: int = 90
 
-C_SE_STOP_CMD = "stopSE.sh"
-C_SE_STOP_TIMEOUT_SEC = 30
+C_SE_STOP_CMD: str = "stopSE.sh"
+C_SE_STOP_TIMEOUT_SEC: int = 30
 
-C_SE_COLLECT_LOGS_CMD = "collectLogs.sh"
-C_SE_COLLECT_LOGS_TIMEOUT_SEC = 90
-C_SE_COLLECT_LOGS_FILESPEC = "logs-*.tar.gz"
-C_SE_COPY_LOGS_TIMEOUT_SEC = 90
+C_SE_COLLECT_LOGS_CMD: str = "collectLogs.sh"
+C_SE_COLLECT_LOGS_TIMEOUT_SEC: int = 90
+C_SE_COLLECT_LOGS_FILESPEC: str = "logs-*.tar.gz"
+C_SE_COPY_LOGS_TIMEOUT_SEC: int = 90
 
 # Paths are relative to the *repository*
 # (because they are used on remote nodes)
-C_TESTLIST_PATH = "bamboo/releasetest/configs/release.testlist"
-C_SETH_RESULT_PATH = "bamboo/unittest/results/results-*.xml"
-C_SETH_TIMEOUT_SEC = 300
-C_COLLECT_RESULTS_TIMEOUT_SEC = 90
+C_TESTLIST_PATH: str = "bamboo/releasetest/configs/release.testlist"
+C_SETH_RESULT_PATH: str = "bamboo/unittest/results/*.xml"
+C_SETH_LOG_PATH: str = "bamboo/unittest/logs"
+C_SETH_TIMEOUT_SEC: int = 300
+C_COLLECT_RESULTS_TIMEOUT_SEC: int = 90
 
 C_CLOUD_INIT_LOG_PATH: pathlib.Path = pathlib.Path("/cloud-init-output.log")
 
 # The file that contains the list of running instance IDs
-C_EC2_INSTANCE_FILE_BASE:str = "runningInstances"
-C_EC2_INSTANCE_FILE_EXT:str = "txt"
-C_EC2_INSTANCE_FILE_GLOB:str = f"{C_EC2_INSTANCE_FILE_BASE}*.{C_EC2_INSTANCE_FILE_EXT}"
+C_EC2_INSTANCE_FILE_BASE: str = "runningInstances"
+C_EC2_INSTANCE_FILE_EXT: str = "txt"
+C_EC2_INSTANCE_FILE_GLOB: str = f"{C_EC2_INSTANCE_FILE_BASE}*.{C_EC2_INSTANCE_FILE_EXT}"
+
 
 class TestRunner:
 
@@ -85,7 +87,6 @@ class TestRunner:
         base_cluster_id = random.randint(1, 9223372036854775807) // 1000 * 1000
         if base_cluster_id < 1000:
             base_cluster_id = 1000
-
 
         for param in instance_params:
             LOG.debug(f"InstanceRunner params: {str(param)}")
@@ -203,10 +204,10 @@ class InstanceRunner:
 
         self.op_ctx = f"{self.test_name}: "
 
-        self.runningInstancesPath: pathlib.Path = pathlib.Path(C_EC2_INSTANCE_FILE_BASE + \
-                                                               '_' + \
-                                                               self.test_name.replace(' ', '_') + \
-                                                               '.' + \
+        self.runningInstancesPath: pathlib.Path = pathlib.Path(C_EC2_INSTANCE_FILE_BASE +
+                                                               '_' +
+                                                               self.test_name.replace(' ', '_') +
+                                                               '.' +
                                                                C_EC2_INSTANCE_FILE_EXT)
 
     def run(self) -> TestResult:
@@ -513,6 +514,7 @@ class InstanceRunner:
 
         test_sh_path = self.remote_repo_dir / "bamboo" / "unittest" / "scripts" / "test.sh"
         target_name = f"release-{self.test_name.replace(' ', '-')}"
+        log_path = self.remote_repo_dir / C_SETH_LOG_PATH
         testlist_path = self.remote_repo_dir / C_TESTLIST_PATH
 
         test_suffix = "-" + target_name.replace(" ", "-")
@@ -520,6 +522,7 @@ class InstanceRunner:
         command = f"{test_sh_path} --testsuffix {test_suffix} " \
                   f"{target_name} " \
                   f"{str(self.remote_cluster_config_path)} " \
+                  f"{str(log_path)}" \
                   f"{str(testlist_path)}"
 
         LOG.info(f"Test {self.test_name}: About to invoke SETH on {self.ip_addrs[0]} "
@@ -613,48 +616,17 @@ class InstanceRunner:
     def __collect_logs(self) -> None:
         """Collect log files from the remote node"""
 
-        collect_logs_command = f"{self.cluster_config.get_dir()}/{C_SE_COLLECT_LOGS_CMD}"
+        # The logs should each node should already have been copied to the first node, so we
+        # just need to get them from there and make sure they go into an appropriate subdirectory.
+        dest = str(self.artifact_path / self.test_name.replace(' ', '-'))
+        LOG.debug(f"Making directory for output logs: {dest}")
+        os.makedirs(dest, exist_ok=True)
 
-        LOG.info(f"Test {self.test_name}: About to invoke the collection of logs on {self.ip_addrs[0]}")
-
-        try:
-            ssh.run_ssh(self.ip_addrs[0], collect_logs_command, C_SE_COLLECT_LOGS_TIMEOUT_SEC, ctx=self.op_ctx)
-
-        except subprocess.TimeoutExpired as e:
-            msg = f"Test {self.test_name}: Collecting of logs from the SE cluster on {self.ip_addrs[0]} timed out " \
-                  f"after {e.timeout} seconds." \
-                  f"\nStdout Output:\n{e.stdout}" \
-                  f"\nStderr Output:\n{e.stderr}"
-            raise errors.SshError(msg, e.stdout, e.stderr) from e
-
-        # Now we need to copy these logs back to the artifact directory and rename them for the current test.
-        # Logs would have been written into the home directory. Let's find the exact name and path
-
-        LOG.debug(f"Test {self.test_name}: About to look for the collected logs on {self.ip_addrs[0]}")
-
-        find_logs_command = f"find {self.remote_home_dir} -name \"{C_SE_COLLECT_LOGS_FILESPEC}\""
-        result = ssh.run_ssh(self.ip_addrs[0], find_logs_command, ctx=self.op_ctx)
-
-        assert result.stdout is not None
-        assert len(result.stdout) > 0
-
-        src_path: pathlib.Path = pathlib.Path(result.stdout.strip())
-
-        # The destination filename is the original filename with the test name inserted
-        # just before the suffix.
-        # e.g. logs-20220622T12:01:01-CentOS-7.tar.gz
-        suffix = ".tar.gz"
-        dest_filename = f"{src_path.name.removesuffix(suffix)}-" \
-                        f"{self.test_name.replace(' ', '-')}{suffix}"
-
-        src = f"{self.ip_addrs[0]}:{result.stdout.strip()}"
-        dest = str(self.artifact_path / dest_filename)
-
-        LOG.debug(f"Test {self.test_name}: About to copy the logs from {src} to {dest}")
+        # Copy all the files into this directory
+        src = f"{self.ip_addrs[0]}:{str(self.remote_repo_dir / C_SETH_LOG_PATH)}"
 
         try:
             ssh.run_scp(src, dest, C_SE_COPY_LOGS_TIMEOUT_SEC, ctx=self.op_ctx)
-
         except subprocess.TimeoutExpired as e:
             msg = f"Test {self.test_name}: Copying of logs from {src} to {dest} timed out " \
                   f"after {e.timeout} seconds." \
@@ -663,6 +635,59 @@ class InstanceRunner:
             raise errors.SshError(msg, e.stdout, e.stderr) from e
 
         LOG.info(f"Test {self.test_name}: Successfully collected logs from {self.ip_addrs[0]} to {dest}")
+
+#
+#
+#        collect_logs_command = f"{self.cluster_config.get_dir()}/{C_SE_COLLECT_LOGS_CMD}"
+#
+#        LOG.info(f"Test {self.test_name}: About to invoke the collection of logs on {self.ip_addrs[0]}")
+#
+#        try:
+#            ssh.run_ssh(self.ip_addrs[0], collect_logs_command, C_SE_COLLECT_LOGS_TIMEOUT_SEC, ctx=self.op_ctx)
+#
+#        except subprocess.TimeoutExpired as e:
+#            msg = f"Test {self.test_name}: Collecting of logs from the SE cluster on {self.ip_addrs[0]} timed out " \
+#                  f"after {e.timeout} seconds." \
+#                  f"\nStdout Output:\n{e.stdout}" \
+#                  f"\nStderr Output:\n{e.stderr}"
+#            raise errors.SshError(msg, e.stdout, e.stderr) from e
+#
+#        # Now we need to copy these logs back to the artifact directory and rename them for the current test.
+#        # Logs would have been written into the home directory. Let's find the exact name and path
+#
+#        LOG.debug(f"Test {self.test_name}: About to look for the collected logs on {self.ip_addrs[0]}")
+#
+#        find_logs_command = f"find {self.remote_home_dir} -name \"{C_SE_COLLECT_LOGS_FILESPEC}\""
+#        result = ssh.run_ssh(self.ip_addrs[0], find_logs_command, ctx=self.op_ctx)
+#
+#        assert result.stdout is not None
+#        assert len(result.stdout) > 0
+#
+#        src_path: pathlib.Path = pathlib.Path(result.stdout.strip())
+#
+#        # The destination filename is the original filename with the test name inserted
+#        # just before the suffix.
+#        # e.g. logs-20220622T12:01:01-CentOS-7.tar.gz
+#        suffix = ".tar.gz"
+#        dest_filename = f"{src_path.name.removesuffix(suffix)}-" \
+#                        f"{self.test_name.replace(' ', '-')}{suffix}"
+#
+#        src = f"{self.ip_addrs[0]}:{result.stdout.strip()}"
+#        dest = str(self.artifact_path / dest_filename)
+#
+#        LOG.debug(f"Test {self.test_name}: About to copy the logs from {src} to {dest}")
+#
+#        try:
+#            ssh.run_scp(src, dest, C_SE_COPY_LOGS_TIMEOUT_SEC, ctx=self.op_ctx)
+#
+#        except subprocess.TimeoutExpired as e:
+#            msg = f"Test {self.test_name}: Copying of logs from {src} to {dest} timed out " \
+#                  f"after {e.timeout} seconds." \
+#                  f"\nStdout Output:\n{e.stdout}" \
+#                  f"\nStderr Output:\n{e.stderr}"
+#            raise errors.SshError(msg, e.stdout, e.stderr) from e
+#
+#        LOG.info(f"Test {self.test_name}: Successfully collected logs from {self.ip_addrs[0]} to {dest}")
 
     def __terminate_instances(self) -> None:
         """Terminates any previously started EC2 instance"""
@@ -733,6 +758,7 @@ class InstanceRunner:
 
         except (Exception,):
             LOG.error(f"Test {self.test_name}: *** UNABLE TO FORCIBLY STOP EC2 INSTANCES {ids} ({ips}). ***")
+
 
 def terminate_instances_from_file():
     """If an instance file exists, then terminate the instances running in it."""
