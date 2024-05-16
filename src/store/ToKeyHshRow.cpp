@@ -945,6 +945,7 @@ L_AdvanceNextRecord:
   i_Fld = -1;
 
   m_pRowSingle->vResetRow();
+  nMaxFreeBytes = m_pRowSingle->nFreeBytes();
 
   //                                                      end of testMoreRecords
 
