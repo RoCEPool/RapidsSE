@@ -70,8 +70,9 @@ RowSingle::RowSingle(StreamDef* pStreamDef)
   
   vResolveRowPix(pStreamDef);
   
-  Row* aRow = pAllotRow();
-  UNUSED(aRow);
+  Row* pRow = pAllotRow();
+
+  UNUSED(pRow);
   
   _checkInitialised_(CN_ROWSINGLE);
   

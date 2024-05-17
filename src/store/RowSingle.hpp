@@ -21,7 +21,7 @@ namespace STORE
       StreamDef *m_pStreamDef;     // stream def
       RowPix *m_pRowPix;        // row pix
     };
-    
+
     bool       m_abGetCol[C_MAX_COLUMNS];
 
   private:

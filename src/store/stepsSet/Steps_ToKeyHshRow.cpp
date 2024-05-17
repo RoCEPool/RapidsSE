@@ -46,7 +46,9 @@ void Step::vToKeyHshRowCompleted(void)
   
   ToKeyHshRow* pToKeyHshRow = * m_pLogicUnit->m_xpToKeyHshRow;
 
-  Pds* pPdsRowBuffer = pToKeyHshRow->pCompleted();
+  i8 i_Ptn = m_pDataStack->iPopInt(__func__);
+
+  Pds* pPdsRowBuffer = pToKeyHshRow->pCompleted(i_Ptn);
   
   m_pDataStack->vPushPtr(pPdsRowBuffer);
 
@@ -113,11 +115,14 @@ void Step::vToKeyHshRowDangling(void)
   ENTRY();
   
   if (m_pLogicUnit->m_xpToKeyHshRow.bIsNull()) {
+    i8 i_Ptn = m_pDataStack->iPopInt(__func__);
+    UNUSED(i_Ptn);
     m_pDataStack->vPushPtr(nullptr);
   }
   else {
     ToKeyHshRow* pToKeyHshRow = *m_pLogicUnit->m_xpToKeyHshRow;
-    Pds* pPdsRowBuffer = pToKeyHshRow->pDangling();
+    i8 i_Ptn = m_pDataStack->iPopInt(__func__);
+    Pds* pPdsRowBuffer = pToKeyHshRow->pDangling(i_Ptn);
     m_pDataStack->vPushPtr(pPdsRowBuffer);
   }
   

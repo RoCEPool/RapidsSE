@@ -52,13 +52,19 @@
   //profile.end
 
   // test for any completed
-  ToKeyHshRow[].completed to Pds[]
-  begin
-    Pds[].isNull not
-  while
-    Pds[].pipeOut
-    ToKeyHshRow[].completed to Pds[]
-  repeat
+  ptnmap::ptnsInGrid 0
+  do
+
+    I ToKeyHshRow[].completed to Pds[]
+
+    begin
+      Pds[].isNull not
+    while
+      Pds[].pipeOut
+      I ToKeyHshRow[].completed to Pds[]
+    repeat
+
+  loop
 
   Pds[].isNull assert
 
@@ -73,13 +79,19 @@
 : toKeyHshRow_EosMarker \handler
 
   // test for any remainders
-  ToKeyHshRow[].dangling to Pds[]
-  begin
-    Pds[].isNull not
-  while
-    Pds[].pipeOut
-    ToKeyHshRow[].dangling to Pds[]
-  repeat
+  ptnmap::ptnsInGrid 0
+  do
+
+    I ToKeyHshRow[].dangling to Pds[]
+
+    begin
+      Pds[].isNull not
+    while
+      Pds[].pipeOut
+      I ToKeyHshRow[].dangling to Pds[]
+    repeat
+
+  loop
 
 
   // -- -- -- -- -- --

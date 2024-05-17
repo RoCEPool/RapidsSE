@@ -484,11 +484,11 @@ void RowPix::vRemovePtnHash(void)
   
   //vPrint();
   
-  ASSERT(m_bPtnHash);
-  ASSERT(m_nExtraCols);
-
-  m_nColumns--;
-  m_nExtraCols--;
+//  ASSERT(m_bPtnHash);
+//  ASSERT(m_nExtraCols);
+//
+//  m_nColumns--;
+//  m_nExtraCols--;
   m_bPtnHash = false;
   
   //vPrint();

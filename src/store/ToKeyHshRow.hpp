@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+#include "LglBufSet.hpp"
+
 namespace STORE
 {
   class ToKeyHshRow : public Object
@@ -18,7 +20,9 @@ namespace STORE
     bool       m_bFirst;
     i8         m_i_Rec;
 
-    PdsBufferQueue* m_pBufferAddrQueue;
+    LglBufSet  m_oLglBufSet;
+
+    RowSingle* m_pRowSingle;
   
     //--
   
@@ -60,9 +64,8 @@ namespace STORE
     bool bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta);
     bool bConvertCsv(CsvBuffer* pCsvBuffer);
 
-    Pds* pDangling(void);
-    Pds* pCompleted(void);
-    Pds* pPdsRowBuffer(void);
+    Pds* pDangling(LglPtn tLglPtn);
+    Pds* pCompleted(LglPtn tLglPtn);
 
     i8 iRowsProcessed(void);
     i8 iRowsInvalid(void);
@@ -70,7 +73,6 @@ namespace STORE
 
 
   //private:
-    void vNewPdsRowBuffer(void);
     Footer* aFooter(void);
   };
 
