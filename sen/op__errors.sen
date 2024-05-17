@@ -58,7 +58,7 @@
   BT_EXECERRORS TableDefErr[] PdsErr[].new
 
   errorCode attachmap::errorText@
-    errorCode PdsErr[].addExecError assert
+    errorCode TableDefErr[] PdsErr[].addExecError assert
 
   // pipeout the EXECERROR PdsErr
   PdsErr[].pipeOut
@@ -88,7 +88,7 @@
   // create an Pds operand for commandErrors
   BT_EXECERRORS TableDefErr[] PdsErr[].new
 
-  errorMsg errorCode PdsErr[].addExecError assert
+  errorMsg errorCode TableDefErr[] PdsErr[].addExecError assert
 
   // pipeout the EXECERROR Pds
   PdsErr[].pipeOut
