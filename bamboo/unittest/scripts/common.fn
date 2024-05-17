@@ -172,7 +172,7 @@ function compileSE() {
       fi
 
       echo "Using GCC version ${newestGccVer} from SCL"
-      scl enable devtoolset-${newestGccVer} "make clean && time make ${target} -j$(nproc)"
+      scl enable "devtoolset-${newestGccVer}" "make clean && time make ${target} -j$(nproc)"
 
     else
       make clean && time make "${target}" "-j$(nproc)"
@@ -332,3 +332,190 @@ function isTpchDir() {
   return 0
 }
 
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Copies log files from each node of the locally installed SE to the bamboo log directory
+## Params:
+##  $1 - path of the cluster config file
+##  $2 - path of where the log files should be copied
+##  $3 - (optional) path where bamboo result files are being written
+function copyLogs() {
+
+  local configFile="$1"
+  local logOutputDir="$2"
+  local bambooResultsDir="$3"
+
+  # Execute in a subshell so that sourcing the config file doesn't pollute
+  # the global variable environment
+  (
+    # shellcheck disable=SC1090
+    source "${configFile}"
+
+    local src
+    local dest
+    declare -a scpCmd=()
+    declare -a sshCmd=()
+
+    for nodeName in "${NODE_LIST[@]}"; do
+      # Get the installation directory
+      local installDir
+      local host
+      installDir="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_DIR_KEY}")"
+      host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+
+      local outputNodeDir
+      outputNodeDir="${logOutputDir}/${nodeName}"
+
+      mkdir -p "${outputNodeDir}"
+
+      # Assume all nodes are remote. This is required because this gets run by the release test.
+      src="${host}:${installDir}/se*.log"
+      dest="${outputNodeDir}"
+      scpCmd=(
+        "scp"
+        "-r"
+        "-o" "StrictHostKeyChecking=no"
+        "${src}"
+        "${dest}"
+        "2>&1"
+      )
+
+      # Run it
+      echo "Copying logs: ${src} --> ${dest}"
+      local response
+      if ! response="$("${scpCmd[@]}")"; then
+        >&2 echo "Error copying logs from node ${nodeName} with the command: ${scpCmd[*]}"
+        >&2 echo "Error response on node ${nodeName} as follows: ${response}"
+        continue
+      fi
+
+      # Rename the files
+      local baseFileName
+      for f in "${outputNodeDir}"/se*.log; do
+        baseFileName="$(basename "${f}")"
+        src="${f}"
+        dest="${outputNodeDir}/${baseFileName//.log/.${nodeName}.log}"
+        mv "${src}" "${dest}" >/dev/null || true
+      done
+
+
+      # Check if the file clusterStatus.log exists on the remote node
+      sshCmd=(
+        "ssh"
+        "-o" "StrictHostKeyChecking=no"
+        "${host}"
+        "bash" "-c"
+        "'[ -f ${installDir}/clusterStatus.log ]'"
+      )
+
+      if "${sshCmd[@]}"; then
+        src="${host}:${installDir}/clusterStatus.log"
+        dest="${logOutputDir}/clusterStatus.${nodeName}.log"
+        scpCmd=(
+          "scp"
+          "-o" "StrictHostKeyChecking=no"
+          "${src}"
+          "${dest}"
+          "2>&1"
+        )
+        echo "Copying logs: ${src} --> ${dest}"
+
+        if ! response="$("${scpCmd[@]}")"; then
+          >&2 echo "Error copying clusterStatus.log from node ${nodeName} with the command: ${scpCmd[*]}"
+          >&2 echo "Error response on node ${nodeName} as follows: ${response}"
+        fi
+      fi
+
+
+      # Copy any queryLib source and log files. First check if they exist.
+      sshCmd=(
+        "ssh"
+        "-o" "StrictHostKeyChecking=no"
+        "${host}"
+        "bash" "-c"
+        "'[ -d ${installDir}/queryLibs/src ] && compgen -G ${installDir}/queryLibs/src/\* >/dev/null'"
+      )
+
+      local outputQueryLibDir="${outputNodeDir}/queryLibs"
+      if "${sshCmd[@]}"; then
+        mkdir -p "${outputQueryLibDir}"
+        src="${host}:${installDir}/queryLibs/src"
+        dest="${outputQueryLibDir}"
+        scpCmd=(
+          "scp"
+          "-o" "StrictHostKeyChecking=no"
+          "-r"
+          "${src}"
+          "${dest}"
+          "2>&1"
+        )
+
+        echo "Copying logs (recursively): ${src} --> ${dest}"
+        if ! response="$("${scpCmd[@]}")"; then
+          >&2 echo "Error copying queryLib sources from node ${nodeName} with the command: ${scpCmd[*]}"
+          >&2 echo "Error response on node ${nodeName} as follows: ${response}"
+        fi
+      fi
+    done
+
+    # Move Seth log files from the results directory to the logs directory.
+    # Seth writes them out to the results directory automatically.
+    # This happens locally.
+    local sethLogGlobPattern="${bambooResultsDir}/seth-log-*"
+    if [ -n "${bambooResultsDir}" ] && compgen -G "${sethLogGlobPattern}" >/dev/null; then
+      src="${bambooResultsDir}/seth-log-*"
+      dest="${logOutputDir}"
+      echo "Copying logs: ${src} --> ${dest}"
+      mv "${bambooResultsDir}"/seth-log-* "${dest}" || true
+    elif [ -z "${bambooResultsDir:-}" ]; then
+      echo "Result directory does not exist: ${bambooResultsDir}"
+    elif compgen -G "${sethLogGlobPattern}" >/dev/null; then
+      echo "No matching seth logs found against the glob pattern: ${sethLogGlobPattern}"
+    fi
+  )
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Remove log files from each node of the locally installed SE
+## Params:
+##  $1 - path of the cluster config file
+function removeLogs() {
+
+  local configFile="$1"
+
+  # Execute in a subshell so that sourcing the config file doesn't pollute
+  # the global variable environment
+  (
+    # shellcheck disable=SC1090
+    source "${configFile}"
+
+    local installDir
+    local host
+    declare -a sshCmd
+
+    for nodeName in "${NODE_LIST[@]}"; do
+      # Get the installation directory
+      installDir="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_DIR_KEY}")"
+      host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+
+      sshCmd=(
+        "ssh"
+        "-o" "StrictHostKeyChecking=no"
+        "${host}"
+        "bash" "-c"
+        "'rm -f ${installDir}/se\*.log; rm -f ${installDir}/clusterStatus.log; rm -rf ${installDir}/queryLibs/\*;'"
+      )
+
+      "${sshCmd[@]}"
+    done
+  )
+}
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Remove the Seth log file from the results directory
+## Params:
+##  $1 - path of results directory
+function removeSethLog() {
+
+  local bambooResultsDir="$1"
+  rm -f "${bambooResultsDir}"/seth-log-* &>/dev/null || true
+}

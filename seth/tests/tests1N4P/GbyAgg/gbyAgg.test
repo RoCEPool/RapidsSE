@@ -84,7 +84,6 @@ PS_COMMENT      VARCHAR(199) NOT NULL
 //------------------------------------------------------------------------------
 load ${testName2}_partsupp "../TPCH/SF_0001/partsupp.tbl";
 
-
 select p_mfgr, p_brand,  count(*) from ${testName2}_part where p_size < 5 group by p_mfgr, p_brand order by p_mfgr, p_brand;
 rows:
  ('Manufacturer#1','Brand#13',1)

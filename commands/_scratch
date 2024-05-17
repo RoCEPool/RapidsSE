@@ -13,7 +13,7 @@ explain stage transliterate SELECT l_orderkey, l_shipdate from lineitem where
       | pulse once
       | stageMarker0383
     stage stageMarker0383 on all partitions :
-      scan rapidsse public lineitem
+      scan rapids public lineitem
       | filter " type BOOLEAN  $11 DATE '1998-12-01'  1327104000000007  -  <=  "
       | project " type INTEGER as l_orderkey $1 , type DATE as l_shipdate $11 "
       | combined 0

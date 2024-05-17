@@ -20,12 +20,13 @@ void Step::vAddSteps_AdaptorWL(void)
   vAddStep("AdaptorWL[].delete"_Stz,              &Step::vAdaptorWLDelete);
 
   vAddStep("AdaptorWL[].childJobExited"_Stz,      &Step::vAdaptorWLChildJobExited);
+  vAddStep("AdaptorWL[].clientAddr@"_Stz,         &Step::vAdaptorWLClientAddr);
   vAddStep("AdaptorWL[].compilerError"_Stz,       &Step::vAdaptorWLCompilerError);
   vAddStep("AdaptorWL[].crwBuffer"_Stz,           &Step::vAdaptorWLCrwBuffer);
   vAddStep("AdaptorWL[].decodePayload"_Stz,       &Step::vAdaptorWLDecodePayload);
   vAddStep("AdaptorWL[].executionError"_Stz,      &Step::vAdaptorWLExecutionError);
   vAddStep("AdaptorWL[].executionWarning"_Stz,    &Step::vAdaptorWLExecutionWarning);
-  vAddStep("adaptorWL[].affectedRowCountPds"_Stz,    &Step::vAdaptorWLAffectedRowCountPds);
+  vAddStep("adaptorWL[].affectedRowCountPds"_Stz, &Step::vAdaptorWLAffectedRowCountPds);
   vAddStep("AdaptorWL[].hasPayloadToSend@"_Stz,   &Step::vAdaptorWLHasPayloadToSendFetch);
   vAddStep("AdaptorWL[].hasQuery"_Stz,            &Step::vAdaptorWLHasQuery);
   vAddStep("AdaptorWL[].isAbortEarly"_Stz,        &Step::vAdaptorWLIsAbortEarly);
@@ -88,6 +89,21 @@ void Step::vAdaptorWLChildJobExited(void)
 
   AdaptorWL* pAdaptorWL = _pAdaptorWL(* m_pLogicUnit->m_xpAdaptorWL);
   pAdaptorWL->vChildJobExited();
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* adaptorWL[].clientAddr@ -- push the connected client's address             */
+/*----------------------------------------------------------------------------*/
+void Step::vAdaptorWLClientAddr(void)
+{
+  ENTRY();
+
+  AdaptorWL* pAdaptorWL = _pAdaptorWL(* m_pLogicUnit->m_xpAdaptorWL);
+  Stz* szClientAddr = pAdaptorWL->szClientAddr();
+  ASSERT(szClientAddr);
+  m_pDataStack->vPushStz(szClientAddr);
 
   EXIT();
 }

@@ -21,13 +21,12 @@ namespace STORE
    ~Card_Term(void) noexcept(false);
 
 
-    void vApplyCast(CardIter* pCI, Card_Emit* p_Dic_expr, Cast& rxCast_last);
+    void vApplyCast(CardIter* pCI, Card_EXPRLIST* p_Dic_expr, Cast& rxCast_last);
     void vBump_ordCol(eSF eFacet, i8 nBy= 1);
     Card_Term* pClone(void);
     Card_Term* pClone(Symbol* pDiffSymbol);
     void vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn);
     eTE  eEvalTerm(void);
-    void vPrint(Ribbon* pRibbon, i8 iDepth);
     void vUpdate_expCol(CardIter* pCI, Card_Emit* p_Dic_expr, bool bAlt=false);
 
     void vX_expCol_To_tblCol(CardIter* pCI);

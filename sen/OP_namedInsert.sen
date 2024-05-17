@@ -10,7 +10,7 @@
 : locateNamedTable params| sTableNm |
 
   // move to default tables folder
-  "/tenants/boray/catalogs/rapidsse/schemas/public/tables"
+  "/tenants/boray/catalogs/rapids/schemas/public/tables"
     str.toStrVec Path[].set
 
   // check table assembly : ../schemas/public/tables/<sTableNm>

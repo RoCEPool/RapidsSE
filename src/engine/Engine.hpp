@@ -40,6 +40,7 @@ namespace ENGINE
     static void vKillPrev(void);
     static void vLoadTables(void);
     static void vLowMemoryDiscard(void);
+    static void vMetaDataTables(void);
     static void vMungeCheck(void);
     static void vNoMemoryLogging(void);
     static void vOpenPool(void);

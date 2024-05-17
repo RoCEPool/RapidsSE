@@ -318,8 +318,16 @@ Object* Socket::pRecvWLMsg(eEC& eErrorCode, String* psErrStr)
     // We're not going to try to clear the remaining bytes on the socket and keep it
     // alive as the payload size in the header may be incorrect. Better to just send
     // the client an error message and then disconnect them.
+    s256 sClientAddr;
+    if (nullptr == inet_ntop(this->m_xClientAddr.sin_family,
+                             &(this->m_xClientAddr.sin_addr),
+                             sClientAddr.azChar(),
+                             sClientAddr.nAreaBytes())) {
+      sClientAddr.vSprint("[inet_ntop error]: %s"_Stz, strerror(errno));
+    }
+
     vTrace("Invalid message received from client on %s:%lld. Message too big (size = %lld).\n"_Stz,
-           inet_ntoa(this->m_xClientAddr.sin_addr),
+           sClientAddr.szStz(),
            ntohs(this->m_xClientAddr.sin_port),
            iMsgSize);
 
@@ -449,6 +457,29 @@ bool Socket::bSendObject(Object* pObject, SysCall& roSysCall, eSY eSendWhy)
 }
 
 /*----------------------------------------------------------------------------*/
+/* send an ascii string                                                       */
+/*----------------------------------------------------------------------------*/
+bool Socket::bSendStr(String* pStr, SysCall& roSysCall, bool bIncNullTerminator)
+{
+  _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
+  ASSERT(pStr);
+  ASSERT(pStr->nLength() > 0);
+
+  roSysCall.vClear();
+
+  i8 nBytes = pStr->nLength() + (bIncNullTerminator ? 1 : 0);
+
+  bool bResult = bBytesSend(pStr->azStr(), nBytes,roSysCall);
+
+  if (bResult) {
+    m_pTotup->vAdd(CN_PAYLOADOBJ,nBytes);
+    m_pWhyTot->vAdd(SY_NONE,nBytes);
+  }
+
+  return bResult;
+}
+
+/*----------------------------------------------------------------------------*/
 /* send an object                                                             */
 /*----------------------------------------------------------------------------*/
 bool Socket::bSendWLMsg(WLP::PayloadObj* pPayloadObj, SysCall& roSysCall, eSY eSendWhy)
@@ -475,8 +506,16 @@ bool Socket::bSendWLMsg(WLP::PayloadObj* pPayloadObj, SysCall& roSysCall, eSY eS
 /*----------------------------------------------------------------------------*/
 void Socket::vClientAddr(s256& sBuf)
 {
+  s256 sClientAddr;
+  if (nullptr == inet_ntop(this->m_xClientAddr.sin_family,
+                           &(this->m_xClientAddr.sin_addr),
+                           sClientAddr.azChar(),
+                           sClientAddr.nAreaBytes())) {
+    sClientAddr.vSprint("[inet_ntop error]: %s"_Stz, strerror(errno));
+  }
+
   sBuf.vSprint("%s:%d"_Stz,
-               inet_ntoa(this->m_xClientAddr.sin_addr),
+               sClientAddr.szStz(),
                ntohs(this->m_xClientAddr.sin_port));
 }
 
@@ -523,9 +562,18 @@ bool Socket::bWLHeaderRecv(void)
 
   bool bResult = bBytesRecv(m_pWlpHeader,WLP::C_WLPHEADER_SIZE,oSysCall);
   if (! bResult) {
-    vTrace("Client %s:%lld has disconnected\n"_Stz,
-           inet_ntoa(this->m_xClientAddr.sin_addr),
-           ntohs(this->m_xClientAddr.sin_port));
+    s256 sClientAddr;
+    if (nullptr == inet_ntop(this->m_xClientAddr.sin_family,
+                             &(this->m_xClientAddr.sin_addr),
+                             sClientAddr.azChar(),
+                             sClientAddr.nAreaBytes())) {
+      sClientAddr.vSprint("[inet_ntop error]: %s"_Stz, strerror(errno));
+    }
+
+    vTraceComponent(TC_CONNECTIONS,
+                    "Client %s:%lld has disconnected\n"_Stz,
+                    sClientAddr.szStz(),
+                    ntohs(this->m_xClientAddr.sin_port));
     vSuccess(false);
     return false;
   }

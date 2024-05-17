@@ -7,6 +7,8 @@
 #include "Board.hpp"
 #include "Error.hpp"
 
+#include "XF_Optimise_Early_projection.hpp"
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -52,8 +54,8 @@ void Card_IndexJoin::vDerive_streamKey(CardIter* pCI)
 
   RASSERT(bPeg_Projection(pCI));
   RASSERT(bPeg_Chosen_index(pCI));
-  pCI->E.p_emit->vDelete_streamKey(pCI);
 
+   pCI->E.p_emit->vDeleteSub(CK_p_STREAMKEY);
 
   if (pCI->StreamOrder.m_pStreamKey) {
     pCI->E.p_streamKey = _pCard_StreamKey(pCI->StreamOrder.m_pStreamKey->pDupCardRecursive());
@@ -64,66 +66,17 @@ void Card_IndexJoin::vDerive_streamKey(CardIter* pCI)
 
   pCI->E.p_index->vAdd_streamKey_exprs(pCI);
 
-  pCI->E.p_emit->vAppendChild(pCI->E.p_streamKey);
-
+  pCI->E.p_Op->vAppendChild(pCI->E.p_streamKey);
 
   // set running projection for use by next op
-  pCI->StreamOrder.m_pEmitted = pCI->E.p_emit;
+  pCI->StreamOrder.m_pEmit = pCI->E.p_emit;
   pCI->StreamOrder.m_pStreamKey  = pCI->E.p_streamKey;
-}
-
-/*----------------------------------------------------------------------------*/
-/* early project                                                              */
-/*----------------------------------------------------------------------------*/
-void Card_IndexJoin::vEarlyProject_recurse_add(CardIter* pCI)
-{
-  //vDump(0,(Stz*)__func__);
-
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (pCI->pPeekPrev()->bIsCard(CK_o_GBYAGG) ||
-      pCI->pPeekPrev()->bIsCard(CK_o_PROJECT)) {
-
-    pCI->Early.m_pOP_leaf = this;
-    pCI->Dic.m_p_expr = pCI->Flux.m_pArriving = pSub_emit();
-
-   // pCI->PRINTBOARD_dbg();
-    return;
-
-
-  }
-
-  // save the current projection needed
-  //   we can restore to this save if projection needed get extended
-  Card_Needed* p_needed_save = pCI->Early.m_pNeeded_later->pClone();
-
-  // check for additional/temporary transients
-  vEarlyProject_add_transients(pCI);
-
-  // insert new empty early project (has only needed) before this indexJoin
-  Card_Project* p_project_early = pCI->Early.m_pNeeded_later->pNew_project_early(pCI);
-  pCI->vInsertBefore(p_project_early, this);
-  pCI->vResynchOp();
-
-  Card_OP::vEarlyProject_backstep(pCI);
-
-  /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
-
-  pCI->E.p_table = pSub_table();
-  pCI->E.p_Op = pCI->E.p_indexJoin;
-  pCI->E.p_indexJoin->vRestate_emit(pCI);
-
-  //pCI->PRINTBOARD_dbg();
-
-  // restore needed
-  delete pCI->Early.m_pNeeded_later;
-  pCI->Early.m_pNeeded_later = p_needed_save;
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_IndexJoin::vEarlyProject_add_transients(CardIter* pCI)
+void Card_IndexJoin::vAdd_transients(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -139,7 +92,7 @@ void Card_IndexJoin::vEarlyProject_add_transients(CardIter* pCI)
   //pCI->G.p_term->vDump();
 
 
-  if (!pCI->Early.m_pNeeded_later->pFind_expr_Matches(pCI->E.p_term->pSymbol())) {
+  if (!pCI->Early.m_pNeeded_later->pFind_expr(pCI->E.p_term->pSymbol())) {
 
     if (pCI->E.p_term->pSymbol()->bHasFacet(SF_EXP_COL)) {
       Card_Expr* p_expr_expCol = Card_Expr::pCraft_expr_Of_term(pCI->E.p_term);
@@ -147,7 +100,7 @@ void Card_IndexJoin::vEarlyProject_add_transients(CardIter* pCI)
       pCI->Early.m_pNeeded_later->vRenumberAll_expr();
     }
     else
-    if (Card_Expr* p_expr_defn = pCI->pResolvePrior_expr(pCI->E.p_term)) {
+    if (Card_Expr* p_expr_defn = pCI->pPrior_expr(pCI->E.p_term->pSymbol())) {
       Card_Expr* p_expr_clone = p_expr_defn->pClone();
       //p_expr_clone->vDump(__func__);
       p_expr_clone->pGet_Symbol(0)->vDeleteFacet(SF_EXP_COL);
@@ -172,11 +125,11 @@ void Card_IndexJoin::vEarlyProject_add_transients(CardIter* pCI)
     if (!p_term->pSymbol()->bHasFacet(SF_EXP_COL) && ! p_term->pSymbol()->bHasFacet(SF_TBL_COL))
       return C_CONTINUE_RECURSION;
 
-    if (pCI->Early.m_pNeeded_later->pFind_expr_Matches_ignoring(p_term->pSymbol(), SF_EXP_COL)) {
+    if (pCI->Early.m_pNeeded_later->pFind_expr_ignoring(p_term->pSymbol(), SF_EXP_COL)) {
       return C_CONTINUE_RECURSION;
     }
 
-    if (Card_Expr* p_expr_defn = pCI->pResolvePrior_expr(p_term)) {
+    if (Card_Expr* p_expr_defn = pCI->pPrior_expr(p_term->pSymbol())) {
       //p_expr_defn->vDump();
       Card_Expr* p_expr_clone = p_expr_defn->pClone();
       if (p_expr_clone->pGet_Symbol(0)->nFacets() > 1)
@@ -191,59 +144,9 @@ void Card_IndexJoin::vEarlyProject_add_transients(CardIter* pCI)
   if (! (pCI->E.p_filter = pSub_filter()))
     return;
 
-  if ((pCI->E.p_boolPred = pCI->E.p_filter->pSub_boolPred()))
-    pCI->E.p_boolPred->bLambdaWalk_term(bLambda);
+  if ((pCI->E.p_predicate = pCI->E.p_filter->pSub_predicate()))
+    pCI->E.p_predicate->bLambdaWalk_term(bLambda);
 
-}
-/*----------------------------------------------------------------------------*/
-/* early project                                                              */
-/*----------------------------------------------------------------------------*/
-void Card_IndexJoin::vEarlyProject_root(CardIter* pCI)
-{
-  //vDump(0,(Stz*)__func__);
-
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  RASSERT(bIsPartitionLevel());
-
-  RASSERT(! pCI->Early.m_pNeeded_later);
-
-  if (pCI->pPeekPrev()->bIsCard(CK_o_PROJECT))
-    return;
-
-  pCI->E.p_key = pSub_key();
-  pCI->E.p_emit = pSub_emit();
-
-  // get the root needed form of ordAgg's projection
-  pCI->Early.m_pOP_root = this;
-  pCI->Early.m_pOP_leaf = nullptr;
-  pCI->Early.m_pNeeded_later  = pCI->E.p_emit->pCraftRoot_needed(pCI);
-
-  // insert empty early projection (has only needed) before this ordAgg
-  Card_Project* p_project_early = pCI->Early.m_pNeeded_later->pNew_project_early(pCI);
-  pCI->vInsertBefore(p_project_early, this);
-  pCI->vResynchOp();
-
-  Card_OP::vEarlyProject_backstep(pCI);
-
-  /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
-
-  RASSERT(pCI->Early.m_pOP_leaf);
-
-  pCI->E.p_indexJoin->vRestate_emit(pCI);
-
- // pCI->PRINTBOARD_dbg();
-}
-
-/*----------------------------------------------------------------------------*/
-/* craft needed                                                               */
-/*----------------------------------------------------------------------------*/
-void Card_IndexJoin::vCraft_needed_root(CardIter *pCI)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  pCI->Early.m_pNeeded_later = pCI->E.p_emit->pCraft_needed_root(pCI);
-  DELETE_CARD(pCI->Early.m_pNeeded_later);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -285,7 +188,7 @@ void Card_IndexJoin::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  vValidate_mustHave(CK_s_LEVEL, CK_s_TABLE, CK_NONE);
+  vValidate_child_mustBe(CK_p_LEVEL, CK_p_TABLE, CK_NONE);
 
   RASSERT(pSub_table()->pSub_indexList());
 

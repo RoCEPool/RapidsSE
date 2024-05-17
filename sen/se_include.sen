@@ -8,33 +8,33 @@ assert::stack_0
 
   "se_core.sen"             include
         
-"<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables"
+"<path> = /tenants/boray/catalogs/rapids/schemas/public/tables"
   constant STD_PATH_TAG
   
 "<noWait> = 1" constant STD_NOWAIT_TAG
 
-"<wait> = 1 <path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables"
+"<wait> = 1 <path> = /tenants/boray/catalogs/rapids/schemas/public/tables"
    constant STD_WAIT_PATH_TAG
 
-"<wait> = 1 <parent> = 1 <path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables"
+"<wait> = 1 <parent> = 1 <path> = /tenants/boray/catalogs/rapids/schemas/public/tables"
    constant STD_NORMALFORK_WAIT_TAG
 
-"<nowait> = 1 <parent> = 1 <path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables"
+"<nowait> = 1 <parent> = 1 <path> = /tenants/boray/catalogs/rapids/schemas/public/tables"
    constant STD_NORMALFORK_TAG
 
-"<nowait> = 1 <parent> = 1 <optimise> = 1 <path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables"
+"<nowait> = 1 <parent> = 1 <optimise> = 1 <path> = /tenants/boray/catalogs/rapids/schemas/public/tables"
    constant STD_NORMALFORK_OPT_TAG
 
-"<nowait> = 1 <parent> = 1 <optimise> = 1 <hasCodeFile> = 1 <path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables"
+"<nowait> = 1 <parent> = 1 <optimise> = 1 <hasCodeFile> = 1 <path> = /tenants/boray/catalogs/rapids/schemas/public/tables"
    constant STD_NORMALFORK_OPT_NOCODE_TAG
 
-"<nowait> = 1 <parent> = 1 <optimise> = 1 <keepCodeFile> = 1 <path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables"
+"<nowait> = 1 <parent> = 1 <optimise> = 1 <keepCodeFile> = 1 <path> = /tenants/boray/catalogs/rapids/schemas/public/tables"
    constant STD_NORMALFORK_OPT_KEEP_TAG
 
-"<wait> = 1 <parent> = 1 <signalParent> = 1 <path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables"
+"<wait> = 1 <parent> = 1 <signalParent> = 1 <path> = /tenants/boray/catalogs/rapids/schemas/public/tables"
    constant STD_BOOTFORK_TAG
 
-"<nowait> = 1 <parent> = 0 <path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables"
+"<nowait> = 1 <parent> = 0 <path> = /tenants/boray/catalogs/rapids/schemas/public/tables"
    constant STD_DEMONFORK_TAG
 
 "se_boot 9" .verbose
@@ -129,6 +129,7 @@ cmd::fillOut_allCmds
   "it_analyzeIndex.sen"     include
   "it_analyzeTable.sen"     include
   "it_bpaObjects.sen"       include
+  "it_bpaPool.sen"          include
   "it_bpaRegions.sen"       include
   "it_columnDefs.sen"       include
   "it_command.sen"          include
@@ -183,6 +184,16 @@ cmd::fillOut_allCmds
   "it_verifyTable.sen"      include
   "it_warnings.sen"         include
 
+  "md_catalog.sen"          include
+  "md_cluster.sen"          include
+  "md_columns.sen"          include
+  "md_indexColumns.sen"     include
+  "md_tableIndexes.sen"     include
+  "md_nodes.sen"            include
+  "md_queries.sen"          include
+  "md_schema.sen"           include
+  "md_sessions.sen"         include
+  "md_tables.sen"           include
 
   "job_startSystem.sen"     include // last last
 
@@ -209,7 +220,7 @@ end ;
 //............................................................................//
 
 /*----------------------------------------------------------------------------*/
-/* make /tenants/boray/catalogs/rapidsse/schemas/public/tables                */
+/* make /tenants/boray/catalogs/rapids/schemas/public/tables                  */
 /*----------------------------------------------------------------------------*/
 : makeDefaultFolders ( )
 
@@ -238,25 +249,27 @@ end ;
       "catalogs" Folder[].findSymbol execute
       Path[].pushFolder
 
-        // make 'rapidsse' catalog folder:
-        //  /tenants/boray/catalogs/rapidsse
-        //  /tenants/boray/catalogs/rapidsse/schemas
-        "rapidsse" :makeCatalogFolder
-        "rapidsse" Folder[].findSymbol execute
+        // make 'rapids' catalog folder:
+        //  /tenants/boray/catalogs/rapids
+        //  /tenants/boray/catalogs/rapids/schemas
+        "rapids" :makeCatalogFolder
+        "rapids" Folder[].findSymbol execute
         Path[].pushFolder
 
           "schemas" Folder[].findSymbol execute
           Path[].pushFolder
 
             // make 'public' schema folder:
-            //  /tenants/boray/catalogs/rapidsse/schemas/public
-            //  /tenants/boray/catalogs/rapidsse/schemas/public/tables
+            //  /tenants/boray/catalogs/rapids/schemas/public
+            //  /tenants/boray/catalogs/rapids/schemas/public/tables
             "public" :makeSchemaFolder
 
           Path[].popFolder
       Path[].popFolder
     Path[].popFolder
   Path[].popFolder
+
+
 
   assert::stack_0
 ;

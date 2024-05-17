@@ -172,6 +172,14 @@ void AdaptorWL::vRepair(Object* pObject)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* Get the current client's IP and port                                       */
+/*----------------------------------------------------------------------------*/
+Stz* AdaptorWL::szClientAddr()
+{
+  return m_sClientAddr.szStz();
+}
+
+/*----------------------------------------------------------------------------*/
 /* Decode the payload into a wireline message                                 */
 /*----------------------------------------------------------------------------*/
 void AdaptorWL::vDecodePayload(WLP::PayloadObj* pPayload)
@@ -463,7 +471,7 @@ void AdaptorWL::vExecutionError(Pds* pPds)
   eEC eErrorCode   = (eEC) pInfoRow->iColVal_int(1);
   Stz* szErrorText = pInfoRow->szColVal_ofs(2);
 
-  vTraceComponent(TC_WLP, "AdaptorWL: Error infoset received: %s\n"_Stz, aErrorMsg[eErrorCode]);
+  vTraceComponent(TC_WLP, "Client %s: Error infoset received: %s\n"_Stz, m_sClientAddr.szStz(), aErrorMsg[eErrorCode]);
 
   if (eErrorCode == EC_WL_SOCKET_CLOSED) {
     // Disconnect immediately
@@ -840,11 +848,11 @@ void AdaptorWL::vRowData(CrwBuffer* pCrwBuffer)
       }
 
       dScalingFactor *= C_ROWDATARESP_SCALE_DOWN;
-      vTraceComponent(TC_WLP, "RowDataResponse cannot fit %lld rows\n"_Stz, iRowsToSend);
+      vTraceComponent(TC_WLP, "Client %s: RowDataResponse cannot fit %lld rows\n"_Stz, m_sClientAddr.szStz(), iRowsToSend);
       continue;
     }
 
-    vTraceComponent(TC_WLP, "RowDataResponse serialised %lld rows\n"_Stz, iRowsToSend);
+    vTraceComponent(TC_WLP, "Client %s: RowDataResponse serialised %lld rows\n"_Stz, m_sClientAddr.szStz(), iRowsToSend);
     iStartingRow += iRowsToSend;
 
     if (iRowsToSend > iMaxRowsThatFit) {
@@ -957,11 +965,11 @@ void AdaptorWL::vPdsRowData(Pds* pPdsRowBuffer)
       }
 
       dScalingFactor *= C_ROWDATARESP_SCALE_DOWN;
-      vTraceComponent(TC_WLP, "RowDataResponse cannot fit %lld rows\n"_Stz, iRowsToSend);
+      vTraceComponent(TC_WLP, "Client %s: RowDataResponse cannot fit %lld rows\n"_Stz, m_sClientAddr.szStz(), iRowsToSend);
       continue;
     }
 
-    vTraceComponent(TC_WLP, "RowDataResponse serialised %lld rows\n"_Stz, iRowsToSend);
+    vTraceComponent(TC_WLP, "Client %s: RowDataResponse serialised %lld rows\n"_Stz, m_sClientAddr.szStz(), iRowsToSend);
     iStartingRow += iRowsToSend;
 
     if (iRowsToSend > iMaxRowsThatFit) {
@@ -1132,7 +1140,26 @@ void AdaptorWL::vDeserialiseMsg(i8 iMessageType)
 
   // Set the current message type and decode the message
   m_iCurrentMsgType = eMsgType;
-  i8 iBytesRead = m_pCurrentMsg->read(m_pProtocol.get());
+  i8 iBytesRead;
+
+  try {
+    iBytesRead = m_pCurrentMsg->read(m_pProtocol.get());
+
+  } catch (apache::thrift::transport::TTransportException& e) {
+    // Respond to the client with an error, and set the m_eProtocolError
+    // which will cause the socket to be closed.
+    std::string sMsgType = to_string(eMsgType);
+    eEC eErrCode = EC_WL_PROTOCOL_ERROR;
+    vSerialiseErrorResponse(eErrCode,
+                            "Error: %s; %s: Unable to decode wireline message of type %s: %s"_Stz,
+                            aEC2[eErrCode],
+                            aErrorMsg[eErrCode],
+                            sMsgType.c_str(),
+                            e.what());
+
+    vDisconnectClient(eErrCode);
+    return;
+  }
 
   if (iBytesRead == 0) {
     // Respond to the client with an error, and set the m_eProtocolError
@@ -1146,9 +1173,10 @@ void AdaptorWL::vDeserialiseMsg(i8 iMessageType)
                             sMsgType.c_str());
 
     vDisconnectClient(eErrCode);
+    return;
   }
 
-  vTraceComponent(TC_WLP, "Decoded a wireline message of type: %s\n"_Stz, to_string(eMsgType).c_str());
+  vTraceComponent(TC_WLP, "Client %s: Decoded a wireline message of type: %s\n"_Stz, m_sClientAddr.szStz(), to_string(eMsgType).c_str());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1381,7 +1409,8 @@ void AdaptorWL::vNextState(eState eNextState)
   }
 
   // Do the transition
-  vTraceComponent(TC_WLP, "Wireline client transitioning from state %s to state %s\n"_Stz,
+  vTraceComponent(TC_WLP, "Client %s: Wireline client transitioning from state %s to state %s\n"_Stz,
+         m_sClientAddr.szStz(),
          aState[m_eProtocolState],
          aState[eNextState]);
 
@@ -1727,7 +1756,7 @@ void AdaptorWL::vProcessQueryExecuteRequest()
     return;
   }
 
-  vTraceComponent(TC_WLP, "QueryExecuteRequest contains query string: %s\n"_Stz, pMsg->query.c_str());
+  vTraceComponent(TC_WLP, "Client %s: QueryExecuteRequest contains query string: %s\n"_Stz, m_sClientAddr.szStz(), pMsg->query.c_str());
 
   vNextState(QUERY_BEGUN);
 

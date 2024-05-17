@@ -273,12 +273,17 @@ int HeartbeatRcv::iRecv(char *pPacket, size_t iSize) {
 
     // For debug logging only
 //    if (iRet > 0) {
-//      char *strSenderAddress = inet_ntoa(SenderAddr.sin_addr);
+//      s256 sSenderAddr;
+//      if (nullptr == inet_ntop(SenderAddr.sin_family,
+//                               &(SenderAddr.sin_addr),
+//                               sSenderAddr.azChar(),
+//                               sSenderAddr.nAreaBytes())) {
+//        sSenderAddr.vSprint("[inet_ntop error]: %s"_Stz, strerror(errno));
+//      }
 //      unsigned short sPort = ntohs(SenderAddr.sin_port);
 //
-//      (void)strSenderAddress;
 //      (void)sPort;
-//      printf("received from %s %d\n", strSenderAddress, sPort);
+//      printf("received from %s %d\n", sSenderAddr.szStz(), sPort);
 //    }
   }
 

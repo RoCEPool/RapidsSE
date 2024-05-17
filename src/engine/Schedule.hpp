@@ -5,6 +5,8 @@
 
 namespace ENGINE
 {
+  class ThreadList;
+
   class Schedule : public Object
   {
   friend Scheduler;
@@ -18,7 +20,7 @@ namespace ENGINE
 
     Atomic       m_ixThreads;
 
-    ThreadVec*   m_pDedicatedThreadVec; // vector of dedicated threads
+    ThreadList*  m_pDedicatedThreadList; // skiplist of dedicated threads
     ThreadVec*   m_pGeneralThreadVec;   // vector of general threads
   
     ThreadQueue* m_pIdleThreadQueue;    // queue of idle threads
@@ -91,7 +93,6 @@ namespace ENGINE
     void vRemoveGeneralThread(Thread* pThread);
   
   public:
-    ThreadVec* pDedicatedThreadVec(void);
     ThreadVec* pGeneralThreadVec(void);
     i8         nIdleThreads(void);
 

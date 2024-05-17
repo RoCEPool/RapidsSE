@@ -45,6 +45,9 @@ namespace STORE
     s256 m_sStageNm;
 
     i8 m_iOperatorNo;
+    i8 m_iDupOpNo;
+    i8 m_iPrevOpNo;
+		i8 m_iPrevDupOpNo;
 
     eSK  m_eSketchKind;
     eHK  m_eHandlerKind;
@@ -114,7 +117,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    OpSketch(StageDef* pStageDef, i8 iOperatorNo, Stz* sEprStr, eHK eHandlerKind, eSK eSketchKind, eSR eStencilIn,
+    OpSketch(StageDef* pStageDef, Stz* sEprStr, eHK eHandlerKind, eSK eSketchKind, eSR eStencilIn,
              eSR eStencilOut, eII eIndexInfo, TypedStack* pInitStack = nullptr);
 
    ~OpSketch(void) noexcept(false);
@@ -128,6 +131,8 @@ namespace STORE
 		void vCopyConstraintStack(TypedStack* pConstraintStack);
     void vCopyInitStack(TypedStack* pInitStack);
 
+		void vDupOpNo(i8 iDupOpNo);
+
     void vGenerateExprStacks(Stz* sExpr, bool bConstraint = false);
 
     void vTable(Table* pTable);
@@ -139,6 +144,7 @@ namespace STORE
     void vLimitExpr(Stz* sLimitExpr);
     void vPayloadBytes(i8 nPayloadBytes);
     void vSetLabels(Stz* sLabel, Stz* sLabelNext, Stz* sLabelLoop, Stz* sLabelOuterLoop = ""_Stz);
+		void vSetOpNos(i8 iOperatorNo, i8 iOpSketchCount, i8 iPrevOpNo, i8 iPrevDupOp);
     void vStreamDefs(StreamDef* pStreamDefLft, StreamDef* pStreamDefRht, StreamDef* pStreamDefOut);
     eSK  eSketchKind(void);
     void vTopCount(i8 iTopCount);

@@ -65,11 +65,36 @@
       PdsWarn[].delete
     then
 
+  else <bpaType> "pool" str.same if
+    // Create a warnings Pds. We may not need it.
+    C_TDEF_WARNINGS op__tableDef_warn assert
+    BT_WARNINGS TableDefWarn[] PdsWarn[].new
+
+    // find the C_TDEF_BPAPOOL table definition
+    C_TDEF_BPAPOOL op__tableDef assert
+
+    // create a streamDef and pipe it out
+    TableDef[] StreamDefLft[].new
+    StreamDefLft[].pipeOut
+
+    // create Pds
+    BT_DATA TableDef[] Pds[].new
+
+    // populate Pds
+    Pds[].addBpaPool
+    Pds[].pipeOut
+
+    PdsWarn[].rows 0 > if
+      PdsWarn[].pipeOut
+    else
+      PdsWarn[].delete
+    then
+
   else
     <bpaType> EC_INVALID_PARAMETER attachmap::errorText@ "%v: %v" str.format EC_INVALID_PARAMETER op__execErrMsg
     true
     exit
-  then then
+  then then then
 
   Marker[].newEosMarker
   Marker[].pipeOut

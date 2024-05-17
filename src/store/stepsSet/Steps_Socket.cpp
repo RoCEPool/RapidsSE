@@ -48,6 +48,7 @@ void Step::vAddSteps_Socket(void)
 
   vAddStep("socket::new"_Stz,        &Step::vSocketNew);
   vAddStep("socket::copy"_Stz,       &Step::vSocketCopy);
+  vAddStep("socket.clientAddr@"_Stz, &Step::vSocketStackClientAddrFetch);
 
   vAddStep("Socket[]"_Stz,           &Step::vSocketGet);
   vAddStep("Socket[].close"_Stz,     &Step::vSocketClose);
@@ -63,14 +64,16 @@ void Step::vAddSteps_Socket(void)
   vAddStep("Socket[].object.delete"_Stz,    &Step::vSocketObjectDelete);
   vAddStep("Socket[].object.isNull"_Stz,    &Step::vSocketObjectIsNull);
   vAddStep("Socket[].object.isNotNull"_Stz, &Step::vSocketObjectIsNotNull);
-  vAddStep("Socket[].recvObject"_Stz,&Step::vSocketRecvObject);
-  vAddStep("Socket[].recvWLMsg"_Stz, &Step::vSocketRecvWLMsg);
-  vAddStep("Socket[].sendObject"_Stz,&Step::vSocketSendObject);
-  vAddStep("Socket[].sendWLMsg"_Stz,&Step::vSocketSendWLMsg);
-  vAddStep("Socket[].set"_Stz,       &Step::vSocketSet);
-  vAddStep("Socket[].success@"_Stz,  &Step::vSocketSuccessFetch);
-  vAddStep("Socket[].success!"_Stz,  &Step::vSocketSuccessStore);
+  vAddStep("Socket[].recvObject"_Stz, &Step::vSocketRecvObject);
+  vAddStep("Socket[].recvWLMsg"_Stz,  &Step::vSocketRecvWLMsg);
+  vAddStep("Socket[].sendObject"_Stz, &Step::vSocketSendObject);
+  vAddStep("Socket[].sendStr"_Stz,    &Step::vSocketSendStr);
+  vAddStep("Socket[].sendWLMsg"_Stz,  &Step::vSocketSendWLMsg);
+  vAddStep("Socket[].set"_Stz,        &Step::vSocketSet);
+  vAddStep("Socket[].success@"_Stz,   &Step::vSocketSuccessFetch);
+  vAddStep("Socket[].success!"_Stz,   &Step::vSocketSuccessStore);
   vAddStep("Socket[].clientAddr@"_Stz,&Step::vSocketClientAddrFetch);
+
 
 }
 
@@ -370,7 +373,7 @@ void Step::vSocketRecvObject(void)
     AM::PARCEL::vRecvContents((Parcel*)pReceivedObject,pSocket);
 
 		if (AM::TRACE::bVerbose(C_VB_OP))
-      MY::pOp()->vOpTrace((Parcel*)pReceivedObject,(Stz*)__func__,false);
+      MY::pOp()->vOpTrace(this, (Parcel*)pReceivedObject,(Stz*)__func__,false);
   }
   
   pSocket->vReceivedObject(pReceivedObject);
@@ -432,6 +435,27 @@ void Step::vSocketSendObject(void)
   EXIT();
 }
 
+
+/*----------------------------------------------------------------------------*/
+/* Socket[].vSocketSendStr: send an ascii string via a socket                 */
+/*----------------------------------------------------------------------------*/
+void Step::vSocketSendStr(void)
+{
+  ENTRY();
+
+  s256 sStr;
+  m_pDataStack->vPopStr(sStr, __func__);
+
+  SysCall oSysCall;
+  Socket* pSocket = *m_pLogicUnit->m_xpSocket;
+
+
+  bool bResult = pSocket->bSendStr(sStr,oSysCall, false);
+
+  m_pDataStack->vPushInt(bResult);
+
+  EXIT();
+}
 
 /*----------------------------------------------------------------------------*/
 /* Socket[].sendWLMsg: send wireline message via a socket                     */
@@ -508,13 +532,32 @@ void Step::vSocketSuccessStore(void)
 
 
 /*----------------------------------------------------------------------------*/
-/* Socket[].clientAddr@ -- fetch client address of socket                     */
+/* Socket[].clientAddr@ -- fetch client address of socket in register         */
 /*----------------------------------------------------------------------------*/
 void Step::vSocketClientAddrFetch(void)
 {
   ENTRY();
 
   Socket* pSocket = *m_pLogicUnit->m_xpSocket;
+
+  s256 sBuf;
+  pSocket->vClientAddr(sBuf);
+
+  m_pDataStack->vPushStz(sBuf.szStz());
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* socket.clientAddr@ -- fetch client address of socket on stack            */
+/*----------------------------------------------------------------------------*/
+void Step::vSocketStackClientAddrFetch(void)
+{
+  ENTRY();
+
+  Socket* pSocket = _pSocket(m_pDataStack->pPopPtr(__func__));
+  ASSERT(pSocket);
+  ASSERT(pSocket->bIsClassNo(CN_SOCKET));
 
   s256 sBuf;
   pSocket->vClientAddr(sBuf);

@@ -27,6 +27,7 @@ public:
 
   // adaptorWL
   void vAdaptorWLChildJobExited(void);
+  void vAdaptorWLClientAddr(void);
   void vAdaptorWLCompilerError(void);
   void vAdaptorWLCrwBuffer(void);
   void vAdaptorWLDecodePayload(void);
@@ -1181,6 +1182,21 @@ void vJobIdLastJobIdFetch(void);
   void vBytesMagnitude(void);
   void vNumberMagnitude(void);
 
+  // metaDataTable
+  void vMetaDataTableSelect(void);
+  void vMetaDataTableCreateTable(void);
+  void vMetaDataTableCreateIndex(void);
+  void vMetaDataTableDropIndex(void);
+
+  void vMetaDataTableInitTables(void);
+  void vMetaDataTableDropTable(void);
+  void vMetaDataTableCatalogInsert(void);
+  void vMetaDataTableCatalogDelete(void);
+  void vMetaDataTableSchemaInsert(void);
+  void vMetaDataTableSchemaDelete(void);
+  void vMetaDataTableInit(void);
+  void vMetaDataTableSetAM(void);
+
   // ErrorMarker[]
   void vErrorMarkerDelete(void);
   void vErrorMarkerGet(void);
@@ -1317,6 +1333,7 @@ void vJobIdLastJobIdFetch(void);
   void vOpJobFetch(void);
   void vOpPipeBackIn(void);
   void vOpPipeOut(void);
+	void vOpPipeOutPtnTasks(void);
   void vOpPtnIdFetch(void);
   void vOpQueueLength(void);
   void vOpStageNameFetch(void);
@@ -1621,6 +1638,7 @@ void vJobIdLastJobIdFetch(void);
   void vPdsAddAnalyzeIndex(void);
   void vPdsAddAnalyzeTable(void);
   void vPdsAddBpaObjects(void);
+  void vPdsAddBpaPool(void);
   void vPdsAddBpaRegions(void);
   void vPdsAddColumnDef(void);
   void vPdsAddGridSanity(void);
@@ -1892,11 +1910,13 @@ void vJobIdLastJobIdFetch(void);
   void vSocketRecvObject(void);
   void vSocketRecvWLMsg(void);
   void vSocketSendObject(void);
+  void vSocketSendStr(void);
   void vSocketSendWLMsg(void);
   void vSocketSet(void);
   void vSocketSuccessFetch(void);
   void vSocketSuccessStore(void);
   void vSocketClientAddrFetch(void);
+  void vSocketStackClientAddrFetch(void);
 
 
   // sql compiler
@@ -2133,6 +2153,7 @@ void vJobIdLastJobIdFetch(void);
   void vTableIndexCount(void);
   void vTableIsColumn(void);
   void vTableIsInternallyDefined(void);
+  void vTableIsMetaData(void);
   void vTableIsReplicated(void);
   void vTableIsUserCreated(void);
   void vTableListPartition(void);
@@ -2409,6 +2430,7 @@ void vJobIdLastJobIdFetch(void);
   void vTraceSet(void);
   void vTraceSetComponent(void);
   void vTraceGetComponent(void);
+  void vTraceWithWlp(void);
 
   // tub
   void vTubAppend(void);

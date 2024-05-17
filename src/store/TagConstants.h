@@ -37,6 +37,7 @@ extern Stz* C_TAG_LASTJOBID;
 extern Stz* C_TAG_LIFE;
 extern Stz* C_TAG_LOWMEMORY;
 extern Stz* C_TAG_MEMORYLOG;
+extern Stz* C_TAG_METADATA;
 extern Stz* C_TAG_NESTEDSQL;
 extern Stz* C_TAG_NODE;
 extern Stz* C_TAG_NOTE;

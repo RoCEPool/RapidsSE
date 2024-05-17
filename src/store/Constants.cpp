@@ -207,6 +207,7 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("C_TDEF_ANALYZEINDEX"_Stz,  C_TDEF_ANALYZEINDEX);
   vAddConstant("C_TDEF_ANALYZETABLE"_Stz,  C_TDEF_ANALYZETABLE);
   vAddConstant("C_TDEF_BPAOBJECTS"_Stz,    C_TDEF_BPAOBJECTS);
+  vAddConstant("C_TDEF_BPAPOOL"_Stz,       C_TDEF_BPAPOOL);
   vAddConstant("C_TDEF_BPAREGIONS"_Stz,    C_TDEF_BPAREGIONS);
   vAddConstant("C_TDEF_COLUMNDEFS"_Stz,    C_TDEF_COLUMNDEFS);
   vAddConstant("C_TDEF_COMMAND"_Stz,       C_TDEF_COMMAND);
@@ -245,6 +246,16 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("C_TDEF_SIZETABLE"_Stz,     C_TDEF_SIZETABLE);
   vAddConstant("C_TDEF_SPACE"_Stz,         C_TDEF_SPACE);
   vAddConstant("C_TDEF_STATUS"_Stz,        C_TDEF_STATUS);
+  vAddConstant("C_TDEF_CATALOG"_Stz,       C_TDEF_CATALOG);
+  vAddConstant("C_TDEF_CLUSTER"_Stz,       C_TDEF_CLUSTER);
+  vAddConstant("C_TDEF_COLUMNS"_Stz,       C_TDEF_COLUMNS);
+  vAddConstant("C_TDEF_INDEXCOLUMNS"_Stz,  C_TDEF_INDEXCOLUMNS);
+  vAddConstant("C_TDEF_INDEXES"_Stz,       C_TDEF_INDEXES);
+  vAddConstant("C_TDEF_NODES"_Stz,         C_TDEF_NODES);
+  vAddConstant("C_TDEF_QUERIES"_Stz,       C_TDEF_QUERIES);
+  vAddConstant("C_TDEF_SCHEMA"_Stz,        C_TDEF_SCHEMA);
+  vAddConstant("C_TDEF_SESSIONS"_Stz,      C_TDEF_SESSIONS);
+  vAddConstant("C_TDEF_TABLES"_Stz,        C_TDEF_TABLES);
   vAddConstant("C_TDEF_TABLESIZES"_Stz,    C_TDEF_TABLESIZES);
   vAddConstant("C_TDEF_TOTALUNITS"_Stz,    C_TDEF_TOTALUNITS);
   vAddConstant("C_TDEF_VERIFYINDEX"_Stz,   C_TDEF_VERIFYINDEX);
@@ -545,6 +556,7 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("EG_RS"_Stz,   EG_RS);
   vAddConstant("EG_RU"_Stz,   EG_RU);
   vAddConstant("EG_SC"_Stz,   EG_SC);
+  vAddConstant("EG_SF"_Stz,   EG_SF);
   vAddConstant("EG_SI"_Stz,   EG_SI);
   vAddConstant("EG_TA"_Stz,   EG_TA);
   vAddConstant("EG_TN"_Stz,   EG_TN);
@@ -556,6 +568,7 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("EG_VA"_Stz,   EG_VA);
   vAddConstant("EG_WK"_Stz,   EG_WK);
   vAddConstant("EG_XA"_Stz,   EG_XA);
+  vAddConstant("EG_XD"_Stz,   EG_XD);
   vAddConstant("EG_XK"_Stz,   EG_XK);
   vAddConstant("EG_XP"_Stz,   EG_XP);
   vAddConstant("EG_YG"_Stz,   EG_YG);

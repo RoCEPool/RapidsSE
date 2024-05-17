@@ -40,11 +40,11 @@
     then
 
     object@ word.name@
-    TableDef[] Pds[].addListFolder not if
+    Pds[].addListFolder not if
       Pds[].pipeOut
       BT_DATA TableDef[] Pds[].new
       object@ word.name@
-      TableDef[] Pds[].addListFolder assert
+      Pds[].addListFolder assert
     then
 
     object@ word.prev object!      // step backwards thru words

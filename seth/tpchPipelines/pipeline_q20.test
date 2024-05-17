@@ -1,11 +1,11 @@
 --------------------------------------------------------------------------------
--- tpch query21
+-- tpch query20
 --------------------------------------------------------------------------------
 
 // NOTE: S08 ColPpg should be 0.
 
 /optimise_passthru
-pipeline Query21
+pipeline Query20
 begin
 
     stage S00 on origin :

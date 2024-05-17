@@ -428,6 +428,9 @@ EOF
     echo "# Enable Multicast on AWS"
     echo "net.ipv4.conf.eth0.force_igmp_version=2"
     echo
+    echo "# Enable extra ephemeral ports"
+    echo "net.ipv4.ip_local_port_range = 20000 65500"
+    echo
   } >>/etc/sysctl.conf
 
   # ----------------------------------------------------------------------------------------

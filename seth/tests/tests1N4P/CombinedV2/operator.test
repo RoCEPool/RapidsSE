@@ -333,7 +333,7 @@ rows:
  (1,'ARGENTINA',1)
  (4,'EGYPT',4)
 
- 
+
  /optimise_passthru
  pipeline OpTest_9
  begin

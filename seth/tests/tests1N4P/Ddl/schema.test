@@ -8,7 +8,7 @@ trackmemory force;
 success
 pwf;
 rows:
-  ('/tables/public/schemas/rapidsse/catalogs/boray/tenants/')
+  ('/tables/public/schemas/rapids/catalogs/boray/tenants/')
 
 // list schemas when not in schemas folder
 lssch;
@@ -39,7 +39,7 @@ lssch;
 failure contains: 'not in schemas'
 
 // cf to catalogs
-cf "rapidsse";
+cf "rapids";
 success
 
 // list schemas when not in schemas folder
@@ -97,7 +97,7 @@ cf "~schemas";
 success
 
 pwf;
-rows: ('/schemas/rapidsse/catalogs/boray/tenants/')
+rows: ('/schemas/rapids/catalogs/boray/tenants/')
 
 //! ALKA ENABLE once empty folder test in place
 //drop schema ${testName2}_mySchema;
@@ -116,13 +116,13 @@ cf ..;
 success
 
 pwf;
-rows: ('/${testName2}_mySchema/schemas/rapidsse/catalogs/boray/tenants/')
+rows: ('/${testName2}_mySchema/schemas/rapids/catalogs/boray/tenants/')
 
 cf ..;
 success
 
 pwf;
-rows: ('/schemas/rapidsse/catalogs/boray/tenants/')
+rows: ('/schemas/rapids/catalogs/boray/tenants/')
 
 drop schema ${testName2}_mySchema;
 success
@@ -132,7 +132,7 @@ success
 
 pwf;
 rows:
-  ('/tables/public/schemas/rapidsse/catalogs/boray/tenants/')
+  ('/tables/public/schemas/rapids/catalogs/boray/tenants/')
 
 // get memory leaks
 memoryLeaks;

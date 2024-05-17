@@ -5,6 +5,7 @@
 #include "Card_KeyNotExists.hpp"
 
 #include "CardIter.hpp"
+#include "XF_Optimise_Early_projection.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -58,7 +59,7 @@ void Card_KeyNotExists::vMorph_from_To_keyNotExists(CardIter *pCI)
   pCI->E.p_index->pSub_bound()->pSymbol()->Y_vSet(P_ChosenBound);
 
   pCI->E.p_filter = pCI->E.p_keyNotExists->pSub_filter();
-  pCI->E.p_filter->vCard(CK_s_CONSTRAINT);
+  pCI->E.p_filter->vCard(CK_p_CONSTRAINT);
 }
 
 
@@ -67,52 +68,9 @@ void Card_KeyNotExists::vMorph_from_To_keyNotExists(CardIter *pCI)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* early project                                                              */
-/*----------------------------------------------------------------------------*/
-void Card_KeyNotExists::vEarlyProject_recurse_add(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (pCI->pPeekPrev()->bIsCard(CK_o_PROJECT)) {
-
-    pCI->Early.m_pOP_leaf = this;
-    pCI->Dic.m_p_expr = pCI->Flux.m_pArriving = pSub_emit();
-
-   // pCI->PRINTBOARD_dbg();
-    return;
-
-
-  }
-
-  // save the current projection needed
-  //   we can restore to this save if projection needed get extended
-  Card_Needed* p_needed_save = pCI->Early.m_pNeeded_later->pClone();
-
-  // check for additional/temporary transients
-  vEarlyProject_add_transients(pCI);
-
-  // insert new empty early project (has only needed) before this indexJoin
-  Card_Project* p_project_early = pCI->Early.m_pNeeded_later->pNew_project_early(pCI);
-  pCI->vInsertBefore(p_project_early, this);
-  pCI->vResynchOp();
-
-  Card_OP::vEarlyProject_backstep(pCI);
-
-  /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
-
-
-  pCI->E.p_Op = pCI->E.p_keyNotExists;
-  pCI->E.p_keyNotExists->vRestate_emit(pCI);
-
-  // restore needed
-  delete pCI->Early.m_pNeeded_later;
-  pCI->Early.m_pNeeded_later = p_needed_save;
-}
-
-/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_KeyNotExists::vEarlyProject_add_transients(CardIter* pCI)
+void Card_KeyNotExists::vAdd_transients(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -135,11 +93,11 @@ void Card_KeyNotExists::vEarlyProject_add_transients(CardIter* pCI)
    *       add expr (defn expr for $t.c) into needed projection
    */
 
-  if (!pCI->Early.m_pNeeded_later->pFind_expr_Matches(pCI->E.p_term->pSymbol())) {
+  if (!pCI->Early.m_pNeeded_later->pFind_expr(pCI->E.p_term->pSymbol())) {
 
     //pCI->Early.m_pNeeded_later->vDump();
 
-    if (Card_Expr* p_expr_defn = pCI->pResolvePrior_expr(pCI->E.p_term)) {
+    if (Card_Expr* p_expr_defn = pCI->pPrior_expr(pCI->E.p_term->pSymbol())) {
       //p_expr_defn->vDump();
       Card_Expr* p_expr_clone = p_expr_defn->pClone();
       pCI->Early.m_pNeeded_later->vAppendChild(p_expr_clone);
@@ -163,7 +121,7 @@ void Card_KeyNotExists::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   UNUSED(pParent);
 
   if (1 == iDepth) {
-    vValidate_mustHave(CK_s_LEVEL, CK_s_TABLE, CK_s_CONSTRAINT, CK_NONE);
+    vValidate_child_mustBe(CK_p_LEVEL, CK_p_TABLE, CK_p_CONSTRAINT, CK_NONE);
     RASSERT(pFindPpyRecursive(P_ChosenIndex,CK_INDEX));
     RASSERT(pSub_bound());
   }

@@ -28,6 +28,7 @@ enum eSF // symbol facet
 
   /* */ SF_ELSE,        // Else                : ELSE
   /* */ SF_ENDIF,       // EndIf               : ENDIF
+  /* */ SF_ENUM,        // Enum                : enum
   /* */ SF_EXP_COL,     // Expr Column No      : $n
 
   /* */ SF_FLD_NM,      // XF_Fold Name           :
@@ -58,6 +59,7 @@ enum eSF // symbol facet
 
   /* */ SF_RLN_OP,      // Relational Op       : <, <=, ... >
 
+  /* */ SF_SQY_CKY,     // Sqy Correlation Key : $SCn
   /* */ SF_SQY_NM,      // Subquery name       : bIsName
   /* */ SF_SQY_NO,      // SubQuery No         : $Qn
   /* */ SF_SQY_OP,      // SubQuery Op         :

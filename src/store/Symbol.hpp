@@ -10,6 +10,8 @@
 #include "eRO.h"
 #include "eSF.h"
 #include "eST.h"
+#include "EnumGroups.h"
+
 
 namespace STORE
 {
@@ -25,6 +27,7 @@ namespace STORE
     b8     m_bTypeNullable;
   };
 
+  class Card;
   class CardIter;
 
   class Symbol : public Object
@@ -32,10 +35,13 @@ namespace STORE
   private:
     static const i8 C_FACETS = 6;
 
+    Card* m_pCard;
     i8    m_nFacets;
     Facet xaFacet[C_FACETS];
     Cast  m_xCast;
     TagSet* m_pProperties;
+
+    bool m_bChanged;
 
   protected:
     // must be last
@@ -51,6 +57,8 @@ namespace STORE
 
     ~Symbol(void);
 
+    static i8   iEval_enum(Stz* szArg);
+    static eEG  eEval_enumGroup(Stz* szArg);
     static eRO  eEvalRelnOp(Stz* szArg);
     static eQO  eEvalSubQryOp(Stz* szArg);
     static eSF  eEval_facet(Stz* szArg);
@@ -71,6 +79,7 @@ namespace STORE
     static bool bIs_Dcm_Lit(Stz* szArg);         // StrLib::bIsDecimal()
     static bool bIs_Direction(Stz* szArg);       // asc, desc
     static bool bIs_Else(Stz* szArg);            // ELSE
+    static bool bIs_Enum(Stz* szArg);            // $En=n
     static bool bIs_EndIf(Stz* szArg);           // ENDIF
     static bool bIs_Exp_Col(Stz* szArg);         // $n
     static bool bIs_Fld_Nm(Stz* szArg);          // bIsName() but not bIs_Agg_Fn() etc
@@ -93,15 +102,16 @@ namespace STORE
     static bool bIs_Null(Stz* szArg);            // NULL
     static bool bIs_Parenthesis(Stz* szArg);     // ( or )
     static bool bIs_Rln_Op(Stz* szArg);          // <, <=, ... >
+    static bool bIs_Sqy_Cky(Stz* szArg);         // $SCn
     static bool bIs_Sqy_Nm(Stz* szArg);          // bIsName() but not bIs_Agg_Fn() etc
     static bool bIs_Sqy_No(Stz* szArg);          // $Qn (or __subqueryN)
     static bool bIs_Sqy_Op(Stz* szArg);          // exists, in, notExists, notIn
     static bool bIs_Sqy_Prm(Stz* szArg);         // %n
-    static bool bIs_Sqy_Rsl(Stz* szArg);         // __n
+    static bool bIs_Sqy_Rsl(Stz* szArg);         // $SRn
     static bool bIs_Stg_Cast(Stz* szArg);        // BROADCAST, HASHCAST
     static bool bIs_Stg_Nm(Stz* szArg);          // Sn
     static bool bIs_Str_Fn(Stz* szArg);          // SUBSTRING2 ... SUBSTRING3
-    static bool bIs_Str_Lit(Stz* szArg);          // 'abc'
+    static bool bIs_Str_Lit(Stz* szArg);         // 'abc'
     static bool bIs_Tbl_Col(Stz* szArg);         // $c.n
     static bool bIs_Tbl_Nm(Stz* szArg);          // bIsName() but not bIs_Agg_Fn() etc
     static bool bIs_Tbl_Syn(Stz* szArg);         // $c
@@ -115,7 +125,7 @@ namespace STORE
 
     static bool bIs_bound(Facet* aFacet);    //
     static bool bIs_rlnConj(Facet* aFacet);  //
-    static bool bIs_term(Facet* aFacet);     //
+    static bool bIs_rpnTerm(Facet* aFacet);     //
 
     static bool bPossibleNm(Stz* szArg);
 
@@ -133,15 +143,21 @@ namespace STORE
     void vApplyFacet(eSF eFacet, char cChr);
     void vApplyFacet(eSF eFacet, char cChr, i8 iInt);
     void vApplyFacet(eSF eFacet, i8 iInt);
+    void vApplyFacet(eSF eFacet, eEG eGroup, i8 iEnum);
     void vApplyFacet(eSF eFacet, Stz* szArg);
     void vApplyFacet_varg(eSF eFacet, Stz* szFormat, ...);
     void vApplyFacet(eSF eFacet, i8 iInt, Symbol* pSymbol);
     void vApplyFacet(eSF eFacet, Symbol* pSymbol);
     void vApplyFacets(Symbol* pSymbol_arg);
 
+    Card* pCard(void);
+    void vCard(Card* pCard);
     Cast xCast(void);
+    bool bChanged(void);
+    void vChanged(bool bChanged);
     eCT  eColType(void);
-    void vCullFacet(eSF eFacet_except);
+    void vCullFacet_except(eSF eFacet_except);
+    void vCullFacet_leaving(eSF eFacet_except1, eSF eFacet_except2);
 
     void vDeleteFacet(eSF eFacet);
     void vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn);
@@ -154,10 +170,8 @@ namespace STORE
     i8   i_Facet(eSF eFacet, char cTblSyn);
     Stz* szFacet(eSF eFacet);
     Stz* szFacet(i8 i_Facet);
-    Stz* szFacet_bound(void);
-    Stz* szFacet_rlnConj(void);
-    Stz* szFacet_single(void);
-    Stz* szFacet_term(void);
+    Stz* szFacet0(void);
+    Stz* szFacet_rpnTerm(void);
     i8   nFacets(void);
     void vFacets_To_String(String* pString);
 
@@ -244,6 +258,8 @@ namespace STORE
     void vFacet_Dcm_Lit(Stz* szDcmLit);
     void vFacet_Direction(Stz* szDirection);
     void vFacet_Else(Stz* szElse);
+    void vFacet_Enum(eEG eGroup, i8 iEnum);
+    void vFacet_Enum(Stz* szEnum);
     void vFacet_EndIf(Stz* szEndIf);
     void vFacet_Exp_Col(Stz* szExpCol);
     void vFacet_Fld_Nm(Stz* szFldNm);
@@ -272,6 +288,8 @@ namespace STORE
     void vFacet_Null(Stz* szNull);
     void vFacet_Parenthesis(Stz* szParenthesis);
     void vFacet_Rln_Op(Stz* szRlnOp);
+    void vFacet_Sqy_Cky(i8 iOrdinal);
+    void vFacet_Sqy_Cky(Stz* szSqyRsl);
     void vFacet_Sqy_Nm(Stz* szPpeNm);
     void vFacet_Sqy_No(i8 iSqyNo);
     void vFacet_Sqy_No(Stz* szSqyNo);

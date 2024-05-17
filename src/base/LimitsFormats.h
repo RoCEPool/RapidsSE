@@ -93,7 +93,7 @@ static Stz* C_NULL    = "null"_Stz;
 
 static Stz* C_PROCEDURE_CATG = "\\procedure"_Stz;
 
-static Stz* C_SE_PATH = "/tenants/boray/catalogs/rapidsse/schemas/public/tables"_Stz;
+static Stz* C_SE_PATH = "/tenants/boray/catalogs/rapids/schemas/public/tables"_Stz;
 static Stz* C_SE_PATH_ROOT = "/"_Stz;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -103,6 +103,7 @@ static Stz* C_TDEF_AFFECTEDROWS     = "__affectedRows"_Stz;
 static Stz* C_TDEF_ANALYZEINDEX     = "__analyzeIndex"_Stz;
 static Stz* C_TDEF_ANALYZETABLE     = "__analyzeTable"_Stz;
 static Stz* C_TDEF_BPAOBJECTS       = "__bpaObjects"_Stz;
+static Stz* C_TDEF_BPAPOOL          = "__bpaPool"_Stz;
 static Stz* C_TDEF_BPAREGIONS       = "__bpaRegions"_Stz;
 static Stz* C_TDEF_COLUMNDEFS       = "__columnDefs"_Stz;
 static Stz* C_TDEF_COMMAND          = "__command"_Stz;
@@ -153,6 +154,16 @@ static Stz* C_TDEF_SPACE            = "__space"_Stz;
 static Stz* C_TDEF_STATUS           = "__status"_Stz;
 static Stz* C_TDEF_SYSLOCKS         = "SE__sysLocks"_Stz;
 static Stz* C_TDEF_SYSMETRICS       = "SE__sysMetrics"_Stz;
+static Stz* C_TDEF_CATALOG          = "catalog"_Stz;
+static Stz* C_TDEF_CLUSTER          = "cluster"_Stz;
+static Stz* C_TDEF_COLUMNS          = "columns"_Stz;
+static Stz* C_TDEF_INDEXCOLUMNS     = "indexColumns"_Stz;
+static Stz* C_TDEF_INDEXES          = "tableIndexes"_Stz;
+static Stz* C_TDEF_NODES            = "nodes"_Stz;
+static Stz* C_TDEF_QUERIES          = "queries"_Stz;
+static Stz* C_TDEF_SCHEMA           = "schema"_Stz;
+static Stz* C_TDEF_SESSIONS         = "sessions"_Stz;
+static Stz* C_TDEF_TABLES           = "tableOfTables"_Stz;
 static Stz* C_TDEF_TABLESIZES       = "__tableSizes"_Stz;
 static Stz* C_TDEF_TOTALUNITS       = "__totalUnits"_Stz;
 static Stz* C_TDEF_VERIFYINDEX      = "__verifyIndex"_Stz;

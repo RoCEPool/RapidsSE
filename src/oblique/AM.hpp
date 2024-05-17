@@ -175,6 +175,7 @@ namespace STORE {
 
   class Marker;
   class MarkerMgr;
+  class MetaDataTables;
 
   class Node;
 
@@ -253,6 +254,8 @@ namespace OBLIQUE
       static i8 iCmdNoNext(void);
       static void vSysMetricsAdd(SysMetrics* pSysMetrics);
       static SysMetrics* pSysMetricsChain(void);
+      static void vMetaDataTables(Table* pTable);
+      static Table* pMetaDataTables(Stz* szMDKind);
     };
 
     class DIC
@@ -487,6 +490,8 @@ namespace OBLIQUE
     public:
       static void vPipeToNextOp(Op* pCurrOp, Operand* pOperand,
                                 Task* pTriggeringTask);
+			static void vPipeToNextOpTasks(Op* pCurrOp, Operand* pOperand,
+																Task* pTriggeringTask);
       static void vPipeToOp(Op* pOp, Operand* pOperand,
                             Task* pTriggeringTask);
     };
@@ -671,7 +676,6 @@ namespace OBLIQUE
     class THREAD
     {
     public:
-      static ThreadVec* pDedicatedThreadVec(void);
       static void vDeleteThread(Thread* pThread);
       static ThreadVec* pGeneralThreadVec(void);
       static Thread* pNewThread(void);    
@@ -776,6 +780,17 @@ namespace OBLIQUE
     static i8   nLvlLevels(void);
     static i8   iLvlRatio(void);
     static bool bMetadata(void);
+
+    static Table* pMetaDataTableCatalog     (void);
+    static Table* pMetaDataTableCluster     (void);
+    static Table* pMetaDataTableColumns     (void);
+    static Table* pMetaDataTableIndexColumns(void);
+    static Table* pMetaDataTableIndexes     (void);
+    static Table* pMetaDataTableNodes       (void);
+    static Table* pMetaDataTableQueries     (void);
+    static Table* pMetaDataTableSchema      (void);
+    static Table* pMetaDataTableSessions    (void);
+    static Table* pMetaDataTableOfTables    (void);
   
     static i8   iNextEpoch(void);
     static i8   iNextTxId(void);

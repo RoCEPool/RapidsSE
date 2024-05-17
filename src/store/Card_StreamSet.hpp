@@ -19,7 +19,8 @@ namespace STORE
     static Card_StreamSet* pComputeAllPermutations(Card_TableList* p_tableList,
                                                    Card_JoinPredList* p_joinPredList);
 
-    void vEstCostsForAllPermutations(Card_TableList*    p_tableList,
+    void vEstCostsForAllPermutations(CardIter* pCI,
+                                     Card_TableList*    p_tableList,
                                      Card_FiltPredList* p_filtPredList);
     Card_StreamPer* pHighestCost(void);
     Card_StreamPer* pJoinOrder(i8 iJoinOrder);

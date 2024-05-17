@@ -8,7 +8,7 @@ success
 
 pwf;
 rows:
-  ('/tables/public/schemas/rapidsse/catalogs/boray/tenants/')
+  ('/tables/public/schemas/rapids/catalogs/boray/tenants/')
 
 // list catalogs when not in catalogs folder
 lscat;
@@ -105,7 +105,7 @@ success
 
 pwf;
 rows:
-  ('/tables/public/schemas/rapidsse/catalogs/boray/tenants/')
+  ('/tables/public/schemas/rapids/catalogs/boray/tenants/')
 
 // get memory leaks
 memoryLeaks;

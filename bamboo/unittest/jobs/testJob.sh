@@ -23,7 +23,7 @@ readonly BIN_DIR="${PROJ_ROOT}/bin"
 readonly SRC_DIR="${PROJ_ROOT}/src"
 readonly BOOTSTRAP_DIR="${PROJ_ROOT}/bootstrap"
 
-readonly COMMON_FN="${SCRIPTS_DIR}/common.fn"
+readonly BAMBOO_COMMON_FN="${SCRIPTS_DIR}/common.fn"
 readonly BOOTSTRAP_COMMON_FN="${BOOTSTRAP_DIR}/common.fn"
 
 readonly RELATIVE_BAMBOO_DIR="${DIR}/.."
@@ -39,12 +39,12 @@ readonly BAMBOO_TESTLISTS_DIR="${RELATIVE_BAMBOO_DIR}/testlists"
 
 # Load other common functions
 
-if [ -z "${__COMMON_FN:-}" ] ; then
+if [ -z "${__BAMBOO_COMMON_FN:-}" ] ; then
   #shellcheck source=../scripts/common.fn
-  source "${COMMON_FN}" || { >&2 echo "Could not load ${COMMON_FN}"; exit 1; }
+  source "${BAMBOO_COMMON_FN}" || { >&2 echo "Could not load ${BAMBOO_COMMON_FN}"; exit 1; }
 fi
 
-if [ -z "${__COMMON_FN:-}" ] ; then
+if [ -z "${__BOOTSTRAP_COMMON_FN:-}" ] ; then
   #shellcheck source=../../../bootstrap/common.fn
   source "${BOOTSTRAP_COMMON_FN}" || { >&2 echo "Could not load ${BOOTSTRAP_COMMON_FN}"; exit 1; }
 fi
@@ -62,7 +62,7 @@ BUILD_TYPE=""
 
 # Which configurations do we wish to run and test with.
 # These values must match the names of the files in the bamboo/config directory
-# as well as the names of the files in the bamboo/testlists directory.
+# as well as the names of the files in the bamboo/unittest/testlists directory.
 # Examples are: "1N4P" "1N1P" "2N4P"
 BUILD_CONFIG=""
 
@@ -98,51 +98,6 @@ function onExit() {
   echo ""
 }
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-function copyLogs() {
-
-  local buildConfig="$1"
-  local buildType="$2"
-  local configSuffix="$3"
-
-  local configFile="${BAMBOO_CONFIGS_DIR}/${buildConfig}${configSuffix:-}.config"
-  # shellcheck disable=SC1090
-  source "${configFile}"
-
-  sleep 5
-  local outputDir="${BAMBOO_LOGS_DIR}/${buildType}-${buildConfig}${configSuffix:-}"
-  mkdir -p "${outputDir}"
-
-  for nodeName in "${NODE_LIST[@]}"; do
-    # Get the installation directory
-    local installDir
-    installDir="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_DIR_KEY}")"
-
-    local nodeDir
-    nodeDir="${outputDir}/${nodeName}"
-
-    mkdir -p "${nodeDir}"
-
-    cp "${installDir}"/se*.log "${nodeDir}" &>/dev/null || true
-
-    for f in "${nodeDir}"/se*.log; do
-      mv "$f" "$(echo "$f" | sed s/.log/.${nodeName}.log/)" &>/dev/null || true
-    done
-
-    cp "${installDir}/clusterStatus.log" "${outputDir}/clusterStatus.${nodeName}.log" &>/dev/null || true
-
-    # Copy any queryLib source and log files
-    local queryLibDir="${nodeDir}/queryLibs"
-    mkdir -p "${queryLibDir}"
-    cp -r "${installDir}/queryLibs/src" "${queryLibDir}"
-
-  done
-
-  mv "${BAMBOO_RESULTS_DIR}"/log-* "${outputDir}/seth.log" &>/dev/null &>/dev/null || true
-}
-
-
 ###############################################################################
 ### Main Script                                                             ###
 ###############################################################################
@@ -170,42 +125,45 @@ if [ "$#" -lt 2 ]; then
   errorExit "Script $0 must be called with at least two arguments: \n\$1 : build_type\n\$2 : build_config\n\$3 : build_suffix\ne.g. $0 \"release\" \"1N4P\" \"_AWS\""
 fi
 
-BUILD_TYPE="$1"
-BUILD_CONFIG="$2"
+BUILD_TYPE="$1"       # e.g. "release" | "debug"
+BUILD_CONFIG="$2"     # e.g. "1N1P" | "1N4P" | "2N4P"
 
 if [ "$#" -ge 3 ]; then
-  CONFIG_SUFFIX="$3"
+  CONFIG_SUFFIX="$3"  # e.g. "_AWS"
 else
   CONFIG_SUFFIX=""
 fi
 
 # Resolve the config file and testlist file to be used
-configFile="${BAMBOO_CONFIGS_DIR}/${BUILD_CONFIG}${CONFIG_SUFFIX:-}.config"
-testlistFile="${BAMBOO_TESTLISTS_DIR}/${BUILD_CONFIG}.testlist"
+CONFIG_FILE="${BAMBOO_CONFIGS_DIR}/${BUILD_CONFIG}${CONFIG_SUFFIX:-}.config"
+TESTLIST_FILE="${BAMBOO_TESTLISTS_DIR}/${BUILD_CONFIG}.testlist"
 
 # Ensure these files exist
-if [ ! -f "${configFile}" ]; then
-  errorExit "Config file does not exist: ${configFile}"
+if [ ! -f "${CONFIG_FILE}" ]; then
+  errorExit "Config file does not exist: ${CONFIG_FILE}"
 fi
 
-if [ ! -f "${testlistFile}" ]; then
-  errorExit "Testlist file does not exist: ${testlistFile}"
+if [ ! -f "${TESTLIST_FILE}" ]; then
+  errorExit "Testlist file does not exist: ${TESTLIST_FILE}"
 fi
 
+# Create the output directory for logs
+LOG_OUTPUT_DIR="${BAMBOO_LOGS_DIR}"
+mkdir -p "${LOG_OUTPUT_DIR}"
 
 # *** Install RapidsSE ***
-if ! "${SCRIPTS_DIR}/install.sh" "${configFile}"; then
+if ! "${SCRIPTS_DIR}/install.sh" "${CONFIG_FILE}"; then
   exit 1
 fi
 
 
 # *** Start RapidsSE ***
-if ! "${SCRIPTS_DIR}/start.sh" "${configFile}"; then
+if ! "${SCRIPTS_DIR}/start.sh" "${CONFIG_FILE}"; then
   # Startup failed. Copy any logs. Stop the whole cluster and exit.
   # We don't try to carry on because it is confusing if Bamboo reports
   # the job failed but any prior tests passed.
-  "${SCRIPTS_DIR}/stop.sh" "${configFile}" || true
-  ( copyLogs "${BUILD_CONFIG}" "${BUILD_TYPE}" "${CONFIG_SUFFIX}") || true
+  "${SCRIPTS_DIR}/stop.sh" "${CONFIG_FILE}" || true
+  { copyLogs "${CONFIG_FILE}" "${LOG_OUTPUT_DIR}" "${BAMBOO_RESULTS_DIR}" ; } || true
   exit 1
 fi
 
@@ -213,19 +171,16 @@ fi
 # *** Test RapidsSE ***
 testNamePrefix="${BUILD_CONFIG}_${BUILD_TYPE}"
 
-if ! "${SCRIPTS_DIR}/test.sh" "${testNamePrefix}" "${configFile}" "${testlistFile}"; then
+if ! "${SCRIPTS_DIR}/test.sh" "${testNamePrefix}" "${CONFIG_FILE}" "${LOG_OUTPUT_DIR}" "${TESTLIST_FILE}"; then
   # Startup failed. Copy any logs. Stop the whole cluster and exit.
-  "${SCRIPTS_DIR}/stop.sh" "${configFile}" || true
-  ( copyLogs "${BUILD_CONFIG}" "${BUILD_TYPE}" "${CONFIG_SUFFIX}") || true
+  "${SCRIPTS_DIR}/stop.sh" "${CONFIG_FILE}" || true
+  ## { copyLogs "${CONFIG_FILE}" "${LOG_OUTPUT_DIR}" "${BAMBOO_RESULTS_DIR}"; } || true
   exit 1
 fi
 
 
-# *** Copy any log files ***
-( copyLogs "${BUILD_CONFIG}" "${BUILD_TYPE}" "${CONFIG_SUFFIX}") || true
-
 # *** Stop the cluster ***
-"${SCRIPTS_DIR}/stop.sh" "${configFile}" || true
+"${SCRIPTS_DIR}/stop.sh" "${CONFIG_FILE}" || true
 
 
 # Set this flag that the script completed successfully.

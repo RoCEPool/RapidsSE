@@ -20,7 +20,7 @@ begin
     | dynamic
     | next
 
-  stage S02 on all partitions :
+  stage S02 on all partitions:
     indexJoin orders IxO_CUSTKEY " BOUND $I1 $1 == "
     | project   " type DATE as O_ORDERDATE $6
                   , type INTEGER ( 19 ) as O_SHIPPRIORITY $9
@@ -30,7 +30,7 @@ begin
     | dynamic
     | next      hashcast
 
-  stage S03 on all partitions :
+  stage S03 on all partitions multiple threads 4:
     indexJoin lineitem IxL_ORDERKEY " BOUND $I1 $3 == "
     | project   " type INTEGER ( 19 ) as L_ORDERKEY L_ORDERKEY
                 , type DECIMAL ( 15 2 ) as L_EXTENDEDPRICE L_EXTENDEDPRICE

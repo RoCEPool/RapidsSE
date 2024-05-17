@@ -62,10 +62,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CASE n_name         WHEN ''AUSTRALIA'' THEN ''here''         WHEN ''INDIA'' THEN ''there''         ELSE ''everywhere''        END FROM ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = CASE WHEN (rapidsse.public.${testName2}_nation.n_name = ''AUSTRALIA'') THEN ''here'' WHEN (rapidsse.public.${testName2}_nation.n_name = ''INDIA'') THEN ''there'' ELSE ''everywhere'' END ; Ordinal Expr = CASE WHEN ($2 = ''AUSTRALIA'') THEN ''here'' WHEN ($2 = ''INDIA'') THEN ''there'' ELSE ''everywhere'' END)
+      » column: (Expr = CASE WHEN (rapids.public.${testName2}_nation.n_name = ''AUSTRALIA'') THEN ''here'' WHEN (rapids.public.${testName2}_nation.n_name = ''INDIA'') THEN ''there'' ELSE ''everywhere'' END ; Ordinal Expr = CASE WHEN ($2 = ''AUSTRALIA'') THEN ''here'' WHEN ($2 = ''INDIA'') THEN ''there'' ELSE ''everywhere'' END)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 
 // Searched CASE expr
@@ -86,10 +86,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CASE         WHEN n_name = ''AUSTRALIA'' THEN ''here''         WHEN n_name = ''INDIA'' THEN ''there''         ELSE ''everywhere''        END FROM ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = CASE WHEN (rapidsse.public.${testName2}_nation.n_name = ''AUSTRALIA'') THEN ''here'' WHEN (rapidsse.public.${testName2}_nation.n_name = ''INDIA'') THEN ''there'' ELSE ''everywhere'' END ; Ordinal Expr = CASE WHEN ($2 = ''AUSTRALIA'') THEN ''here'' WHEN ($2 = ''INDIA'') THEN ''there'' ELSE ''everywhere'' END)
+      » column: (Expr = CASE WHEN (rapids.public.${testName2}_nation.n_name = ''AUSTRALIA'') THEN ''here'' WHEN (rapids.public.${testName2}_nation.n_name = ''INDIA'') THEN ''there'' ELSE ''everywhere'' END ; Ordinal Expr = CASE WHEN ($2 = ''AUSTRALIA'') THEN ''here'' WHEN ($2 = ''INDIA'') THEN ''there'' ELSE ''everywhere'' END)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 
 // CASE without ELSE
@@ -109,10 +109,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CASE         WHEN n_name = ''AUSTRALIA'' THEN ''here''         WHEN n_name = ''INDIA'' THEN ''there''        END FROM ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = CASE WHEN (rapidsse.public.${testName2}_nation.n_name = ''AUSTRALIA'') THEN ''here'' WHEN (rapidsse.public.${testName2}_nation.n_name = ''INDIA'') THEN ''there'' ELSE NULL END ; Ordinal Expr = CASE WHEN ($2 = ''AUSTRALIA'') THEN ''here'' WHEN ($2 = ''INDIA'') THEN ''there'' ELSE NULL END)
+      » column: (Expr = CASE WHEN (rapids.public.${testName2}_nation.n_name = ''AUSTRALIA'') THEN ''here'' WHEN (rapids.public.${testName2}_nation.n_name = ''INDIA'') THEN ''there'' ELSE NULL END ; Ordinal Expr = CASE WHEN ($2 = ''AUSTRALIA'') THEN ''here'' WHEN ($2 = ''INDIA'') THEN ''there'' ELSE NULL END)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 
 // CASE returning different type than that of the predicant
@@ -133,10 +133,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CASE         WHEN n_name = ''AUSTRALIA'' THEN true         WHEN n_name = ''INDIA'' THEN false         ELSE NULL        END FROM ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = CASE WHEN (rapidsse.public.${testName2}_nation.n_name = ''AUSTRALIA'') THEN true WHEN (rapidsse.public.${testName2}_nation.n_name = ''INDIA'') THEN false ELSE NULL END ; Ordinal Expr = CASE WHEN ($2 = ''AUSTRALIA'') THEN true WHEN ($2 = ''INDIA'') THEN false ELSE NULL END)
+      » column: (Expr = CASE WHEN (rapids.public.${testName2}_nation.n_name = ''AUSTRALIA'') THEN true WHEN (rapids.public.${testName2}_nation.n_name = ''INDIA'') THEN false ELSE NULL END ; Ordinal Expr = CASE WHEN ($2 = ''AUSTRALIA'') THEN true WHEN ($2 = ''INDIA'') THEN false ELSE NULL END)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 
 // Invalid CASE with mix of return types (1)
@@ -179,10 +179,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CASE n_name         WHEN ''AUSTRALIA'' THEN ''here''         WHEN ''INDIA'' THEN ''there''         ELSE NULL        END FROM ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = CASE WHEN (rapidsse.public.${testName2}_nation.n_name = ''AUSTRALIA'') THEN ''here'' WHEN (rapidsse.public.${testName2}_nation.n_name = ''INDIA'') THEN ''there'' ELSE NULL END ; Ordinal Expr = CASE WHEN ($2 = ''AUSTRALIA'') THEN ''here'' WHEN ($2 = ''INDIA'') THEN ''there'' ELSE NULL END) ; type: VARCHAR(5)
+      » column: (Expr = CASE WHEN (rapids.public.${testName2}_nation.n_name = ''AUSTRALIA'') THEN ''here'' WHEN (rapids.public.${testName2}_nation.n_name = ''INDIA'') THEN ''there'' ELSE NULL END ; Ordinal Expr = CASE WHEN ($2 = ''AUSTRALIA'') THEN ''here'' WHEN ($2 = ''INDIA'') THEN ''there'' ELSE NULL END) ; type: VARCHAR(5)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 
 // CASE with one return type and NULL (2)
@@ -203,10 +203,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CASE n_name         WHEN ''AUSTRALIA'' THEN NULL         WHEN ''INDIA'' THEN ''there''         ELSE ''everywhere''        END FROM ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = CASE WHEN (rapidsse.public.${testName2}_nation.n_name = ''AUSTRALIA'') THEN NULL WHEN (rapidsse.public.${testName2}_nation.n_name = ''INDIA'') THEN ''there'' ELSE ''everywhere'' END ; Ordinal Expr = CASE WHEN ($2 = ''AUSTRALIA'') THEN NULL WHEN ($2 = ''INDIA'') THEN ''there'' ELSE ''everywhere'' END) ; type: VARCHAR(10)
+      » column: (Expr = CASE WHEN (rapids.public.${testName2}_nation.n_name = ''AUSTRALIA'') THEN NULL WHEN (rapids.public.${testName2}_nation.n_name = ''INDIA'') THEN ''there'' ELSE ''everywhere'' END ; Ordinal Expr = CASE WHEN ($2 = ''AUSTRALIA'') THEN NULL WHEN ($2 = ''INDIA'') THEN ''there'' ELSE ''everywhere'' END) ; type: VARCHAR(10)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 
 // CASE with one return type and NULL (3)
@@ -227,10 +227,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CASE n_name         WHEN ''AUSTRALIA'' THEN NULL         WHEN ''INDIA'' THEN NULL         ELSE ''everywhere''        END FROM ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = CASE WHEN (rapidsse.public.${testName2}_nation.n_name = ''AUSTRALIA'') THEN NULL WHEN (rapidsse.public.${testName2}_nation.n_name = ''INDIA'') THEN NULL ELSE ''everywhere'' END ; Ordinal Expr = CASE WHEN ($2 = ''AUSTRALIA'') THEN NULL WHEN ($2 = ''INDIA'') THEN NULL ELSE ''everywhere'' END) ; type: VARCHAR(10)
+      » column: (Expr = CASE WHEN (rapids.public.${testName2}_nation.n_name = ''AUSTRALIA'') THEN NULL WHEN (rapids.public.${testName2}_nation.n_name = ''INDIA'') THEN NULL ELSE ''everywhere'' END ; Ordinal Expr = CASE WHEN ($2 = ''AUSTRALIA'') THEN NULL WHEN ($2 = ''INDIA'') THEN NULL ELSE ''everywhere'' END) ; type: VARCHAR(10)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 
 // CASE with one return type and NULL (4)
@@ -251,10 +251,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CASE n_name         WHEN ''AUSTRALIA'' THEN NULL         WHEN ''INDIA'' THEN NULL         ELSE NULL       END FROM ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = CASE WHEN (rapidsse.public.${testName2}_nation.n_name = ''AUSTRALIA'') THEN NULL WHEN (rapidsse.public.${testName2}_nation.n_name = ''INDIA'') THEN NULL ELSE NULL END ; Ordinal Expr = CASE WHEN ($2 = ''AUSTRALIA'') THEN NULL WHEN ($2 = ''INDIA'') THEN NULL ELSE NULL END) ; type: NULL
+      » column: (Expr = CASE WHEN (rapids.public.${testName2}_nation.n_name = ''AUSTRALIA'') THEN NULL WHEN (rapids.public.${testName2}_nation.n_name = ''INDIA'') THEN NULL ELSE NULL END ; Ordinal Expr = CASE WHEN ($2 = ''AUSTRALIA'') THEN NULL WHEN ($2 = ''INDIA'') THEN NULL ELSE NULL END) ; type: NULL
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 
 // Case with mix of numeric types. Integer is promoted to a float
@@ -275,10 +275,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CASE n_name         WHEN ''AUSTRALIA'' THEN 1         WHEN ''INDIA'' THEN 1.0e0         ELSE NULL       END FROM ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = CASE WHEN (rapidsse.public.${testName2}_nation.n_name = ''AUSTRALIA'') THEN 1.0000000000e+00 WHEN (rapidsse.public.${testName2}_nation.n_name = ''INDIA'') THEN 1.0000000000e+00 ELSE NULL END ; Ordinal Expr = CASE WHEN ($2 = ''AUSTRALIA'') THEN 1.0000000000e+00 WHEN ($2 = ''INDIA'') THEN 1.0000000000e+00 ELSE NULL END) ; type: FLOAT(19)
+      » column: (Expr = CASE WHEN (rapids.public.${testName2}_nation.n_name = ''AUSTRALIA'') THEN 1.0000000000e+00 WHEN (rapids.public.${testName2}_nation.n_name = ''INDIA'') THEN 1.0000000000e+00 ELSE NULL END ; Ordinal Expr = CASE WHEN ($2 = ''AUSTRALIA'') THEN 1.0000000000e+00 WHEN ($2 = ''INDIA'') THEN 1.0000000000e+00 ELSE NULL END) ; type: FLOAT(19)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 
 // Case with mix of numeric types. Integer (col1) is promoted to a decimal (col9)
@@ -299,10 +299,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CASE col2         WHEN ''AUSTRALIA'' THEN col1         WHEN ''INDIA''     THEN col9         ELSE NULL       END FROM ${testName2}_extractTest"
 
 -> -> projectOp
-      » column: (Expr = CASE WHEN (rapidsse.public.${testName2}_extractTest.col2 = ''AUSTRALIA'') THEN (CAST(rapidsse.public.${testName2}_extractTest.col1 AS DECIMAL(17,0))) WHEN (rapidsse.public.${testName2}_extractTest.col2 = ''INDIA'') THEN rapidsse.public.${testName2}_extractTest.col9 ELSE NULL END ; Ordinal Expr = CASE WHEN ($2 = ''AUSTRALIA'') THEN (CAST($1 AS DECIMAL(17,0))) WHEN ($2 = ''INDIA'') THEN $7 ELSE NULL END) ; type: DECIMAL(17,0)
+      » column: (Expr = CASE WHEN (rapids.public.${testName2}_extractTest.col2 = ''AUSTRALIA'') THEN (CAST(rapids.public.${testName2}_extractTest.col1 AS DECIMAL(17,0))) WHEN (rapids.public.${testName2}_extractTest.col2 = ''INDIA'') THEN rapids.public.${testName2}_extractTest.col9 ELSE NULL END ; Ordinal Expr = CASE WHEN ($2 = ''AUSTRALIA'') THEN (CAST($1 AS DECIMAL(17,0))) WHEN ($2 = ''INDIA'') THEN $7 ELSE NULL END) ; type: DECIMAL(17,0)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_extractTest)')
+         » table: (rapids.public.${testName2}_extractTest)')
 
 
 // Case with mix of numeric types. decimals (col9) are promoted to a float (col8)
@@ -323,10 +323,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CASE col2         WHEN ''AUSTRALIA'' THEN col8         WHEN ''INDIA''     THEN col9         ELSE NULL       END FROM ${testName2}_extractTest"
 
 -> -> projectOp
-      » column: (Expr = CASE WHEN (rapidsse.public.${testName2}_extractTest.col2 = ''AUSTRALIA'') THEN rapidsse.public.${testName2}_extractTest.col8 WHEN (rapidsse.public.${testName2}_extractTest.col2 = ''INDIA'') THEN (CAST(rapidsse.public.${testName2}_extractTest.col9 AS FLOAT)) ELSE NULL END ; Ordinal Expr = CASE WHEN ($2 = ''AUSTRALIA'') THEN $6 WHEN ($2 = ''INDIA'') THEN (CAST($7 AS FLOAT)) ELSE NULL END) ; type: FLOAT(19)
+      » column: (Expr = CASE WHEN (rapids.public.${testName2}_extractTest.col2 = ''AUSTRALIA'') THEN rapids.public.${testName2}_extractTest.col8 WHEN (rapids.public.${testName2}_extractTest.col2 = ''INDIA'') THEN (CAST(rapids.public.${testName2}_extractTest.col9 AS FLOAT)) ELSE NULL END ; Ordinal Expr = CASE WHEN ($2 = ''AUSTRALIA'') THEN $6 WHEN ($2 = ''INDIA'') THEN (CAST($7 AS FLOAT)) ELSE NULL END) ; type: FLOAT(19)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_extractTest)')
+         » table: (rapids.public.${testName2}_extractTest)')
 
 
 // Case with mix of numeric types. dates are promoted to timestamps
@@ -347,10 +347,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CASE n_name         WHEN ''AUSTRALIA'' THEN DATE ''2000-01-01''         WHEN ''INDIA'' THEN TIMESTAMP ''2001-01-01 13:00:00''         ELSE NULL       END FROM ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = CASE WHEN (rapidsse.public.${testName2}_nation.n_name = ''AUSTRALIA'') THEN TIMESTAMP ''2000-01-01 00:00:00'' WHEN (rapidsse.public.${testName2}_nation.n_name = ''INDIA'') THEN TIMESTAMP ''2001-01-01 13:00:00'' ELSE NULL END ; Ordinal Expr = CASE WHEN ($2 = ''AUSTRALIA'') THEN TIMESTAMP ''2000-01-01 00:00:00'' WHEN ($2 = ''INDIA'') THEN TIMESTAMP ''2001-01-01 13:00:00'' ELSE NULL END) ; type: TIMESTAMP
+      » column: (Expr = CASE WHEN (rapids.public.${testName2}_nation.n_name = ''AUSTRALIA'') THEN TIMESTAMP ''2000-01-01 00:00:00'' WHEN (rapids.public.${testName2}_nation.n_name = ''INDIA'') THEN TIMESTAMP ''2001-01-01 13:00:00'' ELSE NULL END ; Ordinal Expr = CASE WHEN ($2 = ''AUSTRALIA'') THEN TIMESTAMP ''2000-01-01 00:00:00'' WHEN ($2 = ''INDIA'') THEN TIMESTAMP ''2001-01-01 13:00:00'' ELSE NULL END) ; type: TIMESTAMP
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 
 // Invalid searched CASE expr with non-boolean predicants (1)
@@ -361,7 +361,7 @@ SELECT CASE
         ELSE 'everywhere'
        END
 FROM ${testName2}_nation;
-failure contains: 'Predicate expression must have a boolean result : WHEN rapidsse.public.${testName2}_nation.n_name'
+failure contains: 'Predicate expression must have a boolean result : WHEN rapids.public.${testName2}_nation.n_name'
 
 
 // Invalid searched CASE expr with non-boolean predicants (2)
@@ -394,17 +394,17 @@ rows: (*,'explainPlan','
    » queryText: "SELECT * FROM ${testName2}_nation WHERE CASE         WHEN n_name = ''AUSTRALIA'' THEN ''here''         WHEN n_name = ''INDIA'' THEN ''there''         ELSE ''everywhere''       END = ''everywhere''"
 
 -> -> projectOp
-      » column: (Alias = N_NATIONKEY ; Expr = rapidsse.public.${testName2}_nation.N_NATIONKEY ; Ordinal Expr = $1)
-      » column: (Alias = N_NAME ; Expr = rapidsse.public.${testName2}_nation.N_NAME ; Ordinal Expr = $2)
-      » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.${testName2}_nation.N_REGIONKEY ; Ordinal Expr = $3)
-      » column: (Alias = N_COMMENT ; Expr = rapidsse.public.${testName2}_nation.N_COMMENT ; Ordinal Expr = $4)
+      » column: (Alias = N_NATIONKEY ; Expr = rapids.public.${testName2}_nation.N_NATIONKEY ; Ordinal Expr = $1)
+      » column: (Alias = N_NAME ; Expr = rapids.public.${testName2}_nation.N_NAME ; Ordinal Expr = $2)
+      » column: (Alias = N_REGIONKEY ; Expr = rapids.public.${testName2}_nation.N_REGIONKEY ; Ordinal Expr = $3)
+      » column: (Alias = N_COMMENT ; Expr = rapids.public.${testName2}_nation.N_COMMENT ; Ordinal Expr = $4)
 
 -> -> -> filterOp
-         » expr: ((CASE WHEN (rapidsse.public.${testName2}_nation.n_name = ''AUSTRALIA'') THEN ''here'' WHEN (rapidsse.public.${testName2}_nation.n_name = ''INDIA'') THEN ''there'' ELSE ''everywhere'' END) = ''everywhere'')
+         » expr: ((CASE WHEN (rapids.public.${testName2}_nation.n_name = ''AUSTRALIA'') THEN ''here'' WHEN (rapids.public.${testName2}_nation.n_name = ''INDIA'') THEN ''there'' ELSE ''everywhere'' END) = ''everywhere'')
          » ordinal expr: ((CASE WHEN ($2 = ''AUSTRALIA'') THEN ''here'' WHEN ($2 = ''INDIA'') THEN ''there'' ELSE ''everywhere'' END) = ''everywhere'')
 
 -> -> -> -> tableScanOp
-            » table: (rapidsse.public.${testName2}_nation)')
+            » table: (rapids.public.${testName2}_nation)')
 
 
 // CASE being part of a larger expression
@@ -425,10 +425,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT 1 + CASE n_name         WHEN ''AUSTRALIA'' THEN 2 * n_nationkey         WHEN ''INDIA'' THEN 3 * n_nationkey         ELSE n_nationkey       END FROM ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = 1 + (CASE WHEN (rapidsse.public.${testName2}_nation.n_name = ''AUSTRALIA'') THEN (2 * rapidsse.public.${testName2}_nation.n_nationkey) WHEN (rapidsse.public.${testName2}_nation.n_name = ''INDIA'') THEN (3 * rapidsse.public.${testName2}_nation.n_nationkey) ELSE rapidsse.public.${testName2}_nation.n_nationkey END) ; Ordinal Expr = 1 + (CASE WHEN ($2 = ''AUSTRALIA'') THEN (2 * $1) WHEN ($2 = ''INDIA'') THEN (3 * $1) ELSE $1 END))
+      » column: (Expr = 1 + (CASE WHEN (rapids.public.${testName2}_nation.n_name = ''AUSTRALIA'') THEN (2 * rapids.public.${testName2}_nation.n_nationkey) WHEN (rapids.public.${testName2}_nation.n_name = ''INDIA'') THEN (3 * rapids.public.${testName2}_nation.n_nationkey) ELSE rapids.public.${testName2}_nation.n_nationkey END) ; Ordinal Expr = 1 + (CASE WHEN ($2 = ''AUSTRALIA'') THEN (2 * $1) WHEN ($2 = ''INDIA'') THEN (3 * $1) ELSE $1 END))
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 
 // Subquery within a CASE
@@ -457,10 +457,10 @@ rows: (*,'explainPlan','
          » queryText: "SELECT MAX(n_nationkey) FROM ${testName2}_nation"
 
 -> -> -> -> projectOp
-            » column: (Expr = MAX(rapidsse.public.${testName2}_nation.n_nationkey) ; Ordinal Expr = MAX($1))
+            » column: (Expr = MAX(rapids.public.${testName2}_nation.n_nationkey) ; Ordinal Expr = MAX($1))
 
 -> -> -> -> -> tableScanOp
-               » table: (rapidsse.public.${testName2}_nation)
+               » table: (rapids.public.${testName2}_nation)
 
 -> mainSubquery
    » table alias: __subquery0004
@@ -470,14 +470,14 @@ rows: (*,'explainPlan','
       » queryText: "SELECT n_name FROM ${testName2}_nation WHERE n_nationkey = (SELECT MAX(n_nationkey) FROM ${testName2}_nation)"
 
 -> -> -> projectOp
-         » column: (Expr = rapidsse.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
+         » column: (Expr = rapids.public.${testName2}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> -> filterOp
-            » expr: (rapidsse.public.${testName2}_nation.n_nationkey = __subquery0003())
+            » expr: (rapids.public.${testName2}_nation.n_nationkey = __subquery0003())
             » ordinal expr: ($1 = __subquery0003())
 
 -> -> -> -> -> tableScanOp
-               » table: (rapidsse.public.${testName2}_nation)
+               » table: (rapids.public.${testName2}_nation)
 
 ∆ mainSubquery
   » table alias: __subquery0006
@@ -487,10 +487,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CASE n_name          WHEN (SELECT n_name FROM ${testName2}_nation WHERE n_nationkey = (SELECT MAX(n_nationkey) FROM ${testName2}_nation)) THEN ''here''          WHEN ''INDIA'' THEN ''there''          ELSE ''everywhere''        END FROM ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = CASE WHEN (rapidsse.public.${testName2}_nation.n_name = __subquery0005()) THEN ''here'' WHEN (rapidsse.public.${testName2}_nation.n_name = ''INDIA'') THEN ''there'' ELSE ''everywhere'' END ; Ordinal Expr = CASE WHEN ($2 = __subquery0005()) THEN ''here'' WHEN ($2 = ''INDIA'') THEN ''there'' ELSE ''everywhere'' END)
+      » column: (Expr = CASE WHEN (rapids.public.${testName2}_nation.n_name = __subquery0005()) THEN ''here'' WHEN (rapids.public.${testName2}_nation.n_name = ''INDIA'') THEN ''there'' ELSE ''everywhere'' END ; Ordinal Expr = CASE WHEN ($2 = __subquery0005()) THEN ''here'' WHEN ($2 = ''INDIA'') THEN ''there'' ELSE ''everywhere'' END)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 
 // Nested CASE
@@ -516,10 +516,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CASE n_name         WHEN ''AUSTRALIA'' THEN ''here''         WHEN ''INDIA'' THEN ''there''         ELSE           CASE n_nationkey             WHEN 1 THEN ''out there''             WHEN 2 THEN ''over there''             ELSE ''everywhere''           END        END FROM ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Expr = CASE WHEN (rapidsse.public.${testName2}_nation.n_name = ''AUSTRALIA'') THEN ''here'' WHEN (rapidsse.public.${testName2}_nation.n_name = ''INDIA'') THEN ''there'' ELSE (CASE WHEN (rapidsse.public.${testName2}_nation.n_nationkey = 1) THEN ''out there'' WHEN (rapidsse.public.${testName2}_nation.n_nationkey = 2) THEN ''over there'' ELSE ''everywhere'' END) END ; Ordinal Expr = CASE WHEN ($2 = ''AUSTRALIA'') THEN ''here'' WHEN ($2 = ''INDIA'') THEN ''there'' ELSE (CASE WHEN ($1 = 1) THEN ''out there'' WHEN ($1 = 2) THEN ''over there'' ELSE ''everywhere'' END) END)
+      » column: (Expr = CASE WHEN (rapids.public.${testName2}_nation.n_name = ''AUSTRALIA'') THEN ''here'' WHEN (rapids.public.${testName2}_nation.n_name = ''INDIA'') THEN ''there'' ELSE (CASE WHEN (rapids.public.${testName2}_nation.n_nationkey = 1) THEN ''out there'' WHEN (rapids.public.${testName2}_nation.n_nationkey = 2) THEN ''over there'' ELSE ''everywhere'' END) END ; Ordinal Expr = CASE WHEN ($2 = ''AUSTRALIA'') THEN ''here'' WHEN ($2 = ''INDIA'') THEN ''there'' ELSE (CASE WHEN ($1 = 1) THEN ''out there'' WHEN ($1 = 2) THEN ''over there'' ELSE ''everywhere'' END) END)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -

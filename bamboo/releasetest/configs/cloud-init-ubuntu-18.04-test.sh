@@ -287,6 +287,9 @@ status "Setting IGMP to v2"
 
 {
   echo
+  echo "# Enable extra ephemeral ports"
+  echo "net.ipv4.ip_local_port_range = 20000 65500"
+  echo
   echo "# Enable Multicast on AWS"
 } >>/etc/sysctl.conf
 

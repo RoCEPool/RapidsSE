@@ -1333,6 +1333,33 @@ i8 PoolHelper::iPoolFree(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* report on buffer pool allocations                                          */
+/*----------------------------------------------------------------------------*/
+void PoolHelper::vPoolSummary(Pds* pPds, Pds* pPdsWarn, StreamDef* pWarnDef)
+{
+  _static_
+  UNUSED(pPdsWarn);
+  UNUSED(pWarnDef);
+
+  s32 sBaseAddr;
+  sBaseAddr.vSprint("%p"_Stz, gpBufferPool->pBase());
+
+  Row* pRow = pPds->pAllotRow(C_VARGS_BEGIN,
+                              gpBufferPool->szShmNm(),
+                              sBaseAddr.szStz(),
+                              gpBufferPool->iTotalSpace(),
+                              C_SIZE_POOL_BUFFER / C_1KB,
+                              gpBufferPool->nBufferCount(),
+                              gpBufferPool->nAllocCount(),
+                              gpBufferPool->nFreeCount(),
+                              gpBufferPool->nAllocCount() * C_SIZE_POOL_BUFFER / C_1KB,
+                              gpBufferPool->nFreeCount() * C_SIZE_POOL_BUFFER / C_1KB,
+                              C_VARGS_END);
+  ASSERT(pRow);
+  UNUSED(pRow);
+}
+
+/*----------------------------------------------------------------------------*/
 /* report on shm region                                                       */
 /*----------------------------------------------------------------------------*/
 void PoolHelper::vRegionSummary()
@@ -1603,6 +1630,49 @@ void PoolHelper::vRegionSummary(Pds* pPds, Pds* pPdsWarn, StreamDef* pWarnDef)
                         iWastageKb,
                         iWastagePct,
                         C_VARGS_END);
+  ASSERT(pRow);
+
+
+  // Also include allocations directly from the PoolBuffer.
+  // We ignore HeapBuffer and FreePoolBuffer objects because HeapBuffers are already
+  // accounted for in the above heaps, and including FreePoolBuffers will make it look
+  // like the pool buffer is being fully used.
+  iChunkSize = C_SIZE_POOL_BUFFER;
+  i8 iNumBufsUsed = 0;
+  iSumBufsUsed = 0;
+  iSumChunksUsed = 0;
+  iWastageKb = 0;
+  iWastagePct = 0;
+
+  for (i8 i_PoolBuffer = gpBufferPool->iBufferFirst();
+       i_PoolBuffer <= gpBufferPool->iBufferLast();
+       i_PoolBuffer++) {
+
+    PoolBuffer* pBuffer = FileMap::pToPoolBuffer(i_PoolBuffer);
+    switch (pBuffer->eGetClassNo()) {
+      case CN_FREEPOOLBUFFER:
+      case CN_HEAPBUFFER:
+        break;
+
+      default:
+        ++iNumBufsUsed;
+        iSumChunksUsed += iChunkSize;
+        break;
+    }
+  }
+
+  pRow = pPds->pAllotRow(C_VARGS_BEGIN,
+                         "bufferPool"_Stz,
+                         0,
+                         iChunkSize / C_1KB,
+                         iNumBufsUsed,
+                         iNumBufsUsed * C_SIZE_POOL_BUFFER / C_1KB,
+                         iNumBufsUsed,
+                         0,
+                         iSumChunksUsed,
+                         iWastageKb,
+                         iWastagePct,
+                         C_VARGS_END);
   ASSERT(pRow);
 }
 

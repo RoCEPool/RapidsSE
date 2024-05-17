@@ -308,23 +308,6 @@ The RapidsSE JDBC driver supports the following properties:
   =========================== ============= ==============================================================
   Key                         Default Value Description
   =========================== ============= ==============================================================
-  ``sokeepalive``             ``false``     If set to ``true``, this sets the keepalive option on the TCP
-                                            socket. If there is no data transferred over the socket for
-                                            2 hours and this option is set to ``true``, the TCP/IP stack
-                                            on the client will send a keepalive probe to the server. This
-                                            tests whether the server is still alive and operating. If the
-                                            server has stopped or is no longer running then an error will
-                                            be propagated back to the client.
-
-                                            It is also useful if the connection between the JDBC driver
-                                            and the server go through firewalls or proxies. Setting the
-                                            keepalive flag to ``true`` will help stop an intermediary
-                                            proxy from thinking this connection is idle and stale and
-                                            therefore closing this connection to free up resources.
-
-                                            Please note that setting this option to ``true`` does
-                                            generate extra network traffic, though it is likely to be
-                                            negligible.
   ``tcpnodelay``              ``true``      If set to ``true`` the Nagle algorithm (TCP_NODELAY) for
                                             this connection will be disabled. Data that is written to
                                             the socket is no longer buffered pending acknowledgements

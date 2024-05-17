@@ -86,6 +86,8 @@ namespace STORE
   
     static void vRepair(Object* pObject);
 
+    Stz* szClientAddr();
+
     void vDecodePayload(WLP::PayloadObj* pPayload);
     void vProcessWLMsg();
     eEC  eProtocolError();

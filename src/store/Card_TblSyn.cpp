@@ -13,7 +13,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE, Card_TblSyn, CK_s_TABLE)
+__pCastFunction_Card(STORE, Card_TblSyn, CK_p_TABLE)
 __aNewFunction(Card_TblSyn, CN_CARD)
 __vDeleteFunction(Card_TblSyn, CN_CARD)
 
@@ -22,7 +22,7 @@ __vDeleteFunction(Card_TblSyn, CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_TblSyn::Card_TblSyn(void)
-: Card_symbol(CK_s_TABLE, C_UNKNOWN)
+: Card_symbol(CK_p_TABLE, C_UNKNOWN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   

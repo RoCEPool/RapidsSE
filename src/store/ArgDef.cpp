@@ -16,8 +16,8 @@ __aFooterFunction(ArgDef)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-ArgDef::ArgDef(i8 i_Arg, Stz* szArgNm, Stz* szArgVal)
-    : Object(CN_ARGDEF)
+ArgDef::ArgDef(i8 i_Arg, Stz* szArgNm, Stz* szArgVal, const char* azFile, i8 iLine)
+    : AbstractDef(CN_ARGDEF,azFile,iLine)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_ARGDEF, _FOOTER_);
 
@@ -114,11 +114,13 @@ void ArgDef::vDump(i8 i_Tab)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ARGDEF,_FOOTER_);
 
-  vTrace("%sArgDef: [%lld] %s %s\n"_Stz,
+  vTrace("%sArgDef: [%lld] %s %s %s:%lld\n"_Stz,
          Stz::szTab(i_Tab),
          m_i_Arg,
          m_sArgNm.szStz(),
-         m_sArgVal.szStz());
+         m_sArgVal.szStz(),
+         m_sFile.szStz(),
+         m_iLine);
 }
 
 /*----------------------------------------------------------------------------*/

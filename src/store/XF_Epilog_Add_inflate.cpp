@@ -67,6 +67,7 @@ void XF_Epilog_Add_inflate::vBifurcate_inflate(void)
   m_pCI->vBeginEach();
   while (m_pCI->bEachOp()) {
 
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     if (CK_o_SCAN == m_pCI->E.e_Op) {
       m_pCI->E.p_inflate = new Card_Inflate;
       m_pCI->vInsertAfter(m_pCI->E.p_inflate, m_pCI->E.p_scan);
@@ -83,14 +84,43 @@ void XF_Epilog_Add_inflate::vBifurcate_inflate(void)
 
       if (m_pCI->E.p_table)
         m_pCI->E.p_inflate->vAppendChild(m_pCI->E.p_table->pDupCardRecursive());
-      if (m_pCI->E.p_stream)
-        m_pCI->E.p_inflate->vAppendChild(m_pCI->E.p_stream->pDupCardRecursive());
+      if (m_pCI->E.p_emit)
+        m_pCI->E.p_inflate->vAppendChild(m_pCI->E.p_emit->pDupCardRecursive());
       if (m_pCI->E.p_injectable)
         m_pCI->E.p_inflate->vAppendChild(m_pCI->E.p_injectable->pDupCardRecursive());
-      if (m_pCI->E.p_synthesis)
-        m_pCI->E.p_inflate->vAppendChild(m_pCI->E.p_synthesis->pDupCardRecursive());
 
+      m_pCI->vSnapIf_arriving();
+
+      continue;
     }
+
+    m_pCI->vSnapIf_arriving();
+  }
+
+  m_pCI->vBeginEach();
+  while (m_pCI->bEachOp()) {
+
+    if (CK_o_STAGE != m_pCI->E.e_Op) {
+      m_pCI->vSnapIf_arriving();
+      continue;
+    }
+
+    eCK eNext = m_pCI->ePeekNext();
+    if (CK_o_SCAN == eNext ||
+        CK_o_INDEXSCAN == eNext) {
+      m_pCI->vSnapIf_arriving();
+      continue;
+    }
+
+    m_pCI->E.p_pdsRow = new Card_PdsRow;
+    m_pCI->vInsertAfter(m_pCI->E.p_pdsRow, m_pCI->E.p_Op);
+
+    m_pCI->vBurst(m_pCI->E.p_Op);
+
+    if (m_pCI->Arriving.m_pEmitted_prior)
+      m_pCI->E.p_pdsRow->vAppendChild(m_pCI->Arriving.m_pEmitted_prior->pDupCardRecursive());
+
+    m_pCI->vSnapIf_arriving();
   }
 
   m_pCI->vEndTransform(__LINE__);

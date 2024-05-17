@@ -179,6 +179,7 @@ void Task::vTask(void)
   m_eTransition  = TR_NONE;
   m_eQueue       = QK_NONE;
   m_bDedicatedThread = false;
+	m_bSecondaryTask = false;
   
   m_oAcksRmg.vCheckInit();
   // m_oWakeup
@@ -372,6 +373,10 @@ void Task::vTaskLoop(void)
       if (AM::SHOW::bException()) {
         vDumpOnException();
       }
+
+//      if (xException.eFailure() == FK_FATAL) {
+//        Process::vExitFailure();
+//      }
       
       vExceptionHandler();
             
@@ -1112,6 +1117,26 @@ bool Task::bIsLocked(void)
   bool b = m_okLock.bIsLocked();
   
   return b;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is task secondary?                                                         */
+/*----------------------------------------------------------------------------*/
+bool Task::bIsSecondary(void)
+{
+	_precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+
+	return m_bSecondaryTask;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set task secondary                                                         */
+/*----------------------------------------------------------------------------*/
+void Task::vIsSecondary(bool bIsSecondary)
+{
+	_precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+
+	m_bSecondaryTask = bIsSecondary;
 }
 
 /*----------------------------------------------------------------------------*/

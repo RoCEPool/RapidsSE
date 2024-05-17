@@ -179,7 +179,7 @@ void NameValidator::vCheckDisabledFunctionality(PlanNode* pRootNode)
         SemanticException::vThrow(EC_DISABLED_STATEMENT, pszDisabledFeature);
       }
 
-      // Carry on
+      // Smooth on
       return GraphNav::WALK_CONTINUE;
   };
 
@@ -206,7 +206,7 @@ void NameValidator::vCheckDisabledFunctionality(PlanNode* pRootNode)
 //          SemanticException::vThrow(EC_DISABLED_STATEMENT, pszDisabledFeature);
 //        }
 //
-//        // Carry on
+//        // Smooth on
 //        return GraphNav::WALK_CONTINUE;
 //      };
 

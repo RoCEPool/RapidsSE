@@ -30,7 +30,7 @@ SELECT col1, col2, col3 FROM public.${testName2}_selectsyntax1;
 rows: 0
 
 -- Select an existing table by catalogName.schemaName.tableName
-SELECT col1, col2, col3 FROM rapidsse.public.${testName2}_selectsyntax1;
+SELECT col1, col2, col3 FROM rapids.public.${testName2}_selectsyntax1;
 rows: 0
 
 -- Select an existing table but use an incorrect schema
@@ -73,7 +73,7 @@ SELECT public.${testName2}_selectsyntax1.col1 FROM ${testName2}_selectsyntax1;
 rows: 0
 
 -- Select an existing column by catalogName.schemaName.tableName.columnName
-SELECT rapidsse.public.${testName2}_selectsyntax1.col1 FROM ${testName2}_selectsyntax1;
+SELECT rapids.public.${testName2}_selectsyntax1.col1 FROM ${testName2}_selectsyntax1;
 rows: 0
 
 -- Select *
@@ -97,7 +97,7 @@ rows:
 ['col1', 'col2', 'col3', 'col1']
 
 -- Select catalog.schema.table.*
-SELECT rapidsse.public.${testName2}_selectsyntax1.* FROM ${testName2}_selectsyntax1;
+SELECT rapids.public.${testName2}_selectsyntax1.* FROM ${testName2}_selectsyntax1;
 rows:
 ['col1', 'col2', 'col3']
 

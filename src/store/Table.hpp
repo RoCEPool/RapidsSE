@@ -10,6 +10,7 @@
 #include "Parcel.hpp"
 #include "TablePtn.hpp"
 #include "KeyBkt.hpp"
+#include "eMD.h"
 
 namespace STORE { class InfoSet; class StreamDef; class PtnDef; }
 
@@ -20,6 +21,8 @@ namespace STORE
   private:
     s256 m_sTableNm; // table name (leave for the moment)
     eTT  m_eKind;    // table kind
+    eMD  m_eMetaDataKind; // metadata table kind
+    s256 m_sTableStep; // table metadata step function
   
     Location   m_oLocation;   // logical location of table
     StreamDef* m_pStreamDef;  // table stream def
@@ -68,17 +71,20 @@ namespace STORE
     i8      nIndexBuffers(i8 i_Index);
     bool    bIsDefinitionOnly(void);
     bool    bIsInternallyDefined(void);
+    bool    bIsMetaDataTable(void);
     bool    bIsReplicated(void);
     bool    bIsUserCreated(void);
     eTT     eKind(void);
     void    vKind(eTT eKind);
     void    vListContents(i8 i_Depth);
+    void    vMetaDataKind(Stz* szTableNm);
     bool    bPopulateIndex(i8 iIndexNo);
     PtnDef*  pPtnDef(void);
     void    vGetGridEstimates(i8& jTableSize, i8& jRowSize, i8& nRowCount);
     void    vRemoveIndex(Index* pIndex);
     void    vResetPointers(void);
     EntBuffer* pRootBuffer(i8 i_TablePtn, i8 i_Index);
+    eMD        eMetaDataKind(void);
     StreamDef* pStreamDef(void);
     void       vStreamDef(StreamDef* pStreamDef);
     Stz*    szTableNm(void);

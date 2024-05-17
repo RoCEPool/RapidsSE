@@ -528,13 +528,13 @@ bool DicStack::bPush_public(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* push rapidsse dic onto this dic stack                                      */
+/* push rapids dic onto this dic stack                                      */
 /*----------------------------------------------------------------------------*/
-bool DicStack::bPush_rapidsse(void)
+bool DicStack::bPush_rapids(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
   
-  Dic* pDic = pFindDic("rapidsse"_Stz);
+  Dic* pDic = pFindDic("rapids"_Stz);
   if (! pDic)
     return false;
 

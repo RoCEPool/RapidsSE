@@ -13,7 +13,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE, Card_Stage, CK_c_STAGE)
+__pCastFunction_Card(STORE, Card_Stage, CK_o_STAGE)
 __aNewFunction(Card_Stage,CN_CARD)
 __vDeleteFunction(Card_Stage,CN_CARD)
 
@@ -22,7 +22,7 @@ __vDeleteFunction(Card_Stage,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Stage::Card_Stage(void)
-: Card_CONSTRUCTION(CK_c_STAGE, 1)
+: Card_CONSTRUCTION(CK_o_STAGE, 1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
@@ -50,6 +50,18 @@ void Card_Stage::vReinstate_stages(CardIter* pCI)
 {
   _static_
 
+
+  vReinstate_stages_v0(pCI);
+//  vReinstate_stages_v1(pCI);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Stage::vReinstate_stages_v0(CardIter* pCI)
+{
+  _static_
+
   i8 nStages = 0;
 
   Card_Stage* p_stage = new Card_Stage;
@@ -58,40 +70,27 @@ void Card_Stage::vReinstate_stages(CardIter* pCI)
   p_stage->vAppendChild(p_topology);
   pCI->E.p_deck->vPushChild(p_stage);
 
-  eAL e_level_running = Card::e_stageTopo_To_aggLevel(YG_ALL_PARTITIONS);
+  eAL e_level_running = Card_Level::e_stageTopo_To_aggLevel(YG_ALL_PARTITIONS);
 
   bool bSawAggOp = false;
   bool bSawFilterOp = false;
   bool bSawIndexJoinOp = false;
   bool bSawProjectOp = false;
-  bool bSawScanOp = false;
   bool bSawSortOp = false;
 
   pCI->vClearRegisters();
   pCI->vBeginEach();
-  while (pCI->bEachOp(CK_c_FOLD))
-    pCI->vRemoveDeleteMain(CK_c_FOLD);
-  pCI->vClearRegisters();
-  pCI->vBeginEach();
-  while (pCI->bEachOp(CK_c_FLAT))
-    pCI->vRemoveDeleteMain(CK_c_FLAT);
+  while (pCI->bEachOp(CK_o_FOLD))
+    pCI->vRemoveDeleteMain(CK_o_FOLD);
 
-//  Card* p_prev = nullptr;
-  eCK   e_prev = CK_NONE;
   Card* p_main = p_stage;
   eCK   e_main = p_main->eCard();
 
   for (i8 i_Main = 1; i_Main < pCI->E.p_deck->nChildCards(); i_Main++) {
 
-//    p_prev = p_main;
-    e_prev = e_main;
 
     p_main = pCI->E.p_deck->pGetChild(i_Main);
     e_main = p_main->eCard();
-
-
-
-    //RASSERT(Card_OP::bIsOp(p_main));
 
 
 
@@ -99,8 +98,6 @@ void Card_Stage::vReinstate_stages(CardIter* pCI)
 
     // change of level
     if (e_level_main != e_level_running) {
-      if (CK_o_SCAN != e_prev)// && CK_o_PROJECT != e_prev)
-        vAddCombined(pCI, p_main, i_Main);
       if (e_level_running == AL_ORIGIN &&
           e_level_main == AL_PARTITION)
         vAddNext(pCI, p_main, i_Main,"broadcast"_Stz);
@@ -109,7 +106,6 @@ void Card_Stage::vReinstate_stages(CardIter* pCI)
       e_level_running = e_level_main;
       vAddStage(pCI, p_main, i_Main, e_level_running,nStages);
       bSawFilterOp = false;
-      bSawScanOp = false;
       if (CK_o_GBYAGG == e_main || CK_o_AGGREG == e_main || CK_o_ORDAGG == e_main)
         bSawAggOp = true;
       else
@@ -124,51 +120,36 @@ void Card_Stage::vReinstate_stages(CardIter* pCI)
     if (CK_o_CROSSJOIN == e_main || CK_o_INDEXJOIN == e_main
         || CK_o_KEYEXISTS == e_main
         || CK_o_KEYNOTEXISTS == e_main) {
-      if (CK_o_SCAN != e_prev)// && ((CK_o_PROJECT == e_prev && bSawFilterOp) || CK_o_PROJECT != e_prev))
-        vAddCombined(pCI, p_main, i_Main);
       vAddNext(pCI, p_main, i_Main,""_Stz);
       vAddStage(pCI, p_main, i_Main, e_level_running,nStages);
       bSawAggOp = false;
       bSawFilterOp = false;
       bSawIndexJoinOp = true;
       bSawProjectOp = false;
-      bSawScanOp = false;
       bSawSortOp = false;
       continue;
     }
 
-//    if ((CK_o_PROJECT == e_main) &&
-//        ! ((bSawAggOp || bSawIndexJoinOp || bSawProjectOp || bSawScanOp || bSawSortOp))) {
-//      vAddCombined(pCI, p_main, i_Main);
-//    }
-
-
     if ((CK_o_AGGREG == e_main)
         && (bSawAggOp || bSawFilterOp || bSawIndexJoinOp || bSawProjectOp || bSawSortOp) ) {
-      if (CK_o_SCAN != e_prev)// && CK_o_PROJECT != e_prev)
-        vAddCombined(pCI, p_main, i_Main);
-      vAddNext(pCI, p_main, i_Main,""_Stz);
+       vAddNext(pCI, p_main, i_Main,""_Stz);
       vAddStage(pCI, p_main, i_Main, e_level_running,nStages);
       bSawAggOp = false;
       bSawFilterOp = false;
       bSawIndexJoinOp = false;
       bSawProjectOp = true;
-      bSawScanOp = false;
       bSawSortOp = false;
       continue;
     }
 
     if ((CK_o_PROJECT == e_main)
         && (bSawAggOp || bSawFilterOp || bSawIndexJoinOp || bSawProjectOp || bSawSortOp) ) {
-      //if (CK_o_SCAN != e_prev && CK_o_PROJECT != e_prev)
-        vAddCombined(pCI, p_main, i_Main);
       vAddNext(pCI, p_main, i_Main,""_Stz);
       vAddStage(pCI, p_main, i_Main, e_level_running,nStages);
       bSawAggOp = false;
       bSawFilterOp = false;
       bSawIndexJoinOp = false;
       bSawProjectOp = true;
-      bSawScanOp = false;
       bSawSortOp = false;
       continue;
     }
@@ -176,23 +157,17 @@ void Card_Stage::vReinstate_stages(CardIter* pCI)
 
     if ((CK_o_GBYAGG == e_main || CK_o_ORDAGG == e_main) &&
         (bSawAggOp || bSawIndexJoinOp || bSawProjectOp)) {
-      if (CK_o_SCAN != e_prev)
-        vAddCombined(pCI, p_main, i_Main);
-      vAddNext(pCI, p_main, i_Main,""_Stz);
+       vAddNext(pCI, p_main, i_Main,""_Stz);
       vAddStage(pCI, p_main, i_Main, e_level_running,nStages);
       bSawAggOp = false;
       bSawFilterOp = false;
       bSawIndexJoinOp = false;
       bSawProjectOp = false;
-      bSawScanOp = false;
       bSawSortOp = false;
       continue;
     }
 
     if (CK_o_SORT == e_main) {
-      if (bSawAggOp || bSawIndexJoinOp || bSawProjectOp || bSawSortOp) {
-        vAddCombined(pCI, p_main, i_Main);
-      }
 
       vAddNext(pCI, p_main, i_Main,""_Stz);
       vAddStage(pCI, p_main, i_Main, e_level_running,nStages);
@@ -200,13 +175,8 @@ void Card_Stage::vReinstate_stages(CardIter* pCI)
       bSawFilterOp = false;
       bSawIndexJoinOp = false;
       bSawProjectOp = false;
-      bSawScanOp = false;
       bSawSortOp = true;
       continue;
-    }
-
-    if (CK_o_SCAN == e_main) {
-      bSawScanOp = true;
     }
 
 
@@ -215,7 +185,7 @@ void Card_Stage::vReinstate_stages(CardIter* pCI)
 
       bSawFilterOp = true;
       if (CK_o_FILTER == e_main && ! bSawAggOp)
-       continue;
+        continue;
 
       vAddNext(pCI, p_main, i_Main,""_Stz);
       vAddStage(pCI, p_main, i_Main, e_level_running,nStages);
@@ -223,21 +193,18 @@ void Card_Stage::vReinstate_stages(CardIter* pCI)
       bSawFilterOp = false;
       bSawIndexJoinOp = false;
       bSawProjectOp = false;
-      bSawScanOp = false;
       bSawSortOp = true;
       continue;
 
     }
 
     if (bSawAggOp || bSawIndexJoinOp) {
-      vAddCombined(pCI, p_main, i_Main);
       vAddNext(pCI, p_main, i_Main,""_Stz);
       vAddStage(pCI, p_main, i_Main, e_level_running,nStages);
       bSawAggOp = false;
       bSawFilterOp = false;
       bSawIndexJoinOp = false;
       bSawProjectOp = false;
-      bSawScanOp = false;
       bSawSortOp = false;
       continue;
     }
@@ -248,27 +215,14 @@ void Card_Stage::vReinstate_stages(CardIter* pCI)
       bSawProjectOp = true;
   }
 
-  e_prev = e_main;
-
   i8 i_End = C_UNKNOWN;
-  if (CK_o_SCAN != e_prev && CK_o_PROJECT != e_prev)
-    vAddCombined(pCI, p_main, i_End);
-  else
-  if (bSawScanOp && bSawProjectOp)
-    vAddCombined(pCI, p_main, i_End);
-  else
-  if (bSawFilterOp && bSawProjectOp)
-    vAddCombined(pCI, p_main, i_End);
-  else
-  if (bSawProjectOp)
-    vAddCombined(pCI,p_main, i_End);
   vAddNext(pCI, p_main, i_End,""_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Stage::vReinstate_stages_v2(CardIter* pCI)
+void Card_Stage::vReinstate_stages_v1(CardIter* pCI)
 {
   _static_
 
@@ -277,16 +231,13 @@ void Card_Stage::vReinstate_stages_v2(CardIter* pCI)
 
   i8 nStages = 0;
   //SawOpCards* pSawOpCards = new SawOpCards;
-  eAL e_level_running = Card::e_stageTopo_To_aggLevel(YG_ALL_PARTITIONS);
+  eAL e_level_running = Card_Level::e_stageTopo_To_aggLevel(YG_ALL_PARTITIONS);
 
   for (i8 i_Main = 1; i_Main < pCI->E.p_deck->nChildCards(); i_Main++) {
 
     Card_OP* p_card_OP = (Card_OP*)(pCI->E.p_deck->pGetChild(i_Main));
 
-    RASSERT(Card_OP::bIsOp(p_card_OP));
-
-    if (pStager->bAddCombined(p_card_OP))
-      vAddCombined(pCI, p_card_OP, i_Main);
+    RASSERT(Card_OP::bIsOp(p_card_OP->eCard()));
 
     if (pStager->bAddNext(p_card_OP))
       vAddNext(pCI, p_card_OP, i_Main, ""_Stz);
@@ -304,23 +255,6 @@ void Card_Stage::vReinstate_stages_v2(CardIter* pCI)
   //delete pSawOpCards;
 
   delete pStager;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_Stage::vAddCombined(CardIter* pCI, Card* p_main, i8& ri_main)
-{
-  _static_
-  Card_Combined* p_combined = new Card_Combined;
-  if (C_UNKNOWN == ri_main) {
-    pCI->E.p_deck->vAppendChild(p_combined);
-    return;
-  }
-  pCI->E.p_deck->vInsertChildBefore(p_combined, p_main);
-  ri_main++;
-  RASSERT(pCI->E.p_deck->pGetChild(ri_main) == p_main);
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -355,7 +289,7 @@ void Card_Stage::vAddStage(CardIter* pCI, Card* p_main, i8& ri_main, eAL e_level
 
   Card_Stage *p_stage = new Card_Stage;
   p_stage->SYM(SF_STG_NM,++nStages);
-  eYG eStageTopo = Card::e_aggLevel_To_stageTopo(e_level_running);
+  eYG eStageTopo = Card_Level::e_aggLevel_To_stageTopo(e_level_running);
   Card_Topology *p_topology = new Card_Topology(eStageTopo);
   p_stage->vAppendChild(p_topology);
   pCI->E.p_deck->vInsertChildBefore(p_stage, p_main);
@@ -375,7 +309,7 @@ void Card_Stage::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  vValidate_notHave(CK_s_LEVEL, CK_NONE);
+  vValidate_child_notBe(CK_p_LEVEL, CK_NONE);
 
   RASSERT(m_xSymbol.bSingleFaceted() && m_xSymbol.bHasFacet(SF_STG_NM));
 

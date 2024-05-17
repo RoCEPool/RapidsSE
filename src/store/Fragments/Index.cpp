@@ -28,10 +28,11 @@ void vIndexDereferenceLB(Dynamic_T* aDynamicT) {
   i8 iIndexBuffer;
   i8 iIndexItem;
   i8 i_BaseOffsetDataX;
+  i8 CURRENT_DUP_OP;
   char* aIndexCrw;
 
-  IndexInfo __INDEX_INFO__;
-  RowInfo   __ROW_INFO_TO__;
+  IndexInfo __INDEX_INFO__[C_MAX_DUP_OPS];
+  RowInfo   __ROW_INFO_TO__[C_MAX_DUP_OPS];
   i8 __COLUMNS_TO_INFLATE_;
   i8 __COLUMNS_INFLATED__;
 
@@ -46,7 +47,7 @@ void vIndexDereferenceLB(Dynamic_T* aDynamicT) {
   __L_LABEL_INDEX_DEREF__:
 
   // reached end ?
-  if ( ! __INDEX_INFO__.m_aEntInt) {
+  if ( ! __INDEX_INFO__[CURRENT_DUP_OP].m_aEntInt) {
     goto L_Return;
   }
 
@@ -54,15 +55,15 @@ void vIndexDereferenceLB(Dynamic_T* aDynamicT) {
   aDynamicT->m_bProcessRow = true;
 
   // dereference the entry
-  iIndexBuffer = __INDEX_INFO__.m_aEntInt->Rrf.m_uBuffer;
-  iIndexItem   = __INDEX_INFO__.m_aEntInt->Rrf.m_uItem;
+  iIndexBuffer = __INDEX_INFO__[CURRENT_DUP_OP].m_aEntInt->Rrf.m_uBuffer;
+  iIndexItem   = __INDEX_INFO__[CURRENT_DUP_OP].m_aEntInt->Rrf.m_uItem;
   aIndexCrw    = ( (char*)C_ADR_REGION + iIndexBuffer * C_1MB + C_CRW_FIRSTHEAD + iIndexItem * C_CRW_HEADBYTES );
 
   // inflate the derefenced entry
   aHeadLine = (struct HeadLine_T *)aIndexCrw;
   auMetaCode = META_AREA(aHeadLine);
-  ayDstByte = (byte*)__ROW_INFO_TO__.m_aRowCellArray + 8*__COLUMNS_INFLATED__;
-  acStrArea = (char*)__ROW_INFO_TO__.m_acStrArea;
+  ayDstByte = (byte*)__ROW_INFO_TO__[CURRENT_DUP_OP].m_aRowCellArray + 8*__COLUMNS_INFLATED__;
+  acStrArea = (char*)__ROW_INFO_TO__[CURRENT_DUP_OP].m_acStrArea;
 	racStrArea = acStrArea;
   eStrInflateRule = SI_STRAREA_ADR;
   i_BaseOffsetDataX = C_1B  + C_8B  + __COLUMNS_TO_INFLATE_;
@@ -88,10 +89,11 @@ void vIndexDereferenceUB(Dynamic_T* aDynamicT) {
   i8 iIndexBuffer;
   i8 iIndexItem;
   i8 i_BaseOffsetDataX;
+  i8 CURRENT_DUP_OP;
   char* aIndexCrw;
 
-  IndexInfo __INDEX_INFO__;
-  RowInfo   __ROW_INFO_TO__;
+  IndexInfo __INDEX_INFO__[C_MAX_DUP_OPS];
+  RowInfo   __ROW_INFO_TO__[C_MAX_DUP_OPS];
   i8 __COLUMNS_TO_INFLATE_;
   i8 __COLUMNS_INFLATED__;
 
@@ -106,7 +108,7 @@ void vIndexDereferenceUB(Dynamic_T* aDynamicT) {
   __L_LABEL_INDEX_DEREF__:
 
   // reached upper bound ?
-  if (__INDEX_INFO__.m_aEntInt == __INDEX_INFO__.m_aEntUpper) {
+  if (__INDEX_INFO__[CURRENT_DUP_OP].m_aEntInt == __INDEX_INFO__[CURRENT_DUP_OP].m_aEntUpper) {
     goto L_Return;
   }
 
@@ -114,15 +116,15 @@ void vIndexDereferenceUB(Dynamic_T* aDynamicT) {
   aDynamicT->m_bProcessRow = true;
 
   // dereference the entry
-  iIndexBuffer = __INDEX_INFO__.m_aEntInt->Rrf.m_uBuffer;
-  iIndexItem   = __INDEX_INFO__.m_aEntInt->Rrf.m_uItem;
+  iIndexBuffer = __INDEX_INFO__[CURRENT_DUP_OP].m_aEntInt->Rrf.m_uBuffer;
+  iIndexItem   = __INDEX_INFO__[CURRENT_DUP_OP].m_aEntInt->Rrf.m_uItem;
   aIndexCrw    = ( (char*)C_ADR_REGION + iIndexBuffer * C_1MB + C_CRW_FIRSTHEAD + iIndexItem * C_CRW_HEADBYTES );
 
   // inflate the derefenced entry
   aHeadLine = (struct HeadLine_T *)aIndexCrw;
   auMetaCode = META_AREA(aHeadLine);
-  ayDstByte = (byte*)__ROW_INFO_TO__.m_aRowCellArray + 8*__COLUMNS_INFLATED__;
-  acStrArea = (char*)__ROW_INFO_TO__.m_acStrArea;
+  ayDstByte = (byte*)__ROW_INFO_TO__[CURRENT_DUP_OP].m_aRowCellArray + 8*__COLUMNS_INFLATED__;
+  acStrArea = (char*)__ROW_INFO_TO__[CURRENT_DUP_OP].m_acStrArea;
   racStrArea = acStrArea;
   eStrInflateRule = SI_STRAREA_ADR;
   i_BaseOffsetDataX = C_1B  + C_8B  + __COLUMNS_TO_INFLATE_;
@@ -143,17 +145,18 @@ void vIndexDereferenceUB(Dynamic_T* aDynamicT) {
 // function-vIndexPositionBegin
 void vIndexPositionBegin(Dynamic_T* aDynamicT) {
 
-  IndexInfo __INDEX_INFO__;
+  i8 CURRENT_DUP_OP;
+  IndexInfo __INDEX_INFO__[C_MAX_DUP_OPS];
 
   // marker-start
 
 #ifdef WITH_CLANG
   // position at beginning of the index
-  __INDEX_INFO__.m_aEntInt =(struct Ent_int*)aDynamicT->m_fp_aExtern_IndexTreeBegin(
-        __INDEX_INFO__.m_aIndexTree, &__INDEX_INFO__.m_aEntBuffer);
+  __INDEX_INFO__[CURRENT_DUP_OP].m_aEntInt =(struct Ent_int*)aDynamicT->m_fp_aExtern_IndexTreeBegin(
+        __INDEX_INFO__[CURRENT_DUP_OP].m_aIndexTree, &__INDEX_INFO__[CURRENT_DUP_OP].m_aEntBuffer);
 #endif
 
-  if ( ! aDynamicT->m_xIndexInfoT.m_aEntInt )
+  if ( ! aDynamicT->m_xIndexInfoT[CURRENT_DUP_OP].m_aEntInt )
     goto L_Return;
 
   // marker-end
@@ -175,9 +178,7 @@ void vIndexPositionLower(Dynamic_T* aDynamicT) {
 
 #ifdef WITH_CLANG
   // position at lower bound
-	__INDEX_POSITION_LOWER__(&__INDEX_INFO__);
-  //__INDEX_INFO__.m_aEntInt =  (struct Ent_int *)__INDEX_POSITION_LOWER__(
-  //    &__INDEX_INFO__);
+	__INDEX_POSITION_LOWER__(&__INDEX_INFO__[CURRENT_DUP_OP]);
 #endif
 
   // marker-end
@@ -193,11 +194,12 @@ void vIndexPositionLower(Dynamic_T* aDynamicT) {
 // function-vIndexScanContinue
 void vIndexScanContinue(Dynamic_T* aDynamicT) {
 
-  IndexInfo __INDEX_INFO__;
+  i8 CURRENT_DUP_OP;
+  IndexInfo __INDEX_INFO__[C_MAX_DUP_OPS];
 
   // marker-start
 
-  if ( ! __INDEX_INFO__.m_aEntInt )
+  if ( ! __INDEX_INFO__[CURRENT_DUP_OP].m_aEntInt )
     goto L_Return;
 
   // marker-end
@@ -219,7 +221,7 @@ void vIndexPositionUpper(Dynamic_T* aDynamicT) {
 
 #ifdef WITH_CLANG
   // position at upper bound
-  __INDEX_POSITION_UPPER__(&__INDEX_INFO__);
+  __INDEX_POSITION_UPPER__(&__INDEX_INFO__[CURRENT_DUP_OP]);
 #endif
 
   // marker-end
@@ -235,12 +237,13 @@ void vIndexPositionUpper(Dynamic_T* aDynamicT) {
 // function-vIndexCheckUpper
 void vIndexCheckUpper(Dynamic_T* aDynamicT) {
 
-  IndexInfo __INDEX_INFO__;
+  i8 CURRENT_DUP_OP;
+  IndexInfo __INDEX_INFO__[C_MAX_DUP_OPS];
 
   // marker-start
 
   // reached upper bound ?
-  if (__INDEX_INFO__.m_aEntInt == __INDEX_INFO__.m_aEntUpper) {
+  if (__INDEX_INFO__[CURRENT_DUP_OP].m_aEntInt == __INDEX_INFO__[CURRENT_DUP_OP].m_aEntUpper) {
     goto L_Return;
   }
 
@@ -286,8 +289,8 @@ void vIndexReturn(Dynamic_T* aDynamicT) {
   //printf("moving to next index scan\n");
 
 #ifdef WITH_CLANG
-  __INDEX_INFO__.m_aEntInt = (struct Ent_int*)aDynamicT->m_fp_aExtern_EntBufferNextEntry(
-      &__INDEX_INFO__.m_aEntBuffer, __INDEX_INFO__.m_aEntInt);
+  __INDEX_INFO__[CURRENT_DUP_OP].m_aEntInt = (struct Ent_int*)aDynamicT->m_fp_aExtern_EntBufferNextEntry(
+      &__INDEX_INFO__[CURRENT_DUP_OP].m_aEntBuffer, __INDEX_INFO__[CURRENT_DUP_OP].m_aEntInt);
 #endif
 
   goto __L_LABEL_INDEX_DEREF__;

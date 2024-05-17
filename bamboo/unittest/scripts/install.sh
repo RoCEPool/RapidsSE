@@ -27,7 +27,7 @@ readonly PKG_DIR="${PROJ_ROOT}/installer/packaging"
 readonly OUT_DIR="${PROJ_ROOT}/installer/output"
 readonly BOOTSTRAP_DIR="${PROJ_ROOT}/bootstrap"
 
-readonly COMMON_FN="${DIR}/common.fn"
+readonly BAMBOO_COMMON_FN="${DIR}/common.fn"
 readonly BOOTSTRAP_COMMON_FN="${BOOTSTRAP_DIR}/common.fn"
 
 # Set to 1 to print debug messages in Bamboo.
@@ -41,10 +41,10 @@ readonly DEBUG=0
 
 if [ -z "${__BAMBOO_COMMON_FN:-}" ] ; then
   #shellcheck source=common.fn
-  source "${COMMON_FN}" || { >&2 echo "Could not load ${COMMON_FN}"; exit 1; }
+  source "${BAMBOO_COMMON_FN}" || { >&2 echo "Could not load ${BAMBOO_COMMON_FN}"; exit 1; }
 fi
 
-if [ -z "${__COMMON_FN:-}" ] ; then
+if [ -z "${__BOOTSTRAP_COMMON_FN:-}" ] ; then
   #shellcheck source=../../../bootstrap/common.fn
   source "${BOOTSTRAP_COMMON_FN}" || { >&2 echo "Could not load ${BOOTSTRAP_COMMON_FN}"; exit 1; }
 fi

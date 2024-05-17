@@ -90,13 +90,11 @@ void Board::vDerive_foldProjection_F(CardIter* pCI)
   if (! pCI->E.p_emit)
     return;
 
-  pCI->E.p_stream = new Card_Stream;
-  pCI->E.p_fold->vAppendChild(pCI->E.p_stream);
-  pCI->E.p_stream->vAppendChild(pCI->E.p_emit->pDupCardRecursive());
+  pCI->E.p_fold->vAppendChild(pCI->E.p_emit->pDupCardRecursive());
 }
 
 /*----------------------------------------------------------------------------*/
-/* find and mark possible call to subquery referenced in pCI->G.p_boolPred    */
+/* find and mark possible call to subquery referenced in pCI->G.p_predicate    */
 /*----------------------------------------------------------------------------*/
 bool Board::bMark_sqyCall(CardIter* pCI)
 {
@@ -104,7 +102,7 @@ bool Board::bMark_sqyCall(CardIter* pCI)
 
   bool bFoundCall = false;
 
-  Card_CONJ* p_conj_ROOT = pCI->E.p_boolPred->pRoot_conj();
+  Card_CONJ* p_conj_ROOT = pCI->E.p_predicate->pRoot_conj();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -118,7 +116,7 @@ bool Board::bMark_sqyCall(CardIter* pCI)
     if (! (pCI->Flat.m_p_term_sqyCall = p_conj->pGetTerm_sqyNo(pCI)))
       return C_CONTINUE_RECURSION;
 
-   pCI->Flat.m_p_conj_iqyCall = p_conj;
+    pCI->Flat.m_p_conj_iqyCall = p_conj;
     pCI->Flat.m_p_conj_iqyCall->vMark1(MARK_AT);
     bFoundCall = true;
 
@@ -213,9 +211,8 @@ void Board::vDump(i8 iDepth)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
 
-  vTrace("%sBoard %p %lld %s\n"_Stz,
+  vTrace("%sBoard %lld %s\n"_Stz,
          Stz::szTab(iDepth),
-         this,
          m_i_Board,
          aBK[m_eBoard]
   );
@@ -277,22 +274,23 @@ void Board::vPrintBoard(CardIter* pCI)
 
   Stz* szQueryNm = m_pBench->pOptimiser()->szQueryNm();
 
-  Ribbon* pRibbon = new Ribbon(m_pBench->pOptimiser()->pCardCtl());
+  Ribbon* pRibbon = new Ribbon;
 
   vPinTitle(pRibbon);
 
   vPinCards(pCI, pRibbon);
 
-  pRibbon->vDrawH('-',0);
-  pRibbon->vDrawH('-',2);
+  pRibbon->vDrawH('=',0);
+  pRibbon->vDrawH('=',2);
   pRibbon->vDrawH('=');
 
   vPinMargin(pRibbon);
 
   i8 iBenchNo = m_pBench->iBenchNo();
+  i8 iXform   = m_pBench->iXform();
   eOH ePhase  = this->ePhase();
   i8 iPrintNo = m_pBench->nPrintBoard_inc();
-  pRibbon->vPrintRibbon(szQueryNm, iBenchNo, ePhase, iPrintNo);
+  pRibbon->vPrintRibbon(szQueryNm, iBenchNo, iXform, ePhase, iPrintNo);
 
   delete pRibbon;
 }
@@ -400,8 +398,6 @@ void Board::vPinCards(CardIter* pCI, Ribbon* pRibbon)
 
   UNUSED(pCI);
 
-  CardCtl* pCardCtl = m_pBench->pOptimiser()->pCardCtl();
-
   if (! m_pDeck->nItems())
     return;
 
@@ -409,37 +405,26 @@ void Board::vPinCards(CardIter* pCI, Ribbon* pRibbon)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Ribbon* pSubRibbon = new Ribbon(pCardCtl);
+  Ribbon* pSubRibbon = new Ribbon;
 
-  Kid xBI(m_pDeck);
+  Kid xDeck(m_pDeck);
 
   i8 nCount = 0;
 
-  while (xBI.bEach()) {
+  while (xDeck.bEach()) {
+    Card* pChild = xDeck.pChild();
+    eCK eChild = pChild->eCard();
 
     if (! nCount++)
       pSubRibbon->vLaneFirst();
     else
-    if (pSubRibbon->i_Char() && pCardCtl->bHeatNext(xBI.pChild()->eCard()))
+    if (pSubRibbon->i_Char() &&
+        (CK_o_STAGE == eChild || CK_SECTION == eChild))
       pSubRibbon->vHeatNext();
     else
       pSubRibbon->vLaneNext();
 
-
-    bool bPrune = false;
-    eAL eLevel = AL_NONE;
-    Card_Level* p_level = xBI.pChild()->pSub_level();
-    if (p_level)
-      eLevel = (eAL) p_level->pSymbol()->Y_iGet(P_Level);
-    xBI.pChild()->vPrintRecursive(pCI,
-                                  pSubRibbon,
-                                  0,
-                                  m_pDeck,
-                                  bPrune,
-                                  eLevel,
-                                  false,
-                                  m_pBench->iXform(),
-                                  m_pBench->szXfunc());
+    pChild->vPrintRecursive(pCI,0,m_pDeck,pSubRibbon);
   }
 
   pRibbon->vPinSubRibbon(pRibbon->i_Heat(), 0, pSubRibbon);
@@ -459,10 +444,13 @@ void Board::vPinTitle(Ribbon* pRibbon)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pRibbon->vSprintSnippet(false,"PrintBoard: %s/%lld -- %s"_Stz,
-                          aXF[m_pBench->eXform()],
-                          m_pBench->nTransformPrint_inc(),
-                          aXF_desc[m_pBench->eXform()]);
+  i8 i_Char = C_UNKNOWN;
+  pRibbon->vSprint(i_Char, "PrintBoard: x%lld %s/%lld -- %s"_Stz,
+                     m_pBench->iXform(),
+                     aXF[m_pBench->eXform()],
+                     m_pBench->nTransformPrint_inc(),
+                     aXF_desc[m_pBench->eXform()]);
+  pRibbon->vNewLine();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

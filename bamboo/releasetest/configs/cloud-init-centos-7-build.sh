@@ -245,7 +245,10 @@ status "Updating /etc/hosts"
 echo "192.168.0.5 ci.rapidsdata.com" >>/etc/hosts
 
 status "Setting IGMP to v2"
-echo -e "\n# Enable Multicast on AWS" >>/etc/sysctl.conf
+{
+echo -e "\n# Enable extra ephemeral ports\nnet.ipv4.ip_local_port_range = 20000 65500"
+echo -e "\n# Enable Multicast on AWS"
+} >>/etc/sysctl.conf
 
 mapfile -t netDevices < <(ip -o -4 addr | awk '{print $2}')
 for device in "${netDevices[@]}"; do

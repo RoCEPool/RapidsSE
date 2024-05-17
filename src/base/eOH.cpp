@@ -16,6 +16,7 @@ Stz* aOH[OH_ENUMS]
   /* */ "OH_OPTIMISE"_Stz,      // OH_OPTIMISE
   /* */ "OH_EPILOG"_Stz,        // OH_EPILOG
   /* */ "OH_SYNTHESISE"_Stz,    // OH_SYNTHESISE
+  /* */ "OH_PASS_THRU"_Stz,     // OH_PASS_THRU
 
 //  /* */ "ENUMS"_Stz
 };
@@ -32,6 +33,7 @@ Stz* aOH_short[OH_ENUMS]
   /* */ "OZ"_Stz,  // OH_OPTIMISE
   /* */ "EL"_Stz,  // OH_EPILOG
   /* */ "SZ"_Stz,  // OH_SYNTHESISE
+  /* */ "PT"_Stz,  // OH_PASS_THRU
 
 //  /* */ "ENUMS"_Stz
 };

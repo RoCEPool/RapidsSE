@@ -32,7 +32,7 @@ success
 
 // Table should exist
 lstbl;
-rows:
+contains rows:
   ('${testName2}_nation')
 
 
@@ -52,7 +52,7 @@ success
 
 // Index should exist
 lsidx ${testName2}_nation;
-rows:
+contains rows:
   ('nation_idx1',false,false)
 
 
@@ -74,13 +74,13 @@ rows: (*,'explainPlan','
    » queryText: "SELECT * FROM ${testName2}_nation"
 
 -> -> projectOp
-      » column: (Alias = N_NATIONKEY ; Expr = rapidsse.public.${testName2}_nation.N_NATIONKEY ; Ordinal Expr = $1)
-      » column: (Alias = N_NAME ; Expr = rapidsse.public.${testName2}_nation.N_NAME ; Ordinal Expr = $2)
-      » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.${testName2}_nation.N_REGIONKEY ; Ordinal Expr = $3)
-      » column: (Alias = N_COMMENT ; Expr = rapidsse.public.${testName2}_nation.N_COMMENT ; Ordinal Expr = $4)
+      » column: (Alias = N_NATIONKEY ; Expr = rapids.public.${testName2}_nation.N_NATIONKEY ; Ordinal Expr = $1)
+      » column: (Alias = N_NAME ; Expr = rapids.public.${testName2}_nation.N_NAME ; Ordinal Expr = $2)
+      » column: (Alias = N_REGIONKEY ; Expr = rapids.public.${testName2}_nation.N_REGIONKEY ; Ordinal Expr = $3)
+      » column: (Alias = N_COMMENT ; Expr = rapids.public.${testName2}_nation.N_COMMENT ; Ordinal Expr = $4)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 // Can we run a basic SELECT against this table (no data)?
 SELECT * FROM ${testName2}_nation;
@@ -101,7 +101,7 @@ rows: (*,'explainPlan','
       » column: (Expr = COUNT(*) ; Ordinal Expr = COUNT(*))
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.${testName2}_nation)')
+         » table: (rapids.public.${testName2}_nation)')
 
 
 // Can we run a basic aggregate (no data)?
@@ -179,7 +179,8 @@ success
 
 // Table should no longer exist
 lstbl;
-rows: 0
+does not contain rows:
+  ('${testName2}_nation')
 
 
 CLEANUP {

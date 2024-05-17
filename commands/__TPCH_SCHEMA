@@ -63,14 +63,14 @@ _          _          _          _           _              _
 
 trackMemory;
 
-_customer
-_lineitem
-_nation_replicated
-_orders_custkey
-_partsupp
-_part
-_region_replicated
-_supplier
+file _customer;
+file _lineitem;
+file _nation_replicated;
+file _orders_custkey;
+file _partsupp;
+file _part;
+file _region_replicated;
+file _supplier;
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
@@ -110,19 +110,6 @@ create        index IxS_SUPPKEY     on Supplier (S_SUPPKEY);
 create        index IxS_NATIONKEY   on Supplier (S_NATIONKEY);
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-/time loadReplicated region   "<tpch_dir>/region.<suffix>"   ;
-/time loadReplicated nation   "<tpch_dir>/nation.<suffix>"   ;
-/time load supplier           "<tpch_dir>/supplier.<suffix>" ;
-/time load customer           "<tpch_dir>/customer.<suffix>" ;
-/time load part               "<tpch_dir>/part.<suffix>"     ;
-/time load partsupp           "<tpch_dir>/partsupp.<suffix>" ;
-/time load orders             "<tpch_dir>/orders.<suffix>"   ;
-/time load lineitem           "<tpch_dir>/lineitem.<suffix>" ;
-
-tablesizes;
-
-bpa;
 
 /*============================================================================*/
 /* end                                                                        */

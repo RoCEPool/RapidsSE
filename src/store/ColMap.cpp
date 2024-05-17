@@ -17,8 +17,8 @@ __aFooterFunction(ColMap)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-ColMap::ColMap(void)
-    : Object(CN_COLMAP)
+ColMap::ColMap(const char* azFile, i8 iLine)
+    : AbstractDef(CN_COLMAP,azFile,iLine)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_COLMAP, _FOOTER_);
 
@@ -77,6 +77,8 @@ void ColMap::vDump(i8 i_Tab)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_COLMAP, _FOOTER_);
   UNUSED(i_Tab);
+
+  vTrace("               %s:%lld\n"_Stz,m_sFile.szStz(),m_iLine);
 
   for (i8 i_Col = 0; i_Col < m_nCols; i_Col++) {
     vTrace("               [%lld] (%s,%lld) -> $%lld\n"_Stz,

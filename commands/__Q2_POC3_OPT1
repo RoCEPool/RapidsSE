@@ -14,11 +14,7 @@ begin
     scan part
     | filter " type BOOLEAN  }  P_TYPE '%STEEL'  6 matchTrailing P_SIZE 20 == and"
     | project " type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY"
-    | combined 0
-    | next
-
-  stage S02 on all partitions :
-    indexJoin partsupp IxPS_PARTKEY "BOUND $I1 P_PARTKEY =="
+    | indexJoin partsupp IxPS_PARTKEY "BOUND $I1 P_PARTKEY =="
     | project " type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY ,
                 type INTEGER ( 19 ) as PS_SUPPKEY PS_SUPPKEY ,
                 type DECIMAL ( 19  2 ) as PS_SUPPLYCOST PS_SUPPLYCOST"
@@ -32,11 +28,7 @@ begin
                type INTEGER ( 19 ) as PS_SUPPKEY PS_SUPPKEY ,
                type DECIMAL ( 19  2 ) as PS_SUPPLYCOST PS_SUPPLYCOST ,
                type INTEGER ( 19 ) as S_NATIONKEY S_NATIONKEY "
-    | combined 0
-    | next
-
-  stage S04 on all partitions :
-    indexJoin nation IxN_NATIONKEY "BOUND $I1 S_NATIONKEY =="
+    | indexJoin nation IxN_NATIONKEY "BOUND $I1 S_NATIONKEY =="
     | project "type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY ,
                type INTEGER ( 19 ) as PS_SUPPKEY PS_SUPPKEY ,
                type DECIMAL ( 19  2 ) as PS_SUPPLYCOST PS_SUPPLYCOST ,
@@ -73,11 +65,7 @@ begin
     | filter "type BOOLEAN PS_SUPPLYCOST_MIN PS_SUPPLYCOST =="
     | project "type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY ,
                type INTEGER ( 19 ) as PS_SUPPKEY PS_SUPPKEY"
-    | combined 0
-    | next
-
-  stage S09 on all partitions :
-    indexJoin part IxP_PARTKEY "BOUND $I1 P_PARTKEY =="
+    | indexJoin part IxP_PARTKEY "BOUND $I1 P_PARTKEY =="
     | project " type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY ,
                 type INTEGER ( 19 ) as PS_SUPPKEY PS_SUPPKEY ,
                 type VARCHAR ( 0 ) as P_MFGR P_MFGR"
@@ -95,11 +83,7 @@ begin
                 type VARCHAR ( 0 ) as S_ADDRESS S_ADDRESS ,
                 type VARCHAR ( 0 ) as S_PHONE S_PHONE ,
                 type VARCHAR ( 0 ) as S_COMMENT S_COMMENT "
-    | combined 0
-    | next
-
-  stage S11 on all partitions :
-    indexJoin nation IxN_NATIONKEY "BOUND $I1 S_NATIONKEY =="
+    | indexJoin nation IxN_NATIONKEY "BOUND $I1 S_NATIONKEY =="
     | project " type DECIMAL ( 19  2 ) as S_ACCTBAL S_ACCTBAL ,
                 type VARCHAR ( 0 ) as S_NAME S_NAME ,
                 type VARCHAR ( 0 ) as N_NAME N_NAME ,

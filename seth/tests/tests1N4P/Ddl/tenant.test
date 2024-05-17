@@ -8,7 +8,7 @@ success
 
 pwf;
 rows:
-  ('/tables/public/schemas/rapidsse/catalogs/boray/tenants/')
+  ('/tables/public/schemas/rapids/catalogs/boray/tenants/')
 
 // list tenants when not in schemas folder
 lsten;
@@ -121,7 +121,7 @@ success
 
 pwf;
 rows:
-  ('/tables/public/schemas/rapidsse/catalogs/boray/tenants/')
+  ('/tables/public/schemas/rapids/catalogs/boray/tenants/')
 
 // get memory leaks
 memoryLeaks;

@@ -23,13 +23,17 @@
 // function-vInflatePdsRowBegin
 void vInflatePdsRowBegin(Dynamic_T* aDynamicT) {
 
-	i8* paW;
-	void* aCurrentRow;
 	i8* piColumn;
+  i8* paW;
+
 	void* aSubReturnLabel;
+  void* aCurrentRow;
+
+  i8 CURRENT_DUP_OP;
+  bool bPdsRowBuffer;
 
 	// marker-start
-	struct __STRUCT_TO__* p__STRUCT_TO__;
+	struct __STRUCT_TO___CURRENT_OP* p__STRUCT_TO___CURRENT_OP;
 	aCurrentRow = nullptr;
 
 	__L_LABEL__:
@@ -57,19 +61,20 @@ void vInflatePdsRowBegin(Dynamic_T* aDynamicT) {
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 	// get the next row (should be able to add rowsize)
 #ifdef WITH_CLANG
-	//aDynamicT->m_xRowInfoIT.m_aRowCellArray = aDynamicT->m_fp_aExtern_PdsRowBufferCellArray(aDynamicT->m_aPdsRowBuffer, i_CurrentRow);
+	//aDynamicT->m_xRowInfoIT[CURRENT_DUP_OP].m_aRowCellArray = aDynamicT->m_fp_aExtern_PdsRowBufferCellArray(aDynamicT->m_aPdsRowBuffer, i_CurrentRow);
 	if ( ! aCurrentRow)
-		aDynamicT->m_xRowInfoIT.m_aRowCellArray = aExtern_PdsFirstRowCellArray(aDynamicT->m_xRowInfoIT.m_aPdsRowBuffer, &aCurrentRow);
+		aDynamicT->m_xRowInfoIT[CURRENT_DUP_OP].m_aRowCellArray = aDynamicT->m_fp_aExtern_PdsFirstRowCellArray(aDynamicT->m_xRowInfoIT[CURRENT_DUP_OP].m_aPdsRowBuffer, &aCurrentRow);
 	else
-		aDynamicT->m_xRowInfoIT.m_aRowCellArray = aExtern_PdsNextRowCellArray(aDynamicT->m_xRowInfoIT.m_aPdsRowBuffer, &aCurrentRow);
+		aDynamicT->m_xRowInfoIT[CURRENT_DUP_OP].m_aRowCellArray = aDynamicT->m_fp_aExtern_PdsNextRowCellArray(aDynamicT->m_xRowInfoIT[CURRENT_DUP_OP].m_aPdsRowBuffer, &aCurrentRow);
 #endif
 
 	if ( ! aCurrentRow)
 		goto L_Return;
 
-	aDynamicT->m_xRowInfoIT.m_acStrArea = aDynamicT->m_xRowInfoIT.m_acStrAreaSav;
+	aDynamicT->m_xRowInfoIT[CURRENT_DUP_OP].m_acStrArea = aDynamicT->m_xRowInfoIT[CURRENT_DUP_OP].m_acStrAreaSav;
 
-	piColumn = (i8*)aDynamicT->m_xRowInfoIT.m_aRowCellArray;
+	//piColumn = (i8*)aDynamicT->m_xRowInfoIT[CURRENT_DUP_OP].m_aRowCellArray;
+  bPdsRowBuffer = true;
 
 	// marker-end
 	L_Return:
@@ -134,13 +139,14 @@ void vInflateRowReturn(Dynamic_T* aDynamicT) {
 
   char* szStrArea;
   i8 nAreaRemaining;
-  struct __STRUCT_TO__* p__STRUCT_TO__;
+  i8 CURRENT_DUP_OP;
+  struct __STRUCT_TO___CURRENT_OP* p__STRUCT_TO___CURRENT_OP;
 
   // marker-start
 
-  p__STRUCT_TO__ = (struct __STRUCT_TO__*)aDynamicT->m_xRowInfoIT.m_aRowCellArray;
-  szStrArea = aDynamicT->m_xRowInfoIT.m_acStrArea;
-  nAreaRemaining = aDynamicT->m_xRowInfoIT.m_nStringAreaSize;
+  p__STRUCT_TO___CURRENT_OP = (struct __STRUCT_TO___CURRENT_OP*)aDynamicT->m_xRowInfoIT[CURRENT_DUP_OP].m_aRowCellArray;
+  szStrArea = aDynamicT->m_xRowInfoIT[CURRENT_DUP_OP].m_acStrArea;
+  nAreaRemaining = aDynamicT->m_xRowInfoIT[CURRENT_DUP_OP].m_nStringAreaSize;
 
   // marker-end
 

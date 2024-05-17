@@ -4,12 +4,13 @@
 #pragma once
 
 #include "BASE.h"
+#include "AbstractDef.hpp"
 #include "SketchTkn.hpp"
 #include "ListExo2_t.hpp"
 
 namespace STORE
 {
-  class ArgDef : public Object
+  class ArgDef : public AbstractDef
                , public ListExo2_t<SketchTkn>
   {
   public:
@@ -25,7 +26,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    ArgDef(i8 i_Arg, Stz* szArgNm, Stz* szArgVal);
+    ArgDef(i8 i_Arg, Stz* szArgNm, Stz* szArgVal, const char* azFile, i8 iLine);
     ~ArgDef(void) noexcept(false);
 
     i8 i_Arg(void);

@@ -240,8 +240,11 @@ template <i8 AREA>
 void String_t<AREA>::operator =(Stz* szArg)
 {
   _precondition_(_MAGIC_,CN_STRING_T,_FOOTER_);
-  
-  StrLib::vCopy(m_caCharArea, AREA, szArg->azChar());
+
+  if (szArg)
+    StrLib::vCopy(m_caCharArea, AREA, szArg->azChar());
+  else
+    m_caCharArea[0] = '\0';
 
   _postcondition_(_MAGIC_,_FOOTER_);
 }
@@ -254,7 +257,10 @@ void String_t<AREA>::operator =(const Stz* szArg)
 {
   _precondition_(_MAGIC_,CN_STRING_T,_FOOTER_);
 
-  StrLib::vCopy(m_caCharArea, AREA, (const char*) szArg);
+  if (szArg)
+    StrLib::vCopy(m_caCharArea, AREA, (const char*) szArg);
+  else
+    m_caCharArea[0] = '\0';
 
   _postcondition_(_MAGIC_,_FOOTER_);
 }
@@ -267,7 +273,10 @@ void String_t<AREA>::operator =(char* asArg)
 {
   _precondition_(_MAGIC_,CN_STRING_T,_FOOTER_);
 
-  StrLib::vCopy(m_caCharArea, AREA, asArg);
+  if (asArg)
+    StrLib::vCopy(m_caCharArea, AREA, asArg);
+  else
+    m_caCharArea[0] = '\0';
 
   _postcondition_(_MAGIC_,_FOOTER_);
 }
@@ -280,7 +289,10 @@ void String_t<AREA>::operator =(const char* asArg)
 {
   _precondition_(_MAGIC_,CN_STRING_T,_FOOTER_);
 
-  StrLib::vCopy(m_caCharArea, AREA, asArg);
+  if (asArg)
+    StrLib::vCopy(m_caCharArea, AREA, asArg);
+  else
+    m_caCharArea[0] = '\0';
 
   _postcondition_(_MAGIC_,_FOOTER_);
 }

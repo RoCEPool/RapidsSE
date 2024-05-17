@@ -3,15 +3,17 @@
 /*============================================================================*/
 #pragma once
 
-#include "BASE.h"
+#include "AbstractDef.hpp"
 
 namespace STORE
 {
-  class ColPpg : public Object
+  class ColPpg : public AbstractDef
   {
     static const i8 C_COLPPG = 128;
 
   public:
+
+    s32  m_sRefer;
 
     i8 m_nArriving;
     i8 m_nPropagated;
@@ -34,7 +36,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    ColPpg(i8 nCrwCols);
+    ColPpg(i8 nCrwCols, const char* azFile, i8 iLine);
 
    ~ColPpg(void) noexcept(false);
 

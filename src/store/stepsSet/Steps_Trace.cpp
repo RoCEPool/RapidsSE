@@ -20,6 +20,7 @@ void Step::vAddSteps_Trace(void)
   vAddStep("trace!"_Stz,            &Step::vTraceSet);
   vAddStep("trace.setComponent"_Stz,&Step::vTraceSetComponent);
   vAddStep("trace.getComponent"_Stz,&Step::vTraceGetComponent);
+  vAddStep("trace.withWlp"_Stz,     &Step::vTraceWithWlp);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -152,6 +153,16 @@ void Step::vTraceGetComponent(void)
 
   m_pDataStack->vPushBol(AM::TRACE::bTraceComponent(eComponent));
 
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* trace.withWlp : Pushes a boolean onto the stack if WLP is being traced     */
+/*----------------------------------------------------------------------------*/
+void Step::vTraceWithWlp(void)
+{
+  ENTRY();
+  m_pDataStack->vPushBol(AM::TRACE::bTraceComponent(TC_WLP));
   EXIT();
 }
 

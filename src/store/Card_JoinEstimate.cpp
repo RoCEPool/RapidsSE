@@ -4,7 +4,7 @@
 
 #include "Card_JoinEstimate.hpp"
 
-#include "Card_BoolPred.hpp"
+#include "Card_Predicate.hpp"
 #include "Card_RlnConj.hpp"
 #include "Card_CostNetwork.hpp"
 #include "Card_CostUnicast.hpp"

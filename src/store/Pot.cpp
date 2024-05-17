@@ -69,8 +69,8 @@ extern "C" void vExtern_PotAllotRowPds(void* aDynamicT, byte* aMixIn, i8 iMixInL
 
 		pPdsRowBuffer->vLglPtn(tLglPtn);
 
-		pDynamic->m_xRowInfoPO.m_aRowCellArray = aDstRow->aCellArray();
-		pDynamic->m_xRowInfoPO.m_aPdsRowBuffer = pPdsRowBuffer;
+		pDynamic->m_xRowInfoPO[0].m_aRowCellArray = aDstRow->aCellArray();
+		pDynamic->m_xRowInfoPO[0].m_aPdsRowBuffer = pPdsRowBuffer;
 	}
 	catch (LowMemory xLowMemory) {
 		pDynamic->m_iErrorCode = EC_LOW_MEMORY;
@@ -90,7 +90,7 @@ extern "C" void vExtern_PotRowStrSize(void* aDynamicT, i8 nRowStrSize) {
 	//LglPtnMap* pPtnMap = AM::pLglPtnMap();
 	//i8 iKeyHsh = HshLib::iHash((byte*)&iMixIn,sizeof(iMixIn));
 
-	Pds* pPdsRowBuffer = _pPds(pDynamicT->m_xRowInfoPO.m_aPdsRowBuffer);
+	Pds* pPdsRowBuffer = _pPds(pDynamicT->m_xRowInfoPO[0].m_aPdsRowBuffer);
 
 	pPdsRowBuffer->vDepositString_end(nRowStrSize);
 }

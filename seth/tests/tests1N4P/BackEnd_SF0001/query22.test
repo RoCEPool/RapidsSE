@@ -140,7 +140,6 @@ end ;
 */
 
 // NOTE: CHANGED KEY NOT EXISTS to KEY EXISTS for SF0001 data
-
 /optimise_passthru 
 pipeline Query22
 begin

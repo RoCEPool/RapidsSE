@@ -9,7 +9,9 @@
 /*----------------------------------------------------------------------------*/
 : sendWL_StartMarker \handler
 
-  "sendWL_StartMarker - EV_M_START" .verbose
+//  trace.withWlp if
+//    Socket[].clientAddr@ "Client %v: sendWL_StartMarker - EV_M_START" str.format .traceWlp
+//  then
 
   "<ansSocket>" [job].tagSet@ tagSet.hasName assert
 
@@ -17,6 +19,9 @@
   <ansSocket> >int >ptr to Socket[]
 
   PipeIn[]\clear [op].pipeout
+
+  // Send the welcome message to the client
+  "RapidsSE" Socket[].sendStr discard
 
   true
 ;
@@ -26,7 +31,9 @@
 /*----------------------------------------------------------------------------*/
 : sendWL_Payload \handler
 
-  "sendWL_Payload - EV_D_PAYLOAD" .verbose
+//  trace.withWlp if
+//    Socket[].clientAddr@ "Client %v: sendWL_Payload - EV_D_PAYLOAD" str.format .traceWlp
+//  then
 
   PipeIn[]\clear locals| pPayloadObj |
 
@@ -37,7 +44,7 @@
     // We expect to see a PayloadObj
     pPayloadObj object.class@ CN_PAYLOADOBJ == ASSERT
 
-    TC_WLP trace.getComponent if
+    trace.withWlp if
       // Calculate the elapsed time between receiving the payload off OP_adaptorWL
       // to processing it here in OP_sendWL
       ticking::getTick to iCurrTime
@@ -47,11 +54,15 @@
       iCurrTime
       pPayloadObj payloadObj::size@
       pPayloadObj payloadObj::msgType@
-      "SendWL: Sending payload: %v : %v bytes at time %v (elapsed OP_adaptorWL to OP_sendWL time: %v ns)" str.format .traceWlp
+      Socket[].clientAddr@
+      "Client %v: Sending payload: %v : %v bytes at time %v (elapsed OP_adaptorWL to OP_sendWL time: %v ns)" str.format .traceWlp
     then
 
     pPayloadObj Socket[].sendWLMsg not if
-      Socket[].clientAddr@  "Error sending wireline message to client at %v" str.format .traceWlp
+      trace.withWlp if
+        Socket[].clientAddr@  "Client %v: Error sending wireline message to client" str.format .traceWlp
+      then
+
       Socket[].close
       ErrorMarker[].newErrorMarker
       ErrorMarker[].pipeOut
@@ -71,14 +82,18 @@
 /*----------------------------------------------------------------------------*/
 : sendWL_Error \handler
 
-  "sendWL_Error - EV_M_ERROR" .verbose
+//  trace.withWlp if
+//    Socket[].clientAddr@ "Client %v: sendWL_Error - EV_M_ERROR" str.format .traceWlp
+//  then
 
   // An up-stream operator has sent an error (usually the Adaptor).
   // This SendWL operator will intercept this and close the socket
   // before propagating the error.
   Socket[].isNotNull if
     Socket[].close
-    Socket[].clientAddr@ "Connection closed to client at address %v" str.format .traceWlp
+    trace.withWlp if
+      Socket[].clientAddr@ "Client %v: Connection closed to client" str.format .traceWlp
+    then
     Socket[].delete
   then
 
@@ -90,7 +105,9 @@
 /*----------------------------------------------------------------------------*/
 : sendWL_Cleaning \handler
 
-  "sendWL_Cleaning - EV_M_CLEANING" .verbose
+//  trace.withWlp if
+//    Socket[].clientAddr@ "Client %v: sendWL_Cleaning - EV_M_CLEANING" str.format .traceWlp
+//  then
 
   EV_M_CLEANING_handler
 ;

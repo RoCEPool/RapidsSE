@@ -29,6 +29,11 @@ Version 5
 
   - Changed interval enum types to reflect the full range of interval types
 
+- **Changed:** The startup sequence has been altered such that RapidsSE now sends
+  the client a simple welcome message upon connection so that the client knows that
+  the TCP connection is valid. Refer to the :ref:`Connection Dialog <wlpv5ConnectionDialog>`
+  for details.
+
 
 Version 4
 ---------

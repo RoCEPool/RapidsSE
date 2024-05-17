@@ -280,11 +280,12 @@ bool ExtendedText::bRetrieve(String* pString)
 {
   _precondition_(_MAGIC_, CN_EXTENDEDTEXT, _FOOTER_);
 
-  pString->vCopy(""_Stz);
-  for (i8 i_Block = 0; i_Block < m_nBlocks; i_Block++)
-    pString->vConcat(szTextBlock(i_Block));
+  pString->vReset();
+  bool bItFits = true;
+  for (i8 i_Block = 0; bItFits && i_Block < m_nBlocks; i_Block++)
+    bItFits = pString->bConcat(szTextBlock(i_Block));
 
-  return true;
+  return bItFits;
 }
 
 /*----------------------------------------------------------------------------*/

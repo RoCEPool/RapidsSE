@@ -30,6 +30,7 @@ Stz* aSF[SF_ENUMS]
 
   /* */ "SF_ELSE"_Stz,
   /* */ "SF_ENDIF"_Stz,
+  /* */ "SF_ENUM"_Stz,
   /* */ "SF_EXP_COL"_Stz,
 
   /* */ "SF_FLD_NM"_Stz,
@@ -60,6 +61,7 @@ Stz* aSF[SF_ENUMS]
 
   /* */ "SF_RLN_OP"_Stz,
 
+  /* */ "SF_SQY_CKY"_Stz,
   /* */ "SF_SQY_NM"_Stz,
   /* */ "SF_SQY_NO"_Stz,
   /* */ "SF_SQY_OP"_Stz,

@@ -24,13 +24,14 @@
 : defineTable::createDefinedTable
 
   // assert initial folder is ./tables
-  //   /tenants/boray/catalogs/rapidsse/schemas/public/tables
+  //   /tenants/boray/catalogs/rapids/schemas/public/tables
   Folder[].isTables assert
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create the table
 
   StreamDefLft[] <tableNm> table::createTable to Table[]
+  // If MetaData
   nullptr to StreamDefLft[]
 ;
 

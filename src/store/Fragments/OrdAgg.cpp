@@ -15,9 +15,9 @@
 // function-iOrdAggBegin
 i8 iOrdAggBegin(Dynamic_T* aDynamicT) {
 
-  struct __STRUCT_FROM__* p__STRUCT_FROM__;
-  RowInfo __ROW_INFO_FROM__;
-  RowInfo __ROW_INFO_TO__;
+  struct __STRUCT_FROM___PREV_OP* p__STRUCT_FROM___PREV_OP;
+  RowInfo __ROW_INFO_FROM__[C_MAX_DUP_OPS];
+  RowInfo __ROW_INFO_TO__[C_MAX_DUP_OPS];
 
   char* szStrArea;
   i8 nAreaRemaining;
@@ -28,24 +28,26 @@ i8 iOrdAggBegin(Dynamic_T* aDynamicT) {
 	i8 __INITSTACK__;
 	i8 __ORDAGGSTACK__;
 
+  i8 CURRENT_DUP_OP;
+  i8 PREV_DUP_OP;
+
 	__L_LABEL_NEXT__:
   __L_LABEL_OUTER_LOOP__:
 
   // marker-start
-  struct __STRUCT_TO__* p__STRUCT_TO__;
+  struct __STRUCT_TO___CURRENT_OP* p__STRUCT_TO___CURRENT_OP;
 
   __L_LABEL__:
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // FROM
-  p__STRUCT_FROM__ = (struct __STRUCT_FROM__*)__ROW_INFO_FROM__.m_aRowCellArray;
+  p__STRUCT_FROM___PREV_OP = (struct __STRUCT_FROM___PREV_OP*)__ROW_INFO_FROM__[PREV_DUP_OP].m_aRowCellArray;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // TO
-  p__STRUCT_TO__ = (struct __STRUCT_TO__*)__ROW_INFO_TO__.m_aRowCellArray;
-  //__ROW_INFO_TO__.m_acStrArea = __ROW_INFO_TO__.m_acStrAreaSav;
-  szStrArea = __ROW_INFO_TO__.m_acStrArea;
-  nAreaRemaining = __ROW_INFO_TO__.m_nStringAreaSize;
+  p__STRUCT_TO___CURRENT_OP = (struct __STRUCT_TO___CURRENT_OP*)__ROW_INFO_TO__[CURRENT_DUP_OP].m_aRowCellArray;
+  szStrArea = __ROW_INFO_TO__[CURRENT_DUP_OP].m_acStrArea;
+  nAreaRemaining = __ROW_INFO_TO__[CURRENT_DUP_OP].m_nStringAreaSize;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Process row ?

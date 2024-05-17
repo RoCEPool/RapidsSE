@@ -33,7 +33,7 @@
 /* set path to the default tenants schemas folder                             */
 /*----------------------------------------------------------------------------*/
 : setSchemas ( )
-  "/tenants/boray/catalogs/rapidsse/schemas"
+  "/tenants/boray/catalogs/rapids/schemas"
   str.toStrVec Path[].set
   setPath
 ;
@@ -42,7 +42,7 @@
 /* set path to the default tenants tables folder                              */
 /*----------------------------------------------------------------------------*/
 : setTables ( )
-  "/tenants/boray/catalogs/rapidsse/schemas/public/tables"
+  "/tenants/boray/catalogs/rapids/schemas/public/tables"
   str.toStrVec Path[].set
   setPath
 ;

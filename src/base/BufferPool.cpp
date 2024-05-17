@@ -906,11 +906,11 @@ FreePoolBuffer* BufferPool::pGetFreePoolBufferByAddress(void* aAddress)
 FreePoolBuffer* BufferPool::pPopFreePoolBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
-  
+
   m_okLock.vGrabWrite();                                                  // 🔴
 
   //vVerifyPool();
-  
+
   // test for empty free chain
   if (C_NIL == m_iFreeHead) {
     ASSERT( ! m_nFreeCount );

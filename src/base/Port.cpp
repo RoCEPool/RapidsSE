@@ -213,11 +213,35 @@ bool Port::bAcceptClient(int& iSocketId, SysCall& roSysCall)
     return false;
   }
 
-  vTrace("Client connected on %s:%d from %s:%d\n"_Stz,
-         inet_ntoa(this->m_xServerAddr.sin_addr),
-         ntohs(this->m_xServerAddr.sin_port),
-         inet_ntoa(this->m_xClientAddr.sin_addr),
-         ntohs(this->m_xClientAddr.sin_port));
+  s256 sServerAddr;
+  s256 sClientAddr;
+
+  if (nullptr == inet_ntop(this->m_xServerAddr.sin_family,
+                           &(this->m_xServerAddr.sin_addr),
+                           sServerAddr.azChar(),
+                           sServerAddr.nAreaBytes())) {
+    roSysCall.vError(errno);
+    close(iSocketId);
+    iSocketId = C_UNKNOWN;
+    return false;
+  }
+
+  if (nullptr == inet_ntop(this->m_xClientAddr.sin_family,
+                           &(this->m_xClientAddr.sin_addr),
+                           sClientAddr.azChar(),
+                           sClientAddr.nAreaBytes())) {
+    roSysCall.vError(errno);
+    close(iSocketId);
+    iSocketId = C_UNKNOWN;
+    return false;
+  }
+
+  vTraceComponent(TC_CONNECTIONS,
+                  "Client connected on %s:%d from %s:%d\n"_Stz,
+                  sServerAddr.szStz(),
+                  ntohs(this->m_xServerAddr.sin_port),
+                  sClientAddr.szStz(),
+                  ntohs(this->m_xClientAddr.sin_port));
   
   if (AM::bAttached()) AM::pResources()->vIncSocketOpen();
   
@@ -419,7 +443,6 @@ bool Port::bCreateListeningPort(int i4PortNo, SysCall& roSysCall)
   
   int iResult;
   int iOpt = 1;
-  int iBacklogOf4 = 4;
 
   roSysCall.vClear();
   
@@ -451,7 +474,7 @@ bool Port::bCreateListeningPort(int i4PortNo, SysCall& roSysCall)
   
   m_iSocketFd = socket(AF_INET
                       ,SOCK_STREAM
-                      ,0
+                      ,6  // tcp
                       );
   
   if (C_UNKNOWN == m_iSocketFd) {
@@ -498,7 +521,7 @@ bool Port::bCreateListeningPort(int i4PortNo, SysCall& roSysCall)
   // 3) allow socket to listen for new connections
   
   iResult = listen(m_iSocketFd
-                   ,iBacklogOf4                                      //! Why 4??
+                   ,SOMAXCONN
                    );
   
   if (iResult != 0) {

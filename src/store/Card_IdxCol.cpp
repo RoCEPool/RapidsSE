@@ -55,7 +55,7 @@ void Card_IdxCol::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 
   RASSERT(pSymbol()->bHasFacet(SF_NMD_COL));
 
-  Card::vValidate_noChildren();
+  Card::vValidate_hasNoChildren();
 
   Card::vValidate(pCI,iDepth,pParent);
   pCI->vValidateChildren(this,iDepth+1);

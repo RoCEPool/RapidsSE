@@ -33,6 +33,12 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // PUSHES
 
+#define _PSH_CELL_ADDRESS(iArg) \
+  if (bPdsRowBuffer)           \
+    *paW++ = (i8)&iArg;         \
+  else                          \
+   *paW++ = 0;
+
 #define _PSH_COL(iArg) \
   *paW++ = (i8)iArg;
 
@@ -203,7 +209,7 @@
   {                                                                         \
     iArg1 = *(--paW);                                                       \
     if (iArg1 != C_DATUM_NULL)    {                                         \
-      iArg2 = (i8)aExtern_IndexTreeAllotPayStr((void*)aDynamicT->m_xIndexInfoPL.m_aIndexTree, (char*)iArg1); \
+      iArg2 = (i8)aDynamicT->m_fp_aExtern_IndexTreeAllotPayStr((void*)aDynamicT->m_xIndexInfoPL[0].m_aIndexTree, (char*)iArg1); \
     }                                                                       \
   }
 
@@ -212,7 +218,7 @@
     iArg1 = *(--paW);                                                       \
     iArg2 = *(--paW);                                                       \
     if (iArg1 && iArg2 != C_DATUM_NULL)    {                                \
-      iArg3 = (i8)aExtern_IndexTreeAllotPayStr((void*)aDynamicT->m_xIndexInfoPL.m_aIndexTree, (char*)iArg2); \
+      iArg3 = (i8)aDynamicT->m_fp_aExtern_IndexTreeAllotPayStr((void*)aDynamicT->m_xIndexInfoPL[0].m_aIndexTree, (char*)iArg2); \
     }                                                                       \
   }
 

@@ -73,6 +73,10 @@ Table::Table(Stz* szTableNm, eTT eKind)
   
   m_sTableNm = szTableNm;
   m_eKind    = eKind;
+  m_eMetaDataKind = MD_NONE;
+  if(m_eKind == TT_METADATA) {
+    vMetaDataKind(szTableNm);
+  }
   
   m_oLocation.vSet();
   m_pStreamDef   = nullptr;
@@ -90,7 +94,7 @@ Table::Table(Stz* szTableNm, eTT eKind)
   //        added after the cluster has started
   //        This must be fixed properly. Ray 14 Nov 2020
   //if (AM::pGrid()->bHasStarted()) {
-  if (TT_NORMAL == m_eKind || TT_INTERNAL == m_eKind) {
+  if (TT_NORMAL == m_eKind || TT_INTERNAL == m_eKind || TT_METADATA == m_eKind) {
     for (i8 i_TablePtn = 0; i_TablePtn < AM::PTNMAP::nPtnsPerNode(); i_TablePtn++) {
 
       LglPtn tLglPtn = Table::tTablePtnToLglPtn(i_TablePtn);
@@ -184,7 +188,10 @@ Table* Table::pFindTable(DicStack* pDicStack, Stz* szTableNm)
   Word* pTableDicWord = pDic->pFindWord(szTableNm);
   if (! pTableDicWord )
     return nullptr;
-  
+
+  if(pTableDicWord->eCategoryEnum() == WC_TABLE)
+    return nullptr;
+
   Dic* pTableDic = _pDic(pTableDicWord->pObject());
   
   Word* pTableWord = pTableDic->pFindWord(szTableNm);
@@ -499,6 +506,16 @@ bool Table::bIsInternallyDefined(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get if table is a definition only                                          */
+/*----------------------------------------------------------------------------*/
+bool Table::bIsMetaDataTable(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+
+  return (TT_METADATA == m_eKind);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get if table is replicated                                                 */
 /*----------------------------------------------------------------------------*/
 bool Table::bIsReplicated(void)
@@ -517,7 +534,7 @@ bool Table::bIsUserCreated(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  return (TT_NORMAL == m_eKind);
+  return (TT_NORMAL == m_eKind || TT_METADATA == m_eKind);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -554,6 +571,26 @@ void Table::vListContents(i8 i_Depth)
          );
 
   m_pStreamDef->vListContents(i_Depth+1);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set metadata table kind                                                    */
+/*----------------------------------------------------------------------------*/
+void Table::vMetaDataKind(Stz *szTableNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+
+  if     (szTableNm->bSame(C_TDEF_CATALOG))       m_eMetaDataKind = MD_CATALOG;
+  else if(szTableNm->bSame(C_TDEF_CLUSTER))       m_eMetaDataKind = MD_CLUSTER;
+  else if(szTableNm->bSame(C_TDEF_COLUMNS))       m_eMetaDataKind = MD_COLUMNS;
+  else if(szTableNm->bSame(C_TDEF_INDEXCOLUMNS))  m_eMetaDataKind = MD_INDEXCOLUMNS;
+  else if(szTableNm->bSame(C_TDEF_INDEXES))       m_eMetaDataKind = MD_INDEXES;
+  else if(szTableNm->bSame(C_TDEF_NODES))         m_eMetaDataKind = MD_NODES;
+  else if(szTableNm->bSame(C_TDEF_QUERIES))       m_eMetaDataKind = MD_QUERIES;
+  else if(szTableNm->bSame(C_TDEF_SCHEMA))        m_eMetaDataKind = MD_SCHEMA;
+  else if(szTableNm->bSame(C_TDEF_SESSIONS))      m_eMetaDataKind = MD_SESSIONS;
+  else if(szTableNm->bSame(C_TDEF_TABLES))        m_eMetaDataKind = MD_TABLES;
+  else                                                  m_eMetaDataKind = MD_NONE;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -630,6 +667,17 @@ EntBuffer* Table::pRootBuffer(i8 i_TablePtn, i8 i_Index)
   EntBuffer* pRootBuffer = pIdxTree->pRootBuffer();
   
   return pRootBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get root buffer of given index                                             */
+/*----------------------------------------------------------------------------*/
+eMD Table::eMetaDataKind(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+
+  ASSERT(m_eKind == TT_METADATA);
+  return m_eMetaDataKind;
 }
 
 /*----------------------------------------------------------------------------*/

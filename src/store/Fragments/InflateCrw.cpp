@@ -15,13 +15,14 @@
 // function-vInflateCrwBegin
 void vInflateCrwBegin(Dynamic_T* aDynamicT) {
 
-  RowInfo __ROW_INFO_TO__;
+  RowInfo __ROW_INFO_TO__[C_MAX_DUP_OPS];
 
   i8* paW;
   i8 i_CurrentRow;
+  i8 CURRENT_DUP_OP;
 
   // marker-start
-  struct __STRUCT_TO__* p__STRUCT_TO__;
+  struct __STRUCT_TO___CURRENT_OP* p__STRUCT_TO___CURRENT_OP;
 
   __L_LABEL__:
 
@@ -33,8 +34,8 @@ void vInflateCrwBegin(Dynamic_T* aDynamicT) {
 	aDynamicT->m_bProcessRow = true;
 
   // set the string area
-	p__STRUCT_TO__ = (struct __STRUCT_TO__*)__ROW_INFO_TO__.m_aRowCellArray;
-  __ROW_INFO_TO__.m_acStrArea  = __ROW_INFO_TO__.m_acStrAreaSav;
+	p__STRUCT_TO___CURRENT_OP = (struct __STRUCT_TO___CURRENT_OP*)__ROW_INFO_TO__[CURRENT_DUP_OP].m_aRowCellArray;
+  __ROW_INFO_TO__[CURRENT_DUP_OP].m_acStrArea  = __ROW_INFO_TO__[CURRENT_DUP_OP].m_acStrAreaSav;
 
   // marker-end
 }
@@ -53,11 +54,11 @@ void vInflateCrwCol(Dynamic_T* aDynamicT) {
   u8 uLow;
   i8 i_Col;
   i8 __COLUMN_NO__;
-	struct __STRUCT_TO__ {
+	struct __STRUCT_TO___CURRENT_OP {
 			union Int_T __COLUMN_TO__;
 	};
 
-	struct __STRUCT_TO__* p__STRUCT_TO__;
+	struct __STRUCT_TO___CURRENT_OP* p__STRUCT_TO___CURRENT_OP;
 
   // marker-start
   // - - - - - - - - - - - -
@@ -66,7 +67,7 @@ void vInflateCrwCol(Dynamic_T* aDynamicT) {
 
   uHigh = uMetaCode >> 4;
   uLow  = uMetaCode & 0x0F;
-	ayDstByte = (byte*)&p__STRUCT_TO__->__COLUMN_TO__.m_iAsI8;
+	ayDstByte = (byte*)&p__STRUCT_TO___CURRENT_OP->__COLUMN_TO__.m_iAsI8;
   aSubReturnLabel = && __L_RETURN_TO_LABEL__;
   goto L_InflateAColumn;
 
@@ -83,16 +84,16 @@ void vInflateCrwCol(Dynamic_T* aDynamicT) {
 // function-vPriorCrwCol
 void vPriorCrwCol(Dynamic_T* aDynamicT) {
 
-	struct __STRUCT_TO__ {
+	struct __STRUCT_TO___CURRENT_OP {
 			union Int_T __COLUMN_TO__;
 			union Int_T __COLUMN_PRIOR__;
 	};
 
-	struct __STRUCT_TO__* p__STRUCT_TO__;
+	struct __STRUCT_TO___CURRENT_OP* p__STRUCT_TO___CURRENT_OP;
 
 	// marker-start
 	// - - - - - - - - - - - -
-	p__STRUCT_TO__->__COLUMN_TO__.m_iAsI8 = p__STRUCT_TO__->__COLUMN_PRIOR__.m_iAsI8;
+	p__STRUCT_TO___CURRENT_OP->__COLUMN_TO__.m_iAsI8 = p__STRUCT_TO___CURRENT_OP->__COLUMN_PRIOR__.m_iAsI8;
 
 	// marker-end
 	return;
@@ -141,7 +142,8 @@ void vInflateCrwReturn(Dynamic_T* aDynamicT) {
   i8 nAreaRemaining;
   char* acStrArea;
   void* aSubReturnLabel;
-  struct __STRUCT_TO__* p__STRUCT_TO__;
+  i8 CURRENT_DUP_OP;
+  struct __STRUCT_TO___CURRENT_OP* p__STRUCT_TO___CURRENT_OP;
 
   // marker-start
   aSubReturnLabel = && L_InflateCrwRet;
@@ -152,10 +154,10 @@ void vInflateCrwReturn(Dynamic_T* aDynamicT) {
 
   L_InflateCrwRet:
 
-  aDynamicT->m_xRowInfoIT.m_acStrArea = acStrArea;
-  p__STRUCT_TO__ = (struct __STRUCT_TO__*)aDynamicT->m_xRowInfoIT.m_aRowCellArray;
-  szStrArea = aDynamicT->m_xRowInfoIT.m_acStrArea;
-  nAreaRemaining = aDynamicT->m_xRowInfoIT.m_nStringAreaSize;
+  aDynamicT->m_xRowInfoIT[CURRENT_DUP_OP].m_acStrArea = acStrArea;
+  p__STRUCT_TO___CURRENT_OP = (struct __STRUCT_TO___CURRENT_OP*)aDynamicT->m_xRowInfoIT[CURRENT_DUP_OP].m_aRowCellArray;
+  szStrArea = aDynamicT->m_xRowInfoIT[CURRENT_DUP_OP].m_acStrArea;
+  nAreaRemaining = aDynamicT->m_xRowInfoIT[CURRENT_DUP_OP].m_nStringAreaSize;
 
   // marker-end
 

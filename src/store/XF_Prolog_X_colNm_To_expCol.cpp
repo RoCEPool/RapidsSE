@@ -65,15 +65,14 @@ void XF_Prolog_X_colNm_To_expCol::vXF_colNm_To_expCol(void)
   m_pCI->vTransform(__FILE__, __func__, XF_PROLOG_X_COLNM_TO_EXPCOL);
 
   m_pCI->vClearRegisters();
-  for (m_pCI->vBeginEach(); m_pCI->bEachOp(); m_pCI->vSnapArriving()) {
-    if (! m_pCI->Flux.m_pArriving)
+  for (m_pCI->vBeginEach(); m_pCI->bEachOp(); m_pCI->vSnapIf_arriving()) {
+    if (! m_pCI->Arriving.m_pEmitted_prior)
       continue;
 
     vX_colNm_To_expCol();
   }
 
   m_pCI->vEndTransform(__LINE__);
-//vValidateBench();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -90,7 +89,7 @@ void XF_Prolog_X_colNm_To_expCol::vX_colNm_To_expCol(void)
   if (m_pCI->E.p_Op->pSymbol()->Y_bHas(P_BreakPt))
     vDebugPoint();
 
-  RASSERT(m_pCI->Flux.m_pArriving);
+  RASSERT(m_pCI->Arriving.m_pEmitted_prior);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -99,20 +98,23 @@ void XF_Prolog_X_colNm_To_expCol::vX_colNm_To_expCol(void)
   auto fb_colNm_To_expCol = [pCI](Card* pCard)
   {
     Card_Term* p_term_colNm = _pCard_Term(pCard);
+
+    // exclusions
     if (! p_term_colNm->pSymbol()->bHasFacet(SF_NMD_COL))
       return C_CONTINUE_RECURSION;
     if ( p_term_colNm->pSymbol()->bHasFacet(SF_TBL_COL))
       return C_CONTINUE_RECURSION;
 
     if (Card_Expr* p_expr_defn =
-        pCI->Dic.m_p_expr->pFind_expr_Matches(p_term_colNm->pSymbol())) {
+        pCI->Dic.m_p_expr->pFind_expr(p_term_colNm->pSymbol())) {
       p_term_colNm->pSymbol()->vApplyCastFacetsPpy(p_expr_defn->pSymbol());
-      p_term_colNm->pSymbol()->vDeleteFacet(SF_NMD_COL);
-    }
 
-    if (Card_Expr* p_expr_ancestor = (Card_Expr*) pCI->pAncestor(CK_EXPR)) {
-      if (p_term_colNm->pSymbol()->bHasFacet(SF_TBL_COL))
-        p_expr_ancestor->pSymbol()->vApplyFacet(SF_TBL_COL,p_term_colNm->pSymbol()->szFacet(SF_TBL_COL));
+      // terms do not have nmdCol
+      p_term_colNm->pSymbol()->vDeleteFacet(SF_NMD_COL);
+
+      if (Symbol* pSym_head = p_expr_defn->pHeadIf_symbol(SF_TBL_COL)) {
+        p_term_colNm->pSymbol()->vApplyFacet(SF_TBL_COL,pSym_head);
+      }
     }
 
     return C_CONTINUE_RECURSION;
@@ -120,7 +122,7 @@ void XF_Prolog_X_colNm_To_expCol::vX_colNm_To_expCol(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pCI->bLambdaWalk(pCI->E.p_Op, CK_TERM, fb_colNm_To_expCol);
+  pCI->E.p_Op->bLambdaWalk(CK_TERM, fb_colNm_To_expCol,pCI);
 }
 
 /*============================================================================*/

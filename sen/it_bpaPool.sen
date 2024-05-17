@@ -1,0 +1,31 @@
+/*============================================================================*/
+/* it_bpaPool.sen -- Define __bpaPool table                                   */
+/*============================================================================*/
+
+" it_bpaPool.sen" .verbose
+
+: start::it_bpaPool
+
+  // C_TDEF_BPAPOOL
+  
+  STD_BOOTFORK_TAG
+  "
+  define table __bpaPool (
+    regionName      VARCHAR NOT NULL ,
+    regionAddr      VARCHAR NOT NULL ,
+    regionSizeBytes INTEGER NOT NULL ,
+    bufferSizeKb    INTEGER NOT NULL ,
+    bufferCount     INTEGER NOT NULL ,
+    buffersAlloc    INTEGER NOT NULL ,
+    buffersFree     INTEGER NOT NULL ,
+    bufMemAllocKB   INTEGER NOT NULL ,
+    bufMemFreeKB    INTEGER NOT NULL
+  ) < infoSet > = 1 ;
+  "
+  nullptr api::forkChild  api:executeCheck
+
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

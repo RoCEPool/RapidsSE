@@ -100,8 +100,10 @@ Word::Word(Stz* szWordNm)
   _checkInitialised_(CN_WORD);
   
   if (m_pDic) {
-    m_pCodeBlock = new CodeBlock(this);
-    m_aInxPtr     = aFirstCell();
+    // Note: We don't allocate m_pCodeBlock and m_aInxPtr until it is actually needed.
+    // Not all words have code blocks and this saves significant memory.
+//    m_pCodeBlock = new CodeBlock(this);
+//    m_aInxPtr     = aFirstCell();
     m_pDic->vAddWord(this);
   }
   else {
@@ -162,6 +164,11 @@ Word* Word::pToWord(void* aEmbeddedObject)
 byte* Word::ayAllot(i8 nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+
+  if (!m_pCodeBlock) {
+    m_pCodeBlock = new CodeBlock(this);
+    m_aInxPtr     = aFirstCell();
+  }
   
   byte* ayAddress = m_pCodeBlock->ayAllot(nBytes);
   
@@ -229,7 +236,7 @@ void Word::vContentDump(void)
          aWK[m_eWord]->azChar(),
          aWC[m_eWordCategory]->azChar(),
          m_bImmediate ? "immediate" : "not-immediate",
-         m_pCodeBlock->nWspUsed(),
+         m_pCodeBlock ? m_pCodeBlock->nWspUsed() : 0,
          m_fpIntrinsic,
          pStepWord ? pStepWord->szWordNm() : "<not-found>"_Stz,
          aFirstCell()
@@ -262,6 +269,11 @@ Dic* Word::pDic(void)
 void* Word::aEncodeArg(CodeCell* aArgCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+
+  if (!m_pCodeBlock) {
+    m_pCodeBlock = new CodeBlock(this);
+    m_aInxPtr     = aFirstCell();
+  }
   
   CodeCell* aAllottedCell = (CodeCell*)m_pCodeBlock->aAppend(aArgCell);
   
@@ -274,7 +286,12 @@ void* Word::aEncodeArg(CodeCell* aArgCell)
 void Word::vEncodeCall(fpSTEPFN* afpEntryStep)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
-  
+
+  if (!m_pCodeBlock) {
+    m_pCodeBlock = new CodeBlock(this);
+    m_aInxPtr     = aFirstCell();
+  }
+
   m_pCodeBlock->vAppend(afpEntryStep);
 }
 
@@ -288,6 +305,11 @@ void Word::vEncodeCall(Stz* aWordNm)
   Dic* pDicRoot = AM::DIC::pRoot();
   Word* pCalledWord = pDicRoot->pFindWord(aWordNm);
   ASSERT(pCalledWord);
+
+  if (!m_pCodeBlock) {
+    m_pCodeBlock = new CodeBlock(this);
+    m_aInxPtr     = aFirstCell();
+  }
   
   m_pCodeBlock->vAppend(pCalledWord->afpEntryStep());
 }
@@ -300,6 +322,11 @@ void Word::vEncodeJump(Stz* aWordNm, CodeCell* aCell)
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
   vEncodeCall(aWordNm);
+
+  if (!m_pCodeBlock) {
+    m_pCodeBlock = new CodeBlock(this);
+    m_aInxPtr     = aFirstCell();
+  }
   
   m_pCodeBlock->vAppend(aCell);
 }
@@ -322,6 +349,11 @@ void Word::vEncodePush(TypeValueArea* aTypedCell)
   else if (CN_STZVAL == eClassNo_val)    vEncodeCall("pushStzVal"_Stz);
   else {
     NEVER_REACH;
+  }
+
+  if (!m_pCodeBlock) {
+    m_pCodeBlock = new CodeBlock(this);
+    m_aInxPtr     = aFirstCell();
   }
 
   m_pCodeBlock->vAppend(aTypedCell);
@@ -413,6 +445,8 @@ void Word::vExitHook(Stz* szExitHook)
 CodeCell* Word::aFirstCell(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+
+  RASSERT(m_pCodeBlock);
   
   CodeCell* aFirst = reinterpret_cast<CodeCell*>(m_pCodeBlock->ayWspArea());
   
@@ -470,6 +504,11 @@ bool Word::bIsName(s256& sName)
 CodeCell* Word::aLastCell(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+
+  if (!m_pCodeBlock) {
+    m_pCodeBlock = new CodeBlock(this);
+    m_aInxPtr     = aFirstCell();
+  }
   
   CodeCell* aLast = reinterpret_cast<CodeCell*>(m_pCodeBlock->ayWspLatter());
   
@@ -557,7 +596,7 @@ void Word::vObjectDump(Stz* aTab)
          m_pDic ? m_pDic->szDicNm() : C_NO_NAME,
          aWK[m_eWord]->azChar(),
          m_bImmediate ? "Immediate"_Stz : "Not Immediate"_Stz,
-         m_pCodeBlock->nWspUsed(),
+         m_pCodeBlock ? m_pCodeBlock->nWspUsed() : 0,
          m_fpIntrinsic,
          aFirstCell()
          );
@@ -600,8 +639,10 @@ Word* Word::pPrevWord(void)
 void Word::vResetCodeBlock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
-  
-  m_pCodeBlock->vReset();
+
+  if (m_pCodeBlock) {
+    m_pCodeBlock->vReset();
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -641,7 +682,7 @@ i8 Word::nCodeBlockUsed(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
 
-  i8 nUsed = m_pCodeBlock->nWspUsed();
+  i8 nUsed = m_pCodeBlock ? m_pCodeBlock->nWspUsed() : 0;
   
   return nUsed;
 }
@@ -718,7 +759,12 @@ void Word::vWordNm(Stz* szWordNm)
 char* Word::aWspArea(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
-  
+
+  if (!m_pCodeBlock) {
+    m_pCodeBlock = new CodeBlock(this);
+    m_aInxPtr     = aFirstCell();
+  }
+
   char* aBody = (char*)m_pCodeBlock->ayWspArea();
   
   return pPoolCheck<char*>((void*)aBody,__func__);

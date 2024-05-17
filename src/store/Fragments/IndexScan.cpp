@@ -25,10 +25,11 @@ void vIndexScanBegin(Dynamic_T* aDynamicT) {
 
   i8 i_CurrentRow;
   i8*   paW;
+  i8 CURRENT_DUP_OP;
 
   char* __INDEXNAME__;
-  IndexInfo __INDEX_INFO__;
-	RowInfo __ROW_INFO_TO__;
+  IndexInfo __INDEX_INFO__[C_MAX_DUP_OPS];
+	RowInfo __ROW_INFO_TO__[C_MAX_DUP_OPS];
 
 	char* szStrArea;
   i8 nAreaRemaining;
@@ -36,19 +37,19 @@ void vIndexScanBegin(Dynamic_T* aDynamicT) {
   __L_LABEL_LOOP__:
 
   // marker-start
-  struct __STRUCT_TO__* p__STRUCT_TO__;
+  struct __STRUCT_TO___CURRENT_OP* p__STRUCT_TO___CURRENT_OP;
 
   __L_LABEL__:
 
-  p__STRUCT_TO__ = (struct __STRUCT_TO__*)__ROW_INFO_TO__.m_aRowCellArray;
-	__ROW_INFO_TO__.m_acStrArea = __ROW_INFO_TO__.m_acStrAreaSav;
-	szStrArea = __ROW_INFO_TO__.m_acStrArea;
-  nAreaRemaining = __ROW_INFO_TO__.m_nStringAreaSize;
+  p__STRUCT_TO___CURRENT_OP = (struct __STRUCT_TO___CURRENT_OP*)__ROW_INFO_TO__[CURRENT_DUP_OP].m_aRowCellArray;
+	__ROW_INFO_TO__[CURRENT_DUP_OP].m_acStrArea = __ROW_INFO_TO__[CURRENT_DUP_OP].m_acStrAreaSav;
+	szStrArea = __ROW_INFO_TO__[CURRENT_DUP_OP].m_acStrArea;
+    nAreaRemaining = __ROW_INFO_TO__[CURRENT_DUP_OP].m_nStringAreaSize;
 
   paW = &aDynamicT->m_aW[0];
 
   #ifdef WITH_CLANG
-		aDynamicT->m_fp_vExtern_IndexFind(&aDynamicT->m_xIndexInfoT,"__TABLENAME__","__INDEXNAME__");
+		aDynamicT->m_fp_vExtern_IndexFind(&aDynamicT->m_xIndexInfoT[CURRENT_DUP_OP],"__TABLENAME__","__INDEXNAME__");
   #endif
 
     i_CurrentRow = -1;

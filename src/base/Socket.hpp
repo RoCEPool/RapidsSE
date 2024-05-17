@@ -51,6 +51,7 @@ namespace BASE
     Object* pRecvWLMsg(eEC& eErrorCode, String* psErrStr);
 
     bool bSendObject(Object* pObject, SysCall& SysCall, eSY eSendWhy);//=SY_NONE);
+    bool bSendStr(String* pStr, SysCall& roSysCall, bool bIncNullTerminator);
     bool bSendWLMsg(WLP::PayloadObj* pPayloadObj, SysCall& SysCall, eSY eSendWhy);//=SY_NONE);
 
     void vClientAddr(s256& sBuf);

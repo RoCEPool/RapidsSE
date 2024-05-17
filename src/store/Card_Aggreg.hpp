@@ -19,9 +19,6 @@ namespace STORE
 
     void vDerive_streamKey(CardIter* pCI);
 
-    void vEarlyProject_root(CardIter* pCI);
-    void vCraft_needed_root(CardIter* pCI);
-
     void vSmooth(CardIter* pCI);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);

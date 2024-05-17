@@ -14,7 +14,7 @@ namespace STORE
     Card_CONDITION(eCK eCard, i8 iFixedDepth);
    ~Card_CONDITION(void) noexcept(false);
 
-    void vAddTransients(CardIter* pCI);
+    void vAdd_transients(CardIter* pCI);
      void vX_expCol_To_tblCol(CardIter* pCI);
     void vX_tblCol_To_expCol(CardIter* pCI);
   };

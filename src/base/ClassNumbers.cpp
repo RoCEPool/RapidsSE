@@ -63,12 +63,9 @@ Stz* BASE::aCN[CN_ENUMS+1]
 
     /* */ "_C__"_Stz,                 // CN__C__
     /* */ "CARD"_Stz,                 // CN_CARD
-    /* */ "CARDCTL"_Stz,              // CN_CARDCTL
-    /* */ "CARDHISTORY"_Stz,          // CN_CARDHISTORY
-    /* */ "CARDIMAGE"_Stz,            // CN_CARDIMAGE
     /* */ "CARDITER"_Stz,             // CN_CARDITER
     /* */ "CARDUSAGE"_Stz,            // CN_CARDUSAGE
-    /* */ "CARRYFORWARD"_Stz,         // CN_CARRYFORWARD
+    /* */ "CARDUTE"_Stz,              // CN_CARDUTE
     /* */ "CATALOG"_Stz,              // CN_CATALOG
     /* */ "CHARSER"_Stz,              // CN_CHARSER
     /* */ "CHILDEXIT"_Stz,            // CN_CHILDEXIT
@@ -214,6 +211,7 @@ Stz* BASE::aCN[CN_ENUMS+1]
     /* */ "MEDIUMVIRTUAL"_Stz,        // CN_MEDIUMVIRTUAL
     /* */ "MEMTEST"_Stz,              // CN_MEMTEST
     /* */ "METADATA"_Stz,             // CN_METADATA
+    /* */ "METADATATABLES"_Stz,       // CN_METADATATABLES
     /* */ "METAGET"_Stz,              // CN_METAGET
     /* */ "METRICSWSP"_Stz,           // CN_METRICSWSP
     /* */ "MUTEX"_Stz,                // CN_MUTEX
@@ -423,6 +421,7 @@ Stz* BASE::aCN[CN_ENUMS+1]
     /* */ "TEXTTINY"_Stz,             // CN_TEXTTINY,
     /* */ "THING"_Stz,                // CN_THING
     /* */ "THREAD"_Stz,               // CN_THREAD
+    /* */ "THREADLIST"_Stz,           // CN_THREADLIST
     /* */ "THREADQUEUE"_Stz,          // CN_THREADQUEUE
     /* */ "THREADSCRATCH"_Stz,        // CN_THREADSCRATCH
     /* */ "THREADVEC"_Stz,            // CN_THREADVEC
@@ -463,11 +462,9 @@ Stz* BASE::aCN[CN_ENUMS+1]
     /* */ "WSPCONVERGENT_t"_Stz,      // CN_WSPCONVERGENT_t
 
     /* */ "_X__"_Stz,                   // CN__X__
-    /* */ "XC"_Stz,                     // CN_XC
     /* */ "XF"_Stz,                     // CN_XF
 		/* */ "XF_EPILOG_ADD_HASH_CAST"_Stz,     // CN_XF_EPILOG_ADD_HASH_CAST
 		/* */ "XF_EPILOG_ADD_INFLATE"_Stz,       // CN_XF_EPILOG_ADD_INFLATE
-		/* */ "XF_EPILOG_APPEND_SYNTHESIS"_Stz,  // CN_XF_EPILOG_APPEND_SYNTHESIS
     /* */ "XF_EPILOG_CULL_FACET"_Stz,        // CN_XF_EPILOG_CULL_FACET
 		/* */ "XF_EPILOG_DETERMINE_COLUMNS"_Stz, // CN_XF_EPILOG_DETERMINE_COLUMNS
 		/* */ "XF_EPILOG_FUSE_PROJECT"_Stz,      // CN_XF_EPILOG_FUSE_PROJECT
@@ -479,25 +476,15 @@ Stz* BASE::aCN[CN_ENUMS+1]
     /* */ "XF_EPILOG_TYPE_CAST"_Stz,         // CN_XF_EPILOG_TYPE_CAST
 		/* */ "XF_EPILOG_X_STMCOL_TO_COLNM"_Stz, // CN_XF_EPILOG_X_STMCOL_TO_COLNM
 		/* */ "XF_EPILOG_X_TBLCOL_TO_EXPCOL"_Stz,// CN_XF_EPILOG_X_TBLCOL_TO_EXPCOL
-		/* */ "XF_FLATTEN_SUBQUERY"_Stz,         // CN_XF_FLATTEN_SUBQUERY
-		/* */ "XF_FLATTEN_10_F"_Stz,             // CN_XF_FLATTEN_10_F
-		/* */ "XF_FLATTEN_24_W_A_C_RO"_Stz,      // CN_XF_FLATTEN_24_W_A_C_RO
-		/* */ "XF_FLATTEN_32_W_A_NC_I"_Stz,      // CN_XF_FLATTEN_32_W_A_NC_I
-		/* */ "XF_FLATTEN_34_W_A_NC_RO"_Stz,     // CN_XF_FLATTEN_34_W_A_NC_RO
-		/* */ "XF_FLATTEN_40_W_L_C_E"_Stz,       // CN_XF_FLATTEN_40_W_L_C_E
-		/* */ "XF_FLATTEN_52_W_L_NC_I_EXISTS"_Stz,// CN_XF_FLATTEN_52_W_L_NC_I_EXISTS
-		/* */ "XF_FLATTEN_52_W_L_NC_I_JOIN"_Stz, // CN_XF_FLATTEN_52_W_L_NC_I_JOIN
-		/* */ "XF_FLATTEN_53_W_L_NC_NI_EXISTS"_Stz, // CN_XF_FLATTEN_53_W_L_NC_NI_EXISTS
-		/* */ "XF_FLATTEN_53_W_L_NC_NI_JOIN"_Stz,// CN_XF_FLATTEN_53_W_L_NC_NI_JOIN
-		/* */ "XF_FLATTEN_74_H_A_NC_RO"_Stz,     // CN_XF_FLATTEN_74_H_A_NC_RO
+    /* */ "XF_FLATTEN_FOLD_SUBQUERY"_Stz,    // CN_XF_FLATTEN_FOLD_SUBQUERY
+		/* */ "XF_FLATTEN_SUBQUERY"_Stz,         // CN_XF_FLATTEN_FLATTEN_PIPELINE
 		/* */ "XF_FLATTEN_PURGE_WHERE"_Stz,      // CN_XF_FLATTEN_PURGE_WHERE
-		/* */ "XF_FLATTEN_DELETE_FLAT"_Stz,      //CN_XF_FLATTEN_DELETE_FLAT
+		/* */ "XF_FLATTEN_DELETE_FOLD"_Stz,      //CN_XF_FLATTEN_DELETE_FLAT
 		/* */ "XF_FLATTEN_DERIVE_BOUNDS"_Stz,    // CN_XF_FLATTEN_DERIVE_BOUNDS
 		/* */ "XF_FLATTEN_ANCHOR_TABLE"_Stz,     // CN_XF_FLATTEN_ANCHOR_TABLE
 		/* */ "XF_FLATTEN_JOIN_ORDERING"_Stz,    // CN_XF_FLATTEN_JOIN_ORDERING
-		/* */ "XF_FLATTEN_LEFT_SUBQUERY"_Stz,    // CN_XF_FLATTEN_LEFT_SUBQUERY
 		/* */ "XF_FLATTEN_PULLUP_RLNCONJ"_Stz,   // CN_XF_FLATTEN_PULLUP_RLNCONJ
-		/* */ "XF_FLATTEN_PREDICATE_REPOSITION"_Stz, // CN_XF_FLATTEN_PREDICATE_REPOSITION
+		/* */ "XF_FLATTEN_PREDICATE_REPOSITION"_Stz, // CN_XF_FLATTEN_REPOSITION_PREDICATE
   	/* */ "XF_FLATTEN_X_EXPCOL_TO_TBLCOL"_Stz,// CN_XF_FLATTEN_X_EXPCOL_TO_TBLCOL
 		/* */ "XF_OPTIMISE_AGGREG_TO_SORT_ORDAGG"_Stz, // CN_XF_OPTIMISE_AGGREG_TO_SORT_ORDAGG
 		/* */ "XF_OPTIMISE_CULL_BOUND"_Stz,       // CN_XF_OPTIMISE_CULL_BOUND
@@ -525,13 +512,12 @@ Stz* BASE::aCN[CN_ENUMS+1]
 		/* */ "XF_PROLOG_ERASE_CONSTRUCTION"_Stz, // CN_XF_PROLOG_ERASE_CONSTRUCTION
 		/* */ "XF_PROLOG_MOVE_ON"_Stz,            // CN_XF_PROLOG_MOVE_ON
 		/* */ "XF_PROLOG_REDUCE_NOT"_Stz,         // CN_XF_PROLOG_REDUCE_NOT
-		/* */ "XF_PROLOG_VALIDATE_BOARD"_Stz,     // CN_XF_PROLOG_VALIDATE_BOARD
 		/* */ "XF_PROLOG_X_SQYNM_TO_SQYNO"_Stz,   // CN_XF_PROLOG_X_SQYNM_TO_SQYNO
 		/* */ "XF_PROLOG_X_COLNM_TO_EXPCOL"_Stz,  // CN_XF_PROLOG_X_COLNM_TO_EXPCOL
 		/* */ "XF_PROLOG_X_SCAN_TO_FROM"_Stz,     // CN_XF_PROLOG_X_SCAN_TO_FROM
 		/* */ "XF_SYNTHESISE_CODE"_Stz,           // CN_XF_SYNTHESISE_CODE
-		/* */ "XF_SYNTHESISE_PIPELINEDEF"_Stz,    // CN_XF_SYNTHESISE_PIPELINEDEF
-    /* */ "XF_UTILITY_VERIFY_DIC"_Stz,        // CN_XF_UTILITY_VERIFY_DIC,
+		/* */ "XF_SYNTHESISE_PIPELINEDEF"_Stz,    // CN_XF_SYNTHESISE_CRAFT_PIPELINEDEF
+    /* */ "XF_UTILITY_VERIFY_DIC"_Stz,        // CN_XF_UTILITY,
 
     /* */ "_Y__"_Stz,                 // CN__Y__
 

@@ -17,8 +17,8 @@ __aFooterFunction(PipelineDef)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-PipelineDef::PipelineDef(Stz* szPipelineNm)
-    : Object(CN_PIPELINEDEF)
+PipelineDef::PipelineDef(Stz* szPipelineNm, const char* azFile, i8 iLine)
+    : AbstractDef(CN_PIPELINEDEF,azFile,iLine)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINEDEF, _FOOTER_);
 
@@ -54,9 +54,11 @@ void PipelineDef::vDump(i8 i_Tab)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINEDEF,_FOOTER_);
 
-  vTrace("%sPipelineDef: %s\n"_Stz,
+  vTrace("%sPipelineDef: %s %s:%lld\n"_Stz,
          Stz::szTab(i_Tab),
-         m_sPipelineNm.szStz());
+         m_sPipelineNm.szStz(),
+         m_sFile.szStz(),
+         m_iLine);
   vTrace("%sFileNm: %s\n"_Stz,
          Stz::szTab(i_Tab+1),
          m_sFileNm.szStz());

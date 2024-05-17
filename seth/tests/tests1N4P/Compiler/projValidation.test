@@ -38,7 +38,7 @@ SELECT n_nationkey as nkey, n_name FROM ${testName2}_nation
 UNION ALL
 SELECT n_regionkey, n_name FROM ${testName2}_nation
 ORDER BY n_regionkey;
-failure contains: 'Invalid expression because it is not being projected: rapidsse.public.${testName2}_nation.n_regionkey'
+failure contains: 'Invalid expression because it is not being projected: rapids.public.${testName2}_nation.n_regionkey'
 
 
 -- Order expr is a superset of projected expression but contains
@@ -48,7 +48,7 @@ SELECT n_nationkey, n_name FROM ${testName2}_nation
 UNION ALL
 SELECT n_regionkey, n_name FROM ${testName2}_nation
 ORDER BY n_nationkey + n_regionkey;
-failure contains: 'Invalid expression because it is not being projected: rapidsse.public.${testName2}_nation.n_regionkey'
+failure contains: 'Invalid expression because it is not being projected: rapids.public.${testName2}_nation.n_regionkey'
 
 
 

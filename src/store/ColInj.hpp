@@ -3,15 +3,17 @@
 /*============================================================================*/
 #pragma once
 
-#include "BASE.h"
+#include "AbstractDef.hpp"
 
 namespace STORE
 {
-  class ColInj : public Object
+  class ColInj : public AbstractDef
   {
     static const i8 C_COLINJ = 128;
 
   public:
+
+    s32  m_sRefer;
 
     i8 m_nCrwCols;
     i8 m_nCols;
@@ -35,7 +37,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    ColInj(i8 nCrwCols);
+    ColInj(i8 nCrwCols, const char* azFile, i8 iLine);
 
    ~ColInj(void) noexcept(false);
 

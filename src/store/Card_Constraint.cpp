@@ -5,7 +5,7 @@
 #include "Card_Constraint.hpp"
 
 #include "Card_Expr.hpp"
-#include "Card_BoolPred.hpp"
+#include "Card_Predicate.hpp"
 #include "Card_RlnConj.hpp"
 #include "Card_Term.hpp"
 #include "Card_SubSet.hpp"
@@ -18,7 +18,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE, Card_Constraint, CK_s_CONSTRAINT)
+__pCastFunction_Card(STORE, Card_Constraint, CK_p_CONSTRAINT)
 __aNewFunction(Card_Constraint,CN_CARD)
 __vDeleteFunction(Card_Constraint,CN_CARD)
 
@@ -27,7 +27,7 @@ __vDeleteFunction(Card_Constraint,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Constraint::Card_Constraint(void)
-: Card_CONDITION(CK_s_CONSTRAINT, 2)
+: Card_CONDITION(CK_p_CONSTRAINT, 2)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -65,8 +65,8 @@ i8 Card_Constraint::nCullMarked_rlnConj(Stz* szWithMark)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_BoolPred* p_boolPred = pSub_boolPred();
-  i8 nCulled = p_boolPred->nCullMarked_rlnConj(szWithMark);
+  Card_Predicate* p_predicate = pSub_predicate();
+  i8 nCulled = p_predicate->nCullMarked_rlnConj(szWithMark);
 
   return nCulled;
 }
@@ -78,8 +78,8 @@ void Card_Constraint::vApplyCast(CardIter *pCI, Card_Emit* p_Dic_expr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if ((pCI->E.p_boolPred = pSub_boolPred()))
-    pCI->E.p_boolPred->vApplyCast(pCI,/*??*/p_Dic_expr);
+  if ((pCI->E.p_predicate = pSub_predicate()))
+    pCI->E.p_predicate->vApplyCast(pCI,/*??*/p_Dic_expr);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -91,9 +91,9 @@ void Card_Constraint::vResolve_colNm_From_colSym(CardIter* pCI)
 
   //i8 i_Main = pCI->G.p_deck->iFindChild(pCI->G.p_Op);
 
-  Card_BoolPred* p_boolPred = pCI->E.p_constraint->pSub_boolPred();
+  Card_Predicate* p_predicate = pCI->E.p_constraint->pSub_predicate();
 
-  Card_CONJ* p_conj_ROOT = static_cast<Card_CONJ*>(p_boolPred->pRoot_conj());
+  Card_CONJ* p_conj_ROOT = static_cast<Card_CONJ*>(p_predicate->pRoot_conj());
   if (! p_conj_ROOT)
     return;
 
@@ -115,13 +115,11 @@ void Card_Constraint::vResolve_colNm_From_colSym(CardIter* pCI)
 
     Symbol* pSymbol = p_term->pSymbol();
     pCI->E.p_injectable = pCI->E.p_Op->pSub_injectable();
-    p_expr_resolved = pCI->E.p_injectable->pFind_expr_Matches(pSymbol);
+    p_expr_resolved = pCI->E.p_injectable->pFind_expr(pSymbol);
 
     szColNm = p_expr_resolved->szFacet(SF_NMD_COL);
 
     p_term->SYM(SF_NMD_COL, szColNm);
-     p_term->vMark1(MARK_CHANGED);
-
     return C_CONTINUE_RECURSION;
   };
 
@@ -139,14 +137,14 @@ void Card_Constraint::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
   UNUSED(pParent);
 
-  (void)Card::eValidate_parentEither(pCI,
+  (void)Card::eValidate_parent_either(pCI,
                                      CK_o_FROM,
                                      CK_o_INDEXJOIN,
                                      CK_o_KEYEXISTS,
                                      CK_o_KEYNOTEXISTS,
                                      CK_NONE);
 
-  eValidate_mustEither(CK_BOOLPRED, CK_NONE);
+  vValidate_child_mustEither(CK_PREDICATE, CK_NONE);
 
   Card::vValidate(pCI,iDepth,pParent);
   pCI->vValidateChildren(this,iDepth+1);

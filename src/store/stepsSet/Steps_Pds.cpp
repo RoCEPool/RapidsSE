@@ -29,6 +29,7 @@ void Step::vAddSteps_Pds(void)
   vAddStep("Pds[].addAnalyzeIndex"_Stz,  &Step::vPdsAddAnalyzeIndex);
   vAddStep("Pds[].addAnalyzeTable"_Stz, &Step::vPdsAddAnalyzeTable);
   vAddStep("Pds[].addBpaObjects"_Stz, &Step::vPdsAddBpaObjects);
+  vAddStep("Pds[].addBpaPool"_Stz,    &Step::vPdsAddBpaPool);
   vAddStep("Pds[].addBpaRegions"_Stz, &Step::vPdsAddBpaRegions);
   vAddStep("Pds[].addColumnDef"_Stz, &Step::vPdsAddColumnDef);
   vAddStep("Pds[].addGridSanity"_Stz,      &Step::vPdsAddGridSanity);
@@ -155,6 +156,31 @@ void Step::vPdsAddBpaObjects(void)
   Pds* pPds = _pPds(*m_pLogicUnit->m_xpPds);
 
   PoolHelper::vObjectSummary(pPds, pPdsWarn);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Pds[].addBpaPool -- add rows about bpa pool summary                        */
+/*----------------------------------------------------------------------------*/
+void Step::vPdsAddBpaPool(void)
+{
+  ENTRY();
+
+  // Get the warning Pds and definition
+  Pds* pPdsWarn = * m_pLogicUnit->m_xpPdsWarn;
+  ASSERT(pPdsWarn);
+  ASSERT(pPdsWarn->eBufferType() == BT_WARNINGS);
+
+  // Get the warning TableDef
+  Table* pWarnTable = _pTable(* m_pLogicUnit->m_xpTableDefWarn);
+  ASSERT(pWarnTable);
+  StreamDef* pWarnDef = pWarnTable->pStreamDef();
+  ASSERT(pWarnDef);
+
+  Pds* pPdsRowBuffer = _pPds(*m_pLogicUnit->m_xpPds);
+
+  PoolHelper::vPoolSummary(pPdsRowBuffer, pPdsWarn, pWarnDef);
 
   EXIT();
 }

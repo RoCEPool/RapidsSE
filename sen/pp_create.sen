@@ -203,6 +203,23 @@
   procedure::add
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // define metadata table
+
+  STD_PATH_TAG
+  "
+  procedureLocal define metadata table
+    parameters $tableNm $etc
+  begin
+
+  stage stageA on origin :
+    start | pulse once | syntaxTable $tableNm $etc |
+      defineMetaDataTable $tableNm | output | sink | stageA
+
+  end ;
+  "
+  procedure::add
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // delete
   
   STD_PATH_TAG

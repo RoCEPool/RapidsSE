@@ -394,7 +394,8 @@ antlrcpp::Any CommandParser::visitStatementChoice(Parser::sqlParser::StatementCh
   else if (pCtx->lstblCmd())          { m_szProcName = "lstbl"_Stz;          return nullptr; }
   else if (pCtx->lsptncolCmd())       { m_szProcName = "lsptncol"_Stz;       return visitChildren(pCtx); }
   else if (pCtx->memoryleaksCmd())    { m_szProcName = "memoryleaks"_Stz;    return nullptr; }
-  else if (pCtx->noopCmd())           { m_szProcName = "noop"_Stz;           return nullptr; }
+	else if (pCtx->metricsCtlCmd())     { m_szProcName = "metricsCtl"_Stz;     return visitChildren(pCtx); }
+	else if (pCtx->noopCmd())           { m_szProcName = "noop"_Stz;           return nullptr; }
   else if (pCtx->setTraceCmd())       { m_szProcName = "setTrace"_Stz;       return visitChildren(pCtx); }
   else if (pCtx->sleepCmd())          { m_szProcName = "sleepCmd"_Stz;       return visitChildren(pCtx); }
   else if (pCtx->spaceCmd())          { m_szProcName = "space"_Stz;          return nullptr; }
@@ -522,7 +523,7 @@ antlrcpp::Any CommandParser::visitBpaCmd(Parser::sqlParser::BpaCmdContext *pCtx)
     CommandParser* nestedParser = new CommandParser(m_pCurStmtTagSet, m_pParentTask);
 
     try {
-      Stz* szBpaAllCmd = "bpa regions; bpa objects;"_Stz;
+      Stz* szBpaAllCmd = "bpa pool; bpa regions; bpa objects;"_Stz;
       m_pChildTasks = nestedParser->pParseCommand(szBpaAllCmd);
 
     } catch (Parser::SyntaxException& e) {
@@ -1045,6 +1046,22 @@ antlrcpp::Any CommandParser::visitLsptncolCmd(Parser::sqlParser::LsptncolCmdCont
   m_pArgValues->vAppendToken(sTableName.szStz(), TN_STRING);
 
   return nullptr; // No need to visit any further down the tree
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Add command parameters for an METRICSCTL statement                         */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any CommandParser::visitMetricsCtlCmd(Parser::sqlParser::MetricsCtlCmdContext *pCtx)
+{
+	UNUSED(pCtx);
+
+	s256 sBuf;
+
+	vCleanString(pCtx->value, sBuf, EC_MAX_IDENTIFIER_NAME_LENGTH);
+
+	m_pArgValues->vAppendToken(sBuf.szStz(), TN_STRING);
+
+	return nullptr; // No need to visit any further down the tree
 }
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
