@@ -405,9 +405,12 @@ void Step::vPdsAddLockStats(void)
 {
   ENTRY();
 
+  // get the streamSet table
+  Table* pTableDef = _pTable(m_pDataStack->pPopPtr(__func__));
+
   Pds* pPdsRowBuffer = _pPds(*m_pLogicUnit->m_xpPds);
 
-  Row* pRow = LockMetrics::pSamplePds(pPdsRowBuffer);
+  Row* pRow = LockMetrics::pSamplePds(pTableDef->pStreamDef(), pPdsRowBuffer);
 
   //pRow->vDump(pStreamDef);
 

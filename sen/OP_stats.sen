@@ -40,7 +40,7 @@
   BT_LOCKSTATS TableDef[] Pds[].new
 
   // add lock  to the Pds
-  Pds[].addLockStats assert
+  TableDef[] Pds[].addLockStats assert
 
   // pipeout the Pds
   Pds[].pipeOut
@@ -60,7 +60,7 @@
   BT_DATA TableDef[] Pds[].new
 
   // add lock to the Pds
-  Pds[].addLockStats assert
+  TableDef[] Pds[].addLockStats assert
 
   // pipeout the Pds
   Pds[].pipeOut

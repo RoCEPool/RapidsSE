@@ -42,7 +42,7 @@ ToKeyHshRow::ToKeyHshRow(StreamDef* pStreamDef, Format* pFmt)
 
   m_pPipelineJob = AM::pPipelineJob();
 
-  m_pStreamDef  = pStreamDef;
+  m_pStreamDef  = new StreamDef(pStreamDef);
   m_nPtnsInGrid = AM::PTNMAP::nPtnsInGrid();
 
   m_nErrors = 0;
@@ -93,6 +93,7 @@ ToKeyHshRow::~ToKeyHshRow(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKEYHSHROW,_FOOTER_);
 
+  delete m_pStreamDef;
   delete m_pRowSingle;
 }
 
