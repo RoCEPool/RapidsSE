@@ -156,8 +156,8 @@ Card_Expr* Card_Expr::pCraft_expr_of_nmdCol(Column *pColumn, i8 iExpCol,
 
   Cast xCast;
   xCast.m_xTypeId       = pColumn->xColumnTypeId();
-  xCast.m_nTypeLength   = pColumn->iColumnLength();
-  xCast.m_nTypeScale    = pColumn->iColumnScale();
+  xCast.m_nTypeLength   = pColumn->iColumnLength() == C_DATUM_NULL ? 0 : pColumn->iColumnLength();
+  xCast.m_nTypeScale    = pColumn->iColumnScale() == C_DATUM_NULL ? 0 : pColumn->iColumnScale();
   xCast.m_bTypeNullable = pColumn->bIsNullable();
 
   Symbol xSym(SF_TBL_COL, cTblSyn, iTblCol);
