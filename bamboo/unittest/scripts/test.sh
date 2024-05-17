@@ -162,7 +162,7 @@ function onExit() {
 
 function processArgs() {
 
-  if [ "$#" -lt 4  ] || [ "$#" -gt 6  ]; then
+  if [ "$#" -lt 4  ] || [ "$#" -gt 7  ]; then
     errorExit "Incorrect arguments provided\n" "Usage: ./${SCRIPT_NAME} " \
               "[ --testsuffix <suffix> ]" \
               "[ --alwaysCollectLogs ]" \
