@@ -143,7 +143,8 @@ void Step::vMetaDataTableCreateTable(void)
     }
   }
 
-  Row* pRow = pPdsRowBuffer->pAllotRow(C_VARGS_BEGIN,
+  Row* pRow = pPdsRowBuffer->pAllotRow(pStreamDef,
+                                       C_VARGS_BEGIN,
                                        "rapids"_Stz,
                                        "public"_Stz,
                                        szTableNm.szStz(),
@@ -162,7 +163,8 @@ void Step::vMetaDataTableCreateTable(void)
     // create a new buffer and continue adding rows to it
     pPdsRowBuffer = new Pds(pStreamDef, false, BT_DATA);
     bAppend = true;
-    pRow = pPdsRowBuffer->pAllotRow(C_VARGS_BEGIN,
+    pRow = pPdsRowBuffer->pAllotRow(pStreamDef,
+                                    C_VARGS_BEGIN,
                                     "rapids"_Stz,
                                     "public"_Stz,
                                     szTableNm.szStz(),
@@ -216,7 +218,8 @@ void Step::vMetaDataTableCreateTable(void)
     Column* pColumn = pNewStreamDef->pGetColumn(i_Col);
 
     // Add column info to pds
-    Row *pRow = pPdsRowBuffer->pAllotRow(C_VARGS_BEGIN,
+    Row *pRow = pPdsRowBuffer->pAllotRow(pColumnsStreamDef,
+                                         C_VARGS_BEGIN,
                                          "rapids"_Stz,
                                          "public"_Stz,
                                          pNewTable->szTableNm(),
@@ -244,19 +247,20 @@ void Step::vMetaDataTableCreateTable(void)
       bAppend = true;
 
       // Add column info to pds
-      pRow = pPdsRowBuffer->pAllotRow(C_VARGS_BEGIN,
-                                           "rapids"_Stz,
-                                           "public"_Stz,
-                                           pNewTable->szTableNm(),
-                                           pColumn->iColumnNo(),
-                                           pColumn->szColNm(),
-                                           (i8)pColumn->eColumnType(),
-                                           aCT[pColumn->eColumnType()],
-                                           pColumn->iColumnScale(),
-                                           pColumn->iColumnLength(),
-                                           pColumn->bIsNullable(),
-                                           (i8)pColumn->bIsPtnKey(),
-                                           C_VARGS_END);
+      pRow = pPdsRowBuffer->pAllotRow(pColumnsStreamDef,
+                                      C_VARGS_BEGIN,
+                                      "rapids"_Stz,
+                                      "public"_Stz,
+                                      pNewTable->szTableNm(),
+                                      pColumn->iColumnNo(),
+                                      pColumn->szColNm(),
+                                      (i8)pColumn->eColumnType(),
+                                      aCT[pColumn->eColumnType()],
+                                      pColumn->iColumnScale(),
+                                      pColumn->iColumnLength(),
+                                      pColumn->bIsNullable(),
+                                      (i8)pColumn->bIsPtnKey(),
+                                      C_VARGS_END);
       ASSERT(pRow);
     }
     i_Col++;
@@ -322,7 +326,8 @@ void Step::vMetaDataTableCreateIndex(void)
   }
 
   // Add index info to pds
-  Row* pRow = pPdsRowBuffer->pAllotRow(C_VARGS_BEGIN,
+  Row* pRow = pPdsRowBuffer->pAllotRow(pIndexesStreamDef,
+                                       C_VARGS_BEGIN,
                                        "rapids"_Stz,
                                        "public"_Stz,
                                        szTableNm.szStz(),
@@ -341,7 +346,8 @@ void Step::vMetaDataTableCreateIndex(void)
     // create a new buffer and continue adding rows to it
     pPdsRowBuffer = new Pds(pIndexesStreamDef, false, BT_DATA);
     bAppend = true;
-    pRow = pPdsRowBuffer->pAllotRow(C_VARGS_BEGIN,
+    pRow = pPdsRowBuffer->pAllotRow(pIndexesStreamDef,
+                                    C_VARGS_BEGIN,
                                     "rapids"_Stz,
                                     "public"_Stz,
                                     szTableNm.szStz(),
@@ -395,7 +401,8 @@ void Step::vMetaDataTableCreateIndex(void)
 
   while(i_Col < nColumns) {
     // Add index info to pds
-    Row *pRow = pPdsRowBuffer->pAllotRow(C_VARGS_BEGIN,
+    Row *pRow = pPdsRowBuffer->pAllotRow(pIndexColsStreamDef,
+                                         C_VARGS_BEGIN,
                                          "rapids"_Stz,
                                          "public"_Stz,
                                          szTableNm.szStz(),
@@ -416,7 +423,8 @@ void Step::vMetaDataTableCreateIndex(void)
       // create a new buffer and continue adding rows to it
       pPdsRowBuffer = new Pds(pIndexColsStreamDef, false, BT_DATA);
       bAppend = true;
-      pRow = pPdsRowBuffer->pAllotRow(C_VARGS_BEGIN,
+      pRow = pPdsRowBuffer->pAllotRow(pIndexColsStreamDef,
+                                      C_VARGS_BEGIN,
                                       "rapids"_Stz,
                                       "public"_Stz,
                                       szTableNm.szStz(),
@@ -520,7 +528,8 @@ void Step::vMetaDataTableInitTables(void)
     }
   }
 
-  Row* pRow = pPdsRowBuffer->pAllotRow(C_VARGS_BEGIN,
+  Row* pRow = pPdsRowBuffer->pAllotRow(pStreamDef,
+                                       C_VARGS_BEGIN,
                                        "rapids"_Stz,
                                        "public"_Stz,
                                        szTableNm.szStz(),
@@ -635,7 +644,8 @@ void Step::vMetaDataTableCatalogInsert(void)
     }
   }
 
-  Row* pRow = pPdsRowBuffer->pAllotRow(C_VARGS_BEGIN,
+  Row* pRow = pPdsRowBuffer->pAllotRow(pStreamDef,
+                                       C_VARGS_BEGIN,
                                        szCatalogNm.szStz(),
                                        C_VARGS_END);
 
@@ -706,7 +716,8 @@ void Step::vMetaDataTableSchemaInsert(void)
     }
   }
 
-  Row* pRow = pPdsRowBuffer->pAllotRow(C_VARGS_BEGIN,
+  Row* pRow = pPdsRowBuffer->pAllotRow(pStreamDef,
+                                       C_VARGS_BEGIN,
                                        szCatalogNm.szStz(),
                                        szSchemaNm.szStz(),
                                        C_VARGS_END);
@@ -830,7 +841,8 @@ void Step::vMetaDataTableInit(void)
       Column* pColumn = pStreamDef->pGetColumn(i_Col);
 
       // Add column info to pds
-      Row *pRow = pPdsRowBuffer->pAllotRow(C_VARGS_BEGIN,
+      Row *pRow = pPdsRowBuffer->pAllotRow(pColumnsStreamDef,
+                                           C_VARGS_BEGIN,
                                            sCatalogNm.szStz(),
                                            sSchemaNm.szStz(),
                                            pTableCur->szTableNm(),
@@ -857,19 +869,20 @@ void Step::vMetaDataTableInit(void)
         pPdsRowBuffer = new Pds(pColumnsStreamDef, false, BT_DATA);
         bAppend = true;
         // Add column info to pds
-        pRow = pPdsRowBuffer->pAllotRow(C_VARGS_BEGIN,
-                                             sCatalogNm.szStz(),
-                                             sSchemaNm.szStz(),
-                                             pTableCur->szTableNm(),
-                                             pColumn->iColumnNo(),
-                                             pColumn->szColNm(),
-                                             (i8)pColumn->eColumnType(),
-                                             aCT[pColumn->eColumnType()],
-                                             pColumn->iColumnScale(),
-                                             pColumn->iColumnLength(),
-                                             pColumn->bIsNullable(),
-                                             (i8)pColumn->bIsPtnKey(),
-                                             C_VARGS_END);
+        pRow = pPdsRowBuffer->pAllotRow(pColumnsStreamDef,
+                                        C_VARGS_BEGIN,
+                                        sCatalogNm.szStz(),
+                                        sSchemaNm.szStz(),
+                                        pTableCur->szTableNm(),
+                                        pColumn->iColumnNo(),
+                                        pColumn->szColNm(),
+                                        (i8)pColumn->eColumnType(),
+                                        aCT[pColumn->eColumnType()],
+                                        pColumn->iColumnScale(),
+                                        pColumn->iColumnLength(),
+                                        pColumn->bIsNullable(),
+                                        (i8)pColumn->bIsPtnKey(),
+                                        C_VARGS_END);
         ASSERT(pRow);
       }
       i_Col++;
@@ -920,7 +933,8 @@ void Step::vMetaDataTableInit(void)
     Node* pNode = (*oNode_I);
     UNUSED(pNode);
 
-    Row* pRow = pPdsRowBuffer->pAllotRow(C_VARGS_BEGIN,
+    Row* pRow = pPdsRowBuffer->pAllotRow(pNodesStreamDef,
+                                         C_VARGS_BEGIN,
                                          (*oNode_I)->iNodeId(),
                                          (*oNode_I)->szIPAddr(),
                                          (*oNode_I)->iPortNo(),
@@ -938,7 +952,8 @@ void Step::vMetaDataTableInit(void)
       // create a new buffer and continue adding rows to it
       pPdsRowBuffer = new Pds(pNodesStreamDef, false, BT_DATA);
       bAppend = true;
-      pRow = pPdsRowBuffer->pAllotRow(C_VARGS_BEGIN,
+      pRow = pPdsRowBuffer->pAllotRow(pNodesStreamDef,
+                                      C_VARGS_BEGIN,
                                       (*oNode_I)->iNodeId(),
                                       (*oNode_I)->szIPAddr(),
                                       (*oNode_I)->iPortNo(),
