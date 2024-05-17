@@ -520,6 +520,7 @@ class InstanceRunner:
         test_suffix = "-" + target_name.replace(" ", "-")
 
         command = f"{test_sh_path} --testsuffix {test_suffix} " \
+                  f"--alwaysCollectLogs " \
                   f"{target_name} " \
                   f"{str(self.remote_cluster_config_path)} " \
                   f"{str(log_path)}" \
