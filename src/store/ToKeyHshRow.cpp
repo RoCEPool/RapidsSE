@@ -2603,7 +2603,7 @@ L_FieldError:
   vSKIP_LINE_END();
   
   // discard partial row in row slab
-  m_pRowSingle->vResetRow();
+  //m_pRowSingle->vResetRow();
 
   goto L_AdvanceNextRecord;                                   // end of fieldError
   
@@ -2670,7 +2670,7 @@ L_RecordEndLineEnd:
 
   UNUSED(aNewRow);
 
-  m_pRowSingle->vResetRow();
+  //m_pRowSingle->vResetRow();
 
   // increment records processed
   m_iRowsProcessed++;

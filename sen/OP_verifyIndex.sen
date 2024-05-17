@@ -30,7 +30,7 @@
   Index[].verify
 
   // insert index verify
-  Index[] Pds[].addVerifyIndex assert
+  Index[] TableDef[] Pds[].addVerifyIndex assert
 
   // pipeout the Pds
   Pds[].pipeOut

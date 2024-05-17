@@ -24,11 +24,11 @@
   // get a row per partition on this node
   [grid].ptnsPerNode 0 do
 
-    I [grid].tablePtnToPtnNo
+    I [grid].tablePtnToPtnNo TableDef[]
       Pds[].addListPartitions  not if
         Pds[].pipeOut
         BT_DATA TableDef[] Pds[].new
-        I [grid].tablePtnToPtnNo
+        I [grid].tablePtnToPtnNo TableDef[]
         Pds[].addListPartitions assert
       then
 

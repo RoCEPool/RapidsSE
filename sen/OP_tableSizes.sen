@@ -51,10 +51,10 @@
       0 Table[].size number.magnitude >str
 
       // insert table size
-      sTableNm Pds[].addTableSizes  not if
+      sTableNm TableDef[] Pds[].addTableSizes  not if
         Pds[].pipeOut
         BT_DATA TableDef[] Pds[].new
-        sTableNm Pds[].addTableSizes assert
+        sTableNm TableDef[] Pds[].addTableSizes assert
       then
 
     then

@@ -92,12 +92,13 @@ void Step::vPdsAddAnalyzeIndex(void)
 
   pIndex->vAnalyze(i_TablePtn, nBuffers, nEntries);
 
-  Row* pRow = pPds->pAllotRow(C_VARGS_BEGIN,
-                                    AM::pGrid()->pThisNode()->szNodeNm(),
-                                    pTableDef->tTablePtnToLglPtn(i_TablePtn).iAsI8(),
-                                    nBuffers,
-                                    nEntries,
-                                    C_VARGS_END);
+  Row* pRow = pPds->pAllotRow(pTableDef->pStreamDef(),
+                              C_VARGS_BEGIN,
+                              AM::pGrid()->pThisNode()->szNodeNm(),
+                              pTableDef->tTablePtnToLglPtn(i_TablePtn).iAsI8(),
+                              nBuffers,
+                              nEntries,
+                              C_VARGS_END);
 
   //ASSERT(pRow);
   //pRow->vDump(pStreamDef);
@@ -114,6 +115,9 @@ void Step::vPdsAddAnalyzeTable(void)
 {
   ENTRY();
 
+  // get the streamSet table
+  Table* pTableDef = _pTable(m_pDataStack->pPopPtr(__func__));
+
   TablePtn* pTablePtn = _pTablePtn(m_pDataStack->pPopPtr(__func__));
 
   i8 i_LglPtn = m_pDataStack->iPopInt(__func__);
@@ -127,12 +131,13 @@ void Step::vPdsAddAnalyzeTable(void)
 
   pTablePtn->vAnalyze(nBuffers, nRows, jSumRowBytes);
 
-  Row* pRow = pPdsRowBuffer->pAllotRow(C_VARGS_BEGIN,
-                                    AM::pGrid()->pThisNode()->szNodeNm(),
-                                    i_LglPtn,
-                                    nBuffers,
-                                    nRows,
-                                    C_VARGS_END);
+  Row* pRow = pPdsRowBuffer->pAllotRow(pTableDef->pStreamDef(),
+                                       C_VARGS_BEGIN,
+                                       AM::pGrid()->pThisNode()->szNodeNm(),
+                                       i_LglPtn,
+                                       nBuffers,
+                                       nRows,
+                                       C_VARGS_END);
 
   //ASSERT(pRow);
   //pRow->vDump(pStreamDef);
@@ -230,18 +235,22 @@ void Step::vPdsAddColumnDef(void)
 {
   ENTRY();
 
+  // get the streamSet table
+  Table* pTableDef = _pTable(m_pDataStack->pPopPtr(__func__));
+
   Column* pColumn = _pColumn(m_pDataStack->pPopPtr(__func__));
 
   Pds* pPds = _pPds(*m_pLogicUnit->m_xpPds);
 
-  Row* pRow = pPds->pAllotRow(C_VARGS_BEGIN,
-                                    pColumn->szColNm(),
-                                    aCT[pColumn->eColumnType()],
-                                    pColumn->iColumnLength(),
-                                    pColumn->iColumnScale(),
-                                    (i8)pColumn->bIsNullable(),
-                                    (i8)pColumn->bIsPtnKey(),
-                                    C_VARGS_END);
+  Row* pRow = pPds->pAllotRow(pTableDef->pStreamDef(),
+                              C_VARGS_BEGIN,
+                              pColumn->szColNm(),
+                              aCT[pColumn->eColumnType()],
+                              pColumn->iColumnLength(),
+                              pColumn->iColumnScale(),
+                              (i8)pColumn->bIsNullable(),
+                              (i8)pColumn->bIsPtnKey(),
+                              C_VARGS_END);
   //ASSERT(pRow);
   //pRow->vDump(pStreamDef);
 
@@ -255,6 +264,9 @@ void Step::vPdsAddColumnDef(void)
 void Step::vPdsAddGridSanity(void)
 {
   ENTRY();
+
+  // get the streamSet table
+  Table* pTableDef = _pTable(m_pDataStack->pPopPtr(__func__));
 
   Row* pNodeInfo = _pRow(m_pDataStack->pPopPtr(__func__));
 
@@ -277,10 +289,11 @@ void Step::vPdsAddGridSanity(void)
   if ( bRegionSize && bPartitions )
     bHomogenous = true;
 
-  Row* pRow = pPdsRowBuffer->pAllotRow(C_VARGS_BEGIN,
-                                    pNodeInfo->szColVal_ofs(0),
-                                    bHomogenous,
-                                    C_VARGS_END);
+  Row* pRow = pPdsRowBuffer->pAllotRow(pTableDef->pStreamDef(),
+                                       C_VARGS_BEGIN,
+                                       pNodeInfo->szColVal_ofs(0),
+                                       bHomogenous,
+                                       C_VARGS_END);
   //ASSERT(pRow);
   //pRow->vDump(pStreamDef);
   m_pDataStack->vPushInt(pRow ? true : false);
@@ -295,6 +308,9 @@ void Step::vPdsAddListFolder(void)
 {
   ENTRY();
 
+  // get the streamSet table
+  Table* pTableDef = _pTable(m_pDataStack->pPopPtr(__func__));
+
   // get the name
   s256 sName;
   m_pDataStack->vPopStr(sName, __func__);
@@ -305,10 +321,11 @@ void Step::vPdsAddListFolder(void)
 
   Pds* pPdsRowBuffer = _pPds(*m_pLogicUnit->m_xpPds);
 
-  Row* pRow = pPdsRowBuffer->pAllotRow(C_VARGS_BEGIN,
-                                    sName.azChar(),
-                                    sKind.azChar(),
-                                    C_VARGS_END);
+  Row* pRow = pPdsRowBuffer->pAllotRow(pTableDef->pStreamDef(),
+                                       C_VARGS_BEGIN,
+                                       sName.azChar(),
+                                       sKind.azChar(),
+                                       C_VARGS_END);
   //ASSERT(pRow);
   //pRow->vDump(pStreamDef);
 
@@ -324,16 +341,20 @@ void Step::vPdsAddListIndex(void)
 {
   ENTRY();
 
+  // get the streamSet table
+  Table* pTableDef = _pTable(m_pDataStack->pPopPtr(__func__));
+
   // get the index
   Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
 
   Pds* pPds = _pPds(*m_pLogicUnit->m_xpPds);
 
-  Row* pRow = pPds->pAllotRow(C_VARGS_BEGIN,
-                                    pIndex->szIndexNm(),
-                                    (i8)pIndex->bIsUnique(),
-                                    (i8)pIndex->bIsPrimaryKey(),
-                                    C_VARGS_END);
+  Row* pRow = pPds->pAllotRow(pTableDef->pStreamDef(),
+                              C_VARGS_BEGIN,
+                              pIndex->szIndexNm(),
+                              (i8)pIndex->bIsUnique(),
+                              (i8)pIndex->bIsPrimaryKey(),
+                              C_VARGS_END);
   //ASSERT(pRow);
   //pRow->vDump(pStreamDef);
 
@@ -343,11 +364,14 @@ void Step::vPdsAddListIndex(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Pds[].addListPartitions -- add a row to Pds with the partitions*/
+/* Pds[].addListPartitions -- add a row to Pds with the partitions            */
 /*----------------------------------------------------------------------------*/
 void Step::vPdsAddListPartitions(void)
 {
   ENTRY();
+
+  // get the streamSet table
+  Table* pTableDef = _pTable(m_pDataStack->pPopPtr(__func__));
 
   LglPtn tLglPtn;
   tLglPtn = m_pDataStack->iPopInt(__func__);
@@ -359,10 +383,11 @@ void Step::vPdsAddListPartitions(void)
   i8 iNodeId = AM::pLglPtnMap()->iNodeId(tLglPtn);
   Node* pNode = pGrid->pFindNodeById(iNodeId);
 
-  Row* pRow = pPds->pAllotRow(C_VARGS_BEGIN,
-                                    tLglPtn.iAsI8(),
-                                    pNode->szNodeNm(),
-                                    C_VARGS_END);
+  Row* pRow = pPds->pAllotRow(pTableDef->pStreamDef(),
+                              C_VARGS_BEGIN,
+                              tLglPtn.iAsI8(),
+                              pNode->szNodeNm(),
+                              C_VARGS_END);
 
 
   //ASSERT(pRow);
@@ -398,6 +423,9 @@ void Step::vPdsAddMemoryLeaks(void)
 {
   ENTRY();
 
+  // get the streamSet table
+  Table* pTableDef = _pTable(m_pDataStack->pPopPtr(__func__));
+
   Pds* pPds = _pPds(*m_pLogicUnit->m_xpPds);
 
   i8 nLeaks = 0;
@@ -423,10 +451,11 @@ void Step::vPdsAddMemoryLeaks(void)
       continue;
 
     ++nLeaks;
-    /*Row* pRow =*/ pPds->pAllotRow(C_VARGS_BEGIN,
-                                          aCN[eClass],
-                                          nDelta,
-                                          C_VARGS_END);
+    /*Row* pRow =*/ pPds->pAllotRow(pTableDef->pStreamDef(),
+                                    C_VARGS_BEGIN,
+                                    aCN[eClass],
+                                    nDelta,
+                                    C_VARGS_END);
   }
 
   m_pDataStack->vPushBol(nLeaks > 0);
@@ -435,11 +464,14 @@ void Step::vPdsAddMemoryLeaks(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Pds[].AddNodeHeartbeat -- add a row to the Pds with node hb    */
+/* Pds[].AddNodeHeartbeat -- add a row to the Pds with node hb                */
 /*----------------------------------------------------------------------------*/
 void Step::vPdsAddNodeHeartbeat(void)
 {
   ENTRY();
+
+  // get the streamSet table
+  Table* pTableDef = _pTable(m_pDataStack->pPopPtr(__func__));
 
   Pds *pPds = _pPds(*m_pLogicUnit->m_xpPds);
 
@@ -451,13 +483,14 @@ void Step::vPdsAddNodeHeartbeat(void)
     if (pThisNode != *oNode_I)
       continue;
 
-    pRow = pPds->pAllotRow(C_VARGS_BEGIN,
-                                 (*oNode_I)->szNodeNm(),
-                                 (*oNode_I)->xGetHeartbeat().m_acRegionName,
-                                 (*oNode_I)->eState() == NS_ACTIVE ? "running"_Stz : "not running"_Stz,
-                                 (*oNode_I)->pSendSocket() ? true : false,
-                                 (*oNode_I)->pRecvSocket() ? true : false,
-                                 C_VARGS_END);
+    pRow = pPds->pAllotRow(pTableDef->pStreamDef(),
+                           C_VARGS_BEGIN,
+                           (*oNode_I)->szNodeNm(),
+                           (*oNode_I)->xGetHeartbeat().m_acRegionName,
+                           (*oNode_I)->eState() == NS_ACTIVE ? "running"_Stz : "not running"_Stz,
+                           (*oNode_I)->pSendSocket() ? true : false,
+                           (*oNode_I)->pRecvSocket() ? true : false,
+                           C_VARGS_END);
 
     break;
   }
@@ -475,11 +508,15 @@ void Step::vPdsAddNodeInfo(void)
 {
   ENTRY();
 
+  // get the streamSet table
+  Table* pTableDef = _pTable(m_pDataStack->pPopPtr(__func__));
+
   Pds* pPdsRowBuffer = _pPds(*m_pLogicUnit->m_xpPds);
 
   Grid* pGrid = AM::pGrid();
 
-  Row* pRow = pPdsRowBuffer->pAllotRow(C_VARGS_BEGIN,
+  Row* pRow = pPdsRowBuffer->pAllotRow(pTableDef->pStreamDef(),
+                                       C_VARGS_BEGIN,
                                        pGrid->pThisNode()->szNodeNm(),
                                        AM::iRegionSize(),
                                        AM::PTNMAP::nPtnsPerNode(),
@@ -493,11 +530,14 @@ void Step::vPdsAddNodeInfo(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Pds[].addNodeStatus -- add a row to the Pds with node status   */
+/* Pds[].addNodeStatus -- add a row to the Pds with node status               */
 /*----------------------------------------------------------------------------*/
 void Step::vPdsAddNodeStatus(void)
 {
   ENTRY();
+
+  // get the streamSet table
+  Table* pTableDef = _pTable(m_pDataStack->pPopPtr(__func__));
 
   Pds *pPds = _pPds(*m_pLogicUnit->m_xpPds);
 
@@ -520,13 +560,14 @@ void Step::vPdsAddNodeStatus(void)
   Row *pRow = nullptr;
   for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
 
-    pRow = pPds->pAllotRow(C_VARGS_BEGIN,
-                                 (*oNode_I)->szNodeNm(),
-                                 (*oNode_I)->xGetHeartbeat().m_acRegionName,
-                                 (*oNode_I)->eState() == NS_ACTIVE ? "running"_Stz : "not running"_Stz,
-                                 (*oNode_I)->pSendSocket() ? true : false,
-                                 (*oNode_I)->pRecvSocket() ? true : false,
-                                 C_VARGS_END);
+    pRow = pPds->pAllotRow(pTableDef->pStreamDef(),
+                           C_VARGS_BEGIN,
+                           (*oNode_I)->szNodeNm(),
+                           (*oNode_I)->xGetHeartbeat().m_acRegionName,
+                           (*oNode_I)->eState() == NS_ACTIVE ? "running"_Stz : "not running"_Stz,
+                           (*oNode_I)->pSendSocket() ? true : false,
+                           (*oNode_I)->pRecvSocket() ? true : false,
+                           C_VARGS_END);
 
     if (!pRow) {
       // call again
@@ -548,15 +589,19 @@ void Step::vPdsAddProgressUnits(void)
 {
   ENTRY();
 
+  // get the streamSet table
+  Table* pTableDef = _pTable(m_pDataStack->pPopPtr(__func__));
+
   // get no of progress units
   i8 iProgressUnits = m_pDataStack->iPopInt(__func__);
 
   // get the Pds
   Pds* pPdsRowBuffer = _pPds(*m_pLogicUnit->m_xpPds);
 
-  Row* pRow = pPdsRowBuffer->pAllotRow(C_VARGS_BEGIN,
-                                    iProgressUnits,
-                                    C_VARGS_END);
+  Row* pRow = pPdsRowBuffer->pAllotRow(pTableDef->pStreamDef(),
+                                       C_VARGS_BEGIN,
+                                       iProgressUnits,
+                                       C_VARGS_END);
   //ASSERT(pRow);
   //pRow->vDump(pStreamDef);
 
@@ -571,6 +616,9 @@ void Step::vPdsAddProgressUnits(void)
 void Step::vPdsAddRowCount(void)
 {
   ENTRY();
+
+  // get the streamSet table
+  Table* pTableDef = _pTable(m_pDataStack->pPopPtr(__func__));
 
   // get the table
   TablePtn* pTablePtn = _pTablePtn(m_pDataStack->pPopPtr(__func__));
@@ -588,9 +636,10 @@ void Step::vPdsAddRowCount(void)
 
   pTablePtn->vAnalyze(nBuffers, nRows, jSumRowBytes);
 
-  Row* pRow = pPdsRowBuffer->pAllotRow(C_VARGS_BEGIN,
-                                    nRows,
-                                    C_VARGS_END);
+  Row* pRow = pPdsRowBuffer->pAllotRow(pTableDef->pStreamDef(),
+                                       C_VARGS_BEGIN,
+                                       nRows,
+                                       C_VARGS_END);
   //ASSERT(pRow);
   //pRow->vDump(pStreamDef);
 
@@ -663,23 +712,27 @@ void Step::vPdsAddRowVargs(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Pds[].addShowCluster -- add a row to Pds with the cluster info */
+/* Pds[].addShowCluster -- add a row to Pds with the cluster info             */
 /*----------------------------------------------------------------------------*/
 void Step::vPdsAddShowCluster(void)
 {
   ENTRY();
+
+  // get the streamSet table
+  Table* pTableDef = _pTable(m_pDataStack->pPopPtr(__func__));
 
   i8 i_Node = m_pDataStack->iPopInt(__func__);
 
   Pds* pPds = _pPds(*m_pLogicUnit->m_xpPds);
 
   Node* pNode = AM::pGrid()->pFindNodeById(i_Node);
-  Row* pRow = pPds->pAllotRow(C_VARGS_BEGIN,
-                                    pNode->szNodeNm(),
-                                    pNode->szIPAddr(),
-                                    pNode->iPortNo(),
-                                    (i8)(pNode->pSendSocket() ? true : false),
-                                    C_VARGS_END);
+  Row* pRow = pPds->pAllotRow(pTableDef->pStreamDef(),
+                              C_VARGS_BEGIN,
+                              pNode->szNodeNm(),
+                              pNode->szIPAddr(),
+                              pNode->iPortNo(),
+                              (i8)(pNode->pSendSocket() ? true : false),
+                              C_VARGS_END);
   //ASSERT(pRow);
   //pRow->vDump(pStreamDef);
 
@@ -689,12 +742,15 @@ void Step::vPdsAddShowCluster(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Pds[].addSizeIndex -- add a row to Pds with the index size     */
+/* Pds[].addSizeIndex -- add a row to Pds with the index size                 */
 /*----------------------------------------------------------------------------*/
 void Step::vPdsAddSizeIndex(void)
 {
   ENTRY();
 
+  // get the streamSet table
+  Table* pTableDef = _pTable(m_pDataStack->pPopPtr(__func__));
+
   i8 iSize = m_pDataStack->iPopInt(__func__);
 
   s256 sSize;
@@ -702,11 +758,12 @@ void Step::vPdsAddSizeIndex(void)
 
   Pds* pPds = _pPds(*m_pLogicUnit->m_xpPds);
 
-  Row* pRow = pPds->pAllotRow(C_VARGS_BEGIN,
-                                    AM::pGrid()->pThisNode()->szNodeNm(),
-                                    iSize,
-                                    sSize.azChar(),
-                                    C_VARGS_END);
+  Row* pRow = pPds->pAllotRow(pTableDef->pStreamDef(),
+                              C_VARGS_BEGIN,
+                              AM::pGrid()->pThisNode()->szNodeNm(),
+                              iSize,
+                              sSize.azChar(),
+                              C_VARGS_END);
   //ASSERT(pRow);
   //pRow->vDump(pStreamDef);
 
@@ -716,12 +773,15 @@ void Step::vPdsAddSizeIndex(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Pds[].addSizeTable -- add a row to Pds with the table size     */
+/* Pds[].addSizeTable -- add a row to Pds with the table size                 */
 /*----------------------------------------------------------------------------*/
 void Step::vPdsAddSizeTable(void)
 {
   ENTRY();
 
+  // get the streamSet table
+  Table* pTableDef = _pTable(m_pDataStack->pPopPtr(__func__));
+
   i8 iSize = m_pDataStack->iPopInt(__func__);
 
   s256 sSize;
@@ -729,11 +789,12 @@ void Step::vPdsAddSizeTable(void)
 
   Pds* pPds = _pPds(*m_pLogicUnit->m_xpPds);
 
-  Row* pRow = pPds->pAllotRow(C_VARGS_BEGIN,
-                                    AM::pGrid()->pThisNode()->szNodeNm(),
-                                    iSize,
-                                    sSize.azChar(),
-                                    C_VARGS_END);
+  Row* pRow = pPds->pAllotRow(pTableDef->pStreamDef(),
+                              C_VARGS_BEGIN,
+                              AM::pGrid()->pThisNode()->szNodeNm(),
+                              iSize,
+                              sSize.azChar(),
+                              C_VARGS_END);
   //ASSERT(pRow);
   //pRow->vDump(pStreamDef);
 
@@ -743,11 +804,14 @@ void Step::vPdsAddSizeTable(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Pds[].addSpaceInfo -- add a row to the Pds with the spaceInfo  */
+/* Pds[].addSpaceInfo -- add a row to the Pds with the spaceInfo              */
 /*----------------------------------------------------------------------------*/
 void Step::vPdsAddSpaceInfo(void)
 {
   ENTRY();
+
+  // get the streamSet table
+  Table* pTableDef = _pTable(m_pDataStack->pPopPtr(__func__));
 
   Pds* pPds = _pPds(*m_pLogicUnit->m_xpPds);
 
@@ -769,15 +833,16 @@ void Step::vPdsAddSpaceInfo(void)
   s256 sTotalFreeSpace;
   MagLib::vByteMag(iTotalFreeSpace, 0, sTotalFreeSpace);
 
-  Row* pRow = pPds->pAllotRow(C_VARGS_BEGIN,
-                                    pGrid->pThisNode()->szNodeNm(),
-                                    iTotalSpace,
-                                    sTotalSpace.azChar(),
-                                    iInUseSpace,
-                                    sInUseSpace.azChar(),
-                                    iTotalFreeSpace,
-                                    sTotalFreeSpace.azChar(),
-                                    C_VARGS_END);
+  Row* pRow = pPds->pAllotRow(pTableDef->pStreamDef(),
+                              C_VARGS_BEGIN,
+                              pGrid->pThisNode()->szNodeNm(),
+                              iTotalSpace,
+                              sTotalSpace.azChar(),
+                              iInUseSpace,
+                              sInUseSpace.azChar(),
+                              iTotalFreeSpace,
+                              sTotalFreeSpace.azChar(),
+                              C_VARGS_END);
   //ASSERT(pRow);
   //pRow->vDump(pStreamDef);
 
@@ -787,11 +852,14 @@ void Step::vPdsAddSpaceInfo(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Pds[].addTableSizes -- add a row to Pds with the table sizes   */
+/* Pds[].addTableSizes -- add a row to Pds with the table sizes               */
 /*----------------------------------------------------------------------------*/
 void Step::vPdsAddTableSizes(void)
 {
   ENTRY();
+
+  // get the streamSet table
+  Table* pTableDef = _pTable(m_pDataStack->pPopPtr(__func__));
 
   s256 sTableName;
   m_pDataStack->vPopStr(sTableName, __func__);
@@ -801,11 +869,12 @@ void Step::vPdsAddTableSizes(void)
 
   Pds* pPds = _pPds(*m_pLogicUnit->m_xpPds);
 
-  Row* pRow = pPds->pAllotRow(C_VARGS_BEGIN,
-                                    AM::pGrid()->pThisNode()->szNodeNm(),
-                                    sTableName.azChar(),
-                                    sSize.azChar(),
-                                    C_VARGS_END);
+  Row* pRow = pPds->pAllotRow(pTableDef->pStreamDef(),
+                              C_VARGS_BEGIN,
+                              AM::pGrid()->pThisNode()->szNodeNm(),
+                              sTableName.azChar(),
+                              sSize.azChar(),
+                              C_VARGS_END);
   //ASSERT(pRow);
   //pRow->vDump(pStreamDef);
 
@@ -815,11 +884,14 @@ void Step::vPdsAddTableSizes(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Pds[].addVerifyIndex -- add a row to Pds with the index verify */
+/* Pds[].addVerifyIndex -- add a row to Pds with the index verify             */
 /*----------------------------------------------------------------------------*/
 void Step::vPdsAddVerifyIndex(void)
 {
   ENTRY();
+
+  // get the streamSet table
+  Table* pTableDef = _pTable(m_pDataStack->pPopPtr(__func__));
 
   // get the index
   Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
@@ -831,12 +903,13 @@ void Step::vPdsAddVerifyIndex(void)
 
   Pds* pPds = _pPds(*m_pLogicUnit->m_xpPds);
 
-  Row* pRow = pPds->pAllotRow(C_VARGS_BEGIN,
-                                    AM::pGrid()->pThisNode()->szNodeNm(),
-                                    pTable->szTableNm(),
-                                    pIndex->szIndexNm(),
-                                    iStatus ? "Valid"_Stz : "Invalid"_Stz,
-                                    C_VARGS_END);
+  Row* pRow = pPds->pAllotRow(pTableDef->pStreamDef(),
+                              C_VARGS_BEGIN,
+                              AM::pGrid()->pThisNode()->szNodeNm(),
+                              pTable->szTableNm(),
+                              pIndex->szIndexNm(),
+                              iStatus ? "Valid"_Stz : "Invalid"_Stz,
+                              C_VARGS_END);
   //ASSERT(pRow);
   //pRow->vDump(pStreamDef);
 
@@ -846,11 +919,14 @@ void Step::vPdsAddVerifyIndex(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Pds[].addVerifyTable -- add a row to Pds with the table verify */
+/* Pds[].addVerifyTable -- add a row to Pds with the table verify             */
 /*----------------------------------------------------------------------------*/
 void Step::vPdsAddVerifyTable(void)
 {
   ENTRY();
+
+  // get the streamSet table
+  Table* pTableDef = _pTable(m_pDataStack->pPopPtr(__func__));
 
   // get the table
   Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
@@ -859,11 +935,12 @@ void Step::vPdsAddVerifyTable(void)
 
   Pds* pPds = _pPds(*m_pLogicUnit->m_xpPds);
 
-  Row* pRow = pPds->pAllotRow(C_VARGS_BEGIN,
-                                    AM::pGrid()->pThisNode()->szNodeNm(),
-                                    pTable->szTableNm(),
-                                    iStatus ? "valid"_Stz : "invalid"_Stz,
-                                    C_VARGS_END);
+  Row* pRow = pPds->pAllotRow(pTableDef->pStreamDef(),
+                              C_VARGS_BEGIN,
+                              AM::pGrid()->pThisNode()->szNodeNm(),
+                              pTable->szTableNm(),
+                              iStatus ? "valid"_Stz : "invalid"_Stz,
+                              C_VARGS_END);
   //ASSERT(pRow);
   //pRow->vDump(pStreamDef);
 

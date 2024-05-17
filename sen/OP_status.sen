@@ -22,7 +22,7 @@
   BT_DATA TableDef[] Pds[].new
 
   // add nodeStatus to the Pds
-  Pds[].addNodeStatus assert
+  TableDef[] Pds[].addNodeStatus assert
 
   // pipeout the Pds
   Pds[].pipeOut

@@ -25,7 +25,7 @@
   TablePtn[].grabRead_yieldLoop
 
   // add row count to Pds
-  TablePtn[] Pds[].addRowCount assert
+  TablePtn[] TableDef[] Pds[].addRowCount assert
 
   TablePtn[].dropRead
 

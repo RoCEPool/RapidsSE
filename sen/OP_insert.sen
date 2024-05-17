@@ -51,7 +51,7 @@
     BT_PROGRESSUNITS TableDef[] Pds[].new
 
     // insert progressUnits to the Pds
-    //Counter0[] Pds[].addProgressUnits assert
+    //Counter0[] TableDef[] Pds[].addProgressUnits assert
     Counter0[] 1 Pds[].addRowVargs assert
 
     // pipeout the Pds
@@ -98,7 +98,7 @@
     BT_PROGRESSUNITS TableDef[] Pds[].new
 
     // insert progressUnits to the Pds
-    //Counter0[] Pds[].addProgressUnits assert
+    //Counter0[] TableDef[] Pds[].addProgressUnits assert
     Counter0[] 1 Pds[].addRowVargs assert
 
     // pipeout the Pds
@@ -125,7 +125,7 @@
   BT_PROGRESSUNITS TableDef[] Pds[].new
 
   // insert progressUnits to the Pds
-  //Counter0[] Pds[].addProgressUnits assert
+  //Counter0[] TableDef[] Pds[].addProgressUnits assert
   Counter0[] 1 Pds[].addRowVargs assert
 
   // pipeout the Pds
