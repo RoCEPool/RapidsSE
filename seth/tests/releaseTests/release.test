@@ -32,7 +32,7 @@ success
 
 // Table should exist
 lstbl;
-rows:
+contains rows:
   ('${testName2}_nation')
 
 
@@ -52,7 +52,7 @@ success
 
 // Index should exist
 lsidx ${testName2}_nation;
-rows:
+contains rows:
   ('nation_idx1',false,false)
 
 
@@ -179,7 +179,8 @@ success
 
 // Table should no longer exist
 lstbl;
-rows: 0
+does not contain rows:
+  ('${testName2}_nation')
 
 
 CLEANUP {
