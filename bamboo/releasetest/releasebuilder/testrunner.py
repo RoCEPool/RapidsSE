@@ -523,7 +523,7 @@ class InstanceRunner:
                   f"--alwaysCollectLogs " \
                   f"{target_name} " \
                   f"{str(self.remote_cluster_config_path)} " \
-                  f"{str(log_path)}" \
+                  f"{str(log_path)} " \
                   f"{str(testlist_path)}"
 
         LOG.info(f"Test {self.test_name}: About to invoke SETH on {self.ip_addrs[0]} "
