@@ -667,9 +667,9 @@ void Step::vPdsAddRowVargs(void)
 
   StreamDef* pStreamDef = pTableDef->pStreamDef();
   //RowPix* pRowPix = pPdsRowBuffer->pRowPix();
-  RowPix* pRowPix = pStreamDef->pRowPix();
+  //RowPix* pRowPix = pStreamDef->pRowPix();
 
-  i8 nCols = pRowPix->nColumns();
+  i8 nCols = pStreamDef->nColumns();
 
   Row* pRow = pPdsRowBuffer->pAllotRow();
 
@@ -685,7 +685,9 @@ void Step::vPdsAddRowVargs(void)
 
   for (i8 i_Arg = 0; i_Arg < nArgs && i_Arg < nCols; i_Arg++) {
 
-    eDM eDatum = (eDM) pRowPix->m_xaColPix[i_Arg].m_uDatum;
+    Column* pColumn = pStreamDef->pGetColumn(i_Arg);
+
+    eDM eDatum = pColumn->eDatum();
 
     switch (eDatum) {
 
