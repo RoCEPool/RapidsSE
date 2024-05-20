@@ -103,6 +103,7 @@ void PagingMetrics::vReportDerefMetrics(Tub* pTub)
     L_RETRY:
     Row* pRow = pPdsRowBuffer->pAllotRow
                 (
+                  pStreamDef,
                   C_VARGS_BEGIN
                  
                  ,pDerefMetrics->iObjectNo()

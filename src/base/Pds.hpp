@@ -64,7 +64,7 @@ namespace BASE
 
     // public:
     Row*            pAllotRow(void);
-    Row*            pAllotRow(i8 iVargsBegin, ...);
+    //Row*            pAllotRow(i8 iVargsBegin, ...);
     Row*            pAllotRow(StreamDef* pStreamDef, i8 iVargsBegin, ...);
 //    Row*            pAllotRowFull(char** aaStzSet);
     SkipListBlock*  pAppend(void* pKey);

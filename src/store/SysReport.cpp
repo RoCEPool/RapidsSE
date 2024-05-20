@@ -98,6 +98,7 @@ void SysReport::vSysLocks(Tub* pTub)
     L_RETRY:
     Row* pRow = pPds->pAllotRow
                 (
+                  pStreamDef,
                   C_VARGS_BEGIN
                  
                  ,pThisNode->iNodeId()
@@ -183,6 +184,7 @@ void SysReport::vSysMetrics(Tub* pTub)
     L_RETRY:
     Row* pRow = pPds->pAllotRow
                 (
+                  pStreamDef,
                   C_VARGS_BEGIN
                  
                  ,pThisNode->iNodeId()

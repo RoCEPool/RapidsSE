@@ -161,6 +161,7 @@ eEC JobReport::eMetricsReport(Job* pJob, Tub* pTub)
           L_RETRY:
           Row* pRow = pPds->pAllotRow
                       (
+                        pStreamDef,
                         C_VARGS_BEGIN
                        
                        ,pJobMetrics->tJobId().uJobNo()
@@ -268,6 +269,7 @@ eEC JobReport::eNetDissectReport(Job* pJob, Tub* pTub)
       L_RETRY_1a:
       Row* pRow = pPds->pAllotRow
                   (
+                    pStreamDef,
                     C_VARGS_BEGIN
                    
                    ,pJob->tJobId().uJobNo()
@@ -306,6 +308,7 @@ eEC JobReport::eNetDissectReport(Job* pJob, Tub* pTub)
       L_RETRY_1b:
       Row* pRow = pPds->pAllotRow
                   (
+                    pStreamDef,
                     C_VARGS_BEGIN
                    
                    ,pJob->tJobId().uJobNo()
@@ -346,6 +349,7 @@ eEC JobReport::eNetDissectReport(Job* pJob, Tub* pTub)
       L_RETRY_2a:
       Row* pRow = pPds->pAllotRow
                   (
+                    pStreamDef,
                     C_VARGS_BEGIN
                    
                    ,pJob->tJobId().uJobNo()
@@ -384,6 +388,7 @@ eEC JobReport::eNetDissectReport(Job* pJob, Tub* pTub)
       L_RETRY_2b:
       Row* pRow = pPds->pAllotRow
                   (
+                    pStreamDef,
                     C_VARGS_BEGIN
                    
                    ,pJob->tJobId().uJobNo()
@@ -468,7 +473,7 @@ eEC JobReport::eNetworkReport(Job* pJob, Tub* pTub)
 
     L_HACK:
     Row* pRow = pPds->pAllotRow
-                (
+                ( pStreamDef,
                   C_VARGS_BEGIN
                  
                  ,pJob->tJobId().uJobNo()
@@ -577,7 +582,7 @@ eEC JobReport::eOperandReport(Job* pJob, Tub* pTub)
           
           L_HACK:
           Row* pRow = pPds->pAllotRow
-                      (
+                      ( pStreamDef,
                         C_VARGS_BEGIN
                        
                        ,pJob->tJobId().uJobNo()
@@ -716,7 +721,7 @@ eEC JobReport::eOperatorReport(Job* pJob, Tub* pTub)
         // allot a row for the stats in the Pds
         L_RETRY_3a:
         Row* pRow = pPds->pAllotRow
-                    (
+                    ( pStreamDef,
                       C_VARGS_BEGIN
                                             
                      ,pJob->tJobId().uJobNo()

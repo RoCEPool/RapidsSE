@@ -389,7 +389,7 @@ bool Optimiser::bTransform(Error& rxError, Pds* pPdsRowBuffer)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
 
   UNUSED(pPdsRowBuffer);
-  
+
   bool bClean = bApplyTransformations(rxError);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
