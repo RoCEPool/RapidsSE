@@ -656,10 +656,12 @@ void Pds::vBufferType(eBT eBufferType)
 /*----------------------------------------------------------------------------*/
 /* Allot a row and copy given row into it                                     */
 /*----------------------------------------------------------------------------*/
-Row* Pds::pCopyRow(Row* pRow, bool bSrcHasPtnHash, bool bCopyPtnHash)
+Row* Pds::pCopyRow(StreamDef* pStreamDef, Row* pRow, bool bSrcHasPtnHash, bool bCopyPtnHash)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
-  ASSERT(m_oRowPix.m_bInitialised);
+  //ASSERT(m_oRowPix.m_bInitialised);
+
+  RowPix* pRowPix = pStreamDef->pRowPix();
 
   Row* pNewRow = pAllotRow();
   if (! pNewRow) {
@@ -670,11 +672,11 @@ Row* Pds::pCopyRow(Row* pRow, bool bSrcHasPtnHash, bool bCopyPtnHash)
   i8 iVal;
   Stz* szSrcStz;
 
-  i8 nCols = m_oRowPix.m_nColumns;
+  i8 nCols = pRowPix->m_nColumns;
   i8 i_Col;
   for (i_Col = 0; i_Col < nCols; i_Col++) {
 
-    eDM eDatum = (eDM)m_oRowPix.m_xaColPix[i_Col].m_uDatum;
+    eDM eDatum = (eDM)pRowPix->m_xaColPix[i_Col].m_uDatum;
 
     if (DM_VCH == eDatum) {
       // vch datum

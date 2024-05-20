@@ -70,7 +70,7 @@ namespace BASE
     SkipListBlock*  pAppend(void* pKey);
     eBT             eBufferType(void);
     void            vBufferType(eBT eBufferType);
-    Row*            pCopyRow(Row* pRow, bool bSrcHasPtnHash = false, bool bCopyPtnHash = false);
+    Row*            pCopyRow(StreamDef* pStreamDef, Row* pRow, bool bSrcHasPtnHash = false, bool bCopyPtnHash = false);
 //		Row*            pCopyRowArray(i8* pRowArray);
 //    void*           aAllotStzSet(void);
     void            vDecidedDelete(void);

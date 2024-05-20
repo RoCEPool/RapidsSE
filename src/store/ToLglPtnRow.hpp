@@ -33,7 +33,7 @@ namespace STORE
     Pds* pDangling(LglPtn tLglPtn);
   
   private:
-    void vCopyRow(LglPtn tLglPtn, Row* aRowSrc, RowPix* pFromRowPix);
+    void vCopyRow(LglPtn tLglPtn, Row* aRowSrc, StreamDef* pFromStreamDef);
 
     Footer* aFooter(void);
   };

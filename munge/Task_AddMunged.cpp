@@ -35260,7 +35260,7 @@ void Task::vAddMunged(Task* )
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
-    "/* handler for EV_D_PDSROWBUFFER ...                                             */\n"
+    "/* handler for EV_D_PDSROWBUFFER ...                                          */\n"
     "/*----------------------------------------------------------------------------*/\n"
     ": namedInsert_PdsRowBuffer \\handler\n"
     "\n"

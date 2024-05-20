@@ -18,6 +18,7 @@
 #include "Job.hpp"
 #include "Node_I.hpp"
 #include "LogicUnit.hpp"
+#include "Table.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */

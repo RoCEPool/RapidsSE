@@ -2658,14 +2658,14 @@ L_RecordEndLineEnd:
   }
 
   // copy source RowSingle into target partition row slab
-  aNewRow = pIntoPdsRowBuffer->pCopyRow(m_pRowSingle->pRowCurrent(), false, false);
+  aNewRow = pIntoPdsRowBuffer->pCopyRow(m_pStreamDef, m_pRowSingle->pRowCurrent(), false, false);
   if (! aNewRow) {
     pIntoPdsRowBuffer = new Pds(m_pStreamDef, false);
     pIntoPdsRowBuffer->vLglPtn(tLglPtn);
 
     m_oLglBufSet.vAddBuffer(tLglPtn,pIntoPdsRowBuffer);
 
-    aNewRow = pIntoPdsRowBuffer->pCopyRow(m_pRowSingle->pRowCurrent(), false, false);
+    aNewRow = pIntoPdsRowBuffer->pCopyRow(m_pStreamDef, m_pRowSingle->pRowCurrent(), false, false);
     ASSERT(aNewRow);
   }
 
