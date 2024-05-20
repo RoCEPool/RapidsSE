@@ -159,21 +159,21 @@ RowBox_t<AREA>::RowBox_t(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-template <i8 AREA>
-RowBox_t<AREA>::RowBox_t(StreamDef* pStreamDef, bool bAddPtnHash)
-{
-  _poolAddress_(this); _footer_();
-
-  vInitRowBox_t();
-
-  pAllotRowPix(pStreamDef->pRowPix()->nDynamicSize());
-
-  pStreamDef->vToRowPix(pRowPix(),bAddPtnHash);
-  
-  m_nRowSizeProper = Row::nRowProper(pStreamDef->nColumns());
-    
-  _poolAddress_(this); _footer_();
-}
+//template <i8 AREA>
+//RowBox_t<AREA>::RowBox_t(StreamDef* pStreamDef, bool bAddPtnHash)
+//{
+//  _poolAddress_(this); _footer_();
+//
+//  vInitRowBox_t();
+//
+//  pAllotRowPix(pStreamDef->pRowPix()->nDynamicSize());
+//
+//  pStreamDef->vToRowPix(pRowPix(),bAddPtnHash);
+//
+//  m_nRowSizeProper = Row::nRowProper(pStreamDef->nColumns());
+//
+//  _poolAddress_(this); _footer_();
+//}
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
