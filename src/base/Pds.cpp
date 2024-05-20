@@ -1379,14 +1379,14 @@ Row* Pds::pNextRow(Row* pCurr)
 /*----------------------------------------------------------------------------*/
 /* print rows                                                                 */
 /*----------------------------------------------------------------------------*/
-void Pds::vPrintRows(File* pFilePtr, Stz* szLabel)
+void Pds::vPrintRows(StreamDef* pStreamDef, File* pFilePtr, Stz* szLabel)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
   UNUSED(pFilePtr);
 
-  ASSERT(m_oRowPix.m_bInitialised);
+  //ASSERT(m_oRowPix.m_bInitialised);
 
-  HV_Record hvRecord(&m_oRowPix);
+  HV_Record hvRecord(pStreamDef->pRowPix());
 
   PdsCursor* pCursor = new PdsCursor(this);
 
