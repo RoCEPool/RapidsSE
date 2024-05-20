@@ -360,7 +360,7 @@ void Step::vSqlCompilerDoExplain(void) {
 }
 
 /*----------------------------------------------------------------------------*/
-/* sqlCompiler::doExplainTliterate -- (potentially) create the explain of the plan     */
+/* sqlCompiler::doExplainTliterate -- (potentially) create the explain of plan */
 /*----------------------------------------------------------------------------*/
 void Step::vSqlCompilerDoExplainTliterate(void) {
   ENTRY();
@@ -370,6 +370,9 @@ void Step::vSqlCompilerDoExplainTliterate(void) {
    * has an explain operator. We simply want to put the transliterated pipeline
    * command in the row set.
    */
+
+  // get the streamSet table
+  Table* pTableDef = _pTable(m_pDataStack->pPopPtr(__func__));
 
   // Get the compiler stage
   s256 sCompilerStage;
@@ -416,11 +419,12 @@ void Step::vSqlCompilerDoExplainTliterate(void) {
 
     i8 iStageNum = ExplainOp::iStageCount(pExplainOp);
 
-    Row *pRow = pPdsRowBuffer->pAllotRow(C_VARGS_BEGIN,
-                                    iStageNum,
-                                    sCompilerStage.szStz(),
-                                    sPipelineCmd.szStz(),
-                                    C_VARGS_END);
+    Row *pRow = pPdsRowBuffer->pAllotRow(pTableDef->pStreamDef(),
+                                         C_VARGS_BEGIN,
+                                         iStageNum,
+                                         sCompilerStage.szStz(),
+                                         sPipelineCmd.szStz(),
+                                         C_VARGS_END);
     ASSERT(pRow);
     UNUSED(pRow);
   }
