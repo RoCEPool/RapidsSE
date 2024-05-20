@@ -16,8 +16,8 @@
 
 
 // There should be no tables loaded to start with.
-lstbl;
-rows: 0
+// lstbl;
+// rows: 0
 
 
 // Create a simple table
