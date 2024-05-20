@@ -295,16 +295,6 @@ i8 StreamDefBase::iColumnOrder(i8 i_Col)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get no of columns in subset of streamDef                                   */
-/*----------------------------------------------------------------------------*/
-i8 StreamDefBase::nColumns(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  return m_nColumns;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get direction order                                                        */
 /*----------------------------------------------------------------------------*/
 eSD StreamDefBase::eDirection(i8 i_Order)
@@ -366,16 +356,6 @@ Column* StreamDefBase::pFindColumn(Stz* szColumnNm)
   }
   
   return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get column at index                                                        */
-/*----------------------------------------------------------------------------*/
-Column* StreamDefBase::pGetColumn(i8 i_Column)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  return &m_xaColumn[i_Column];
 }
 
 /*----------------------------------------------------------------------------*/
