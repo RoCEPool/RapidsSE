@@ -31,14 +31,14 @@ __aFooterFunction(Record)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Record::Record(RowPix* pRowPix)
+Record::Record(StreamDef* pStreamDef)
 : Object(CN_RECORD)
 {
   _precondition_(_MAGIC_,CN_RECORD,_FOOTER_);
   
   ASSERT(pRowPix->m_nColumns);
   
-  m_pRowPix = pRowPix;
+  m_pStreamDef = pStreamDef;
     
   m_azCursor = & m_caRecord[0];
   
@@ -172,10 +172,11 @@ void Record::vAddRow(Row* aRow)
   m_azCursor = & m_caRecord[0];
   
   for (i8 i_Col = 0;
-       i_Col < m_pRowPix->m_nColumns - m_pRowPix->m_nExtraCols;
+       i_Col < m_pStreamDef->nColumns();
        i_Col++) {
 
-    eDM eDatum = (eDM)m_pRowPix->m_xaColPix[i_Col].m_uDatum; //pCol->eDatum();
+    Column* pColumn = m_pStreamDef->pGetColumn(i_Col);
+    eDM eDatum = pColumn->eDatum();
     //i8  iScale = m_pRowPix->m_xaColPix[i_Col].m_uScale; //pCol->iColumnScale();
 
 

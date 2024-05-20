@@ -800,17 +800,17 @@ void RowBox_t<AREA>::vDumpRow(i8 i_Row)
 /*----------------------------------------------------------------------------*/
 /* dump given row                                                             */
 /*----------------------------------------------------------------------------*/
-template <i8 AREA>
-void RowBox_t<AREA>::vDumpRow(i8 i_Row, Row* aRow)
-{
-  _poolAddress_(this); _footer_();
-
-
-  HV_Record hvRecord(pRowPix());
-
-  Stz* szRow = hvRecord->sz(aRow);
-  vTrace("[%lld] %s\n"_Stz,i_Row,szRow);
-}
+//template <i8 AREA>
+//void RowBox_t<AREA>::vDumpRow(i8 i_Row, Row* aRow)
+//{
+//  _poolAddress_(this); _footer_();
+//
+//
+//  HV_Record hvRecord(pRowPix());
+//
+//  Stz* szRow = hvRecord->sz(aRow);
+//  vTrace("[%lld] %s\n"_Stz,i_Row,szRow);
+//}
 
 /*----------------------------------------------------------------------------*/
 /* get number of extra columns                                                */

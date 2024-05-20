@@ -1389,7 +1389,7 @@ void Pds::vPrintRows(StreamDef* pStreamDef, File* pFilePtr, Stz* szLabel)
 
   //ASSERT(m_oRowPix.m_bInitialised);
 
-  HV_Record hvRecord(pStreamDef->pRowPix());
+  HV_Record hvRecord(pStreamDef);
 
   PdsCursor* pCursor = new PdsCursor(this);
 

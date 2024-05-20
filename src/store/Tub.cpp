@@ -250,7 +250,7 @@ void Tub::vSetRowPix(Tub* pTub, RowPix* pRowPix)
 void Tub::vToCsv(StreamDef* pStreamDef, Tub* pTub, Pds* pPds)
 {
   _static_
-  HV_Record hvRecord(pStreamDef->pRowPix());
+  HV_Record hvRecord(pStreamDef);
 
   CsvBuffer* pCsvBuffer = _pCsvBuffer(pTub->pWorkingBuffer());
   if (! pCsvBuffer) {

@@ -284,7 +284,7 @@ void RowSingle::vPrintRow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
 
-  HV_Record hvRecord(m_pStreamDef->pRowPix());
+  HV_Record hvRecord(m_pStreamDef);
   hvRecord->vToCsvRecord(pRowCurrent());
   hvRecord->vPrintAsRow();
 }

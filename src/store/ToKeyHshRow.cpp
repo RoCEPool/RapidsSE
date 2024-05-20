@@ -2640,7 +2640,7 @@ L_RecordEndLineEnd:
   vSKIP_RECORD_LINE_END();
 
   if (iTraceBits & C_BIT_EndRecord) {
-    HV_Record hvRecord(m_pStreamDef->pRowPix());
+    HV_Record hvRecord(m_pStreamDef);
     vTrace("[%lld] %s\n"_Stz,
            m_i_Rec,
            hvRecord->sz(m_pRowSingle->pRowCurrent()));
