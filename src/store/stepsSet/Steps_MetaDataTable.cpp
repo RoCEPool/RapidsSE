@@ -476,8 +476,8 @@ void Step::vMetaDataTableDropIndex(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* MetaDataTable[].initTables -- First step in initializing metaData tables.
- * This is triggered during a define metadata table command.
+/* MetaDataTable[].initTables -- First step in initializing metaData tables.  *
+ * This is triggered during a define metadata table command.                  *
  * Insert a row in TableOfTables with info about a metadata table.            */
 /*----------------------------------------------------------------------------*/
 void Step::vMetaDataTableInitTables(void)

@@ -45,10 +45,10 @@
     // skip definition only tables
     Table[].isInternallyDefined if
 
-    sTableNm 1 Pds[].addRowVargs  not if
+    sTableNm 1 TableDef[] Pds[].addRowVargs  not if
       Pds[].pipeOut
       BT_DATA TableDef[] Pds[].new
-      sTableNm 1 Pds[].addRowVargs assert
+      sTableNm 1 TableDef[] Pds[].addRowVargs assert
     then
 
 

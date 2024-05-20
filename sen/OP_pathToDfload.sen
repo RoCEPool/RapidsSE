@@ -82,7 +82,7 @@
 
   BT_COMMAND TableDef[] Pds[].new
 
-  sTags sCmd  2 Pds[].addRowVargs assert
+  sTags sCmd  2 TableDef[] Pds[].addRowVargs assert
 
   Pds[].pipeOut
 

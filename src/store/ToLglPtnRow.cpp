@@ -171,7 +171,8 @@ void ToLglPtnRow::vCopyRow(LglPtn tLglPtn, Row* aRowSrc, StreamDef* pFromStreamD
     pIntoPdsRowBuffer = new Pds(pFromRowPix);
     pIntoPdsRowBuffer->vLglPtn(tLglPtn);
 
-    pIntoPdsRowBuffer->pRowPix()->vRemovePtnHash();
+    // ?? ALKA 20/5/2024
+    //pIntoPdsRowBuffer->pRowPix()->vRemovePtnHash();
     m_oLglBufSet.vAddBuffer(tLglPtn,pIntoPdsRowBuffer);
   }
 
@@ -181,7 +182,8 @@ void ToLglPtnRow::vCopyRow(LglPtn tLglPtn, Row* aRowSrc, StreamDef* pFromStreamD
     pIntoPdsRowBuffer = new Pds(pFromRowPix);
     pIntoPdsRowBuffer->vLglPtn(tLglPtn);
 
-    pIntoPdsRowBuffer->pRowPix()->vRemovePtnHash();
+    // ?? ALKA 20/5/2024
+    //pIntoPdsRowBuffer->pRowPix()->vRemovePtnHash();
     m_oLglBufSet.vAddBuffer(tLglPtn,pIntoPdsRowBuffer);
 
     aNewRow = pIntoPdsRowBuffer->pCopyRow(pFromStreamDef, aRowSrc,bSrcHasPtnHash,bCopyPtnHash);

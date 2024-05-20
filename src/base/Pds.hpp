@@ -31,7 +31,7 @@ namespace BASE
 
     eBT     m_eBufferType;
 
-    RowPix m_oRowPix;
+    //RowPix m_oRowPix;
 
     // ---------------------------
     i8    m_iSynthRowKey;     // Synthetic key for rows added to Pds
@@ -86,8 +86,8 @@ namespace BASE
     SkipListBlock*  pFirstBlock(void);
     Row*            pFirstRow(void);
     i8              nFreeBytes(void);
-    void            vInitPix(RowPix* pRowPix);
-    void            vInitPix(StreamDef* pStreamDef, bool bAddKeyHash);
+    //void            vInitPix(RowPix* pRowPix);
+    //void            vInitPix(StreamDef* pStreamDef, bool bAddKeyHash);
     i8              nItems(void);
     void*           aLastUsableByteAddr(void);
     i8              iLastUsableOffset(void);
@@ -95,7 +95,7 @@ namespace BASE
     Row*            pNextRow(Row* pCurr);
     void            vPrintRows(StreamDef* pStreamDef, File* pFilePtr, Stz* szLabel);
     void            vReset(void);
-    RowPix*         pRowPix(void);
+    //RowPix*         pRowPix(void);
     void            vStzSetSize(i8 nBytes);
     i8              iStzSetSize(void);
     void            vValidate(void);

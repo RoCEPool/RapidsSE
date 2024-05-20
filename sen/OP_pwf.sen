@@ -38,7 +38,7 @@
   BT_DATA TableDef[] Pds[].new
 
   // add pwfInfo to the Pds
-  folder 1 Pds[].addRowVargs assert
+  folder 1 TableDef[] Pds[].addRowVargs assert
 
   // pipeout the Pds
   Pds[].pipeOut

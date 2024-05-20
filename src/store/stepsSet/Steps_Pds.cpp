@@ -658,10 +658,17 @@ void Step::vPdsAddRowVargs(void)
 {
   ENTRY();
 
+  // get the streamSet table
+  Table* pTableDef = _pTable(m_pDataStack->pPopPtr(__func__));
+
   i8 nArgs = m_pDataStack->iPopInt(__func__);
 
   Pds* pPdsRowBuffer = _pPds(*m_pLogicUnit->m_xpPds);
-  RowPix* pRowPix = pPdsRowBuffer->pRowPix();
+
+  StreamDef* pStreamDef = pTableDef->pStreamDef();
+  //RowPix* pRowPix = pPdsRowBuffer->pRowPix();
+  RowPix* pRowPix = pStreamDef->pRowPix();
+
   i8 nCols = pRowPix->nColumns();
 
   Row* pRow = pPdsRowBuffer->pAllotRow();
@@ -1384,7 +1391,7 @@ void Step::vPdsTableDefNameFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Pds[].toCsv -- convert Pds operand to csvBuffer                */
+/* Pds[].toCsv -- convert Pds operand to csvBuffer                            */
 /*----------------------------------------------------------------------------*/
 void Step::vPdsToCsv(void)
 {
@@ -1392,9 +1399,11 @@ void Step::vPdsToCsv(void)
 
   Pds* pPds = _pPds(*m_pLogicUnit->m_xpPds);
 
+  StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
+
   Tub* pTub = _pTub(m_pDataStack->pPopPtr(__func__));
 
-  Tub::vToCsv(pTub, pPds);
+  Tub::vToCsv(pStreamDef, pTub, pPds);
 
   EXIT();
 }

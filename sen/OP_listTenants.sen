@@ -38,11 +38,11 @@
   Folder[] dic.lastWord dup
   iterate                          // setup iteration of words
     object@ word.name@
-    1 Pds[].addRowVargs  not if
+    1 TableDef[] Pds[].addRowVargs  not if
       Pds[].pipeOut
       BT_DATA TableDef[] Pds[].new
       object@ word.name@
-      1 Pds[].addRowVargs assert
+      1 TableDef[] Pds[].addRowVargs assert
     then
 
     object@ word.prev object!      // step backwards thru words

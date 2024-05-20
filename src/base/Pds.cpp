@@ -161,7 +161,7 @@ Pds::Pds(RowPix* pRowPix, eBT eBufferType)
   }
 
   // Init RowPix object -------------------------------
-  vInitPix(pRowPix);
+  //vInitPix(pRowPix);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
 }
@@ -230,7 +230,7 @@ Pds::Pds(StreamDef* pStreamDef, bool bAddKeyHash, eBT eBufferType)
   }
 
   // Init RowPix object -------------------------------
-  vInitPix(pStreamDef, bAddKeyHash);
+  //vInitPix(pStreamDef, bAddKeyHash);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
 }
@@ -305,7 +305,7 @@ Pds::Pds(i8 nBytes, CompareFunc fpCompare, bool bAddToHashMap)
     m_auTailOffsets[i_Level] = m_uInUseRootOffset;
   }
 
-  m_oRowPix.m_bInitialised = false;
+  //m_oRowPix.m_bInitialised = false;
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
 }
@@ -1240,74 +1240,75 @@ i8 Pds::nFreeBytes(void)
 /*----------------------------------------------------------------------------*/
 /* Init the RowPix structure                                                  */
 /*----------------------------------------------------------------------------*/
-void Pds::vInitPix(RowPix* pRowPix)
-{
-  ASSERT(pRowPix);
-
-  m_oRowPix.vCopyRowPix(pRowPix);
-
-//  i8 nCols = m_oRowPix.m_nColumns;
-//  i8 iTotalStzArea = 0;
+//void Pds::vInitPix(RowPix* pRowPix)
+//{
+//  ASSERT(pRowPix);
 //
-//  // Calculate total size of string area needed per row
-//  for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
-//    eDM eDatum = (eDM)m_oRowPix.m_xaColPix[i_Col].m_uDatum;
-//    if (DM_VCH == eDatum) {
-//      i8 nBytes = m_oRowPix.m_xaColPix[i_Col].m_uLength;
+//  m_oRowPix.vCopyRowPix(pRowPix);
 //
-//      if (nBytes) {
-//        iTotalStzArea += String_d::iBytesToAlloc(nBytes);
-//      }
-//    }
-//  }
-//  // Set size of StzSet area
-//  vStzSetSize(iTotalStzArea);
-
-  i8 iRowSizeProper = Row::nRowProper(m_oRowPix.m_nColumns);
-	UNUSED(iRowSizeProper);
-  // Assert the space we are allocating for the row + key is less than or equal to the block size
-  ASSERT((iRowSizeProper + (i8)sizeof(m_iSynthRowKey)) <= m_nBlockSize);
-
-}
+////  i8 nCols = m_oRowPix.m_nColumns;
+////  i8 iTotalStzArea = 0;
+////
+////  // Calculate total size of string area needed per row
+////  for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
+////    eDM eDatum = (eDM)m_oRowPix.m_xaColPix[i_Col].m_uDatum;
+////    if (DM_VCH == eDatum) {
+////      i8 nBytes = m_oRowPix.m_xaColPix[i_Col].m_uLength;
+////
+////      if (nBytes) {
+////        iTotalStzArea += String_d::iBytesToAlloc(nBytes);
+////      }
+////    }
+////  }
+////  // Set size of StzSet area
+////  vStzSetSize(iTotalStzArea);
+//
+//  i8 iRowSizeProper = Row::nRowProper(m_oRowPix.m_nColumns);
+//	UNUSED(iRowSizeProper);
+//  // Assert the space we are allocating for the row + key is less than or equal to the block size
+//  ASSERT((iRowSizeProper + (i8)sizeof(m_iSynthRowKey)) <= m_nBlockSize);
+//
+//}
 
 /*----------------------------------------------------------------------------*/
 /* Init the RowPix structure from a streamdef                                 */
 /*----------------------------------------------------------------------------*/
-void Pds::vInitPix(StreamDef* pStreamDef, bool bAddKeyHash)
-{
-
-  pStreamDef->vToRowPix(&m_oRowPix, bAddKeyHash);
-
-//  i8 nCols = m_oRowPix.m_nColumns;
-//  i8 iTotalStzArea = 0;
+//void Pds::vInitPix(StreamDef* pStreamDef, bool bAddKeyHash)
+//{
 //
-//  // Calculate total size of string area needed per row
-//  for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
-//    eDM eDatum = (eDM)m_oRowPix.m_xaColPix[i_Col].m_uDatum;
-//    if (DM_VCH == eDatum) {
-//      i8 nBytes = m_oRowPix.m_xaColPix[i_Col].m_uLength;
+//  pStreamDef->vToRowPix(&m_oRowPix, bAddKeyHash);
 //
-//      // TODO: Hack, till we get the proper length
-//      if (nBytes) {
-//        if(nBytes > 800) {
-//          iTotalStzArea += String_d::iBytesToAlloc(800);
-//          m_oRowPix.m_xaColPix[i_Col].m_uLength = 800;
-//        }
-//        else
-//          iTotalStzArea += String_d::iBytesToAlloc(nBytes);
-//      }
-//    }
-//  }
-//  // Set size of StzSet area
-//  vStzSetSize(iTotalStzArea);
+////  i8 nCols = m_oRowPix.m_nColumns;
+////  i8 iTotalStzArea = 0;
+////
+////  // Calculate total size of string area needed per row
+////  for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
+////    eDM eDatum = (eDM)m_oRowPix.m_xaColPix[i_Col].m_uDatum;
+////    if (DM_VCH == eDatum) {
+////      i8 nBytes = m_oRowPix.m_xaColPix[i_Col].m_uLength;
+////
+////      // TODO: Hack, till we get the proper length
+////      if (nBytes) {
+////        if(nBytes > 800) {
+////          iTotalStzArea += String_d::iBytesToAlloc(800);
+////          m_oRowPix.m_xaColPix[i_Col].m_uLength = 800;
+////        }
+////        else
+////          iTotalStzArea += String_d::iBytesToAlloc(nBytes);
+////      }
+////    }
+////  }
+////  // Set size of StzSet area
+////  vStzSetSize(iTotalStzArea);
+//
+//  i8 iRowSizeProper = Row::nRowProper(m_oRowPix.m_nColumns);
+//	UNUSED(iRowSizeProper);
+//
+//  // Assert the space we are allocating for the row + key is less than or equal to the block size
+//  ASSERT((iRowSizeProper + (i8)sizeof(m_iSynthRowKey)) <= m_nBlockSize);
+//
+//}
 
-  i8 iRowSizeProper = Row::nRowProper(m_oRowPix.m_nColumns);
-	UNUSED(iRowSizeProper);
-
-  // Assert the space we are allocating for the row + key is less than or equal to the block size
-  ASSERT((iRowSizeProper + (i8)sizeof(m_iSynthRowKey)) <= m_nBlockSize);
-
-}
 /*----------------------------------------------------------------------------*/
 /* Number of elements in this Skip List                                       */
 /*----------------------------------------------------------------------------*/
@@ -1417,11 +1418,11 @@ void Pds::vReset(void)
 /*----------------------------------------------------------------------------*/
 /* return address of RowPix                                                   */
 /*----------------------------------------------------------------------------*/
-RowPix* Pds::pRowPix(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
-  return &m_oRowPix;
-}
+//RowPix* Pds::pRowPix(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
+//  return &m_oRowPix;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* Validate this Skip List                                                    */

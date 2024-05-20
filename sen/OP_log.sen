@@ -28,7 +28,7 @@
     // create a Pds operand
     BT_DATA TableDef[] Pds[].new
 
-    <pMsg> iTsp 2 Pds[].addRowVargs if
+    <pMsg> iTsp 2 TableDef[] Pds[].addRowVargs if
       Pds[].pipeOut
     else
       Pds[].delete
