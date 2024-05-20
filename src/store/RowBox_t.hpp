@@ -93,10 +93,10 @@ namespace STORE
     void vDepositString_end(i8 nSize);
 
     void  vDiscardInvalidRow(void);
-    void  vDumpAllRows(void);
+    //void  vDumpAllRows(void);
     void  vDumpNst(void);
-    void  vDumpRow(i8 i_Row);
-    void  vDumpRow(i8 i_Row, Row* aRow);
+    //void  vDumpRow(i8 i_Row);
+    //void  vDumpRow(i8 i_Row, Row* aRow);
 
     i8    nExtraCols(void);
     void  vInitPix(StreamDef* pStreamDef, bool bAddKeyHash);
@@ -763,16 +763,16 @@ void RowBox_t<AREA>::vDiscardInvalidRow(void)
 /*----------------------------------------------------------------------------*/
 /* dump given row                                                             */
 /*----------------------------------------------------------------------------*/
-template <i8 AREA>
-void RowBox_t<AREA>::vDumpAllRows(void)
-{
-  _poolAddress_(this); _footer_();
-
-  i8 nRows = this->nRows();
-  vTrace("RowBuffer of %lld rows...\n"_Stz,nRows);
-  for (i8 i_Row = 0; i_Row < nRows; i_Row++)
-    vDumpRow(i_Row);
-}
+//template <i8 AREA>
+//void RowBox_t<AREA>::vDumpAllRows(void)
+//{
+//  _poolAddress_(this); _footer_();
+//
+//  i8 nRows = this->nRows();
+//  vTrace("RowBuffer of %lld rows...\n"_Stz,nRows);
+//  for (i8 i_Row = 0; i_Row < nRows; i_Row++)
+//    vDumpRow(i_Row);
+//}
 
 /*----------------------------------------------------------------------------*/
 /* dump normalised string table                                               */
@@ -788,14 +788,14 @@ void RowBox_t<AREA>::vDumpNst(void)
 /*----------------------------------------------------------------------------*/
 /* dump given row                                                             */
 /*----------------------------------------------------------------------------*/
-template <i8 AREA>
-void RowBox_t<AREA>::vDumpRow(i8 i_Row)
-{
-  _poolAddress_(this); _footer_();
-
-  Row* aRow = this->pRowAddress(i_Row);
-  vDumpRow(i_Row,aRow);
-}
+//template <i8 AREA>
+//void RowBox_t<AREA>::vDumpRow(i8 i_Row)
+//{
+//  _poolAddress_(this); _footer_();
+//
+//  Row* aRow = this->pRowAddress(i_Row);
+//  vDumpRow(i_Row,aRow);
+//}
 
 /*----------------------------------------------------------------------------*/
 /* dump given row                                                             */

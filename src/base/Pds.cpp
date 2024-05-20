@@ -663,8 +663,6 @@ Row* Pds::pCopyRow(StreamDef* pStreamDef, Row* pRow, bool bSrcHasPtnHash, bool b
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
   //ASSERT(m_oRowPix.m_bInitialised);
 
-  RowPix* pRowPix = pStreamDef->pRowPix();
-
   Row* pNewRow = pAllotRow();
   if (! pNewRow) {
 //    vTrace("%s: Unable to copy row as the Pds is full\n"_Stz, __func__ );
@@ -674,11 +672,12 @@ Row* Pds::pCopyRow(StreamDef* pStreamDef, Row* pRow, bool bSrcHasPtnHash, bool b
   i8 iVal;
   Stz* szSrcStz;
 
-  i8 nCols = pRowPix->m_nColumns;
+  i8 nCols = pStreamDef->nColumns();
   i8 i_Col;
   for (i_Col = 0; i_Col < nCols; i_Col++) {
 
-    eDM eDatum = (eDM)pRowPix->m_xaColPix[i_Col].m_uDatum;
+    Column* pColumn = pStreamDef->pGetColumn(i_Col);
+    eDM eDatum = pColumn->eDatum();
 
     if (DM_VCH == eDatum) {
       // vch datum
