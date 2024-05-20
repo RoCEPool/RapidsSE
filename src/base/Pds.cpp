@@ -461,7 +461,7 @@ Row* Pds::pAllotRow(StreamDef* pStreamDef, i8 iVArgsBegin, ...)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
 
-  RowPix* pRowPix = pStreamDef->pRowPix();
+  //RowPix* pRowPix = pStreamDef->pRowPix();
 
   // allot a row
   Row* pRow = pAllotRow();
@@ -475,9 +475,11 @@ Row* Pds::pAllotRow(StreamDef* pStreamDef, i8 iVArgsBegin, ...)
 
   va_start(xVarArgs,iVArgsBegin);
 
-  for (i8 i_Col = 0; i_Col < pRowPix->m_nColumns; i_Col++) {
+  for (i8 i_Col = 0; i_Col < pStreamDef->nColumns(); i_Col++) {
 
-    eDM eDatum = (eDM)pRowPix->m_xaColPix[i_Col].m_uDatum;
+    Column* pColumn = pStreamDef->pGetColumn(i_Col);
+
+    eDM eDatum = pColumn->eDatum();
 
     if (DM_VCH == eDatum) {
       // STRING_DEPOSIT
