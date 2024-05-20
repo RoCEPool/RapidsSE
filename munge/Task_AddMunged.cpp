@@ -23765,7 +23765,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  begin\n"
     "    BT_DATA TableDef[] Pds[].new\n"
-    "    iCursor Table[].listPartition to iCursor\n"
+    "    iCursor TableDef[] Table[].listPartition to iCursor\n"
     "    \n"
     "    iCursor while\n"
     "      Pds[].pipeOut\n"

@@ -570,6 +570,9 @@ void Step::vTableListPartition(void)
   
   s256 sOutput;
 
+  // get the streamSet table
+  Table* pTableDef = _pTable(m_pDataStack->pPopPtr(__func__));
+
   Pds* pPds = _pPds(*m_pLogicUnit->m_xpPds);
 
   LglPtn tLglPtn;
@@ -584,9 +587,10 @@ void Step::vTableListPartition(void)
     sOutput.vSprint("Ptn %lld : Node %lld TablePtn %lld"_Stz,
                     tLglPtn.iAsI8(),iNodeId,i_TablePtn);
 
-    Row* pRow = pPds->pAllotRow(C_VARGS_BEGIN,
-                                      sOutput.azChar(),
-                                      C_VARGS_END);
+    Row* pRow = pPds->pAllotRow(pTableDef->pStreamDef(),
+                                C_VARGS_BEGIN,
+                                sOutput.azChar(),
+                                C_VARGS_END);
 
     if (! pRow) {
       // call again

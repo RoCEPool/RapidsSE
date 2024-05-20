@@ -28,7 +28,7 @@
 
   begin
     BT_DATA TableDef[] Pds[].new
-    iCursor Table[].listPartition to iCursor
+    iCursor TableDef[] Table[].listPartition to iCursor
     
     iCursor while
       Pds[].pipeOut
