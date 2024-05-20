@@ -273,6 +273,9 @@ void Step::vSqlCompilerDoExplain(void) {
    * current stage that was just processed, and the plan itself.
    */
 
+  // get the streamSet table
+  Table* pTableDef = _pTable(m_pDataStack->pPopPtr(__func__));
+
   // Get the compiler stage
   s256 sCompilerStage;
   m_pDataStack->vPopStr(sCompilerStage, __func__);
@@ -337,11 +340,12 @@ void Step::vSqlCompilerDoExplain(void) {
     }
 
 
-    Row *pRow = pPdsRowBuffer->pAllotRow(C_VARGS_BEGIN,
-                                    iStageNum,
-                                    sCompilerStage.szStz(),
-                                    sExplainBuf.szStz(),
-                                    C_VARGS_END);
+    Row *pRow = pPdsRowBuffer->pAllotRow(pTableDef->pStreamDef(),
+                                         C_VARGS_BEGIN,
+                                         iStageNum,
+                                         sCompilerStage.szStz(),
+                                         sExplainBuf.szStz(),
+                                         C_VARGS_END);
     ASSERT(pRow);
     UNUSED(pRow);
   }
