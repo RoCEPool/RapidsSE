@@ -50,9 +50,9 @@ namespace STORE
     void    vPtnDefNm(Stz* szPtnDefNm);
     Stz*    szPtnDefNm(void);
     void    vResetPointers(void);
-    RowPix* pRowPix(void);
-    void    vToColPix(RowPix* pRowPix, bool bPtnHash);
-    void    vToRowPix(RowPix* pRowPix, bool bPtnHash);
+    //RowPix* pRowPix(void);
+    //void    vToColPix(RowPix* pRowPix, bool bPtnHash);
+    //void    vToRowPix(RowPix* pRowPix, bool bPtnHash);
     void    vToMetadata(String* psMetadata);
     
   private:
