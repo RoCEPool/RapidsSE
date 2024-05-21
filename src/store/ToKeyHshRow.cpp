@@ -626,7 +626,7 @@ i8 ToKeyHshRow::iRowsSkipped(void)
   \
   m_pRowSingle->vDepositColVal(_colVal); \
   \
-  if (xColPix.m_bPtnKey) \
+  if (pColumn->bIsPtnKey()) \
     tKeyHsh.vRunningHash((byte*)&_colVal, sizeof(i8));
 
 #define vDEPOSIT_NULL(_errorCode) \
@@ -636,7 +636,7 @@ i8 ToKeyHshRow::iRowsSkipped(void)
   \
   m_pRowSingle->vDepositColVal(C_DATUM_NULL); \
   \
-  if (xColPix.m_bPtnKey) \
+  if (pColumn->bIsPtnKey()) \
     tKeyHsh.vRunningHash((byte*)&C_DATUM_NULL,sizeof(i8));
 
 /*----------------------------------------------------------------------------*/
@@ -682,13 +682,15 @@ bool ToKeyHshRow::bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
 
   Bcd xBcdValue;
 
-  ColPix xColPix;
+  //ColPix xColPix;
   eDM ePixDatum;
   i8 nPixLength;
   i8 nPixScale;
   i8 nPixWholeDigits;
   i8 nPixFracDigits;
   bool bPixNullable;
+
+  Column* pColumn;
 
   char* aStzSet;
   i8 nMaxFreeBytes = 0;
@@ -814,8 +816,8 @@ bool ToKeyHshRow::bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
   i8 i_ErrorCodeLine = -1;
 
   i8 nCols = m_pStreamDef->nColumns();
-  RowPix* pRowPix = m_pStreamDef->pRowPix();
-  ColPix* aColPix = pRowPix->m_xaColPix;
+  //RowPix* pRowPix = m_pStreamDef->pRowPix();
+  //ColPix* aColPix = pRowPix->m_xaColPix;
 
   // ---- ---- ---- ---- ---- ---- ---- ----
   // determine field separator
@@ -985,15 +987,15 @@ L_NextFieldInRecord:
   
   // decode and convert field i_Fld
 
-  xColPix         = aColPix[i_Fld];
+  pColumn = m_pStreamDef->pGetColumn(i_Fld);
   
-  ePixDatum       = (eDM) xColPix.m_uDatum;   // DM_BOL .. DM_VCH
-  nPixLength      = xColPix.m_uLength;        // total number of digits or chars
-  nPixScale       = xColPix.m_uScale;         // scale
-  nPixWholeDigits = xColPix.m_uLength         // max number digits to left of .
-                      - xColPix.m_uScale;
-  nPixFracDigits  = xColPix.m_uScale;         // max number digits to right of .
-  bPixNullable    = xColPix.m_bNullable;      // can field be a null?
+  ePixDatum       = pColumn->eDatum();               // DM_BOL .. DM_VCH
+  nPixLength      = pColumn->iColumnLength();        // total number of digits or chars
+  nPixScale       = pColumn->iColumnScale();         // scale
+  nPixWholeDigits = pColumn->iColumnLength()         // max number digits to left of .
+                      - pColumn->iColumnScale();
+  nPixFracDigits  = pColumn->iColumnScale();         // max number digits to right of .
+  bPixNullable    = pColumn->bIsNullable();      // can field be a null?
   
   // debug
   //pCol = m_pStreamDef->pGetColumn(i_Fld);
@@ -2465,7 +2467,7 @@ L_Varchar_depositValue:
   // Store len of string
   m_pRowSingle->vDepositString_end(nVchChars + 1);
 
-	if (xColPix.m_bPtnKey)
+	if (pColumn->bIsPtnKey())
 		tKeyHsh.vRunningHash((byte*)azColVal_varchar, nVchChars);
 
   if (iTraceBits & C_BIT_Varchar)
