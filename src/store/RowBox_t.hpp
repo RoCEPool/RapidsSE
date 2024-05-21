@@ -60,8 +60,7 @@ namespace STORE
     i8   nColumns(void);
     ColPix* axaColPix(void);
     i8    iColumn(Row* aRow, i8 iColumn);
-    void  vCopyRowPix(RowPix* pRowPixSrc);
-    void  vCopyRow(Row* aRowSrc, bool bSrcHasPtnHash, bool bCopyPtnHash);
+    //void  vCopyRow(Row* aRowSrc, bool bSrcHasPtnHash, bool bCopyPtnHash);
 
     Dtm* aColDtm(i8 i_Col);
     void vColSetNull(i8 i_Col);
@@ -319,67 +318,67 @@ ColPix* RowBox_t<AREA>::axaColPix(void)
 /*----------------------------------------------------------------------------*/
 /* copy given stream pix into the stream pix in this row                      */
 /*----------------------------------------------------------------------------*/
-template <i8 AREA>
-void RowBox_t<AREA>::vCopyRowPix(RowPix* pRowPixSrc)
-{
-  _poolAddress_(this); _footer_();
-
-  pAllotRowPix(pRowPixSrc->nDynamicSize());
-
-  MemLib::vCopy(pRowPix(),pRowPixSrc,sizeof(RowPix),CN_PDS);
-
-  m_nRowSizeProper = Row::nRowProper(pRowPixSrc->m_nColumns);
-}
+//template <i8 AREA>
+//void RowBox_t<AREA>::vCopyRowPix(RowPix* pRowPixSrc)
+//{
+//  _poolAddress_(this); _footer_();
+//
+//  pAllotRowPix(pRowPixSrc->nDynamicSize());
+//
+//  MemLib::vCopy(pRowPix(),pRowPixSrc,sizeof(RowPix),CN_PDS);
+//
+//  m_nRowSizeProper = Row::nRowProper(pRowPixSrc->m_nColumns);
+//}
 
 /*----------------------------------------------------------------------------*/
 /* copy given source row into current row of this row slab                    */
 /*----------------------------------------------------------------------------*/
-template <i8 AREA>
-void RowBox_t<AREA>::vCopyRow(Row* aRowSrc, bool bSrcHasPtnHash, bool bCopyPtnHash)
-{
-  _poolAddress_(this); _footer_();
-  
-  ASSERT(pRowPix()->m_bInitialised);
-  ASSERT(pRowPix()->m_nColumns);
-
-  i8 iVal;
-  Stz* szSrcStz;
-  
-  ASSERT(0 == m_i_ColCrs);
-  
-  i8 nCols = pRowPix()->m_nColumns;
-  
-  i8 i_Col;
-  
-  for (i_Col = 0; i_Col < nCols; i_Col++) {
-    
-    eDM eDatum = (eDM)pRowPix()->m_xaColPix[i_Col].m_uDatum;
-    
-    if (DM_VCH == eDatum) {
-       // vch datum
-
-      if (C_DATUM_NULL == aRowSrc->iColVal_int(i_Col)) {
-        vDepositColVal(C_DATUM_NULL);
-      }
-      else {
-        szSrcStz = aRowSrc->szColVal_ofs(i_Col);
-        vDepositColVal(szSrcStz);
-      }
-    }
-    else {
-      // all others
-     
-      iVal = aRowSrc->iColVal_int(i_Col);
-      vDepositColVal(iVal);
-    }
-  }
-
-  if (bSrcHasPtnHash && bCopyPtnHash) {
-    iVal = aRowSrc->iColVal_int(i_Col);
-    vDepositColVal(iVal);
-  }
-  
-}
+//template <i8 AREA>
+//void RowBox_t<AREA>::vCopyRow(Row* aRowSrc, bool bSrcHasPtnHash, bool bCopyPtnHash)
+//{
+//  _poolAddress_(this); _footer_();
+//
+//  ASSERT(pRowPix()->m_bInitialised);
+//  ASSERT(pRowPix()->m_nColumns);
+//
+//  i8 iVal;
+//  Stz* szSrcStz;
+//
+//  ASSERT(0 == m_i_ColCrs);
+//
+//  i8 nCols = pRowPix()->m_nColumns;
+//
+//  i8 i_Col;
+//
+//  for (i_Col = 0; i_Col < nCols; i_Col++) {
+//
+//    eDM eDatum = (eDM)pRowPix()->m_xaColPix[i_Col].m_uDatum;
+//
+//    if (DM_VCH == eDatum) {
+//       // vch datum
+//
+//      if (C_DATUM_NULL == aRowSrc->iColVal_int(i_Col)) {
+//        vDepositColVal(C_DATUM_NULL);
+//      }
+//      else {
+//        szSrcStz = aRowSrc->szColVal_ofs(i_Col);
+//        vDepositColVal(szSrcStz);
+//      }
+//    }
+//    else {
+//      // all others
+//
+//      iVal = aRowSrc->iColVal_int(i_Col);
+//      vDepositColVal(iVal);
+//    }
+//  }
+//
+//  if (bSrcHasPtnHash && bCopyPtnHash) {
+//    iVal = aRowSrc->iColVal_int(i_Col);
+//    vDepositColVal(iVal);
+//  }
+//
+//}
 
 /*----------------------------------------------------------------------------*/
 /* return column value from row for given column number                       */
