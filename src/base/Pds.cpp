@@ -169,14 +169,14 @@ Pds::Pds(RowPix* pRowPix, eBT eBufferType)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Pds::Pds(StreamDef* pStreamDef, bool bAddKeyHash, eBT eBufferType)
+Pds::Pds(StreamDef* pStreamDef, eBT eBufferType)
     : DataBuffer(CN_PDS, false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
 
   ASSERT(CacheLine::bOnCacheLineBoundary(this));
 
-  i8 iRowSizeProper = Row::nRowProper(pStreamDef->nColumns() + (bAddKeyHash ? 1 : 0));
+  i8 iRowSizeProper = Row::nRowProper(pStreamDef->nColumns());
 
   // Calculate block size and padding ------------------
   m_nBlockSize = sizeof(SkipListNode) + iRowSizeProper + sizeof(m_iSynthRowKey);

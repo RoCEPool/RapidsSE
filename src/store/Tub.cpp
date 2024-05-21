@@ -84,20 +84,6 @@ extern "C" void vExtern_TubRowPix(void* aTub, i8 nColumns, void* pColumnInfo) {
 }
 
 /*----------------------------------------------------------------------------*/
-/* allocate row string                                                        */
-/*----------------------------------------------------------------------------*/
-void vTub_RowStrSize(void* pTub, i8 nRowStrSize) {
-  Tub::vRowStrSize((Tub*)pTub, nRowStrSize);
-}
-
-/*----------------------------------------------------------------------------*/
-/* allocate row string                                                        */
-/*----------------------------------------------------------------------------*/
-void vTub_RowPix(void* pTub, void* pRowPix) {
-  Tub::vSetRowPix((Tub*)pTub, (RowPix*)pRowPix);
-}
-
-/*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Tub::Tub(void)
@@ -228,19 +214,6 @@ void Tub::vRowStrSize(Tub* pTub, i8 nRowStrSize)
   Pds* pPdsRowBuffer = _pPds(pTub->pWorkingBuffer());
 
   pPdsRowBuffer->vDepositString_end(nRowStrSize);
-
-}
-
-/*----------------------------------------------------------------------------*/
-/* allocate row string                                                        */
-/*----------------------------------------------------------------------------*/
-void Tub::vSetRowPix(Tub* pTub, RowPix* pRowPix)
-{
-  _static_
-
-  RASSERT(CN_TUB == pTub->eGetClassNo());
-
-  pTub->vRowPix(pRowPix);
 
 }
 

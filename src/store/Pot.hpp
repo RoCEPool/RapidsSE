@@ -35,7 +35,6 @@ namespace STORE
     static void* aAllotRowPds(Pot* pPot, i8 iKeyHsh, char** aazStrArea, i8* pnMaxStrAreaLen, i8* piErrorCode);
     static void  vRowStrSize(Pot* pPot, i8 iKeyHsh, i8 nRowStrSize);
     static void  vRepair(Object* pObject);
-    static void  vSetRowPix(Pot* pPot, RowPix* pRowPix);
 
     DataBuffer* pBuffer(i8 i_Ptn);
     DataBuffer* pCompleted(i8 i_Ptn);

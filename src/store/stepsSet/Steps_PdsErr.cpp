@@ -181,7 +181,7 @@ void Step::vPdsErrNew(void)
 
   StreamDef* pStreamDef = pTable->pStreamDef();
 
-  m_pLogicUnit->m_xpPdsErr = new Pds(pStreamDef, false, eBufferType);
+  m_pLogicUnit->m_xpPdsErr = new Pds(pStreamDef, eBufferType);
 
   EXIT();
 }

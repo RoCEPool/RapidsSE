@@ -36,7 +36,7 @@ Record::Record(StreamDef* pStreamDef)
 {
   _precondition_(_MAGIC_,CN_RECORD,_FOOTER_);
   
-  ASSERT(pRowPix->m_nColumns);
+  ASSERT(pStreamDef->nColumns());
   
   m_pStreamDef = pStreamDef;
     

@@ -125,7 +125,7 @@ void Step::vMetaDataTableCreateTable(void)
   Pds* pPdsRowBuffer = nullptr;
   bool bAppend = false;
   if(pPdsRootBuffer->nItems() == 0) {
-    pPdsRowBuffer = new Pds(pStreamDef, false, BT_DATA);
+    pPdsRowBuffer = new Pds(pStreamDef,  BT_DATA);
     bAppend = true;
   } else {
     i8 iSearchKey = C_INT_MAX;
@@ -138,7 +138,7 @@ void Step::vMetaDataTableCreateTable(void)
 
       pPdsRowBuffer = _pPds(pEntry->m_pValObject);
     } else {
-      pPdsRowBuffer = new Pds(pStreamDef, false, BT_DATA);
+      pPdsRowBuffer = new Pds(pStreamDef,  BT_DATA);
       bAppend = true;
     }
   }
@@ -161,7 +161,7 @@ void Step::vMetaDataTableCreateTable(void)
     AM::pHashMap()->vDropKeyLock(oBufferId.m_pvAsAddress);
 
     // create a new buffer and continue adding rows to it
-    pPdsRowBuffer = new Pds(pStreamDef, false, BT_DATA);
+    pPdsRowBuffer = new Pds(pStreamDef,  BT_DATA);
     bAppend = true;
     pRow = pPdsRowBuffer->pAllotRow(pStreamDef,
                                     C_VARGS_BEGIN,
@@ -193,7 +193,7 @@ void Step::vMetaDataTableCreateTable(void)
   pPdsRowBuffer = nullptr;
   bAppend = false;
   if(pPdsRootBuffer->nItems() == 0) {
-    pPdsRowBuffer = new Pds(pColumnsStreamDef, false, BT_DATA);
+    pPdsRowBuffer = new Pds(pColumnsStreamDef, BT_DATA);
     bAppend = true;
   } else {
     i8 iSearchKey = C_INT_MAX;
@@ -206,7 +206,7 @@ void Step::vMetaDataTableCreateTable(void)
 
       pPdsRowBuffer = _pPds(pEntry->m_pValObject);
     } else {
-      pPdsRowBuffer = new Pds(pColumnsStreamDef, false, BT_DATA);
+      pPdsRowBuffer = new Pds(pColumnsStreamDef, BT_DATA);
       bAppend = true;
     }
   }
@@ -243,7 +243,7 @@ void Step::vMetaDataTableCreateTable(void)
       AM::pHashMap()->vDropKeyLock(oBufferId.m_pvAsAddress);
 
       // create a new buffer and continue adding rows to it
-      pPdsRowBuffer = new Pds(pColumnsStreamDef, false, BT_DATA);
+      pPdsRowBuffer = new Pds(pColumnsStreamDef, BT_DATA);
       bAppend = true;
 
       // Add column info to pds
@@ -307,7 +307,7 @@ void Step::vMetaDataTableCreateIndex(void)
   Pds* pPdsRowBuffer = nullptr;
   bool bAppend = false;
   if(pPdsRootBuffer->nItems() == 0) {
-    pPdsRowBuffer = new Pds(pIndexesStreamDef, false, BT_DATA);
+    pPdsRowBuffer = new Pds(pIndexesStreamDef, BT_DATA);
     bAppend = true;
   } else {
     i8 iSearchKey = C_INT_MAX;
@@ -320,7 +320,7 @@ void Step::vMetaDataTableCreateIndex(void)
 
       pPdsRowBuffer = _pPds(pEntry->m_pValObject);
     } else {
-      pPdsRowBuffer = new Pds(pIndexesStreamDef, false, BT_DATA);
+      pPdsRowBuffer = new Pds(pIndexesStreamDef, BT_DATA);
       bAppend = true;
     }
   }
@@ -344,7 +344,7 @@ void Step::vMetaDataTableCreateIndex(void)
     AM::pHashMap()->vDropKeyLock(oBufferId.m_pvAsAddress);
 
     // create a new buffer and continue adding rows to it
-    pPdsRowBuffer = new Pds(pIndexesStreamDef, false, BT_DATA);
+    pPdsRowBuffer = new Pds(pIndexesStreamDef, BT_DATA);
     bAppend = true;
     pRow = pPdsRowBuffer->pAllotRow(pIndexesStreamDef,
                                     C_VARGS_BEGIN,
@@ -378,7 +378,7 @@ void Step::vMetaDataTableCreateIndex(void)
   pPdsRowBuffer = nullptr;
   bAppend = false;
   if(pPdsRootBuffer->nItems() == 0) {
-    pPdsRowBuffer = new Pds(pIndexColsStreamDef, false, BT_DATA);
+    pPdsRowBuffer = new Pds(pIndexColsStreamDef, BT_DATA);
     bAppend = true;
   } else {
     i8 iSearchKey = C_INT_MAX;
@@ -391,7 +391,7 @@ void Step::vMetaDataTableCreateIndex(void)
 
       pPdsRowBuffer = _pPds(pEntry->m_pValObject);
     } else {
-      pPdsRowBuffer = new Pds(pIndexColsStreamDef, false, BT_DATA);
+      pPdsRowBuffer = new Pds(pIndexColsStreamDef, BT_DATA);
       bAppend = true;
     }
   }
@@ -421,7 +421,7 @@ void Step::vMetaDataTableCreateIndex(void)
       AM::pHashMap()->vDropKeyLock(oBufferId.m_pvAsAddress);
 
       // create a new buffer and continue adding rows to it
-      pPdsRowBuffer = new Pds(pIndexColsStreamDef, false, BT_DATA);
+      pPdsRowBuffer = new Pds(pIndexColsStreamDef, BT_DATA);
       bAppend = true;
       pRow = pPdsRowBuffer->pAllotRow(pIndexColsStreamDef,
                                       C_VARGS_BEGIN,
@@ -510,7 +510,7 @@ void Step::vMetaDataTableInitTables(void)
   Pds* pPdsRowBuffer = nullptr;
   bool bAppend = false;
   if(pPdsRootBuffer->nItems() == 0) {
-    pPdsRowBuffer = new Pds(pStreamDef, false, BT_DATA);
+    pPdsRowBuffer = new Pds(pStreamDef,  BT_DATA);
     bAppend = true;
   } else {
     i8 iSearchKey = C_INT_MAX;
@@ -523,7 +523,7 @@ void Step::vMetaDataTableInitTables(void)
 
       pPdsRowBuffer = _pPds(pEntry->m_pValObject);
     } else {
-      pPdsRowBuffer = new Pds(pStreamDef, false, BT_DATA);
+      pPdsRowBuffer = new Pds(pStreamDef,  BT_DATA);
       bAppend = true;
     }
   }
@@ -626,7 +626,7 @@ void Step::vMetaDataTableCatalogInsert(void)
   Pds* pPdsRowBuffer = nullptr;
   bool bAppend = false;
   if(pPdsRootBuffer->nItems() == 0) {
-    pPdsRowBuffer = new Pds(pStreamDef, false, BT_DATA);
+    pPdsRowBuffer = new Pds(pStreamDef,  BT_DATA);
     bAppend = true;
   } else {
     i8 iSearchKey = C_INT_MAX;
@@ -639,7 +639,7 @@ void Step::vMetaDataTableCatalogInsert(void)
 
       pPdsRowBuffer = _pPds(pEntry->m_pValObject);
     } else {
-      pPdsRowBuffer = new Pds(pStreamDef, false, BT_DATA);
+      pPdsRowBuffer = new Pds(pStreamDef,  BT_DATA);
       bAppend = true;
     }
   }
@@ -698,7 +698,7 @@ void Step::vMetaDataTableSchemaInsert(void)
   Pds* pPdsRowBuffer = nullptr;
   bool bAppend = false;
   if(pPdsRootBuffer->nItems() == 0) {
-    pPdsRowBuffer = new Pds(pStreamDef, false, BT_DATA);
+    pPdsRowBuffer = new Pds(pStreamDef,  BT_DATA);
     bAppend = true;
   } else {
     i8 iSearchKey = C_INT_MAX;
@@ -711,7 +711,7 @@ void Step::vMetaDataTableSchemaInsert(void)
 
       pPdsRowBuffer = _pPds(pEntry->m_pValObject);
     } else {
-      pPdsRowBuffer = new Pds(pStreamDef, false, BT_DATA);
+      pPdsRowBuffer = new Pds(pStreamDef,  BT_DATA);
       bAppend = true;
     }
   }
@@ -816,7 +816,7 @@ void Step::vMetaDataTableInit(void)
     Pds* pPdsRowBuffer = nullptr;
     bool bAppend = false;
     if(pPdsRootBuffer->nItems() == 0) {
-      pPdsRowBuffer = new Pds(pColumnsStreamDef, false, BT_DATA);
+      pPdsRowBuffer = new Pds(pColumnsStreamDef, BT_DATA);
       bAppend = true;
     } else {
       i8 iSearchKey = C_INT_MAX;
@@ -829,7 +829,7 @@ void Step::vMetaDataTableInit(void)
 
         pPdsRowBuffer = _pPds(pEntry->m_pValObject);
       } else {
-        pPdsRowBuffer = new Pds(pColumnsStreamDef, false, BT_DATA);
+        pPdsRowBuffer = new Pds(pColumnsStreamDef, BT_DATA);
         bAppend = true;
       }
     }
@@ -866,7 +866,7 @@ void Step::vMetaDataTableInit(void)
         AM::pHashMap()->vDropKeyLock(oBufferId.m_pvAsAddress);
 
         // create a new buffer and continue adding rows to it
-        pPdsRowBuffer = new Pds(pColumnsStreamDef, false, BT_DATA);
+        pPdsRowBuffer = new Pds(pColumnsStreamDef, BT_DATA);
         bAppend = true;
         // Add column info to pds
         pRow = pPdsRowBuffer->pAllotRow(pColumnsStreamDef,
@@ -911,7 +911,7 @@ void Step::vMetaDataTableInit(void)
   Pds* pPdsRowBuffer = nullptr;
   bool bAppend = false;
   if(pPdsRootBuffer->nItems() == 0) {
-    pPdsRowBuffer = new Pds(pNodesStreamDef, false, BT_DATA);
+    pPdsRowBuffer = new Pds(pNodesStreamDef, BT_DATA);
     bAppend = true;
   } else {
     i8 iSearchKey = C_INT_MAX;
@@ -924,7 +924,7 @@ void Step::vMetaDataTableInit(void)
 
       pPdsRowBuffer = _pPds(pEntry->m_pValObject);
     } else {
-      pPdsRowBuffer = new Pds(pNodesStreamDef, false, BT_DATA);
+      pPdsRowBuffer = new Pds(pNodesStreamDef, BT_DATA);
       bAppend = true;
     }
   }
@@ -950,7 +950,7 @@ void Step::vMetaDataTableInit(void)
       AM::pHashMap()->vDropKeyLock(oBufferId.m_pvAsAddress);
 
       // create a new buffer and continue adding rows to it
-      pPdsRowBuffer = new Pds(pNodesStreamDef, false, BT_DATA);
+      pPdsRowBuffer = new Pds(pNodesStreamDef, BT_DATA);
       bAppend = true;
       pRow = pPdsRowBuffer->pAllotRow(pNodesStreamDef,
                                       C_VARGS_BEGIN,

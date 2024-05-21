@@ -12,6 +12,7 @@ namespace STORE
   private:
     PdsBufferQueue* m_pBufferAddrQueue;
 
+    //StreamDef*  m_pStreamDef;
     RowPix*      m_pRowPix;
 
     // must be last
@@ -29,7 +30,6 @@ namespace STORE
     static void* aAllotRowPds(Tub* pTub, char** aazStrArea, i8* pnMaxStrAreaLen, i8* piErrorCode);
 		static Row*  pAllotRow(Tub* pTub, char** aazStrArea, i8* pnMaxStrAreaLen, i8* piErrorCode);
     static void  vRowStrSize(Tub* pTub, i8 nRowStrSize);
-    static void  vSetRowPix(Tub* pTub, RowPix* pRowPix);
     static void  vToCsv(StreamDef* pStreamDef, Tub* pTub, Pds* pPds);
 
   public:
@@ -47,8 +47,6 @@ namespace STORE
   };
   
   Tub* _pTub(void* aAddr);
-  void  vTub_RowStrSize(void* pTub, i8 nRowStrSize);
-  void vTub_RowPix(void* pTub, void* aRowPix);
 }
 
 /*============================================================================*/

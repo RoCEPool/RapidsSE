@@ -2652,7 +2652,7 @@ L_RecordEndLineEnd:
   pIntoPdsRowBuffer = _pPds(m_oLglBufSet.pBuffer(tLglPtn));
 
   if (! pIntoPdsRowBuffer) {
-    pIntoPdsRowBuffer = new Pds(m_pStreamDef, false);
+    pIntoPdsRowBuffer = new Pds(m_pStreamDef);
     pIntoPdsRowBuffer->vLglPtn(tLglPtn);
     m_oLglBufSet.vAddBuffer(tLglPtn,pIntoPdsRowBuffer);
   }
@@ -2660,7 +2660,7 @@ L_RecordEndLineEnd:
   // copy source RowSingle into target partition row slab
   aNewRow = pIntoPdsRowBuffer->pCopyRow(m_pStreamDef, m_pRowSingle->pRowCurrent(), false, false);
   if (! aNewRow) {
-    pIntoPdsRowBuffer = new Pds(m_pStreamDef, false);
+    pIntoPdsRowBuffer = new Pds(m_pStreamDef);
     pIntoPdsRowBuffer->vLglPtn(tLglPtn);
 
     m_oLglBufSet.vAddBuffer(tLglPtn,pIntoPdsRowBuffer);

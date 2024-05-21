@@ -1175,7 +1175,7 @@ void Step::vPdsNew(void)
 
   StreamDef* pStreamDef = pTable->pStreamDef();
 
-  m_pLogicUnit->m_xpPds = new Pds(pStreamDef, false, eBufferType);
+  m_pLogicUnit->m_xpPds = new Pds(pStreamDef,  eBufferType);
 
   EXIT();
 }
