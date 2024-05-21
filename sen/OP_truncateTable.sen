@@ -40,13 +40,25 @@
 /*----------------------------------------------------------------------------*/
 : truncateTable_StartMarker \handler
 
+  0 locals| errorCode |
+
   //"Operand:- EV_M_START" .verbose
 
   PipeIn[].pipeOut
 
   // check if we can truncate the table
   <tableNm> op__table if
-    Table[].tablePtn@ to TablePtn[]
+    // If table kind is not user defined (TT_NORMAL)
+    // throw error
+    Table[].kind TT_NORMAL != if
+      // create an exec error rowBuffer
+      EC_TABLE_CANT_BE_DELETED to errorCode
+      errorCode op__execErr
+      true
+      exit
+    else
+      Table[].tablePtn@ to TablePtn[]
+    then
   then
 
   true

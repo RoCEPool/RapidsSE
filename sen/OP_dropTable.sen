@@ -103,7 +103,6 @@
 
   //"Operand:- EV_D_PDSROWBUFFER" .verbose
   //PipeIn[].pipeToOutput
-  "Got PdsRowBuffer" .
 
   PipeIn[].pipeToOutput
 

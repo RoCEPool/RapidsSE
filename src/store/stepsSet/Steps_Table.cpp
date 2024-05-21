@@ -56,6 +56,7 @@ void Step::vAddSteps_Table(void)
   vAddStep("Table[].findColumn"_Stz,       &Step::vTableFindColumn);
   vAddStep("table.indexCount"_Stz,         &Step::vTableIndexCount);
   vAddStep("table.isColumn"_Stz,           &Step::vTableIsColumn);
+  vAddStep("Table[].kind"_Stz,           &Step::vTableGetKind);
   vAddStep("table.getName"_Stz,            &Step::vTableGetName);
   vAddStep("Table[].isInternallyDefined"_Stz,   &Step::vTableIsInternallyDefined);
   vAddStep("Table[].isMetaData"_Stz,   &Step::vTableIsMetaData);
@@ -498,6 +499,20 @@ void Step::vTableIsColumn(void)
   
   m_pDataStack->vPushInt(bFound);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Table[].kind -- get table kind                                             */
+/*----------------------------------------------------------------------------*/
+void Step::vTableGetKind(void)
+{
+  ENTRY();
+
+  Table* pTable = _pTable(*m_pLogicUnit->m_xpTable);
+
+  m_pDataStack->vPushInt(pTable->eKind());
+
   EXIT();
 }
 

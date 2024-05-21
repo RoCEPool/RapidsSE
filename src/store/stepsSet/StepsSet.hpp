@@ -1190,6 +1190,7 @@ void vJobIdLastJobIdFetch(void);
 
   void vMetaDataTableInitTables(void);
   void vMetaDataTableDropTable(void);
+  void vMetaDataTableFind(void);
   void vMetaDataTableCatalogInsert(void);
   void vMetaDataTableCatalogDelete(void);
   void vMetaDataTableSchemaInsert(void);
@@ -2152,6 +2153,7 @@ void vJobIdLastJobIdFetch(void);
   void vTableGetName(void);
   void vTableIndexCount(void);
   void vTableIsColumn(void);
+  void vTableGetKind(void);
   void vTableIsInternallyDefined(void);
   void vTableIsMetaData(void);
   void vTableIsReplicated(void);

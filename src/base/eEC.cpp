@@ -258,6 +258,7 @@ Stz* aEC[EC_ENUMS] =
 
   /* _T_ */
   /* EC_TABLE_ALREADY_LOADED          */ (Stz*)"table already loaded",
+  /* EC_TABLE_CANT_BE_DELETED         */ (Stz*)"table can't be deleted",
   /* EC_TABLE_EXISTS                  */ (Stz*)"table exists",
   /* EC_TABLE_NOT_EMPTY               */ (Stz*)"table not empty",
   /* EC_TABLE_IN_USE                  */ (Stz*)"table in use",
@@ -558,6 +559,7 @@ Stz* aEC2[EC_ENUMS] = // error code
 
   /* _T_ */
   /* EC_TABLE_ALREADY_LOADED          */ (Stz*)"EC_TABLE_ALREADY_LOADED",
+  /* EC_TABLE_CANT_BE_DELETED         */ (Stz*)"EC_TABLE_CANT_BE_DELETED",
   /* EC_TABLE_EXISTS                  */ (Stz*)"EC_TABLE_EXISTS",
   /* EC_TABLE_NOT_EMPTY               */ (Stz*)"EC_TABLE_NOT_EMPTY",
   /* EC_TABLE_IN_USE                  */ (Stz*)"EC_TABLE_IN_USE",
@@ -865,6 +867,7 @@ Stz* aErrorMsg[EC_ENUMS] =
 
   /* _T_ */
   /* EC_TABLE_ALREADY_LOADED          */ (Stz*)"table already loaded",
+  /* EC_TABLE_CANT_BE_DELETED         */ (Stz*)"table can't be deleted",
   /* EC_TABLE_EXISTS                  */ (Stz*)"table exists",
   /* EC_TABLE_NOT_EMPTY               */ (Stz*)"table not empty",
   /* EC_TABLE_IN_USE                  */ (Stz*)"table in use",

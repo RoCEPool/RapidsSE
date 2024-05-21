@@ -40,6 +40,7 @@ void Step::vAddSteps_MetaDataTable(void)
   vAddStep("MetaDataTable[].select"_Stz,        &Step::vMetaDataTableSelect);
   vAddStep("MetaDataTable[].createTable"_Stz,  &Step::vMetaDataTableCreateTable);
   vAddStep("MetaDataTable[].dropTable"_Stz,  &Step::vMetaDataTableDropTable);
+  vAddStep("MetaDataTable[].find"_Stz,  &Step::vMetaDataTableFind);
 
   vAddStep("MetaDataTable[].createIndex"_Stz,  &Step::vMetaDataTableCreateIndex);
   vAddStep("MetaDataTable[].dropIndex"_Stz,  &Step::vMetaDataTableDropIndex);
@@ -459,13 +460,13 @@ void Step::vMetaDataTableDropIndex(void)
   // Delete table index info from indexes
 
   Table* pTable = AM::pMetaDataTableIndexes();
-  MetaDataTables::vDeleteRowFromTable(pTable, 2, szTableNm);
+  MetaDataTables::vDeleteAllRowsFromTable(pTable, 2, szTableNm);
 
   //------------------------------------------------------------------------
   // Delete table index info from indexColumns
 
   pTable = AM::pMetaDataTableIndexColumns();
-  MetaDataTables::vDeleteRowFromTable(pTable, 2, szTableNm);
+  MetaDataTables::vDeleteAllRowsFromTable(pTable, 2, szTableNm);
 
   EXIT();
 }
@@ -562,33 +563,60 @@ void Step::vMetaDataTableDropTable(void)
   //------------------------------------------------------------------------
   // Delete table row info from tableOfTables
 
-  Table* pTable = AM::pMetaDataTableOfTables();
+  // We first attempt to delete the table row info from tableoftables
+  // We check if it's a user defined table or an internal/metadata table
+  // If it's not a user table, we ignore the drop table command.
 
-  // This fn deletes all rows from the table
-  // We KNOW that there should exist only one row with this table name
-  // TODO: Arjun - Break out of searching for the table name once we found
-  // a match.
-  MetaDataTables::vDeleteRowFromTable(pTable, 2, szTableNm);
+  bool bResult = MetaDataTables::bDeleteFromTableOfTables(szTableNm);
+
+  if(!bResult) {
+    EXIT();
+    return;
+  }
 
   //------------------------------------------------------------------------
   // Delete table row info from columns
 
-  pTable = AM::pMetaDataTableColumns();
+  Table* pTable = AM::pMetaDataTableColumns();
 
   // More than one row can match this table name, so delete all of them
-  MetaDataTables::vDeleteRowFromTable(pTable, 2, szTableNm);
+  MetaDataTables::vDeleteAllRowsFromTable(pTable, 2, szTableNm);
 
   //------------------------------------------------------------------------
   // Delete table index info from indexes
 
   pTable = AM::pMetaDataTableIndexes();
-  MetaDataTables::vDeleteRowFromTable(pTable, 2, szTableNm);
+  MetaDataTables::vDeleteAllRowsFromTable(pTable, 2, szTableNm);
 
   //------------------------------------------------------------------------
   // Delete table index info from indexColumns
 
   pTable = AM::pMetaDataTableIndexColumns();
-  MetaDataTables::vDeleteRowFromTable(pTable, 2, szTableNm);
+  MetaDataTables::vDeleteAllRowsFromTable(pTable, 2, szTableNm);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* MetaDataTable[].find --                                                    */
+/*----------------------------------------------------------------------------*/
+void Step::vMetaDataTableFind(void)
+{
+  ENTRY();
+
+  s256 szTableNm;
+  m_pDataStack->vPopStr(szTableNm,__func__);
+
+  Table* pTable = AM::pMetaDataTableSchema();
+  if(!pTable) {
+    m_pDataStack->vPushPtr(nullptr);
+    EXIT();
+    return;
+  }
+
+  Table* pNewTable = MetaDataTables::pTableFind(szTableNm);
+
+  m_pDataStack->vPushPtr(pNewTable);
 
   EXIT();
 }
@@ -748,7 +776,7 @@ void Step::vMetaDataTableSchemaDelete(void)
     EXIT();
     return;
   }
-  MetaDataTables::vDeleteRowFromTable(pTable, 0, szCatalogNm);
+  MetaDataTables::vDeleteAllRowsFromTable(pTable, 0, szCatalogNm);
 
   EXIT();
 }
@@ -768,7 +796,7 @@ void Step::vMetaDataTableCatalogDelete(void)
     EXIT();
     return;
   }
-  MetaDataTables::vDeleteRowFromTable(pTable, 0, szCatalogNm);
+  MetaDataTables::vDeleteAllRowsFromTable(pTable, 0, szCatalogNm);
 
   EXIT();
 }

@@ -473,6 +473,7 @@ void Constants::vAddConstantsCpp(void)
   /*    */ vAddConstant("EC_SYSTEM_CLOSED"_Stz,      EC_SYSTEM_CLOSED);
 
   /*    */ vAddConstant("EC_TABLE_ALREADY_LOADED"_Stz, EC_TABLE_ALREADY_LOADED);
+  /*    */ vAddConstant("EC_TABLE_CANT_BE_DELETED"_Stz, EC_TABLE_CANT_BE_DELETED);
   /* 55 */ vAddConstant("EC_TABLE_EXISTS"_Stz,       EC_TABLE_EXISTS);
   /* 56 */ vAddConstant("EC_TABLE_IN_USE"_Stz,       EC_TABLE_IN_USE);
   /* 57 */ vAddConstant("EC_TABLE_NOT_EMPTY"_Stz,    EC_TABLE_NOT_EMPTY);
@@ -631,6 +632,15 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("RS_NONE"_Stz,                 RS_NONE);
   /*  0 */ vAddConstant("RS_LOCAL_RESPONSE"_Stz,       RS_LOCAL_RESPONSE);
   /*  0 */ vAddConstant("RS_DIS2PC_RESPONSE"_Stz,      RS_DIS2PC_RESPONSE);
+
+  // TT_ : table type
+  /*  0 */ vAddConstant("TT_NONE"_Stz,      TT_NONE);
+  /*  1 */ vAddConstant("TT_INFOSET"_Stz,   TT_INFOSET);
+  /*  2 */ vAddConstant("TT_INTERNAL"_Stz,  TT_INTERNAL);
+  /*  3 */ vAddConstant("TT_METADATA"_Stz,  TT_METADATA);
+  /*  4 */ vAddConstant("TT_NORMAL"_Stz,    TT_NORMAL);
+  /*  5 */ vAddConstant("TT_REPLICATED"_Stz,TT_REPLICATED);
+  /*  6 */ vAddConstant("TT_ENUMS"_Stz,     TT_ENUMS);
 
   // TC_ : traceable components
   /*  0 */ vAddConstant("TC_VERBOSE"_Stz,               TC_VERBOSE);

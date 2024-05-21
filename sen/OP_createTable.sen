@@ -35,7 +35,7 @@
   StreamDefLft[] sTableNm table::createTable to Table[]
 
   // Add info to metadata tables, pass the table type (eTT)
-  4 MetaDataTable[].createTable
+  TT_NORMAL MetaDataTable[].createTable
 
   nullptr to StreamDefLft[]
 ;
