@@ -954,7 +954,20 @@ void Input::vCollectCpp(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  vTokenCollectBegin();
+  //vTokenCollectBegin();
+  // Note: We are removing vTokenCollectBegin(), which would get a pointer into
+  // the TokenVecs byte array so it could write the token string directly into it.
+  // While this would be quite performant, it means that the byte array must be
+  // big enough for all supported inputs so as not to overflow.
+  // Instead we will collect it into a string on the stack and then copy it to
+  // the TokenVecs byte array when we append the token.
+  s1M sTokenStr;
+  m_pCurrTkn->vLineNo(m_xAnnChar.m_iLine);
+  m_pCurrTkn->vColNo(m_xAnnChar.m_iCol);
+  // The implementation below will use the string pointer from here, which points
+  // to the stack string. At the end of this we will copy the stack string into
+  // the TokenVec.
+  m_pCurrTkn->vChars(sTokenStr.szStz());
 
   // end of input?
   if (bHitEOF()) {
@@ -990,7 +1003,9 @@ void Input::vCollectCpp(void)
     vCollectCppOther();
   }
   
-  vTokenCollectEnd();
+  //vTokenCollectEnd();
+  // Copy the string that we've collected on the stack into the TokenVec bytespace.
+  m_pCurrTkn->vUpdateChars(sTokenStr.szStz(), m_pInpTknVec);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  
@@ -1560,7 +1575,19 @@ void Input::vCollectSen(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  vTokenCollectBegin();
+  //vTokenCollectBegin();
+  // Note: We are removing vTokenCollectBegin(), which would get a pointer into
+  // the TokenVecs byte array so it could write the token string directly into it.
+  // While this would be quite performant, it means that the byte array must be
+  // big enough for all supported inputs so as not to overflow.
+  // Instead we will collect it into a string on the stack and then copy it to
+  // the TokenVecs byte array when we append the token.
+  s1M sTokenStr;
+  m_pCurrTkn->vLineNo(m_xAnnChar.m_iLine);
+  m_pCurrTkn->vColNo(m_xAnnChar.m_iCol);
+  // The implementation below will use the string pointer from here, which points
+  // to the stack string.
+  m_pCurrTkn->vChars(sTokenStr.szStz());
 
   // end of input?
   if (bHitEOF()) {
@@ -1590,7 +1617,9 @@ void Input::vCollectSen(void)
     vCollectSenName();
   }
   
-  vTokenCollectEnd();
+  //vTokenCollectEnd();
+  // Copy the string that we've collected on the stack into the TokenVec bytespace.
+  m_pCurrTkn->vUpdateChars(sTokenStr.szStz(), m_pInpTknVec);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -2138,44 +2167,6 @@ void Input::vUngetAnnCharStripped(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
   m_pCharser->vUngetAnnChar(m_xAnnChar);
-}
-
-/*----------------------------------------------------------------------------*/
-/* begin collecting a new token                                               */
-/*----------------------------------------------------------------------------*/
-void Input::vTokenCollectBegin(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
-    
-//  Stz* szLatter = m_pTknVec->szLaterChars();
-//
-//  * szLatter->azChar() = '\0';
-//
-//  m_pCurrTkn->vChars(szLatter);
-  
-  m_pInpTknVec->vCollectBegin(m_pCurrTkn);
-    
-  m_pCurrTkn->vLineNo(m_xAnnChar.m_iLine);
-  m_pCurrTkn->vColNo(m_xAnnChar.m_iCol);
-}
-
-/*----------------------------------------------------------------------------*/
-/* end collecting a token                                                     */
-/*----------------------------------------------------------------------------*/
-void Input::vTokenCollectEnd(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
-  
-//  i8 nChars = m_pCurrTkn->nChars();
-//
-//  m_pTknVec->vTakeCharsBytes(nChars + 1);
-//
-//  Stz* szLatter = m_pTknVec->szLaterChars();
-//  * szLatter->azChar() = '\0';
-//
-//  vTrace("Chars: %s\n"_Stz,m_pCurrTkn->szChars());
-  
-  m_pInpTknVec->vCollectEnd(m_pCurrTkn);
 }
 
 /*----------------------------------------------------------------------------*/

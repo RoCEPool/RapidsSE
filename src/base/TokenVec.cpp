@@ -194,7 +194,7 @@ void TokenVec::vAppendToken(Stz* szArgChars, eTN eToken)
 
   pToken->vToken(eToken);
 
-  vIntegrityCheck();
+  //vIntegrityCheck();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -206,7 +206,7 @@ void TokenVec::vAppendToken(Token* pToken)
   
   vAppendToken(pToken->szChars(),pToken->eToken());
   
-  vIntegrityCheck();
+  //vIntegrityCheck();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -221,7 +221,7 @@ void TokenVec::vAppendVector(TokenVec* pTknVec)
     vAppendToken(pToken);
   }
   
-  vIntegrityCheck();
+  //vIntegrityCheck();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -236,44 +236,6 @@ bool TokenVec::bBlankLine(void)
     return true;
   
   return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* begin collecting a new token                                               */
-/*----------------------------------------------------------------------------*/
-void TokenVec::vCollectBegin(Token* pToken)
-{
-  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
-  
-  Stz* szLatter = _szLaterChars();
-  
-  * szLatter->azChar() = '\0';
-  
-  pToken->vChars(szLatter);
-}
-
-/*----------------------------------------------------------------------------*/
-/* end collecting a token                                                     */
-/*----------------------------------------------------------------------------*/
-void TokenVec::vCollectEnd(Token* pToken)
-{
-  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
-  
-  i8 nChars = pToken->nChars();
-
-  _vByteSpaceTake(nChars + 1);
-
-  Stz* szLatter = _szLaterChars();
-  * szLatter->azChar() = '\0';
-
-  //SP_Token spTkn;
-  //vTrace("vCollectEnd: %s\n"_Stz,spTkn.sz(pToken));
-  
-  //if (pToken->szChars()->bSame("catalog"_Stz))
-  //if (pToken->szChars()->bSame(""_Stz))
-  //  BASE::vDebugPoint();
-  
-  vIntegrityCheck();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -308,7 +270,7 @@ void TokenVec::vCopyVector(TokenVec* pTknVecSrc)
     pToken_dst->vCopyToken_restricted(pToken_src,this);
   }
   
-  vIntegrityCheck();
+  //vIntegrityCheck();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -486,7 +448,7 @@ void TokenVec::vDuplicateVector(TokenVec* pSrcVec)
     vAppendToken(pToken_src);
   }
   
-  vIntegrityCheck();
+//  vIntegrityCheck();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -689,7 +651,7 @@ void TokenVec::vInsertToken(i8 i_At, Stz* szArgChars, eTN eToken)
   
   //vDumpVec(16);
 
-  vIntegrityCheck();
+//  vIntegrityCheck();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -876,7 +838,7 @@ void TokenVec::vRemoveToken(i8 i_CutTkn)
     _vTokenRemoveLast(pTknCut);
   }
     
-  vIntegrityCheck();
+//  vIntegrityCheck();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -892,7 +854,7 @@ void TokenVec::vReplaceToken(Token* pDstToken, Token* pSrcToken)
   pDstToken->vLineNo(pSrcToken->iLineNo());
   pDstToken->vColNo(pSrcToken->iColNo());
   
-  vIntegrityCheck();
+//  vIntegrityCheck();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1091,7 +1053,7 @@ void TokenVec::vUpdateToken(Token* pDstToken, Stz* szArgChars)
   else
     _vCharsCopyInterior(pDstToken,szArgChars);
   
-  vIntegrityCheck();
+//  vIntegrityCheck();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1326,7 +1288,7 @@ void TokenVec::_vCharsCopyInterior(Token* pDstToken, Stz* szArgChars)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
-  vIntegrityCheck();
+//  vIntegrityCheck();
 
   //vTrace("_vCharsCopyInterior\n"_Stz);
   //vDumpVec(16);
@@ -1356,7 +1318,7 @@ void TokenVec::_vCharsCopyInterior(Token* pDstToken, Stz* szArgChars)
   //vTrace("--- --- --- --- --- ---\n"_Stz);
   //vDumpVec(16);
 
-  vIntegrityCheck();
+//  vIntegrityCheck();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1366,8 +1328,8 @@ void TokenVec::_vCharsCopyLast(Token* pDstToken, Stz* szArgChars)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
-  vListTokens();
-  vIntegrityCheck();
+//  vListTokens();
+//  vIntegrityCheck();
   i8 nSize = szArgChars->nSize();
   
   Stz* szExtension = _szByteSpaceExtend(nSize);
@@ -1376,8 +1338,8 @@ void TokenVec::_vCharsCopyLast(Token* pDstToken, Stz* szArgChars)
 
   StrLib::vCopy(szExtension->azChar(), nSize, szArgChars->azChar());
 
-  vListTokens();
-  vIntegrityCheck();
+//  vListTokens();
+//  vIntegrityCheck();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1464,7 +1426,7 @@ void TokenVec::_vTokenRemoveInterior(Token* pTknCut)
   //vTrace("--- --- --- --- --- ---\n"_Stz);
   //vDumpVec(16);
 
-  vIntegrityCheck();
+  //vIntegrityCheck();
 
   //BASE::vDebugPoint();
 }

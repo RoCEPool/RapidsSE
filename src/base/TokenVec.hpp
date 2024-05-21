@@ -34,8 +34,6 @@ namespace BASE
     void vAppendToken(Token* pToken);
     void vAppendVector(TokenVec* pTokenVec);
     bool bBlankLine(void);
-    void vCollectBegin(Token* pToken);
-    void vCollectEnd(Token* pToken);
     i8   iCountTokens(void);
     void vCopyVector(TokenVec* pTokenVec);
     i8   iCurrToken(void);

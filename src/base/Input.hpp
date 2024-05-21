@@ -128,9 +128,6 @@ namespace BASE
     void vGetAnnChar(void);
     void vGetAnnCharStripped(void);
     void vUngetAnnCharStripped(void);
-  
-    void vTokenCollectBegin(void);
-    void vTokenCollectEnd(void);
 
     bool bCursorAdvance(eEC& eError);
     void vCursorReset(void);
