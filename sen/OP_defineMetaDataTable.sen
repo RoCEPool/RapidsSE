@@ -39,7 +39,8 @@
   MetaDataTable[].setAM
 
   // create row in metadata table with catalogNm, schemaNm, tableNm
-  MetaDataTable[].initTables
+  // PAss the table type (eTT)
+  3 MetaDataTable[].initTables
 
   nullptr to StreamDefLft[]
 ;

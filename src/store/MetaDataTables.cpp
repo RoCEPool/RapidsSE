@@ -108,6 +108,61 @@ void MetaDataTables::vDeleteRowFromTable(Table *pTable, i8 iCol, Stz *szColVal)
   pHashMap->vDropKeyLock(oRootBufferId.m_pvAsAddress);
 }
 
+Table* MetaDataTables::pTableFind(Stz *szTableNm)
+{
+  _static_
+
+  HashMap* pHashMap = AM::pHashMap();
+
+  Table* pTableOfTables = AM::pMetaDataTableOfTables();
+  TablePtn* pTablePtn = pTableOfTables->pTablePtn(0);
+
+  BufferId oRootBufferId = pTablePtn->oRootBufferId();
+  Pds* pRootPds = pTablePtn->pRootPds();
+
+  PdsCursor* pCursor = new PdsCursor(pRootPds);
+
+  // Iterate this table ptn root pds buffer that contains bufferId's of PdsRowBuffers
+
+  while(! pCursor->bIsCurrNull()) {
+    SkipListBlock* pSLBlock = pCursor->m_pCurrentBlock;
+
+    BufferId oBufferId = pTablePtn->oExtractBufferId((Object*)pSLBlock->aItem());
+    Pds* pPdsRowBuffer = _pPds(pHashMap->pValueAt(oBufferId.m_pvAsAddress, true));
+
+    PdsCursor* pRowCursor = new PdsCursor(pPdsRowBuffer);
+
+    // Iterate this PdsRowBuffer, searching for the rows which match this col value
+    while(! pRowCursor->bIsCurrNull()) {
+      Row* pRow = pRowCursor->pCurrRow();
+
+      Stz* szRowTableNm = pRow->szColVal_ofs(2);
+
+      if(szRowTableNm->bSame(szTableNm)) {
+        Table* pTable = (Table*)(pRow->iColVal_int(4));
+
+        delete pRowCursor;
+        pHashMap->vDropKeyLock(pPdsRowBuffer->oGetBufferId().m_pvAsAddress);
+
+        delete pCursor;
+        pHashMap->vDropKeyLock(oRootBufferId.m_pvAsAddress);
+
+        return pTable;
+      }
+      pRowCursor->vNext();
+    }
+
+    pHashMap->vDropKeyLock(pPdsRowBuffer->oGetBufferId().m_pvAsAddress);
+
+    // Get the next PdsRowBuffer
+    pCursor->vNext();
+    delete pRowCursor;
+  }
+  delete pCursor;
+  pHashMap->vDropKeyLock(oRootBufferId.m_pvAsAddress);
+
+  return nullptr;
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/

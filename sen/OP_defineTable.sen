@@ -31,7 +31,11 @@
   // create the table
 
   StreamDefLft[] <tableNm> table::createTable to Table[]
-  // If MetaData
+
+  // create row in metadata table with catalogNm, schemaNm, tableNm
+  // Pass the table type (eTT)
+  2 MetaDataTable[].initTables
+
   nullptr to StreamDefLft[]
 ;
 
