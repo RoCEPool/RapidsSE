@@ -19,7 +19,7 @@ namespace STORE
     Column m_xaColumn[C_MAX_COLUMNS];     // array of columns
     i8     m_nFixedSized;                 // size of fixed size row
 
-    RowPix  m_oRowPix;                    // row pix
+    //RowPix  m_oRowPix;                    // row pix
   
   private:
 
