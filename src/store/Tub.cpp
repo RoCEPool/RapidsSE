@@ -37,19 +37,19 @@ extern "C" void vExtern_TubAllotRowPds(void* aDynamic, char** aazStrArea, i8* pn
 	try {
 		RASSERT(CN_TUB == pTub->eGetClassNo());
 
-		RowPix* pRowPix = pTub->pRowPix();
+		//RowPix* pRowPix = pTub->pRowPix();
 
 		Pds* pPdsRowBuffer = _pPds(pTub->pWorkingBuffer());
 
 		if (! pPdsRowBuffer || pPdsRowBuffer->nFreeBytes() < C_2KB) {
-			pPdsRowBuffer = new Pds(pRowPix);
+			pPdsRowBuffer = new Pds((StreamDef*)pDynamicT->m_aStreamDefOut);
 			pTub->vAddBuffer(pPdsRowBuffer);
 		}
 
 		Row* pRowDst = pPdsRowBuffer->pAllotRow();
 
 		if (pRowDst == nullptr) {
-			pPdsRowBuffer = new Pds(pRowPix);
+			pPdsRowBuffer = new Pds((StreamDef*)pDynamicT->m_aStreamDefOut);
 			pTub->vAddBuffer(pPdsRowBuffer);
 			pRowDst = pPdsRowBuffer->pAllotRow();
 			RASSERT(pRowDst);
@@ -77,11 +77,6 @@ extern "C" void vExtern_TubRowStrSize(void* pTub, i8 nRowStrSize) {
 /*----------------------------------------------------------------------------*/
 /* allocate row string                                                        */
 /*----------------------------------------------------------------------------*/
-extern "C" void vExtern_TubRowPix(void* aTub, i8 nColumns, void* pColumnInfo) {
-  Tub* pTub = (Tub*)aTub;
-	RowPix* pRowPix = RowPix::pRowPixNew(nColumns, (ColumnInfo*)pColumnInfo);
-	pTub->vRowPix(pRowPix);
-}
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -93,7 +88,7 @@ Tub::Tub(void)
 
   m_pBufferAddrQueue = new PdsBufferQueue();
 
-  m_pRowPix      = nullptr;
+  //m_pRowPix      = nullptr;
   
   _checkInitialised_(CN_TUB);
   
@@ -107,7 +102,7 @@ Tub::~Tub(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TUB,_FOOTER_);
 
-  delete m_pRowPix;
+  //delete m_pRowPix;
 
   delete m_pBufferAddrQueue;
 }
@@ -129,78 +124,40 @@ void Tub::vRepair(Object* pObject)
 /*----------------------------------------------------------------------------*/
 /* allot a new row in a pds                                                   */
 /*----------------------------------------------------------------------------*/
-void* Tub::aAllotRowPds(Tub* pTub, char** aazStrArea, i8* pnMaxStrAreaLen, i8* piErrorCode)
-{
-  _static_
-
-  try {
-    RASSERT(CN_TUB == pTub->eGetClassNo());
-
-    RowPix* pRowPix = pTub->pRowPix();
-
-    Pds* pPdsRowBuffer = _pPds(pTub->pWorkingBuffer());
-
-    if (! pPdsRowBuffer || pPdsRowBuffer->nFreeBytes() < C_2KB) {
-      pPdsRowBuffer = new Pds(pRowPix);
-      pTub->vAddBuffer(pPdsRowBuffer);
-    }
-
-    Row* pRowDst = pPdsRowBuffer->pAllotRow();
-
-    if (pRowDst == nullptr) {
-      pPdsRowBuffer = new Pds(pRowPix);
-      pTub->vAddBuffer(pPdsRowBuffer);
-      pRowDst = pPdsRowBuffer->pAllotRow();
-      RASSERT(pRowDst);
-    }
-
-    *aazStrArea = (char*)pPdsRowBuffer->azDepositString_begin();
-    *pnMaxStrAreaLen = pPdsRowBuffer->nFreeBytes();
-    return pRowDst->aCellArray();
-  }
-  catch (LowMemory xLowMemory) {
-    *piErrorCode = EC_LOW_MEMORY;
-    return nullptr;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* allot a new row in a pds                                                   */
-/*----------------------------------------------------------------------------*/
-Row* Tub::pAllotRow(Tub* pTub, char** aazStrArea, i8* pnMaxStrAreaLen, i8* piErrorCode)
-{
-	_static_
-
-	try {
-		RASSERT(CN_TUB == pTub->eGetClassNo());
-
-		RowPix* pRowPix = pTub->pRowPix();
-
-		Pds* pPdsRowBuffer = _pPds(pTub->pWorkingBuffer());
-
-		if (! pPdsRowBuffer || pPdsRowBuffer->nFreeBytes() < C_2KB) {
-			pPdsRowBuffer = new Pds(pRowPix);
-			pTub->vAddBuffer(pPdsRowBuffer);
-		}
-
-		Row* pRowDst = pPdsRowBuffer->pAllotRow();
-
-		if (pRowDst == nullptr) {
-			pPdsRowBuffer = new Pds(pRowPix);
-			pTub->vAddBuffer(pPdsRowBuffer);
-			pRowDst = pPdsRowBuffer->pAllotRow();
-			RASSERT(pRowDst);
-		}
-
-		*aazStrArea = (char*)pPdsRowBuffer->azDepositString_begin();
-		*pnMaxStrAreaLen = pPdsRowBuffer->nFreeBytes();
-		return pRowDst;
-	}
-	catch (LowMemory xLowMemory) {
-		*piErrorCode = EC_LOW_MEMORY;
-		return nullptr;
-	}
-}
+//Row* Tub::pAllotRow(Tub* pTub, char** aazStrArea, i8* pnMaxStrAreaLen, i8* piErrorCode)
+//{
+//	_static_
+//
+//	try {
+//		RASSERT(CN_TUB == pTub->eGetClassNo());
+//
+//		RowPix* pRowPix = pTub->pRowPix();
+//
+//		Pds* pPdsRowBuffer = _pPds(pTub->pWorkingBuffer());
+//
+//		if (! pPdsRowBuffer || pPdsRowBuffer->nFreeBytes() < C_2KB) {
+//			pPdsRowBuffer = new Pds(pRowPix);
+//			pTub->vAddBuffer(pPdsRowBuffer);
+//		}
+//
+//		Row* pRowDst = pPdsRowBuffer->pAllotRow();
+//
+//		if (pRowDst == nullptr) {
+//			pPdsRowBuffer = new Pds(pRowPix);
+//			pTub->vAddBuffer(pPdsRowBuffer);
+//			pRowDst = pPdsRowBuffer->pAllotRow();
+//			RASSERT(pRowDst);
+//		}
+//
+//		*aazStrArea = (char*)pPdsRowBuffer->azDepositString_begin();
+//		*pnMaxStrAreaLen = pPdsRowBuffer->nFreeBytes();
+//		return pRowDst;
+//	}
+//	catch (LowMemory xLowMemory) {
+//		*piErrorCode = EC_LOW_MEMORY;
+//		return nullptr;
+//	}
+//}
 
 /*----------------------------------------------------------------------------*/
 /* allocate row string                                                        */
@@ -311,22 +268,22 @@ bool Tub::bIsEmpty(void)
 /*----------------------------------------------------------------------------*/
 /* get row pix                                                                */
 /*----------------------------------------------------------------------------*/
-RowPix* Tub::pRowPix(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TUB,_FOOTER_);
-    
-  return m_pRowPix;
-}
+//RowPix* Tub::pRowPix(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_TUB,_FOOTER_);
+//
+//  return m_pRowPix;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* set row pix                                                                */
 /*----------------------------------------------------------------------------*/
-void Tub::vRowPix(RowPix* pRowPix)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TUB,_FOOTER_);
-
-  m_pRowPix = pRowPix;
-}
+//void Tub::vRowPix(RowPix* pRowPix)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_TUB,_FOOTER_);
+//
+//  m_pRowPix = pRowPix;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* return working buffer (tail)                                               */

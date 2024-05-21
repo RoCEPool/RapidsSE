@@ -161,14 +161,14 @@ void ToLglPtnRow::vCopyRow(LglPtn tLglPtn, Row* aRowSrc, StreamDef* pFromStreamD
   bool bSrcHasPtnHash = false;
   bool bCopyPtnHash   = false;
 
-  RowPix* pFromRowPix = pFromStreamDef->pRowPix();
+  //RowPix* pFromRowPix = pFromStreamDef->pRowPix();
 
   // get pds row buffer for given partition (new a first buffer if ncessary)
 
   Pds* pIntoPdsRowBuffer = _pPds(m_oLglBufSet.pBuffer(tLglPtn));
 
   if (! pIntoPdsRowBuffer) {
-    pIntoPdsRowBuffer = new Pds(pFromRowPix);
+    pIntoPdsRowBuffer = new Pds(pFromStreamDef);
     pIntoPdsRowBuffer->vLglPtn(tLglPtn);
 
     // ?? ALKA 20/5/2024
@@ -179,7 +179,7 @@ void ToLglPtnRow::vCopyRow(LglPtn tLglPtn, Row* aRowSrc, StreamDef* pFromStreamD
   // new a row in pds row buffer (new another pds row buffer if necessary)
   Row* aNewRow = pIntoPdsRowBuffer->pCopyRow(pFromStreamDef, aRowSrc,bSrcHasPtnHash,bCopyPtnHash);
   if (! aNewRow) {
-    pIntoPdsRowBuffer = new Pds(pFromRowPix);
+    pIntoPdsRowBuffer = new Pds(pFromStreamDef);
     pIntoPdsRowBuffer->vLglPtn(tLglPtn);
 
     // ?? ALKA 20/5/2024

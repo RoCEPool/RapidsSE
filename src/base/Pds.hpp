@@ -53,7 +53,7 @@ namespace BASE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    Pds(RowPix* pRowPix, eBT eBufferType = BT_DATA);        // When Pds is used to store rows
+//  Pds(RowPix* pRowPix, eBT eBufferType = BT_DATA);        // When Pds is used to store rows
     Pds(StreamDef* pStreamDef, eBT eBufferType = BT_DATA);  // When Pds is used to store rows
     Pds(i8 nBytes, CompareFunc fpCompare, bool bAddToHashMap=true);                   // When Pds is used to track BufferIds
     ~Pds(void) noexcept(false);
@@ -64,9 +64,9 @@ namespace BASE
 
     // public:
     Row*            pAllotRow(void);
-    //Row*            pAllotRow(i8 iVargsBegin, ...);
+//  Row*            pAllotRow(i8 iVargsBegin, ...);
     Row*            pAllotRow(StreamDef* pStreamDef, i8 iVargsBegin, ...);
-//    Row*            pAllotRowFull(char** aaStzSet);
+//  Row*            pAllotRowFull(char** aaStzSet);
     SkipListBlock*  pAppend(void* pKey);
     eBT             eBufferType(void);
     void            vBufferType(eBT eBufferType);

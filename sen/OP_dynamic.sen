@@ -124,7 +124,7 @@
   // execute function to generate the streamDefOut
   nullptr StreamDefHandler[] false Dynamic[].execute assert
 
-  // get streamDefOut from Dynamic
+  // get duplicate streamDefOut from Dynamic
   Dynamic[].streamDefOut to StreamDefOut[]
 
   // pipeout the streamDefOut

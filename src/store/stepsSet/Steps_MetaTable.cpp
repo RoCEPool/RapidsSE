@@ -30,9 +30,10 @@ void Step::vMetaTableListTables(void)
   
   Pot* pPot = _pPot(m_pLogicUnit->m_xRluCommon.m_pPot);
 
-  RowPix* pRowPix = new RowPix(m_pLogicUnit->m_xpStreamDefLft->pRowPix(), 0);
-  pPot->vRowPix(pRowPix);
-  
+  //RowPix* pRowPix = new RowPix(m_pLogicUnit->m_xpStreamDefLft->pRowPix(), 0);
+  //pPot->vRowPix(pRowPix);
+
+  StreamDef* pStreamDef = *m_pLogicUnit->m_xpStreamDefLft;
   bool bNewBuffer;
   Pds* pPdsRowBuffer = nullptr;
   
@@ -40,7 +41,7 @@ void Step::vMetaTableListTables(void)
   Dic* pDic = m_oDicStack.pTop();
   Word* pWord = nullptr;
   while ( (pWord = pDic->pEachWord(pWord)) ) {
-    Row* aRow = pPot->aNewDstRow(0,&pPdsRowBuffer,&bNewBuffer);
+    Row* aRow = pPot->aNewDstRow(pStreamDef, 0, &pPdsRowBuffer, &bNewBuffer);
     UNUSED((aRow));
     bool bResult = pPdsRowBuffer->bDepositColVal(pWord->szWordNm());
     ASSERT(bResult);

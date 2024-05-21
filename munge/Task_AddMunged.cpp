@@ -32952,7 +32952,7 @@ void Task::vAddMunged(Task* )
     "  // execute function to generate the streamDefOut\n"
     "  nullptr StreamDefHandler[] false Dynamic[].execute assert\n"
     "\n"
-    "  // get streamDefOut from Dynamic\n"
+    "  // get duplicate streamDefOut from Dynamic\n"
     "  Dynamic[].streamDefOut to StreamDefOut[]\n"
     "\n"
     "  // pipeout the streamDefOut\n"

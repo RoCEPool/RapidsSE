@@ -103,68 +103,68 @@ void Pds::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Pds::Pds(RowPix* pRowPix, eBT eBufferType)
-    : DataBuffer(CN_PDS, false)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
-
-  ASSERT(CacheLine::bOnCacheLineBoundary(this));
-
-  i8 iRowSizeProper = Row::nRowProper(pRowPix->m_nColumns);
-
-  // Calculate block size and padding ------------------
-  m_nBlockSize = sizeof(SkipListNode) + iRowSizeProper + sizeof(m_iSynthRowKey);
-  m_nPaddingPerBlk = 0;
-
-  // Ensure block size is a multiple of 16 bytes
-  i8 iMod = m_nBlockSize % 16;
-  if(iMod != 0) {
-    m_nPaddingPerBlk = 16 - iMod;
-    m_nBlockSize += m_nPaddingPerBlk;
-  }
-
-  m_iSynthRowKey  = 0;
-  m_eBufferType = eBufferType;
-
-  // Init temp variables -------------------------------
-  m_aRowCur  = nullptr;
-  m_i_RowCrs = C_UNKNOWN;
-  m_i_ColCrs = C_UNKNOWN;
-  m_aStzSet  = nullptr;
-  m_nRowStringBytes = 0;
-
-  // Set compare function ------------------------------
-  m_fpCompare = PdsUtils::iIntCompare;
-
-  // Initialise the workspace --------------------------
-  m_iFreeListEntries = 0;
-  m_xWsp.vInit(m_nBlockSize);
-
-  // Add dummy root nodes to the Free and In Use skip lists
-  // Note: Dummy root blocks are zeroed since we don't know what the key type is
-
-  SkipListBlock* aFreeListRootOffset = aAllotSkipListBlock();
-  MemLib::vZero(aFreeListRootOffset,m_nBlockSize,CN_NONE);
-  m_uFreeListRootOffset = uGetOffsetFromBase((void*)aFreeListRootOffset);
-
-  SkipListBlock* aInUseRootOffset = aAllotSkipListBlock();
-  MemLib::vZero(aInUseRootOffset,m_nBlockSize,CN_NONE);
-  m_uInUseRootOffset = uGetOffsetFromBase((void*)aInUseRootOffset);
-
-
-  // Reset the number of entries to zero since we don't count the dummy blocks
-  m_iFreeListEntries = 0;
-  for (i8 i_Level = 0; i_Level < C_MAX_LVL_LEVELS; i_Level++) {
-    m_iNumEntries[i_Level] = 0;
-    // Init the tail vector to the dummy root
-    m_auTailOffsets[i_Level] = m_uInUseRootOffset;
-  }
-
-  // Init RowPix object -------------------------------
-  //vInitPix(pRowPix);
-
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
-}
+//Pds::Pds(RowPix* pRowPix, eBT eBufferType)
+//    : DataBuffer(CN_PDS, false)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
+//
+//  ASSERT(CacheLine::bOnCacheLineBoundary(this));
+//
+//  i8 iRowSizeProper = Row::nRowProper(pRowPix->m_nColumns);
+//
+//  // Calculate block size and padding ------------------
+//  m_nBlockSize = sizeof(SkipListNode) + iRowSizeProper + sizeof(m_iSynthRowKey);
+//  m_nPaddingPerBlk = 0;
+//
+//  // Ensure block size is a multiple of 16 bytes
+//  i8 iMod = m_nBlockSize % 16;
+//  if(iMod != 0) {
+//    m_nPaddingPerBlk = 16 - iMod;
+//    m_nBlockSize += m_nPaddingPerBlk;
+//  }
+//
+//  m_iSynthRowKey  = 0;
+//  m_eBufferType = eBufferType;
+//
+//  // Init temp variables -------------------------------
+//  m_aRowCur  = nullptr;
+//  m_i_RowCrs = C_UNKNOWN;
+//  m_i_ColCrs = C_UNKNOWN;
+//  m_aStzSet  = nullptr;
+//  m_nRowStringBytes = 0;
+//
+//  // Set compare function ------------------------------
+//  m_fpCompare = PdsUtils::iIntCompare;
+//
+//  // Initialise the workspace --------------------------
+//  m_iFreeListEntries = 0;
+//  m_xWsp.vInit(m_nBlockSize);
+//
+//  // Add dummy root nodes to the Free and In Use skip lists
+//  // Note: Dummy root blocks are zeroed since we don't know what the key type is
+//
+//  SkipListBlock* aFreeListRootOffset = aAllotSkipListBlock();
+//  MemLib::vZero(aFreeListRootOffset,m_nBlockSize,CN_NONE);
+//  m_uFreeListRootOffset = uGetOffsetFromBase((void*)aFreeListRootOffset);
+//
+//  SkipListBlock* aInUseRootOffset = aAllotSkipListBlock();
+//  MemLib::vZero(aInUseRootOffset,m_nBlockSize,CN_NONE);
+//  m_uInUseRootOffset = uGetOffsetFromBase((void*)aInUseRootOffset);
+//
+//
+//  // Reset the number of entries to zero since we don't count the dummy blocks
+//  m_iFreeListEntries = 0;
+//  for (i8 i_Level = 0; i_Level < C_MAX_LVL_LEVELS; i_Level++) {
+//    m_iNumEntries[i_Level] = 0;
+//    // Init the tail vector to the dummy root
+//    m_auTailOffsets[i_Level] = m_uInUseRootOffset;
+//  }
+//
+//  // Init RowPix object -------------------------------
+//  //vInitPix(pRowPix);
+//
+//  _postcondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
+//}
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */

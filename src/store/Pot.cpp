@@ -25,13 +25,6 @@ __aFooterFunction(Pot)
 /*----------------------------------------------------------------------------*/
 /* allot a new row                                                            */
 /*----------------------------------------------------------------------------*/
-extern "C" void* aExtern_PotAllotRowPds(void* pPot, i8 iKeyHash, char** aazStrArea, i8* pnMaxStrAreaLen, i8* piErrorCode) {
-  return Pot::aAllotRowPds((Pot*)pPot, iKeyHash, (char**)aazStrArea, pnMaxStrAreaLen, piErrorCode);
-}
-
-/*----------------------------------------------------------------------------*/
-/* allot a new row                                                            */
-/*----------------------------------------------------------------------------*/
 extern "C" void vExtern_PotAllotRowPds(void* aDynamicT, byte* aMixIn, i8 iMixInLen, char** aazStrArea, i8* pnMaxStrAreaLen) {
 
 	Dynamic_T* pDynamic = (Dynamic_T*)aDynamicT;
@@ -47,19 +40,19 @@ extern "C" void vExtern_PotAllotRowPds(void* aDynamicT, byte* aMixIn, i8 iMixInL
 	try {
 		Row* aDstRow;
 
-		RowPix* pRowPix = pPot->m_pRowPix;
+		//RowPix* pRowPix = pPot->m_pRowPix;
 
 		// get pds row buffer for given partition (new a first buffer if ncessary)
 		Pds* pPdsRowBuffer = _pPds(pPot->pBuffer(tLglPtn));
 		if (! pPdsRowBuffer || pPdsRowBuffer->nFreeBytes() < C_2KB) {
-			pPdsRowBuffer = new Pds(pRowPix);
+			pPdsRowBuffer = new Pds((StreamDef*)pDynamic->m_aStreamDefOut);
 			pPot->vAddBuffer(tLglPtn,pPdsRowBuffer);
 		}
 
 		// new a row in pds row buffer (new another pds row buffer if necessary)
 		aDstRow = pPdsRowBuffer->pAllotRow();
 		if (! aDstRow) {
-			pPdsRowBuffer = new Pds(pRowPix);
+			pPdsRowBuffer = new Pds((StreamDef*)pDynamic->m_aStreamDefOut);
 			pPot->vAddBuffer(tLglPtn,pPdsRowBuffer);
 			aDstRow = pPdsRowBuffer->pAllotRow();
 			RASSERT(aDstRow);
@@ -98,18 +91,11 @@ extern "C" void vExtern_PotRowStrSize(void* aDynamicT, i8 nRowStrSize) {
 /*----------------------------------------------------------------------------*/
 /* allocate row string                                                        */
 /*----------------------------------------------------------------------------*/
-extern "C" void vExtern_PotRowPix(void* aPot, i8 nColumns, void* pColumnInfo) {
-	Pot* pPot = (Pot*)aPot;
-	RowPix* pRowPix = RowPix::pRowPixNew(nColumns, (ColumnInfo*)pColumnInfo);
-	pPot->vRowPix(pRowPix);
-}
-
-/*----------------------------------------------------------------------------*/
-/* allocate row string                                                        */
-/*----------------------------------------------------------------------------*/
-void vPot_RowStrSize(void* pPot, i8 iKeyHash, i8 nRowStrSize) {
-  Pot::vRowStrSize((Pot*)pPot, iKeyHash, nRowStrSize);
-}
+//extern "C" void vExtern_PotRowPix(void* aPot, i8 nColumns, void* pColumnInfo) {
+//	Pot* pPot = (Pot*)aPot;
+//	RowPix* pRowPix = RowPix::pRowPixNew(nColumns, (ColumnInfo*)pColumnInfo);
+//	pPot->vRowPix(pRowPix);
+//}
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -118,8 +104,6 @@ Pot::Pot(void)
 : Object(CN_POT)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_POT,_FOOTER_);
-  
-  m_pRowPix = nullptr;
 
   m_iSynthKey = 0;
   m_pPdsOfBufferAddrs = new Pds_t<PotPdsItem>(PdsUtils::iPotPdsItemKeyCompare);
@@ -136,58 +120,13 @@ Pot::~Pot(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_POT,_FOOTER_);
 
-  delete m_pRowPix;
+  //delete m_pRowPix;
   delete m_pPdsOfBufferAddrs;
 }
 
 /*----------------------------------------------------------------------------*/
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* create new destination row (possible new row slab)                         */
-/*----------------------------------------------------------------------------*/
-void* Pot::aAllotRowPds(Pot* pPot, i8 iKeyHash, char** aazStrArea, i8* pnMaxStrAreaLen, i8* piErrorCode)
-{
-  _static_
-
-  try {
-    Row* aDstRow;
-
-    LglPtnMap* pPtnMap = AM::pLglPtnMap();
-    //i8 iKeyHsh = HshLib::iHash((byte*)&iMixIn,sizeof(iMixIn));
-    LglPtn tLglPtn = pPtnMap->tHashToLglPtnId(iKeyHash);
-
-    RowPix* pRowPix = pPot->m_pRowPix;
-
-    // get pds row buffer for given partition (new a first buffer if ncessary)
-    Pds* pPdsRowBuffer = _pPds(pPot->pBuffer(tLglPtn));
-    if (! pPdsRowBuffer || pPdsRowBuffer->nFreeBytes() < C_2KB) {
-      pPdsRowBuffer = new Pds(pRowPix);
-      pPot->vAddBuffer(tLglPtn,pPdsRowBuffer);
-    }
-
-    // new a row in pds row buffer (new another pds row buffer if necessary)
-    aDstRow = pPdsRowBuffer->pAllotRow();
-    if (! aDstRow) {
-      pPdsRowBuffer = new Pds(pRowPix);
-      pPot->vAddBuffer(tLglPtn,pPdsRowBuffer);
-      aDstRow = pPdsRowBuffer->pAllotRow();
-      RASSERT(aDstRow);
-    }
-    *aazStrArea = (char*)pPdsRowBuffer->azDepositString_begin();
-    *pnMaxStrAreaLen = pPdsRowBuffer->nFreeBytes();
-
-    pPdsRowBuffer->vLglPtn(tLglPtn);
-
-    return aDstRow->aCellArray();
-
-  }
-  catch (LowMemory xLowMemory) {
-    *piErrorCode = EC_LOW_MEMORY;
-    return nullptr;
-  }
-}
 
 /*----------------------------------------------------------------------------*/
 /* set row string                                                             */
@@ -342,7 +281,7 @@ DataBuffer* Pot::pDangling(i8 i_Ptn)
 /*----------------------------------------------------------------------------*/
 /* create new destination row (possible new row slab)                         */
 /*----------------------------------------------------------------------------*/
-Row* Pot::aNewDstRow(i8 i_Ptn, Pds** ppPdsRowBuffer,bool* pbNewBuffer)
+Row* Pot::aNewDstRow(StreamDef* pStreamDef, i8 i_Ptn, Pds** ppPdsRowBuffer,bool* pbNewBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_POT,_FOOTER_);
 
@@ -358,7 +297,7 @@ Row* Pot::aNewDstRow(i8 i_Ptn, Pds** ppPdsRowBuffer,bool* pbNewBuffer)
   Pds* pPdsRowBuffer = _pPds(pBuffer(tLglPtn));
   if (! pPdsRowBuffer || pPdsRowBuffer->nFreeBytes() < C_2KB) {
 
-    pPdsRowBuffer = new Pds(m_pRowPix);
+    pPdsRowBuffer = new Pds(pStreamDef);
     vAddBuffer(tLglPtn,pPdsRowBuffer);
   }
 
@@ -366,7 +305,7 @@ Row* Pot::aNewDstRow(i8 i_Ptn, Pds** ppPdsRowBuffer,bool* pbNewBuffer)
   aDstRow = pPdsRowBuffer->pAllotRow();
   if (! aDstRow) {
     *pbNewBuffer = true;
-    pPdsRowBuffer = new Pds(m_pRowPix);
+    pPdsRowBuffer = new Pds(pStreamDef);
     vAddBuffer(tLglPtn,pPdsRowBuffer);
     aDstRow = pPdsRowBuffer->pAllotRow();
     ASSERT(aDstRow);
@@ -383,14 +322,14 @@ Row* Pot::aNewDstRow(i8 i_Ptn, Pds** ppPdsRowBuffer,bool* pbNewBuffer)
 /*----------------------------------------------------------------------------*/
 /* set stream pix                                                             */
 /*----------------------------------------------------------------------------*/
-void Pot::vRowPix(RowPix* pRowPix)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_POT,_FOOTER_);
-  
-  //if (! m_pRowPix) {
-    m_pRowPix = pRowPix;
-  //}
-}
+//void Pot::vRowPix(RowPix* pRowPix)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_POT,_FOOTER_);
+//
+//  //if (! m_pRowPix) {
+//    m_pRowPix = pRowPix;
+//  //}
+//}
 
 /*----------------------------------------------------------------------------*/
 /* get estimate of size                                                       */
