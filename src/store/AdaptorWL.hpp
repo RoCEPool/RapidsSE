@@ -162,7 +162,7 @@ namespace STORE
     void vCreateAndAddRow(
         std::vector<com::rapidsdata::wirelineprotocol::messages::v5::Row>* pRowList,
         Row* pRow,
-        RowPix* pRowPix);
+        StreamDef* pStreamDef);
   };
 
   AdaptorWL* _pAdaptorWL(void* aAddr);

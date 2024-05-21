@@ -764,10 +764,10 @@ void AdaptorWL::vRowData(CrwBuffer* pCrwBuffer)
     return;
   }
 
-  StreamDef* pDef = m_pStmtCtx->pStreamDef();
-  RowPix* pRowPix = pDef->pRowPix();
+  StreamDef* pStreamDef = m_pStmtCtx->pStreamDef();
+  //RowPix* pRowPix = pDef->pRowPix();
 
-  HV_RowSingle hvRowSingle(pDef);
+  HV_RowSingle hvRowSingle(pStreamDef);
 
   // Work out how many rows from this CrwBuffer to serialise
   i8 iStartingRow = 0;
@@ -814,7 +814,7 @@ void AdaptorWL::vRowData(CrwBuffer* pCrwBuffer)
       RowInflator::vInflate_AllColumns_into_RowSingle(hvRowSingle, aCrw);
       Row* pRow = hvRowSingle->pRowCurrent();
 
-      vCreateAndAddRow(&xRowList, pRow, pRowPix);
+      vCreateAndAddRow(&xRowList, pRow, pStreamDef);
     }
 
     ASSERT((i8) xRowList.size() == iRowsToSend);
@@ -881,8 +881,8 @@ void AdaptorWL::vPdsRowData(Pds* pPdsRowBuffer)
     return;
   }
 
-  StreamDef* pDef = m_pStmtCtx->pStreamDef();
-  RowPix* pRowPix = pDef->pRowPix();
+  StreamDef* pStreamDef = m_pStmtCtx->pStreamDef();
+  //RowPix* pRowPix = pDef->pRowPix();
 
   // Work out how many rows from this RowBuffer to serialise
   i8 iStartingRow = 0;
@@ -927,7 +927,7 @@ void AdaptorWL::vPdsRowData(Pds* pPdsRowBuffer)
     for (i8 i_Row = iStartingRow; i_Row < iStartingRow + iRowsToSend; i_Row++) {
       Row* pRow = pPdsCursor->pCurrRow();
       RASSERT(pRow);
-      vCreateAndAddRow(&xRowList, pRow, pRowPix);
+      vCreateAndAddRow(&xRowList, pRow, pStreamDef);
       pPdsCursor->vNext();
     }
 
@@ -2137,7 +2137,7 @@ i8 AdaptorWL::nRowsToSend(i8 iRowsInBuf)
 /*----------------------------------------------------------------------------*/
 void AdaptorWL::vCreateAndAddRow(std::vector<com::rapidsdata::wirelineprotocol::messages::v5::Row>* pRowList,
                                  Row* pRow,
-                                 RowPix* pRowPix)
+                                 StreamDef* pStreamDef)
 {
   typedef com::rapidsdata::wirelineprotocol::messages::v5::Row RowWL;
   typedef com::rapidsdata::wirelineprotocol::messages::v5::ColumnValue ColumnWL;
@@ -2150,7 +2150,7 @@ void AdaptorWL::vCreateAndAddRow(std::vector<com::rapidsdata::wirelineprotocol::
   std::vector<ColumnWL> xColumns;
 
   for (i8 i_Col = 0;
-       i_Col < pRowPix->m_nColumns - pRowPix->m_nExtraCols;
+       i_Col < pStreamDef->nColumns();
        i_Col++) {
 
     ColumnWL    xColumnWL;
@@ -2163,7 +2163,8 @@ void AdaptorWL::vCreateAndAddRow(std::vector<com::rapidsdata::wirelineprotocol::
     SP_Bcd      spBcd;
     d8*         pDbl;
 
-    eDM eDatum = (eDM) pRowPix->m_xaColPix[i_Col].m_uDatum;
+    Column* pColumn = pStreamDef->pGetColumn(i_Col);
+    eDM eDatum = pColumn->eDatum();
 
     // Null check with special case for strings and decimals (why?)
     bool bIsNull = false;
