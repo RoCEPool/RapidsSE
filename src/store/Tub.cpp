@@ -37,8 +37,6 @@ extern "C" void vExtern_TubAllotRowPds(void* aDynamic, char** aazStrArea, i8* pn
 	try {
 		RASSERT(CN_TUB == pTub->eGetClassNo());
 
-		//RowPix* pRowPix = pTub->pRowPix();
-
 		Pds* pPdsRowBuffer = _pPds(pTub->pWorkingBuffer());
 
 		if (! pPdsRowBuffer || pPdsRowBuffer->nFreeBytes() < C_2KB) {
@@ -87,8 +85,6 @@ Tub::Tub(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TUB,_FOOTER_);
 
   m_pBufferAddrQueue = new PdsBufferQueue();
-
-  //m_pRowPix      = nullptr;
   
   _checkInitialised_(CN_TUB);
   
@@ -101,8 +97,6 @@ Tub::Tub(void)
 Tub::~Tub(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TUB,_FOOTER_);
-
-  //delete m_pRowPix;
 
   delete m_pBufferAddrQueue;
 }
@@ -120,44 +114,6 @@ void Tub::vRepair(Object* pObject)
   
   UNUSED(pObject);
 }
-
-/*----------------------------------------------------------------------------*/
-/* allot a new row in a pds                                                   */
-/*----------------------------------------------------------------------------*/
-//Row* Tub::pAllotRow(Tub* pTub, char** aazStrArea, i8* pnMaxStrAreaLen, i8* piErrorCode)
-//{
-//	_static_
-//
-//	try {
-//		RASSERT(CN_TUB == pTub->eGetClassNo());
-//
-//		RowPix* pRowPix = pTub->pRowPix();
-//
-//		Pds* pPdsRowBuffer = _pPds(pTub->pWorkingBuffer());
-//
-//		if (! pPdsRowBuffer || pPdsRowBuffer->nFreeBytes() < C_2KB) {
-//			pPdsRowBuffer = new Pds(pRowPix);
-//			pTub->vAddBuffer(pPdsRowBuffer);
-//		}
-//
-//		Row* pRowDst = pPdsRowBuffer->pAllotRow();
-//
-//		if (pRowDst == nullptr) {
-//			pPdsRowBuffer = new Pds(pRowPix);
-//			pTub->vAddBuffer(pPdsRowBuffer);
-//			pRowDst = pPdsRowBuffer->pAllotRow();
-//			RASSERT(pRowDst);
-//		}
-//
-//		*aazStrArea = (char*)pPdsRowBuffer->azDepositString_begin();
-//		*pnMaxStrAreaLen = pPdsRowBuffer->nFreeBytes();
-//		return pRowDst;
-//	}
-//	catch (LowMemory xLowMemory) {
-//		*piErrorCode = EC_LOW_MEMORY;
-//		return nullptr;
-//	}
-//}
 
 /*----------------------------------------------------------------------------*/
 /* allocate row string                                                        */
@@ -264,26 +220,6 @@ bool Tub::bIsEmpty(void)
   
   return m_pBufferAddrQueue->bIsEmpty();
 }
-
-/*----------------------------------------------------------------------------*/
-/* get row pix                                                                */
-/*----------------------------------------------------------------------------*/
-//RowPix* Tub::pRowPix(void)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_TUB,_FOOTER_);
-//
-//  return m_pRowPix;
-//}
-
-/*----------------------------------------------------------------------------*/
-/* set row pix                                                                */
-/*----------------------------------------------------------------------------*/
-//void Tub::vRowPix(RowPix* pRowPix)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_TUB,_FOOTER_);
-//
-//  m_pRowPix = pRowPix;
-//}
 
 /*----------------------------------------------------------------------------*/
 /* return working buffer (tail)                                               */

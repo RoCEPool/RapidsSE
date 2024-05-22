@@ -12,8 +12,6 @@ namespace STORE
   private:
     PdsBufferQueue* m_pBufferAddrQueue;
 
-    //RowPix*      m_pRowPix;
-
     // must be last
     Footer m_xFooter;
     
@@ -26,8 +24,7 @@ namespace STORE
     
     static void vRepair(Object* pObject);
 
-		//static Row*  pAllotRow(Tub* pTub, char** aazStrArea, i8* pnMaxStrAreaLen, i8* piErrorCode);
-    static void  vRowStrSize(Tub* pTub, i8 nRowStrSize);
+		static void  vRowStrSize(Tub* pTub, i8 nRowStrSize);
     static void  vToCsv(StreamDef* pStreamDef, Tub* pTub, Pds* pPds);
 
   public:
@@ -37,8 +34,6 @@ namespace STORE
     DataBuffer* pCompletedBuffer(void);
     DataBuffer* pDanglingBuffer(void);
     bool        bIsEmpty(void);
-    //RowPix*     pRowPix(void);
-    //void        vRowPix(RowPix* pRowPix);
     DataBuffer* pWorkingBuffer(void);
 
     Footer* aFooter(void);

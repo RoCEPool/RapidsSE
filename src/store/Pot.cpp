@@ -40,8 +40,6 @@ extern "C" void vExtern_PotAllotRowPds(void* aDynamicT, byte* aMixIn, i8 iMixInL
 	try {
 		Row* aDstRow;
 
-		//RowPix* pRowPix = pPot->m_pRowPix;
-
 		// get pds row buffer for given partition (new a first buffer if ncessary)
 		Pds* pPdsRowBuffer = _pPds(pPot->pBuffer(tLglPtn));
 		if (! pPdsRowBuffer || pPdsRowBuffer->nFreeBytes() < C_2KB) {
@@ -89,15 +87,6 @@ extern "C" void vExtern_PotRowStrSize(void* aDynamicT, i8 nRowStrSize) {
 }
 
 /*----------------------------------------------------------------------------*/
-/* allocate row string                                                        */
-/*----------------------------------------------------------------------------*/
-//extern "C" void vExtern_PotRowPix(void* aPot, i8 nColumns, void* pColumnInfo) {
-//	Pot* pPot = (Pot*)aPot;
-//	RowPix* pRowPix = RowPix::pRowPixNew(nColumns, (ColumnInfo*)pColumnInfo);
-//	pPot->vRowPix(pRowPix);
-//}
-
-/*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Pot::Pot(void)
@@ -120,7 +109,6 @@ Pot::~Pot(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_POT,_FOOTER_);
 
-  //delete m_pRowPix;
   delete m_pPdsOfBufferAddrs;
 }
 
@@ -318,18 +306,6 @@ Row* Pot::aNewDstRow(StreamDef* pStreamDef, i8 i_Ptn, Pds** ppPdsRowBuffer,bool*
 
   return aDstRow;
 }
-
-/*----------------------------------------------------------------------------*/
-/* set stream pix                                                             */
-/*----------------------------------------------------------------------------*/
-//void Pot::vRowPix(RowPix* pRowPix)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_POT,_FOOTER_);
-//
-//  //if (! m_pRowPix) {
-//    m_pRowPix = pRowPix;
-//  //}
-//}
 
 /*----------------------------------------------------------------------------*/
 /* get estimate of size                                                       */
