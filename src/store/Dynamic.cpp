@@ -304,12 +304,10 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
 	m_xDynamicT.m_fp_aExtern_PdsNextRowCellArray   = nullptr;
 	m_xDynamicT.m_fp_vExtern_PotAllotRowPds   = nullptr;
 	m_xDynamicT.m_fp_vExtern_PotRowStrSize    = nullptr;
-	//m_xDynamicT.m_fp_vExtern_PotRowPix        = nullptr;
 
 	m_xDynamicT.m_fp_aExtern_StreamDefNew = nullptr;
 
 	m_xDynamicT.m_fp_vExtern_TubAllotRowPds = nullptr;
-	//m_xDynamicT.m_fp_vExtern_TubRowPix      = nullptr;
 	m_xDynamicT.m_fp_vExtern_TubRowStrSize  = nullptr;
 
   _checkInitialised_(CN_DYNAMIC);

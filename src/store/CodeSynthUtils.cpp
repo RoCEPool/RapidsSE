@@ -616,19 +616,6 @@ void CodeSynthUtils::vReplaceTubPot(String* sLine, OpSketch* pOpSketch) {
 
   bool bResult;
 
-//  if (StrLib::bContains(sLine->azStr(), "__EXTERN_ROWPIX__")) {
-//    if (pOpSketch->m_eSketchKind == SK_TUB || pOpSketch->m_eSketchKind == SK_PRJTUB) {
-//      bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(), "__EXTERN_ROWPIX__", "aDynamicT->m_fp_vExtern_TubRowPix");
-//      RASSERT(bResult);
-//   }
-//    else {
-//      RASSERT(pOpSketch->m_eSketchKind == SK_POT || pOpSketch->m_eSketchKind == SK_PRJPOT);
-//			//bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(), "__EXTERN_ROWPIX__", "vExtern_PotRowPix");
-//			bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(), "__EXTERN_ROWPIX__", "aDynamicT->m_fp_vExtern_PotRowPix");
-//      RASSERT(bResult);
-//    }
-//  }
-
   if (StrLib::bContains(sLine->azStr(), "__EXTERN_ALLOTROW__()")) {
     if (pOpSketch->m_eSketchKind == SK_TUB || pOpSketch->m_eSketchKind == SK_PRJTUB) {
       bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(), "__EXTERN_ALLOTROW__()",

@@ -765,7 +765,6 @@ void AdaptorWL::vRowData(CrwBuffer* pCrwBuffer)
   }
 
   StreamDef* pStreamDef = m_pStmtCtx->pStreamDef();
-  //RowPix* pRowPix = pDef->pRowPix();
 
   HV_RowSingle hvRowSingle(pStreamDef);
 
@@ -882,7 +881,6 @@ void AdaptorWL::vPdsRowData(Pds* pPdsRowBuffer)
   }
 
   StreamDef* pStreamDef = m_pStmtCtx->pStreamDef();
-  //RowPix* pRowPix = pDef->pRowPix();
 
   // Work out how many rows from this RowBuffer to serialise
   i8 iStartingRow = 0;
