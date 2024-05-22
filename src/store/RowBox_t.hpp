@@ -64,12 +64,6 @@ namespace STORE
 
     Row* pRowAddress(i8 i_Row);
     i8   nRows(void);
-    //Row* pFirstRow(void);
-    //Row* pLastRow(void);
-    //Row* pNextRow(Row* pPriorRow);
-  
-//    void vPrintRows(StreamDef* pStreamDef);
-//    void vShow(StreamDef* pStreamDef);
 
     void vAdvanceCursor(void);
     void vDepositColVal(d8 dColVal);
@@ -80,36 +74,14 @@ namespace STORE
     char* azDepositString_begin(void);
     void vDepositString_end(i8 nSize);
 
-    //void  vDiscardInvalidRow(void);
-    //void  vDumpAllRows(void);
-    //void  vDumpNst(void);
-    //void  vDumpRow(i8 i_Row);
-    //void  vDumpRow(i8 i_Row, Row* aRow);
-
-    //i8    nExtraCols(void);
-    //void  vInitPix(StreamDef* pStreamDef, bool bAddKeyHash);
-    //NmlStr* pNmlStr(void);
-    //void  vNormaliseStrings(void);
-    //i8    iPtnOfRow(Row* aRow);
-    //void  vPositionOnCell(i8 i_Col);
-    //bool  bPtnHash(void);
     void  vReset(void);
     void  vResetRow(void);
-    //i8    nRowProperBytes(void);
     Row*  pRowCurrent(void);
-    //Row*  aRowByOfs(i8 iOfs);
-    //Row*  aSetCurRow(i8 iRow);
-    //i8    iOffsetInWsp(Row* aRow);
-    //void  vSlabReport(void);
-    //RowPix* pRowPix(void);
-    //void  vResetRowPix(void);
-    //void  vZeroRow(Row* aRow);
   
     Stz* szBufferNm(void);
     void vBufferNm(Stz* szBufferNm);
 
   private:
-    //i8    i_RowBufferCell(i8 i_Row);
   
     Footer* aFooter(void);
 
