@@ -505,14 +505,14 @@ void StreamDefBase::vResetPointers(void)
 /*----------------------------------------------------------------------------*/
 /* convert streamDef to condensed streamPix format                            */
 /*----------------------------------------------------------------------------*/
-RowPix* StreamDefBase::pRowPix(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  vToRowPix(&m_oRowPix,false);
-  
-  return & m_oRowPix;
-}
+//RowPix* StreamDefBase::pRowPix(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_);
+//
+//  vToRowPix(&m_oRowPix,false);
+//
+//  return & m_oRowPix;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* get fixed row size                                                         */
@@ -557,132 +557,132 @@ i8 StreamDefBase::jTableSize(void)
 /*----------------------------------------------------------------------------*/
 /* convert columns of this streamDef to colPix (opt. adding a ptnhash column) */
 /*----------------------------------------------------------------------------*/
-void StreamDefBase::vToColPix(RowPix* pRowPixDst, bool bAddKeyHash)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  ColPix* axaColPixDst = pRowPixDst->m_xaColPix;
-  
-  i8 nNameSize;
-  i8 nStzOfs;
-  
-  
-  pRowPixDst->m_nNameOffset = sizeof(ColPix)
-                                * ( m_nColumns + (bAddKeyHash ? 1 : 0) );
-  pRowPixDst->m_nTotalChars = 0;
-
-  i8 iBufSpaceRemaining = (i8) (sizeof(pRowPixDst->m_xaColPix) +
-                                sizeof(pRowPixDst->m_baPixArea) -
-                                pRowPixDst->m_nNameOffset);
-
-  char* azNames = aAdd<char*>(axaColPixDst,pRowPixDst->m_nNameOffset);
-  char* azColNmDst = azNames;
-
-  i8 i_Col;
-          
-  for (i_Col = 0; i_Col < m_nColumns; i_Col++) {
-
-    Column* pColumn = &m_xaColumn[i_Col];
-    
-    ColPix* axColPixDst = &axaColPixDst[i_Col];
-
-    axColPixDst->m_uNumber   = (u8)i_Col;
-    // name
-    axColPixDst->m_uKind     = (u8)CX_USERCOL;
-    axColPixDst->m_uTypeId   = (u8)pColumn->xColumnTypeId().iIdVal();
-    axColPixDst->m_uDatum    = (u8)pColumn->eDatum();
-    axColPixDst->m_uLength   = (u8)pColumn->iColumnLength();
-    axColPixDst->m_uScale    = (u8)pColumn->iColumnScale();
-    axColPixDst->m_bNullable = (u8)pColumn->bIsNullable();
-    axColPixDst->m_bPtnKey   = (u8)pColumn->bIsPtnKey();
-    axColPixDst->m_uSpare    = (u8)0;
-
-    StrLib::vCopy(azColNmDst, iBufSpaceRemaining, pColumn->szColNm()->azChar());
-    nNameSize = StrLib::nSize(azColNmDst);
-    iBufSpaceRemaining -= nNameSize;
-
-    nStzOfs = nDifference(axColPixDst,azColNmDst);
-    axColPixDst->m_uName = nStzOfs;
-    
-    azColNmDst += nNameSize;
-    pRowPixDst->m_nTotalChars += nNameSize;
-  }
-
-  // i_Col falls thru
-  
-  if (bAddKeyHash) {
-
-    //pRowPixDst->vPrint();
-    ASSERT(! pRowPixDst->m_nExtraCols);
-    
-    pRowPixDst->m_nColumns++;
-    pRowPixDst->m_nExtraCols = 1;
-    pRowPixDst->m_bPtnHash = true;
-
-    ColPix* axColPixDst = &axaColPixDst[i_Col];
-  
-    axColPixDst->m_uNumber   = (u8)i_Col;
-    // name
-    axColPixDst->m_uKind     = (u8)CX_PTNHASH;
-    axColPixDst->m_uTypeId   = (u8)(TypeId::xIdOf(CT_INTEGER).iIdVal());
-    axColPixDst->m_uDatum    = (u8)DM_INT;
-    axColPixDst->m_uLength   = (u8)C_MAX_INT_PRECISION;
-    axColPixDst->m_uScale    = (u8)0;
-    axColPixDst->m_bNullable = (u8)false;
-    axColPixDst->m_bPtnKey   = (u8)false;
-    axColPixDst->m_uSpare    = (u8)0;
-
-    StrLib::vCopy(azColNmDst, iBufSpaceRemaining, "__keyHash");
-    nNameSize = StrLib::nSize(azColNmDst);
-    iBufSpaceRemaining -= nNameSize;
-
-    nStzOfs = nDifference(axColPixDst,azColNmDst);
-    axColPixDst->m_uName = nStzOfs;
-
-    azColNmDst += nNameSize;
-    pRowPixDst->m_nTotalChars += nNameSize;
-    
-    //pRowPixDst->vPrint();
-  }
-  
-  pRowPixDst->m_nTotalChars++;
-  * azColNmDst = '\0';
-}
-
-/*----------------------------------------------------------------------------*/
-/* convert this streamDef to RowPix (optionally adding a ptnhash column)      */
-/*----------------------------------------------------------------------------*/
-void StreamDefBase::vToRowPix(RowPix* pRowPixDst, bool bAddKeyHash)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  if (pRowPixDst->m_bInitialised)
-    return;
-  
-  ASSERT(! pRowPixDst->m_bPtnHash);
-
-  pRowPixDst->m_sPixNm   = m_sStreamDefNm;
-  pRowPixDst->m_nColumns = m_nColumns;
-
-//  if (bAddPtnHash) {
+//void StreamDefBase::vToColPix(RowPix* pRowPixDst, bool bAddKeyHash)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_);
+//
+//  ColPix* axaColPixDst = pRowPixDst->m_xaColPix;
+//
+//  i8 nNameSize;
+//  i8 nStzOfs;
+//
+//
+//  pRowPixDst->m_nNameOffset = sizeof(ColPix)
+//                                * ( m_nColumns + (bAddKeyHash ? 1 : 0) );
+//  pRowPixDst->m_nTotalChars = 0;
+//
+//  i8 iBufSpaceRemaining = (i8) (sizeof(pRowPixDst->m_xaColPix) +
+//                                sizeof(pRowPixDst->m_baPixArea) -
+//                                pRowPixDst->m_nNameOffset);
+//
+//  char* azNames = aAdd<char*>(axaColPixDst,pRowPixDst->m_nNameOffset);
+//  char* azColNmDst = azNames;
+//
+//  i8 i_Col;
+//
+//  for (i_Col = 0; i_Col < m_nColumns; i_Col++) {
+//
+//    Column* pColumn = &m_xaColumn[i_Col];
+//
+//    ColPix* axColPixDst = &axaColPixDst[i_Col];
+//
+//    axColPixDst->m_uNumber   = (u8)i_Col;
+//    // name
+//    axColPixDst->m_uKind     = (u8)CX_USERCOL;
+//    axColPixDst->m_uTypeId   = (u8)pColumn->xColumnTypeId().iIdVal();
+//    axColPixDst->m_uDatum    = (u8)pColumn->eDatum();
+//    axColPixDst->m_uLength   = (u8)pColumn->iColumnLength();
+//    axColPixDst->m_uScale    = (u8)pColumn->iColumnScale();
+//    axColPixDst->m_bNullable = (u8)pColumn->bIsNullable();
+//    axColPixDst->m_bPtnKey   = (u8)pColumn->bIsPtnKey();
+//    axColPixDst->m_uSpare    = (u8)0;
+//
+//    StrLib::vCopy(azColNmDst, iBufSpaceRemaining, pColumn->szColNm()->azChar());
+//    nNameSize = StrLib::nSize(azColNmDst);
+//    iBufSpaceRemaining -= nNameSize;
+//
+//    nStzOfs = nDifference(axColPixDst,azColNmDst);
+//    axColPixDst->m_uName = nStzOfs;
+//
+//    azColNmDst += nNameSize;
+//    pRowPixDst->m_nTotalChars += nNameSize;
+//  }
+//
+//  // i_Col falls thru
+//
+//  if (bAddKeyHash) {
+//
+//    //pRowPixDst->vPrint();
 //    ASSERT(! pRowPixDst->m_nExtraCols);
 //
 //    pRowPixDst->m_nColumns++;
 //    pRowPixDst->m_nExtraCols = 1;
 //    pRowPixDst->m_bPtnHash = true;
+//
+//    ColPix* axColPixDst = &axaColPixDst[i_Col];
+//
+//    axColPixDst->m_uNumber   = (u8)i_Col;
+//    // name
+//    axColPixDst->m_uKind     = (u8)CX_PTNHASH;
+//    axColPixDst->m_uTypeId   = (u8)(TypeId::xIdOf(CT_INTEGER).iIdVal());
+//    axColPixDst->m_uDatum    = (u8)DM_INT;
+//    axColPixDst->m_uLength   = (u8)C_MAX_INT_PRECISION;
+//    axColPixDst->m_uScale    = (u8)0;
+//    axColPixDst->m_bNullable = (u8)false;
+//    axColPixDst->m_bPtnKey   = (u8)false;
+//    axColPixDst->m_uSpare    = (u8)0;
+//
+//    StrLib::vCopy(azColNmDst, iBufSpaceRemaining, "__keyHash");
+//    nNameSize = StrLib::nSize(azColNmDst);
+//    iBufSpaceRemaining -= nNameSize;
+//
+//    nStzOfs = nDifference(axColPixDst,azColNmDst);
+//    axColPixDst->m_uName = nStzOfs;
+//
+//    azColNmDst += nNameSize;
+//    pRowPixDst->m_nTotalChars += nNameSize;
+//
+//    //pRowPixDst->vPrint();
 //  }
-  
-  vToColPix(pRowPixDst,bAddKeyHash);
-  
-  pRowPixDst->m_bInitialised = true;
-  
-  //if (AM::bDeveloper()) {
-  //  pRowPixDst->vPrint();
-  //
-  //  vDebugPoint();
-  //}
+//
+//  pRowPixDst->m_nTotalChars++;
+//  * azColNmDst = '\0';
+//}
 
-}
+/*----------------------------------------------------------------------------*/
+/* convert this streamDef to RowPix (optionally adding a ptnhash column)      */
+/*----------------------------------------------------------------------------*/
+//void StreamDefBase::vToRowPix(RowPix* pRowPixDst, bool bAddKeyHash)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_);
+//
+//  if (pRowPixDst->m_bInitialised)
+//    return;
+//
+//  ASSERT(! pRowPixDst->m_bPtnHash);
+//
+//  pRowPixDst->m_sPixNm   = m_sStreamDefNm;
+//  pRowPixDst->m_nColumns = m_nColumns;
+//
+////  if (bAddPtnHash) {
+////    ASSERT(! pRowPixDst->m_nExtraCols);
+////
+////    pRowPixDst->m_nColumns++;
+////    pRowPixDst->m_nExtraCols = 1;
+////    pRowPixDst->m_bPtnHash = true;
+////  }
+//
+//  vToColPix(pRowPixDst,bAddKeyHash);
+//
+//  pRowPixDst->m_bInitialised = true;
+//
+//  //if (AM::bDeveloper()) {
+//  //  pRowPixDst->vPrint();
+//  //
+//  //  vDebugPoint();
+//  //}
+//
+//}
 
 /*----------------------------------------------------------------------------*/
 /* convert streamDef to its metadat format                                    */

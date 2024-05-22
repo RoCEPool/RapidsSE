@@ -23,7 +23,7 @@ namespace STORE
     i8     m_nColumns;    // total columns
     Column m_xaColumn[C_MAX_COLUMNS];  // array of columns
 
-    RowPix m_oRowPix;     // row pix
+    //RowPix m_oRowPix;     // row pix
     i8     m_jRowSize;    // size of fixed size row
     i8     m_jTableSize;  // estimate of table size
 
@@ -80,15 +80,15 @@ namespace STORE
     bool    bReplicated(void);
     void    vReplicated(bool bReplicated);
     void    vResetPointers(void);
-    RowPix* pRowPix(void);
+    //RowPix* pRowPix(void);
     i8      jRowSizeBytes(void);
   
     void    vStreamDefNm(Stz* szStreamDefNm);
     Stz*    szStreamDefNm(void);
   
     i8      jTableSize(void);
-    void    vToColPix(RowPix* pRowPix, bool bAddKeyHash);
-    void    vToRowPix(RowPix* pRowPix, bool bAddKeyHash);
+    //void    vToColPix(RowPix* pRowPix, bool bAddKeyHash);
+    //void    vToRowPix(RowPix* pRowPix, bool bAddKeyHash);
     void    vToMetadata(String* psMetadata);
 
     bool    bUnique(void);

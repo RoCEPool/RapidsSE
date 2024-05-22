@@ -17,10 +17,10 @@ namespace STORE
   public:
     // - - - - - - - - - - - - - - - - - -
     // meta data
-    union {
+//    union {
       StreamDef *m_pStreamDef;     // stream def
-      RowPix *m_pRowPix;        // row pix
-    };
+//      RowPix *m_pRowPix;        // row pix
+//    };
 
     bool       m_abGetCol[C_MAX_COLUMNS];
 
@@ -48,6 +48,7 @@ namespace STORE
     Dtm  wColDtm(i8 i_Col);
     char* azColVal(i8 i_Col);
     i8   iColVal(i8 i_Col);
+    i8   nColumns(void);
     d8   dColVal(i8 i_Col);
     Stz* szColVal(i8 i_Col);
     void vCopyRow(Row* pRow);
