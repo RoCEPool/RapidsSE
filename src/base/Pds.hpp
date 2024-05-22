@@ -31,8 +31,6 @@ namespace BASE
 
     eBT     m_eBufferType;
 
-    //RowPix m_oRowPix;
-
     // ---------------------------
     i8    m_iSynthRowKey;     // Synthetic key for rows added to Pds
 
@@ -53,8 +51,7 @@ namespace BASE
     void* operator new(size_t);
     void  operator delete(void*);
 
-//  Pds(RowPix* pRowPix, eBT eBufferType = BT_DATA);        // When Pds is used to store rows
-    Pds(StreamDef* pStreamDef, eBT eBufferType = BT_DATA);  // When Pds is used to store rows
+Pds(StreamDef* pStreamDef, eBT eBufferType = BT_DATA);  // When Pds is used to store rows
     Pds(i8 nBytes, CompareFunc fpCompare, bool bAddToHashMap=true);                   // When Pds is used to track BufferIds
     ~Pds(void) noexcept(false);
 
@@ -64,7 +61,6 @@ namespace BASE
 
     // public:
     Row*            pAllotRow(void);
-//  Row*            pAllotRow(i8 iVargsBegin, ...);
     Row*            pAllotRow(StreamDef* pStreamDef, i8 iVargsBegin, ...);
 //  Row*            pAllotRowFull(char** aaStzSet);
     SkipListBlock*  pAppend(void* pKey);
@@ -86,8 +82,6 @@ namespace BASE
     SkipListBlock*  pFirstBlock(void);
     Row*            pFirstRow(void);
     i8              nFreeBytes(void);
-    //void            vInitPix(RowPix* pRowPix);
-    //void            vInitPix(StreamDef* pStreamDef, bool bAddKeyHash);
     i8              nItems(void);
     void*           aLastUsableByteAddr(void);
     i8              iLastUsableOffset(void);
@@ -95,7 +89,6 @@ namespace BASE
     Row*            pNextRow(Row* pCurr);
     void            vPrintRows(StreamDef* pStreamDef, File* pFilePtr, Stz* szLabel);
     void            vReset(void);
-    //RowPix*         pRowPix(void);
     void            vStzSetSize(i8 nBytes);
     i8              iStzSetSize(void);
     void            vValidate(void);
