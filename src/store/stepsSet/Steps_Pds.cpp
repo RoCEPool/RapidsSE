@@ -666,8 +666,6 @@ void Step::vPdsAddRowVargs(void)
   Pds* pPdsRowBuffer = _pPds(*m_pLogicUnit->m_xpPds);
 
   StreamDef* pStreamDef = pTableDef->pStreamDef();
-  //RowPix* pRowPix = pPdsRowBuffer->pRowPix();
-  //RowPix* pRowPix = pStreamDef->pRowPix();
 
   i8 nCols = pStreamDef->nColumns();
 

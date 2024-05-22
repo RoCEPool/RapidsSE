@@ -97,8 +97,6 @@ void ToLglPtnRow::vConvert(Table* pTable, Pds* pPdsRowBuffer)
 //  vTrace("ToLglPtnRow\n"_Stz);
 //  pPdsRowBuffer->vPrintRows(nullptr, nullptr);
 
-//  i8 i_KeyHshCol = pRowPix->i_KeyHsh();
-
 //  LglPtnMap* pPtnMap = AM::pLglPtnMap();
   PdsCursor* pCursor = new PdsCursor(pPdsRowBuffer);
 
@@ -112,7 +110,6 @@ void ToLglPtnRow::vConvert(Table* pTable, Pds* pPdsRowBuffer)
 //    LglPtn tLglPtn = pPtnMap->tHashToLglPtnId(tKeyHsh);
 
 //    vTrace("ToBktRow::vConvert2 KeyHsh: %lld Ptn:%lld\n"_Stz, tKeyHsh.iAsI8(), tLglPtn.iAsI8());
-//  RowPix* pRowPix = pPdsRowBuffer->pRowPix();
     vCopyRow(0, aRowSrc, pTable->pStreamDef());
 
     pCursor->vNext();
@@ -161,8 +158,6 @@ void ToLglPtnRow::vCopyRow(LglPtn tLglPtn, Row* aRowSrc, StreamDef* pFromStreamD
   bool bSrcHasPtnHash = false;
   bool bCopyPtnHash   = false;
 
-  //RowPix* pFromRowPix = pFromStreamDef->pRowPix();
-
   // get pds row buffer for given partition (new a first buffer if ncessary)
 
   Pds* pIntoPdsRowBuffer = _pPds(m_oLglBufSet.pBuffer(tLglPtn));
@@ -171,8 +166,6 @@ void ToLglPtnRow::vCopyRow(LglPtn tLglPtn, Row* aRowSrc, StreamDef* pFromStreamD
     pIntoPdsRowBuffer = new Pds(pFromStreamDef);
     pIntoPdsRowBuffer->vLglPtn(tLglPtn);
 
-    // ?? ALKA 20/5/2024
-    //pIntoPdsRowBuffer->pRowPix()->vRemovePtnHash();
     m_oLglBufSet.vAddBuffer(tLglPtn,pIntoPdsRowBuffer);
   }
 
@@ -182,8 +175,6 @@ void ToLglPtnRow::vCopyRow(LglPtn tLglPtn, Row* aRowSrc, StreamDef* pFromStreamD
     pIntoPdsRowBuffer = new Pds(pFromStreamDef);
     pIntoPdsRowBuffer->vLglPtn(tLglPtn);
 
-    // ?? ALKA 20/5/2024
-    //pIntoPdsRowBuffer->pRowPix()->vRemovePtnHash();
     m_oLglBufSet.vAddBuffer(tLglPtn,pIntoPdsRowBuffer);
 
     aNewRow = pIntoPdsRowBuffer->pCopyRow(pFromStreamDef, aRowSrc,bSrcHasPtnHash,bCopyPtnHash);

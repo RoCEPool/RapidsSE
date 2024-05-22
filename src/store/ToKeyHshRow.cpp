@@ -816,8 +816,6 @@ bool ToKeyHshRow::bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
   i8 i_ErrorCodeLine = -1;
 
   i8 nCols = m_pStreamDef->nColumns();
-  //RowPix* pRowPix = m_pStreamDef->pRowPix();
-  //ColPix* aColPix = pRowPix->m_xaColPix;
 
   // ---- ---- ---- ---- ---- ---- ---- ----
   // determine field separator
