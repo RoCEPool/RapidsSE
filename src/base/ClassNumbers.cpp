@@ -336,6 +336,7 @@ Stz* BASE::aCN[CN_ENUMS+1]
     /* */ "SEAPI"_Stz,                // CN_SEAPI
     /* */ "SEDEPUTY"_Stz,             // CN_SEDEPUTY
     /* */ "SEEME"_Stz,                // CN_SEEME
+    /* */ "SEGMENTEDARRAYITER"_Stz,   // CN_SEGMENTEDARRAYITER
     /* */ "SENCELL"_Stz,              // CN_SENCELL
     /* */ "SENCOMPILER"_Stz,          // CN_SENCOMPILER
     /* */ "SENDS"_Stz,                // CN_SENDS
@@ -431,6 +432,7 @@ Stz* BASE::aCN[CN_ENUMS+1]
     /* */ "TINYVIRTUAL"_Stz,          // CN_TINYVIRTUAL
     /* */ "TMEVAL"_Stz,               // CN_TMEVAL
     /* */ "TOKEN"_Stz,                // CN_TOKEN
+    /* */ "TOKENARRAY"_Stz,           // CN_TOKENARRAY
     /* */ "TOKENVEC"_Stz,             // CN_TOKENVEC
     /* */ "TOKEYHSHROW"_Stz,          // CN_TOKEYHSHROW
     /* */ "TOLGLPTNCRW"_Stz,          // CN_TOLGLPTNCRW

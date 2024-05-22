@@ -181,6 +181,7 @@
 #include "SN_Vch.hpp"
 
 #include "ThreadList.hpp"
+#include "TokenArray.hpp"
 #include "ToLglPtnCrw.hpp"
 #include "ToLglPtnRow.hpp"
 #include "TraceLock.hpp"
@@ -647,6 +648,7 @@ SizeHeap gxaSizeHeap[]
   { CN_SEAPI,                    sizeof(SeApi),              HT_T_LARGE   ,FILL },
   { CN_SEDEPUTY,        sizeof(SeDeputy),           HT_T_MEDIUM  , FILL },
   { CN_SEEME,           sizeof(SeeMe),              HT_INVALID   , FILL },
+  { CN_SEGMENTEDARRAYITER, 0,                       HT_INVALID   , FILL },
   { CN_SENCELL,         sizeof(SenCell),            HT_INVALID   , FILL },
   { CN_SENCOMPILER,     sizeof(SenCompiler),        HT_T_TINY    , FILL },
   { CN_SENDS,           sizeof(Sends),              HT_T_TINY    , FILL },
@@ -742,6 +744,7 @@ SizeHeap gxaSizeHeap[]
   { CN_TINYVIRTUAL,              sizeof(Heap),/*correct*/    HT_INVALID   ,FILL },
   { CN_TMEVAL,                   sizeof(TypeValueArea),/*yes*/   HT_INVALID   ,FILL },
   { CN_TOKEN,                    sizeof(Token),                  HT_T_TINY    , FILL },
+  { CN_TOKENARRAY,               sizeof(TokenArray),             HT_T_TINY    , FILL },
   { CN_TOKENVEC,                 sizeof(TokenVec),               HT_T_LARGE   , FILL },
   { CN_TOKEYHSHROW,              sizeof(ToKeyHshRow),            HT_T_MEDIUM  , FILL },
   { CN_TOLGLPTNCRW,              sizeof(ToLglPtnCrw),            HT_T_LARGE   , FILL },
