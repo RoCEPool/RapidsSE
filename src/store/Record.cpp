@@ -177,8 +177,6 @@ void Record::vAddRow(Row* aRow)
 
     Column* pColumn = m_pStreamDef->pGetColumn(i_Col);
     eDM eDatum = pColumn->eDatum();
-    //i8  iScale = m_pRowPix->m_xaColPix[i_Col].m_uScale; //pCol->iColumnScale();
-
 
     if (i_Col)
       StrLib::vAppendString(&m_azCursor, azRecordLastChar(), ",");

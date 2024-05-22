@@ -17,10 +17,7 @@ namespace STORE
   public:
     // - - - - - - - - - - - - - - - - - -
     // meta data
-//    union {
-      StreamDef *m_pStreamDef;     // stream def
-//      RowPix *m_pRowPix;        // row pix
-//    };
+    StreamDef *m_pStreamDef;     // stream def
 
     bool       m_abGetCol[C_MAX_COLUMNS];
 

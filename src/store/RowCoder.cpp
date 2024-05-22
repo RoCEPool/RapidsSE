@@ -152,23 +152,6 @@ i8 RowCoder::nMetaSize(StreamDef* pStreamDef)
   return nMetaBytes;
 }
 
-/*----------------------------------------------------------------------------*/
-/* calc size of meta tape for given column vector (does not incl <W>)         */
-/*----------------------------------------------------------------------------*/
-//i8 RowCoder::nMetaSize(RowPix* pRowPix)
-//{
-//  //  i8 nColumns = pColVec->nItems();
-//  //
-//  //  i8 nBits = (nColumns * (i8)C_METABITS);
-//  //
-//  //  i8 nMetaBytes = nBits / (i8)C_BITS_PER_BYTE
-//  //                   + (nBits % (i8)C_BITS_PER_BYTE ? 1 : 0);
-//
-//  i8 nMetaBytes = pRowPix->m_nColumns - pRowPix->m_nExtraCols;
-//
-//  return nMetaBytes;
-//}
-
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

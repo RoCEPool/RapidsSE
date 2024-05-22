@@ -30,7 +30,6 @@ namespace STORE
     //static void vDteIntoEdt(i8 wDte_src, i8* awEdt_dst, i8& iEra_);
     static i8   jHeadSizeStream(StreamDef* pStreamDef);
     static i8   nMetaSize(StreamDef* pStreamDef);
-    //static i8   nMetaSize(RowPix* pRowPix);
   
   /*--------------------------------------------------------------------------*/
   /* how many bytes does given encoding occupy in the data portion of a head? */
