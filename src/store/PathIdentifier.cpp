@@ -87,7 +87,6 @@ PathIdentifier::~PathIdentifier(void) noexcept(false)
   
   for (i8 i_Phrase = 0; i_Phrase < C_MAX_PHRASES; i_Phrase++) {
     if (m_pPhraseTknVec[i_Phrase]) {
-      m_pPhraseTknVec[i_Phrase]->vSetAllTokens();
       delete m_pPhraseTknVec[i_Phrase];
     }
     if (m_pPathVec[i_Phrase]) {
@@ -95,7 +94,6 @@ PathIdentifier::~PathIdentifier(void) noexcept(false)
     }
   }
   
-  m_pWhereTknVec->vSetAllTokens();
   delete m_pWhereTknVec;
 }
 
@@ -492,7 +490,7 @@ void PathIdentifier::vMatchPredicates(i8 i_Phrase, PredicateVec* mpPathPredVec, 
     s256 sColumnNm_Path = mpPathPred->sColumnNm();
     
     // search where clause to find predicate with column name and suitable op
-    for (i8 i_ColumnTkn_Where = -1;;) {
+    for (i8 i_ColumnTkn_Where = 0;;) {
       
       TokenVec* pPhraseTknVec = m_pPhraseTknVec[i_Phrase];
       
@@ -615,10 +613,7 @@ void PathIdentifier::vParsePhrases(void)
     m_nPhrases++;    
   }
   
-  pPhrase1->vSetAllTokens();
   delete pPhrase1;
-  
-  pPhrase2->vSetAllTokens();
   delete pPhrase2;
 
   //vShowPhrases();

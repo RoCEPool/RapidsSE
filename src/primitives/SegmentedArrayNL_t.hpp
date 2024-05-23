@@ -22,16 +22,19 @@ namespace PRIMITIVES
 
   public:
     SegmentedArrayIter(SegmentedArrayNL_t<CLASSNO, ITEM, OBJS_PER_SEG>* pSegmentedArray);
+    SegmentedArrayIter(SegmentedArrayNL_t<CLASSNO, ITEM, OBJS_PER_SEG>* pSegmentedArray, i8 iIdx);
     ~SegmentedArrayIter(void) noexcept(false);
 
-
+    void  vAfterLast();
+    i8    iArrayIndex();
+    void  vBeforeFirst();
     bool  bIsAfterLast();
     bool  bIsBeforeFirst();
     bool  bHasNext();
     bool  bHasPrevious();
     ITEM* pNext();
     ITEM* pPrevious();
-    ITEM* operator *();
+    ITEM* pCurrItem();
   };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -61,6 +64,8 @@ namespace PRIMITIVES
     Footer* aFooter(void);
     ITEM* pGet(i8 iIdx);
     SegmentedArrayIter<CLASSNO,ITEM,OBJS_PER_SEG> xIterator();
+    SegmentedArrayIter<CLASSNO,ITEM,OBJS_PER_SEG> xIterator(i8 iIdx);
+    void  vInsert(const ITEM& oItem, i8 iIdx);
     i8    nItems(void);
     void  vReset(void);
     void  vRemove(i8 iIdx);
@@ -132,7 +137,6 @@ SegmentedArrayNL_t<CLASSNO,ITEM,OBJS_PER_SEG>::~SegmentedArrayNL_t(void) noexcep
   }
 }
 
-
 /*----------------------------------------------------------------------------*/
 /* add an item to the array                                                   */
 /*----------------------------------------------------------------------------*/
@@ -149,7 +153,7 @@ void SegmentedArrayNL_t<CLASSNO,ITEM,OBJS_PER_SEG>::vAdd(const ITEM& oItem)
     pSeg = pAddSegment();
   }
 
-  pSeg->vAddToThisSegment(iOffset, oItem);
+  pSeg->m_aObjects[iOffset] = oItem;
   ++m_nItems;
 }
 
@@ -183,7 +187,7 @@ ITEM* SegmentedArrayNL_t<CLASSNO,ITEM,OBJS_PER_SEG>::pGet(i8 iIdx)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get number of items in list                                                */
+/* get an iterator positioned just before the first item                      */
 /*----------------------------------------------------------------------------*/
 template <eCN CLASSNO, class ITEM, i8 OBJS_PER_SEG>
 SegmentedArrayIter<CLASSNO,ITEM,OBJS_PER_SEG> SegmentedArrayNL_t<CLASSNO,ITEM,OBJS_PER_SEG>::xIterator(void)
@@ -191,6 +195,58 @@ SegmentedArrayIter<CLASSNO,ITEM,OBJS_PER_SEG> SegmentedArrayNL_t<CLASSNO,ITEM,OB
   ASSERT(m_pHead == this);
   SegmentedArrayIter<CLASSNO,ITEM,OBJS_PER_SEG> xIter(this);
   return xIter;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get an iterator positioned at a given item index                           */
+/*----------------------------------------------------------------------------*/
+template <eCN CLASSNO, class ITEM, i8 OBJS_PER_SEG>
+SegmentedArrayIter<CLASSNO,ITEM,OBJS_PER_SEG> SegmentedArrayNL_t<CLASSNO,ITEM,OBJS_PER_SEG>::xIterator(i8 iIdx)
+{
+  ASSERT(m_pHead == this);
+  ASSERT(iIdx >= 0);
+  ASSERT(iIdx < m_nItems);
+
+  SegmentedArrayIter<CLASSNO,ITEM,OBJS_PER_SEG> xIter(this, iIdx);
+  return xIter;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Insert an item at a given array index and shuffle subsequent elements right*/
+/*----------------------------------------------------------------------------*/
+template <eCN CLASSNO, class ITEM, i8 OBJS_PER_SEG>
+void SegmentedArrayNL_t<CLASSNO,ITEM,OBJS_PER_SEG>::vInsert(const ITEM& oItem, i8 iIdx)
+{
+  ASSERT(m_pHead == this);
+  ASSERT(iIdx >= 0);
+  ASSERT(iIdx <= m_nItems);
+
+  if (iIdx == m_nItems) {
+    vAdd(oItem);
+    return;
+  }
+
+  // We need to ripple right starting from the last element.
+  // First add space for a new empty element.
+  vAdd(ITEM{});
+
+  i8 iRippleIdx = m_nItems - 2;
+  SegmentedArrayNL_t<CLASSNO,ITEM,OBJS_PER_SEG>* pRippleSeg = pSegmentOf(iRippleIdx);
+
+  while (iRippleIdx >= iIdx) {
+    // Copy iRippleIdx to iRippleIdx + 1
+    i8 iRippleOffset = iRippleIdx % OBJS_PER_SEG;
+
+    if (iRippleOffset == OBJS_PER_SEG - 1) {
+      pRippleSeg = pSegmentOf(iRippleIdx);
+      pRippleSeg->m_pNext->m_aObjects[0] = pRippleSeg->m_aObjects[iRippleOffset];
+    } else {
+      pRippleSeg->m_pNext->m_aObjects[iRippleOffset + 1] = pRippleSeg->m_aObjects[iRippleOffset];
+    }
+  }
+
+  // Now we can insert at iIdx
+  pRippleSeg->m_aObjects[iIdx % OBJS_PER_SEG] = oItem;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -215,7 +271,7 @@ void SegmentedArrayNL_t<CLASSNO,ITEM,OBJS_PER_SEG>::vReset(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Clear the array any all extra array segments                               */
+/* Remove an item at a given array index and shuffle subsequent elements left */
 /*----------------------------------------------------------------------------*/
 template <eCN CLASSNO, class ITEM, i8 OBJS_PER_SEG>
 void SegmentedArrayNL_t<CLASSNO,ITEM,OBJS_PER_SEG>::vRemove(i8 iIdx)
@@ -324,12 +380,82 @@ SegmentedArrayIter<CLASSNO,ITEM,OBJS_PER_SEG>::SegmentedArrayIter(SegmentedArray
 }
 
 /*----------------------------------------------------------------------------*/
+/* Construct a new iterator at a given item index                             */
+/*----------------------------------------------------------------------------*/
+template <eCN CLASSNO, class ITEM, i8 OBJS_PER_SEG>
+SegmentedArrayIter<CLASSNO,ITEM,OBJS_PER_SEG>::SegmentedArrayIter(SegmentedArrayNL_t<CLASSNO,ITEM,OBJS_PER_SEG>* pSegmentedArray, i8 iIdx)
+ : Object(CN_SEGMENTEDARRAYITER)
+{
+  ASSERT(iIdx >= 0);
+  ASSERT(iIdx < pSegmentedArray->m_pHead->m_nItems);
+  m_pCurrSegment = pSegmentedArray;
+  m_iSegment = iIdx / OBJS_PER_SEG;
+  m_iOffset = iIdx % OBJS_PER_SEG;
+}
+
+/*----------------------------------------------------------------------------*/
 /* Destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 template <eCN CLASSNO, class ITEM, i8 OBJS_PER_SEG>
 SegmentedArrayIter<CLASSNO,ITEM,OBJS_PER_SEG>::~SegmentedArrayIter(void) noexcept(false)
 {
 
+}
+
+/*----------------------------------------------------------------------------*/
+/* Move the iterator to one space beyond the last item                        */
+/*----------------------------------------------------------------------------*/
+template <eCN CLASSNO, class ITEM, i8 OBJS_PER_SEG>
+void SegmentedArrayIter<CLASSNO,ITEM,OBJS_PER_SEG>::vAfterLast()
+{
+  i8 nItems = m_pCurrSegment->m_pHead->m_nItems;
+  m_iOffset = nItems % OBJS_PER_SEG;
+
+  if (m_iOffset == 0 && nItems > 0) {
+    m_pCurrSegment->m_pHead->pAddSegment();
+  }
+
+  while (m_pCurrSegment->m_pNext) {
+    ++m_iSegment;
+    m_pCurrSegment = m_pCurrSegment->m_pNext;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* returns the array index of the iterator position, or -1 if before the first*/
+/* element or nItems() if after the last element.                             */
+/*----------------------------------------------------------------------------*/
+template <eCN CLASSNO, class ITEM, i8 OBJS_PER_SEG>
+i8 SegmentedArrayIter<CLASSNO,ITEM,OBJS_PER_SEG>::iArrayIndex()
+{
+  i8 iIdx = m_iSegment * OBJS_PER_SEG + m_iOffset;
+  return iIdx;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Move the iterator to one space before the first item                       */
+/*----------------------------------------------------------------------------*/
+template <eCN CLASSNO, class ITEM, i8 OBJS_PER_SEG>
+void SegmentedArrayIter<CLASSNO,ITEM,OBJS_PER_SEG>::vBeforeFirst()
+{
+  m_pCurrSegment = m_pCurrSegment->m_pHead;
+  m_iOffset = -1;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Get the current item that the iterator is pointing at                      */
+/*----------------------------------------------------------------------------*/
+template <eCN CLASSNO, class ITEM, i8 OBJS_PER_SEG>
+ITEM* SegmentedArrayIter<CLASSNO,ITEM,OBJS_PER_SEG>::pCurrItem()
+{
+  i8 nItems = m_pCurrSegment->m_pHead->m_nItems;
+  i8 iCurrIdx = m_iSegment * OBJS_PER_SEG + m_iOffset;
+
+  if (iCurrIdx < 0 || iCurrIdx >= nItems) {
+    return nullptr;
+  }
+
+  return &(m_pCurrSegment->m_aObjects[m_iOffset]);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -383,7 +509,8 @@ bool SegmentedArrayIter<CLASSNO,ITEM,OBJS_PER_SEG>::bHasPrevious()
 template <eCN CLASSNO, class ITEM, i8 OBJS_PER_SEG>
 ITEM* SegmentedArrayIter<CLASSNO,ITEM,OBJS_PER_SEG>::pNext()
 {
-  if (!bHasNext()) {
+  // If we have already moved beyond the last element then don't keep moving
+  if (bIsAfterLast()) {
     return nullptr;
   }
 
@@ -391,8 +518,20 @@ ITEM* SegmentedArrayIter<CLASSNO,ITEM,OBJS_PER_SEG>::pNext()
     m_iOffset = 0;
     ++m_iSegment;
 
+    if (!m_pCurrSegment->m_pNext) {
+      // We add a segment so we can legitimately move beyond the last element.
+      // This allows for backward iteration by starting beyond the last element,
+      // which is necessary for the corner case of an array with zero elements.
+      m_pCurrSegment->m_pHead->vAddSegment();
+    }
+
     ASSERT(m_pCurrSegment->m_pNext);
     m_pCurrSegment = m_pCurrSegment->m_pNext;
+  }
+
+  // We may have now moved after the last element
+  if (bIsAfterLast()) {
+    return nullptr;
   }
 
   return &(m_pCurrSegment->m_aObjects[m_iOffset]);
@@ -404,14 +543,21 @@ ITEM* SegmentedArrayIter<CLASSNO,ITEM,OBJS_PER_SEG>::pNext()
 template <eCN CLASSNO, class ITEM, i8 OBJS_PER_SEG>
 ITEM* SegmentedArrayIter<CLASSNO,ITEM,OBJS_PER_SEG>::pPrevious()
 {
-  if (!bHasPrevious()) {
+  // If we have already moved before the first element then don't keep moving
+  if (bIsBeforeFirst()) {
     return nullptr;
   }
 
   if (--m_iOffset == -1) {
     m_iOffset = OBJS_PER_SEG - 1;
-    --m_iSegment;
 
+    if (m_iSegment == 0) {
+      // We have now moved before the first element
+      return nullptr;
+    }
+
+    ASSERT(m_iSegment >= 1);
+    --m_iSegment;
 
     // Find the previous segment by iterating from the head
     SegmentedArrayNL_t<CLASSNO, ITEM, OBJS_PER_SEG>* pSeg = m_pCurrSegment->m_pHead;
@@ -429,21 +575,6 @@ ITEM* SegmentedArrayIter<CLASSNO,ITEM,OBJS_PER_SEG>::pPrevious()
   return &(m_pCurrSegment->m_aObjects[m_iOffset]);
 }
 
-/*----------------------------------------------------------------------------*/
-/* Get the current item that the iterator is pointing at                      */
-/*----------------------------------------------------------------------------*/
-template <eCN CLASSNO, class ITEM, i8 OBJS_PER_SEG>
-ITEM* SegmentedArrayIter<CLASSNO,ITEM,OBJS_PER_SEG>::operator*()
-{
-  i8 nItems = m_pCurrSegment->m_pHead->m_nItems;
-  i8 iCurrIdx = m_iSegment * OBJS_PER_SEG + m_iOffset;
-
-  if (iCurrIdx < 0 || iCurrIdx >= nItems) {
-    return nullptr;
-  }
-
-  return &(m_pCurrSegment->m_aObjects[m_iOffset]);
-}
 
 /*============================================================================*/
 /* end                                                                        */

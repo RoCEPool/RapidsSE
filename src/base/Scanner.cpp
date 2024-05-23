@@ -43,7 +43,6 @@ Scanner::~Scanner(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCANNER,_FOOTER_);
     
-  m_pTknVec->vSetAllTokens();
   delete m_pTknVec;
 }
 

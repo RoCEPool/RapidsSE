@@ -426,7 +426,6 @@ void Stream::vCreateOps(void)
     bool b = CmdHelper::bParseCmd(pTknVec,pOp_0->pOpTags());
     UNUSED(b);
     
-    pTknVec->vSetAllTokens();
     delete pTknVec;
 
   } // for

@@ -3,14 +3,16 @@
 /*============================================================================*/
 #pragma once
 
+#include "TokenArray.hpp"
+
 namespace BASE
 {
-  class TokenVec : public ArrayNL_t<CN_TOKENVEC,Token,C_MAX_TOKENS>
+  class TokenVec : public Object
   {
   private:
-     
-    i8 m_iCurTkn;        // the current token in the vector
-  
+    TokenArray* m_pTokenArray;
+    TokenArrayIter m_xTokenIter;
+
     b256K m_xyByteSpace; // buffer for all token chars
   
     // must be last
@@ -29,48 +31,37 @@ namespace BASE
                               TokenVec* pFindVec, TokenVec* pWithVec);
     //static TokenVec* pTokeniseSen(Stz* szString);
 
-    bool bAdvanceCurr(bool bIncItems);
+    void vAdvanceCurr(void);
     void vAppendToken(Stz* szArgChars, eTN eToken);
     void vAppendToken(Token* pToken);
     void vAppendVector(TokenVec* pTokenVec);
     bool bBlankLine(void);
-    i8   iCountTokens(void);
-    void vCopyVector(TokenVec* pTokenVec);
-    i8   iCurrToken(void);
-    void vCurrToken(i8 i_Tkn);
     Token* pCurrToken(void);
     void vDbgStr(String* psDstStr);
-    void vDumpVec(i8 nPlusMore=0);
-    void vDuplicateVector(TokenVec* pSrcVec);
+    void vDumpVec();
     i8   iFindToken(Stz* pLookFor);
     i8   iFindToken(Stz* pLookFor, eTN eToken);
     Token* pFindToken(Stz* szArgChars, i8& i_Token);
     i8   iFirstTag(void);
     i8   iFirstTag2(void);
     Token* pFirstToken(void);
+    Token* pGet(i8 iIdx);
     bool bHasSemicolon(void);
-    void vIncTokens(void);
     void vInsertToken(i8 i_Tkn, Stz* szArgChars, eTN eToken);
     void vIntegrityCheck(void);
+    i8   nItems(void);
     i8   iLastToken(void);
     Token* pLastToken(void);
     void vListTokens(void);
     Token* pNextToken(void);
-    void vNextToken(void);
     Token* pPrevToken(void);
-    void vPrevToken(void);
     void vRemoveSemicolon(void);
     void vRemoveToken(i8 i_Tkn);
     void vRewindCurr(void);
-    void vReplaceToken(Token* pDstToken, Token* pSrcToken);
-    void vSetAllTokens(void);
     void vSoftReset(void);
-    void vStripAmpersand(void);
     void vStripSingleQuotes(void);
     void vStripSemicolon(void);
     void vTrimTokens(i8 i_Tkn);
-    //void vTokeniseSen(Stz* szString);
-    //void vTokeniseCpp(Stz* szString);
     i8   nTokens(void);
     void vUpdateToken(Token* pDstToken, Stz* szArgChars);
     i8   nUsedByteSpace(void);
@@ -93,8 +84,8 @@ namespace BASE
 
     Stz* _szLaterChars(void);
   
-    void _vTokenRemoveInterior(Token* pCutToken);
-    void _vTokenRemoveLast(Token* pCutToken);
+    void _vTokenRemoveInterior(i8 iIdx);
+    void _vTokenRemoveLast(i8 iIdx);
 
     void _vVecAdjustChars(i8 i_Tkn, i8 nByBytes);
     void _vVecRippleLeft(i8 i_Tkn, i8 iAdjCharsBytes);

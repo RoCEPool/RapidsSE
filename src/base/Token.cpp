@@ -540,32 +540,6 @@ void Token::vUpdateChars(Stz* szArgChars, TokenVec* pExoTknVec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* copy given token into this token                                           */
-/*----------------------------------------------------------------------------*/
-void Token::vCopyToken_restricted(Token* pSrcToken, TokenVec* pExoTknVec)
-{
-  _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
-  UNUSED(pExoTknVec);
-
-  ASSERT(pExoTknVec == m_p_ExoTknVec);
-  
-  m_p_ExoTknVec->vReplaceToken(this,pSrcToken);
-}
-
-/*----------------------------------------------------------------------------*/
-/* init this token                                                            */
-/*----------------------------------------------------------------------------*/
-void Token::vInitToken_restricted(i8 i_Token, TokenVec* pExoTknVec)
-{
-  _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
-
-  ASSERT(! m_p_ExoTknVec);
-  
-  m_p_ExoTknVec = pExoTknVec;
-  m_i_Token     = i_Token;
-}
-
-/*----------------------------------------------------------------------------*/
 /* ripple copy given token into this token                                    */
 /*----------------------------------------------------------------------------*/
 void Token::vRippleCopy_restricted(Token* pSrcToken, i8 nAdjCharsBytes,
@@ -581,20 +555,6 @@ void Token::vRippleCopy_restricted(Token* pSrcToken, i8 nAdjCharsBytes,
   m_iLineNo = pSrcToken->m_iLineNo;
   m_iColNo  = pSrcToken->m_iColNo;
 }
-
-/*----------------------------------------------------------------------------*/
-/* set chars of this token to given arg                                       */
-/*----------------------------------------------------------------------------*/
-void Token::vSetChars_restricted(Stz* szArg, TokenVec* pExoTknVec)
-{
-  _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
-  UNUSED(pExoTknVec);
-
-  ASSERT(pExoTknVec == m_p_ExoTknVec);
-  
-  m_szChars = szArg;
-}
-
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
@@ -987,8 +947,18 @@ bool Token::bSame(Stz* szArg)
 i8 Token::i_Token(void)
 {
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
-    
+
   return m_i_Token;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set token number/index                                                     */
+/*----------------------------------------------------------------------------*/
+void Token::vTokenNum(i8 i_Token)
+{
+  _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
+
+  m_i_Token = i_Token;
 }
 
 /*----------------------------------------------------------------------------*/

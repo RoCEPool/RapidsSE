@@ -462,7 +462,7 @@ bool Input::bReadCommand(eEC& eInputError)
   vSingleLineCmd(true);
     
   if (d_iDebugMode)
-    m_pInpTknVec->vDumpVec(16);
+    m_pInpTknVec->vDumpVec();
   
   if (! bCollectVecFirstLine(eInputError))
     goto L_Exit;
@@ -470,7 +470,7 @@ bool Input::bReadCommand(eEC& eInputError)
   //vTrace(" : >>>%s<<<\n"_Stz,m_pCharser->szRawInput());
 
   if (d_iDebugMode)
-    m_pInpTknVec->vDumpVec(16);
+    m_pInpTknVec->vDumpVec();
 
   m_pInpTknVec->vIntegrityCheck();
   
@@ -512,7 +512,7 @@ bool Input::bReadCommand(eEC& eInputError)
   
   // read more till ;
   if (d_iDebugMode)
-    m_pInpTknVec->vDumpVec(16);
+    m_pInpTknVec->vDumpVec();
   
   if (! bCollectVecTillSemicolon(eInputError))
     goto L_Exit;
@@ -520,7 +520,7 @@ bool Input::bReadCommand(eEC& eInputError)
   //vTrace(" : %s\n"_Stz,m_pCharser->szRawInput());
   
   if (d_iDebugMode)
-    m_pInpTknVec->vDumpVec(16);
+    m_pInpTknVec->vDumpVec();
 
   m_pInpTknVec->vIntegrityCheck();
   if (d_iDebugMode) {
@@ -832,12 +832,12 @@ bool Input::bCollectVecFirstLine(eEC& eInputError)
       return false;
     
     if (d_iDebugMode)
-      m_pInpTknVec->vDumpVec(16);
+      m_pInpTknVec->vDumpVec();
 
     vCollectOneToken();
 
     if (d_iDebugMode)
-      m_pInpTknVec->vDumpVec(16);
+      m_pInpTknVec->vDumpVec();
 
     if (m_pCurrTkn->bInvalidToken()) {
       eInputError = EC_INVALID_TOKEN;
@@ -896,7 +896,7 @@ bool Input::bCollectVecTillSemicolon(eEC& eInputError)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
   if (d_iDebugMode)
-    m_pInpTknVec->vDumpVec(16);
+    m_pInpTknVec->vDumpVec();
   
   // get tokens delimited by ';'
   for (;;) {
@@ -912,7 +912,7 @@ bool Input::bCollectVecTillSemicolon(eEC& eInputError)
     }
 
     if (TN_NULL == m_pCurrTkn->eToken())
-      m_pInpTknVec->vDumpVec(0);
+      m_pInpTknVec->vDumpVec();
 
     ASSERT(TN_NULL != m_pCurrTkn->eToken());
     
@@ -2189,11 +2189,7 @@ bool Input::bCursorAdvance(eEC& eError)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_INPUT, _FOOTER_);
 
-  if (!m_pInpTknVec->bAdvanceCurr(true)) {
-    eError = EC_COMMAND_TOO_LONG;
-    return false;
-  }
-
+  m_pInpTknVec->vAdvanceCurr();
   m_pCurrTkn = m_pInpTknVec->pCurrToken();
 
   return true;
