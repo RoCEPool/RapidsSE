@@ -1679,7 +1679,7 @@ OUT.flush();</stringProp>
             <stringProp name="scriptLanguage">groovy</stringProp>
           </JSR223Sampler>
           <hashTree/>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q1 Group" enabled="false"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q1 Group" enabled="true"/>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
@@ -2209,7 +2209,7 @@ end ;</stringProp>
               </hashTree>
             </hashTree>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q3 Group" enabled="false"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q3 Group" enabled="true"/>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
@@ -2588,7 +2588,7 @@ end ;
               </hashTree>
             </hashTree>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q4 Group" enabled="false"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q4 Group" enabled="true"/>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
@@ -2875,6 +2875,7 @@ order by
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q5_poc3" enabled="true">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
+/keepCodeFile
 pipeline Query5
 begin
   stage S00 on origin :
@@ -2882,12 +2883,13 @@ begin
     | pulse once
     | next
 
-  stage S01 on all partitions multiple threads 4:
+  stage S01 on all partitions:
     scan rapidsse public Orders
+    | project &quot;type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY ,
+               type INTEGER ( 19 ) as O_CUSTKEY O_CUSTKEY ,
+               type DATE ( 0 ) as O_ORDERDATE O_ORDERDATE&quot;
     | filter &quot; type BOOLEAN O_ORDERDATE DATE &apos;1994-01-01&apos;  &gt;=
                             O_ORDERDATE DATE &apos;1995-01-01&apos;  &lt;  and  &quot;
-    | project &quot;type INTEGER ( 19 ) as O_CUSTKEY O_CUSTKEY ,
-               type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY&quot;
     | indexJoin Customer IxC_CUSTKEY &quot;BOUND $I1 O_CUSTKEY ==&quot;
     | project &quot;type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY ,
                type INTEGER ( 19 ) as C_NATIONKEY C_NATIONKEY&quot;
@@ -2895,7 +2897,7 @@ begin
     | combined 0
     | next hashcast
 
-  stage S03 on all partitions :
+  stage S02 on all partitions  multiple threads 4:
     indexJoin Lineitem IxL_ORDERKEY &quot;bound $I1 O_ORDERKEY ==&quot;
     | project &quot;type INTEGER ( 19 ) as C_NATIONKEY C_NATIONKEY ,
                    type INTEGER ( 19 ) as L_SUPPKEY L_SUPPKEY ,
@@ -2905,8 +2907,12 @@ begin
     | combined 0
     | next hashcast
 
-  stage S04 on all partitions :
+  stage S03 on all partitions :
     indexJoin Supplier IxS_SUPPKEY expr &quot;bound $I1 L_SUPPKEY ==&quot;
+    | project &quot;type INTEGER ( 19 ) as C_NATIONKEY C_NATIONKEY ,
+               type DECIMAL ( 19  2 ) as L_EXTENDEDPRICE L_EXTENDEDPRICE ,
+               type DECIMAL ( 19  2 ) as L_DISCOUNT L_DISCOUNT ,
+               type INTEGER ( 19 ) as S_NATIONKEY S_NATIONKEY&quot;
     | filter &quot; type BOOLEAN C_NATIONKEY S_NATIONKEY == &quot;
     | project &quot;type DECIMAL ( 19  2 ) as L_EXTENDEDPRICE L_EXTENDEDPRICE ,
                type DECIMAL ( 19  2 ) as L_DISCOUNT L_DISCOUNT ,
@@ -2915,7 +2921,7 @@ begin
     | combined 0
     | next hashcast
 
-  stage S05 on all partitions :
+  stage S04 on all partitions :
     indexJoin Nation IxN_NATIONKEY expr &quot;bound $I1 S_NATIONKEY ==&quot;
     | project &quot;type DECIMAL ( 19  2 ) as L_EXTENDEDPRICE L_EXTENDEDPRICE ,
                type DECIMAL ( 19  2 ) as L_DISCOUNT L_DISCOUNT ,
@@ -2925,43 +2931,43 @@ begin
     | combined 0
     | next hashcast
 
-  stage S06 on all partitions :
+  stage S05 on all partitions :
     indexJoin Region IxR_REGIONKEY expr &quot;bound $I1 N_REGIONKEY ==&quot;
-    | filter &quot; type BOOLEAN R_NAME &apos;ASIA&apos;  ==  &quot;
     | project &quot;type DECIMAL ( 19  2 ) as L_EXTENDEDPRICE L_EXTENDEDPRICE ,
-               type DECIMAL ( 19  2 ) as L_DISCOUNT L_DISCOUNT ,
-               type VARCHAR ( 0 ) as N_NAME N_NAME&quot;
+                   type DECIMAL ( 19  2 ) as L_DISCOUNT L_DISCOUNT ,
+                   type VARCHAR ( 0 ) as N_NAME N_NAME ,
+                   type VARCHAR ( 0 ) as R_NAME R_NAME&quot;
+    | filter &quot; type BOOLEAN R_NAME &apos;ASIA&apos;  ==  &quot;
     | gbyAgg &quot; GroupBy    type VARCHAR ( 0 ) as N_NAME N_NAME
              aggregates type VARCHAR ( 0 ) as N_NAME $K1 ,
                         type DECIMAL ( 19  2 ) as REVENUE )  L_EXTENDEDPRICE 1.  L_DISCOUNT -  *  sum  &quot;
     | combined 0
     | next
 
-  stage S08 on all nodes :
+  stage S06 on all nodes :
     gbyAgg &quot; GroupBy    type VARCHAR ( 0 ) as N_NAME N_NAME
              aggregates type VARCHAR ( 0 ) as N_NAME $K1 ,
                         type DECIMAL ( 19  2 ) as REVENUE ) REVENUE sum  &quot;
     | combined 0
     | next
 
-  stage S09 on origin :
+  stage S07 on origin :
     gbyAgg &quot; GroupBy    type VARCHAR ( 0 ) as N_NAME N_NAME
              aggregates type VARCHAR ( 0 ) as N_NAME $K1 ,
              type DECIMAL ( 19  2 ) as REVENUE ) REVENUE sum  &quot;
     | combined 0
     | next
 
-  stage S10 on origin :
-    sort &quot; type DECIMAL ( 19  2 ) REVENUE ASC  &quot;
+  stage S08 on origin :
+    sort &quot; type DECIMAL ( 19  2 ) REVENUE DESC  &quot;
     | combined 0
     | next
 
-  stage S11 on origin :
+  stage S09 on origin :
     output
     | sink
     | first
-end ;
-</stringProp>
+end ;</stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="queryTimeout"></stringProp>
