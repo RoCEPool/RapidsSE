@@ -2349,6 +2349,7 @@ order by
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q5_poc3_mt" enabled="true">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
+/keepCodeFile
 pipeline Query5
 begin
   stage S00 on origin :
@@ -2363,8 +2364,6 @@ begin
                type DATE ( 0 ) as O_ORDERDATE O_ORDERDATE&quot;
     | filter &quot; type BOOLEAN O_ORDERDATE DATE &apos;1994-01-01&apos;  &gt;=
                             O_ORDERDATE DATE &apos;1995-01-01&apos;  &lt;  and  &quot;
-    | project &quot;type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY ,
-               type INTEGER ( 19 ) as O_CUSTKEY O_CUSTKEY&quot;
     | indexJoin Customer IxC_CUSTKEY &quot;BOUND $I1 O_CUSTKEY ==&quot;
     | project &quot;type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY ,
                type INTEGER ( 19 ) as C_NATIONKEY C_NATIONKEY&quot;
@@ -2372,7 +2371,7 @@ begin
     | combined 0
     | next hashcast
 
-  stage S03 on all partitions  multiple threads 4:
+  stage S02 on all partitions  multiple threads 4:
     indexJoin Lineitem IxL_ORDERKEY &quot;bound $I1 O_ORDERKEY ==&quot;
     | project &quot;type INTEGER ( 19 ) as C_NATIONKEY C_NATIONKEY ,
                    type INTEGER ( 19 ) as L_SUPPKEY L_SUPPKEY ,
@@ -2382,7 +2381,7 @@ begin
     | combined 0
     | next hashcast
 
-  stage S04 on all partitions :
+  stage S03 on all partitions :
     indexJoin Supplier IxS_SUPPKEY expr &quot;bound $I1 L_SUPPKEY ==&quot;
     | project &quot;type INTEGER ( 19 ) as C_NATIONKEY C_NATIONKEY ,
                type DECIMAL ( 19  2 ) as L_EXTENDEDPRICE L_EXTENDEDPRICE ,
@@ -2396,7 +2395,7 @@ begin
     | combined 0
     | next hashcast
 
-  stage S05 on all partitions :
+  stage S04 on all partitions :
     indexJoin Nation IxN_NATIONKEY expr &quot;bound $I1 S_NATIONKEY ==&quot;
     | project &quot;type DECIMAL ( 19  2 ) as L_EXTENDEDPRICE L_EXTENDEDPRICE ,
                type DECIMAL ( 19  2 ) as L_DISCOUNT L_DISCOUNT ,
@@ -2406,47 +2405,43 @@ begin
     | combined 0
     | next hashcast
 
-  stage S06 on all partitions :
+  stage S05 on all partitions :
     indexJoin Region IxR_REGIONKEY expr &quot;bound $I1 N_REGIONKEY ==&quot;
     | project &quot;type DECIMAL ( 19  2 ) as L_EXTENDEDPRICE L_EXTENDEDPRICE ,
                    type DECIMAL ( 19  2 ) as L_DISCOUNT L_DISCOUNT ,
                    type VARCHAR ( 0 ) as N_NAME N_NAME ,
                    type VARCHAR ( 0 ) as R_NAME R_NAME&quot;
     | filter &quot; type BOOLEAN R_NAME &apos;ASIA&apos;  ==  &quot;
-    | project &quot;type DECIMAL ( 19  2 ) as L_EXTENDEDPRICE L_EXTENDEDPRICE ,
-               type DECIMAL ( 19  2 ) as L_DISCOUNT L_DISCOUNT ,
-               type VARCHAR ( 0 ) as N_NAME N_NAME&quot;
     | gbyAgg &quot; GroupBy    type VARCHAR ( 0 ) as N_NAME N_NAME
              aggregates type VARCHAR ( 0 ) as N_NAME $K1 ,
                         type DECIMAL ( 19  2 ) as REVENUE )  L_EXTENDEDPRICE 1.  L_DISCOUNT -  *  sum  &quot;
     | combined 0
     | next
 
-  stage S08 on all nodes :
+  stage S06 on all nodes :
     gbyAgg &quot; GroupBy    type VARCHAR ( 0 ) as N_NAME N_NAME
              aggregates type VARCHAR ( 0 ) as N_NAME $K1 ,
                         type DECIMAL ( 19  2 ) as REVENUE ) REVENUE sum  &quot;
     | combined 0
     | next
 
-  stage S09 on origin :
+  stage S07 on origin :
     gbyAgg &quot; GroupBy    type VARCHAR ( 0 ) as N_NAME N_NAME
              aggregates type VARCHAR ( 0 ) as N_NAME $K1 ,
              type DECIMAL ( 19  2 ) as REVENUE ) REVENUE sum  &quot;
     | combined 0
     | next
 
-  stage S10 on origin :
-    sort &quot; type DECIMAL ( 19  2 ) REVENUE ASC  &quot;
+  stage S08 on origin :
+    sort &quot; type DECIMAL ( 19  2 ) REVENUE DESC  &quot;
     | combined 0
     | next
 
-  stage S11 on origin :
+  stage S09 on origin :
     output
     | sink
     | first
-end ;
-</stringProp>
+end ;</stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="queryTimeout"></stringProp>
