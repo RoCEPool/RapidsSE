@@ -1906,7 +1906,8 @@ void OpSketch::vPushLiteral(TypedStack* pExprStack, IntStack* pTypeStack, Token*
         else if (ePreExp == PE_EXP &&
           m_eSketchKind != SK_FILTER &&
           m_eSketchKind != SK_SEMIJOIN &&
-          m_eSketchKind != SK_ANTIJOIN)
+          m_eSketchKind != SK_ANTIJOIN &&
+          m_eSketchKind != SK_INDEXJOIN)
         pExprStack->vPushStz("_ALLOC_VCH(szStrArea)"_Stz);
 			}
       break;
