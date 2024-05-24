@@ -116,7 +116,7 @@ bool PROMPT::bPrompt_ascii(SePrompt* pPrompt)
 
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
   
-  i8 iNumTokens = pInpTknVec->nItems();
+  i8 iNumTokens = pInpTknVec->nTokens();
 
   if (1 == iNumTokens) {
     
@@ -869,7 +869,7 @@ bool PROMPT::bPrompt_dumpTokens(SePrompt* pPrompt)
   RASSERT(pPrompt);
 
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
-  i8 iNumTokens = pInpTknVec->nItems();
+  i8 iNumTokens = pInpTknVec->nTokens();
   
   if (2 == iNumTokens) {
     Token* pTkn1 = pInpTknVec->pGet(1);
@@ -993,7 +993,7 @@ bool PROMPT::bPrompt_errno(SePrompt* pPrompt)
   i8 iErrNo = 0;
 
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
-  i8 iNumTokens = pInpTknVec->nItems();
+  i8 iNumTokens = pInpTknVec->nTokens();
   
   if (2 == iNumTokens) {
     if (pInpTknVec->pGet(1)->eToken() != TN_INTEGER)
@@ -1189,7 +1189,7 @@ bool PROMPT::bPrompt_fileProc(SePrompt* pPrompt)
   
   sFileInp = pTknVec->pGet(1)->szChars();
   sFileOut = pTknVec->pGet(2)->szChars();
-  i8 nLines = pTknVec->nItems() > 3 ? pTknVec->pGet(3)->iToI8() : 0;
+  i8 nLines = pTknVec->nTokens() > 3 ? pTknVec->pGet(3)->iToI8() : 0;
 
   LocalFile oFileInp;
   LocalFile oFileOut;
@@ -1813,7 +1813,7 @@ bool PROMPT::bPrompt_hexdump(SePrompt* pPrompt)
 
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
 
-  i8 iNumTokens = pInpTknVec->nItems();
+  i8 iNumTokens = pInpTknVec->nTokens();
   if (2 != iNumTokens)
     return false;
   
@@ -1945,7 +1945,7 @@ bool PROMPT::bPrompt_indexEntries(SePrompt* pPrompt)
   ASSERT(pInpTknVec->pGet(0)->bSame("indexEntries"_Stz));
   
   // get number of items in token vector
-  i8 nTokens = pInpTknVec->nItems();
+  i8 nTokens = pInpTknVec->nTokens();
   
   // - - - - - - - - - - - - - - - - - - - - -
   // there should be 1/2 tokens
@@ -2000,7 +2000,7 @@ bool PROMPT::bPrompt_job(SePrompt* pPrompt)
   Token* pArg1 = nullptr;
   
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
-  i8 nTokens = pInpTknVec->nItems();
+  i8 nTokens = pInpTknVec->nTokens();
   
   if (nTokens != 3)
     return false;
@@ -2357,7 +2357,7 @@ bool PROMPT::bPrompt_lvl(SePrompt* pPrompt)
   i8 i_Next = 0;
   
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
-  i8 iNumTokens = pInpTknVec->nItems();
+  i8 iNumTokens = pInpTknVec->nTokens();
   
   if (2 == iNumTokens) {
     Token* pTkn0 = pInpTknVec->pGet(1);
@@ -2483,7 +2483,7 @@ bool PROMPT::bPrompt_memoryLeaks(SePrompt* pPrompt)
 //  vTrace("Text_leak : %p\n"_Stz,pText_leak);
 
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
-  i8 iNumTokens = pInpTknVec->nItems();
+  i8 iNumTokens = pInpTknVec->nTokens();
   JobList* pExitedJobs = AM::pExitedJobs();
   i8 nRetired = pExitedJobs->nJobs();
   
@@ -2932,7 +2932,7 @@ bool PROMPT::bPrompt_optimiserLvl(SePrompt* pPrompt)
   i8 iOptimiserLvl = 0;
   
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
-  i8 iNumTokens = pInpTknVec->nItems();
+  i8 iNumTokens = pInpTknVec->nTokens();
   
   if (2 == iNumTokens) {
     Token* pTkn0 = pInpTknVec->pGet(1);
@@ -2973,14 +2973,14 @@ bool PROMPT::bPrompt_output(SePrompt* pPrompt)
 {
   RASSERT(pPrompt);
 
-  if (pPrompt->pInpTknVec()->nItems() == 2 &&
+  if (pPrompt->pInpTknVec()->nTokens() == 2 &&
       pPrompt->pInpTknVec()->pGet(1)->bSame("disable"_Stz)) {
     
     vTrace("OUTPUT DISABLE\n"_Stz);
     pPrompt->vOutputEnabled(false);
   }
   else
-  if (pPrompt->pInpTknVec()->nItems() == 2 &&
+  if (pPrompt->pInpTknVec()->nTokens() == 2 &&
       pPrompt->pInpTknVec()->pGet(1)->bSame("enable"_Stz)) {
 
     vTrace("OUTPUT ENABLE\n"_Stz);
@@ -4301,7 +4301,7 @@ bool PROMPT::bPrompt_promptDebug(SePrompt* pPrompt)
 
   ASSERT(pTknVec->pGet(0)->bSame("promptDebug"_Stz));
 
-  if (1 == pTknVec->nItems()) {
+  if (1 == pTknVec->nTokens()) {
     
     vTrace("%lld\n"_Stz,iJotDebug());
     
@@ -4629,7 +4629,7 @@ bool PROMPT::bPrompt_scan(SePrompt* pPrompt)
   
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
   
-  i8 iNumTokens = pInpTknVec->nItems();
+  i8 iNumTokens = pInpTknVec->nTokens();
   
   s48K sPipelineStmt;
   
@@ -4684,7 +4684,7 @@ bool PROMPT::bPrompt_select(SePrompt* pPrompt)
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
   TagSet* pInpTagSet = pPrompt->pInpTagSet();
 
-  i8 iNumTokens = pInpTknVec->nItems();
+  i8 iNumTokens = pInpTknVec->nTokens();
   
 //  s16KB sSelectStmt;
 //  pInpTknVec->vVecToString(sSelectStmt,0,true);
@@ -4767,7 +4767,7 @@ bool PROMPT::bPrompt_selfies(SePrompt* pPrompt)
 
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
   
-  i8 iNumTokens = pInpTknVec->nItems();
+  i8 iNumTokens = pInpTknVec->nTokens();
   
   Stz* szCmd = pInpTknVec->pGet(0)->szChars();
   
@@ -4948,7 +4948,7 @@ bool PROMPT::bPrompt_shortcut(SePrompt* pPrompt)
 
   ASSERT(pTknVec->pGet(0)->bSame("shortcut"_Stz));
 
-  if (1 == pTknVec->nItems()) {
+  if (1 == pTknVec->nTokens()) {
     ShortCutVec* pShortCutVec = pPrompt->pShortCutVec();
     i8 nShortCuts = pShortCutVec->nItems();
     for (i8 i_ShortCut = 0; i_ShortCut < nShortCuts; i_ShortCut++) {
@@ -5010,7 +5010,7 @@ bool PROMPT::bPrompt_show(SePrompt* pPrompt)
 
   ASSERT(pTkVec->pGet(0)->bSame("show"_Stz));
 
-  if (pTkVec->nItems() != 2) {
+  if (pTkVec->nTokens() != 2) {
     vTrace("error: show { grid | nodes } : %s\n"_Stz, aEC[EC_INVALID_COMMAND]);
     return false;
   }
@@ -5137,7 +5137,7 @@ bool PROMPT::bPrompt_sleep(SePrompt* pPrompt)
 
   ASSERT(pInpTknVec->pGet(0)->bSame("sleep"_Stz));
 
-  if (pInpTknVec->nItems() != 2) {
+  if (pInpTknVec->nTokens() != 2) {
     vTrace("error: sleep : %s\n"_Stz, aEC[EC_INVALID_COMMAND]);
     return false;
   }
@@ -5435,7 +5435,7 @@ bool PROMPT::bPrompt_start(SePrompt* pPrompt)
   RASSERT(pPrompt);
 
   TokenVec* pTknVec = pPrompt->pInpTknVec();
-  i8 nTokens = pTknVec->nItems();
+  i8 nTokens = pTknVec->nTokens();
 
   if (nTokens < 2) {
     return bPrompt_startStatus(pPrompt);
@@ -6094,7 +6094,7 @@ bool PROMPT::bPrompt_takeMem(SePrompt* pPrompt)
 
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
 
-  i8 iNumTokens = pInpTknVec->nItems();
+  i8 iNumTokens = pInpTknVec->nTokens();
   if (2 == iNumTokens) {
     if (pInpTknVec->pGet(1)->eToken() != TN_INTEGER)
       return false;
@@ -6237,7 +6237,7 @@ bool PROMPT::bPrompt_threads(SePrompt* pPrompt)
   RASSERT(pPrompt);
   
   TokenVec* pTknVec = pPrompt->pInpTknVec();
-  i8 nTokens = pTknVec->nItems();
+  i8 nTokens = pTknVec->nTokens();
 
   if (nTokens < 2) {
     Schedule::vThreadsReport();
@@ -6292,7 +6292,7 @@ bool PROMPT::bPrompt_timer(SePrompt* pPrompt)
 {
   RASSERT(pPrompt);
 
-  if (pPrompt->pInpTknVec()->nItems() == 2 &&
+  if (pPrompt->pInpTknVec()->nTokens() == 2 &&
       pPrompt->pInpTknVec()->pGet(1)->bSame("start"_Stz)) {
     
     pPrompt->pTimer()->vStart();
@@ -6335,7 +6335,7 @@ bool PROMPT::bPrompt_tools(SePrompt* pPrompt)
 
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
   
-  i8 iNumTokens = pInpTknVec->nItems();
+  i8 iNumTokens = pInpTknVec->nTokens();
   
   return true;
 }
@@ -6564,7 +6564,7 @@ bool PROMPT::bPrompt_verbose(SePrompt* pPrompt)
 {
   RASSERT(pPrompt);
 
-  if (pPrompt->pInpTknVec()->nItems() == 2 &&
+  if (pPrompt->pInpTknVec()->nTokens() == 2 &&
       pPrompt->pInpTknVec()->pGet(1)->bSame("disable"_Stz)) {
 
     vTrace("VERBOSE DISABLED\n"_Stz);
@@ -6572,7 +6572,7 @@ bool PROMPT::bPrompt_verbose(SePrompt* pPrompt)
     vTrace("\nsuccess: 0 rows affected\n"_Stz);
   }
   else
-  if (pPrompt->pInpTknVec()->nItems() == 2 &&
+  if (pPrompt->pInpTknVec()->nTokens() == 2 &&
       pPrompt->pInpTknVec()->pGet(1)->bSame("enable"_Stz)) {
 
     vTrace("VERBOSE ENABLED\n"_Stz);

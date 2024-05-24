@@ -819,8 +819,12 @@ bool SePrompt::bPromptFunction(eEC* eErrorCode)
   
   Timer oTimer;
 
+  Token* pToken0 = pTkn(0);
+  Token* pToken1 = pTkn(1);
+  Stz* szToken0 = pToken0 ? pToken0->szChars() : ""_Stz;
+  Stz* szToken1 = pToken1 ? pToken1->szChars() : ""_Stz;
   PromptFun* pPromptDesc =
-    gxPromptCatalog.pFindFun(pTkn(0)->szChars(), pTkn(1)->szChars(), eErrorCode);
+    gxPromptCatalog.pFindFun(szToken0, szToken1, eErrorCode);
 
   if (*eErrorCode == EC_DISABLED_STATEMENT)
     return true;
@@ -1187,7 +1191,7 @@ bool SePrompt::bTagCommand(eEC* eErrorCode)
   
   Token* pTkn0 = pTkn(0);
   
-  if (! pTkn0->bSame("tag"_Stz))
+  if (!pTkn0 || ! pTkn0->bSame("tag"_Stz))
     return false;
   
   bool b = bPromptFunction(eErrorCode);
@@ -1213,7 +1217,7 @@ Token* SePrompt::pTkn(i8 i_Token)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  Token* pTkn = m_pInpTknVec->pGet(i_Token,true);
+  Token* pTkn = m_pInpTknVec->pGet(i_Token);
   
   return pTkn;
 }

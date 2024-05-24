@@ -6,6 +6,11 @@
 
 #include "SP_Token.hpp"
 
+#ifdef WITH_TOKENVEC_INTEGRITY
+#define INTEGRITY_CHECK() (this->vIntegrityCheck())
+#define INTEGRITY_CHECK_STATIC(obj) (obj->vIntegrityCheck())
+#endif
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -63,6 +68,7 @@ TokenVec* TokenVec::pGetSubVec(TokenVec* pTknVec, i8 i_From, i8 i_To)
     } while ((pToken = xIter.pNext()) != nullptr && ++i_Token <= i_To);
   }
 
+  INTEGRITY_CHECK_STATIC(pSubVec);
   return pSubVec;
 }
 
@@ -97,7 +103,8 @@ TokenVec* TokenVec::pGetSubVec(TokenVec* pTknVec, Stz* szStart, Stz* szEnd)
     
     pSubVec->vAppendToken(pToken);
   }
-  
+
+  INTEGRITY_CHECK_STATIC(pSubVec);
   return pSubVec;
 }
 
@@ -108,18 +115,19 @@ bool TokenVec::bReplace(TokenVec* pThisVec,
                         TokenVec* pFindVec, TokenVec* pWithVec)
 {
   _static_
+  INTEGRITY_CHECK_STATIC(pThisVec);
 
-  i8 nTokens = pThisVec->nTokens();
-  for (i8 i_Token = 0; i_Token < nTokens; i_Token++) {
-    
-    Token* pThisToken = pThisVec->pGet(i_Token);
-    
+  TokenArrayIter xIter = pThisVec->m_pTokenArray->xIterator();
+  Token* pThisToken;
+
+  while ((pThisToken = xIter.pNext()) != nullptr) {
+
     i8 i_Find = pFindVec->iFindToken(pThisToken->szChars());
     
     if (C_UNKNOWN == i_Find)
       continue;
 
-    if (pWithVec->nItems() <= i_Find)
+    if (pWithVec->nTokens() <= i_Find)
       return false;
 
     Token* pWithToken = pWithVec->pGet(i_Find);
@@ -129,10 +137,11 @@ bool TokenVec::bReplace(TokenVec* pThisVec,
     if (pWithToken->bSame("|"_Stz))
       return false;
 
-    pThisToken->vUpdateChars(pWithToken->szChars(),pThisVec);
+    pThisVec->vUpdateToken(xIter.iArrayIndex(), pThisToken, pWithToken->szChars());
     pThisToken->vToken(pWithToken->eToken());
   }
 
+  INTEGRITY_CHECK_STATIC(pThisVec);
   return true;
 }
 
@@ -162,7 +171,8 @@ void TokenVec::vAdvanceCurr(void)
 void TokenVec::vAppendToken(Stz* szArgChars, eTN eToken)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
-  
+  INTEGRITY_CHECK();
+
   i8 nSize = szArgChars->nSize();
   Stz* szExtension = _szByteSpaceExtend(nSize);
   StrLib::vCopy(szExtension->azChar(), nSize, szArgChars->azChar());
@@ -173,7 +183,7 @@ void TokenVec::vAppendToken(Stz* szArgChars, eTN eToken)
   oToken.vChars(szExtension);
   m_pTokenArray->vAdd(oToken);
 
-  //vIntegrityCheck();
+  INTEGRITY_CHECK();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -182,10 +192,11 @@ void TokenVec::vAppendToken(Stz* szArgChars, eTN eToken)
 void TokenVec::vAppendToken(Token* pToken)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
-  
+  INTEGRITY_CHECK();
+
   vAppendToken(pToken->szChars(),pToken->eToken());
   
-  //vIntegrityCheck();
+  INTEGRITY_CHECK();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -194,13 +205,14 @@ void TokenVec::vAppendToken(Token* pToken)
 void TokenVec::vAppendVector(TokenVec* pTknVec)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
-  
+  INTEGRITY_CHECK();
+
   for (i8 i_Token = 0; i_Token < pTknVec->nTokens(); i_Token++) {
     Token* pToken = pTknVec->pGet(i_Token);
     vAppendToken(pToken);
   }
   
-  //vIntegrityCheck();
+  INTEGRITY_CHECK();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -215,6 +227,24 @@ bool TokenVec::bBlankLine(void)
     return true;
   
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Copy an external string for the last token and point the token to it       */
+/*----------------------------------------------------------------------------*/
+void TokenVec::szCopyStrForLastToken(Token* pLastToken, Stz* szSrc)
+{
+  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+
+  ASSERT(pLastToken);
+  ASSERT(szSrc);
+
+  i8 iNumTokens = nTokens();
+  ASSERT(iNumTokens > 0);
+  ASSERT(pGet(iNumTokens - 1) == pLastToken);
+
+  _vCharsAddLast(pLastToken, szSrc);
+  INTEGRITY_CHECK();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -394,7 +424,7 @@ Token* TokenVec::pFindToken(Stz* szArgChars, i8& i_Token)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
 
-  TokenArrayIter xIter = m_pTokenArray->xIterator(i_Token);
+  TokenArrayIter xIter = m_pTokenArray->xIterator(i_Token - 1);
   Token* pToken;
 
   while ((pToken = xIter.pNext()) != nullptr) {
@@ -522,7 +552,8 @@ bool TokenVec::bHasSemicolon(void)
 void TokenVec::vInsertToken(i8 i_At, Stz* szArgChars, eTN eToken)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
-  
+  INTEGRITY_CHECK();
+
   // calc the action
   
   //vDumpVec(16);
@@ -557,7 +588,7 @@ void TokenVec::vInsertToken(i8 i_At, Stz* szArgChars, eTN eToken)
     pToken->vChars(pToken->szChars() + nBytesToIns);
   }
 
-//  vIntegrityCheck();
+  INTEGRITY_CHECK();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -578,18 +609,11 @@ void TokenVec::vIntegrityCheck(void)
 
   Token* pTknA;
   Token* pTknB;
-  i8 i_Token = -1;
 
   while ( (pTknA = xIter1.pNext()) != nullptr &&
           (pTknB = xIter2.pNext()) != nullptr ) {
 
-    ++i_Token;
-    i8 i_TknA = pTknA->i_Token();
-    i8 i_TknB = pTknB->i_Token();
-    UNUSED(i_TknB);
-    
-    ASSERT(i_Token == i_TknA);
-    ASSERT(i_TknB  == i_TknA + 1);
+    ASSERT(pTknA != pTknB);
 
     Stz* szCharsA = pTknA->szChars();
     Stz* szCharsB = pTknB->szChars();
@@ -598,24 +622,20 @@ void TokenVec::vIntegrityCheck(void)
     
     if (szCharsB != aAdd<Stz*>(szCharsA,nBytesA)) {
       vTrace("Error at [%lld] - [%lld] %p\n"_Stz,
-             i_TknA,
-             i_TknA + 1,
+             xIter1.iArrayIndex(),
+             xIter2.iArrayIndex(),
              aAdd<char*>(szCharsA,nBytesA)
              );
       vDumpVec();
     }
     
     ASSERT(szCharsB == aAdd<Stz*>(szCharsA,nBytesA));
+
+    // The character at szCharsA is either the start of the bytespace, or
+    // the character before it is a null terminator from a previous string.
+    ASSERT(szCharsA == m_xyByteSpace.szArea() || *(aAdd<char*>(szCharsA, -1)) == '\0');
+    ASSERT(*(aAdd<char*>(szCharsB, -1)) == '\0');
   }
-}
-
-/*----------------------------------------------------------------------------*/
-/* return the number of tokens in the array                                   */
-/*----------------------------------------------------------------------------*/
-i8 TokenVec::nItems(void) {
-  _precondition_(_MAGIC_, CN_TOKENVEC, _FOOTER_);
-
-  return m_pTokenArray->nItems();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -691,6 +711,7 @@ Token* TokenVec::pPrevToken(void)
 void TokenVec::vRemoveSemicolon(void)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+  INTEGRITY_CHECK();
 
   i8 i_Semi = iFindToken(";"_Stz,TN_OTHER);
   
@@ -698,6 +719,7 @@ void TokenVec::vRemoveSemicolon(void)
     return;
   
   vRemoveToken(i_Semi);
+  INTEGRITY_CHECK();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -706,7 +728,8 @@ void TokenVec::vRemoveSemicolon(void)
 void TokenVec::vRemoveToken(i8 i_CutTkn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENVEC,_FOOTER_);
-  
+  INTEGRITY_CHECK();
+
   i8 nTkns = nTokens();
   
   if (i_CutTkn < nTkns - 1) {
@@ -716,7 +739,7 @@ void TokenVec::vRemoveToken(i8 i_CutTkn)
     _vTokenRemoveLast(i_CutTkn);
   }
     
-//  vIntegrityCheck();
+  INTEGRITY_CHECK();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -727,6 +750,7 @@ void TokenVec::vRewindCurr(void)
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   ASSERT(!m_xTokenIter.bHasNext()); // at the last element
   ASSERT(!m_xTokenIter.bIsBeforeFirst());
+  INTEGRITY_CHECK();
 
   i8 nBytes = pCurrToken()->nChars() + 1;
   
@@ -736,6 +760,7 @@ void TokenVec::vRewindCurr(void)
   m_xTokenIter.pPrevious();
 
   m_pTokenArray->vRemove(iIdx);
+  INTEGRITY_CHECK();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -749,6 +774,7 @@ void TokenVec::vSoftReset(void)
 
   m_xTokenIter.vBeforeFirst();
   m_pTokenArray->vReset();
+  INTEGRITY_CHECK();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -757,6 +783,7 @@ void TokenVec::vSoftReset(void)
 void TokenVec::vStripSingleQuotes(void)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+  INTEGRITY_CHECK();
 
   TokenArrayIter xIter = m_pTokenArray->xIterator();
   Token* pToken;
@@ -764,6 +791,7 @@ void TokenVec::vStripSingleQuotes(void)
   while ((pToken = xIter.pNext()) != nullptr) {
     pToken->vStripSingleQuotes();
   }
+  INTEGRITY_CHECK();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -772,6 +800,7 @@ void TokenVec::vStripSingleQuotes(void)
 void TokenVec::vStripSemicolon(void)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+  INTEGRITY_CHECK();
 
   TokenArrayIter xIter = m_pTokenArray->xIterator();
   Token* pToken;
@@ -782,6 +811,7 @@ void TokenVec::vStripSemicolon(void)
       break;
     }
   }
+  INTEGRITY_CHECK();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -790,81 +820,15 @@ void TokenVec::vStripSemicolon(void)
 void TokenVec::vTrimTokens(i8 i_Tkn)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+  INTEGRITY_CHECK();
 
-  // TODO: Add trim semantics to segmented array
   Token* pToken = pGet(i_Tkn);
   Stz* szTrimmedLatter = pToken->szChars();
   
-  i8 nHadTkns = nTokens();
-  
-  
   m_xyByteSpace.vTrim(szTrimmedLatter);
-  
-  for (i8 i_Reset = i_Tkn; i_Reset < nHadTkns; i_Reset++) {
-    Token* pToken_reset = pGet(i_Reset);
-    pToken_reset->vReset();
-  }
-  
-  vItems(i_Tkn);
+  m_pTokenArray->vTrimRight(i_Tkn);
+  INTEGRITY_CHECK();
 }
-
-/*----------------------------------------------------------------------------*/
-/* tokenise given string into this token vector                               */
-/*----------------------------------------------------------------------------*/
-//void TokenVec::vTokeniseSen(Stz* szTokenStr)
-//{
-//  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
-//
-//  vSoftReset();
-//  vIntegrityCheck();
-//
-//  Input* pInput = new Input(nullptr);
-//  pInput->vUseString(szTokenStr);
-//  pInput->vFormSenTokens();
-//  pInput->vUseBegin();
-//
-//  for (i8 i_Token = 0; ; i_Token++) {
-//
-//    pInput->vReadToken();
-//    if (TN_NULL == pInput->eToken())
-//      break;
-//
-//    vAppendToken(pInput->szChars(),pInput->eToken());
-//  }
-//
-//  pInput->vUseEnd();
-//  while (pInput)
-//    pInput = pInput->pDeleteInput();
-//}
-
-/*----------------------------------------------------------------------------*/
-/* tokenise given string into this token vector                               */
-/*----------------------------------------------------------------------------*/
-//void TokenVec::vTokeniseCpp(Stz* szTokenStr)
-//{
-//  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
-//
-//  vSoftReset();
-//  vIntegrityCheck();
-//
-//  Input* pInput = new Input(nullptr);
-//  pInput->vUseString(szTokenStr);
-//  pInput->vFormCppTokens();
-//  pInput->vUseBegin();
-//
-//  for (i8 i_Token = 0; ; i_Token++) {
-//
-//    pInput->vReadToken();
-//    if (TN_NULL == pInput->eToken())
-//      break;
-//
-//    vAppendToken(pInput->szChars(),pInput->eToken());
-//  }
-//
-//  pInput->vUseEnd();
-//  while (pInput)
-//    pInput = pInput->pDeleteInput();
-//}
 
 /*----------------------------------------------------------------------------*/
 /* get number of tokens                                                       */
@@ -873,36 +837,51 @@ i8 TokenVec::nTokens(void)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
-  i8 nTokens = nItems();
-  
-  return nTokens;
+  return m_pTokenArray->nItems();
 }
 
 /*----------------------------------------------------------------------------*/
-/* copy chars                                                                 */
+/* copy token with new string                                                 */
 /*----------------------------------------------------------------------------*/
 void TokenVec::vUpdateToken(Token* pDstToken, Stz* szArgChars)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+  INTEGRITY_CHECK();
 
-  if (_bIsLastToken(pDstToken))
-    _vCharsCopyLast(pDstToken,szArgChars);
+  i8 numTokens = nTokens();
+
+  // Get the index in the array of this token. We'll do a reverse search
+  // because it's more likely to be at the end.
+  i8 iIdx = m_pTokenArray->iRevFind(pDstToken);
+  ASSERT(iIdx >= 0);
+  ASSERT(iIdx < numTokens);
+
+  if (iIdx == numTokens - 1) // last item
+    _vCharsReplaceLast(iIdx, pDstToken, szArgChars);
   else
-    _vCharsCopyInterior(pDstToken,szArgChars);
+    _vCharsReplaceInterior(iIdx, pDstToken, szArgChars);
   
-//  vIntegrityCheck();
+  INTEGRITY_CHECK();
 }
 
 /*----------------------------------------------------------------------------*/
-/* copy chars                                                                 */
+/* copy token with new string                                                 */
 /*----------------------------------------------------------------------------*/
-i8 TokenVec::nUsedByteSpace(void)
+void TokenVec::vUpdateToken(i8 iIdx, Token* pDstToken, Stz* szArgChars)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
-  
-  i8 nUsed = m_xyByteSpace.i_Latter();
-  
-  return nUsed;
+
+  ASSERT(m_pTokenArray->pGet(iIdx) == pDstToken);
+  INTEGRITY_CHECK();
+
+  i8 numTokens = nTokens();
+
+  if (iIdx == numTokens - 1) // last item
+    _vCharsReplaceLast(iIdx, pDstToken, szArgChars);
+  else
+    _vCharsReplaceInterior(iIdx, pDstToken, szArgChars);
+
+  INTEGRITY_CHECK();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -914,15 +893,18 @@ void TokenVec::vToTknString(String* psDstStr)
   
   StrLib::vCopy(psDstStr->azStr(), psDstStr->nAreaBytes(), "");
   
-  i8 nTokens = this->nTokens();
-  
   // concat all the tokens together
-  for (i8 i_Token = 0; i_Token < nTokens; i_Token++) {
-    
-    Token* pToken = pGet(i_Token);
-    
-    if (i_Token)
+  TokenArrayIter xIter = m_pTokenArray->xIterator();
+  Token* pToken;
+  bool bFirst = true;
+
+  while ((pToken = xIter.pNext()) != nullptr) {
+
+    if (bFirst) {
+      bFirst = false;
+    } else {
       StrLib::vConcat(psDstStr->azStr(), psDstStr->nAreaBytes(), ' ');
+    }
     
     eTN eToken = pToken->eToken();
     
@@ -984,14 +966,20 @@ void TokenVec::vVecToString(String* psDstStr, i8 iFromTkn, bool bAddSemicolon)
   bool bNoQuotes = false;
 
   StrLib::vCopy(psDstStr->azStr(), psDstStr->nAreaBytes(), "");
-  
-  i8 nTokens = this->nTokens();
-  
+
+  TokenArrayIter xIter = m_pTokenArray->xIterator(iFromTkn - 1);
+  Token* pToken;
+  bool bFirst = true;
+
   // concat all the tokens together
-  for (i8 i_Token = iFromTkn; i_Token < nTokens; i_Token++) {
-    
-    Token* pToken = pGet(i_Token);
-    
+  while ((pToken = xIter.pNext()) != nullptr) {
+
+    if (bFirst) {
+      bFirst = false;
+    } else {
+      StrLib::vConcat(psDstStr->azStr(), psDstStr->nAreaBytes(), ' ');
+    }
+
     eTN eToken = pToken->eToken();
     
     switch (eToken) {
@@ -1119,98 +1107,105 @@ void TokenVec::_vByteSpaceTrim(i8 nBytes)
 }
 
 /*----------------------------------------------------------------------------*/
-/* copy chars into a non-last token                                           */
+/* add chars for a last token, extending the bytespace                        */
 /*----------------------------------------------------------------------------*/
-void TokenVec::_vCharsCopyInterior(Token* pDstToken, Stz* szArgChars)
+void TokenVec::_vCharsAddLast(Token* pDstToken, Stz* szArgChars)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
-  
-//  vIntegrityCheck();
 
-  //vTrace("_vCharsCopyInterior\n"_Stz);
-  //vDumpVec(16);
+  // Assumes that the Tokens string is not currently pointing to some bytespace area
+  ASSERT( !(pDstToken->szChars() >= m_xyByteSpace.szArea() &&
+            pDstToken->szChars() <= m_xyByteSpace.szBoundary() ));
 
-  SP_Token spTkn;
-  //vTrace("Copying:- %s <= %s\n"_Stz,spTkn.sz(pDstToken),szArgChars);
-
-  
-  // * * * * * * * * * * * * * * * * * * * *
-  i8 i_Tkn = pDstToken->i_Token();
-  Stz* szInsitui = pDstToken->szChars();
-  
-  i8 nRemSize = pDstToken->nChars() + 1;
-  _vByteSpaceRemove(szInsitui,nRemSize);
-  _vVecRippleLeft(i_Tkn,(- nRemSize)); // observe minus sign
-
-  //vTrace("--- --- --- --- --- ---\n"_Stz);
-
-  i8 nInsSize = szArgChars->nSize();
-  _vByteSpaceInsert(szInsitui,nInsSize);
-  _vVecRippleRight(i_Tkn,nInsSize);
-
-  StrLib::vCopy(szInsitui->azChar(), nInsSize, szArgChars->azChar());
-  // * * * * * * * * * * * * * * * * * * * *
-
-  
-  //vTrace("--- --- --- --- --- ---\n"_Stz);
-  //vDumpVec(16);
-
-//  vIntegrityCheck();
-}
-
-/*----------------------------------------------------------------------------*/
-/* copy chars into a last token                                               */
-/*----------------------------------------------------------------------------*/
-void TokenVec::_vCharsCopyLast(Token* pDstToken, Stz* szArgChars)
-{
-  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
-  
 //  vListTokens();
-//  vIntegrityCheck();
   i8 nSize = szArgChars->nSize();
-  
+
   Stz* szExtension = _szByteSpaceExtend(nSize);
-  
+
   pDstToken->vChars(szExtension);
 
   StrLib::vCopy(szExtension->azChar(), nSize, szArgChars->azChar());
 
 //  vListTokens();
-//  vIntegrityCheck();
+  INTEGRITY_CHECK();
 }
 
 /*----------------------------------------------------------------------------*/
-/* completely reset this token vector                                         */
+/* copy chars into a non-last token                                           */
 /*----------------------------------------------------------------------------*/
-void TokenVec::_vHardReset(void)
+void TokenVec::_vCharsReplaceInterior(i8 iIdx, Token* pDstToken, Stz* szArgChars)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
-  m_xyByteSpace.vReset();
-  
-  m_iCurTkn = -1;
+  INTEGRITY_CHECK();
 
-  vItems(0);
+//  SP_Token spTkn;
+  //vTrace("Copying:- %s <= %s\n"_Stz,spTkn.sz(pDstToken),szArgChars);
+
+  ASSERT(iIdx >= 0);
+  ASSERT(iIdx < nTokens() - 1); // not the last item
+
+  // Note: This assumes that the token's string pointer is already pointing
+  //       into the bytespace area. Hence this needs to be removed first.
+  ASSERT(pDstToken->szChars() >= m_xyByteSpace.szArea());
+  ASSERT(pDstToken->szChars() <= m_xyByteSpace.szBoundary());
   
-  for (i8 i_Token = 0; i_Token < C_MAX_TOKENS; i_Token++) {
-    Token* pToken = pGet(i_Token,true);
-    pToken->vReset();
+  Stz* szInsitui = pDstToken->szChars();
+  i8 nOldSize = pDstToken->nChars() + 1;
+  i8 nNewSize = szArgChars->nSize();
+  i8 nSizeDiff = nNewSize - nOldSize;
+
+  if (nSizeDiff > 0) {
+    // insert space into the bytespace
+    _vByteSpaceInsert(szInsitui,nSizeDiff);
+
+  } else if (nSizeDiff < 0) {
+    // remove space from the bytespace
+    _vByteSpaceRemove(szInsitui,-nSizeDiff);
   }
+
+  // Now we can copy the new string into the byte space
+  StrLib::vCopy(szInsitui->azChar(), nNewSize, szArgChars->azChar());
+  _vVecAdjustChars(iIdx + 1, nSizeDiff);
+
+  // * * * * * * * * * * * * * * * * * * * *
+
+  
+  //vTrace("--- --- --- --- --- ---\n"_Stz);
+  //vDumpVec(16);
+
+  INTEGRITY_CHECK();
 }
 
 /*----------------------------------------------------------------------------*/
-/* test if given token is the last token                                      */
+/* replace chars for a last token. Token already has chars in bytespace       */
 /*----------------------------------------------------------------------------*/
-bool TokenVec::_bIsLastToken(Token* pToken)
+void TokenVec::_vCharsReplaceLast(i8 iIdx, Token* pDstToken, Stz* szArgChars)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
-  
-  i8 nTkns = nTokens();
 
-  if (pToken->i_Token() + 1 == nTkns)
-    return true;
-  else
-    return false;
+  ASSERT(iIdx == nTokens() - 1);
+  UNUSED(iIdx);
+
+  ASSERT(pDstToken->szChars() >= m_xyByteSpace.szArea());
+  ASSERT(pDstToken->szChars() <= m_xyByteSpace.szBoundary());
+
+//  vListTokens();
+  INTEGRITY_CHECK();
+  i8 nOldSize = pDstToken->szChars()->nSize();
+  i8 nNewSize = szArgChars->nSize();
+  i8 iSizeDiff = nNewSize - nOldSize;
+
+  if (iSizeDiff > 0) {
+    _vByteSpaceTake(iSizeDiff);
+  } else if (iSizeDiff < 0) {
+    _vByteSpaceTrim(-iSizeDiff);
+  }
+
+  StrLib::vCopy(pDstToken->azChars(), nNewSize, szArgChars->azChar());
+
+//  vListTokens();
+  INTEGRITY_CHECK();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1232,14 +1227,15 @@ void TokenVec::_vTokenRemoveInterior(i8 iIdx)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
-  //vIntegrityCheck();
+  INTEGRITY_CHECK();
 
   Token* pTknCut = pGet(iIdx);
 //  i8 i_CutTkn = pTknCut->i_Token();
 //  SP_Token spTkn;
   //vTrace("Cutting:- %s %p\n"_Stz,spTkn.sz(pTknCut),pTknCut->azChars());
 
-  
+  //vTrace("\n\n\n"_Stz);
+  //vDumpVec();
   // * * * * * * * * * * * * * * * * * * * * * *
 
   Stz* szCutAt  = pTknCut->szChars();
@@ -1261,11 +1257,11 @@ void TokenVec::_vTokenRemoveInterior(i8 iIdx)
 
   do {
     pToken->vTokenNum(iNum++);
-    pToken->vChars(pToken->szChars() - nBytesToCut);
+    pToken->vChars(aAdd<Stz*>(pToken->szChars(), -nBytesToCut));
   } while ((pToken = xIter.pNext()) != nullptr);
 
   // * * * * * * * * * * * * * * * * * * * * * *
-  //vIntegrityCheck();
+  INTEGRITY_CHECK();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1274,6 +1270,7 @@ void TokenVec::_vTokenRemoveInterior(i8 iIdx)
 void TokenVec::_vTokenRemoveLast(i8 iIdx)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+  INTEGRITY_CHECK();
 
   Token* pTknCut = pGet(iIdx);
   
@@ -1282,6 +1279,8 @@ void TokenVec::_vTokenRemoveLast(i8 iIdx)
   _vByteSpaceTrim(nBytes);
 
   m_pTokenArray->vRemove(iIdx);
+
+  INTEGRITY_CHECK();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1290,65 +1289,15 @@ void TokenVec::_vTokenRemoveLast(i8 iIdx)
 void TokenVec::_vVecAdjustChars(i8 i_Tkn, i8 nByBytes)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
-  
-  i8 nTkns = nTokens();
 
-  for (i8 i_Token = i_Tkn; i_Token < nTkns; i_Token++) {
-    Token* pTknAdj = pGet(i_Token);
+  TokenArrayIter xIter = m_pTokenArray->xIterator(i_Tkn - 1);
+  Token* pTknAdj;
 
+  while ((pTknAdj = xIter.pNext()) != nullptr) {
     pTknAdj->vAdjustChars(nByBytes);
   }
-}
 
-/*----------------------------------------------------------------------------*/
-/* ripple the tokens leftward, overwriting the i_Tkn, dec no of tokens        */
-/*----------------------------------------------------------------------------*/
-void TokenVec::_vVecRippleLeft(i8 i_Tkn, i8 nAdjCharsBytes)
-{
-  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
-  
-  Token* pTknSrc = nullptr;
-  Token* pTknDst = nullptr;
-  
-  i8 i_Limit = nTokens();
-
-  for (i8 i_Ripple = i_Tkn + 1; i_Ripple < i_Limit ; i_Ripple++) {
-    
-    pTknSrc = pGet(i_Ripple);
-    pTknDst = pGet(i_Ripple - 1);
- 
-    pTknDst->vRippleCopy_restricted(pTknSrc,nAdjCharsBytes,this);
-  }
-
-  if (pTknSrc)
-    pTknSrc->vReset();
-  
-  vDecItems();
-}
-
-/*----------------------------------------------------------------------------*/
-/* inc no tokens, ripple tokens rightward from i_Tkn, leaving i_Tkn for reuse */
-/*----------------------------------------------------------------------------*/
-void TokenVec::_vVecRippleRight(i8 i_Tkn, i8 nAdjCharsByte)
-{
-  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
-  
-  Token* pTknSrc = nullptr;
-  Token* pTknDst = nullptr;
-  
-  i8 i_Start = nTokens() - 1;
-
-  vIncItems();
-  
-  for (i8 i_Ripple = i_Start; i_Ripple >= i_Tkn; i_Ripple--) {
-    
-    pTknSrc = pGet(i_Ripple);
-    pTknDst = pGet(i_Ripple + 1);
-    
-    pTknDst->vRippleCopy_restricted(pTknSrc,nAdjCharsByte,this);
-  }
-  
-  pTknSrc = pGet(i_Start);
+  INTEGRITY_CHECK();
 }
 
 /*============================================================================*/

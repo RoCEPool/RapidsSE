@@ -36,6 +36,7 @@ namespace BASE
     void vAppendToken(Token* pToken);
     void vAppendVector(TokenVec* pTokenVec);
     bool bBlankLine(void);
+    void szCopyStrForLastToken(Token* pLastToken, Stz* szSrc);
     Token* pCurrToken(void);
     void vDbgStr(String* psDstStr);
     void vDumpVec();
@@ -49,7 +50,6 @@ namespace BASE
     bool bHasSemicolon(void);
     void vInsertToken(i8 i_Tkn, Stz* szArgChars, eTN eToken);
     void vIntegrityCheck(void);
-    i8   nItems(void);
     i8   iLastToken(void);
     Token* pLastToken(void);
     void vListTokens(void);
@@ -64,7 +64,7 @@ namespace BASE
     void vTrimTokens(i8 i_Tkn);
     i8   nTokens(void);
     void vUpdateToken(Token* pDstToken, Stz* szArgChars);
-    i8   nUsedByteSpace(void);
+    void vUpdateToken(i8 iIdx, Token* pDstToken, Stz* szArgChars);
     void vToTknString(String* psDstStr);
     void vVecToString(String* psDstStr, i8 iFromTkn, bool bAddSemicolon);
   
@@ -75,12 +75,9 @@ namespace BASE
     void _vByteSpaceTake(i8 nBytes);
     void _vByteSpaceTrim(i8 nBytes);
   
-    void _vCharsCopyInterior(Token* pDstToken, Stz* szArgChars);
-    void _vCharsCopyLast(Token* pDstToken, Stz* szArgChars);
-
-    void _vHardReset(void);
-    
-    bool _bIsLastToken(Token* pToken);
+    void _vCharsAddLast(Token* pDstToken, Stz* szArgChars);
+    void _vCharsReplaceInterior(i8 iIdx, Token* pDstToken, Stz* szArgChars);
+    void _vCharsReplaceLast(i8 iIdx, Token* pDstToken, Stz* szArgChars);
 
     Stz* _szLaterChars(void);
   
@@ -88,8 +85,6 @@ namespace BASE
     void _vTokenRemoveLast(i8 iIdx);
 
     void _vVecAdjustChars(i8 i_Tkn, i8 nByBytes);
-    void _vVecRippleLeft(i8 i_Tkn, i8 iAdjCharsBytes);
-    void _vVecRippleRight(i8 i_Tkn, i8 iAdjCharsBytes);
 
     Footer* aFooter(void);
   };

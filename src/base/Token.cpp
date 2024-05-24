@@ -527,19 +527,6 @@ eTN Token::eCollectSenToken(char** aazCrs, Stz* szString)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* copy given chars into this token                                           */
-/*----------------------------------------------------------------------------*/
-void Token::vUpdateChars(Stz* szArgChars, TokenVec* pExoTknVec)
-{
-  _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
-  UNUSED(pExoTknVec);
-
-  ASSERT(pExoTknVec == m_p_ExoTknVec);
-
-  m_p_ExoTknVec->vUpdateToken(this,szArgChars);
-}
-
-/*----------------------------------------------------------------------------*/
 /* ripple copy given token into this token                                    */
 /*----------------------------------------------------------------------------*/
 void Token::vRippleCopy_restricted(Token* pSrcToken, i8 nAdjCharsBytes,

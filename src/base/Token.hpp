@@ -51,7 +51,6 @@ namespace BASE
 
     static eTN eCollectSenToken(char** aazCrs, Stz* szString);
 
-    void  vUpdateChars(Stz* szArg, TokenVec* pExoTknVec);
     void  vRippleCopy_restricted(Token* pToken_src, i8 nBytesAdjust,
                                  TokenVec* pExoTknVec);
 

@@ -1623,7 +1623,7 @@ Card_TermSeq* Dissector::pTo_termSeq(Stz* szTermSeq)
     
   TokenVec* pTokenVec = AM::TOKENISE::pTokeniseSen(szTermSeq);
     
-  i8 nTokens = pTokenVec->nItems();
+  i8 nTokens = pTokenVec->nTokens();
   for (i8 i_Tkn = 0; i_Tkn < nTokens; i_Tkn++) {
     Token* pToken = pTokenVec->pGet(i_Tkn);
 

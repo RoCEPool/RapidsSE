@@ -26148,7 +26148,7 @@ void Task::vAddMunged(Task* )
     "/* pp_optimise.sen -- define optimise                                         */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\" pp_create.sen\" .verbose\n"
+    "\" pp_optimise.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* optimise test                                                              */\n"

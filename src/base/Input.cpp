@@ -1005,7 +1005,8 @@ void Input::vCollectCpp(void)
   
   //vTokenCollectEnd();
   // Copy the string that we've collected on the stack into the TokenVec bytespace.
-  m_pCurrTkn->vUpdateChars(sTokenStr.szStz(), m_pInpTknVec);
+  ASSERT(m_pInpTknVec->pGet(m_pInpTknVec->nTokens() - 1) == m_pCurrTkn); // always the last token
+  m_pInpTknVec->szCopyStrForLastToken(m_pCurrTkn, sTokenStr.szStz());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  
@@ -1619,7 +1620,7 @@ void Input::vCollectSen(void)
   
   //vTokenCollectEnd();
   // Copy the string that we've collected on the stack into the TokenVec bytespace.
-  m_pCurrTkn->vUpdateChars(sTokenStr.szStz(), m_pInpTknVec);
+  m_pInpTknVec->szCopyStrForLastToken(m_pCurrTkn, sTokenStr.szStz());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -2188,6 +2189,7 @@ bool Input::bHitEOF(void)
 bool Input::bCursorAdvance(eEC& eError)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_INPUT, _FOOTER_);
+  UNUSED(eError);
 
   m_pInpTknVec->vAdvanceCurr();
   m_pCurrTkn = m_pInpTknVec->pCurrToken();

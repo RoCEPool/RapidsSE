@@ -19,7 +19,7 @@ bool STORE::bRule_r0(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
   
   vTrace("Cmd : %s\n"_Stz,sCmd.szStz());
   
-  i8 nTkns = pTknVec->nItems();
+  i8 nTkns = pTknVec->nTokens();
   if (nTkns < 2)
     return false;
     
@@ -51,7 +51,7 @@ bool STORE::bRule_r1(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
   
   vTrace("Cmd : %s\n"_Stz,sCmd.szStz());
   
-  i8 nTkns = pTknVec->nItems();
+  i8 nTkns = pTknVec->nTokens();
   if (nTkns < 2)
     return false;
     
@@ -83,7 +83,7 @@ bool STORE::bRule_r2(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
   
   vTrace("Cmd : %s\n"_Stz,sCmd.szStz());
   
-  i8 nTkns = pTknVec->nItems();
+  i8 nTkns = pTknVec->nTokens();
   if (nTkns < 2)
     return false;
     
@@ -115,7 +115,7 @@ bool STORE::bRule_r3(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
   
   vTrace("Cmd : %s\n"_Stz,sCmd.szStz());
   
-  i8 nTkns = pTknVec->nItems();
+  i8 nTkns = pTknVec->nTokens();
   if (nTkns < 2)
     return false;
     
@@ -147,7 +147,7 @@ bool STORE::bRule_r4(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
   
   vTrace("Cmd : %s\n"_Stz,sCmd.szStz());
   
-  i8 nTkns = pTknVec->nItems();
+  i8 nTkns = pTknVec->nTokens();
   if (nTkns < 2)
     return false;
     
@@ -179,7 +179,7 @@ bool STORE::bRule_r5(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
   
   vTrace("Cmd : %s\n"_Stz,sCmd.szStz());
   
-  i8 nTkns = pTknVec->nItems();
+  i8 nTkns = pTknVec->nTokens();
   if (nTkns < 2)
     return false;
     
@@ -211,7 +211,7 @@ bool STORE::bRule_r6(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
   
   vTrace("Cmd : %s\n"_Stz,sCmd.szStz());
   
-  i8 nTkns = pTknVec->nItems();
+  i8 nTkns = pTknVec->nTokens();
   if (nTkns < 2)
     return false;
     
@@ -243,7 +243,7 @@ bool STORE::bRule_r7(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
   
   vTrace("Cmd : %s\n"_Stz,sCmd.szStz());
   
-  i8 nTkns = pTknVec->nItems();
+  i8 nTkns = pTknVec->nTokens();
   if (nTkns < 2)
     return false;
     
@@ -275,7 +275,7 @@ bool STORE::bRule_r8(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
   
   vTrace("Cmd : %s\n"_Stz,sCmd.szStz());
   
-  i8 nTkns = pTknVec->nItems();
+  i8 nTkns = pTknVec->nTokens();
   if (nTkns < 2)
     return false;
     
@@ -307,7 +307,7 @@ bool STORE::bRule_r9(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
   
   vTrace("Cmd : %s\n"_Stz,sCmd.szStz());
   
-  i8 nTkns = pTknVec->nItems();
+  i8 nTkns = pTknVec->nTokens();
   if (nTkns < 2)
     return false;
     

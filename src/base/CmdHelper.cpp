@@ -72,20 +72,20 @@ bool CmdHelper::bExtractCmdTags(TagSet* pDstCmdTagSet, TokenVec* pSrcCmdTknVec)
   // extract leading job control tags
   // /ccode, /jobMetrics /nowait, /pipelineName, /time
   
-  Token* pTkn0 = pSrcCmdTknVec->pGet(0,true);
+  Token* pTkn0 = pSrcCmdTknVec->pGet(0);
   
   s32 sTag;
   
   while ('/' == * pTkn0->azChars() ) {
     
 
-    Token* pTkn1 = pSrcCmdTknVec->pGet(1,true);
+    Token* pTkn1 = pSrcCmdTknVec->pGet(1);
     sTag.vSprint("<%s>"_Stz,pTkn1->szChars());
 
-    Token* pTkn2 = pSrcCmdTknVec->pGet(2,true);
-    if (pTkn2->bSame("="_Stz)) {
+    Token* pTkn2 = pSrcCmdTknVec->pGet(2);
+    if (pTkn2 && pTkn2->bSame("="_Stz)) {
 
-      Token* pTkn3 = pSrcCmdTknVec->pGet(3,true);
+      Token* pTkn3 = pSrcCmdTknVec->pGet(3);
 
       pDstCmdTagSet->vInsert(sTag,pTkn3->szChars());
 

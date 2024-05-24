@@ -46,7 +46,7 @@ void Step::vTokenVecDump(void)
   
   TokenVec* pTknVec = _pTokenVec(m_pDataStack->pPopPtr(__func__));
 
-  pTknVec->vDumpVec(0);
+  pTknVec->vDumpVec();
     
   EXIT();
 }
