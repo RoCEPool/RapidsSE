@@ -54,6 +54,7 @@ void Step::vAddSteps_Table(void)
   vAddStep("Table[].dump"_Stz,             &Step::vTableDump);
   vAddStep("Table[].dumpmeta"_Stz,         &Step::vTableDumpMeta);
   vAddStep("Table[].findColumn"_Stz,       &Step::vTableFindColumn);
+  vAddStep("Table[].findIndex"_Stz,       &Step::vTableFindIndex);
   vAddStep("table.indexCount"_Stz,         &Step::vTableIndexCount);
   vAddStep("table.isColumn"_Stz,           &Step::vTableIsColumn);
   vAddStep("Table[].kind"_Stz,           &Step::vTableGetKind);
@@ -466,6 +467,25 @@ void Step::vTableFindColumn(void)
   
   m_pDataStack->vPushPtr(pColumn);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Table[].findIndex -- find the index from the table                         */
+/*----------------------------------------------------------------------------*/
+void Step::vTableFindIndex(void)
+{
+  ENTRY();
+
+  Table* pTable = _pTable(*m_pLogicUnit->m_xpTable);
+
+  s256 szIndexNm;
+  m_pDataStack->vPopStr(szIndexNm,__func__);
+
+  Index* pIndex = pTable->pFindIndex(szIndexNm);
+
+  m_pDataStack->vPushPtr(pIndex);
+
   EXIT();
 }
 

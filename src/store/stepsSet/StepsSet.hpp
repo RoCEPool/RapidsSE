@@ -2149,6 +2149,7 @@ void vJobIdLastJobIdFetch(void);
   void vTableDump(void);
   void vTableDumpMeta(void);
   void vTableFindColumn(void);
+  void vTableFindIndex(void);
   void vTableGet(void);
   void vTableGetName(void);
   void vTableIndexCount(void);

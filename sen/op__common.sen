@@ -209,7 +209,6 @@
 
   Table[] not if
     EC_NO_SUCH_TABLE to errorCode
-    "Error can't delete" .
 
     // create an exec error rowBuffer
     errorCode op__execErr
@@ -312,64 +311,31 @@
     exit
   then
 
-
-  // check in tables folder
-  check::folderIsTables not if
-    to errorCode
-
-    // create an exec error rowBuffer
-    errorCode op__execErr
-
+  sTableNm op__table not if
     false
     exit
   then
-
-  // table
-  sTableNm check::validTableAssembly not if
-    to errorCode
-
-    // create an exec error rowBuffer
-    sTableNm errorCode attachmap::errorText@ str.format
-    errorCode
-    op__execErrMsg
-
-    false
-    exit
-  then
-
-  // move to table folder and find the table
-  sTableNm Path[].pushNamedTableFolder
-  sTableNm find execute to Table[]
 
   // cross-check
   Table[] assert
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  // move to indexes folder
-  Path[].pushIndexesFolder
+  sIndexNm Table[].findIndex to Index[]
 
-  sIndexNm check::nameIsaIndex not if
-    to errorCode
+  Index[] not if
+    EC_NO_SUCH_INDEX to errorCode
 
     // create an exec error rowBuffer
     errorCode op__execErr
 
-    Path[].popNamedTableFolder
-    Path[].popIndexesFolder
     false
     exit
   then
 
-  sIndexNm find execute to Index[]
-
   // cross-check
   Index[] assert
 
-  Path[].popNamedTableFolder
-  Path[].popIndexesFolder
-
-  //pathStr .
   true
 ;
 

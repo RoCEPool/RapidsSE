@@ -62,7 +62,6 @@
 
   sReportTable op__table if
     sReportTable Path[].pushNamedTableFolder
-    sReportTable find execute to Table[]
 
   then
 

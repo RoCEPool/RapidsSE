@@ -19,8 +19,8 @@
   // move into table folder : ../schemas/public/tables/<sTableNm>
   sTableNm Path[].pushNamedTableFolder
   
-  // find the pTable : ../schemas/public/tables/<sTableNm>/<sTableNm>
-  sTableNm find execute to Table[]
+  // find the pTable from the tables metadata table
+  sTableNm MetaDataTable[].find to Table[]
 
   // cross-check Table[]
   Table[] assert

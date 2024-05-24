@@ -29,7 +29,18 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // parse cmd and create index definition
 
-  sTableNm find execute to Table[]
+  sTableNm MetaDataTable[].find to Table[]
+
+  Table[] not if
+    [ddlLock].testDrop
+
+    EC_NO_SUCH_TABLE op__execErr
+
+    Path[].popIndexesFolder
+    Path[].popNamedTableFolder
+    Folder[].isTables assert
+    exit
+  then
 
   //dbg>
 
