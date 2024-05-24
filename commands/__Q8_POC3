@@ -18,16 +18,12 @@
      | project "type INTEGER ( 19 ) R_REGIONKEY as R_REGIONKEY"
      | indexJoin nation IxN_REGIONKEY "BOUND $I1 R_REGIONKEY =="
      | project "type INTEGER ( 19 ) as N_NATIONKEY N_NATIONKEY"
-     | combined 0
-     | next
-
-   stage S03 on all partitions :
-     indexJoin customer IxC_NATIONKEY "BOUND $I1 N_NATIONKEY =="
+     | indexJoin customer IxC_NATIONKEY "BOUND $I1 N_NATIONKEY =="
      | project "type INTEGER ( 19 ) as C_CUSTKEY C_CUSTKEY"
      | combined 0
      | next
 
-   stage S04 on all partitions :
+   stage S03 on all partitions multiple threads 4:
      indexJoin orders IxO_CUSTKEY "BOUND $I1 C_CUSTKEY =="
      | project "type DATE ( 0 ) as O_ORDERDATE O_ORDERDATE ,
                 type integer ( 19 ) as O_ORDERKEY O_ORDERKEY ,
