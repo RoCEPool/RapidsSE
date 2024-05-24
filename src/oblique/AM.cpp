@@ -4101,21 +4101,7 @@ Table* AM::pTableFind(Stz* szTableNm)
 {
   Table* pTable = nullptr;
 
-  DicStack* pDicStack = AM::TASK::pDicStack();
-
-  if (pDicStack && pDicStack->pTop()) {
-    pTable = Table::pFindTable(pDicStack,szTableNm);
-  }
-  else {
-    pDicStack = new DicStack;
-
-    if (pDicStack->bTest("rapids"_Stz,"public"_Stz,szTableNm))
-      pTable = pDicStack->pTable();
-
-    delete pDicStack;
-  }
-
-//  pTable = MetaDataTables::pTableFind(szTableNm);
+  pTable = MetaDataTables::pTableFind(szTableNm);
   
   return pTable;
 }
