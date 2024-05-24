@@ -56,7 +56,9 @@ extern "C" void* aExtern_EntBufferNextEntry(void** ppEntBuffer, void* aPrevEntry
 	EntBuffer* pEntBuffer = *(EntBuffer**)(ppEntBuffer);
 	Ent* aEnt = (Ent*)aPrevEntry;
 
-	Ent *aNextEntry = pEntBuffer->aNextEntry(aEnt, 0);
+	//Ent *aNextEntry = pEntBuffer->aNextEntry(aEnt, 0);
+
+  Ent *aNextEntry = pEntBuffer->aNextEntry_flat(aEnt, 0);
 
 	if (! aNextEntry ) {
 		pEntBuffer = pEntBuffer->pNextEntBuffer();
@@ -1253,25 +1255,6 @@ void EntBuffer::vNextEntBuffer(EntBuffer* pNextBuffer)
   m_tNextBuffer = pNextBuffer;
 
   RASSERT(m_tNextBuffer.pGetDataBuffer() == pNextBuffer);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get next entry                                                             */
-/*----------------------------------------------------------------------------*/
-Ent* EntBuffer::aNextEntry_flat(Ent* aCurrent, i8 i_Level)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
-    
-  tET tNextEntry = aCurrent->m_taNextEntry[i_Level];
-  
-  if (C_ENT_END_TICKET == tNextEntry)
-    return nullptr;
-    
-  i8 iNextEntryOffset = (i8)tNextEntry * C_ENT_QUANTA;
-  
-  Ent* aNextEnt = (Ent*) ((char*)this + 624 + iNextEntryOffset);
-  
-  return aNextEnt;
 }
 
 /*----------------------------------------------------------------------------*/

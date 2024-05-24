@@ -21,7 +21,7 @@ Ent* EntBuffer::aFindEnt_int(Key* aWithKey_int)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
 
-  RASSERT(KE_INT == m_eEntKind);
+  ASSERT(KE_INT == m_eEntKind);
   
   if (nItems() == 0)
     return nullptr;
@@ -56,7 +56,7 @@ Ent* EntBuffer::aFindEnt_int(Key* aWithKey_int)
 //        if (SCAN_IS_AT_PRIOR_POS(iWithIntElm0,iNextEnt_IntElm0))
 //          break;
 //      }
-      RASSERT( ! pIndexDef()->bHasDescending() );
+      ASSERT( ! pIndexDef()->bHasDescending() );
       if (SCAN_IS_AT_PRIOR_POS(iWithIntElm0,iNextEnt_IntElm0))
           break;
       aScanEnt = aNextEnt_int;
@@ -87,12 +87,12 @@ Ent* EntBuffer::aFindEntryBefore_int(Key* aGivenKey_int)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
-  RASSERT(KE_INT == m_eEntKind);
+  ASSERT(KE_INT == m_eEntKind);
 
   if (nItems() == 0)
     return aSkipRoots();
 
-  RASSERT( ! pIndexDef()->bHasDescending() );
+  ASSERT( ! pIndexDef()->bHasDescending() );
   
   Ent* aSkipRoots = this->aSkipRoots();
   
@@ -134,14 +134,14 @@ Ent* EntBuffer::aFindEntryBefore_MoveGE_int(Key* aGivenKey_int, EntBuffer** ppEn
 {
 	_precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
 
-	RASSERT(KE_INT == m_eEntKind);
+	ASSERT(KE_INT == m_eEntKind);
 
 	Ent* aSkipRoots = this->aSkipRoots();
 
 	if (nItems() == 0)
 		return aSkipRoots;
 
-	RASSERT( ! pIndexDef()->bHasDescending() );
+	ASSERT( ! pIndexDef()->bHasDescending() );
 
 	Ent_int* aItemArray = (Ent_int*)this->aItemArray();
 
@@ -153,6 +153,7 @@ Ent* EntBuffer::aFindEntryBefore_MoveGE_int(Key* aGivenKey_int, EntBuffer** ppEn
 
 	Ent_int* aScanEnt = (Ent_int*)aSkipRoots;
 	for (i4 i_Level = (i4)m_nLevels - 1; i_Level >= 0; i_Level--) {
+
 
 		for (tET tNextEnt = NEXT_TICKET(aScanEnt,i_Level);
 				 ! END_TICKET(tNextEnt);
@@ -223,7 +224,7 @@ EntBuffer* EntBuffer::pFindLeafBuffer_int(Key* aForKey)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
-  RASSERT(KE_INT == m_eEntKind);
+  ASSERT(KE_INT == m_eEntKind);
     
     /*
      
@@ -295,7 +296,7 @@ EntBuffer* EntBuffer::pFindLeafBuffer_intO(Key* aForKey)
 {
 	_precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
 
-	RASSERT(KE_INT == m_eEntKind);
+	ASSERT(KE_INT == m_eEntKind);
 
 	/*
 
@@ -367,7 +368,7 @@ EntBuffer* EntBuffer::pFindLeafBuffer_ascInt(Key* aForKey)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
 
-  RASSERT(KE_INT == m_eEntKind);
+  ASSERT(KE_INT == m_eEntKind);
 
   /*
 
@@ -439,7 +440,7 @@ EntBuffer* EntBuffer::pFindLeafBuffer_ascDscInt(Key* aForKey)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
 
-  RASSERT(KE_INT == m_eEntKind);
+  ASSERT(KE_INT == m_eEntKind);
 
   /*
 
@@ -514,7 +515,7 @@ void EntBuffer::vPosVecPriorToBuffer_int(EntBuffer* pToRefdBuffer,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
 
-  RASSERT(KE_INT == m_eEntKind);
+  ASSERT(KE_INT == m_eEntKind);
   
   ASSERT(0 != m_iBufferHeight);
 
@@ -628,8 +629,8 @@ void EntBuffer::vPosVecPriorToEntry_int(Key* aGivenKey_int,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
     
-  RASSERT(KE_INT == m_eEntKind);
-  RASSERT( ! pIndexDef()->bHasDescending() );
+  ASSERT(KE_INT == m_eEntKind);
+  ASSERT( ! pIndexDef()->bHasDescending() );
     
   Ent* aSkipRoots = this->aSkipRoots();
   
@@ -681,10 +682,10 @@ void EntBuffer::vPosVecPriorToEntry_int(Ent* aToEntry,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
-  RASSERT(KE_INT == m_eEntKind);
+  ASSERT(KE_INT == m_eEntKind);
 
-  IndexDef* pIndexDef = this->pIndexDef();
-  RASSERT( ! pIndexDef->bHasDescending() );
+  //IndexDef* pIndexDef = this->pIndexDef();
+  //RASSERT( ! pIndexDef->bHasDescending() );
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -736,7 +737,7 @@ void EntBuffer::vPosVecPriorToEntry_int(Ent* aToEntry,
     aPriorVec[i_ScanLevel] = aScanEntry_sl;
   }
   
-  RASSERT(aToEntry == aNextEntry_sl)
+  ASSERT(aToEntry == aNextEntry_sl)
 
 }
 

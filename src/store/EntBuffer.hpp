@@ -253,7 +253,6 @@ namespace STORE
     void        vLazyBuild(void);
     i8          iLengthList(void);
     i8          iLengthSubList(void);
-    Ent*        aNextEntry_flat(Ent* aEnt, i8 i_Offset);
     void        vPurgeUpwards(Ent* aDeleteEntry, EntBuffer** ppRootBuffer);
     void        vReset(void);
     void        vRestore(void);
@@ -381,6 +380,25 @@ namespace STORE
 		}
 
 	#endif
+
+  /*----------------------------------------------------------------------------*/
+  /* get next entry                                                             */
+  /*----------------------------------------------------------------------------*/
+  inline Ent* aNextEntry_flat(Ent* aCurrent, i8 i_Level)
+  {
+    _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
+
+    tET tNextEntry = aCurrent->m_taNextEntry[i_Level];
+
+    if (C_ENT_END_TICKET == tNextEntry)
+      return nullptr;
+
+    i8 iNextEntryOffset = (i8)tNextEntry * C_ENT_QUANTA;
+
+    Ent* aNextEnt = (Ent*) ((char*)this + 624 + iNextEntryOffset);
+
+    return aNextEnt;
+  }
 
 	/*----------------------------------------------------------------------------*/
   /* get next buffer                                                            */
