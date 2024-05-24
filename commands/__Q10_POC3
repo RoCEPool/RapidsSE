@@ -15,11 +15,7 @@ begin
     indexScan Orders IxO_ORDERDATE "LBOUND date '1993-10-01' >=  UBOUND date '1994-01-01' < "
     | project "type INTEGER ( 19 ) as O_CUSTKEY  O_CUSTKEY ,
                type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY"
-    | combined 0
-    | next
-
-  stage S02 on all partitions:
-    indexJoin Customer IxC_CUSTKEY "BOUND $I1 O_CUSTKEY =="
+    | indexJoin Customer IxC_CUSTKEY "BOUND $I1 O_CUSTKEY =="
     | project "type INTEGER ( 19 ) as O_CUSTKEY O_CUSTKEY ,
                type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY"
     | hash expr type INTEGER ( 19 ) O_ORDERKEY
