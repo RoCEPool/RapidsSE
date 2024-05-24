@@ -104,8 +104,6 @@ end ;
 */
 
 /optimise_passthru
-/weaved
-/keepCodeFile
 pipeline Query5
 begin
   stage S00 on origin :
@@ -120,18 +118,14 @@ begin
                type DATE ( 0 ) as O_ORDERDATE O_ORDERDATE"
     | filter " type BOOLEAN O_ORDERDATE DATE '1994-01-01'  >=
                             O_ORDERDATE DATE '1995-01-01'  <  and  "
-    | combined 0
-    | next
-
-  stage S011 on all partitions multiple threads 4:
-    indexJoin Customer IxC_CUSTKEY "BOUND $I1 O_CUSTKEY =="
+    | indexJoin Customer IxC_CUSTKEY "BOUND $I1 O_CUSTKEY =="
     | project "type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY ,
                type INTEGER ( 19 ) as C_NATIONKEY C_NATIONKEY"
     | hash "type INTEGER ( 19 ) O_ORDERKEY"
     | combined 0
     | next hashcast
 
-  stage S02 on all partitions:
+  stage S02 on all partitions multiple threads 4:
     indexJoin Lineitem IxL_ORDERKEY "bound $I1 O_ORDERKEY =="
     | project "type INTEGER ( 19 ) as C_NATIONKEY C_NATIONKEY ,
                    type INTEGER ( 19 ) as L_SUPPKEY L_SUPPKEY ,
