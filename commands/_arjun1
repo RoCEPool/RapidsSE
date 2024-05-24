@@ -1,4 +1,4 @@
-
+/*
 _nation;
 create index nation_idx1 ON nation(N_NATIONKEY);
 create index nation_R_REGIONKEY on nation(N_REGIONKEY);
@@ -68,5 +68,167 @@ load Lineitem "../TPCH/SF_0001/lineitem.tbl";
 
 drop table Lineitem;
 
-memoryleaks;
+*/
 
+
+// begin tracking memory
+trackMemory force;
+
+
+//------------------------------------------------------------------------------
+// create table
+create table datums (
+  int_col0   INTEGER NOT NULL,
+  int_col1   INTEGER,
+  bol_col2   BOOLEAN,
+  bol_col3   BOOLEAN,
+  dte_col4   DATE,
+  dte_col5   DATE,
+  dec_col6   DECIMAL(19,2),
+  dec_col7   DECIMAL(19,2),
+  flt_col8   FLOAT,
+  flt_col9   FLOAT,
+  tme_col10  TIME,
+  tme_col11  TIME,
+  tsp_col12  TIMESTAMP,
+  tsp_col13  TIMESTAMP,
+  vch_col14  VARCHAR(32),
+  vch_col15  VARCHAR(32)
+);
+
+
+load datums "../DATA/Transliterate/groupBy.csv" ;
+
+
+//------------------------------------------------------------------------------
+select int_col1, sum(int_col0) from datums group by int_col1;
+
+
+//------------------------------------------------------------------------------
+select sum(int_col0), int_col1 from datums group by int_col1;
+
+
+//------------------------------------------------------------------------------
+create table part (
+  P_PARTKEY           INTEGER NOT NULL,
+  P_NAME              VARCHAR(55) NOT NULL,
+  P_MFGR              CHAR(25) NOT NULL,
+  P_BRAND             CHAR(10) NOT NULL,
+  P_TYPE              VARCHAR(25) NOT NULL,
+  P_SIZE              INTEGER NOT NULL,
+  P_CONTAINER         CHAR(10) NOT NULL,
+  P_RETAILPRICE       DECIMAL(15,2) NOT NULL,
+  P_COMMENT           VARCHAR(23) NOT NULL
+);
+
+
+//------------------------------------------------------------------------------
+load part "../TPCH/SF_0001/part.tbl";
+
+
+// create a table
+create table partsupp (
+PS_PARTKEY      INTEGER NOT NULL,
+PS_SUPPKEY      INTEGER NOT NULL,
+PS_AVAILQTY     INTEGER NOT NULL,
+PS_SUPPLYCOST   DECIMAL(15,2) NOT NULL,
+PS_COMMENT      VARCHAR(199) NOT NULL
+);
+
+
+//------------------------------------------------------------------------------
+load partsupp "../TPCH/SF_0001/partsupp.tbl";
+
+select p_mfgr, p_brand,  count(*) from part where p_size < 5 group by p_mfgr, p_brand order by p_mfgr, p_brand;
+
+
+select p_brand, p_mfgr, count(*) from part where p_size < 5 group by p_mfgr, p_brand;
+
+
+//------------------------------------------------------------------------------
+// create table lineitem
+create table LineItem
+(
+ L_ORDERKEY      INTEGER       NOT NULL,
+ L_PARTKEY       INTEGER       NOT NULL,
+ L_SUPPKEY       INTEGER       NOT NULL,
+ L_LINENUMBER    INTEGER       NOT NULL,
+ L_QUANTITY      DECIMAL(15,2) NOT NULL,
+ L_EXTENDEDPRICE DECIMAL(15,2) NOT NULL,
+ L_DISCOUNT      DECIMAL(15,2) NOT NULL,
+ L_TAX           DECIMAL(15,2) NOT NULL,
+ L_RETURNFLAG    CHAR(1)       NOT NULL,
+ L_LINESTATUS    CHAR(1)       NOT NULL,
+ L_SHIPDATE      DATE NOT      NULL,
+ L_COMMITDATE    DATE NOT      NULL,
+ L_RECEIPTDATE   DATE NOT      NULL,
+ L_SHIPINSTRUCT  CHAR(25)      NOT NULL,
+ L_SHIPMODE      CHAR(10)      NOT NULL,
+ L_COMMENT       VARCHAR(44)   NOT NULL
+ );
+
+
+// load data
+load lineitem "../DATA/TPCH/lineitem10.csv";
+
+
+//------------------------------------------------------------------------------
+select L_ORDERKEY, sum(L_LINENUMBER) from lineitem group by L_ORDERKEY;
+
+
+//------------------------------------------------------------------------------
+select sum(L_LINENUMBER), L_ORDERKEY from lineitem group by L_ORDERKEY;
+
+
+//------------------------------------------------------------------------------
+select L_ORDERKEY, sum(L_DISCOUNT) from lineitem group by L_ORDERKEY;
+
+
+
+//------------------------------------------------------------------------------
+select L_LINENUMBER, sum(L_DISCOUNT) , sum(L_LINENUMBER) from lineitem group by L_LINENUMBER;
+
+
+//------------------------------------------------------------------------------
+create table Nation (
+	 N_NATIONKEY       INTEGER      NOT NULL,
+	 N_NAME            CHAR(25)     NOT NULL,
+	 N_REGIONKEY       INTEGER      NOT NULL,
+	 N_COMMENT         VARCHAR(152)
+);
+
+
+//------------------------------------------------------------------------------
+load nation "../DATA/TPCH/nation.tbl";
+
+
+//------------------------------------------------------------------------------
+SELECT n_regionkey AS region , COUNT(n_nationkey) AS nationcount
+                                             FROM nation
+                                             GROUP BY region
+                                             HAVING region > 1;
+
+
+
+// drop the table
+drop table datums;
+
+
+// drop the table
+drop table lineitem;
+
+
+// drop the table
+drop table part;
+
+
+// drop the table
+drop table partsupp;
+
+
+// drop the table
+drop table nation;
+
+
+// get memory leaks
+memoryLeaks;

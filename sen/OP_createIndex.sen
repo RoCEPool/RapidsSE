@@ -31,7 +31,7 @@
 
   sTableNm MetaDataTable[].find to Table[]
 
-  Table[] not if
+  Table[].isNull if
     [ddlLock].testDrop
 
     EC_NO_SUCH_TABLE op__execErr

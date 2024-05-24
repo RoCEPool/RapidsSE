@@ -57,6 +57,7 @@ void Step::vAddSteps_Table(void)
   vAddStep("Table[].findIndex"_Stz,       &Step::vTableFindIndex);
   vAddStep("table.indexCount"_Stz,         &Step::vTableIndexCount);
   vAddStep("table.isColumn"_Stz,           &Step::vTableIsColumn);
+  vAddStep("Table[].isNull"_Stz,           &Step::vTableIsNull);
   vAddStep("Table[].kind"_Stz,           &Step::vTableGetKind);
   vAddStep("table.getName"_Stz,            &Step::vTableGetName);
   vAddStep("Table[].isInternallyDefined"_Stz,   &Step::vTableIsInternallyDefined);
@@ -519,6 +520,18 @@ void Step::vTableIsColumn(void)
   
   m_pDataStack->vPushInt(bFound);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Table[].isNull --                                                          */
+/*----------------------------------------------------------------------------*/
+void Step::vTableIsNull(void)
+{
+  ENTRY();
+
+  m_pDataStack->vPushInt(m_pLogicUnit->m_xpTable.bIsNull() ? 1 : 0);
+
   EXIT();
 }
 
