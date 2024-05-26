@@ -57,7 +57,7 @@
 //#define WITH_TRACE_API EndDefine           // code for tracing api's compiled in
 //#define WITH_TRACE_INDEX_COMPACTION EndDefine    // compaction progress
 //#define WITH_TRACE_LOGICUNIT EndDefine     // trace logic unit
-
+//#define WITH_TOKENVEC_INTEGRITY EndDefine  // token vector integrity check
 #endif
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

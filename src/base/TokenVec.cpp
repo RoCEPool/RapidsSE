@@ -7,8 +7,11 @@
 #include "SP_Token.hpp"
 
 #ifdef WITH_TOKENVEC_INTEGRITY
-#define INTEGRITY_CHECK() (this->vIntegrityCheck())
-#define INTEGRITY_CHECK_STATIC(obj) (obj->vIntegrityCheck())
+#define INTEGRITY_CHECK() (this->vIntegrityCheck()) EndDefine
+#define INTEGRITY_CHECK_STATIC(obj) (obj->vIntegrityCheck()) EndDefine
+#else
+#define INTEGRITY_CHECK() EndDefine
+#define INTEGRITY_CHECK_STATIC(obj) (UNUSED(obj)) EndDefine
 #endif
 
 /*----------------------------------------------------------------------------*/
@@ -239,9 +242,8 @@ void TokenVec::szCopyStrForLastToken(Token* pLastToken, Stz* szSrc)
   ASSERT(pLastToken);
   ASSERT(szSrc);
 
-  i8 iNumTokens = nTokens();
-  ASSERT(iNumTokens > 0);
-  ASSERT(pGet(iNumTokens - 1) == pLastToken);
+  ASSERT(nTokens() > 0);
+  ASSERT(pGet(nTokens() - 1) == pLastToken);
 
   _vCharsAddLast(pLastToken, szSrc);
   INTEGRITY_CHECK();
