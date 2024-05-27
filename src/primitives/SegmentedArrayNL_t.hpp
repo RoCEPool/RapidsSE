@@ -602,7 +602,7 @@ bool SegmentedArrayIter<CLASSNO,ITEM,OBJS_PER_SEG>::bHasPrevious()
   i8 nItems = m_pCurrSegment->m_pHead->m_nItems;
   i8 iCurrIdx = m_iSegment * OBJS_PER_SEG + m_iOffset;
 
-  return (iCurrIdx - 1 >= 0 && iCurrIdx < nItems);
+  return (iCurrIdx > 0 && nItems > 0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -650,8 +650,15 @@ ITEM* SegmentedArrayIter<CLASSNO,ITEM,OBJS_PER_SEG>::pPrevious()
     return nullptr;
   }
 
+  // The iterator may be well after the last element (e.g. if it was previous
+  // at the last element then a whole heap of them got removed). If this is the
+  // case then let's adjust the iterator to point to the space after the last
+  // element.
+  if (m_iSegment * OBJS_PER_SEG + m_iOffset > m_pCurrSegment->m_pHead->m_nItems) {
+    vAfterLast();
+  }
+
   if (--m_iOffset == -1) {
-    m_iOffset = OBJS_PER_SEG - 1;
 
     if (m_iSegment == 0) {
       // We have now moved before the first element
@@ -659,6 +666,7 @@ ITEM* SegmentedArrayIter<CLASSNO,ITEM,OBJS_PER_SEG>::pPrevious()
     }
 
     ASSERT(m_iSegment >= 1);
+    m_iOffset = OBJS_PER_SEG - 1;
     --m_iSegment;
 
     // Find the previous segment by iterating from the head

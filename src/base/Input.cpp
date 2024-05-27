@@ -943,6 +943,7 @@ void Input::vCollectCpp(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
   ASSERT(UF_CPP_TOKENS == m_eTknForm);
+  ASSERT(m_pCurrTkn);
 
   char* azTermCrs = m_pCurrTkn->azChars();
   UNUSED(azTermCrs);
@@ -2245,7 +2246,9 @@ void Input::vTestSwitchToSen(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
 
-  if (m_pInpTknVec->pFirstToken() == m_pCurrTkn && m_pCurrTkn->bIsPipeline()) {
+  if (m_pInpTknVec->nTokens() == 1 &&
+      m_pInpTknVec->pGet(0) == m_pCurrTkn &&
+      m_pCurrTkn->bIsPipeline()) {
     m_bRevertToCpp = true;
     vFormSenTokens();
   }
