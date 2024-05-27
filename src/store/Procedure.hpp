@@ -17,6 +17,7 @@ namespace STORE
     i8      m_i_Tkn;
     Token*  m_pToken;
     Token*  m_pProcNmToken;
+    i8      m_iProcNmToken;
 
     i8        m_nTokens;
     TokenVec* m_pTokenVec;

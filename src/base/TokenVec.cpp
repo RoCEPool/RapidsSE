@@ -847,30 +847,7 @@ i8 TokenVec::nTokens(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* copy token with new string                                                 */
-/*----------------------------------------------------------------------------*/
-void TokenVec::vUpdateToken(Token* pDstToken, Stz* szArgChars)
-{
-  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
-  INTEGRITY_CHECK();
-
-  i8 numTokens = nTokens();
-
-  // Get the index in the array of this token.
-  i8 iIdx = m_pTokenArray->iFind(pDstToken);
-  ASSERT(iIdx >= 0);
-  ASSERT(iIdx < numTokens);
-
-  if (iIdx == numTokens - 1) // last item
-    _vCharsReplaceLast(iIdx, pDstToken, szArgChars);
-  else
-    _vCharsReplaceInterior(iIdx, pDstToken, szArgChars);
-  
-  INTEGRITY_CHECK();
-}
-
-/*----------------------------------------------------------------------------*/
-/* copy token with new string                                                 */
+/* Update token with a new string. Clean up the old string.                   */
 /*----------------------------------------------------------------------------*/
 void TokenVec::vUpdateToken(i8 iIdx, Token* pDstToken, Stz* szArgChars)
 {
@@ -1149,6 +1126,7 @@ void TokenVec::_vCharsReplaceInterior(i8 iIdx, Token* pDstToken, Stz* szArgChars
 
   ASSERT(iIdx >= 0);
   ASSERT(iIdx < nTokens() - 1); // not the last item
+  ASSERT(m_pTokenArray->pGet(iIdx) == pDstToken);
 
   // Note: This assumes that the token's string pointer is already pointing
   //       into the bytespace area. Hence this needs to be removed first.
@@ -1190,6 +1168,7 @@ void TokenVec::_vCharsReplaceLast(i8 iIdx, Token* pDstToken, Stz* szArgChars)
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
 
   ASSERT(iIdx == nTokens() - 1);
+  ASSERT(m_pTokenArray->pGet(iIdx) == pDstToken);
   UNUSED(iIdx);
 
   ASSERT(pDstToken->szChars() >= m_xyByteSpace.szArea());

@@ -39,6 +39,7 @@ Procedure::Procedure(TokenVec* pTokenVec)
   m_i_Tkn = 0;
   m_pToken = m_pTokenVec->pGet(m_i_Tkn);
   m_pProcNmToken = nullptr;
+  m_iProcNmToken = C_UNKNOWN;
   
   _checkInitialised_(CN_PROCEDURE);
 
@@ -885,6 +886,7 @@ bool Procedure::bParse_Name(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PROCEDURE,_FOOTER_);
 
   m_pProcNmToken = m_pToken;
+  m_iProcNmToken = m_i_Tkn;
   m_sProcNm = m_pToken->szChars();
   
   if (m_sProcNm.bSame("std_start"_Stz))
@@ -1166,8 +1168,8 @@ bool Procedure::bRemoveToken(void)
 void Procedure::vUpdateProcNmToken(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PROCEDURE,_FOOTER_);
-  
-  m_pTokenVec->vUpdateToken(m_pProcNmToken, m_sProcNm);
+  ASSERT(m_iProcNmToken >= 0);
+  m_pTokenVec->vUpdateToken(m_iProcNmToken, m_pProcNmToken, m_sProcNm);
 }
 
 /*============================================================================*/

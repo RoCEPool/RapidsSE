@@ -10,7 +10,7 @@ namespace BASE
   class TokenVec : public Object
   {
   private:
-    TokenArray* m_pTokenArray;
+    TokenArray* m_pTokenArray;    // an extensible array of Token objects
     TokenArrayIter m_xTokenIter;
 
     b256K m_xyByteSpace; // buffer for all token chars
@@ -64,7 +64,6 @@ namespace BASE
     void   vStripSemicolon(void);
     void   vTrimTokens(i8 i_Tkn);
     i8     nTokens(void);
-    void   vUpdateToken(Token* pDstToken, Stz* szArgChars);
     void   vUpdateToken(i8 iIdx, Token* pDstToken, Stz* szArgChars);
     void   vToTknString(String* psDstStr);
     void   vVecToString(String* psDstStr, i8 iFromTkn, bool bAddSemicolon);

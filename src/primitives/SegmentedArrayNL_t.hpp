@@ -43,6 +43,13 @@ namespace PRIMITIVES
 
   /*============================================================================*/
   /* A segmented array of objects                                               */
+  /*                                                                            */
+  /* This is distinct from SegmentNL_t which is a segmented array of pointers   */
+  /* because the objects we allocate within here we don't want to allocate each */
+  /* of them dynamically. This would likely be a waste of space if the objects  */
+  /* are of a small size, and using it would mean jumping around in memory.     */
+  /* As such, a segmented array of objects has different semantics to a         */
+  /* segmented array of pointers.                                               */
   /*============================================================================*/
   template <eCN CLASSNO, class ITEM, i8 OBJS_PER_SEG>
   class SegmentedArrayNL_t : public Object
