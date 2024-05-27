@@ -46,7 +46,7 @@ extern i8    iExtern_StrLibLike2(char* azStr, char* azRegExp) __attribute__((wea
 extern i8    iExtern_StrLibLike3(char* azStr, char* azRegExp, char cEsc) __attribute__((weak_import));
 
 extern void  vExtern_TubAllotRowPds(void* aDynamic, char** aazStrArea, i8* pnMaxStrAreaLen) __attribute__((weak_import));
-extern void  vExtern_TubRowStrSize(void* pTub, i8 nRowStrSize) __attribute__((weak_import));
+extern void  vExtern_TubRowStrSize(void* aDynamic, i8 nRowStrSize) __attribute__((weak_import));
 
 /*
  * extern void  vExtern_EntWrkEntKind(void* pEntWrk, i8 bPayLoad, i8 iKeyKind) __attribute__((weak_import));

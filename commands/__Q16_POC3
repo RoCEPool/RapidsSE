@@ -2,7 +2,6 @@
 /* __Q16_run                                                                  */
 /*============================================================================*/
 
-print "Q16";
 
 /******************************************************************************
 Q16_0: select
@@ -156,6 +155,8 @@ stage G_CNT_DISTINCT_C on origin :
 end ;
 */
 
+/optimise_passthru
+/pipeline_def
 pipeline unamed
 begin
   stage stageStart on origin :
@@ -163,20 +164,20 @@ begin
     | pulse once
     | next
 
-  stage stageMarker2543 on all partitions :
+  stage S00 on all partitions :
     scan rapidsse public partsupp
     | next
 
-  stage stageMarker2546 on all partitions :
+  stage S01 on all partitions :
     indexjoin Part IxP_PARTKEY "BOUND $I1 PS_PARTKEY =="  // J1 - PART
     | hash " type INTEGER PS_SUPPKEY"
     | combined 0
     | next hashcast
 
-  stage stageMarker2549 on all partitions :
-    filter " type BOOLEAN  J1_P_BRAND 'Brand#45'  !=
-                 }  J1_P_TYPE 'MEDIUM POLISHED%'  16 matchLeading  not and
-                 }  49  14  23  45  19  3  36  9  #8  J1_P_SIZE in and"
+  stage S02 on all partitions :
+    filter " type BOOLEAN  P_BRAND 'Brand#45'  !=
+                 }  P_TYPE 'MEDIUM POLISHED%'  16 matchLeading  not and
+                 }  49  14  23  45  19  3  36  9  #8  P_SIZE in and"
     | keyNotExists SUPPLIER IxS_SUPPKEY  "BOUND $I1 $2 =="
                "type BOOLEAN  }  S_COMMENT '%Customer%Complaints%'  8 10 matchMiddle1"
     | aggreg " groupBy  type VARCHAR ( 0 ) as p_brand $9 ,
@@ -191,7 +192,7 @@ begin
     | combined 0
     | next
 
-  stage stageMarker2552 on all nodes :
+  stage S03 on all nodes :
     aggreg " groupBy  type VARCHAR ( 0 ) as p_brand $1 ,
                    type VARCHAR ( 0 ) as p_type $2 ,
                    type INTEGER as p_size $3 ,
@@ -204,7 +205,7 @@ begin
     | combined 0
     | next
 
-  stage stageMarker2555 on origin :
+  stage S04 on origin :
     aggreg " groupBy  type VARCHAR ( 0 ) as p_brand $1 ,
                    type VARCHAR ( 0 ) as p_type $2 ,
                    type INTEGER as p_size $3 ,
@@ -217,7 +218,7 @@ begin
     | combined 0
     | next
 
-stage stageMarker2555_b on origin :
+stage S05 on origin :
     aggreg " groupBy  type VARCHAR ( 0 ) as p_brand $1 ,
                        type VARCHAR ( 0 ) as p_type $2 ,
                        type INTEGER as p_size $3
@@ -228,15 +229,15 @@ stage stageMarker2555_b on origin :
                        type INTEGER  as supplier_cnt ) $4 COUNT"
     | combined 0
     | next
-
-  stage stageMarker2555_c on origin :
+/*
+  stage S06 on origin :
     sort " type INTEGER $4 DESC  ,
              type VARCHAR ( 0 ) as p_brand $1 ASC  ,
              type VARCHAR ( 0 ) as p_type $2 ASC  ,
              type INTEGER as p_size $3 ASC  "
     | combined 0
     | next
-
+*/
   stage stageLast on origin :
     output
     | sink

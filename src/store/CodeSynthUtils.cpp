@@ -635,7 +635,7 @@ void CodeSynthUtils::vReplaceTubPot(String* sLine, OpSketch* pOpSketch) {
   if (StrLib::bContains(sLine->azStr(), "__EXTERN_ROWSTRSIZE")) {
     if (pOpSketch->m_eSketchKind == SK_TUB) {
       bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(), "__EXTERN_ROWSTRSIZE__",
-                                 "aDynamicT->m_fp_vExtern_TubRowStrSize(aDynamicT->m_pTub,nSrcSize)");
+                                 "aDynamicT->m_fp_vExtern_TubRowStrSize(aDynamicT,nSrcSize)");
       RASSERT(bResult);
     }
     else {

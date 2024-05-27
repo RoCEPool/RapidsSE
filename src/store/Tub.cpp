@@ -68,8 +68,12 @@ extern "C" void vExtern_TubAllotRowPds(void* aDynamic, char** aazStrArea, i8* pn
 /*----------------------------------------------------------------------------*/
 /* allocate row string                                                        */
 /*----------------------------------------------------------------------------*/
-extern "C" void vExtern_TubRowStrSize(void* pTub, i8 nRowStrSize) {
+extern "C" void vExtern_TubRowStrSize(void* aDynamic, i8 nRowStrSize) {
+  Dynamic_T* pDynamicT = (Dynamic_T*)aDynamic;
+  Tub* pTub = _pTub(pDynamicT->m_pTub);
   Tub::vRowStrSize((Tub*)pTub, nRowStrSize);
+  //Pds* pPdsRowBuffer = _pPds(pTub->pWorkingBuffer());
+  //pPdsRowBuffer->vPrintRows((StreamDef*)pDynamicT->m_aStreamDefOut, nullptr, nullptr);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -127,7 +131,6 @@ void Tub::vRowStrSize(Tub* pTub, i8 nRowStrSize)
   Pds* pPdsRowBuffer = _pPds(pTub->pWorkingBuffer());
 
   pPdsRowBuffer->vDepositString_end(nRowStrSize);
-
 }
 
 /*----------------------------------------------------------------------------*/

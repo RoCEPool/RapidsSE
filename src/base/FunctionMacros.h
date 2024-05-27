@@ -123,7 +123,7 @@
     *d = '\0';                                  \
 		                                            \
    *paW++ = (i8)azStringDyn;                    \
-	 aDynamicT->m_fp_vExtern_TubRowStrSize(aDynamicT->m_pTub,nSrcSize); \
+	 aDynamicT->m_fp_vExtern_TubRowStrSize(aDynamicT,nSrcSize); \
 	 azStringDyn = azStringDyn + nSrcSize;        \
   }                                             \
 }
