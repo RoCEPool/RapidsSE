@@ -4165,9 +4165,11 @@ bool PROMPT::bPrompt_procedure(SePrompt* pPrompt)
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
   
   //pInpTknVec->vListTokens();
-  
+
+#ifdef WITH_TOKENVEC_INTEGRITY
   pInpTknVec->vIntegrityCheck();
-  
+#endif
+
   ASSERT(pInpTknVec->pGet(0)->bSame("procedure"_Stz));
     
   Procedure::vAddProcedure(pInpTknVec);

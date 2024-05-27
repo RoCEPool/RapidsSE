@@ -472,7 +472,9 @@ bool Input::bReadCommand(eEC& eInputError)
   if (d_iDebugMode)
     m_pInpTknVec->vDumpVec();
 
+#ifdef WITH_TOKENVEC_INTEGRITY
   m_pInpTknVec->vIntegrityCheck();
+#endif
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for empty file
@@ -499,8 +501,10 @@ bool Input::bReadCommand(eEC& eInputError)
   
   if (m_pInpTknVec->bHasSemicolon()) {
     m_pInpTknVec->vRemoveSemicolon();
+#ifdef WITH_TOKENVEC_INTEGRITY
     m_pInpTknVec->vIntegrityCheck();
     m_pInpTknVec->vListTokens();
+#endif
     goto L_Exit;
   }
   
@@ -522,7 +526,10 @@ bool Input::bReadCommand(eEC& eInputError)
   if (d_iDebugMode)
     m_pInpTknVec->vDumpVec();
 
+#ifdef WITH_TOKENVEC_INTEGRITY
   m_pInpTknVec->vIntegrityCheck();
+#endif
+
   if (d_iDebugMode) {
     vJot1('r',"collected till semicolon"_Stz);
     m_pInpTknVec->vListTokens();
@@ -533,14 +540,9 @@ bool Input::bReadCommand(eEC& eInputError)
   
   // stip off ;
   m_pInpTknVec->vStripSemicolon();
+#ifdef WITH_TOKENVEC_INTEGRITY
   m_pInpTknVec->vIntegrityCheck();
-
-  // stip off &
-  //m_pTknVec->vStripAmpersand();
-  //m_pTknVec->vIntegrityCheck();
-
-  m_pInpTknVec->vIntegrityCheck();
-  
+#endif
   
 L_Exit:
 

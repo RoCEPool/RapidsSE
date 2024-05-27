@@ -904,8 +904,10 @@ bool SePrompt::bReadCommand(eEC& eInputError)
     return false;
   }
   */
-  
+
+#ifdef WITH_TOKENVEC_INTEGRITY
   m_pInpTknVec->vIntegrityCheck();
+#endif
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // special case: initial command supplied as an SE command line argument
@@ -916,7 +918,9 @@ bool SePrompt::bReadCommand(eEC& eInputError)
     s4K szInitial = AM::szInitial();
     AM::TOKENISE::vTokeniseSen(m_pInpTknVec,szInitial);
     m_pInpTknVec->vStripSemicolon();
+#ifdef WITH_TOKENVEC_INTEGRITY
     m_pInpTknVec->vIntegrityCheck();
+#endif
     return true;
   }
   
@@ -929,7 +933,9 @@ bool SePrompt::bReadCommand(eEC& eInputError)
     s4K szCommand = AM::szCommand();
     AM::TOKENISE::vTokeniseSen(m_pInpTknVec,szCommand);
     m_pInpTknVec->vStripSemicolon();
+#ifdef WITH_TOKENVEC_INTEGRITY
     m_pInpTknVec->vIntegrityCheck();
+#endif
     return true;
   }
   
@@ -941,7 +947,9 @@ bool SePrompt::bReadCommand(eEC& eInputError)
     m_pInpTknVec->vStripSemicolon();
 
     vToDo(""_Stz);
+#ifdef WITH_TOKENVEC_INTEGRITY
     m_pInpTknVec->vIntegrityCheck();
+#endif
     return true;
   }
   
@@ -949,7 +957,9 @@ bool SePrompt::bReadCommand(eEC& eInputError)
   // special case:
   
   if (m_bOneCommand && m_pInput_deputy->bIsStdin()) {
+#ifdef WITH_TOKENVEC_INTEGRITY
     m_pInpTknVec->vIntegrityCheck();
+#endif
     m_bContinue = false;
     return false;
   }
@@ -960,8 +970,10 @@ bool SePrompt::bReadCommand(eEC& eInputError)
   if (! m_pInput_deputy->bReadCommand(eInputError))
     return false;
 
+#ifdef WITH_TOKENVEC_INTEGRITY
   m_pInpTknVec->vIntegrityCheck();
-  
+#endif
+
   return true;
 }
 

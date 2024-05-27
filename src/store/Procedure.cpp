@@ -41,8 +41,10 @@ Procedure::Procedure(TokenVec* pTokenVec)
   m_pProcNmToken = nullptr;
   
   _checkInitialised_(CN_PROCEDURE);
-  
+
+#ifdef WITH_TOKENVEC_INTEGRITY
   m_pTokenVec->vIntegrityCheck();
+#endif
 
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_PROCEDURE,_FOOTER_);
@@ -657,8 +659,10 @@ void Procedure::vParseAndAdd(void)
   if (AM::TRACE::bVerbose(C_VB_PROCEDURE))
     vTrace("%s\n"_Stz,sProc.azChar());
 
+#ifdef WITH_TOKENVEC_INTEGRITY
   m_pTokenVec->vIntegrityCheck();
-  
+#endif
+
   Token* pTkn1_ProcNm = m_pTokenVec->pGet(1);
   
   m_sProcNm = pTkn1_ProcNm->szChars();
@@ -671,10 +675,16 @@ void Procedure::vParseAndAdd(void)
     m_sProcNm.vConcat(m_pTokenVec->pGet(2)->szChars());
     
     m_pTokenVec->vRemoveToken(2);
+
+#ifdef WITH_TOKENVEC_INTEGRITY
     m_pTokenVec->vIntegrityCheck();
+#endif
 
     m_pTokenVec->vUpdateToken(1, pTkn1_ProcNm, m_sProcNm);
+
+#ifdef WITH_TOKENVEC_INTEGRITY
     m_pTokenVec->vIntegrityCheck();
+#endif
 
     //m_pTokenVec->vDumpTokens();
   }
@@ -687,11 +697,17 @@ void Procedure::vParseAndAdd(void)
     m_sProcNm.vConcat(m_pTokenVec->pGet(2)->szChars());
         
     m_pTokenVec->vRemoveToken(2);
+
+#ifdef WITH_TOKENVEC_INTEGRITY
     m_pTokenVec->vIntegrityCheck();
-    
+#endif
+
     m_pTokenVec->vUpdateToken(1, pTkn1_ProcNm, m_sProcNm);
+
+#ifdef WITH_TOKENVEC_INTEGRITY
     m_pTokenVec->vIntegrityCheck();
-    
+#endif
+
     //m_pTokenVec->vDumpTokens();
   }
 
