@@ -7,6 +7,6 @@
 #include "Token.hpp"
 
 namespace BASE {
-  typedef SegmentedArrayNL_t<CN_TOKENARRAY, Token, (C_SIZE_TINY_OBJECT - (6 * 8)) / sizeof(Token)> TokenArray;
-  typedef SegmentedArrayIter<CN_TOKENARRAY, Token, (C_SIZE_TINY_OBJECT - (6 * 8)) / sizeof(Token)> TokenArrayIter;
+  typedef SegmentedArrayNL_t<CN_TOKENARRAY, Token, (C_SIZE_TINY_OBJECT - (6 * C_BYTES_PER_WORD)) / sizeof(Token)> TokenArray;
+  typedef SegmentedArrayIter<CN_TOKENARRAY, Token, (C_SIZE_TINY_OBJECT - (6 * C_BYTES_PER_WORD)) / sizeof(Token)> TokenArrayIter;
 }

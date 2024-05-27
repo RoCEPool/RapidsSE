@@ -162,7 +162,6 @@ void TokenVec::vAdvanceCurr(void)
 
   if (!m_xTokenIter.bHasNext()) {
     Token oToken;
-    oToken.vTokenNum(m_pTokenArray->nItems());
     m_pTokenArray->vAdd(oToken);
   }
   m_xTokenIter.pNext();
@@ -181,7 +180,6 @@ void TokenVec::vAppendToken(Stz* szArgChars, eTN eToken)
   StrLib::vCopy(szExtension->azChar(), nSize, szArgChars->azChar());
 
   Token oToken{};
-  oToken.vTokenNum(m_pTokenArray->nItems());
   oToken.vToken(eToken);
   oToken.vChars(szExtension);
   m_pTokenArray->vAdd(oToken);
@@ -247,6 +245,16 @@ void TokenVec::szCopyStrForLastToken(Token* pLastToken, Stz* szSrc)
 
   _vCharsAddLast(pLastToken, szSrc);
   INTEGRITY_CHECK();
+}
+
+/*----------------------------------------------------------------------------*/
+/* return the array index of the current token                                */
+/*----------------------------------------------------------------------------*/
+i8 TokenVec::iCurrToken(void)
+{
+  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+
+  return m_xTokenIter.iArrayIndex();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -368,7 +376,7 @@ void TokenVec::vDumpVec()
     if (pToken->azChars()) {
       vTrace("  Chars %p : %s ; Size %lldB (next %p)\n"_Stz,
              pToken->azChars(),
-             spTkn.sz(pToken),
+             spTkn.sz(pToken, xIter.iArrayIndex()),
              pToken->nChars() + 1,
              aAdd<char*>(pToken->azChars(),pToken->nChars() + 1)
              );
@@ -574,19 +582,15 @@ void TokenVec::vInsertToken(i8 i_At, Stz* szArgChars, eTN eToken)
   // Insert the token at the given index. This will cause subsequent tokens
   // to ripple to the right.
   Token oToken = *pTkn_insAt;
-  oToken.vTokenNum(i_At);
   oToken.vToken(eToken);
   m_pTokenArray->vInsert(oToken, i_At);
 
   // TEMPORARY, until a segmented packed string is implemented
   // Adjust the string pointers of all subsequent tokens by this same offset.
-  // Also adjust the token numbers.
   TokenArrayIter xIter = m_pTokenArray->xIterator(i_At);
 
   Token* pToken;
-  i8 iNum = i_At;
   while ((pToken = xIter.pNext()) != nullptr) {
-    pToken->vTokenNum(++iNum);
     pToken->vChars(pToken->szChars() + nBytesToIns);
   }
 
@@ -682,7 +686,7 @@ void TokenVec::vListTokens(void)
   TokenArrayIter xIter = m_pTokenArray->xIterator();
   Token* pToken;
   while ((pToken = xIter.pNext()) != nullptr) {
-    vJot1(':',"  %s"_Stz,spTkn.sz(pToken));
+    vJot1(':',"  %s"_Stz,spTkn.sz(pToken, xIter.iArrayIndex()));
   }
 }
 
@@ -1252,13 +1256,10 @@ void TokenVec::_vTokenRemoveInterior(i8 iIdx)
 
   // TEMPORARY, until a segmented packed string is implemented
   // adjust the string pointers of all subsequent tokens by this same offset.
-  // Also adjust the token numbers.
   TokenArrayIter xIter = m_pTokenArray->xIterator(iIdx);
   Token* pToken = xIter.pCurrItem();
-  i8 iNum = iIdx;
 
   do {
-    pToken->vTokenNum(iNum++);
     pToken->vChars(aAdd<Stz*>(pToken->szChars(), -nBytesToCut));
   } while ((pToken = xIter.pNext()) != nullptr);
 

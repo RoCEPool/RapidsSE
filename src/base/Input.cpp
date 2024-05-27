@@ -356,7 +356,7 @@ void Input::vInspect(void)
          d_nUseBegin,
          d_nReadCommand,
          d_nCollectOneToken,
-         spTkn.sz(m_pCurrTkn)
+         spTkn.sz(m_pCurrTkn, m_pInpTknVec->iCurrToken())
          );
 
   m_pCharser->vInspect();
@@ -800,7 +800,8 @@ void Input::vCollectOneToken(void)
 
   if (d_iDebugMode) {
     SP_Token spTkn;
-    vJot2('<',(Stz*)__func__,spTkn.sz(m_pCurrTkn));
+    vJot2('<',(Stz*)__func__,spTkn.sz(m_pCurrTkn,
+                                                            m_pInpTknVec->iCurrToken()));
   }
 }
 
@@ -2244,7 +2245,7 @@ void Input::vTestSwitchToSen(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
 
-  if (m_pCurrTkn && 0 == m_pCurrTkn->i_Token() && m_pCurrTkn->bIsPipeline()) {
+  if (m_pInpTknVec->pFirstToken() == m_pCurrTkn && m_pCurrTkn->bIsPipeline()) {
     m_bRevertToCpp = true;
     vFormSenTokens();
   }
