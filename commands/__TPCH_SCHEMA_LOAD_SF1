@@ -116,6 +116,7 @@ create        index IxR_REGIONKEY   on Region   (R_REGIONKEY);
 create        index IxR_NAME        on Region   (R_NAME);
 
 // Supplier (partitioned on s_suppkey)
+create        index IxS_NATIONKEY   on Supplier (S_NATIONKEY);
 create        index IxS_SUPPKEY     on Supplier (S_SUPPKEY);
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */

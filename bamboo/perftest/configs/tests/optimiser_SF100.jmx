@@ -6075,7 +6075,7 @@ end ;
               </hashTree>
             </hashTree>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q11 Group" enabled="false"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q11 Group" enabled="true"/>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
@@ -6100,12 +6100,12 @@ OUT.flush();</stringProp>
               <stringProp name="scriptLanguage">groovy</stringProp>
             </JSR223Sampler>
             <hashTree/>
-            <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q11Loop" enabled="false">
+            <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q11Loop" enabled="true">
               <boolProp name="LoopController.continue_forever">true</boolProp>
               <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
             </LoopController>
             <hashTree>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q11" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q11" enabled="false">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">select 
   ps_partkey, 
@@ -6145,6 +6145,106 @@ order by
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q11_poc3_mt" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">/optimise_passthru
+pipeline Query11
+begin
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
+
+  stage S01 on all partitions :
+    scan nation
+    | filter &quot; type BOOLEAN N_NAME &apos;GERMANY&apos;  ==  &quot;
+    | project &quot; type INTEGER ( 19 ) as N_NATIONKEY N_NATIONKEY&quot;
+    | indexJoin supplier IxS_NATIONKEY &quot;bound $I1 N_NATIONKEY ==&quot;
+    | project &quot; type INTEGER ( 19 ) as S_SUPPKEY S_SUPPKEY&quot;
+    | combined 0
+    | next broadcast
+
+ stage S02 on all partitions:
+    indexJoin partsupp IxPS_SUPPKEY &quot;bound $I1 S_SUPPKEY ==&quot;
+    | aggreg &quot; type DECIMAL ( 19  2 ) )  PS_SUPPLYCOST PS_AVAILQTY casttype DECIMAL ( 19  2 ) CAST  *  sum  &quot;
+    | combined 0
+    | next
+
+  stage S03 on all nodes :
+    aggreg &quot; type DECIMAL ( 19  2 ) as INNERRESULT )  $1 sum  &quot;
+    | combined 0
+    | next
+
+  stage S04 on origin :
+    aggreg &quot; type DECIMAL ( 19  2 ) as INNERRESULT )  $1 sum&quot;
+    | combined 0
+    | next
+
+  stage S05 on origin :
+    aggreg &quot; type DECIMAL ( 19  2 ) as INNERRESULT INNERRESULT 0.00001  *  &quot;
+    | combined 0
+    | next broadcast
+
+  stage S06 on all partitions  multiple threads 4:
+    indexJoin nation IxN_NATIONKEY &quot;bound $I1&quot;
+    | filter &quot; type BOOLEAN N_NAME &apos;GERMANY&apos;  ==  &quot;
+    | project &quot; type INTEGER ( 19 ) as N_NATIONKEY N_NATIONKEY ,
+                type DECIMAL ( 19  2 ) as INNERRESULT INNERRESULT&quot;
+    | indexJoin supplier IxS_NATIONKEY &quot;bound $I1 N_NATIONKEY ==&quot;
+    | project &quot; type INTEGER ( 19 ) as S_SUPPKEY S_SUPPKEY ,
+                type DECIMAL ( 19  2 ) as INNERRESULT INNERRESULT&quot;
+    | combined 0
+    | next broadcast
+
+  stage S08 on all partitions :
+    indexJoin partsupp IxPS_SUPPKEY &quot;bound $I1 S_SUPPKEY ==&quot;
+    | gbyAgg &quot; GroupBy    type INTEGER ( 19 ) PS_PARTKEY
+               aggregates
+                          type INTEGER ( 19 ) as PS_PARTKEY $K1 ,
+                          type DECIMAL ( 19  2 ) as VALUE ) PS_SUPPLYCOST PS_AVAILQTY casttype DECIMAL ( 19  2 ) CAST  *  sum  ,
+                          type DECIMAL ( 19  2 ) as INNERRESULT INNERRESULT&quot;
+    | combined 0
+    | next
+
+  stage S09 on all nodes :
+    gbyAgg &quot; GroupBy    type INTEGER ( 19 ) PS_PARTKEY
+             aggregates type INTEGER ( 19 ) as PS_PARTKEY $K1 ,
+                        type DECIMAL ( 19  2 ) as VALUE ) VALUE sum  , type DECIMAL ( 19  2 ) as INNERRESULT INNERRESULT&quot;
+    | combined 0
+    | next
+
+  stage S10 on origin :
+    gbyAgg &quot; GroupBy    type INTEGER ( 19 ) PS_PARTKEY
+             aggregates type INTEGER ( 19 ) as PS_PARTKEY $K1 ,
+                        type DECIMAL ( 19  2 ) as VALUE ) VALUE sum  ,
+                        type DECIMAL ( 19  2 ) as INNERRESULT INNERRESULT&quot;
+    | combined 0
+    | next
+
+  stage S11 on origin :
+    filter &quot; type BOOLEAN  value INNERRESULT  &gt;  &quot;
+    | project &quot; type INTEGER ( 19 ) as PS_PARTKEY PS_PARTKEY ,
+                type DECIMAL ( 19  2 ) as VALUE VALUE&quot;
+    | sort &quot; type DECIMAL ( 19  2 ) VALUE DESC  &quot;
+    | combined 0
+    | next
+
+  stage S12 on origin :
+    output
+    | sink
+    | first
+end ;
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
               <IfController guiclass="IfControllerPanel" testclass="IfController" testname="Check for error" enabled="true">
                 <stringProp name="IfController.condition">${__jexl3(!${JMeterThread.last_sample_ok},)}</stringProp>
                 <boolProp name="IfController.evaluateAll">false</boolProp>
@@ -6159,6 +6259,103 @@ order by
                 </BeanShellListener>
                 <hashTree/>
               </hashTree>
+              <com.rapidsdata.jmeter.samplers.JdbcRecorder guiclass="com.rapidsdata.jmeter.samplers.gui.JdbcRecorderGui" testclass="com.rapidsdata.jmeter.samplers.JdbcRecorder" testname="rseults_q11" enabled="true">
+                <stringProp name="JdbcRecorder.connPoolVarName"></stringProp>
+                <stringProp name="JdbcRecorder.queries">/optimise_passthru
+pipeline Query11
+begin
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
+
+  stage S01 on all partitions :
+    scan nation
+    | filter &quot; type BOOLEAN N_NAME &apos;GERMANY&apos;  ==  &quot;
+    | project &quot; type INTEGER ( 19 ) as N_NATIONKEY N_NATIONKEY&quot;
+    | indexJoin supplier IxS_NATIONKEY &quot;bound $I1 N_NATIONKEY ==&quot;
+    | project &quot; type INTEGER ( 19 ) as S_SUPPKEY S_SUPPKEY&quot;
+    | combined 0
+    | next broadcast
+
+ stage S02 on all partitions:
+    indexJoin partsupp IxPS_SUPPKEY &quot;bound $I1 S_SUPPKEY ==&quot;
+    | aggreg &quot; type DECIMAL ( 19  2 ) )  PS_SUPPLYCOST PS_AVAILQTY casttype DECIMAL ( 19  2 ) CAST  *  sum  &quot;
+    | combined 0
+    | next
+
+  stage S03 on all nodes :
+    aggreg &quot; type DECIMAL ( 19  2 ) as INNERRESULT )  $1 sum  &quot;
+    | combined 0
+    | next
+
+  stage S04 on origin :
+    aggreg &quot; type DECIMAL ( 19  2 ) as INNERRESULT )  $1 sum&quot;
+    | combined 0
+    | next
+
+  stage S05 on origin :
+    aggreg &quot; type DECIMAL ( 19  2 ) as INNERRESULT INNERRESULT 0.00001  *  &quot;
+    | combined 0
+    | next broadcast
+
+  stage S06 on all partitions  multiple threads 4:
+    indexJoin nation IxN_NATIONKEY &quot;bound $I1&quot;
+    | filter &quot; type BOOLEAN N_NAME &apos;GERMANY&apos;  ==  &quot;
+    | project &quot; type INTEGER ( 19 ) as N_NATIONKEY N_NATIONKEY ,
+                type DECIMAL ( 19  2 ) as INNERRESULT INNERRESULT&quot;
+    | indexJoin supplier IxS_NATIONKEY &quot;bound $I1 N_NATIONKEY ==&quot;
+    | project &quot; type INTEGER ( 19 ) as S_SUPPKEY S_SUPPKEY ,
+                type DECIMAL ( 19  2 ) as INNERRESULT INNERRESULT&quot;
+    | combined 0
+    | next broadcast
+
+  stage S08 on all partitions :
+    indexJoin partsupp IxPS_SUPPKEY &quot;bound $I1 S_SUPPKEY ==&quot;
+    | gbyAgg &quot; GroupBy    type INTEGER ( 19 ) PS_PARTKEY
+               aggregates
+                          type INTEGER ( 19 ) as PS_PARTKEY $K1 ,
+                          type DECIMAL ( 19  2 ) as VALUE ) PS_SUPPLYCOST PS_AVAILQTY casttype DECIMAL ( 19  2 ) CAST  *  sum  ,
+                          type DECIMAL ( 19  2 ) as INNERRESULT INNERRESULT&quot;
+    | combined 0
+    | next
+
+  stage S09 on all nodes :
+    gbyAgg &quot; GroupBy    type INTEGER ( 19 ) PS_PARTKEY
+             aggregates type INTEGER ( 19 ) as PS_PARTKEY $K1 ,
+                        type DECIMAL ( 19  2 ) as VALUE ) VALUE sum  , type DECIMAL ( 19  2 ) as INNERRESULT INNERRESULT&quot;
+    | combined 0
+    | next
+
+  stage S10 on origin :
+    gbyAgg &quot; GroupBy    type INTEGER ( 19 ) PS_PARTKEY
+             aggregates type INTEGER ( 19 ) as PS_PARTKEY $K1 ,
+                        type DECIMAL ( 19  2 ) as VALUE ) VALUE sum  ,
+                        type DECIMAL ( 19  2 ) as INNERRESULT INNERRESULT&quot;
+    | combined 0
+    | next
+
+  stage S11 on origin :
+    filter &quot; type BOOLEAN  value INNERRESULT  &gt;  &quot;
+    | project &quot; type INTEGER ( 19 ) as PS_PARTKEY PS_PARTKEY ,
+                type DECIMAL ( 19  2 ) as VALUE VALUE&quot;
+    | sort &quot; type DECIMAL ( 19  2 ) VALUE DESC  &quot;
+    | combined 0
+    | next
+
+  stage S12 on origin :
+    output
+    | sink
+    | first
+end ;
+</stringProp>
+                <boolProp name="JdbcRecorder.incColumnNames">true</boolProp>
+                <boolProp name="JdbcRecorder.incColumnTypes">false</boolProp>
+                <boolProp name="JdbcRecorder.overrideOutput">false</boolProp>
+                <stringProp name="JdbcRecorder.fileName"></stringProp>
+                <stringProp name="JdbcRecorder.fileFormat">pretty</stringProp>
+              </com.rapidsdata.jmeter.samplers.JdbcRecorder>
+              <hashTree/>
             </hashTree>
           </hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q12 Group" enabled="true"/>
