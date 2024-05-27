@@ -856,9 +856,8 @@ void TokenVec::vUpdateToken(Token* pDstToken, Stz* szArgChars)
 
   i8 numTokens = nTokens();
 
-  // Get the index in the array of this token. We'll do a reverse search
-  // because it's more likely to be at the end.
-  i8 iIdx = m_pTokenArray->iRevFind(pDstToken);
+  // Get the index in the array of this token.
+  i8 iIdx = m_pTokenArray->iFind(pDstToken);
   ASSERT(iIdx >= 0);
   ASSERT(iIdx < numTokens);
 
