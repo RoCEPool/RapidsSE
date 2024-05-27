@@ -127,6 +127,7 @@
 #include "Op.hpp"
 #include "OpSpec.hpp"
 
+#include "PackedStringBuf.hpp"
 #include "PathIdentifier.hpp"
 #include "VertexSpec.hpp"
 #include "Pipeline.hpp"
@@ -554,6 +555,10 @@ SizeHeap gxaSizeHeap[]
   {CN_OTHEROPERAND,             sizeof(OtherOperand),       HT_T_TINY    , FILL },
 
   {CN__P__,                     'P' - ('A' - 1),            HT_INVALID   , FILL },
+  {CN_PACKEDSTRINGBUFTINY,      sizeof(PackedStringBufTiny),HT_T_TINY    , FILL },
+  {CN_PACKEDSTRINGBUFSMALL,     sizeof(PackedStringBufSmall),HT_T_SMALL  , FILL },
+  {CN_PACKEDSTRINGBUFMEDIUM,    sizeof(PackedStringBufMedium),HT_T_MEDIUM, FILL },
+  {CN_PACKEDSTRINGBUFLARGE,     sizeof(PackedStringBufLarge),HT_T_LARGE  , FILL },
   {CN_PAGEFILE,                 sizeof(PageFile),           HT_T_TINY    , FILL },
   {CN_PAGEINBUFFER,             sizeof(CrwBuffer),          HT_T_LARGE   ,FILL },
   {CN_PAGINGMETRICS,            sizeof(PagingMetrics),      HT_T_LARGE   , FILL },

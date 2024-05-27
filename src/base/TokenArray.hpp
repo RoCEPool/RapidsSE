@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* PlanNode.hpp - A base class of a generic node in the plan graph            */
+/* TokenArray.hpp - A typedef'ed segmented array of Token objects             */
 /*============================================================================*/
 #pragma once
 
