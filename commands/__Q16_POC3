@@ -2,247 +2,125 @@
 /* __Q16_run                                                                  */
 /*============================================================================*/
 
-
-/******************************************************************************
-Q16_0: select
-         p_brand,
-         p_type,
-         p_size,
-         count(distinct ps_suppkey) as supplier_cnt
-
-  from PartSupp, Part
- 
- where     p_partkey  =  ps_partkey
-       and p_brand    <> 'Brand#45'
-       and p_type     not like 'MEDIUM POLISHED%'
-       and p_size     in (49,14,23,45,19,3,36,9)
-       and ps_suppkey not in
-
-             ( select s_suppkey
-
-                 from Supplier
- 
-                where s_comment like '%Customer%Complaints%' )
-
- group by p_brand, p_type, p_size
-
- order by supplier_cnt desc, p_brand, p_type, p_size;
-*******************************************************************************/
-
-/*
-/time pipeline Q16
-begin
-
-  stage G_Start on origin :
-    start
-    | pulse once
-    | G_PART
-
-  //
-  // Q16_0:
-  //   a) scan PartSupp  /PS_PARTKEY/  # _partkey    _suppkey
-  //   b) join Part      /P_PARTKEY/   # _partkey
-  //
-
-  stage G_PART on all partitions :
-    scan part
-    | filter " type BOOLEAN P_BRAND 'Brand#45'  !=
-               }  P_TYPE 'MEDIUM POLISHED%'  16 matchLeading  not and
-               }  49  14  23  45  19  3  36  9  #8  P_SIZE in and  "
-
-    | project "type INTEGER as P_PARTKEY P_PARTKEY ,
-               type VARCHAR ( 0 ) as P_BRAND P_BRAND ,
-               type VARCHAR ( 0 ) as P_TYPE P_TYPE ,
-               type INTEGER as P_SIZE P_SIZE"
-                   | combined 0
-    | next
-
-  stage G_PARTSUPP on all partitions :
-    indexJoin partsupp IxPS_PARTKEY "bound $I1 p_partkey =="
-    | project "    type VARCHAR ( 0 ) as P_BRAND P_BRAND ,
-                   type VARCHAR ( 0 ) as P_TYPE P_TYPE ,
-                   type INTEGER as P_SIZE P_SIZE ,
-                   type INTEGER as PS_SUPPKEY J1_PS_SUPPKEY"
-    | combined 0
-    | next
-
-  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
-
-  stage G_CNT_P on all partitions :
-    aggreg " groupBy type VARCHAR ( 0 ) as P_BRAND P_BRAND ,
-             type VARCHAR ( 0 ) as P_TYPE P_TYPE ,
-             type INTEGER as P_SIZE P_SIZE ,
-             type INTEGER as PS_SUPPKEY PS_SUPPKEY
-             aggregates
-             type VARCHAR ( 0 ) as P_BRAND $K1 ,
-             type VARCHAR ( 0 ) as P_TYPE $K2 ,
-             type INTEGER as P_SIZE $K3 ,
-             type INTEGER as PS_SUPPKEY $K4 "
-    | combined 0
-    | next
-
-  stage G_CNT_N on all nodes :
-    aggreg " groupBy type VARCHAR ( 0 ) as P_BRAND P_BRAND ,
-                 type VARCHAR ( 0 ) as P_TYPE P_TYPE ,
-                 type INTEGER as P_SIZE P_SIZE ,
-                 type INTEGER as PS_SUPPKEY PS_SUPPKEY
-                 aggregates
-                  type VARCHAR ( 0 ) as P_BRAND $K1 ,
-                  type VARCHAR ( 0 ) as P_TYPE $K2 ,
-                  type INTEGER as P_SIZE $K3 ,
-                  type INTEGER as PS_SUPPKEY $K4 "
-    | combined 0
-    | next
-
-  stage G_CNT_O on origin :
-    aggreg " groupBy type VARCHAR ( 0 ) as P_BRAND P_BRAND ,
-                   type VARCHAR ( 0 ) as P_TYPE P_TYPE ,
-                   type INTEGER as P_SIZE P_SIZE ,
-                   type INTEGER as PS_SUPPKEY PS_SUPPKEY
-                   aggregates
-                    type VARCHAR ( 0 ) as P_BRAND $K1 ,
-                    type VARCHAR ( 0 ) as P_TYPE $K2 ,
-                    type INTEGER as P_SIZE $K3 ,
-                    type INTEGER as PS_SUPPKEY $K4 "
-    | hash " type INTEGER PS_SUPPKEY"
-    | combined 0
-    | next hashcast
-    //| next
-
-  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
-
-  stage G_CNT_DISTINCT_A on all partitions :
-     aggreg " groupBy type VARCHAR ( 0 ) P_BRAND ,
-                      type VARCHAR ( 0 ) as P_TYPE P_TYPE ,
-                      type INTEGER as P_SIZE P_SIZE
-               aggregates
-               type VARCHAR ( 0 ) as P_BRAND $K1 ,
-               type VARCHAR ( 0 ) as P_TYPE $K2 ,
-               type INTEGER as P_SIZE $K3 ,
-               type INTEGER as SUPPLIER_CNT ) $4 COUNT"
-  | combined 0
-  | next
-
-  stage G_CNT_DISTINCT_B on all nodes :
-     aggreg " groupBy type VARCHAR ( 0 ) as P_BRAND P_BRAND ,
-                      type VARCHAR ( 0 ) as P_TYPE P_TYPE ,
-                      type INTEGER as P_SIZE P_SIZE
-               aggregates
-                         type VARCHAR ( 0 ) as P_BRAND $K1 ,
-                         type VARCHAR ( 0 ) as P_TYPE $K2 ,
-                         type INTEGER as P_SIZE $K3 ,
-                         type INTEGER as SUPPLIER_CNT ) $4 SUM"
-| combined 0
-| next
-
-stage G_CNT_DISTINCT_C on origin :
-   aggreg " groupBy type VARCHAR ( 0 ) as P_BRAND P_BRAND ,
-                         type VARCHAR ( 0 ) as P_TYPE P_TYPE ,
-                         type INTEGER as P_SIZE P_SIZE
-                  aggregates
-                            type VARCHAR ( 0 ) as P_BRAND $K1 ,
-                            type VARCHAR ( 0 ) as P_TYPE $K2 ,
-                            type INTEGER as P_SIZE $K3 ,
-                            type INTEGER as SUPPLIER_CNT ) $4 SUM"
-| combined 0
-| next
-
-  stage G_Last on origin :
-    output
-    | sink
-    | G_Start
-    
-end ;
-*/
-
 /optimise_passthru
-/pipeline_def
-pipeline unamed
+pipeline Query16
 begin
-  stage stageStart on origin :
+  stage S00 on origin :
     start
     | pulse once
-    | next
-
-  stage S00 on all partitions :
-    scan rapidsse public partsupp
     | next
 
   stage S01 on all partitions :
-    indexjoin Part IxP_PARTKEY "BOUND $I1 PS_PARTKEY =="  // J1 - PART
-    | hash " type INTEGER PS_SUPPKEY"
+    scan rapidsse public part
+    | filter " type BOOLEAN  P_BRAND 'Brand#45' !=
+              }  P_TYPE 'MEDIUM POLISHED%'  16 matchLeading not and
+              }  49  14  23  45  19  3  36  9  #8  P_SIZE in and"
+    | project "type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY ,
+               type VARCHAR ( 0 ) as P_BRAND P_BRAND ,
+               type VARCHAR ( 0 ) as P_TYPE P_TYPE ,
+               type INTEGER ( 19 ) as P_SIZE P_SIZE"
+    | indexjoin PartSupp IxPS_PARTKEY "BOUND $I1 P_PARTKEY =="
+    | project "type INTEGER ( 19 ) as PS_SUPPKEY PS_SUPPKEY ,
+               type VARCHAR ( 0 ) as P_BRAND P_BRAND ,
+               type VARCHAR ( 0 ) as P_TYPE P_TYPE ,
+               type INTEGER ( 19 ) as P_SIZE P_SIZE"
+    | hash " type INTEGER ( 19 ) PS_SUPPKEY"
     | combined 0
     | next hashcast
 
-  stage S02 on all partitions :
-    filter " type BOOLEAN  P_BRAND 'Brand#45'  !=
-                 }  P_TYPE 'MEDIUM POLISHED%'  16 matchLeading  not and
-                 }  49  14  23  45  19  3  36  9  #8  P_SIZE in and"
-    | keyNotExists SUPPLIER IxS_SUPPKEY  "BOUND $I1 $2 =="
+  stage S03 on all partitions :
+    keyNotExists SUPPLIER IxS_SUPPKEY  "BOUND $I1 PS_SUPPKEY =="
                "type BOOLEAN  }  S_COMMENT '%Customer%Complaints%'  8 10 matchMiddle1"
-    | aggreg " groupBy  type VARCHAR ( 0 ) as p_brand $9 ,
-               type VARCHAR ( 0 ) as p_type $10 ,
-               type INTEGER as p_size $11 ,
-               type INTEGER as ps_suppkey $2
+    | gbyAgg " GroupBy type VARCHAR ( 0 ) as P_BRAND P_BRAND ,
+                       type VARCHAR ( 0 ) as P_TYPE P_TYPE ,
+                       type INTEGER ( 19 ) as P_SIZE P_SIZE ,
+                       type INTEGER ( 19 ) as PS_SUPPKEY PS_SUPPKEY
                aggregates
-               type VARCHAR ( 0 )  as p_brand $K1 ,
-               type VARCHAR ( 0 )  as p_type $K2 ,
-               type INTEGER  as p_size $K3 ,
-               type INTEGER  as ps_suppkey $K4 "
+                       type VARCHAR ( 0 )  as P_BRAND $K1 ,
+                       type VARCHAR ( 0 )  as P_TYPE $K2 ,
+                       type INTEGER ( 19 )  as P_SIZE $K3 ,
+                       type INTEGER ( 19 )  as PS_SUPPKEY $K4"
+
     | combined 0
     | next
 
-  stage S03 on all nodes :
-    aggreg " groupBy  type VARCHAR ( 0 ) as p_brand $1 ,
-                   type VARCHAR ( 0 ) as p_type $2 ,
-                   type INTEGER as p_size $3 ,
-                   type INTEGER as ps_suppkey $4
-                   aggregates
-                   type VARCHAR ( 0 )  as p_brand $K1 ,
-                   type VARCHAR ( 0 )  as p_type $K2 ,
-                   type INTEGER  as p_size $K3 ,
-                   type INTEGER  as ps_suppkey $K4 "
+  stage S04 on all nodes :
+    gbyAgg " GroupBy type VARCHAR ( 0 ) as P_BRAND P_BRAND ,
+                     type VARCHAR ( 0 ) as P_TYPE P_TYPE ,
+                     type INTEGER ( 19 ) as P_SIZE P_SIZE ,
+                     type INTEGER ( 19 ) as PS_SUPPKEY PS_SUPPKEY
+             aggregates
+                    type VARCHAR ( 0 )  as P_BRAND $K1 ,
+                    type VARCHAR ( 0 )  as P_TYPE $K2 ,
+                    type INTEGER ( 19 )  as P_SIZE $K3 ,
+                    type INTEGER ( 19 )  as PS_SUPPKEY $K4 "
     | combined 0
     | next
 
-  stage S04 on origin :
-    aggreg " groupBy  type VARCHAR ( 0 ) as p_brand $1 ,
-                   type VARCHAR ( 0 ) as p_type $2 ,
-                   type INTEGER as p_size $3 ,
-                   type INTEGER as ps_suppkey $4
-                   aggregates
-                   type VARCHAR ( 0 )  as p_brand $K1 ,
-                   type VARCHAR ( 0 )  as p_type $K2 ,
-                   type INTEGER  as p_size $K3 ,
-                   type INTEGER  as ps_suppkey $K4 "
+  stage S05 on origin :
+    gbyAgg " GroupBy type VARCHAR ( 0 ) as P_BRAND P_BRAND ,
+                     type VARCHAR ( 0 ) as P_TYPE P_TYPE ,
+                     type INTEGER ( 19 ) as P_SIZE P_SIZE ,
+                     type INTEGER ( 19 ) as PS_SUPPKEY PS_SUPPKEY
+             aggregates
+                    type VARCHAR ( 0 )  as P_BRAND $K1 ,
+                    type VARCHAR ( 0 )  as P_TYPE $K2 ,
+                    type INTEGER ( 19 )  as P_SIZE $K3 ,
+                    type INTEGER ( 19 )  as PS_SUPPKEY $K4 "
+    | hash " type INTEGER ( 19 ) PS_SUPPKEY"
     | combined 0
-    | next
+    | next hashcast
 
-stage S05 on origin :
-    aggreg " groupBy  type VARCHAR ( 0 ) as p_brand $1 ,
-                       type VARCHAR ( 0 ) as p_type $2 ,
-                       type INTEGER as p_size $3
+  stage S06 on all partitions :
+    gbyAgg " GroupBy  type VARCHAR ( 0 ) as P_BRAND P_BRAND ,
+                       type VARCHAR ( 0 ) as P_TYPE P_TYPE ,
+                       type INTEGER ( 19 ) as P_SIZE P_SIZE
                        aggregates
-                       type VARCHAR ( 0 )  as p_brand $K1 ,
-                       type VARCHAR ( 0 )  as p_type $K2 ,
-                       type INTEGER  as p_size $K3 ,
-                       type INTEGER  as supplier_cnt ) $4 COUNT"
+                       type VARCHAR ( 0 )  as P_BRAND $K1 ,
+                       type VARCHAR ( 0 )  as P_TYPE $K2 ,
+                       type INTEGER ( 19 )  as P_SIZE $K3 ,
+                       type INTEGER ( 19 )  as supplier_cnt ) PS_SUPPKEY COUNT"
     | combined 0
     | next
-/*
-  stage S06 on origin :
-    sort " type INTEGER $4 DESC  ,
-             type VARCHAR ( 0 ) as p_brand $1 ASC  ,
-             type VARCHAR ( 0 ) as p_type $2 ASC  ,
-             type INTEGER as p_size $3 ASC  "
+
+  stage S07 on all nodes :
+    gbyAgg " GroupBy type VARCHAR ( 0 ) as P_BRAND P_BRAND ,
+                     type VARCHAR ( 0 ) as P_TYPE P_TYPE ,
+                     type INTEGER ( 19 ) as P_SIZE P_SIZE
+                     aggregates
+                     type VARCHAR ( 0 )  as P_BRAND $K1 ,
+                     type VARCHAR ( 0 )  as P_TYPE $K2 ,
+                     type INTEGER ( 19 )  as P_SIZE $K3 ,
+                     type INTEGER ( 19 )  as supplier_cnt ) supplier_cnt SUM"
     | combined 0
     | next
-*/
+
+  stage S08 on origin :
+    gbyAgg " GroupBy  type VARCHAR ( 0 ) as P_BRAND P_BRAND ,
+                      type VARCHAR ( 0 ) as P_TYPE P_TYPE ,
+                      type INTEGER ( 19 ) as P_SIZE P_SIZE
+                      aggregates
+                      type VARCHAR ( 0 )  as P_BRAND $K1 ,
+                      type VARCHAR ( 0 )  as P_TYPE $K2 ,
+                      type INTEGER ( 19 )  as P_SIZE $K3 ,
+                      type INTEGER ( 19 )  as supplier_cnt ) supplier_cnt SUM"
+    | combined 0
+    | next
+
+  stage S09 on origin :
+    sort " type INTEGER ( 19 ) $4 DESC  ,
+           type VARCHAR ( 0 ) as P_BRAND P_BRAND ASC ,
+           type VARCHAR ( 0 ) as P_TYPE P_TYPE ASC ,
+           type INTEGER ( 19 ) as P_SIZE P_SIZE ASC "
+    | combined 0
+    | next
+
   stage stageLast on origin :
     output
     | sink
     | first
 end ;
+
 
 /*============================================================================*/
 /* end                                                                        */

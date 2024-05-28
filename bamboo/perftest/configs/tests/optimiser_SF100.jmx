@@ -2814,7 +2814,7 @@ end ;
               </hashTree>
             </hashTree>
             <com.rapidsdata.jmeter.samplers.JdbcRecorder guiclass="com.rapidsdata.jmeter.samplers.gui.JdbcRecorderGui" testclass="com.rapidsdata.jmeter.samplers.JdbcRecorder" testname="results-q3" enabled="true">
-              <stringProp name="JdbcRecorder.connPoolVarName"></stringProp>
+              <stringProp name="JdbcRecorder.connPoolVarName">SEConnPool</stringProp>
               <stringProp name="JdbcRecorder.queries">/pipelineName = &quot;Q3&quot;
 select
   l_orderkey,
@@ -3333,6 +3333,154 @@ end ;
                 <hashTree/>
               </hashTree>
             </hashTree>
+            <com.rapidsdata.jmeter.samplers.JdbcRecorder guiclass="com.rapidsdata.jmeter.samplers.gui.JdbcRecorderGui" testclass="com.rapidsdata.jmeter.samplers.JdbcRecorder" testname="results-q4" enabled="true">
+              <stringProp name="JdbcRecorder.connPoolVarName">SEConnPool</stringProp>
+              <stringProp name="JdbcRecorder.queries">/pipelineName = &quot;Q4&quot;
+select
+  o_orderpriority,
+  count(*) as order_count
+from
+  orders
+where
+  o_orderdate &gt;= date &apos;1993-07-01&apos;
+  and o_orderdate &lt; date &apos;1993-07-01&apos; + interval &apos;3&apos; month
+  and exists (
+    select
+      *
+    from
+      lineitem
+    where
+      l_orderkey = o_orderkey
+      and l_commitdate &lt; l_receiptdate )
+group by
+  o_orderpriority
+order by
+  o_orderpriority;
+
+/optimise_passthru
+pipeline Query4
+begin
+
+  stage S00 on origin : 
+      start
+    | pulse     once
+    | next
+
+  stage S01 on all partitions : 
+    scan      orders
+    | project   &quot; type DATE ( 0 ) as O_ORDERDATE O_ORDERDATE
+                , type VARCHAR ( 15 ) as O_ORDERPRIORITY O_ORDERPRIORITY
+                , type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY &quot;
+    | filter    &quot; type BOOLEAN O_ORDERDATE DATE &apos;1993-07-01&apos; &gt;= O_ORDERDATE DATE &apos;1993-10-01&apos;&lt; and &quot;
+    | project   &quot; type VARCHAR ( 15 ) as C0_O_ORDERPRIORITY $2
+                , type INTEGER ( 19 ) as C1_O_ORDERKEY $3 &quot;
+    | hash      &quot;type INTEGER $2&quot;
+    | dynamic
+    | next      hashcast
+
+  stage S02 on all partitions :
+    keyExists lineitem IxL_ORDERKEY &quot; BOUND $I1 $2 == &quot; &quot; type BOOLEAN L_COMMITDATE L_RECEIPTDATE &lt; &quot;
+    | project   &quot; type VARCHAR ( 15 ) as C0_O_ORDERPRIORITY $1 &quot;
+    | gbyAgg    &quot; groupBy
+                  type VARCHAR as C0_O_ORDERPRIORITY $1
+                aggregates
+                  type VARCHAR as C0_COL0 $K1
+                , type INTEGER ( 19 ) as C1_COL1 ) countAll &quot;
+    | dynamic
+    | next      
+
+  stage S03 on all nodes :
+    gbyAgg    &quot; groupBy
+                  type VARCHAR $1
+                aggregates
+                  type VARCHAR as C0_COL0 $K1
+                , type INTEGER ( 19 ) as C1_COL1 ) $2 sum &quot;
+    | dynamic
+    | next      
+
+  stage S04 on origin :
+    gbyAgg    &quot; groupBy
+                  type VARCHAR $1
+                aggregates
+                  type VARCHAR as C0_COL0 $K1
+                , type INTEGER ( 19 ) as C1_order_count ) $2 sum &quot;
+    | dynamic
+    | next      
+
+  stage S05 on origin :
+      output
+    | sink
+    | first
+
+end ;
+
+
+
+/optimise_passthru
+pipeline Query4
+begin
+
+  stage S00 on origin : 
+      start
+    | pulse     once
+    | next
+
+  stage S01 on all partitions : 
+    scan      orders
+    | project   &quot; type DATE ( 0 ) as O_ORDERDATE O_ORDERDATE
+                , type VARCHAR ( 15 ) as O_ORDERPRIORITY O_ORDERPRIORITY
+                , type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY &quot;
+    | filter    &quot; type BOOLEAN O_ORDERDATE DATE &apos;1993-07-01&apos; &gt;= O_ORDERDATE DATE &apos;1993-10-01&apos;&lt; and &quot;
+    | project   &quot; type VARCHAR ( 15 ) as C0_O_ORDERPRIORITY $2
+                , type INTEGER ( 19 ) as C1_O_ORDERKEY $3 &quot;
+    | hash      &quot;type INTEGER $2&quot;
+    | dynamic
+    | next      hashcast
+
+  stage S02 on all partitions  multiple threads 4:
+    keyExists lineitem IxL_ORDERKEY &quot; BOUND $I1 $2 == &quot; &quot; type BOOLEAN L_COMMITDATE L_RECEIPTDATE &lt; &quot;
+    | project   &quot; type VARCHAR ( 15 ) as C0_O_ORDERPRIORITY $1 &quot;
+    | gbyAgg    &quot; groupBy
+                  type VARCHAR as C0_O_ORDERPRIORITY $1
+                aggregates
+                  type VARCHAR as C0_COL0 $K1
+                , type INTEGER ( 19 ) as C1_COL1 ) countAll &quot;
+    | dynamic
+    | next      
+
+  stage S03 on all nodes :
+    gbyAgg    &quot; groupBy
+                  type VARCHAR $1
+                aggregates
+                  type VARCHAR as C0_COL0 $K1
+                , type INTEGER ( 19 ) as C1_COL1 ) $2 sum &quot;
+    | dynamic
+    | next      
+
+  stage S04 on origin :
+    gbyAgg    &quot; groupBy
+                  type VARCHAR $1
+                aggregates
+                  type VARCHAR as C0_COL0 $K1
+                , type INTEGER ( 19 ) as C1_order_count ) $2 sum &quot;
+    | dynamic
+    | next      
+
+  stage S05 on origin :
+      output
+    | sink
+    | first
+
+end ;
+
+</stringProp>
+              <boolProp name="JdbcRecorder.incColumnNames">true</boolProp>
+              <boolProp name="JdbcRecorder.incColumnTypes">false</boolProp>
+              <boolProp name="JdbcRecorder.overrideOutput">false</boolProp>
+              <stringProp name="JdbcRecorder.fileName"></stringProp>
+              <stringProp name="JdbcRecorder.fileFormat">pretty</stringProp>
+            </com.rapidsdata.jmeter.samplers.JdbcRecorder>
+            <hashTree/>
           </hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q5 Group" enabled="true"/>
           <hashTree>
@@ -6562,7 +6710,7 @@ end ;
                 <hashTree/>
               </hashTree>
               <com.rapidsdata.jmeter.samplers.JdbcRecorder guiclass="com.rapidsdata.jmeter.samplers.gui.JdbcRecorderGui" testclass="com.rapidsdata.jmeter.samplers.JdbcRecorder" testname="rseults_q11" enabled="true">
-                <stringProp name="JdbcRecorder.connPoolVarName"></stringProp>
+                <stringProp name="JdbcRecorder.connPoolVarName">SEConnPool</stringProp>
                 <stringProp name="JdbcRecorder.queries">/optimise_passthru
 pipeline Query11
 begin
@@ -7206,7 +7354,7 @@ This query requires a view to be created first.</stringProp>
               </hashTree>
             </hashTree>
             <com.rapidsdata.jmeter.samplers.JdbcRecorder guiclass="com.rapidsdata.jmeter.samplers.gui.JdbcRecorderGui" testclass="com.rapidsdata.jmeter.samplers.JdbcRecorder" testname="results-q15" enabled="true">
-              <stringProp name="JdbcRecorder.connPoolVarName"></stringProp>
+              <stringProp name="JdbcRecorder.connPoolVarName">SEConnPool</stringProp>
               <stringProp name="JdbcRecorder.queries">/optimise_passthru
 pipeline Query15
  begin
@@ -7268,7 +7416,7 @@ pipeline Query15
             </com.rapidsdata.jmeter.samplers.JdbcRecorder>
             <hashTree/>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q16 Group" enabled="false"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q16 Group" enabled="true"/>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
@@ -7340,7 +7488,7 @@ order by
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q16" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q16" enabled="false">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">select 
   p_brand, 
@@ -7382,6 +7530,136 @@ order by
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q16_poc3" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">/optimise_passthru
+pipeline Query16
+begin
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
+
+  stage S01 on all partitions :
+    scan rapidsse public part
+    | filter &quot; type BOOLEAN  P_BRAND &apos;Brand#45&apos; !=
+              }  P_TYPE &apos;MEDIUM POLISHED%&apos;  16 matchLeading not and
+              }  49  14  23  45  19  3  36  9  #8  P_SIZE in and&quot;
+    | project &quot;type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY ,
+               type VARCHAR ( 0 ) as P_BRAND P_BRAND ,
+               type VARCHAR ( 0 ) as P_TYPE P_TYPE ,
+               type INTEGER ( 19 ) as P_SIZE P_SIZE&quot;
+    | indexjoin PartSupp IxPS_PARTKEY &quot;BOUND $I1 P_PARTKEY ==&quot;
+    | project &quot;type INTEGER ( 19 ) as PS_SUPPKEY PS_SUPPKEY ,
+               type VARCHAR ( 0 ) as P_BRAND P_BRAND ,
+               type VARCHAR ( 0 ) as P_TYPE P_TYPE ,
+               type INTEGER ( 19 ) as P_SIZE P_SIZE&quot;
+    | hash &quot; type INTEGER ( 19 ) PS_SUPPKEY&quot;
+    | combined 0
+    | next hashcast
+
+  stage S03 on all partitions :
+    keyNotExists SUPPLIER IxS_SUPPKEY  &quot;BOUND $I1 PS_SUPPKEY ==&quot;
+               &quot;type BOOLEAN  }  S_COMMENT &apos;%Customer%Complaints%&apos;  8 10 matchMiddle1&quot;
+    | gbyAgg &quot; GroupBy type VARCHAR ( 0 ) as P_BRAND P_BRAND ,
+                       type VARCHAR ( 0 ) as P_TYPE P_TYPE ,
+                       type INTEGER ( 19 ) as P_SIZE P_SIZE ,
+                       type INTEGER ( 19 ) as PS_SUPPKEY PS_SUPPKEY
+               aggregates
+                       type VARCHAR ( 0 )  as P_BRAND $K1 ,
+                       type VARCHAR ( 0 )  as P_TYPE $K2 ,
+                       type INTEGER ( 19 )  as P_SIZE $K3 ,
+                       type INTEGER ( 19 )  as PS_SUPPKEY $K4&quot;
+
+    | combined 0
+    | next
+
+  stage S04 on all nodes :
+    gbyAgg &quot; GroupBy type VARCHAR ( 0 ) as P_BRAND P_BRAND ,
+                     type VARCHAR ( 0 ) as P_TYPE P_TYPE ,
+                     type INTEGER ( 19 ) as P_SIZE P_SIZE ,
+                     type INTEGER ( 19 ) as PS_SUPPKEY PS_SUPPKEY
+             aggregates
+                    type VARCHAR ( 0 )  as P_BRAND $K1 ,
+                    type VARCHAR ( 0 )  as P_TYPE $K2 ,
+                    type INTEGER ( 19 )  as P_SIZE $K3 ,
+                    type INTEGER ( 19 )  as PS_SUPPKEY $K4 &quot;
+    | combined 0
+    | next
+
+  stage S05 on origin :
+    gbyAgg &quot; GroupBy type VARCHAR ( 0 ) as P_BRAND P_BRAND ,
+                     type VARCHAR ( 0 ) as P_TYPE P_TYPE ,
+                     type INTEGER ( 19 ) as P_SIZE P_SIZE ,
+                     type INTEGER ( 19 ) as PS_SUPPKEY PS_SUPPKEY
+             aggregates
+                    type VARCHAR ( 0 )  as P_BRAND $K1 ,
+                    type VARCHAR ( 0 )  as P_TYPE $K2 ,
+                    type INTEGER ( 19 )  as P_SIZE $K3 ,
+                    type INTEGER ( 19 )  as PS_SUPPKEY $K4 &quot;
+    | hash &quot; type INTEGER ( 19 ) PS_SUPPKEY&quot;
+    | combined 0
+    | next hashcast
+
+  stage S06 on all partitions :
+    gbyAgg &quot; GroupBy  type VARCHAR ( 0 ) as P_BRAND P_BRAND ,
+                       type VARCHAR ( 0 ) as P_TYPE P_TYPE ,
+                       type INTEGER ( 19 ) as P_SIZE P_SIZE
+                       aggregates
+                       type VARCHAR ( 0 )  as P_BRAND $K1 ,
+                       type VARCHAR ( 0 )  as P_TYPE $K2 ,
+                       type INTEGER ( 19 )  as P_SIZE $K3 ,
+                       type INTEGER ( 19 )  as supplier_cnt ) PS_SUPPKEY COUNT&quot;
+    | combined 0
+    | next
+
+  stage S07 on all nodes :
+    gbyAgg &quot; GroupBy type VARCHAR ( 0 ) as P_BRAND P_BRAND ,
+                     type VARCHAR ( 0 ) as P_TYPE P_TYPE ,
+                     type INTEGER ( 19 ) as P_SIZE P_SIZE
+                     aggregates
+                     type VARCHAR ( 0 )  as P_BRAND $K1 ,
+                     type VARCHAR ( 0 )  as P_TYPE $K2 ,
+                     type INTEGER ( 19 )  as P_SIZE $K3 ,
+                     type INTEGER ( 19 )  as supplier_cnt ) supplier_cnt SUM&quot;
+    | combined 0
+    | next
+
+  stage S08 on origin :
+    gbyAgg &quot; GroupBy  type VARCHAR ( 0 ) as P_BRAND P_BRAND ,
+                      type VARCHAR ( 0 ) as P_TYPE P_TYPE ,
+                      type INTEGER ( 19 ) as P_SIZE P_SIZE
+                      aggregates
+                      type VARCHAR ( 0 )  as P_BRAND $K1 ,
+                      type VARCHAR ( 0 )  as P_TYPE $K2 ,
+                      type INTEGER ( 19 )  as P_SIZE $K3 ,
+                      type INTEGER ( 19 )  as supplier_cnt ) supplier_cnt SUM&quot;
+    | combined 0
+    | next
+
+  stage S09 on origin :
+    sort &quot; type INTEGER ( 19 ) $4 DESC  ,
+           type VARCHAR ( 0 ) as P_BRAND P_BRAND ASC ,
+           type VARCHAR ( 0 ) as P_TYPE P_TYPE ASC ,
+           type INTEGER ( 19 ) as P_SIZE P_SIZE ASC &quot;
+    | combined 0
+    | next
+
+  stage stageLast on origin :
+    output
+    | sink
+    | first
+end ;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
               <IfController guiclass="IfControllerPanel" testclass="IfController" testname="Check for error" enabled="true">
                 <stringProp name="IfController.condition">${__jexl3(!${JMeterThread.last_sample_ok},)}</stringProp>
                 <boolProp name="IfController.evaluateAll">false</boolProp>
@@ -7397,6 +7675,133 @@ order by
                 <hashTree/>
               </hashTree>
             </hashTree>
+            <com.rapidsdata.jmeter.samplers.JdbcRecorder guiclass="com.rapidsdata.jmeter.samplers.gui.JdbcRecorderGui" testclass="com.rapidsdata.jmeter.samplers.JdbcRecorder" testname="results-q16" enabled="true">
+              <stringProp name="JdbcRecorder.connPoolVarName">SEConnPool</stringProp>
+              <stringProp name="JdbcRecorder.queries">/optimise_passthru
+pipeline Query16
+begin
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
+
+  stage S01 on all partitions :
+    scan rapidsse public part
+    | filter &quot; type BOOLEAN  P_BRAND &apos;Brand#45&apos; !=
+              }  P_TYPE &apos;MEDIUM POLISHED%&apos;  16 matchLeading not and
+              }  49  14  23  45  19  3  36  9  #8  P_SIZE in and&quot;
+    | project &quot;type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY ,
+               type VARCHAR ( 0 ) as P_BRAND P_BRAND ,
+               type VARCHAR ( 0 ) as P_TYPE P_TYPE ,
+               type INTEGER ( 19 ) as P_SIZE P_SIZE&quot;
+    | indexjoin PartSupp IxPS_PARTKEY &quot;BOUND $I1 P_PARTKEY ==&quot;
+    | project &quot;type INTEGER ( 19 ) as PS_SUPPKEY PS_SUPPKEY ,
+               type VARCHAR ( 0 ) as P_BRAND P_BRAND ,
+               type VARCHAR ( 0 ) as P_TYPE P_TYPE ,
+               type INTEGER ( 19 ) as P_SIZE P_SIZE&quot;
+    | hash &quot; type INTEGER ( 19 ) PS_SUPPKEY&quot;
+    | combined 0
+    | next hashcast
+
+  stage S03 on all partitions :
+    keyNotExists SUPPLIER IxS_SUPPKEY  &quot;BOUND $I1 PS_SUPPKEY ==&quot;
+               &quot;type BOOLEAN  }  S_COMMENT &apos;%Customer%Complaints%&apos;  8 10 matchMiddle1&quot;
+    | gbyAgg &quot; GroupBy type VARCHAR ( 0 ) as P_BRAND P_BRAND ,
+                       type VARCHAR ( 0 ) as P_TYPE P_TYPE ,
+                       type INTEGER ( 19 ) as P_SIZE P_SIZE ,
+                       type INTEGER ( 19 ) as PS_SUPPKEY PS_SUPPKEY
+               aggregates
+                       type VARCHAR ( 0 )  as P_BRAND $K1 ,
+                       type VARCHAR ( 0 )  as P_TYPE $K2 ,
+                       type INTEGER ( 19 )  as P_SIZE $K3 ,
+                       type INTEGER ( 19 )  as PS_SUPPKEY $K4&quot;
+
+    | combined 0
+    | next
+
+  stage S04 on all nodes :
+    gbyAgg &quot; GroupBy type VARCHAR ( 0 ) as P_BRAND P_BRAND ,
+                     type VARCHAR ( 0 ) as P_TYPE P_TYPE ,
+                     type INTEGER ( 19 ) as P_SIZE P_SIZE ,
+                     type INTEGER ( 19 ) as PS_SUPPKEY PS_SUPPKEY
+             aggregates
+                    type VARCHAR ( 0 )  as P_BRAND $K1 ,
+                    type VARCHAR ( 0 )  as P_TYPE $K2 ,
+                    type INTEGER ( 19 )  as P_SIZE $K3 ,
+                    type INTEGER ( 19 )  as PS_SUPPKEY $K4 &quot;
+    | combined 0
+    | next
+
+  stage S05 on origin :
+    gbyAgg &quot; GroupBy type VARCHAR ( 0 ) as P_BRAND P_BRAND ,
+                     type VARCHAR ( 0 ) as P_TYPE P_TYPE ,
+                     type INTEGER ( 19 ) as P_SIZE P_SIZE ,
+                     type INTEGER ( 19 ) as PS_SUPPKEY PS_SUPPKEY
+             aggregates
+                    type VARCHAR ( 0 )  as P_BRAND $K1 ,
+                    type VARCHAR ( 0 )  as P_TYPE $K2 ,
+                    type INTEGER ( 19 )  as P_SIZE $K3 ,
+                    type INTEGER ( 19 )  as PS_SUPPKEY $K4 &quot;
+    | hash &quot; type INTEGER ( 19 ) PS_SUPPKEY&quot;
+    | combined 0
+    | next hashcast
+
+  stage S06 on all partitions :
+    gbyAgg &quot; GroupBy  type VARCHAR ( 0 ) as P_BRAND P_BRAND ,
+                       type VARCHAR ( 0 ) as P_TYPE P_TYPE ,
+                       type INTEGER ( 19 ) as P_SIZE P_SIZE
+                       aggregates
+                       type VARCHAR ( 0 )  as P_BRAND $K1 ,
+                       type VARCHAR ( 0 )  as P_TYPE $K2 ,
+                       type INTEGER ( 19 )  as P_SIZE $K3 ,
+                       type INTEGER ( 19 )  as supplier_cnt ) PS_SUPPKEY COUNT&quot;
+    | combined 0
+    | next
+
+  stage S07 on all nodes :
+    gbyAgg &quot; GroupBy type VARCHAR ( 0 ) as P_BRAND P_BRAND ,
+                     type VARCHAR ( 0 ) as P_TYPE P_TYPE ,
+                     type INTEGER ( 19 ) as P_SIZE P_SIZE
+                     aggregates
+                     type VARCHAR ( 0 )  as P_BRAND $K1 ,
+                     type VARCHAR ( 0 )  as P_TYPE $K2 ,
+                     type INTEGER ( 19 )  as P_SIZE $K3 ,
+                     type INTEGER ( 19 )  as supplier_cnt ) supplier_cnt SUM&quot;
+    | combined 0
+    | next
+
+  stage S08 on origin :
+    gbyAgg &quot; GroupBy  type VARCHAR ( 0 ) as P_BRAND P_BRAND ,
+                      type VARCHAR ( 0 ) as P_TYPE P_TYPE ,
+                      type INTEGER ( 19 ) as P_SIZE P_SIZE
+                      aggregates
+                      type VARCHAR ( 0 )  as P_BRAND $K1 ,
+                      type VARCHAR ( 0 )  as P_TYPE $K2 ,
+                      type INTEGER ( 19 )  as P_SIZE $K3 ,
+                      type INTEGER ( 19 )  as supplier_cnt ) supplier_cnt SUM&quot;
+    | combined 0
+    | next
+
+  stage S09 on origin :
+    sort &quot; type INTEGER ( 19 ) $4 DESC  ,
+           type VARCHAR ( 0 ) as P_BRAND P_BRAND ASC ,
+           type VARCHAR ( 0 ) as P_TYPE P_TYPE ASC ,
+           type INTEGER ( 19 ) as P_SIZE P_SIZE ASC &quot;
+    | combined 0
+    | next
+
+  stage stageLast on origin :
+    output
+    | sink
+    | first
+end ;</stringProp>
+              <boolProp name="JdbcRecorder.incColumnNames">true</boolProp>
+              <boolProp name="JdbcRecorder.incColumnTypes">false</boolProp>
+              <boolProp name="JdbcRecorder.overrideOutput">false</boolProp>
+              <stringProp name="JdbcRecorder.fileName"></stringProp>
+              <stringProp name="JdbcRecorder.fileFormat">pretty</stringProp>
+            </com.rapidsdata.jmeter.samplers.JdbcRecorder>
+            <hashTree/>
           </hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q17 Group" enabled="true"/>
           <hashTree>
@@ -7763,43 +8168,8 @@ begin
               </hashTree>
             </hashTree>
             <com.rapidsdata.jmeter.samplers.JdbcRecorder guiclass="com.rapidsdata.jmeter.samplers.gui.JdbcRecorderGui" testclass="com.rapidsdata.jmeter.samplers.JdbcRecorder" testname="results-q18" enabled="true">
-              <stringProp name="JdbcRecorder.connPoolVarName"></stringProp>
-              <stringProp name="JdbcRecorder.queries">select 
-  c_name, 
-  c_custkey, 
-  o_orderkey, 
-  o_orderdate, 
-  o_totalprice, 
-  sum(l_quantity)
-from 
-  customer, 
-  orders, 
-  lineitem
-where 
-  o_orderkey in (
-    select 
-      l_orderkey
-    from 
-      lineitem
-    group by 
-      l_orderkey 
-    having
-      sum(l_quantity) &gt; 300 
-  )
-  and c_custkey = o_custkey
-  and o_orderkey = l_orderkey
-group by 
-  c_name, 
-  c_custkey, 
-  o_orderkey, 
-  o_orderdate, 
-  o_totalprice
-order by 
-  o_totalprice desc, 
-  o_orderdate
-limit 100;
-
-
+              <stringProp name="JdbcRecorder.connPoolVarName">SEConnPool</stringProp>
+              <stringProp name="JdbcRecorder.queries">
 /optimise_passthru
 pipeline Query18
 begin
