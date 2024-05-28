@@ -11,24 +11,24 @@ pipeline Query15
      | next
 
    stage S01 on all partitions :
-     indexScan lineitem IxL_SHIPDATE "LBOUND $I1 DATE '1993-01-01' >= UBOUND $I1 DATE '1993-04-01' <"
+     indexScan lineitem IxL_SHIPDATE "LBOUND $I1 DATE '1996-01-01' >= UBOUND $I1 DATE '1996-04-01' <"
      | gbyAgg " GroupBy    type INTEGER ( 19 ) as l_suppkey $3
                 aggregates type INTEGER ( 19 ) $K1 ,
-                           type DECIMAL ( 19  2 ) )  $6 1.00  $7 -  *  sum  "
+                           type DECIMAL ( 19  2 ) as total_revenue )  $6 1.00  $7 -  *  sum"
      | combined 0
      | next
 
    stage S02 on all nodes :
      gbyAgg " GroupBy    type INTEGER ( 19 ) as l_suppkey $1
               aggregates type INTEGER ( 19 ) $K1 ,
-                         type DECIMAL ( 19  2 ) )  $2 sum  "
+                         type DECIMAL ( 19  2 ) as total_revenue )  $2 sum  "
      | combined 0
      | next
 
    stage S03 on origin :
      gbyAgg " GroupBy    type INTEGER ( 19 ) as l_suppkey $1
               aggregates type INTEGER ( 19 ) as supplier_no $K1 ,
-                         type DECIMAL ( 19  2 ) )  $2 sum  "
+                         type DECIMAL ( 19  2 ) as total_revenue )  $2 sum  "
      | combined 0
      | next
 
@@ -40,6 +40,12 @@ pipeline Query15
 
    stage S05 on all partitions :
      indexJoin supplier IxS_SuppKey "BOUND $I1 supplier_no ==" //J1
+     | Project   "   type INTEGER ( 19 ) as s_suppkey s_suppkey
+                   , type VARCHAR ( 25 ) as s_name s_name
+                   , type VARCHAR ( 40 ) as s_address s_address
+                   , type VARCHAR ( 15 ) as s_phone s_phone
+                   , type DECIMAL ( 19  2 ) as total_revenue total_revenue"
+
      | combined 0
      | next
 
