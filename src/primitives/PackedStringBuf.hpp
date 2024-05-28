@@ -253,10 +253,33 @@ void PackedStringBuf<CLASSNO, AREA>::vRemove(Stz* szItem)
   // Write nulls over the existing string. We don't try to compact or move
   // any data because this adds significant complexity for not much benefit.
   pSegment->m_xBytes.vWipe(szItem);
-  --(this->m_nItems);
+  --(this->m_pHead->m_nItems);
 
-  // TODO if it is the last string allocated then return space back to the byte array
-  // TODO if this segment doesn't contain any strings then remove it
+  // If it is the last string allocated then return space back to the byte array
+  i8 nItemSize = szItem->nSize();
+  if (pSegment->m_xBytes.szLatter() == aAdd<Stz*>(szItem, nItemSize + 1)) {
+    pSegment->m_xBytes.vGive(nItemSize);
+  }
+
+  // If this segment doesn't contain any strings and it's not the head
+  // then remove it from the chain
+  if (pSegment != pSegment->m_pHead &&
+      pSegment->m_xBytes.isEmpty()) {
+
+    // Find the parent segment of the one we want to remove
+    ASSERT(this->m_pHead == this);
+    PackedStringBuf* pParentSegment = this;
+    while (pParentSegment != nullptr && pParentSegment->m_pNext != pSegment) {
+      pParentSegment = pParentSegment->m_pNext;
+    }
+
+    ASSERT(pParentSegment);
+    ASSERT(pParentSegment->m_pNext == pSegment);
+    // Remove the empty segment from the chain
+    pParentSegment->m_pNext = pSegment->m_pNext;
+    pSegment->m_pNext = nullptr;
+    delete pSegment;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -271,20 +294,22 @@ Stz* PackedStringBuf<CLASSNO, AREA>::pUpdate(Stz* szOldItem, Stz* szNewItem)
   PackedStringBuf* pSegment = pSegmentOf(szOldItem);
   ASSERT(pSegment);
 
-  // Optimisation, if length(szNewItem) is <= length(szOldItem) then
-  // we can write over szOldItem
-
+  // Optimisation, if length(szNewItem) is <= length(szOldItem) and szOldItem
+  // is not the last string in the segment then we can write over szOldItem.
+  // If it is the last string in the segment then we want to call vRemove()
+  // as the new size might be significantly smaller than the old size and we
+  // could potentially remove a segment out of the chain.
   i8 iOldSize = szOldItem->nSize();
   i8 iNewSize = szNewItem->nSize();
 
-  if (iNewSize <= iOldSize) {
+  if (iNewSize <= iOldSize &&
+      pSegment->m_xBytes.szLatter() != aAdd<Stz*>(szOldItem, iOldSize + 1)) {
     pSegment->m_xBytes.vWipe(szOldItem);
     StrLib::vCopy(szOldItem->azChar(), iOldSize, szNewItem->azChar());
     return szOldItem;
   }
 
-  // The new string is too big to fit in this existing space, so add it somewhere else
-  pSegment->m_xBytes.vWipe(szOldItem);
+  vRemove(szOldItem);
   Stz* szDst = pAdd(szNewItem);
   return szDst;
 }

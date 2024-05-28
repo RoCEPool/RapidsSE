@@ -27,6 +27,7 @@ namespace BASE
     bool bContains(Stz* szAddr);
     Stz* szGet(i8 i_Area);
     void vGive(i8 nBytes);
+    bool bIsEmpty(void);
     i8   i_Latter(void);
     Stz* szLatter(void);
     void vListAll(void);
@@ -182,6 +183,17 @@ void Bytes_t<AREA>::vGive(i8 nBytes)
   _precondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
   
   m_i_Latter -= nBytes;
+}
+
+/*----------------------------------------------------------------------------*/
+/* give nBytes back to latter area                                            */
+/*----------------------------------------------------------------------------*/
+template <i8 AREA>
+bool Bytes_t<AREA>::bIsEmpty(void)
+{
+  _precondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
+
+  return m_i_Latter == 0;
 }
 
 /*----------------------------------------------------------------------------*/
