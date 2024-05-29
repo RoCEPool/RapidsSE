@@ -1709,7 +1709,7 @@ OUT.flush();</stringProp>
               <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
             </LoopController>
             <hashTree>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q1" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q1" enabled="false">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/weaved
 /pipelineName = &quot;Q1&quot;
@@ -1975,29 +1975,7 @@ end ;</stringProp>
             </hashTree>
             <com.rapidsdata.jmeter.samplers.JdbcRecorder guiclass="com.rapidsdata.jmeter.samplers.gui.JdbcRecorderGui" testclass="com.rapidsdata.jmeter.samplers.JdbcRecorder" testname="results-q1" enabled="true">
               <stringProp name="JdbcRecorder.connPoolVarName">SEConnPool</stringProp>
-              <stringProp name="JdbcRecorder.queries">/pipelineName = &quot;Q1&quot;
-select
-  l_returnflag,
-  l_linestatus,
-  sum(l_quantity) as sum_qty,
-  sum(l_extendedprice) as sum_base_price,
-  sum(l_extendedprice * (1 - l_discount)) as sum_disc_price,
-  sum(l_extendedprice * (1 - l_discount) * (1 + l_tax)) as sum_charge,
-  avg(l_quantity) as avg_qty,
-  avg(l_extendedprice) as avg_price,
-  avg(l_discount) as avg_disc,
-  count(*) as count_order
-from
-  lineitem
-where
-  l_shipdate &lt;= date &apos;1998-12-01&apos; - interval &apos;90&apos; day
-group by
-  l_returnflag,
-  l_linestatus
-order by
-  l_returnflag,
-  l_linestatus;
-
+              <stringProp name="JdbcRecorder.queries">
 /optimise_passthru
 pipeline Query1
 begin
@@ -2465,7 +2443,7 @@ OUT.flush();</stringProp>
               <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
             </LoopController>
             <hashTree>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q3" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q3" enabled="false">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/weaved
 /pipelineName = &quot;Q3&quot;
@@ -2815,31 +2793,7 @@ end ;
             </hashTree>
             <com.rapidsdata.jmeter.samplers.JdbcRecorder guiclass="com.rapidsdata.jmeter.samplers.gui.JdbcRecorderGui" testclass="com.rapidsdata.jmeter.samplers.JdbcRecorder" testname="results-q3" enabled="true">
               <stringProp name="JdbcRecorder.connPoolVarName">SEConnPool</stringProp>
-              <stringProp name="JdbcRecorder.queries">/pipelineName = &quot;Q3&quot;
-select
-  l_orderkey,
-  sum(l_extendedprice*(1-l_discount)) as revenue,
-  o_orderdate,
-  o_shippriority
-from
-  customer,
-  orders,
-  lineitem
-where
-  c_mktsegment = &apos;BUILDING&apos;
-  and c_custkey = o_custkey
-  and l_orderkey = o_orderkey
-  and o_orderdate &lt; &apos;1995-03-15&apos;
-  and l_shipdate &gt; &apos;1995-03-15&apos;
-group by
-  l_orderkey,
-  o_orderdate,
-  o_shippriority
-order by
-  revenue desc,
-  o_orderdate
-limit 10;
-
+              <stringProp name="JdbcRecorder.queries">
 
 /optimise_passthru
 pipeline Query3
@@ -3146,7 +3100,7 @@ OUT.flush();</stringProp>
               <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
             </LoopController>
             <hashTree>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q4" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q4" enabled="false">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/weaved
 /pipelineName = &quot;Q4&quot;
@@ -3335,27 +3289,7 @@ end ;
             </hashTree>
             <com.rapidsdata.jmeter.samplers.JdbcRecorder guiclass="com.rapidsdata.jmeter.samplers.gui.JdbcRecorderGui" testclass="com.rapidsdata.jmeter.samplers.JdbcRecorder" testname="results-q4" enabled="true">
               <stringProp name="JdbcRecorder.connPoolVarName">SEConnPool</stringProp>
-              <stringProp name="JdbcRecorder.queries">/pipelineName = &quot;Q4&quot;
-select
-  o_orderpriority,
-  count(*) as order_count
-from
-  orders
-where
-  o_orderdate &gt;= date &apos;1993-07-01&apos;
-  and o_orderdate &lt; date &apos;1993-07-01&apos; + interval &apos;3&apos; month
-  and exists (
-    select
-      *
-    from
-      lineitem
-    where
-      l_orderkey = o_orderkey
-      and l_commitdate &lt; l_receiptdate )
-group by
-  o_orderpriority
-order by
-  o_orderpriority;
+              <stringProp name="JdbcRecorder.queries">
 
 /optimise_passthru
 pipeline Query4
@@ -4225,7 +4159,7 @@ OUT.flush();</stringProp>
               <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
             </LoopController>
             <hashTree>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q7" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q7" enabled="false">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/weaved
 /pipelineName = &quot;Q7&quot;
@@ -7326,7 +7260,7 @@ begin
     | next
 
   stage S05 on origin :
-    aggreg &quot; type DECIMAL ( 19  2 ) as INNERRESULT INNERRESULT 0.00001  *  &quot;
+    aggreg &quot; type DECIMAL ( 19  2 ) as INNERRESULT INNERRESULT 0.000001  *  &quot;
     | combined 0
     | next broadcast
 
@@ -7404,7 +7338,7 @@ end ;
                 </BeanShellListener>
                 <hashTree/>
               </hashTree>
-              <com.rapidsdata.jmeter.samplers.JdbcRecorder guiclass="com.rapidsdata.jmeter.samplers.gui.JdbcRecorderGui" testclass="com.rapidsdata.jmeter.samplers.JdbcRecorder" testname="rseults_q11" enabled="true">
+              <com.rapidsdata.jmeter.samplers.JdbcRecorder guiclass="com.rapidsdata.jmeter.samplers.gui.JdbcRecorderGui" testclass="com.rapidsdata.jmeter.samplers.JdbcRecorder" testname="results_q11" enabled="true">
                 <stringProp name="JdbcRecorder.connPoolVarName">SEConnPool</stringProp>
                 <stringProp name="JdbcRecorder.queries">/optimise_passthru
 pipeline Query11
@@ -7440,7 +7374,7 @@ begin
     | next
 
   stage S05 on origin :
-    aggreg &quot; type DECIMAL ( 19  2 ) as INNERRESULT INNERRESULT 0.00001  *  &quot;
+    aggreg &quot; type DECIMAL ( 19  2 ) as INNERRESULT INNERRESULT 0.000001  *  &quot;
     | combined 0
     | next broadcast
 
@@ -8283,7 +8217,7 @@ pipeline Query15
             </com.rapidsdata.jmeter.samplers.JdbcRecorder>
             <hashTree/>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q16 Group" enabled="true"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q16 Group" enabled="false"/>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
@@ -8943,7 +8877,7 @@ OUT.flush();</stringProp>
               <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
             </LoopController>
             <hashTree>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q18" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q18" enabled="false">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">select 
   c_name, 
