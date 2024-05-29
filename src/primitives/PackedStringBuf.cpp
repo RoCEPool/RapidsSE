@@ -24,6 +24,8 @@ PackedStringBuf* PackedStringBuf::pCreate(eSIZE eFirstSize)
     case SMALL:   return new PackedStringSegmentSmall;
     case MEDIUM:  return new PackedStringSegmentMedium;
     case LARGE:   return new PackedStringSegmentLarge;
+    default:
+      NEVER_REACH
   }
 }
 
