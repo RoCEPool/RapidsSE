@@ -331,6 +331,8 @@ void Step::vMetaDataTableCreateIndex(void)
                                        "public"_Stz,
                                        szTableNm.szStz(),
                                        pIndex->szIndexNm(),
+                                       (i8)pIndex->bIsUnique(),
+                                       (i8)pIndex->bIsPrimaryKey(),
                                        C_VARGS_END);
 
   if (!pRow) {

@@ -1,5 +1,5 @@
 
-// Generated from /Users/craig/repos/rapidsse/thirdparty/antlr/sql.g4 by ANTLR 4.13.1
+// Generated from /Users/arjun/Boray/rapidsse/thirdparty/antlr/sql.g4 by ANTLR 4.13.1
 
 #pragma once
 
@@ -137,8 +137,6 @@ public:
     virtual std::any visitLogCmd(sqlParser::LogCmdContext *context) = 0;
 
     virtual std::any visitLscolCmd(sqlParser::LscolCmdContext *context) = 0;
-
-    virtual std::any visitLsidxCmd(sqlParser::LsidxCmdContext *context) = 0;
 
     virtual std::any visitLsidxcolCmd(sqlParser::LsidxcolCmdContext *context) = 0;
 

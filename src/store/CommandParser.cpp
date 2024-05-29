@@ -389,7 +389,6 @@ antlrcpp::Any CommandParser::visitStatementChoice(Parser::sqlParser::StatementCh
   else if (pCtx->fileCmd())           { m_szProcName = nullptr;              return visitChildren(pCtx); }
   else if (pCtx->logCmd())            { m_szProcName = "logMsg"_Stz;         return visitChildren(pCtx); }
   else if (pCtx->lscolCmd())          { m_szProcName = "lscol"_Stz;          return visitChildren(pCtx); }
-  else if (pCtx->lsidxCmd())          { m_szProcName = "lsidx"_Stz;          return visitChildren(pCtx); }
   else if (pCtx->lsidxcolCmd())       { m_szProcName = "lsidxcol"_Stz;       return visitChildren(pCtx); }
   else if (pCtx->lstblCmd())          { m_szProcName = "lstbl"_Stz;          return nullptr; }
   else if (pCtx->lsptncolCmd())       { m_szProcName = "lsptncol"_Stz;       return visitChildren(pCtx); }
@@ -1005,20 +1004,7 @@ antlrcpp::Any CommandParser::visitLscolCmd(Parser::sqlParser::LscolCmdContext *p
 }
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-/* Add command parameters for an ldidx statement                              */
-/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-antlrcpp::Any CommandParser::visitLsidxCmd(Parser::sqlParser::LsidxCmdContext *pCtx)
-{
-  // Add command parameters
-  s256 sIdentifier;
-  vCleanString(pCtx->tableName()->identifier(), sIdentifier, EC_MAX_TABLE_NAME_LENGTH);
-  m_pArgValues->vAppendToken(sIdentifier.szStz(), TN_STRING);
-
-  return nullptr; // No need to visit any further down the tree
-}
-
-/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-/* Add command parameters for an ldidx statement                              */
+/* Add command parameters for an ldidxcol statement                           */
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 antlrcpp::Any CommandParser::visitLsidxcolCmd(Parser::sqlParser::LsidxcolCmdContext *pCtx)
 {

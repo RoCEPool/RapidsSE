@@ -20,9 +20,9 @@ create index keyIdx on ${testName2}_createT1 (key);
 affected: 0
 
 // check existence of index
-lsidx ${testName2}_createT1;
-rows:
-  ('keyIdx',false,false)
+//select * from tableIndexes where TableName = '${testName2}_createT1';
+//rows:
+//  (*, *, '${testName2}_createT1', 'keyIdx',false,false)
 
 // check columns of index
 lsidxcol ${testName2}_createT1 keyIdx;

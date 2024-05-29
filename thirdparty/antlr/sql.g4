@@ -29,7 +29,6 @@ statementChoice   :
                     | loadReplicatedCmd
                     | logCmd
                     | lscolCmd
-                    | lsidxCmd
                     | lsidxcolCmd
                     | lsptncolCmd
                     | lstblCmd
@@ -217,7 +216,6 @@ loadOptionKeys    : FIELD_DELIMITER | ESCAPE_CHAR | DATE_FORMAT | RECORD_ENDS
                     | ENCLOSED_BY_LEADING | ENCLOSED_BY_TRAILING | RECORD_TERMINATOR ;
 logCmd            : LOG msg=stringLiteral (ECHO (SQL_TRUE | ON | SQL_FALSE | OFF))?;
 lscolCmd          : LSCOL tableName ;
-lsidxCmd          : LSIDX tableName ;
 lsidxcolCmd       : LSIDXCOL tableName indexName;
 lsptncolCmd       : LSPTNCOL tableName ;
 lstblCmd          : LSTBL;
@@ -624,7 +622,7 @@ nonReservedWord   :
                   | HASH | HASHKEY | HOURS
                   | IF | IFNULL | INDEX | INTERVAL_DT | INTERVAL_YM
                   | KEY
-                  | LIMIT | LOAD | LOADREPLICATED | LOG | LOOP | LSIDX | LSPTNCOL | LSTBL
+                  | LIMIT | LOAD | LOADREPLICATED | LOG | LOOP | LSPTNCOL | LSTBL
                   | MEMORYLEAKS | METRICSCTL | MILLIS | MILLISECOND | MILLISECONDS | MINUTES
                   | MONOTONIC | MONTHS | MS | MULTIPLE
                   | NODE | NODES | NOOP | NOP | NOW
@@ -762,7 +760,6 @@ LOG                   : L O G;
 LOOP                  : L O O P;
 LSCOL                 : L S C O L;
 LSIDXCOL              : L S I D X C O L;
-LSIDX                 : L S I D X;
 LSPTNCOL              : L S P T N C O L;
 LSTBL                 : L S T B L;
 MAX                   : M A X;

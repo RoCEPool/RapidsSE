@@ -123,14 +123,12 @@ assert::stack_0
   "OP_listFolders.sen"          include
   "OP_listCatalogs.sen"         include
   "OP_listColumns.sen"          include
-  "OP_listIndexes.sen"          include
   "OP_listIndexColumns.sen"     include
   "OP_listPartitionColumns.sen" include
   "OP_listPartitions.sen"       include
   "OP_listParts.sen"            include
   "OP_listSchemas.sen"          include
   "OP_listTables.sen"           include
-  "OP_listTableDefs.sen"        include
   "OP_listTenants.sen"          include
   "OP_locks.sen"                include
   "OP_locksReset.sen"           include

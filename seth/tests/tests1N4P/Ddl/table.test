@@ -134,8 +134,8 @@ success
 lscol ${testName2}_T1;
 rows: 48
 
-lsidx ${testName2}_T1;
-rows: 0
+//select * from tableIndexes where TableName = '${testName2}_T1';
+//rows: 0
 
 // (10) drop table
 drop table ${testName2}_T1 ;

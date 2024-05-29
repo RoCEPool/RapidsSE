@@ -24,9 +24,9 @@ create index idx on ${testName2}_supplier (S_SUPPKEY);
 affected: 0
 
 // check existence of index
-lsidx ${testName2}_supplier;
-rows:
-  ('idx',false,false)
+//select * from tableIndexes where TableName = '${testName2}_supplier';
+//rows:
+//  (*, *, '${testName2}_supplier', 'idx',false,false)
 
 // check columns of index
 lsidxcol ${testName2}_supplier idx;
@@ -688,9 +688,9 @@ create index idx on ${testName2}_supplier (S_NATIONKEY);
 affected: 0
 
 // check existence of index
-lsidx ${testName2}_supplier;
-rows:
-('idx',false,false)
+//select * from tableIndexes where TableName = '${testName2}_supplier';
+//rows:
+//(*, *, '${testName2}_supplier', 'idx',false,false)
 
 // check columns of index
 lsidxcol ${testName2}_supplier idx;

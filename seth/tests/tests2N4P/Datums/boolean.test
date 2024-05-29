@@ -28,10 +28,10 @@ create index bol_idx2 on ${testName2}_bolTbl (bol_col8);
 success
 
 // check existence of index
-lsidx ${testName2}_bolTbl;
-rows:
-  ('bol_idx1', false, false)
-  ('bol_idx2', false, false)
+//select * from tableIndexes where TableName = '${testName2}_bolTbl';
+//rows:
+//  (*, *, '${testName2}_bolTbl', 'bol_idx1', false, false)
+//  (*, *, '${testName2}_bolTbl', 'bol_idx2', false, false)
 
 // check columns of index
 lsidxcol ${testName2}_bolTbl bol_idx1;

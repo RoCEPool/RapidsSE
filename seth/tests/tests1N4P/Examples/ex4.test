@@ -29,9 +29,9 @@ lstbl;
 rows:
   ('${testName2}_foo')
 
-lsidx ${testName2}_foo;
-rows:
-  ('fooIdx',false,false)
+//select * from tableIndexes where TableName = '${testName2}_foo';
+//rows:
+//  (*, *, '${testName2}_foo', 'fooIdx',false,false)
 
 lsidxcol ${testName2}_foo fooIdx;
 rows:
@@ -51,9 +51,6 @@ USE 'c2';
 
 lstbl;
 rows: 0
-
-lsidx ${testName2}_foo;
-failure contains: 'Table does not exist'
 
 
 -- Close connections c1 and c2

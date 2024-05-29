@@ -9,9 +9,6 @@ failure contains: "mismatched input 'count'"
 count badTable;
 failure contains: "Table does not exist"
 
-lsidx lsidx;
-failure contains: "Table does not exist"
-
 // create table with |
 create table | (i integer);
 failure contains: "mismatched input '|'"

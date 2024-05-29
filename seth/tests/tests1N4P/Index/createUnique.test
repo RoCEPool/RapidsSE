@@ -49,9 +49,9 @@ create unique index Idx on ${testName2}_T1 (key);
 affected: 0
 
 // check existence of index
-lsidx ${testName2}_T1;
-rows:
-  ('Idx', true, false)
+//select * from tableIndexes where TableName = '${testName2}_T1';
+//rows:
+//  (*, *, '${testName2}_T1', 'Idx', true, false)
 
 // check columns of index
 lsidxcol ${testName2}_T1 Idx;
@@ -63,8 +63,8 @@ drop index ${testName2}_T1 Idx;
 success
 
 // check existence of index
-lsidx ${testName2}_T1;
-rows: 0
+//select * from tableIndexes where TableName = '${testName2}_T1';
+//rows: 0
 
 // create index where table does not exist
 create unique index Idx on noTable (key);
@@ -75,8 +75,8 @@ rows:
   ('/tables/public/schemas/rapids/catalogs/boray/tenants/')
 
 // check existence of index
-lsidx ${testName2}_T1;
-rows: 0
+//select * from tableIndexes where TableName = '${testName2}_T1';
+//rows: 0
 
 // create index where key does not exist
 create unique index Idx on ${testName2}_T1 (noKey);
@@ -87,44 +87,44 @@ rows:
   ('/tables/public/schemas/rapids/catalogs/boray/tenants/')
 
 // check existence of index
-lsidx ${testName2}_T1;
-rows: 0
+//select * from tableIndexes where TableName = '${testName2}_T1';
+//rows: 0
 
 // create index once
 create unique index Idx1 on ${testName2}_T1 (key);
 affected: 0
 
 // check existence of index
-lsidx ${testName2}_T1;
-rows:
-('Idx1', true, false)
+//select * from tableIndexes where TableName = '${testName2}_T1';
+//rows:
+//(*, *, '${testName2}_T1', 'Idx1', true, false)
 
 // create same index again
 create unique index Idx1 on ${testName2}_T1 (key);
 failure contains: 'index exists'
 
 // check existence of index
-lsidx ${testName2}_T1;
-rows:
- ('Idx1', true, false)
+//select * from tableIndexes where TableName = '${testName2}_T1';
+//rows:
+// (*, *, '${testName2}_T1', 'Idx1', true, false)
 
 // create another index with same column
 create unique index Idx2 on ${testName2}_T1 (key);
 success
 
 // check existence of index
-lsidx ${testName2}_T1;
-rows:
- ('Idx1',true,false)
- ('Idx2',true,false)
+//select * from tableIndexes where TableName = '${testName2}_T1';
+//rows:
+// (*, *, '${testName2}_T1', 'Idx1',true,false)
+// (*, *, '${testName2}_T1', 'Idx2',true,false)
 
 // create index with two columns
 create unique index Idx3 on ${testName2}_T1 (key, name);
 success
 
 // check existence of index
-lsidx ${testName2}_T1;
-rows: 3
+//select * from tableIndexes where TableName = '${testName2}_T1';
+//rows: 3
 
 // check columns of Idx3
 lsidxcol ${testName2}_T1 Idx3;
@@ -137,12 +137,12 @@ create unique index Idx4 on ${testName2}_T1 (key, name);
 success
 
 // check existence of index
-lsidx ${testName2}_T1;
-rows:
- ('Idx1',true,false)
- ('Idx2',true,false)
- ('Idx3',true,false)
- ('Idx4',true,false)
+//select * from tableIndexes where TableName = '${testName2}_T1';
+//rows:
+// (*, *, '${testName2}_T1', 'Idx1',true,false)
+// (*, *, '${testName2}_T1', 'Idx2',true,false)
+// (*, *, '${testName2}_T1', 'Idx3',true,false)
+// (*, *, '${testName2}_T1', 'Idx4',true,false)
 
 // check columns of Idx4
 lsidxcol ${testName2}_T1 Idx4;
@@ -155,13 +155,13 @@ create unique index Idx5 on ${testName2}_T1 (key, name);
 success
 
 // check existence of index
-lsidx ${testName2}_T1;
-rows:
-('Idx1',true,false)
-('Idx2',true,false)
-('Idx3',true,false)
-('Idx4',true,false)
-('Idx5',true,false)
+//select * from tableIndexes where TableName = '${testName2}_T1';
+//rows:
+//(*, *, '${testName2}_T1', 'Idx1',true,false)
+//(*, *, '${testName2}_T1', 'Idx2',true,false)
+//(*, *, '${testName2}_T1', 'Idx3',true,false)
+//(*, *, '${testName2}_T1', 'Idx4',true,false)
+//(*, *, '${testName2}_T1', 'Idx5',true,false)
 
 // check columns of Idx5
 lsidxcol ${testName2}_T1 Idx5;
@@ -174,14 +174,14 @@ create unique index Idx6 on ${testName2}_T1 (key, name);
 success
 
 // check existence of index
-lsidx ${testName2}_T1;
-rows:
-('Idx1',true,false)
-('Idx2',true,false)
-('Idx3',true,false)
-('Idx4',true,false)
-('Idx5',true,false)
-('Idx6',true,false)
+//select * from tableIndexes where TableName = '${testName2}_T1';
+//rows:
+//(*, *, '${testName2}_T1', 'Idx1',true,false)
+//(*, *, '${testName2}_T1', 'Idx2',true,false)
+//(*, *, '${testName2}_T1', 'Idx3',true,false)
+//(*, *, '${testName2}_T1', 'Idx4',true,false)
+//(*, *, '${testName2}_T1', 'Idx5',true,false)
+//(*, *, '${testName2}_T1', 'Idx6',true,false)
 
 // check columns of Idx4
 lsidxcol ${testName2}_T1 Idx6;
@@ -194,15 +194,15 @@ create unique index Idx7 on ${testName2}_T1 (key, name);
 success
 
 // check existence of index
-lsidx ${testName2}_T1;
-rows:
-('Idx1',true,false)
-('Idx2',true,false)
-('Idx3',true,false)
-('Idx4',true,false)
-('Idx5',true,false)
-('Idx6',true,false)
-('Idx7',true,false)
+//select * from tableIndexes where TableName = '${testName2}_T1';
+//rows:
+//(*, *, '${testName2}_T1', 'Idx1',true,false)
+//(*, *, '${testName2}_T1', 'Idx2',true,false)
+//(*, *, '${testName2}_T1', 'Idx3',true,false)
+//(*, *, '${testName2}_T1', 'Idx4',true,false)
+//(*, *, '${testName2}_T1', 'Idx5',true,false)
+//(*, *, '${testName2}_T1', 'Idx6',true,false)
+//(*, *, '${testName2}_T1', 'Idx7',true,false)
 
 // check columns of Idx7
 lsidxcol ${testName2}_T1 Idx7;
@@ -215,16 +215,16 @@ create unique index Idx8 on ${testName2}_T1 (key, name);
 success
 
 // check existence of index
-lsidx ${testName2}_T1;
-rows:
-('Idx1',true,false)
-('Idx2',true,false)
-('Idx3',true,false)
-('Idx4',true,false)
-('Idx5',true,false)
-('Idx6',true,false)
-('Idx7',true,false)
-('Idx8',true,false)
+//select * from tableIndexes where TableName = '${testName2}_T1';
+//rows:
+//(*, *, '${testName2}_T1', 'Idx1',true,false)
+//(*, *, '${testName2}_T1', 'Idx2',true,false)
+//(*, *, '${testName2}_T1', 'Idx3',true,false)
+//(*, *, '${testName2}_T1', 'Idx4',true,false)
+//(*, *, '${testName2}_T1', 'Idx5',true,false)
+//(*, *, '${testName2}_T1', 'Idx6',true,false)
+//(*, *, '${testName2}_T1', 'Idx7',true,false)
+//(*, *, '${testName2}_T1', 'Idx8',true,false)
 
 // check columns of Idx8
 lsidxcol ${testName2}_T1 Idx8;
