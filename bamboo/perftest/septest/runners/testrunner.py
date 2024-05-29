@@ -562,6 +562,9 @@ class TestRunner:
                         connect = decimal.Decimal(row[C_CSV_CONNECT])
                         latency -= connect
 
+                        if latency < 0:
+                            latency = 0
+
                     except ValueError:
                         errmsg = f"Statement with label \"{label}\" failed because the " \
                                  f"\"{C_CSV_CONNECT}\" field is not numeric in metric file " \
