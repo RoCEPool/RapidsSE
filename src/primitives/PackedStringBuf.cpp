@@ -430,11 +430,11 @@ PackedStringBuf* PackedStringBuf::pSegmentOf(Stz* szItem)
   do {
     bool bResult;
 
-    switch (this->eGetClassNo()) {
-      case CN_PACKEDSTRINGBUFTINY:    bResult =   _pPackedStringSegmentTiny(this)->bSegContainsAddr(szItem); break;
-      case CN_PACKEDSTRINGBUFSMALL:   bResult =  _pPackedStringSegmentSmall(this)->bSegContainsAddr(szItem); break;
-      case CN_PACKEDSTRINGBUFMEDIUM:  bResult = _pPackedStringSegmentMedium(this)->bSegContainsAddr(szItem); break;
-      case CN_PACKEDSTRINGBUFLARGE:   bResult =  _pPackedStringSegmentLarge(this)->bSegContainsAddr(szItem); break;
+    switch (pSegment->eGetClassNo()) {
+      case CN_PACKEDSTRINGBUFTINY:    bResult =   _pPackedStringSegmentTiny(pSegment)->bSegContainsAddr(szItem); break;
+      case CN_PACKEDSTRINGBUFSMALL:   bResult =  _pPackedStringSegmentSmall(pSegment)->bSegContainsAddr(szItem); break;
+      case CN_PACKEDSTRINGBUFMEDIUM:  bResult = _pPackedStringSegmentMedium(pSegment)->bSegContainsAddr(szItem); break;
+      case CN_PACKEDSTRINGBUFLARGE:   bResult =  _pPackedStringSegmentLarge(pSegment)->bSegContainsAddr(szItem); break;
       default:
         NEVER_REACH
     }
@@ -442,7 +442,9 @@ PackedStringBuf* PackedStringBuf::pSegmentOf(Stz* szItem)
     if (bResult) {
       break;
     }
-  } while ((pSegment = pSegment->m_pNext) != nullptr);
+
+    pSegment = pSegment->m_pNext;
+  } while (pSegment != nullptr);
 
   return pSegment;
 }
