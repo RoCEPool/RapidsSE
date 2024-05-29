@@ -4,6 +4,7 @@
 #pragma once
 
 #include "TokenArray.hpp"
+#include "PackedStringBuf.hpp"
 
 namespace BASE
 {
@@ -13,8 +14,8 @@ namespace BASE
     TokenArray* m_pTokenArray;    // an extensible array of Token objects
     TokenArrayIter m_xTokenIter;
 
-    b256K m_xyByteSpace; // buffer for all token chars
-  
+    PackedStringBuf* m_pPackedStrings;
+
     // must be last
     Footer m_xFooter;    
     
@@ -69,22 +70,6 @@ namespace BASE
     void   vVecToString(String* psDstStr, i8 iFromTkn, bool bAddSemicolon);
   
   private:
-    Stz* _szByteSpaceExtend(i8 nBytes);
-    void _vByteSpaceInsert(Stz* szAtChars, i8 nBytesIns);
-    void _vByteSpaceRemove(Stz* szAtChars, i8 nBytesRem);
-    void _vByteSpaceTake(i8 nBytes);
-    void _vByteSpaceTrim(i8 nBytes);
-  
-    void _vCharsAddLast(Token* pDstToken, Stz* szArgChars);
-    void _vCharsReplaceInterior(i8 iIdx, Token* pDstToken, Stz* szArgChars);
-    void _vCharsReplaceLast(i8 iIdx, Token* pDstToken, Stz* szArgChars);
-
-    Stz* _szLaterChars(void);
-  
-    void _vTokenRemoveInterior(i8 iIdx);
-    void _vTokenRemoveLast(i8 iIdx);
-
-    void _vVecAdjustChars(i8 i_Tkn, i8 nByBytes);
 
     Footer* aFooter(void);
   };
