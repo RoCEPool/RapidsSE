@@ -593,6 +593,7 @@ void TokenVec::vIntegrityCheck(void)
   while ((pToken = xIter.pNext()) != nullptr) {
 
     Stz* szTknStz = pToken->szChars();
+    UNUSED(szTknStz);
     ASSERT(szTknStz);
     ASSERT(m_pPackedStrings->bContainsAddr(szTknStz));
   }
@@ -850,6 +851,7 @@ void TokenVec::vUpdateToken(i8 iIdx, Token* pDstToken, Stz* szArgChars)
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
 
   ASSERT(m_pTokenArray->pGet(iIdx) == pDstToken);
+  UNUSED(iIdx);
   INTEGRITY_CHECK();
 
   ASSERT(m_pPackedStrings->bContainsAddr(pDstToken->szChars()));

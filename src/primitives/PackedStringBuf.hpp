@@ -107,7 +107,7 @@ namespace PRIMITIVES
 
     static i8 nArea(void);
 
-    Stz*    pAddToSeg(Stz* szItem, i8 iSize);
+    Stz*    pAddToSeg(Stz* szItem);
     bool    bCanFitInSeg(i8 iSize);
     void    vDestroy(void);
     i8      nEntriesInSeg();

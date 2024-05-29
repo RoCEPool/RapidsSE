@@ -127,10 +127,10 @@ Stz* PackedStringBuf::pAdd(Stz* szItem, i8 iSize)
   if (this->bCanFitInCurrentSeg(iSize)) {
     Stz* szDst;
     switch (this->eGetClassNo()) {
-      case CN_PACKEDSTRINGBUFTINY:    szDst =   _pPackedStringSegmentTiny(this)->pAddToSeg(szItem, iSize); break;
-      case CN_PACKEDSTRINGBUFSMALL:   szDst =  _pPackedStringSegmentSmall(this)->pAddToSeg(szItem, iSize); break;
-      case CN_PACKEDSTRINGBUFMEDIUM:  szDst = _pPackedStringSegmentMedium(this)->pAddToSeg(szItem, iSize); break;
-      case CN_PACKEDSTRINGBUFLARGE:   szDst =  _pPackedStringSegmentLarge(this)->pAddToSeg(szItem, iSize); break;
+      case CN_PACKEDSTRINGBUFTINY:    szDst =   _pPackedStringSegmentTiny(this)->pAddToSeg(szItem); break;
+      case CN_PACKEDSTRINGBUFSMALL:   szDst =  _pPackedStringSegmentSmall(this)->pAddToSeg(szItem); break;
+      case CN_PACKEDSTRINGBUFMEDIUM:  szDst = _pPackedStringSegmentMedium(this)->pAddToSeg(szItem); break;
+      case CN_PACKEDSTRINGBUFLARGE:   szDst =  _pPackedStringSegmentLarge(this)->pAddToSeg(szItem); break;
       default:
         NEVER_REACH
     }
@@ -150,10 +150,10 @@ Stz* PackedStringBuf::pAdd(Stz* szItem, i8 iSize)
   ASSERT(pSegment);
   Stz* szDst;
   switch (pSegment->eGetClassNo()) {
-    case CN_PACKEDSTRINGBUFTINY:    szDst =   _pPackedStringSegmentTiny(pSegment)->pAddToSeg(szItem, iSize); break;
-    case CN_PACKEDSTRINGBUFSMALL:   szDst =  _pPackedStringSegmentSmall(pSegment)->pAddToSeg(szItem, iSize); break;
-    case CN_PACKEDSTRINGBUFMEDIUM:  szDst = _pPackedStringSegmentMedium(pSegment)->pAddToSeg(szItem, iSize); break;
-    case CN_PACKEDSTRINGBUFLARGE:   szDst =  _pPackedStringSegmentLarge(pSegment)->pAddToSeg(szItem, iSize); break;
+    case CN_PACKEDSTRINGBUFTINY:    szDst =   _pPackedStringSegmentTiny(pSegment)->pAddToSeg(szItem); break;
+    case CN_PACKEDSTRINGBUFSMALL:   szDst =  _pPackedStringSegmentSmall(pSegment)->pAddToSeg(szItem); break;
+    case CN_PACKEDSTRINGBUFMEDIUM:  szDst = _pPackedStringSegmentMedium(pSegment)->pAddToSeg(szItem); break;
+    case CN_PACKEDSTRINGBUFLARGE:   szDst =  _pPackedStringSegmentLarge(pSegment)->pAddToSeg(szItem); break;
     default:
       NEVER_REACH
   }
@@ -555,10 +555,10 @@ PackedStringSegment<CLASSNO, AREA>::~PackedStringSegment(void) noexcept(false)
 /* add an item to the packed string buffer. Size must include null char       */
 /*----------------------------------------------------------------------------*/
 template <eCN CLASSNO, i8 AREA>
-Stz* PackedStringSegment<CLASSNO, AREA>::pAddToSeg(Stz* szItem, i8 iSize)
+Stz* PackedStringSegment<CLASSNO, AREA>::pAddToSeg(Stz* szItem)
 {
   ASSERT(m_pHead == this || this->m_pHead);
-  ASSERT(this->bCanFitInSeg(iSize));
+  ASSERT(this->bCanFitInSeg(szItem->nSize()));
   ASSERT(m_nSegEntries >= 0);
 
   Stz* szDst = m_xBytes.szLatter();
