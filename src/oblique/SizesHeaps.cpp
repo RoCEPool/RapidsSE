@@ -750,7 +750,7 @@ SizeHeap gxaSizeHeap[]
   { CN_TMEVAL,                   sizeof(TypeValueArea),/*yes*/   HT_INVALID   ,FILL },
   { CN_TOKEN,                    sizeof(Token),                  HT_T_TINY    , FILL },
   { CN_TOKENARRAY,               sizeof(TokenArray),             HT_T_TINY    , FILL },
-  { CN_TOKENVEC,                 sizeof(TokenVec),               HT_T_LARGE   , FILL },
+  { CN_TOKENVEC,                 sizeof(TokenVec),               HT_T_TINY    , FILL },
   { CN_TOKEYHSHROW,              sizeof(ToKeyHshRow),            HT_T_MEDIUM  , FILL },
   { CN_TOLGLPTNCRW,              sizeof(ToLglPtnCrw),            HT_T_LARGE   , FILL },
   { CN_TOLGLPTNROW,              sizeof(ToLglPtnRow),            HT_T_LARGE   , FILL },

@@ -9,6 +9,34 @@
 namespace PRIMITIVES
 {
 
+  // Forward declarations to allow the typedef
+  template <eCN CLASSNO, i8 AREA> class PackedStringSegment;
+  class PackedStringBuf;
+
+  // Typedefs of the 4 actual types of buffer segments
+  typedef PackedStringSegment<CN_PACKEDSTRINGBUFTINY,   C_SIZE_TINY_OBJECT   - (8 * C_BYTES_PER_WORD) - sizeof(Bytes_t<1>)> PackedStringSegmentTiny;
+  typedef PackedStringSegment<CN_PACKEDSTRINGBUFSMALL,  C_SIZE_SMALL_OBJECT  - (8 * C_BYTES_PER_WORD) - sizeof(Bytes_t<1>)> PackedStringSegmentSmall;
+  typedef PackedStringSegment<CN_PACKEDSTRINGBUFMEDIUM, C_SIZE_MEDIUM_OBJECT - (8 * C_BYTES_PER_WORD) - sizeof(Bytes_t<1>)> PackedStringSegmentMedium;
+  typedef PackedStringSegment<CN_PACKEDSTRINGBUFLARGE,  C_SIZE_LARGE_OBJECT  - (8 * C_BYTES_PER_WORD) - sizeof(Bytes_t<1>)> PackedStringSegmentLarge;
+
+  // Note: The '8 * C_BYTES_PER_WORD' in the above template parameter is calculated
+  // from the size of the PackedStringSegment class on its own and without the
+  // array of objects (which is why we can't use sizeof()). The -1 on the end is
+  // because then the size of the object will equal the size of the allocated chunk
+  // and it must be smaller than this.
+  //    Object header                 1 word
+  //    PackedStringBuf:
+  //      ptr m_pHead                 1 word
+  //      ptr m_pNext                 1 word
+  //      union of ptrs               1 word
+  //    PackedStringSegment:
+  //      i8 m_nItems                 1 word
+  //      i8 m_nSegEntries            1 word
+  //      Footer                      2 words
+  //    ------                        -------
+  //    Total                         8 words
+
+
   // A base class that hides the segmentation as well as size differences of each segment.
   // All user calls go through this base class and not the templated derived class.
   class PackedStringBuf : public Object
@@ -17,15 +45,24 @@ namespace PRIMITIVES
     PackedStringBuf*  m_pHead;
     PackedStringBuf*  m_pNext;
     i8                m_nItems;
+    union { // For debugging purposes
+      PackedStringSegmentTiny*   m_pTiny;
+      PackedStringSegmentSmall*  m_pSmall;
+      PackedStringSegmentMedium* m_pMedium;
+      PackedStringSegmentLarge*  m_pLarge;
+      void*                      m_pVoid;
+    } u;
 
   public:
     enum eSIZE { TINY, SMALL, MEDIUM, LARGE };
     static PackedStringBuf* pCreate(eSIZE eFirstSize);
-    ~PackedStringBuf() noexcept(false);
+    static void vDestroy(PackedStringBuf* pBuf);
+
   protected:
-    // Constructors are protected, so they aren't instantiated directly
+    // Constructors and destructor are protected, so they aren't instantiated directly
     explicit PackedStringBuf(eCN eClassNo);
     explicit PackedStringBuf(eCN eClassNo, PackedStringBuf* pHead);
+    ~PackedStringBuf() noexcept(false);
 
   public:
     Stz*    pAdd(Stz* szItem);
@@ -72,6 +109,7 @@ namespace PRIMITIVES
 
     Stz*    pAddToSeg(Stz* szItem, i8 iSize);
     bool    bCanFitInSeg(i8 iSize);
+    void    vDestroy(void);
     i8      nEntriesInSeg();
     bool    bSegContainsAddr(Stz* szAddr);
     Footer* aFooter(void);
@@ -83,21 +121,7 @@ namespace PRIMITIVES
 
 
 
-  typedef PackedStringSegment<CN_PACKEDSTRINGBUFTINY, C_SIZE_TINY_OBJECT - (6 * C_BYTES_PER_WORD) - sizeof(Bytes_t<1>)>     PackedStringSegmentTiny;
-  typedef PackedStringSegment<CN_PACKEDSTRINGBUFSMALL, C_SIZE_SMALL_OBJECT - (6 * C_BYTES_PER_WORD) - sizeof(Bytes_t<1>)>   PackedStringSegmentSmall;
-  typedef PackedStringSegment<CN_PACKEDSTRINGBUFMEDIUM, C_SIZE_MEDIUM_OBJECT - (6 * C_BYTES_PER_WORD) - sizeof(Bytes_t<1>)> PackedStringSegmentMedium;
-  typedef PackedStringSegment<CN_PACKEDSTRINGBUFLARGE, C_SIZE_LARGE_OBJECT - (6 * C_BYTES_PER_WORD) - sizeof(Bytes_t<1>)>   PackedStringSegmentLarge;
-
-  // Note: The '6 * C_BYTES_PER_WORD' in the above template parameter is calculated
-  // from the size of the SegmentedArrayNL_t class without the array of objects:
-  //  Object header (derived)       1 word
-  //  SegmentedArrayNL_t* m_pHead   1 word
-  //  SegmentedArrayNL_t* m_pNext   1 word
-  //  i8 m_nItems                   1 word
-  //  Footer                        2 words
-  //  ------                        -------
-  //  Total                         6 words
-
+  // Casting
   PackedStringSegmentTiny*   _pPackedStringSegmentTiny(void* aAddr);
   PackedStringSegmentSmall*  _pPackedStringSegmentSmall(void* aAddr);
   PackedStringSegmentMedium* _pPackedStringSegmentMedium(void* aAddr);

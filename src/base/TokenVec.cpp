@@ -48,7 +48,7 @@ TokenVec::~TokenVec(void) noexcept(false)
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
   delete m_pTokenArray;
-  delete m_pPackedStrings;
+  PackedStringBuf::vDestroy(m_pPackedStrings);
 }
 
 /*----------------------------------------------------------------------------*/

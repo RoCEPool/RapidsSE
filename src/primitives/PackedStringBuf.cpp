@@ -14,7 +14,7 @@ __pCastFunction(PRIMITIVES,PackedStringSegmentLarge,CN_PACKEDSTRINGBUFLARGE)
 
 
 /*----------------------------------------------------------------------------*/
-/* Constructor of PackedStringBuf class                                       */
+/* Create a PackedStringBuf                                                   */
 /*----------------------------------------------------------------------------*/
 PackedStringBuf* PackedStringBuf::pCreate(eSIZE eFirstSize)
 {
@@ -28,6 +28,26 @@ PackedStringBuf* PackedStringBuf::pCreate(eSIZE eFirstSize)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Deallocate PackedStringBuf                                                 */
+/*----------------------------------------------------------------------------*/
+void PackedStringBuf::vDestroy(PackedStringBuf *pBuf)
+{
+  if (!pBuf) {
+    return;
+  }
+
+  switch (pBuf->eGetClassNo()) {
+
+    case CN_PACKEDSTRINGBUFTINY:    delete   _pPackedStringSegmentTiny(pBuf); break;
+    case CN_PACKEDSTRINGBUFSMALL:   delete  _pPackedStringSegmentSmall(pBuf); break;
+    case CN_PACKEDSTRINGBUFMEDIUM:  delete _pPackedStringSegmentMedium(pBuf); break;
+    case CN_PACKEDSTRINGBUFLARGE:   delete  _pPackedStringSegmentLarge(pBuf); break;
+    default:
+      NEVER_REACH
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* Constructor of PackedStringBuf class                                       */
 /*----------------------------------------------------------------------------*/
 PackedStringBuf::PackedStringBuf(BASE::eCN eClassNo)
@@ -36,6 +56,7 @@ PackedStringBuf::PackedStringBuf(BASE::eCN eClassNo)
   this->m_pHead = this;
   this->m_pNext = nullptr;
   this->m_nItems = 0;
+  this->u.m_pVoid = this;
 
   //_checkInitialised_(this->eGetClassNo());
 }
@@ -49,6 +70,7 @@ PackedStringBuf::PackedStringBuf(BASE::eCN eClassNo, PackedStringBuf* pHead)
   this->m_pHead = pHead;
   this->m_pNext = nullptr;
   this->m_nItems = 0;
+  this->u.m_pVoid = this;
 
   //_checkInitialised_(this->eGetClassNo());
 }
@@ -71,18 +93,18 @@ PackedStringBuf::~PackedStringBuf(void) noexcept(false)
     m_pNext = nullptr;
   }
 
-  // Call the destructor of the derived class to ensure that the bytespace
-  // is cleaned up. This is necessary because in many cases it is the base class
-  // pointer that is being deleted, and this would normally result in a leak
-  // of the bytespace object in the derived class.
-  switch (this->eGetClassNo()) {
-    case CN_PACKEDSTRINGBUFTINY:      _pPackedStringSegmentTiny(this)->~PackedStringSegmentTiny();   break;
-    case CN_PACKEDSTRINGBUFSMALL:    _pPackedStringSegmentSmall(this)->~PackedStringSegmentSmall();  break;
-    case CN_PACKEDSTRINGBUFMEDIUM:  _pPackedStringSegmentMedium(this)->~PackedStringSegmentMedium(); break;
-    case CN_PACKEDSTRINGBUFLARGE:    _pPackedStringSegmentLarge(this)->~PackedStringSegmentLarge();  break;
-    default:
-      NEVER_REACH
-  }
+//  // Call the destructor of the derived class to ensure that the bytespace
+//  // is cleaned up. This is necessary because in many cases it is the base class
+//  // pointer that is being deleted, and this would normally result in a leak
+//  // of the bytespace object in the derived class.
+//  switch (this->eGetClassNo()) {
+//    case CN_PACKEDSTRINGBUFTINY:      _pPackedStringSegmentTiny(this)->vDestroy();   break;
+//    case CN_PACKEDSTRINGBUFSMALL:    _pPackedStringSegmentSmall(this)->vDestroy();  break;
+//    case CN_PACKEDSTRINGBUFMEDIUM:  _pPackedStringSegmentMedium(this)->vDestroy(); break;
+//    case CN_PACKEDSTRINGBUFLARGE:    _pPackedStringSegmentLarge(this)->vDestroy();  break;
+//    default:
+//      NEVER_REACH
+//  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -207,7 +229,12 @@ void PackedStringBuf::vReset(void)
 {
   ASSERT(m_pHead == this);
 
-  delete m_pNext; // deletes all chained segments
+//  if (m_pNext){
+//    i8 iDebug = 1;
+//    UNUSED(iDebug);
+//  }
+
+  PackedStringBuf::vDestroy(m_pNext); // deletes all chained segments
   m_pNext = nullptr;
   m_nItems = 0;
 
@@ -265,7 +292,7 @@ void PackedStringBuf::vRemove(Stz* szItem)
     // Remove the empty segment from the chain
     pParentSegment->m_pNext = pSegment->m_pNext;
     pSegment->m_pNext = nullptr;
-    delete pSegment;
+    PackedStringBuf::vDestroy(pSegment);
   }
 }
 
@@ -353,9 +380,11 @@ Stz* PackedStringBuf::pUpdate(Stz* szOldItem, Stz* szNewItem)
         default:
           NEVER_REACH
       }
+
+      return szOldItem;
     }
 
-    return szOldItem;
+      // fall out
   }
 
   vRemove(szOldItem);
@@ -377,10 +406,10 @@ bool PackedStringBuf::bCanFitInCurrentSeg(i8 iSize)
   ASSERT(m_pHead == this || m_pHead);
 
   switch (this->eGetClassNo()) {
-    case CN_PACKEDSTRINGBUFTINY:    return   _pPackedStringSegmentTiny(this)->bCanFitInCurrentSeg(iSize);
-    case CN_PACKEDSTRINGBUFSMALL:   return  _pPackedStringSegmentSmall(this)->bCanFitInCurrentSeg(iSize);
-    case CN_PACKEDSTRINGBUFMEDIUM:  return _pPackedStringSegmentMedium(this)->bCanFitInCurrentSeg(iSize);
-    case CN_PACKEDSTRINGBUFLARGE:   return  _pPackedStringSegmentLarge(this)->bCanFitInCurrentSeg(iSize);
+    case CN_PACKEDSTRINGBUFTINY:    return   _pPackedStringSegmentTiny(this)->bCanFitInSeg(iSize);
+    case CN_PACKEDSTRINGBUFSMALL:   return  _pPackedStringSegmentSmall(this)->bCanFitInSeg(iSize);
+    case CN_PACKEDSTRINGBUFMEDIUM:  return _pPackedStringSegmentMedium(this)->bCanFitInSeg(iSize);
+    case CN_PACKEDSTRINGBUFLARGE:   return  _pPackedStringSegmentLarge(this)->bCanFitInSeg(iSize);
     default:
       NEVER_REACH
   }
@@ -423,7 +452,7 @@ PackedStringBuf* PackedStringBuf::pSegmentOf(Stz* szItem)
 PackedStringBuf* PackedStringBuf::pAddSegmentFor(i8 iSize)
 {
   ASSERT(iSize > 0);
-  ASSERT(this == m_pHead);
+  ASSERT(this == m_pHead || m_pHead);
 
   PackedStringBuf* pNewSegment;
 
@@ -557,6 +586,15 @@ bool PackedStringSegment<CLASSNO, AREA>::bCanFitInSeg(i8 iSize)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Do any cleanup for this object is being deleted                            */
+/*----------------------------------------------------------------------------*/
+template <eCN CLASSNO, i8 AREA>
+void PackedStringSegment<CLASSNO, AREA>::vDestroy(void)
+{
+  // none necessary as the byte array is not dynamically allocated in this object
+}
+
+/*----------------------------------------------------------------------------*/
 /* returns the number of entries in this segment                              */
 /*----------------------------------------------------------------------------*/
 template <eCN CLASSNO, i8 AREA>
@@ -606,6 +644,8 @@ void PackedStringSegment<CLASSNO, AREA>::vRemoveFromSeg(Stz* szItem, bool* pbIsE
   ASSERT(pbIsEmpty);
   ASSERT(m_nSegEntries > 0);
 
+  i8 nItemSize = szItem->nSize();
+
   // Write nulls over the existing string. We don't try to compact or move
   // any data because this adds significant complexity for not much benefit.
   // However we write the nulls to reduce confusion in debugging and potentially
@@ -613,7 +653,6 @@ void PackedStringSegment<CLASSNO, AREA>::vRemoveFromSeg(Stz* szItem, bool* pbIsE
   m_xBytes.vWipe(szItem);
 
   // If it is the last string allocated then return space back to the byte array
-  i8 nItemSize = szItem->nSize();
   if (m_xBytes.szLatter() == aAdd<Stz*>(szItem, nItemSize + 1)) {
     m_xBytes.vGive(nItemSize);
   }
