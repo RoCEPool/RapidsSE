@@ -33,9 +33,9 @@ select * from tableIndexes where TableName = '${testName2}_foo';
 contains rows:
   (*, *, '${testName2}_foo', 'fooIdx',false,false)
 
-lsidxcol ${testName2}_foo fooIdx;
-rows:
-  ('col0', 'INTEGER', 19, 0, true, true)
+select * from indexColumns where TableName = '${testName2}_foo' and IndexName = 'fooIdx';
+contains rows:
+  (*, *, '${testName2}_foo', 'fooIdx', 'col0', 'INTEGER', 19, 0, true, true)
 
 
 

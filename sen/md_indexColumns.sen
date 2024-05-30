@@ -11,12 +11,16 @@
   STD_BOOTFORK_TAG
   "
   define metadata table indexColumns (
-    CatalogName VARCHAR NOT NULL ,
-    SchemaName  VARCHAR NOT NULL ,
-    TableName   VARCHAR NOT NULL ,
-    IndexName   VARCHAR NOT NULL ,
-    ColumnName  VARCHAR NOT NULL ,
-    ColumnNo    INTEGER NOT NULL
+    CatalogName    VARCHAR NOT NULL ,
+    SchemaName     VARCHAR NOT NULL ,
+    TableName      VARCHAR NOT NULL ,
+    IndexName      VARCHAR NOT NULL ,
+    ColumnName     VARCHAR NOT NULL ,
+    ColumnType     VARCHAR NOT NULL ,
+    ColumnLength   INTEGER NOT NULL ,
+    ColumnScale    INTEGER NOT NULL ,
+    IsNullable     BOOLEAN NOT NULL ,
+    IsPartitionKey BOOLEAN NOT NULL
   ) < metaData > = 1 ;
   "
   nullptr api::forkChild  api:executeCheck

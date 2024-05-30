@@ -253,10 +253,6 @@ public:
     return visitChildren(ctx);
   }
 
-  virtual std::any visitLsidxcolCmd(sqlParser::LsidxcolCmdContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
   virtual std::any visitLsptncolCmd(sqlParser::LsptncolCmdContext *ctx) override {
     return visitChildren(ctx);
   }

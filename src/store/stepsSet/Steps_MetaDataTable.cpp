@@ -400,14 +400,19 @@ void Step::vMetaDataTableCreateIndex(void)
   i8 i_Col = 0;
 
   while(i_Col < nColumns) {
+    Column* pColumn = pIndex->pGetColumn(i_Col);
     // Add index info to pds
     Row *pRow = pPdsRowBuffer->pAllotRow(C_VARGS_BEGIN,
                                          "rapids"_Stz,
                                          "public"_Stz,
                                          szTableNm.szStz(),
                                          pIndex->szIndexNm(),
-                                         pIndex->pGetColumn(i_Col)->szColNm(),
-                                         i_Col,
+                                         pColumn->szColNm(),
+                                         aCT[pColumn->eColumnType()],
+                                         pColumn->iColumnLength(),
+                                         pColumn->iColumnScale(),
+                                         (i8)pColumn->bIsNullable(),
+                                         (i8)pColumn->bIsPtnKey(),
                                          C_VARGS_END);
 
     if (!pRow) {
@@ -462,13 +467,13 @@ void Step::vMetaDataTableDropIndex(void)
   // Delete table index info from indexes
 
   Table* pTable = AM::pMetaDataTableIndexes();
-  MetaDataTables::vDeleteAllRowsFromTable(pTable, 2, szTableNm);
+  MetaDataTables::bDeleteRowFromTable(pTable, 2, szTableNm, 3, szIndexNm);
 
   //------------------------------------------------------------------------
   // Delete table index info from indexColumns
 
   pTable = AM::pMetaDataTableIndexColumns();
-  MetaDataTables::vDeleteAllRowsFromTable(pTable, 2, szTableNm);
+  MetaDataTables::bDeleteRowFromTable(pTable, 2, szTableNm, 3, szIndexNm);
 
   EXIT();
 }
@@ -1025,46 +1030,6 @@ void Step::vMetaDataTableInit(void)
   } else {
     AM::pHashMap()->vDropKeyLock(pPdsRowBuffer->oGetBufferId().m_pvAsAddress);
   }
-
-  //------------------------------------------------------------------------
-  // Init indexes table
-
-//  Table* pTableIndexes = AM::pMetaDataTableIndexes();
-//  StreamDef* pIndexesStreamDef = pTableIndexes->pStreamDef();
-//  pTablePtn = pTableIndexes->pTablePtn(0);
-//
-//  pPdsRowBuffer = new Pds(pIndexesStreamDef, false, BT_DATA);
-//  Row* pRow = pPdsRowBuffer->pAllotRow(C_VARGS_BEGIN,
-//                                  "rapids"_Stz,
-//                                  "public"_Stz,
-//                                  "dummy"_Stz,
-//                                  "dummy"_Stz,
-//                                  C_VARGS_END);
-//
-//  i8 nRows = 0;
-//  pTablePtn->vAppendBuffer(pPdsRowBuffer, nRows);
-//  UNUSED(pRow);
-
-  //------------------------------------------------------------------------
-  // Init indexes table
-
-//  Table* pTableIndexColumns = AM::pMetaDataTableIndexColumns();
-//  StreamDef* pIndexColumnsStreamDef = pTableIndexColumns->pStreamDef();
-//  pTablePtn = pTableIndexColumns->pTablePtn(0);
-//
-//  pPdsRowBuffer = new Pds(pIndexColumnsStreamDef, false, BT_DATA);
-//  pRow = pPdsRowBuffer->pAllotRow(C_VARGS_BEGIN,
-//                                       "rapids"_Stz,
-//                                       "public"_Stz,
-//                                       "dummy"_Stz,
-//                                       "dummy"_Stz,
-//                                       "dummy"_Stz,
-//                                       2,
-//                                       C_VARGS_END);
-//
-//  nRows = 0;
-//  pTablePtn->vAppendBuffer(pPdsRowBuffer, nRows);
-//  UNUSED(pRow);
 
   EXIT();
 }

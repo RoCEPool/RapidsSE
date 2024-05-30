@@ -19,9 +19,9 @@ contains rows:
   (*, *, '${testName2}_createT1', 'keyIdx',false,false)
 
 // check columns of index
-lsidxcol ${testName2}_createT1 keyIdx;
-rows:
-  ('key', 'INTEGER', 19, 0, false, true)
+select * from indexColumns where TableName = '${testName2}_createT1' and IndexName = 'keyIdx';
+contains rows:
+  (*, *, '${testName2}_createT1', 'keyIdx','key', 'INTEGER', 19, 0, false, true)
 
 // sz of index
 szidx ${testName2}_createT1 keyidx;

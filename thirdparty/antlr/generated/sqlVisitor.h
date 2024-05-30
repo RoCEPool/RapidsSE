@@ -138,8 +138,6 @@ public:
 
     virtual std::any visitLscolCmd(sqlParser::LscolCmdContext *context) = 0;
 
-    virtual std::any visitLsidxcolCmd(sqlParser::LsidxcolCmdContext *context) = 0;
-
     virtual std::any visitLsptncolCmd(sqlParser::LsptncolCmdContext *context) = 0;
 
     virtual std::any visitLstblCmd(sqlParser::LstblCmdContext *context) = 0;

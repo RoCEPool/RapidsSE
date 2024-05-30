@@ -19,9 +19,9 @@ contains rows:
   (*, *, '${testName2}_T1', 'idx', false, false)
 
 // check columns of index
-lsidxcol ${testName2}_T1 idx;
-rows:
-  ('col0', 'INTEGER', 19, 0, false, true)
+select * from indexColumns where TableName = '${testName2}_T1' and IndexName = 'idx';
+contains rows:
+  (*, *, '${testName2}_T1', 'idx', 'col0', 'INTEGER', 19, 0, false, true)
 
 // (3) now load some data into the table
 load ${testName2}_T1 "../seth/tests/Insert/insert.csv" ;

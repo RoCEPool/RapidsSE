@@ -389,7 +389,6 @@ antlrcpp::Any CommandParser::visitStatementChoice(Parser::sqlParser::StatementCh
   else if (pCtx->fileCmd())           { m_szProcName = nullptr;              return visitChildren(pCtx); }
   else if (pCtx->logCmd())            { m_szProcName = "logMsg"_Stz;         return visitChildren(pCtx); }
   else if (pCtx->lscolCmd())          { m_szProcName = "lscol"_Stz;          return visitChildren(pCtx); }
-  else if (pCtx->lsidxcolCmd())       { m_szProcName = "lsidxcol"_Stz;       return visitChildren(pCtx); }
   else if (pCtx->lstblCmd())          { m_szProcName = "lstbl"_Stz;          return nullptr; }
   else if (pCtx->lsptncolCmd())       { m_szProcName = "lsptncol"_Stz;       return visitChildren(pCtx); }
   else if (pCtx->memoryleaksCmd())    { m_szProcName = "memoryleaks"_Stz;    return nullptr; }
@@ -999,23 +998,6 @@ antlrcpp::Any CommandParser::visitLscolCmd(Parser::sqlParser::LscolCmdContext *p
   s256 sTableName;
   vCleanString(pCtx->tableName()->identifier(), sTableName, EC_MAX_TABLE_NAME_LENGTH);
   m_pArgValues->vAppendToken(sTableName.szStz(), TN_STRING);
-
-  return nullptr; // No need to visit any further down the tree
-}
-
-/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-/* Add command parameters for an ldidxcol statement                           */
-/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-antlrcpp::Any CommandParser::visitLsidxcolCmd(Parser::sqlParser::LsidxcolCmdContext *pCtx)
-{
-  // Add command parameters
-  s256 sTableName;
-  s256 sIndexName;
-  vCleanString(pCtx->tableName()->identifier(), sTableName, EC_MAX_TABLE_NAME_LENGTH);
-  vCleanString(pCtx->indexName()->identifier(), sIndexName, EC_MAX_INDEX_NAME_LENGTH);
-
-  m_pArgValues->vAppendToken(sTableName.szStz(), TN_STRING);
-  m_pArgValues->vAppendToken(sIndexName.szStz(), TN_STRING);
 
   return nullptr; // No need to visit any further down the tree
 }

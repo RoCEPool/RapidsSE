@@ -44,9 +44,9 @@ contains rows:
   (*, *, '${testName2}_lineitem', "LINEITEM_IDX1",false,false)
 
 // check columns of index
-lsidxcol ${testName2}_lineitem LINEITEM_IDX1;
-rows:
-  ("l_orderkey", "INTEGER", 19, 0, false, true)
+select * from indexColumns where TableName = '${testName2}_lineitem' and IndexName = 'LINEITEM_IDX1';
+contains rows:
+  (*, *, '${testName2}_lineitem', "LINEITEM_IDX1", "l_orderkey", "INTEGER", 19, 0, false, true)
 
 // truncate when table is empty
 truncate ${testName2}_lineitem;

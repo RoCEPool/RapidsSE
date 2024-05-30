@@ -46,9 +46,9 @@ contains rows:
   (*, *, '${testName2}_j10', 'keyIdx',false,false)
 
 // Example of a row with multiple columns being expected.
-lsidxcol ${testName2}_j10 keyIdx;
-rows:
-  ('key', 'INTEGER', 19, 0, false, true)
+select * from indexColumns where TableName = '${testName2}_j10' and IndexName = 'keyIdx';
+contains rows:
+  (*, *, '${testName2}_j10', 'keyIdx', 'key', 'INTEGER', 19, 0, false, true)
 
 load ${testName2}_j10 "../seth/tests/Examples/j10.csv";
 success

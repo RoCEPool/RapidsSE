@@ -57,27 +57,24 @@ contains rows:
   (*, *, '${testName2}_T1', 'Idx', false, false)
 
 // check columns of invalid table
-lsidxcol ${testName2}_T2 Idx;
-failure contains: 'Table does not exist'
+select * from indexColumns where TableName = '${testName2}_T2' and IndexName = 'Idx';
+rows: 0
 
 // check columns of invalid index
-lsidxcol ${testName2}_T1 Idx2;
-failure contains: 'no such index'
+select * from indexColumns where TableName = '${testName2}_T1' and IndexName = 'Idx2';
+rows: 0
 
 // check columns of index when not in tables
 cf ~;
 success
 
-lsidxcol ${testName2}_T1 Idx1;
-failure contains: 'not in tables'
-
 cf "~tables";
 success
 
 // check columns of index
-lsidxcol ${testName2}_T1 Idx;
-rows:
-  ('key', 'INTEGER', 19, 0, false, true)
+select * from indexColumns where TableName = '${testName2}_T1' and IndexName = 'Idx';
+contains rows:
+  (*, *, '${testName2}_T1', 'Idx', 'key', 'INTEGER', 19, 0, false, true)
 
 // drop the index
 drop index ${testName2}_T1 Idx;
@@ -143,10 +140,10 @@ select * from tableIndexes where TableName = '${testName2}_T1';
 rows: 3
 
 // check columns of Idx3
-lsidxcol ${testName2}_T1 Idx3;
-rows:
- ('key', 'INTEGER', 19, 0, false, true)
- ('name', 'VARCHAR', 32, 0, false, false)
+select * from indexColumns where TableName = '${testName2}_T1' and IndexName = 'Idx3';
+contains rows:
+ (*, *, '${testName2}_T1', 'Idx3', 'key', 'INTEGER', 19, 0, false, true)
+ (*, *, '${testName2}_T1', 'Idx3', 'name', 'VARCHAR', 32, 0, false, false)
 
 // create another index with two columns
 create index Idx4 on ${testName2}_T1 (key, name);
@@ -161,10 +158,10 @@ contains rows:
  (*, *, '${testName2}_T1', 'Idx4',false,false)
 
 // check columns of Idx4
-lsidxcol ${testName2}_T1 Idx4;
-rows:
-  ('key', 'INTEGER', 19, 0, false, true)
-  ('name', 'VARCHAR', 32, 0, false, false)
+select * from indexColumns where TableName = '${testName2}_T1' and IndexName = 'Idx4';
+contains rows:
+  (*, *, '${testName2}_T1', 'Idx4', 'key', 'INTEGER', 19, 0, false, true)
+  (*, *, '${testName2}_T1', 'Idx4', 'name', 'VARCHAR', 32, 0, false, false)
 
 // create another index with two columns
 create index Idx5 on ${testName2}_T1 (key, name);
@@ -180,10 +177,10 @@ contains rows:
 (*, *, '${testName2}_T1', 'Idx5',false,false)
 
 // check columns of Idx5
-lsidxcol ${testName2}_T1 Idx5;
-rows:
-  ('key', 'INTEGER', 19, 0, false, true)
-  ('name', 'VARCHAR', 32, 0, false, false)
+select * from indexColumns where TableName = '${testName2}_T1' and IndexName = 'Idx5';
+contains rows:
+  (*, *, '${testName2}_T1', 'Idx5', 'key', 'INTEGER', 19, 0, false, true)
+  (*, *, '${testName2}_T1', 'Idx5', 'name', 'VARCHAR', 32, 0, false, false)
 
 // create another index with two columns
 create index Idx6 on ${testName2}_T1 (key, name);
@@ -200,10 +197,10 @@ contains rows:
 (*, *, '${testName2}_T1', 'Idx6',false,false)
 
 // check columns of Idx4
-lsidxcol ${testName2}_T1 Idx6;
-rows:
-  ('key', 'INTEGER', 19, 0, false, true)
-  ('name', 'VARCHAR', 32, 0, false, false)
+select * from indexColumns where TableName = '${testName2}_T1' and IndexName = 'Idx6';
+contains rows:
+  (*, *, '${testName2}_T1', 'Idx6', 'key', 'INTEGER', 19, 0, false, true)
+  (*, *, '${testName2}_T1', 'Idx6', 'name', 'VARCHAR', 32, 0, false, false)
 
 // create another index with two columns
 create index Idx7 on ${testName2}_T1 (key, name);
@@ -221,10 +218,10 @@ contains rows:
 (*, *, '${testName2}_T1', 'Idx7',false,false)
 
 // check columns of Idx7
-lsidxcol ${testName2}_T1 Idx7;
-rows:
-  ('key', 'INTEGER', 19, 0, false, true)
-  ('name', 'VARCHAR', 32, 0, false, false)
+select * from indexColumns where TableName = '${testName2}_T1' and IndexName = 'Idx7';
+contains rows:
+  (*, *, '${testName2}_T1', 'Idx7', 'key', 'INTEGER', 19, 0, false, true)
+  (*, *, '${testName2}_T1', 'Idx7', 'name', 'VARCHAR', 32, 0, false, false)
 
 // create another index with two columns
 create index Idx8 on ${testName2}_T1 (key, name);
@@ -243,10 +240,10 @@ contains rows:
 (*, *, '${testName2}_T1', 'Idx8',false,false)
 
 // check columns of Idx8
-lsidxcol ${testName2}_T1 Idx8;
-rows:
-  ('key', 'INTEGER', 19, 0, false, true)
-  ('name', 'VARCHAR', 32, 0, false, false)
+select * from indexColumns where TableName = '${testName2}_T1' and IndexName = 'Idx8';
+contains rows:
+  (*, *, '${testName2}_T1', 'Idx8', 'key', 'INTEGER', 19, 0, false, true)
+  (*, *, '${testName2}_T1', 'Idx8', 'name', 'VARCHAR', 32, 0, false, false)
 
 // create another index with two columns
 create index Idx9 on ${testName2}_T1 (key, name);

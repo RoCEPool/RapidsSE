@@ -29,14 +29,14 @@ contains rows:
   (*, *, '${testName2}_IntTbl', 'int_idx2', false, false)
 
 // check columns of index
-lsidxcol ${testName2}_IntTbl int_idx1;
-rows:
-  ('int_col1', 'INTEGER', 19, 0, false, true)
+select * from indexColumns where TableName = '${testName2}_IntTbl' and IndexName = 'int_idx1';
+contains rows:
+  (*, *, '${testName2}_IntTbl', 'int_idx1', 'int_col1', 'INTEGER', 19, 0, false, true)
 
 // check columns of index
-lsidxcol ${testName2}_IntTbl int_idx2;
-rows:
-  ('int_col4', 'INTEGER', 19, 0, true, false)
+select * from indexColumns where TableName = '${testName2}_IntTbl' and IndexName = 'int_idx2';
+contains rows:
+  (*, *, '${testName2}_IntTbl', 'int_idx2', 'int_col4', 'INTEGER', 19, 0, true, false)
 
 load ${testName2}_IntTbl "../DATA/Datums/integer.csv" ;
 warning contains: '16 rows were invalid'

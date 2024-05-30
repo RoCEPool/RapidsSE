@@ -36,19 +36,19 @@ contains rows:
   (*, *, '${testName2}_VchTbl', 'vch_idx3', false, false)
 
 // check columns of index
-lsidxcol ${testName2}_VchTbl vch_idx1;
-rows:
-  ('vch_col2', 'VARCHAR', 10, 0, false, false)
+select * from indexColumns where TableName = '${testName2}_VchTbl' and IndexName = 'vch_idx1';
+contains rows:
+  (*, *, '${testName2}_VchTbl', 'vch_idx1', 'vch_col2', 'VARCHAR', 10, 0, false, false)
 
 // check columns of index
-lsidxcol ${testName2}_VchTbl vch_idx2;
-rows:
-  ('vch_col3', 'VARCHAR', 32, 0, false, false)
+select * from indexColumns where TableName = '${testName2}_VchTbl' and IndexName = 'vch_idx2';
+contains rows:
+  (*, *, '${testName2}_VchTbl', 'vch_idx2', 'vch_col3', 'VARCHAR', 32, 0, false, false)
 
 // check columns of index
-lsidxcol ${testName2}_VchTbl vch_idx3;
-rows:
-  ('vch_col5', 'VARCHAR', 64000, 0, true, false)
+select * from indexColumns where TableName = '${testName2}_VchTbl' and IndexName = 'vch_idx3';
+contains rows:
+  (*, *, '${testName2}_VchTbl', 'vch_idx3', 'vch_col5', 'VARCHAR', 64000, 0, true, false)
 
 Load ${testName2}_VchTbl "../DATA/Datums/varchar.csv" <enclosed_by_leading> = "'";
 warning contains: '2 rows were invalid'

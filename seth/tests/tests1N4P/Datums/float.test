@@ -30,14 +30,14 @@ contains rows:
 (*, *, '${testName2}_fltTbl', 'flt_idx2', false, false)
 
 // check columns of index
-lsidxcol ${testName2}_fltTbl flt_idx1;
-rows:
-('flt_col1', 'FLOAT', 19, 0, false, true)
+select * from indexColumns where TableName = '${testName2}_fltTbl' and IndexName = 'flt_idx1';
+contains rows:
+(*, *, '${testName2}_fltTbl', 'flt_idx1', 'flt_col1', 'FLOAT', 19, 0, false, true)
 
 // check columns of index
-lsidxcol ${testName2}_fltTbl flt_idx2;
-rows:
-('flt_col6', 'FLOAT', 19, 0, true, false)
+select * from indexColumns where TableName = '${testName2}_fltTbl' and IndexName = 'flt_idx2';
+contains rows:
+(*, *, '${testName2}_fltTbl', 'flt_idx2', 'flt_col6', 'FLOAT', 19, 0, true, false)
 
 Load ${testName2}_fltTbl "../DATA/Datums/float.csv" ;
 failure contains: '15 rows were invalid'

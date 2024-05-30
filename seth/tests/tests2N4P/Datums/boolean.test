@@ -34,14 +34,14 @@ contains rows:
   (*, *, '${testName2}_bolTbl', 'bol_idx2', false, false)
 
 // check columns of index
-lsidxcol ${testName2}_bolTbl bol_idx1;
-rows:
-  ('bol_col1', 'BOOLEAN', 0, 0, false, true)
+select * from indexColumns where TableName = '${testName2}_bolTbl' and IndexName = 'bol_idx1';
+contains rows:
+  (*, *, '${testName2}_bolTbl', 'bol_idx1', 'bol_col1', 'BOOLEAN', 0, 0, false, true)
 
 // check columns of index
-lsidxcol ${testName2}_bolTbl bol_idx2;
-rows:
-  ('bol_col8', 'BOOLEAN', 0, 0, true, false)
+select * from indexColumns where TableName = '${testName2}_bolTbl' and IndexName = 'bol_idx2';
+contains rows:
+  (*, *, '${testName2}_bolTbl', 'bol_idx2', 'bol_col8', 'BOOLEAN', 0, 0, true, false)
 
 load ${testName2}_bolTbl "../DATA/Datums/boolean.csv" ;
 warning contains: '18 rows were invalid'

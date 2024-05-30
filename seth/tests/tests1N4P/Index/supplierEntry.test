@@ -29,9 +29,9 @@ contains rows:
   (*, *, '${testName2}_supplier', 'idx',false,false)
 
 // check columns of index
-lsidxcol ${testName2}_supplier idx;
-rows:
-  ('S_SUPPKEY', 'INTEGER', 19, 0, false, true)
+select * from indexColumns where TableName = '${testName2}_supplier' and IndexName = 'idx';
+contains rows:
+  (*, *, '${testName2}_supplier', 'idx', 'S_SUPPKEY', 'INTEGER', 19, 0, false, true)
 
 compactidx ${testName2}_supplier idx;
 success
@@ -693,9 +693,9 @@ contains rows:
 (*, *, '${testName2}_supplier', 'idx',false,false)
 
 // check columns of index
-lsidxcol ${testName2}_supplier idx;
-rows:
-('S_NATIONKEY', 'INTEGER', 19, 0, false, false)
+select * from indexColumns where TableName = '${testName2}_supplier' and IndexName = 'idx';
+contains rows:
+(*, *, '${testName2}_supplier', 'idx', 'S_NATIONKEY', 'INTEGER', 19, 0, false, false)
 
 //------------------------------------------------------------------------------
 // exact key fetches

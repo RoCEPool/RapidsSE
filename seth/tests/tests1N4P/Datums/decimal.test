@@ -33,14 +33,14 @@ contains rows:
 (*, *, '${testName2}_decTbl', 'dec_idx2', false, false)
 
 // check columns of index
-lsidxcol ${testName2}_decTbl dec_idx1;
-rows:
-('dec_col1', 'DECIMAL', 10, 2, false, true)
+select * from indexColumns where TableName = '${testName2}_decTbl' and IndexName = 'dec_idx1';
+contains rows:
+(*, *, '${testName2}_decTbl', 'dec_idx1', 'dec_col1', 'DECIMAL', 10, 2, false, true)
 
 // check columns of index
-lsidxcol ${testName2}_decTbl dec_idx2;
-rows:
-('dec_col6', 'DECIMAL',19, 2, true, false)
+select * from indexColumns where TableName = '${testName2}_decTbl' and IndexName = 'dec_idx2';
+contains rows:
+(*, *, '${testName2}_decTbl', 'dec_idx2', 'dec_col6', 'DECIMAL',19, 2, true, false)
 
 Load ${testName2}_decTbl "../DATA/Datums/decimal.csv" ;
 warning contains: '15 rows were invalid'

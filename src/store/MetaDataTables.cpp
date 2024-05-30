@@ -188,6 +188,78 @@ void MetaDataTables::vDeleteAllRowsFromTable(Table *pTable, i8 iCol, Stz *szColV
   pHashMap->vDropKeyLock(oRootBufferId.m_pvAsAddress);
 }
 
+/*----------------------------------------------------------------------------*/
+/* Delete row that matches (col1 string), (col2 string)                       */
+/*----------------------------------------------------------------------------*/
+bool MetaDataTables::bDeleteRowFromTable(Table* pTable, i8 iCol1, Stz* szCol1Val, i8 iCol2, Stz* szCol2Val)
+{
+  _static_
+
+  HashMap* pHashMap = AM::pHashMap();
+
+  TablePtn* pTablePtn = pTable->pTablePtn(0);
+
+  BufferId oRootBufferId = pTablePtn->oRootBufferId();
+  Pds* pRootPds = pTablePtn->pRootPds();
+
+  PdsCursor* pCursor = new PdsCursor(pRootPds);
+
+  // Iterate this table ptn root pds buffer that contains bufferId's of PdsRowBuffers
+
+  while(! pCursor->bIsCurrNull()) {
+    SkipListBlock* pSLBlock = pCursor->m_pCurrentBlock;
+
+    BufferId oBufferId = pTablePtn->oExtractBufferId((Object*)pSLBlock->aItem());
+    Pds* pPdsRowBuffer = _pPds(pHashMap->pValueAt(oBufferId.m_pvAsAddress, true));
+
+    PdsCursor* pRowCursor = new PdsCursor(pPdsRowBuffer);
+
+    // Iterate this PdsRowBuffer, searching for the rows which match this col value
+    while(! pRowCursor->bIsCurrNull()) {
+      Row* pRow = pRowCursor->pCurrRow();
+
+      Stz* szRowCol1 = pRow->szColVal_ofs(iCol1);
+
+      if(szRowCol1->bSame(szCol1Val)) {
+        Stz* szRowCol2 = pRow->szColVal_ofs(iCol2);
+        if(szRowCol2->bSame(szCol2Val)) {
+          // Found a match, delete this entry
+          i8* pKey = (i8*)pRowCursor->pCurrKey();
+
+          bool bResult = pPdsRowBuffer->bDelete(pKey);
+          ASSERT(bResult);
+          UNUSED(bResult);
+          // If the pds row buffer is now empty, we can delete it
+          if(pPdsRowBuffer->nItems() == 0) {
+            void* pKey = pCursor->pCurrKey();
+            pRootPds->bDelete(pKey);
+            delete pPdsRowBuffer;
+          } else {
+            pHashMap->vDropKeyLock(pPdsRowBuffer->oGetBufferId().m_pvAsAddress);
+          }
+
+          delete pRowCursor;
+          delete pCursor;
+          pHashMap->vDropKeyLock(oRootBufferId.m_pvAsAddress);
+
+          return true;
+        }
+      }
+      pRowCursor->vNext();
+    }
+
+    delete pRowCursor;
+    pHashMap->vDropKeyLock(pPdsRowBuffer->oGetBufferId().m_pvAsAddress);
+  }
+  delete pCursor;
+  pHashMap->vDropKeyLock(oRootBufferId.m_pvAsAddress);
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Get the table pointer from the metadata tableoftables                      */
+/*----------------------------------------------------------------------------*/
 Table* MetaDataTables::pTableFind(Stz *szTableNm)
 {
   _static_

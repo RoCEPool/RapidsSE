@@ -57,10 +57,10 @@ contains rows:
 
 
 // Index has the right columns
-lsidxcol ${testName2}_nation nation_idx1;
-rows:
-  ('N_NATIONKEY', 'INTEGER', 19, 0, false, true)
-  ('N_REGIONKEY', 'INTEGER', 19, 0, false, false)
+select * from indexColumns where TableName = '${testName2}_nation' and IndexName = 'nation_idx1';
+contains rows:
+  (*, *, '${testName2}_nation', 'nation_idx1', 'N_NATIONKEY', 'INTEGER', 19, 0, false, true)
+  (*, *, '${testName2}_nation', 'nation_idx1', 'N_REGIONKEY', 'INTEGER', 19, 0, false, false)
 
 
 // Can we explain a SELECT from this table?

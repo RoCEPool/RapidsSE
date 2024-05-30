@@ -29,7 +29,6 @@ statementChoice   :
                     | loadReplicatedCmd
                     | logCmd
                     | lscolCmd
-                    | lsidxcolCmd
                     | lsptncolCmd
                     | lstblCmd
                     | metricsCtlCmd
@@ -216,7 +215,6 @@ loadOptionKeys    : FIELD_DELIMITER | ESCAPE_CHAR | DATE_FORMAT | RECORD_ENDS
                     | ENCLOSED_BY_LEADING | ENCLOSED_BY_TRAILING | RECORD_TERMINATOR ;
 logCmd            : LOG msg=stringLiteral (ECHO (SQL_TRUE | ON | SQL_FALSE | OFF))?;
 lscolCmd          : LSCOL tableName ;
-lsidxcolCmd       : LSIDXCOL tableName indexName;
 lsptncolCmd       : LSPTNCOL tableName ;
 lstblCmd          : LSTBL;
 
@@ -759,7 +757,6 @@ LOAD                  : L O A D;
 LOG                   : L O G;
 LOOP                  : L O O P;
 LSCOL                 : L S C O L;
-LSIDXCOL              : L S I D X C O L;
 LSPTNCOL              : L S P T N C O L;
 LSTBL                 : L S T B L;
 MAX                   : M A X;

@@ -32,14 +32,14 @@ contains rows:
 (*, *, '${testName2}_tspTbl', 'tsp_idx2', false, false)
 
 // check columns of index
-lsidxcol ${testName2}_tspTbl tsp_idx1;
-rows:
-('tsp_col1', 'TIMESTAMP', 0, 0, false, true)
+select * from indexColumns where TableName = '${testName2}_tspTbl' and IndexName = 'tsp_idx1';
+contains rows:
+(*, *, '${testName2}_tspTbl', 'tsp_idx1', 'tsp_col1', 'TIMESTAMP', 0, 0, false, true)
 
 // check columns of index
-lsidxcol ${testName2}_tspTbl tsp_idx2;
-rows:
-('tsp_col7', 'TIMESTAMP', 0, 0, true, false)
+select * from indexColumns where TableName = '${testName2}_tspTbl' and IndexName = 'tsp_idx2';
+contains rows:
+(*, *, '${testName2}_tspTbl', 'tsp_idx2', 'tsp_col7', 'TIMESTAMP', 0, 0, true, false)
 
 Load ${testName2}_tspTbl "../DATA/Datums/timestamp.csv" ;
 warning contains: '27 rows were invalid'
