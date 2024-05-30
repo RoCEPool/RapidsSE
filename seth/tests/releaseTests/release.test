@@ -51,9 +51,9 @@ success
 
 
 // Index should exist
-//select * from tableIndexes where TableName = '${testName2}_nation';
-//contains rows:
-//  (*, *, '${testName2}_nation', 'nation_idx1',false,false)
+select * from tableIndexes where TableName = '${testName2}_nation';
+contains rows:
+  (*, *, '${testName2}_nation', 'nation_idx1',false,false)
 
 
 // Index has the right columns
@@ -168,8 +168,8 @@ success
 
 
 // Index should no longer exist
-//select * from tableIndexes where TableName = '${testName2}_nation';
-//rows: 0
+select * from tableIndexes where TableName = '${testName2}_nation';
+rows: 0
 
 
 // Drop a table

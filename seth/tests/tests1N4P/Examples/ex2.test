@@ -27,9 +27,9 @@ LOOP FOR 5 SECONDS {
   create index fooIdx on ${testName2}_foo (col0);
   success
 
-//  select * from tableIndexes where TableName = '${testName2}_foo';
-//  rows:
-//    (*, *, '${testName2}_foo', 'fooIdx',false,false)
+  select * from tableIndexes where TableName = '${testName2}_foo';
+  contains rows:
+    (*, *, '${testName2}_foo', 'fooIdx',false,false)
 
   lsidxcol ${testName2}_foo fooIdx;
   rows:

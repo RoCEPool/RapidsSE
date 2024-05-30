@@ -20,9 +20,9 @@ CREATE 2 THREADS {
   rows: 
     ('${testName2}_foo')
 
-//  select * from tableIndexes where TableName = '${testName2}_foo';
-//  rows:
-//    (*, *, '${testName2}_foo', 'fooIdx',false,false)
+  select * from tableIndexes where TableName = '${testName2}_foo';
+  contains rows:
+    (*, *, '${testName2}_foo', 'fooIdx',false,false)
 
   lsidxcol ${testName2}_foo fooIdx;
   rows:

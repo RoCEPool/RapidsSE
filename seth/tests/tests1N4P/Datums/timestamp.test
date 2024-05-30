@@ -26,10 +26,10 @@ create index tsp_idx2 on ${testName2}_tspTbl (tsp_col7);
 success
 
 // check existence of index
-//select * from tableIndexes where TableName = '${testName2}_tspTbl';
-//rows:
-//(*, *, '${testName2}_tspTbl', 'tsp_idx1', false, false)
-//(*, *, '${testName2}_tspTbl', 'tsp_idx2', false, false)
+select * from tableIndexes where TableName = '${testName2}_tspTbl';
+contains rows:
+(*, *, '${testName2}_tspTbl', 'tsp_idx1', false, false)
+(*, *, '${testName2}_tspTbl', 'tsp_idx2', false, false)
 
 // check columns of index
 lsidxcol ${testName2}_tspTbl tsp_idx1;

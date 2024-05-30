@@ -29,11 +29,11 @@ create index vch_idx3 on ${testName2}_VchTbl (vch_col5);
 affected: 0
 
 // check existence of index
-//select * from tableIndexes where TableName = '${testName2}_VchTbl';
-//rows:
-//  (*, *, '${testName2}_VchTbl', 'vch_idx1', false, false)
-//  (*, *, '${testName2}_VchTbl', 'vch_idx2', false, false)
-//  (*, *, '${testName2}_VchTbl', 'vch_idx3', false, false)
+select * from tableIndexes where TableName = '${testName2}_VchTbl';
+contains rows:
+  (*, *, '${testName2}_VchTbl', 'vch_idx1', false, false)
+  (*, *, '${testName2}_VchTbl', 'vch_idx2', false, false)
+  (*, *, '${testName2}_VchTbl', 'vch_idx3', false, false)
 
 // check columns of index
 lsidxcol ${testName2}_VchTbl vch_idx1;

@@ -14,9 +14,9 @@ create index idx on ${testName2}_T1 (col0);
 success
 
 // check existence of index
-//select * from tableIndexes where TableName = '${testName2}_T1';
-//rows:
-//  (*, *, '${testName2}_T1', 'idx', false, false)
+select * from tableIndexes where TableName = '${testName2}_T1';
+contains rows:
+  (*, *, '${testName2}_T1', 'idx', false, false)
 
 // check columns of index
 lsidxcol ${testName2}_T1 idx;

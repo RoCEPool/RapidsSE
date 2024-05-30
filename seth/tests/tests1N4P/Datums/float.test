@@ -24,10 +24,10 @@ create index flt_idx2 on ${testName2}_fltTbl (flt_col6);
 success
 
 // check existence of index
-//select * from tableIndexes where TableName = '${testName2}_fltTbl';
-//rows:
-//(*, *, '${testName2}_fltTbl', 'flt_idx1', false, false)
-//(*, *, '${testName2}_fltTbl', 'flt_idx2', false, false)
+select * from tableIndexes where TableName = '${testName2}_fltTbl';
+contains rows:
+(*, *, '${testName2}_fltTbl', 'flt_idx1', false, false)
+(*, *, '${testName2}_fltTbl', 'flt_idx2', false, false)
 
 // check columns of index
 lsidxcol ${testName2}_fltTbl flt_idx1;

@@ -39,9 +39,9 @@ CREATE INDEX LINEITEM_IDX1 ON ${testName2}_lineitem(l_orderkey);
 affected: 0
 
 // check existence of index
-//select * from tableIndexes where TableName = '${testName2}_lineitem';
-//rows:
-//  (*, *, '${testName2}_lineitem', "LINEITEM_IDX1",false,false)
+select * from tableIndexes where TableName = '${testName2}_lineitem';
+contains rows:
+  (*, *, '${testName2}_lineitem', "LINEITEM_IDX1",false,false)
 
 // check columns of index
 lsidxcol ${testName2}_lineitem LINEITEM_IDX1;

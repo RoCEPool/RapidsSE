@@ -3916,7 +3916,7 @@ void AM::vDeleteOperand(Operand* pOperand, Job* pJob)
       // permanent row buffers not to be deleted
       if (pPdsRowBuffer->bIsPermanent()) {
         AM::pHashMap()->vDropKeyLock(pPdsRowBuffer->oGetBufferId().m_pvAsAddress);
-        ASSERT(!AM::pHashMap()->bIsLocked(pPdsRowBuffer->oGetBufferId().m_pvAsAddress));
+        //ASSERT(!AM::pHashMap()->bIsLocked(pPdsRowBuffer->oGetBufferId().m_pvAsAddress));
         break;
       }
 

@@ -41,9 +41,9 @@ rows:
 create index keyIdx on ${testName2}_j10 (key);
 affected: 0
 
-//select * from tableIndexes where TableName = '${testName2}_j10';
-//rows:
-//  (*, *, '${testName2}_j10', 'keyIdx',false,false)
+select * from tableIndexes where TableName = '${testName2}_j10';
+contains rows:
+  (*, *, '${testName2}_j10', 'keyIdx',false,false)
 
 // Example of a row with multiple columns being expected.
 lsidxcol ${testName2}_j10 keyIdx;

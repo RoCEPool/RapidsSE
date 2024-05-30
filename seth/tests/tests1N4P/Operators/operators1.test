@@ -24,9 +24,9 @@ create index OpTable1_idx on ${testName2}_OpTable1 (jidx_key);
 success
 
 // check existence of index
-//select * from tableIndexes where TableName = '${testName2}_OpTable1';
-//rows:
-//(*, *, '${testName2}_OpTable1', 'OpTable1_idx', false, false)
+select * from tableIndexes where TableName = '${testName2}_OpTable1';
+contains rows:
+(*, *, '${testName2}_OpTable1', 'OpTable1_idx', false, false)
 
 load ${testName2}_OpTable1 "../DATA/Operators/operators1_1.csv" ;
 success
@@ -53,9 +53,9 @@ create index OpTable2_idx on ${testName2}_OpTable2 (jidx_key_2);
 success
 
 // check existence of index
-//select * from tableIndexes where TableName = '${testName2}_OpTable2';
-//rows:
-//(*, *, '${testName2}_OpTable2', 'OpTable2_idx', false, false)
+select * from tableIndexes where TableName = '${testName2}_OpTable2';
+contains rows:
+(*, *, '${testName2}_OpTable2', 'OpTable2_idx', false, false)
 
 load ${testName2}_OpTable2 "../DATA/Operators/operators1_2.csv" ;
 success

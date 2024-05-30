@@ -27,10 +27,10 @@ create index dec_idx2 on ${testName2}_decTbl (dec_col6);
 success
 
 // check existence of index
-//select * from tableIndexes where TableName = '${testName2}_decTbl';
-//rows:
-//(*, *, '${testName2}_decTbl', 'dec_idx1', false, false)
-//(*, *, '${testName2}_decTbl', 'dec_idx2', false, false)
+select * from tableIndexes where TableName = '${testName2}_decTbl';
+contains rows:
+(*, *, '${testName2}_decTbl', 'dec_idx1', false, false)
+(*, *, '${testName2}_decTbl', 'dec_idx2', false, false)
 
 // check columns of index
 lsidxcol ${testName2}_decTbl dec_idx1;

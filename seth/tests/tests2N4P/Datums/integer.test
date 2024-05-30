@@ -23,10 +23,10 @@ create index int_idx2 on ${testName2}_IntTbl (int_col4);
 success
 
 // check existence of index
-//select * from tableIndexes where TableName = '${testName2}_IntTbl';
-//rows:
-//  (*, *, '${testName2}_IntTbl', 'int_idx1', false, false)
-//  (*, *, '${testName2}_IntTbl', 'int_idx2', false, false)
+select * from tableIndexes where TableName = '${testName2}_IntTbl';
+contains rows:
+  (*, *, '${testName2}_IntTbl', 'int_idx1', false, false)
+  (*, *, '${testName2}_IntTbl', 'int_idx2', false, false)
 
 // check columns of index
 lsidxcol ${testName2}_IntTbl int_idx1;

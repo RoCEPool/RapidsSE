@@ -30,9 +30,9 @@ CREATE INDEX lineitem_idx1 ON ${testName2}_lineitem(l_shipdate);
 affected: 0
 
 // check existence of index
-//select * from tableIndexes where TableName = '${testName2}_lineitem';
-//rows:
-//  (*, *, '${testName2}_lineitem', "lineitem_idx1",false,false)
+select * from tableIndexes where TableName = '${testName2}_lineitem';
+contains rows:
+  (*, *, '${testName2}_lineitem', "lineitem_idx1",false,false)
 
 // check columns of index
 lsidxcol ${testName2}_lineitem lineitem_idx1;
