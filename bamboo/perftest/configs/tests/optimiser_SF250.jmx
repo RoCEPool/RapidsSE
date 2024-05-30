@@ -4617,7 +4617,7 @@ end ;</stringProp>
               </hashTree>
             </hashTree>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q20 Group" enabled="false"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q20 Group" enabled="true"/>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
@@ -4647,7 +4647,7 @@ OUT.flush();</stringProp>
               <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
             </LoopController>
             <hashTree>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q20" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q20" enabled="false">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">select 
   s_name, 
@@ -4686,6 +4686,102 @@ where
   and n_name = &apos;CANADA&apos;
 order by 
   s_name;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q20_poc3" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">/optimise_passthru
+pipeline Query20
+begin
+
+    stage S00 on origin :
+      start
+      | pulse once
+      | next
+
+    stage S01 on all partitions :
+      scan rapidsse public Part
+      | filter &quot; type BOOLEAN  }  $2 &apos;forest%&apos;  7 matchLeading &quot;
+      | project &quot; type INTEGER ( 19 ) as p_partkey $1 &quot;
+      | combined 0
+      | next broadcast
+
+    stage S02 on all partitions :
+      indexJoin lineitem IxL_PARTKEY &quot;BOUND $I1 P_PARTKEY ==&quot;
+      | filter &quot; type BOOLEAN  L_SHIPDATE DATE &apos;1994-01-01&apos; &gt;= L_SHIPDATE DATE &apos;1995-01-01&apos;  &lt;  and  &quot;
+      | gbyAgg &quot; groupBy  type integer ( 19 ) P_PARTKEY ,
+                          type integer ( 19 ) L_SUPPKEY
+                       aggregates type integer ( 19 ) as P_PARTKEY $K1 ,
+                                  type integer ( 19 ) as L_SUPPKEY $K2 ,
+                                  type DECIMAL ( 19  2 ) )  $6 sum&quot;
+      | combined 0
+      | next
+
+    stage S03 on all nodes :
+      gbyAgg &quot; groupBy type integer ( 19 ) P_PARTKEY ,
+                       type integer ( 19 ) L_SUPPKEY
+                  aggregates type integer ( 19 ) as P_PARTKEY $K1 ,
+                             type integer ( 19 ) as L_SUPPKEY $K2 ,
+                             type DECIMAL ( 19  2 ) )  $3 sum&quot;
+      | combined 0
+      | next
+
+    stage S04 on origin :
+      gbyAgg &quot; groupBy type integer ( 19 ) P_PARTKEY ,
+                       type integer ( 19 ) L_SUPPKEY
+                   aggregates type integer ( 19 ) as P_PARTKEY $K1 ,
+                              type integer ( 19 ) as L_SUPPKEY $K2 ,
+                              type DECIMAL ( 19  2 ) )  $3 sum&quot;
+      | combined 0
+      | next
+
+    stage S05 on origin :
+      project &quot; type integer ( 19 ) as P_PARTKEY P_PARTKEY , type integer ( 19 ) as L_SUPPKEY L_SUPPKEY , type DECIMAL ( 19  2 ) as sqyResult 0.5  $3 *  &quot;
+      | combined 0
+      | next broadcast
+
+   stage S06 on all partitions :
+     indexJoin partSupp IxPS_SUPPKEY &quot;BOUND $I1 L_SUPPKEY ==&quot;
+     | filter &quot; type BOOLEAN P_PARTKEY PS_PARTKEY == PS_AVAILQTY casttype DECIMAL ( 19  2 ) CAST sqyResult  &gt; and &quot;
+     | project &quot; type INTEGER ( 19 ) as PS_SUPPKEY $2&quot;
+     | hash &quot;type INTEGER ( 19 ) PS_SUPPKEY&quot;
+     | combined 0
+     | next hashcast
+
+   stage S07 on all partitions :
+     gbyAgg &quot; groupBy type integer ( 19 ) PS_SUPPKEY
+                        aggregates type integer ( 19 ) as PS_SUPPKEY $K1&quot;
+     | combined 0
+     | next
+
+  stage S08 on all partitions :
+    indexJoin Supplier IxS_SUPPKEY &quot;BOUND $I1 PS_SUPPKEY ==&quot;
+    | project &quot; type INTEGER ( 19 ) as S_NATIONKEY S_NATIONKEY , type VARCHAR ( 0 ) as S_NAME S_NAME , type VARCHAR ( 0 ) as S_ADDRESS S_ADDRESS&quot;
+    | indexJoin Nation IxN_NATIONKEY &quot;BOUND $I1 S_NATIONKEY ==&quot;
+    | filter &quot; type BOOLEAN N_NAME &apos;CANADA&apos; ==  &quot;
+    | project &quot; type VARCHAR ( 0 ) as S_NAME S_NAME , type VARCHAR ( 0 ) as S_ADDRESS S_ADDRESS &quot;
+    | sort &quot; type VARCHAR ( 0 ) S_NAME ASC  &quot;
+    | combined 0
+    | next
+
+  stage S10 on origin :
+    sort &quot; type VARCHAR ( 0 ) S_NAME ASC  &quot;
+    | combined 0
+    | next
+
+  stage S11 on origin :
+    output
+    | sink
+    | first
+end ;</stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="queryTimeout"></stringProp>

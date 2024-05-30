@@ -10,7 +10,7 @@ begin
     | pulse once
     | next
 
-  stage S01 on all partitions :
+  stage S01 on all partitions:
     scan Customer
     | filter " type BOOLEAN  C_ACCTBAL 0.00  >
                }  '13'  '31'  '23'  '29'  '30'  '18'  '17'  #7  C_PHONE 1  2  substring3  in  and  "
@@ -33,7 +33,7 @@ begin
     | combined 0
     | next broadcast
 
-  stage S05 on all partitions :
+  stage S05 on all partitions  multiple threads 4:
     indexJoin Customer IxC_CUSTKEY "bound $I1"
     | filter " type BOOLEAN  }  '13'  '31'  '23'  '29'  '30'  '18'  '17'  #7  C_PHONE 1  2  substring3  in
               C_ACCTBAL acctbal  >  and "
@@ -42,7 +42,7 @@ begin
     | next
 
   stage S06 on all partitions :
-    keyExists ORDERS IxO_CUSTKEY  "BOUND $I1 C_CUSTKEY =="
+    keyNotExists ORDERS IxO_CUSTKEY  "BOUND $I1 C_CUSTKEY =="
                    "type BOOLEAN O_CUSTKEY 0 >"
     | project " type VARCHAR ( 0 ) as cntrycode  cntrycode , type DECIMAL ( 19  2 ) as C_ACCTBAL  C_ACCTBAL"
     | combined 0
