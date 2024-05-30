@@ -32,13 +32,13 @@ pipeline Query15
      | combined 0
      | next
 
-   stage S04 on origin :
+   stage S04 on origin:
      top "type DECIMAL ( 19  2 ) $2" 1
      | hash "type INTEGER ( 19 ) supplier_no"
      | combined 0
      | next hashcast
 
-   stage S05 on all partitions :
+   stage S05 on all partitions multiple threads 4:
      indexJoin supplier IxS_SuppKey "BOUND $I1 supplier_no ==" //J1
      | Project   "   type INTEGER ( 19 ) as s_suppkey s_suppkey
                    , type VARCHAR ( 25 ) as s_name s_name

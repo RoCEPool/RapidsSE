@@ -1742,7 +1742,7 @@ order by
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q1_2n_p_4mt" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q1_2n_p_opt1_4mt" enabled="true">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
 pipeline Query1
@@ -1865,7 +1865,7 @@ end ;</stringProp>
               </hashTree>
             </hashTree>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q2 Group" enabled="false"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q2 Group" enabled="true"/>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
@@ -1895,7 +1895,7 @@ OUT.flush();</stringProp>
               <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
             </LoopController>
             <hashTree>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q2" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q2" enabled="false">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">select
   s_acctbal,
@@ -1941,6 +1941,149 @@ order by
   s_name,
   p_partkey
 limit 100;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q2_poc3_opt1_mt" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">/optimise_passthru
+pipeline Query2
+begin
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
+
+  stage S01 on all partitions :
+    scan part
+    | filter &quot; type BOOLEAN  }  P_TYPE &apos;%BRASS&apos;  6 matchTrailing P_SIZE 15 == and&quot;
+    | project &quot; type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY&quot;
+    | indexJoin partsupp IxPS_PARTKEY &quot;BOUND $I1 P_PARTKEY ==&quot;
+    | project &quot; type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY ,
+                type INTEGER ( 19 ) as PS_SUPPKEY PS_SUPPKEY ,
+                type DECIMAL ( 19  2 ) as PS_SUPPLYCOST PS_SUPPLYCOST&quot;
+    | hash &quot;type INTEGER ( 19 ) PS_SUPPKEY&quot;
+    | combined 0
+    | next hashcast
+
+  stage S02 on all partitions:
+    indexJoin supplier IxS_SUPPKEY &quot;BOUND $I1 PS_SUPPKEY ==&quot;
+    | project &quot;type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY ,
+               type INTEGER ( 19 ) as PS_SUPPKEY PS_SUPPKEY ,
+               type DECIMAL ( 19  2 ) as PS_SUPPLYCOST PS_SUPPLYCOST ,
+               type INTEGER ( 19 ) as S_NATIONKEY S_NATIONKEY &quot;
+    | indexJoin nation IxN_NATIONKEY &quot;BOUND $I1 S_NATIONKEY ==&quot;
+    | project &quot;type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY ,
+               type INTEGER ( 19 ) as PS_SUPPKEY PS_SUPPKEY ,
+               type DECIMAL ( 19  2 ) as PS_SUPPLYCOST PS_SUPPLYCOST ,
+               type INTEGER ( 19 ) as N_REGIONKEY N_REGIONKEY &quot;
+    | indexJoin region IxR_REGIONKEY &quot;BOUND $I1 N_REGIONKEY ==&quot;
+    | filter &quot; type BOOLEAN  R_NAME &apos;EUROPE&apos;  == &quot;
+    | hash &quot;type INTEGER ( 19 ) P_PARTKEY&quot;
+    | combined 0
+    | next hashcast
+
+  stage S03 on all partitions :
+    gbyAgg &quot; GroupBy    type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY
+               aggregates type INTEGER ( 19 ) as P_PARTKEY $K1 ,
+                          type DECIMAL ( 19  2 ) as PS_SUPPLYCOST_MIN ) PS_SUPPLYCOST min &quot;
+    | combined 0
+    | next
+
+  stage S04 on all nodes :
+     gbyAgg &quot; GroupBy     type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY
+               aggregates type INTEGER ( 19 ) as P_PARTKEY $K1 ,
+                          type DECIMAL ( 19  2 ) as PS_SUPPLYCOST_MIN ) PS_SUPPLYCOST_MIN min &quot;
+    | combined 0
+    | next
+
+  stage S05 on origin :
+     gbyAgg &quot; GroupBy    type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY
+               aggregates type INTEGER ( 19 ) as P_PARTKEY $K1 ,
+                          type DECIMAL ( 19  2 ) as PS_SUPPLYCOST_MIN ) PS_SUPPLYCOST_MIN min &quot;
+     | combined 0
+     | next
+
+  stage S06 on origin :
+    hash &quot;type INTEGER ( 19 ) P_PARTKEY&quot;
+    | combined 0
+    | next hashcast
+
+  stage S07 on all partitions  multiple threads 4:
+    indexJoin partsupp IxPS_PARTKEY &quot;BOUND $I1 P_PARTKEY ==&quot;
+    | filter &quot;type BOOLEAN PS_SUPPLYCOST_MIN PS_SUPPLYCOST ==&quot;
+    | project &quot;type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY ,
+               type INTEGER ( 19 ) as PS_SUPPKEY PS_SUPPKEY&quot;
+    | indexJoin part IxP_PARTKEY &quot;BOUND $I1 P_PARTKEY ==&quot;
+    | filter &quot; type BOOLEAN  }  P_TYPE &apos;%BRASS&apos;  6 matchTrailing P_SIZE 15 == and&quot;
+    | project &quot; type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY ,
+                type INTEGER ( 19 ) as PS_SUPPKEY PS_SUPPKEY ,
+                type VARCHAR ( 0 ) as P_MFGR P_MFGR&quot;
+    | hash &quot;type INTEGER ( 19 ) PS_SUPPKEY&quot;
+    | combined 0
+    | next hashcast
+
+  stage S08 on all partitions:
+    indexJoin supplier IxS_SUPPKEY &quot;BOUND $I1 PS_SUPPKEY ==&quot;
+    | project &quot; type INTEGER ( 19 ) as S_NATIONKEY S_NATIONKEY ,
+                type DECIMAL ( 19  2 ) as S_ACCTBAL S_ACCTBAL ,
+                type VARCHAR ( 0 ) as S_NAME S_NAME ,
+                type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY ,
+                type VARCHAR ( 0 ) as P_MFGR P_MFGR ,
+                type VARCHAR ( 0 ) as S_ADDRESS S_ADDRESS ,
+                type VARCHAR ( 0 ) as S_PHONE S_PHONE ,
+                type VARCHAR ( 0 ) as S_COMMENT S_COMMENT &quot;
+    | indexJoin nation IxN_NATIONKEY &quot;BOUND $I1 S_NATIONKEY ==&quot;
+    | project &quot; type DECIMAL ( 19  2 ) as S_ACCTBAL S_ACCTBAL ,
+                type VARCHAR ( 0 ) as S_NAME S_NAME ,
+                type VARCHAR ( 0 ) as N_NAME N_NAME ,
+                type INTEGER ( 19 ) as N_REGIONKEY N_REGIONKEY ,
+                 type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY ,
+                 type VARCHAR ( 0 ) as P_MFGR P_MFGR ,
+                 type VARCHAR ( 0 ) as S_ADDRESS S_ADDRESS ,
+                 type VARCHAR ( 0 ) as S_PHONE S_PHONE ,
+                 type VARCHAR ( 0 ) as S_COMMENT S_COMMENT &quot;
+    | indexJoin region IxR_REGIONKEY &quot;BOUND $I1 N_REGIONKEY ==&quot;
+    | filter &quot; type BOOLEAN  R_NAME &apos;EUROPE&apos;  == &quot;
+    | sort &quot;type DECIMAL ( 19  2 ) S_ACCTBAL DESC ,
+            type VARCHAR ( 0 ) N_NAME ASC ,
+            type VARCHAR ( 0 ) S_NAME ASC ,
+            type INTEGER ( 19 ) P_PARTKEY ASC&quot;
+    | limit 100
+    | combined 0
+    | next
+
+  stage S13 on all nodes :
+    sort &quot;type DECIMAL ( 19  2 ) S_ACCTBAL DESC ,
+          type VARCHAR ( 0 ) N_NAME ASC ,
+          type VARCHAR ( 0 ) S_NAME ASC ,
+          type INTEGER ( 19 ) P_PARTKEY ASC&quot;
+    | limit 100
+    | combined 0
+    | next
+
+  stage S14 on origin :
+    sort &quot;type DECIMAL ( 19  2 ) S_ACCTBAL DESC ,
+          type VARCHAR ( 0 ) N_NAME ASC ,
+          type VARCHAR ( 0 ) S_NAME ASC ,
+          type INTEGER ( 19 ) P_PARTKEY ASC&quot;
+    | limit 100
+    | combined 0
+    | next
+
+  stage S15 on origin :
+    output
+    | sink
+    | first
+end ;
+</stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="queryTimeout"></stringProp>
@@ -2032,7 +2175,7 @@ limit 10;</stringProp>
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q3_2n_p_4mt" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q3_2n_p_opt1_4mt" enabled="true">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
 pipeline Query3
@@ -2107,6 +2250,86 @@ begin
     | first
 end ;
 </stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q3_poc3_4mt" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">/optimise_passthru
+pipeline Query3
+begin
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
+
+  stage S01 on all partitions :
+    scan Customer
+    | project &quot;type INTEGER ( 19 ) as C_CUSTKEY C_CUSTKEY ,
+               type VARCHAR as C_MKTSEGMENT C_MKTSEGMENT &quot;
+    | filter &quot;type BOOLEAN C_MKTSEGMENT &apos;BUILDING&apos; ==&quot;
+    | project &quot;type INTEGER ( 19 ) as C_CUSTKEY C_CUSTKEY&quot;
+    | indexjoin Orders IxO_CUSTKEY &quot;BOUND $I1 C_CUSTKEY ==&quot;
+    | project &quot;type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY ,
+               type DATE as O_ORDERDATE O_ORDERDATE ,
+               type INTEGER ( 19 ) as O_SHIPPRIORITY O_SHIPPRIORITY&quot;
+    | filter &quot;type BOOLEAN O_ORDERDATE DATE &apos;1995-03-15&apos; &lt;&quot;
+    | hash &quot;type INTEGER ( 19 ) O_ORDERKEY&quot;
+    | combined 0
+    | next hashcast
+
+  stage S03 on all partitions :
+    sort &quot;type INTEGER ( 19 ) O_ORDERKEY ASC&quot;
+    | combined 0
+    | next
+
+  stage S04 on all partitions multiple threads 4:
+    indexjoin Lineitem IxL_ORDERKEY &quot;BOUND $I1 O_ORDERKEY ==&quot;
+    | project &quot;type INTEGER ( 19 ) as L_ORDERKEY L_ORDERKEY ,
+               type DECIMAL ( 19 2 ) as L_EXTENDEDPRICE L_EXTENDEDPRICE ,
+               type DECIMAL ( 19 2 ) as L_DISCOUNT L_DISCOUNT ,
+               type DATE as L_SHIPDATE L_SHIPDATE ,
+               type DATE as O_ORDERDATE O_ORDERDATE ,
+               type INTEGER ( 19 ) as O_SHIPPRIORITY O_SHIPPRIORITY&quot;
+    | filter &quot;type BOOLEAN L_SHIPDATE DATE &apos;1995-03-15&apos; &gt;&quot;
+    | ordAgg &quot; OrdGroupBy type INTEGER ( 19 ) L_ORDERKEY
+               aggregates type INTEGER ( 19 ) as L_ORDERKEY $K1 ,
+                          type DECIMAL ( 19  2 ) as REVENUE ) L_EXTENDEDPRICE 1. L_DISCOUNT -  *  sum  ,
+                          type DATE as O_ORDERDATE  O_ORDERDATE ,
+                          type INTEGER ( 19 ) as O_SHIPPRIORITY O_SHIPPRIORITY &quot;
+    | combined 0
+    | next
+
+  stage S05 on all partitions :
+    sort &quot; type DECIMAL ( 19  2 ) REVENUE DESC , type DATE O_ORDERDATE ASC  &quot;
+    | limit 10
+    | combined 0
+    | next
+
+  stage S06 on all nodes :
+    sort &quot; type DECIMAL ( 19  2 ) REVENUE DESC , type DATE O_ORDERDATE ASC  &quot;
+    | limit 10
+    | combined 0
+    | next
+
+  stage S07 on origin :
+    sort &quot; type DECIMAL ( 19  2 ) REVENUE DESC , type DATE O_ORDERDATE ASC  &quot;
+    | limit 10
+    | combined 0
+    | next
+
+  stage S08 on origin :
+    output
+    | sink
+    | first
+end ;</stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="queryTimeout"></stringProp>
@@ -2195,7 +2418,7 @@ order by
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q4_2n_p_4mt" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q4_2n_p_opt1_4mt" enabled="true">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
 pipeline Query4
@@ -2518,7 +2741,7 @@ where
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q6_2n_4mt" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q6_2n_opt1_4mt" enabled="true">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
 pipeline Query6
@@ -2558,6 +2781,94 @@ begin
     | first
 
 end ;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q6_poc3_p_opt1" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">/optimise_passthru
+pipeline Query6
+ begin
+   stage S00 on origin :
+     start
+     | pulse once
+     | next
+
+   stage S01 on all partitions :
+     indexscan lineitem IxL_SHIPDATE &quot;LBOUND $I1 DATE &apos;1994-01-01&apos; &gt;= UBOUND $I1 DATE &apos;1995-01-01&apos; &lt;&quot;
+     |  project   &quot;type DECIMAL ( 15 2 ) as L_QUANTITY L_QUANTITY
+                      , type DECIMAL ( 15 2 ) as L_EXTENDEDPRICE L_EXTENDEDPRICE
+                      , type DECIMAL ( 15 2 ) as L_DISCOUNT L_DISCOUNT&quot;
+     | filter &quot; type BOOLEAN  }  0.05 0.07 L_DISCOUNT between L_QUANTITY 24. &lt; and&quot;
+     | aggreg &quot; type DECIMAL ( 19  2 ) as REVENUE ) L_EXTENDEDPRICE L_DISCOUNT *  sum  &quot;
+     | combined 0
+     | next
+
+   stage S02 on all nodes :
+     aggreg &quot; type DECIMAL ( 19  2 ) as REVENUE ) REVENUE sum  &quot;
+     | combined 0
+     | next
+
+   stage S03 on origin :
+     aggreg &quot; type DECIMAL ( 19  2 ) as REVENUE ) REVENUE sum  &quot;
+     | combined 0
+     | next
+
+   stage S04 on origin :
+     output
+     | sink
+     | first
+end ;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q6_poc3_p_opt1_scan_mt" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">/optimise_passthru
+pipeline Query6
+ begin
+   stage S00 on origin :
+     start
+     | pulse once
+     | next
+
+   stage S01 on all partitions multiple threads 4:
+     scan lineitem
+     | filter &quot; type BOOLEAN  L_SHIPDATE DATE &apos;1994-01-01&apos;  &gt;=  L_SHIPDATE DATE &apos;1995-01-01&apos;  &lt;  and  }  0.05 0.07 L_DISCOUNT between  and  L_QUANTITY 24.  &lt;  and  &quot;
+     | aggreg &quot; type DECIMAL ( 19  2 ) as REVENUE ) L_EXTENDEDPRICE L_DISCOUNT *  sum  &quot;
+     | combined 0
+     | next
+
+   stage S02 on all nodes :
+     aggreg &quot; type DECIMAL ( 19  2 ) as REVENUE ) REVENUE sum  &quot;
+     | combined 0
+     | next
+
+   stage S03 on origin :
+     aggreg &quot; type DECIMAL ( 19  2 ) as REVENUE ) REVENUE sum  &quot;
+     | combined 0
+     | next
+
+   stage S04 on origin :
+     output
+     | sink
+     | first
+end ;
+</stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="queryTimeout"></stringProp>
@@ -2667,6 +2978,124 @@ order by
               </JDBCSampler>
               <hashTree/>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q7_POC3_4mt" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">/optimise_passthru
+pipeline Query7
+begin
+   stage S00 on origin :
+     start
+     | pulse once
+     | next
+
+   stage S01 on all partitions :
+     scan nation
+     | project &quot;type INTEGER ( 19 ) as N_NATIONKEY N_NATIONKEY ,
+                type VARCHAR ( 0 ) as N2_N_NAME N_NAME&quot;
+     | filter &quot;type BOOLEAN N2_N_NAME &apos;FRANCE&apos; == N2_N_NAME &apos;GERMANY&apos; == OR&quot;
+     | project &quot;type INTEGER ( 19 ) as N_NATIONKEY N_NATIONKEY ,
+                type VARCHAR ( 0 ) as N2_N_NAME N2_N_NAME&quot;
+     | combined 0
+     | next
+
+   stage S02 on all partitions :
+     indexJoin customer IxC_NATIONKEY &quot;BOUND $I1 N_NATIONKEY ==&quot;
+     | project &quot;type INTEGER ( 19 ) as C_CUSTKEY C_CUSTKEY ,
+                type VARCHAR ( 0 ) as N2_N_NAME N2_N_NAME&quot;
+     | combined 0
+     | next
+
+   stage S03 on all partitions :
+     indexJoin orders IxO_CUSTKEY &quot;BOUND $I1 C_CUSTKEY ==&quot;
+     | project &quot;type integer ( 19 ) as O_ORDERKEY O_ORDERKEY ,
+                type VARCHAR ( 0 ) as N2_N_NAME N2_N_NAME&quot;
+     | hash &quot;type INTEGER ( 19 ) O_ORDERKEY&quot;
+     | combined 0
+     | next hashcast
+
+   stage S04 on all partitions  multiple threads 4:
+     indexJoin LineItem IxL_ORDERKEY &quot;BOUND $I1 O_ORDERKEY ==&quot;
+     | project &quot;type INTEGER ( 19 ) as L_SUPPKEY L_SUPPKEY ,
+                type VARCHAR ( 0 ) as N2_N_NAME N2_N_NAME ,
+                type DATE ( 0 ) as L_SHIPDATE L_SHIPDATE ,
+                type DECIMAL ( 19  2 ) as L_EXTENDEDPRICE L_EXTENDEDPRICE  ,
+                type DECIMAL ( 19  2 ) as L_DISCOUNT L_DISCOUNT &quot;
+     | filter &quot;type BOOLEAN } DATE &apos;1995-01-01&apos;  DATE &apos;1996-12-31&apos; L_SHIPDATE between&quot;
+     | project &quot;type INTEGER ( 19 ) as L_SUPPKEY L_SUPPKEY ,
+                type VARCHAR ( 0 ) as N2_N_NAME N2_N_NAME ,
+                type INTEGER ( 19 ) as L_YEAR L_SHIPDATE extract_year ,
+                type DECIMAL ( 19  2 ) as volume L_EXTENDEDPRICE 1.00 L_DISCOUNT -  * &quot;
+     | hash &quot;type INTEGER ( 19 ) L_SUPPKEY &quot;
+     | combined 0
+     | next hashcast
+
+   stage S05 on all partitions :
+     indexJoin Supplier IxS_SUPPKEY expr bound $I1 L_SUPPKEY ==
+     | project &quot;type INTEGER ( 19 ) as S_NATIONKEY S_NATIONKEY ,
+                type VARCHAR ( 0 ) as N2_N_NAME N2_N_NAME ,
+                type INTEGER ( 19 ) as L_YEAR L_YEAR ,
+                type DECIMAL ( 19  2 ) as VOLUME VOLUME&quot;
+     | combined 0
+     | next
+
+   stage S06 on all partitions :
+     indexJoin Nation IxN_NATIONKEY expr bound $I1 S_NATIONKEY ==
+     | project &quot;type VARCHAR ( 0 ) as N1_N_NAME N_NAME ,
+                     type VARCHAR ( 0 ) as N2_N_NAME N2_N_NAME ,
+                     type INTEGER ( 19 ) as L_YEAR L_YEAR ,
+                     type DECIMAL ( 19  2 ) as VOLUME VOLUME&quot;
+     | filter &quot;type BOOLEAN N1_N_NAME &apos;FRANCE&apos; == N2_N_NAME &apos;GERMANY&apos; == and
+                            N1_N_NAME &apos;GERMANY&apos; == N2_N_NAME &apos;FRANCE&apos; == and or&quot;
+     | gbyAgg &quot; GroupBy type VARCHAR ( 0 ) as N1_N_NAME N1_N_NAME ,
+                      type VARCHAR ( 0 ) as N2_N_NAME N2_N_NAME ,
+                      type INTEGER ( 19 ) as L_YEAR L_YEAR aggregates
+                      type VARCHAR ( 0 ) as N1_N_NAME $K1 ,
+                      type VARCHAR ( 0 ) as N2_N_NAME $K2 ,
+                      type INTEGER ( 19 ) as L_YEAR $K3 ,
+                      type DECIMAL ( 19  2 ) AS REVENUE ) VOLUME sum  &quot;
+     | combined 0
+     | next
+
+   stage S08 on all nodes :
+    gbyAgg &quot; GroupBy type VARCHAR ( 0 ) as N1_N_NAME N1_N_NAME ,
+                     type VARCHAR ( 0 ) as N2_N_NAME N2_N_NAME ,
+                     type INTEGER ( 19 ) as L_YEAR L_YEAR
+                     aggregates
+                     type VARCHAR ( 0 ) as N1_N_NAME $K1 ,
+                     type VARCHAR ( 0 ) as N2_N_NAME $K2 ,
+                     type INTEGER ( 19 ) as L_YEAR $K3 ,
+                     type DECIMAL ( 19  2 ) AS REVENUE ) REVENUE sum  &quot;
+     | combined 0
+     | next
+
+   stage S09 on origin :
+     gbyAgg &quot; GroupBy type VARCHAR ( 0 ) as SUPP_NATION N1_N_NAME ,
+                      type VARCHAR ( 0 ) as CUST_NATION N2_N_NAME ,
+                      type INTEGER ( 19 ) as L_YEAR L_YEAR
+                      aggregates
+                      type VARCHAR ( 0 ) as N1_N_NAME $K1 ,
+                      type VARCHAR ( 0 ) as N2_N_NAME $K2 ,
+                      type INTEGER ( 19 ) as L_YEAR $K3 ,
+                      type DECIMAL ( 19  2 ) AS REVENUE ) REVENUE sum  &quot;
+     | combined 0
+     | next
+
+   stage S10 on origin :
+     output
+     | sink
+     | first
+ end ;
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q7_POC3_4mt_m" enabled="true">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
 pipeline Query7
@@ -3984,7 +4413,7 @@ end ;</stringProp>
               </hashTree>
             </hashTree>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q15 Group" enabled="false"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q15 Group" enabled="true"/>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
@@ -4014,7 +4443,7 @@ OUT.flush();</stringProp>
               <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
             </LoopController>
             <hashTree>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q15" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q15" enabled="false">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">select 
   s_suppkey, 
@@ -4030,6 +4459,142 @@ where
   and total_revenue &gt;= ( select max(total_revenue) from revenue)
 order by 
   s_suppkey;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="TestPlan.comments">IMPORTANT NOTE:
+
+This query requires a view to be created first.</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q15_poc3" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">/optimise_passthru
+pipeline Query15
+ begin
+   stage S00 on origin :
+     start
+     | pulse once
+     | next
+
+   stage S01 on all partitions :
+     indexScan lineitem IxL_SHIPDATE &quot;LBOUND $I1 DATE &apos;1996-01-01&apos; &gt;= UBOUND $I1 DATE &apos;1996-04-01&apos; &lt;&quot;
+     | gbyAgg &quot; GroupBy    type INTEGER ( 19 ) as l_suppkey $3
+                aggregates type INTEGER ( 19 ) $K1 ,
+                           type DECIMAL ( 19  2 ) as total_revenue )  $6 1.00  $7 -  *  sum&quot;
+     | combined 0
+     | next
+
+   stage S02 on all nodes :
+     gbyAgg &quot; GroupBy    type INTEGER ( 19 ) as l_suppkey $1
+              aggregates type INTEGER ( 19 ) $K1 ,
+                         type DECIMAL ( 19  2 ) as total_revenue )  $2 sum  &quot;
+     | combined 0
+     | next
+
+   stage S03 on origin :
+     gbyAgg &quot; GroupBy    type INTEGER ( 19 ) as l_suppkey $1
+              aggregates type INTEGER ( 19 ) as supplier_no $K1 ,
+                         type DECIMAL ( 19  2 ) as total_revenue )  $2 sum  &quot;
+     | combined 0
+     | next
+
+   stage S04 on origin :
+     top &quot;type DECIMAL ( 19  2 ) $2&quot; 1
+     | hash &quot;type INTEGER ( 19 ) supplier_no&quot;
+     | combined 0
+     | next hashcast
+
+   stage S05 on all partitions :
+     indexJoin supplier IxS_SuppKey &quot;BOUND $I1 supplier_no ==&quot; //J1
+     | Project   &quot;   type INTEGER ( 19 ) as s_suppkey s_suppkey
+                   , type VARCHAR ( 25 ) as s_name s_name
+                   , type VARCHAR ( 40 ) as s_address s_address
+                   , type VARCHAR ( 15 ) as s_phone s_phone
+                   , type DECIMAL ( 19  2 ) as total_revenue total_revenue&quot;
+
+     | combined 0
+     | next
+
+   stage S06 on origin :
+     output
+     | sink
+     | first
+ end ;
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="TestPlan.comments">IMPORTANT NOTE:
+
+This query requires a view to be created first.</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q15_poc3_mt" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">/optimise_passthru
+pipeline Query15
+ begin
+   stage S00 on origin :
+     start
+     | pulse once
+     | next
+
+   stage S01 on all partitions :
+     indexScan lineitem IxL_SHIPDATE &quot;LBOUND $I1 DATE &apos;1996-01-01&apos; &gt;= UBOUND $I1 DATE &apos;1996-04-01&apos; &lt;&quot;
+     | gbyAgg &quot; GroupBy    type INTEGER ( 19 ) as l_suppkey $3
+                aggregates type INTEGER ( 19 ) $K1 ,
+                           type DECIMAL ( 19  2 ) as total_revenue )  $6 1.00  $7 -  *  sum&quot;
+     | combined 0
+     | next
+
+   stage S02 on all nodes :
+     gbyAgg &quot; GroupBy    type INTEGER ( 19 ) as l_suppkey $1
+              aggregates type INTEGER ( 19 ) $K1 ,
+                         type DECIMAL ( 19  2 ) as total_revenue )  $2 sum  &quot;
+     | combined 0
+     | next
+
+   stage S03 on origin :
+     gbyAgg &quot; GroupBy    type INTEGER ( 19 ) as l_suppkey $1
+              aggregates type INTEGER ( 19 ) as supplier_no $K1 ,
+                         type DECIMAL ( 19  2 ) as total_revenue )  $2 sum  &quot;
+     | combined 0
+     | next
+
+   stage S04 on origin :
+     top &quot;type DECIMAL ( 19  2 ) $2&quot; 1
+     | hash &quot;type INTEGER ( 19 ) supplier_no&quot;
+     | combined 0
+     | next hashcast
+
+   stage S05 on all partitions multiple threads 4:
+     indexJoin supplier IxS_SuppKey &quot;BOUND $I1 supplier_no ==&quot; //J1
+     | Project   &quot;   type INTEGER ( 19 ) as s_suppkey s_suppkey
+                   , type VARCHAR ( 25 ) as s_name s_name
+                   , type VARCHAR ( 40 ) as s_address s_address
+                   , type VARCHAR ( 15 ) as s_phone s_phone
+                   , type DECIMAL ( 19  2 ) as total_revenue total_revenue&quot;
+
+     | combined 0
+     | next
+
+   stage S06 on origin :
+     output
+     | sink
+     | first
+ end ;
+</stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="queryTimeout"></stringProp>
@@ -4350,7 +4915,7 @@ end ;</stringProp>
               </hashTree>
             </hashTree>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q18 Group" enabled="false"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q18 Group" enabled="true"/>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
@@ -4416,6 +4981,227 @@ order by
   o_totalprice desc, 
   o_orderdate
 limit 100;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q18_POC3" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">/optimise_passthru
+pipeline Query18
+begin
+   stage S00 on origin :
+     start
+     | pulse once
+     | next
+
+   stage S01 on all partitions :
+      indexscan lineitem IxL_ORDERKEY &quot;lbound $I1 0 &gt;=&quot;
+     | ordAgg &quot; ordgroupBy  type INTEGER ( 19 ) as L_ORDERKEY L_ORDERKEY aggregates  type INTEGER ( 19 ) as L_ORDERKEY $K1 , type DECIMAL ( 19  2 ) as SUM_QTY )  L_QUANTITY sum  &quot;
+     | combined 0
+     | next
+
+  stage S02 on origin :
+     filter  &quot; type BOOLEAN  SUM_QTY 300.00  &gt;  &quot;
+     | combined 0
+     | next broadcast
+
+   stage S03 on all partitions :
+     indexJoin orders IxO_ORDERKEY &quot;bound $I1 $1 ==&quot;
+     | project &quot;type INTEGER ( 19 ) as O_CUSTKEY O_CUSTKEY ,
+                type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY ,
+                type DATE as O_ORDERDATE O_ORDERDATE ,
+                type DECIMAL ( 19  2 ) as O_TOTALPRICE O_TOTALPRICE ,
+                type DECIMAL ( 19  2 ) as SUM_QTY SUM_QTY &quot;
+     | combined 0
+     | next
+
+   stage S04 on all partitions :
+     indexJoin customer IxC_CUSTKEY &quot;bound $I1 $1 ==&quot;
+     | project &quot;type VARCHAR ( 0 ) as C_NAME C_NAME ,
+                type INTEGER ( 19 ) as C_CUSTKEY C_CUSTKEY ,
+                type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY ,
+                type DATE as O_ORDERDATE O_ORDERDATE ,
+                type DECIMAL ( 19  2 ) as O_TOTALPRICE O_TOTALPRICE ,
+                type DECIMAL ( 19  2 ) as SUM_QTY SUM_QTY &quot;
+     | combined 0
+     | next
+
+   stage S05 on all partitions :
+     gbyAgg &quot; GroupBy type VARCHAR ( 0 ) as C_NAME C_NAME ,
+                      type INTEGER ( 19 ) as C_CUSTKEY C_CUSTKEY ,
+                      type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY ,
+                      type DATE as O_ORDERDATE O_ORDERDATE ,
+                      type DECIMAL ( 19  2 ) as O_TOTALPRICE O_TOTALPRICE
+                      aggregates
+                      type VARCHAR ( 0 ) as C_NAME $K1 ,
+                      type INTEGER ( 19 ) as C_CUSTKEY $K2 ,
+                      type INTEGER ( 19 ) as O_ORDERKEY $K3 ,
+                      type DATE as O_ORDERDATE $K4 ,
+                      type DECIMAL ( 19  2 ) as O_TOTALPRICE $K5 ,
+                      type DECIMAL ( 19  2 ) as SUM_QTY ) SUM_QTY sum  &quot;
+     | combined 0
+     | next
+
+   stage S06 on all nodes :
+     gbyAgg &quot; GroupBy  type VARCHAR ( 0 ) as C_NAME C_NAME ,
+                       type INTEGER ( 19 ) as C_CUSTKEY C_CUSTKEY ,
+                       type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY ,
+                       type DATE as O_ORDERDATE O_ORDERDATE ,
+                       type DECIMAL ( 19  2 ) as O_TOTALPRICE O_TOTALPRICE
+                       aggregates
+                       type VARCHAR ( 0 ) as C_NAME $K1 ,
+                       type INTEGER ( 19 ) as C_CUSTKEY $K2 ,
+                       type INTEGER ( 19 ) as O_ORDERKEY $K3 ,
+                       type DATE as O_ORDERDATE $K4 ,
+                       type DECIMAL ( 19  2 ) as O_TOTALPRICE $K5 ,
+                       type DECIMAL ( 19  2 ) as SUM_QTY ) SUM_QTY sum  &quot;
+     | combined 0
+     | next
+
+   stage S07 on origin :
+     gbyAgg &quot; GroupBy  type VARCHAR ( 0 ) as C_NAME C_NAME ,
+                       type INTEGER ( 19 ) as C_CUSTKEY C_CUSTKEY ,
+                       type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY ,
+                       type DATE as O_ORDERDATE O_ORDERDATE ,
+                       type DECIMAL ( 19  2 ) as O_TOTALPRICE O_TOTALPRICE
+                       aggregates
+                       type VARCHAR ( 0 ) as C_NAME $K1 ,
+                       type INTEGER ( 19 ) as C_CUSTKEY $K2 ,
+                       type INTEGER ( 19 ) as O_ORDERKEY $K3 ,
+                       type DATE as O_ORDERDATE $K4 ,
+                       type DECIMAL ( 19  2 ) as O_TOTALPRICE $K5 ,
+                       type DECIMAL ( 19  2 ) as SUM_QTY ) SUM_QTY sum  &quot;
+     | combined 0
+     | next
+
+   stage S08 on origin :
+     sort &quot; type DECIMAL ( 19  2 ) as O_TOTALPRICE O_TOTALPRICE DESC  , type DATE as O_ORDERDATE O_ORDERDATE ASC  &quot;
+     | limit 100
+     | combined 0
+     | next
+
+   stage S10 on origin :
+     output
+     | sink
+     | first
+ end ;
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q18_POC3_mt" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">/keepCodeFile
+/optimise_passthru
+pipeline Query18
+begin
+   stage S00 on origin :
+     start
+     | pulse once
+     | next
+
+   stage S01 on all partitions :
+      indexscan lineitem IxL_ORDERKEY &quot;lbound $I1 0 &gt;=&quot;
+     | ordAgg &quot; ordgroupBy  type INTEGER ( 19 ) as L_ORDERKEY L_ORDERKEY aggregates  type INTEGER ( 19 ) as L_ORDERKEY $K1 , type DECIMAL ( 19  2 ) as SUM_QTY )  L_QUANTITY sum  &quot;
+     | combined 0
+     | next
+
+  stage S02 on origin :
+     filter  &quot; type BOOLEAN  SUM_QTY 300.00  &gt;  &quot;
+     | combined 0
+     | next broadcast
+
+   stage S03 on all partitions multiple threads 4:
+     indexJoin orders IxO_ORDERKEY &quot;bound $I1 $1 ==&quot;
+     | project &quot;type INTEGER ( 19 ) as O_CUSTKEY O_CUSTKEY ,
+                type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY ,
+                type DATE as O_ORDERDATE O_ORDERDATE ,
+                type DECIMAL ( 19  2 ) as O_TOTALPRICE O_TOTALPRICE ,
+                type DECIMAL ( 19  2 ) as SUM_QTY SUM_QTY &quot;
+     | indexJoin customer IxC_CUSTKEY &quot;bound $I1 $1 ==&quot;
+     | project &quot;type VARCHAR ( 0 ) as C_NAME C_NAME ,
+                type INTEGER ( 19 ) as C_CUSTKEY C_CUSTKEY ,
+                type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY ,
+                type DATE as O_ORDERDATE O_ORDERDATE ,
+                type DECIMAL ( 19  2 ) as O_TOTALPRICE O_TOTALPRICE ,
+                type DECIMAL ( 19  2 ) as SUM_QTY SUM_QTY &quot;
+     | combined 0
+     | next
+
+   stage S05 on all partitions :
+     gbyAgg &quot; GroupBy type VARCHAR ( 0 ) as C_NAME C_NAME ,
+                      type INTEGER ( 19 ) as C_CUSTKEY C_CUSTKEY ,
+                      type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY ,
+                      type DATE as O_ORDERDATE O_ORDERDATE ,
+                      type DECIMAL ( 19  2 ) as O_TOTALPRICE O_TOTALPRICE
+                      aggregates
+                      type VARCHAR ( 0 ) as C_NAME $K1 ,
+                      type INTEGER ( 19 ) as C_CUSTKEY $K2 ,
+                      type INTEGER ( 19 ) as O_ORDERKEY $K3 ,
+                      type DATE as O_ORDERDATE $K4 ,
+                      type DECIMAL ( 19  2 ) as O_TOTALPRICE $K5 ,
+                      type DECIMAL ( 19  2 ) as SUM_QTY ) SUM_QTY sum  &quot;
+     | combined 0
+     | next
+
+   stage S06 on all nodes :
+     gbyAgg &quot; GroupBy  type VARCHAR ( 0 ) as C_NAME C_NAME ,
+                       type INTEGER ( 19 ) as C_CUSTKEY C_CUSTKEY ,
+                       type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY ,
+                       type DATE as O_ORDERDATE O_ORDERDATE ,
+                       type DECIMAL ( 19  2 ) as O_TOTALPRICE O_TOTALPRICE
+                       aggregates
+                       type VARCHAR ( 0 ) as C_NAME $K1 ,
+                       type INTEGER ( 19 ) as C_CUSTKEY $K2 ,
+                       type INTEGER ( 19 ) as O_ORDERKEY $K3 ,
+                       type DATE as O_ORDERDATE $K4 ,
+                       type DECIMAL ( 19  2 ) as O_TOTALPRICE $K5 ,
+                       type DECIMAL ( 19  2 ) as SUM_QTY ) SUM_QTY sum  &quot;
+     | combined 0
+     | next
+
+   stage S07 on origin :
+     gbyAgg &quot; GroupBy  type VARCHAR ( 0 ) as C_NAME C_NAME ,
+                       type INTEGER ( 19 ) as C_CUSTKEY C_CUSTKEY ,
+                       type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY ,
+                       type DATE as O_ORDERDATE O_ORDERDATE ,
+                       type DECIMAL ( 19  2 ) as O_TOTALPRICE O_TOTALPRICE
+                       aggregates
+                       type VARCHAR ( 0 ) as C_NAME $K1 ,
+                       type INTEGER ( 19 ) as C_CUSTKEY $K2 ,
+                       type INTEGER ( 19 ) as O_ORDERKEY $K3 ,
+                       type DATE as O_ORDERDATE $K4 ,
+                       type DECIMAL ( 19  2 ) as O_TOTALPRICE $K5 ,
+                       type DECIMAL ( 19  2 ) as SUM_QTY ) SUM_QTY sum  &quot;
+     | combined 0
+     | next
+
+   stage S08 on origin :
+     sort &quot; type DECIMAL ( 19  2 ) as O_TOTALPRICE O_TOTALPRICE DESC  , type DATE as O_ORDERDATE O_ORDERDATE ASC  &quot;
+     | limit 100
+     | combined 0
+     | next
+
+   stage S10 on origin :
+     output
+     | sink
+     | first
+ end ;
+</stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="queryTimeout"></stringProp>
@@ -4792,6 +5578,103 @@ end ;</stringProp>
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q20_poc3_mt" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">/optimise_passthru
+pipeline Query20
+begin
+
+    stage S00 on origin :
+      start
+      | pulse once
+      | next
+
+    stage S01 on all partitions multiple threads 4:
+      scan rapidsse public Part
+      | filter &quot; type BOOLEAN  }  $2 &apos;forest%&apos;  7 matchLeading &quot;
+      | project &quot; type INTEGER ( 19 ) as p_partkey $1 &quot;
+      | combined 0
+      | next broadcast
+
+    stage S02 on all partitions:
+      indexJoin lineitem IxL_PARTKEY &quot;BOUND $I1 P_PARTKEY ==&quot;
+      | filter &quot; type BOOLEAN  L_SHIPDATE DATE &apos;1994-01-01&apos; &gt;= L_SHIPDATE DATE &apos;1995-01-01&apos;  &lt;  and  &quot;
+      | gbyAgg &quot; groupBy  type integer ( 19 ) P_PARTKEY ,
+                          type integer ( 19 ) L_SUPPKEY
+                       aggregates type integer ( 19 ) as P_PARTKEY $K1 ,
+                                  type integer ( 19 ) as L_SUPPKEY $K2 ,
+                                  type DECIMAL ( 19  2 ) )  $6 sum&quot;
+      | combined 0
+      | next
+
+    stage S03 on all nodes :
+      gbyAgg &quot; groupBy type integer ( 19 ) P_PARTKEY ,
+                       type integer ( 19 ) L_SUPPKEY
+                  aggregates type integer ( 19 ) as P_PARTKEY $K1 ,
+                             type integer ( 19 ) as L_SUPPKEY $K2 ,
+                             type DECIMAL ( 19  2 ) )  $3 sum&quot;
+      | combined 0
+      | next
+
+    stage S04 on origin :
+      gbyAgg &quot; groupBy type integer ( 19 ) P_PARTKEY ,
+                       type integer ( 19 ) L_SUPPKEY
+                   aggregates type integer ( 19 ) as P_PARTKEY $K1 ,
+                              type integer ( 19 ) as L_SUPPKEY $K2 ,
+                              type DECIMAL ( 19  2 ) )  $3 sum&quot;
+      | combined 0
+      | next
+
+    stage S05 on origin :
+      project &quot; type integer ( 19 ) as P_PARTKEY P_PARTKEY , type integer ( 19 ) as L_SUPPKEY L_SUPPKEY , type DECIMAL ( 19  2 ) as sqyResult 0.5  $3 *  &quot;
+      | combined 0
+      | next broadcast
+
+   stage S06 on all partitions  multiple threads 4:
+     indexJoin partSupp IxPS_SUPPKEY &quot;BOUND $I1 L_SUPPKEY ==&quot;
+     | filter &quot; type BOOLEAN P_PARTKEY PS_PARTKEY == PS_AVAILQTY casttype DECIMAL ( 19  2 ) CAST sqyResult  &gt; and &quot;
+     | project &quot; type INTEGER ( 19 ) as PS_SUPPKEY $2&quot;
+     | hash &quot;type INTEGER ( 19 ) PS_SUPPKEY&quot;
+     | combined 0
+     | next hashcast
+
+   stage S07 on all partitions :
+     gbyAgg &quot; groupBy type integer ( 19 ) PS_SUPPKEY
+                        aggregates type integer ( 19 ) as PS_SUPPKEY $K1&quot;
+     | combined 0
+     | next
+
+  stage S08 on all partitions :
+    indexJoin Supplier IxS_SUPPKEY &quot;BOUND $I1 PS_SUPPKEY ==&quot;
+    | project &quot; type INTEGER ( 19 ) as S_NATIONKEY S_NATIONKEY , type VARCHAR ( 0 ) as S_NAME S_NAME , type VARCHAR ( 0 ) as S_ADDRESS S_ADDRESS&quot;
+    | indexJoin Nation IxN_NATIONKEY &quot;BOUND $I1 S_NATIONKEY ==&quot;
+    | filter &quot; type BOOLEAN N_NAME &apos;CANADA&apos; ==  &quot;
+    | project &quot; type VARCHAR ( 0 ) as S_NAME S_NAME , type VARCHAR ( 0 ) as S_ADDRESS S_ADDRESS &quot;
+    | sort &quot; type VARCHAR ( 0 ) S_NAME ASC  &quot;
+    | combined 0
+    | next
+
+  stage S10 on origin :
+    sort &quot; type VARCHAR ( 0 ) S_NAME ASC  &quot;
+    | combined 0
+    | next
+
+  stage S11 on origin :
+    output
+    | sink
+    | first
+end ;
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
               <IfController guiclass="IfControllerPanel" testclass="IfController" testname="Check for error" enabled="true">
                 <stringProp name="IfController.condition">${__jexl3(!${JMeterThread.last_sample_ok},)}</stringProp>
                 <boolProp name="IfController.evaluateAll">false</boolProp>
@@ -4905,7 +5788,7 @@ order by
               </hashTree>
             </hashTree>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q22 Group" enabled="false"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q22 Group" enabled="true"/>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
@@ -4971,6 +5854,90 @@ group by
   cntrycode
 order by 
   cntrycode;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q22_poc3" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">/optimise_passthru
+pipeline Query22
+begin
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
+
+  stage S01 on all partitions:
+    scan Customer
+    | filter &quot; type BOOLEAN  C_ACCTBAL 0.00  &gt;
+               }  &apos;13&apos;  &apos;31&apos;  &apos;23&apos;  &apos;29&apos;  &apos;30&apos;  &apos;18&apos;  &apos;17&apos;  #7  C_PHONE 1  2  substring3  in  and  &quot;
+    | aggreg &quot; type DECIMAL ( 19  2 ) )  C_ACCTBAL sum  , type INTEGER ( 19 ) )  C_ACCTBAL count  &quot;
+    | combined 0
+    | next
+
+  stage S02 on all nodes :
+    aggreg &quot; type DECIMAL ( 19  2 ) )  $1 sum  , type INTEGER ( 19 ) )  $2 sum  &quot;
+    | combined 0
+    | next
+
+  stage S03 on origin :
+    aggreg &quot; type INTEGER ( 19 ) )  $2 sum  , type DECIMAL ( 19  2 ) )  $1 sum  &quot;
+    | combined 0
+    | next
+
+  stage S04 on origin :
+    project &quot; type DECIMAL ( 19  2 ) as acctbal $2 $1 casttype DECIMAL ( 19  2 ) CAST  /  &quot;
+    | combined 0
+    | next broadcast
+
+  stage S05 on all partitions  multiple threads 4:
+    indexJoin Customer IxC_CUSTKEY &quot;bound $I1&quot;
+    | filter &quot; type BOOLEAN  }  &apos;13&apos;  &apos;31&apos;  &apos;23&apos;  &apos;29&apos;  &apos;30&apos;  &apos;18&apos;  &apos;17&apos;  #7  C_PHONE 1  2  substring3  in
+              C_ACCTBAL acctbal  &gt;  and &quot;
+    | project &quot; type INTEGER ( 19 ) as C_CUSTKEY C_CUSTKEY , type VARCHAR ( 0 ) as cntrycode C_PHONE 1  2  substring3  , type DECIMAL ( 19  2 ) as C_ACCTBAL C_ACCTBAL &quot;
+    | combined 0
+    | next
+
+  stage S06 on all partitions :
+    keyNotExists ORDERS IxO_CUSTKEY  &quot;BOUND $I1 C_CUSTKEY ==&quot;
+                   &quot;type BOOLEAN O_CUSTKEY 0 &gt;&quot;
+    | project &quot; type VARCHAR ( 0 ) as cntrycode  cntrycode , type DECIMAL ( 19  2 ) as C_ACCTBAL  C_ACCTBAL&quot;
+    | combined 0
+    | next
+
+ stage S07 on all partitions :
+    gbyAgg &quot; groupBy  type VARCHAR ( 0 ) as cntrycode $1 aggregates  type VARCHAR ( 0 ) as cntrycode $K1 , type INTEGER ( 19 ) )  countAll  , type DECIMAL ( 19  2 ) )  $2 sum  &quot;
+    | combined 0
+    | next
+
+  stage S08 on all nodes :
+    gbyAgg &quot; groupBy  type VARCHAR ( 0 ) as cntrycode $1 aggregates  type VARCHAR ( 0 ) as cntrycode $K1 , type INTEGER ( 19 ) )  $2 sum  , type DECIMAL ( 19  2 ) )  $3 sum  &quot;
+    | combined 0
+    | next
+
+  stage S09 on origin :
+    gbyAgg &quot; groupBy  type VARCHAR ( 0 ) as cntrycode $1 aggregates  type VARCHAR ( 0 ) as cntrycode $K1 , type INTEGER ( 19 ) as numcust )  $2 sum  , type DECIMAL ( 19  2 ) as totacctbal )  $3 sum  &quot;
+    | combined 0
+    | next
+
+  stage S10 on origin :
+    sort &quot; type VARCHAR ( 0 ) as cntrycode $1 ASC  &quot;
+    | combined 0
+    | next
+
+  stage stageLast on origin :
+    output
+    | sink
+    | first
+end ;
+</stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="queryTimeout"></stringProp>

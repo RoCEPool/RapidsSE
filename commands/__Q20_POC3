@@ -52,7 +52,7 @@ begin
       | combined 0
       | next broadcast
 
-   stage S06 on all partitions :
+   stage S06 on all partitions  multiple threads 4:
      indexJoin partSupp IxPS_SUPPKEY "BOUND $I1 L_SUPPKEY =="
      | filter " type BOOLEAN P_PARTKEY PS_PARTKEY == PS_AVAILQTY casttype DECIMAL ( 19  2 ) CAST sqyResult  > and "
      | project " type INTEGER ( 19 ) as PS_SUPPKEY $2"
