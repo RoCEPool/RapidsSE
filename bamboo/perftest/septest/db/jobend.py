@@ -2,6 +2,7 @@ import datetime
 from decimal import Decimal
 import typing
 import logging
+import time
 
 import psycopg
 
@@ -12,6 +13,7 @@ from septest.results import TestResult
 # Create a main logger
 LOG = logging.getLogger(__name__)
 
+MAX_CONNECT_ATTEMPTS: int = 10
 
 def record_job_results(job_result_id: int,
                        abnormal_exit: bool,
@@ -23,23 +25,39 @@ def record_job_results(job_result_id: int,
     token = septest.db.dbhelper.get_auth_token()
     connect_params: {} = septest.db.dbhelper.get_connect_params()
 
-    # Note: not autocommit transactions
-    with psycopg.connect(password=token,
-                         autocommit=False,
-                         **connect_params) as conn:
-        cur = conn.cursor()
+    connect_attempts: int = 0
+    last_error: psycopg.errors.Error = None
 
-        __update_job_result_row(cur, job_result_id, abnormal_exit, test_results)
+    while connect_attempts < MAX_CONNECT_ATTEMPTS:
+        try:
+            # Note: not autocommit transactions
+            with psycopg.connect(password=token,
+                                 autocommit=False,
+                                 **connect_params) as conn:
+                cur = conn.cursor()
 
-        for test_result in test_results:
-            test_result_id = __create_test_result_row(cur, test_result)
-            __create_metric_result_rows(cur, test_result_id, test_result)
+                __update_job_result_row(cur, job_result_id, abnormal_exit, test_results)
 
-        # Commit the above transactions
-        conn.commit()
+                for test_result in test_results:
+                    test_result_id = __create_test_result_row(cur, test_result)
+                    __create_metric_result_rows(cur, test_result_id, test_result)
 
-    # Database connection will be automatically closed at this point
+                # Commit the above transactions
+                conn.commit()
+                return
 
+            # Database connection will be automatically closed at this point
+
+        except psycopg.errors.Error as e:
+            last_error = e
+            connect_attempts += 1
+            time.sleep(1)
+            continue
+
+    if last_error is not None:
+        raise last_error
+
+    raise errors.DatabaseError(f"Could not connect to the database after {MAX_CONNECT_ATTEMPTS} attempts.")
 
 def __update_job_result_row(cur: typing.Union[psycopg.Cursor[typing.Any], psycopg.ServerCursor[typing.Any]],
                             job_result_id: int,
