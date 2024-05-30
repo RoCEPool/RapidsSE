@@ -228,8 +228,8 @@ void Step::vMetaDataTableCreateTable(void)
                                          pColumn->szColNm(),
                                          (i8)pColumn->eColumnType(),
                                          aCT[pColumn->eColumnType()],
-                                         pColumn->iColumnScale(),
                                          pColumn->iColumnLength(),
+                                         pColumn->iColumnScale(),
                                          pColumn->bIsNullable(),
                                          (i8)pColumn->bIsPtnKey(),
                                          C_VARGS_END);

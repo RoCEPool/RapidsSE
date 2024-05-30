@@ -18,8 +18,8 @@
     Name           VARCHAR NOT NULL ,
     EnumType       INTEGER NOT NULL ,
     Type           VARCHAR NOT NULL ,
-    Scale          INTEGER NOT NULL ,
     Length         INTEGER NOT NULL ,
+    Scale          INTEGER NOT NULL ,
     Nullable       BOOLEAN NOT NULL ,
     IsPartitionKey BOOLEAN NOT NULL
   ) < metaData > = 1 ;

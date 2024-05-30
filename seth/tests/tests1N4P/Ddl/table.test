@@ -131,8 +131,8 @@ c47 boolean NOT NULL
 );
 success
 
-lscol ${testName2}_T1;
-rows: 48
+select * from columns where TableName = '${testName2}_T1';
+row range: [48,)
 
 select * from tableIndexes where TableName = '${testName2}_T1';
 rows: 0
@@ -237,10 +237,6 @@ failure contains: 'EC_SYNTAX_ERROR; Line: 2; Column: 33; mismatched input ''NUKK
 // lscol //
 ///////////
 
-// lscol on invalid table
-lscol noTable;
-failure contains: 'Table does not exist'
-
 // (17) create table t1
 create table ${testName2}_T1 (
    key   INTEGER NOT NULL,
@@ -261,10 +257,10 @@ success
 // success
 
 // lscol
-lscol ${testName2}_T1;
-rows:
-  ('key','INTEGER',19,0,false,true)
-  ('name','VARCHAR',32,0,false,false)
+select * from columns where TableName = '${testName2}_T1';
+contains rows:
+  (*, *, '${testName2}_T1', 0, 'key',  6, 'INTEGER',19,0,false,true)
+  (*, *, '${testName2}_T1', 1, 'name', 11,'VARCHAR',32,0,false,false)
 
 // () drop table t1
 drop table ${testName2}_T1 ;

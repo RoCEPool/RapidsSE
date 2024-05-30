@@ -16,7 +16,7 @@
 
 
 // There should be no tables loaded to start with.
-lstbl;
+select * from tableOfTables where TableType = 4;
 rows: 0
 
 
@@ -37,12 +37,12 @@ contains rows:
 
 
 // Describe the columns in the table
-lscol ${testName2}_nation;
-unordered rows:
-  ('N_NATIONKEY', 'INTEGER', 19,  0, false, true)
-  ('N_NAME',      'VARCHAR', 25,  0, false, false)
-  ('N_REGIONKEY', 'INTEGER', 19,  0, false, false)
-  ('N_COMMENT',   'VARCHAR', 152, 0, true,  false)
+select * from columns where TableName = '${testName2}_nation';
+contains rows:
+  (*, *, '${testName2}_nation', 0, 'N_NATIONKEY', 6,  'INTEGER', 19,  0, false, true)
+  (*, *, '${testName2}_nation', 1, 'N_NAME',      11, 'VARCHAR', 25,  0, false, false)
+  (*, *, '${testName2}_nation', 2, 'N_REGIONKEY', 6,  'INTEGER', 19,  0, false, false)
+  (*, *, '${testName2}_nation', 3, 'N_COMMENT',   11, 'VARCHAR', 152, 0, true,  false)
 
 
 // Create an index on the table
