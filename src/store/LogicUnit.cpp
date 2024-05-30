@@ -247,7 +247,7 @@ LogicUnit::LogicUnit(void)
   
   m_afDynFun = nullptr;
   
-  m_pTknVec = new TokenVec;
+  m_pTknVec = nullptr; //new TokenVec;
   m_pTkn    = nullptr;
   m_i_Tkn   = C_UNKNOWN;
   
