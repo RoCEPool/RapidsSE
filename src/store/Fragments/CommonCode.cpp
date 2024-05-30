@@ -920,7 +920,7 @@ void vPLIntKeyToHash(Dynamic_T* aDynamicT) {
 	struct __STRUCT_TO___CURRENT_OP* p__STRUCT_TO___CURRENT_OP;
 
 	// marker-start
-	  iMixVal = *(i8*)((char*)(&((struct Ent_int*)aDynamicT->m_xIndexInfoPL[CURRENT_DUP_OP].m_aEntInt)->m_iIntElm0) + 8 + iKeySize);
+	  iMixVal = *(i8*)((char*)(&((struct Ent_int*)aDynamicT->m_xIndexInfoPL[CURRENT_DUP_OP].m_aEntInt)->m_iIntElm0) + iKeySize);
 	  iMixLen = sizeof(i8);
 	  aMixVal = (byte*)&iMixVal;
 
