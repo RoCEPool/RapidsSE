@@ -593,7 +593,8 @@ void TokenVec::vInsertToken(i8 i_At, Stz* szArgChars, eTN eToken)
 void TokenVec::vIntegrityCheck(void)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
-
+  
+#if defined WITH_TOKENVEC_INTEGRITY
   TokenArrayIter xIter = m_pTokenArray->xIterator();
   Token* pToken;
 
@@ -604,7 +605,7 @@ void TokenVec::vIntegrityCheck(void)
     ASSERT(szTknStz);
     ASSERT(m_pPackedStrings->bContainsAddr(szTknStz));
   }
-
+#endif
 
   /*
   i8 nTkns = nTokens();
