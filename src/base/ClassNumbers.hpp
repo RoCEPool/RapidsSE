@@ -43,6 +43,7 @@ enum eCN : u2 // Class Number
   /* */ CN_BYTES_T,
 
   /* */ CN__C__,
+  /* */ CN_CALLFRAME,
   /* */ CN_CARD,
   /* */ CN_CARDITER,
   /* */ CN_CARDUSAGE,

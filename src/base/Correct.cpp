@@ -12,6 +12,8 @@
   #include <dlfcn.h>
 #endif
 
+#include "CallFrame.hpp"
+
 extern s256 gi_szaArgv[];
 
 /*----------------------------------------------------------------------------*/
@@ -122,6 +124,84 @@ void BASE::vThreadCallStackDump_Demangled(void)
   }
 
   vTrace("End Thread Backtrace\n"_Stz);
+
+  free(acSymbolList);
+}
+
+/*----------------------------------------------------------------------------*/
+/* save current thread's demangled call stack, 1 line per frame.              */
+/* Input param is an array of strings. e.g. char[8][256]                      */
+/*----------------------------------------------------------------------------*/
+void BASE::vThreadCallStack(CallFrame aCallFrame[], i8 nFrames)
+{
+  // get void*'s for all frames on the stack
+  void* aaFramePtr[nFrames];
+  int nPtrs = backtrace(aaFramePtr,nFrames);
+
+  // First try to extract out file and line numbers and print that.
+  // If this fails then we will fall back to a secondary approach.
+  s256 asModules[nFrames];
+  s256 asFileNames[nFrames];
+  s2K  asFuncNames[nFrames];
+  i8   aiLines[nFrames];
+  i8   aiOffsets[nFrames];
+
+  b1 bGotLines = bAddrsToLines(aaFramePtr, nPtrs, asModules, asFileNames, asFuncNames, aiLines, aiOffsets);
+
+  if (bGotLines) {
+    for (i8 iFrame = 0; iFrame < nPtrs; iFrame++) {
+
+      aCallFrame[iFrame].m_pvFramePtr = aaFramePtr[iFrame];
+      StrLib::vCopy(aCallFrame[iFrame].m_acModules,   sizeof(aCallFrame[iFrame].m_acModules),   asModules[iFrame].azChar());
+      StrLib::vCopy(aCallFrame[iFrame].m_acFileNames, sizeof(aCallFrame[iFrame].m_acFileNames), asFileNames[iFrame].azChar());
+      StrLib::vCopy(aCallFrame[iFrame].m_acFuncNames, sizeof(aCallFrame[iFrame].m_acFuncNames), asFuncNames[iFrame].azChar());
+      aCallFrame[iFrame].m_iLines = aiLines[iFrame];
+      aCallFrame[iFrame].m_iOffsets = aiOffsets[iFrame];
+    }
+
+    for (i8 iFrame = nPtrs; iFrame < nFrames; iFrame++) {
+      aCallFrame[iFrame].vReset();
+    }
+
+    return;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // Secondary approach - Get the manged symbols, parse them and try to demangle the functions.
+  // We won't have file and line numbers, but we should be able to get offsets into the functions.
+  // Worst case is we just print the mangled function names and offsets.
+
+  // The string format of this symbol list is different on Mac vs Linux, so we need to parse them differently
+  char** acSymbolList = backtrace_symbols(aaFramePtr,nPtrs);
+
+  for (i8 i=0; i<nPtrs; i++) {
+
+    s256  sModule;
+    void* pvAddr = aaFramePtr[i];
+    s2K   sSymbol;
+    i8    iOffset;
+
+    b1 bParsed = bParseBacktraceSymbol(acSymbolList[i], sModule, sSymbol, iOffset);
+
+    if (bParsed || (sModule.nLength() > 0 && sSymbol.nLength() > 0 && iOffset > 0)) {
+
+      aCallFrame[i].m_pvFramePtr = pvAddr;
+      StrLib::vCopy(aCallFrame[i].m_acModules, sizeof(aCallFrame[i].m_acModules), sModule.azChar());
+      aCallFrame[i].m_acFileNames[0] = 0;
+      StrLib::vCopy(aCallFrame[i].m_acFuncNames, sizeof(aCallFrame[i].m_acFuncNames), sSymbol.azChar());
+      aCallFrame[i].m_iLines = 0;
+      aCallFrame[i].m_iOffsets = iOffset;
+
+    } else {
+      aCallFrame[i].m_pvFramePtr = pvAddr;
+      aCallFrame[i].m_acModules[0] = 0;
+      aCallFrame[i].m_acFileNames[0] = 0;
+      StrLib::vCopy(aCallFrame[i].m_acFuncNames, sizeof(aCallFrame[i].m_acFuncNames), acSymbolList[i]);
+      aCallFrame[i].m_iLines = 0;
+      aCallFrame[i].m_iOffsets = 0;
+    }
+  }
 
   free(acSymbolList);
 }
@@ -481,6 +561,37 @@ b1 BASE::bParseBacktraceSymbol(const char* pBtLine, s256& sModule, s2K& sFuncNam
 #endif
 }
 
+/*----------------------------------------------------------------------------*/
+/* Get information about the caller to the caller of this function.           */
+/*----------------------------------------------------------------------------*/
+void BASE::vGetCaller(CallFrame& oFrame)
+{
+  vGetCaller(oFrame, -1);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Get information about the caller to the caller of this function.           */
+/* iOffset = 0 gets the parent of the caller. -1 gets the parent of that, etc */
+/*----------------------------------------------------------------------------*/
+void BASE::vGetCaller(CallFrame& oFrame, i8 iOffset)
+{
+  // We want to get the parent of the caller of this function.
+  // 0: BASE::vThreadCallStack()
+  // 1: This function
+  // 2: Caller
+  // 3: Parent of caller
+
+  ASSERT(iOffset <= 0);
+
+  const i8 nFrames = 4 - iOffset;
+  CallFrame aFrames[nFrames];
+
+  // Get a number of frames
+  vThreadCallStack(aFrames, nFrames);
+
+  // Copy the specific one the caller wanted
+  oFrame = aFrames[3 - iOffset];
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 

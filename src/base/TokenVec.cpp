@@ -38,6 +38,13 @@ TokenVec::TokenVec(void)
   _checkInitialised_(CN_TOKENVEC);
      
   _postcondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+
+//  CallFrame xFrame;
+//  vGetCaller(xFrame, -1);
+//  vTrace("TokenVec constructor called from: %s  (%s:%lld)\n"_Stz,
+//         xFrame.m_acFuncNames,
+//         xFrame.m_acFileNames,
+//         xFrame.m_iLines);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -62,6 +62,7 @@ Stz* BASE::aCN[CN_ENUMS+1]
     /* */ "BYTES_T"_Stz,              // CN_BYTES_T
 
     /* */ "_C__"_Stz,                 // CN__C__
+    /* */ "CALLFRAME"_Stz,            // CN_CALLFRAME
     /* */ "CARD"_Stz,                 // CN_CARD
     /* */ "CARDITER"_Stz,             // CN_CARDITER
     /* */ "CARDUSAGE"_Stz,            // CN_CARDUSAGE

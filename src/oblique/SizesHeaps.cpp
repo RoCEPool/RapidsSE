@@ -34,6 +34,7 @@
 
 #include "backend/Backend.hpp"
 
+#include "CallFrame.hpp"
 #include "CmdLineArgs.hpp"
 
 #include "DdlLock.hpp"
@@ -375,6 +376,7 @@ SizeHeap gxaSizeHeap[]
   {CN_BYTES_T,                  sizeof(s32),              HT_INVALID   , FILL },
 
   {CN__C__,                     'C' - ('A' - 1),          HT_INVALID   , FILL },
+  {CN_CALLFRAME,                sizeof(CallFrame),        HT_T_SMALL   , FILL },
   {CN_CARD,                     sizeof(Card),             HT_T_SMALL   , FILL },
   {CN_CARDITER,                 sizeof(CardIter),         HT_T_MEDIUM  , FILL },
   {CN_CARDUSAGE,                sizeof(CardUsage),        HT_T_SMALL   , FILL },
