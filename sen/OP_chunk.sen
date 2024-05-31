@@ -40,7 +40,7 @@
     BT_TOTALUNITS TableDef[] Pds[].new
 
     // add fileSize to the Pds
-    iFileSizeMb sFileNm 2 Pds[].addRowVargs assert
+    iFileSizeMb sFileNm 2 TableDef[] Pds[].addRowVargs assert
 
     // pipeout the Pds
     Pds[].pipeOut

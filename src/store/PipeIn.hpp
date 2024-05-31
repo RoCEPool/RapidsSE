@@ -12,7 +12,6 @@ namespace STORE
   public:
   
     SMA<OperandQueue,CN_OPERANDQUEUE> m_pQueueLeft;   // left input queue
-    SMA<OperandQueue,CN_OPERANDQUEUE> m_pQueueRight;  // right input queue
     SMA<OperandQueue,CN_OPERANDQUEUE> m_pQueueOoO;    // out-of-order queue
 
     // must be last

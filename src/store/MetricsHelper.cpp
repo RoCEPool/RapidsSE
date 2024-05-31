@@ -16,7 +16,7 @@ void MetricsHelper::vWriteCsvPds(Pds* pPdsRowBuffer, StreamDef* pStreamDef, File
 {
   _static_
 
-  HV_Record hvRecord(pStreamDef->pRowPix());
+  HV_Record hvRecord(pStreamDef);
 
   PdsCursor* pCursor = new PdsCursor(pPdsRowBuffer);
 

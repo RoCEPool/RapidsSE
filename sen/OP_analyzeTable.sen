@@ -39,10 +39,10 @@
     TablePtn[].grabRead_yieldLoop
 
     // analyze table
-    iLglPtn TablePtn[] Pds[].addAnalyzeTable not if
+    iLglPtn TablePtn[] TableDef[] Pds[].addAnalyzeTable not if
       Pds[].pipeOut
       BT_DATA TableDef[] Pds[].new
-      iLglPtn TablePtn[] Table[] Pds[].addAnalyzeTable assert
+      iLglPtn TablePtn[] TableDef[] Pds[].addAnalyzeTable assert
     then
 
     TablePtn[].dropRead

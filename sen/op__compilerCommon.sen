@@ -73,8 +73,14 @@
   // does the sql have an explain ?
   PlanOperand[] sOperatorName sqlCompiler::hasExplain if
 
+    // Get the tabledef for the explain format
+    PlanOperand[] sqlCompiler::explainFormat to stringA[]
+
+    // find the explain tabledef
+    stringA[] op__tableDef assert
+
     // execute explain for this operator
-    PlanOperand[] sOperatorName sqlCompiler::doExplain
+    PlanOperand[] sOperatorName TableDef[] sqlCompiler::doExplain
 
     // pipeout BT_EXPLAIN Pds
     Pds[].pipeout

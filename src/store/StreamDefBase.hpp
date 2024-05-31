@@ -23,7 +23,6 @@ namespace STORE
     i8     m_nColumns;    // total columns
     Column m_xaColumn[C_MAX_COLUMNS];  // array of columns
 
-    RowPix m_oRowPix;     // row pix
     i8     m_jRowSize;    // size of fixed size row
     i8     m_jTableSize;  // estimate of table size
 
@@ -56,8 +55,7 @@ namespace STORE
     void    vAsString(String* pString);
   
     i8      iColumnOrder(i8 i_Col);
-    i8      nColumns(void);
- 
+
     eSD     eDirection(i8 i_Order);
     void    vDirection(i8 i_Order, eSD eDirection);
 
@@ -65,7 +63,6 @@ namespace STORE
 
     Column* pFindColumn(Stz* sColumnNm);
 
-    Column* pGetColumn(i8 i_Col);
     Column* pGetOrder(i8 i_Order);
   
     bool    bIsDuplicateName(Column* pColumn);
@@ -82,15 +79,12 @@ namespace STORE
     bool    bReplicated(void);
     void    vReplicated(bool bReplicated);
     void    vResetPointers(void);
-    RowPix* pRowPix(void);
     i8      jRowSizeBytes(void);
   
     void    vStreamDefNm(Stz* szStreamDefNm);
     Stz*    szStreamDefNm(void);
   
     i8      jTableSize(void);
-    void    vToColPix(RowPix* pRowPix, bool bAddKeyHash);
-    void    vToRowPix(RowPix* pRowPix, bool bAddKeyHash);
     void    vToMetadata(String* psMetadata);
 
     bool    bUnique(void);
@@ -122,6 +116,28 @@ namespace STORE
 
 		eEC eValidateColumnName   (TokenVec* pTknVec);
     eEC eValidateTableName   (TokenVec* pTknVec);
+
+  public:
+
+    /*----------------------------------------------------------------------------*/
+    /* get no of columns in subset of streamDef                                   */
+    /*----------------------------------------------------------------------------*/
+    inline i8 nColumns(void)
+    {
+      _precondition_(_ADDRESS_,_MAGIC_);
+
+      return m_nColumns;
+    }
+
+    /*----------------------------------------------------------------------------*/
+    /* get column at index                                                        */
+    /*----------------------------------------------------------------------------*/
+    inline Column* pGetColumn(i8 i_Column)
+    {
+      _precondition_(_ADDRESS_,_MAGIC_);
+
+      return &m_xaColumn[i_Column];
+    }
 
   };
 

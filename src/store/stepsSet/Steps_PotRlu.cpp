@@ -25,7 +25,6 @@ void Step::vAddSteps_PotRlu(void)
   vAddStep("potRlu[].isNull"_Stz,          &Step::vPotRluIsNull);
   vAddStep("potRlu[].new"_Stz,             &Step::vPotRluNew);
   vAddStep("potRlu[].pushBuffer"_Stz,      &Step::vPotRluPushBuffer);
-  vAddStep("potRlu[].rowPix!"_Stz,         &Step::vPotRluRowPixStore);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -151,25 +150,6 @@ void Step::vPotRluPushBuffer(void)
   DataBuffer* pBuffer = pPot->pDangling(0);
 
   m_pDataStack->vPushPtr(pBuffer);
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* potRlu[].rowPix! -- store rowpix created from stream def out in pot        */
-/*----------------------------------------------------------------------------*/
-void Step::vPotRluRowPixStore(void)
-{
-  ENTRY();
-
-  StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
-  i8 iAddPtnHsh = m_pDataStack->iPopIntBol(__func__);
-
-  RowPix* pRowPix = new RowPix;
-  pStreamDef->vToRowPix(pRowPix,(bool)iAddPtnHsh);
-
-  Pot* pPot = _pPot(m_pLogicUnit->m_xRluCommon.m_pPot);
-  pPot->vRowPix(pRowPix);
 
   EXIT();
 }

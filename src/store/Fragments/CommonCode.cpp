@@ -449,10 +449,10 @@ void vPotTubRowPix(Dynamic_T* aDynamicT) {
   {
     // marker-start
 
-#ifdef WITH_CLANG
-    //void* aRowPix = aDynamicT->m_fp_aExtern_RowPixNew(__COLUMNS_OUT__, &xColumnInfo);
-    __EXTERN_ROWPIX__(__TUB_POT__, __COLUMNS_OUT__, &xColumnInfo);
-#endif
+//#ifdef WITH_CLANG
+//    //void* aRowPix = aDynamicT->m_fp_aExtern_RowPixNew(__COLUMNS_OUT__, &xColumnInfo);
+//    __EXTERN_ROWPIX__(__TUB_POT__, __COLUMNS_OUT__, &xColumnInfo);
+//#endif
     __ROW_INFO_TO__[CURRENT_DUP_OP].m_bInitialize = false;
     aDynamicT->m_bGeneratePot = __POT__;
   }

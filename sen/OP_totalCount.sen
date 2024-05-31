@@ -65,7 +65,7 @@
   BT_COUNT TableDef[] Pds[].new
 
   // insert row count into Pds
-  Counter0[] 1 Pds[].addRowVargs assert
+  Counter0[] 1 TableDef[] Pds[].addRowVargs assert
 
   Pds[].Pipeout
 

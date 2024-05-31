@@ -30,10 +30,10 @@
   begin
     node_I[].node to pNode
 
-    pNode node.id Pds[].addShowCluster  not if
+    pNode node.id TableDef[] Pds[].addShowCluster  not if
       Pds[].pipeOut
       BT_DATA TableDef[] Pds[].new
-      pNode node.id Pds[].addShowCluster assert
+      pNode node.id TableDef[] Pds[].addShowCluster assert
     then
 
     node_I[].next

@@ -119,7 +119,7 @@ void Step::vPdsWarnNew(void)
 
   StreamDef* pStreamDef = pTable->pStreamDef();
 
-  m_pLogicUnit->m_xpPdsWarn = new Pds(pStreamDef, false, eBufferType);
+  m_pLogicUnit->m_xpPdsWarn = new Pds(pStreamDef, eBufferType);
 
   EXIT();
 }

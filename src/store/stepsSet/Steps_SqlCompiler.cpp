@@ -124,13 +124,15 @@ void Step::vSqlCompilerAggregateSplit(void) {
   } catch (Parser::SqlException& e) {
     Grid* pGrid = AM::pGrid();
     Pds* pPds = _pPds(*m_pLogicUnit->m_xpPdsErr);
-    Row* pRow = pPds->pAllotRow(C_VARGS_BEGIN,
-                                    pGrid->pThisNode()->szNodeNm(),
-                                    EC_SEMANTIC_ERROR,
-                                    0,
-                                    0,
-                                    e.szError(),
-                                    C_VARGS_END);
+    Table* pTableErr = _pTable(*m_pLogicUnit->m_xpTableDefErr);
+    Row* pRow = pPds->pAllotRow(pTableErr->pStreamDef(),
+                                C_VARGS_BEGIN,
+                                pGrid->pThisNode()->szNodeNm(),
+                                EC_SEMANTIC_ERROR,
+                                0,
+                                0,
+                                e.szError(),
+                                C_VARGS_END);
     ASSERT(pRow);
     UNUSED(pRow);
     delete pPlanRoot;
@@ -198,13 +200,15 @@ void Step::vSqlCompilerCorrBySquash(void) {
   } catch (Parser::SqlException& e) {
     Grid* pGrid = AM::pGrid();
 		Pds* pPds = _pPds(*m_pLogicUnit->m_xpPdsErr);
-    Row* pRow = pPds->pAllotRow(C_VARGS_BEGIN,
-                                    pGrid->pThisNode()->szNodeNm(),
-                                    EC_SEMANTIC_ERROR,
-                                    0,
-                                    0,
-                                    e.szError(),
-                                    C_VARGS_END);
+    Table* pTableErr = _pTable(*m_pLogicUnit->m_xpTableDefErr);
+    Row* pRow = pPds->pAllotRow(pTableErr->pStreamDef(),
+                                C_VARGS_BEGIN,
+                                pGrid->pThisNode()->szNodeNm(),
+                                EC_SEMANTIC_ERROR,
+                                0,
+                                0,
+                                e.szError(),
+                                C_VARGS_END);
     ASSERT(pRow);
     UNUSED(pRow);
     delete pPlanRoot;
@@ -268,6 +272,9 @@ void Step::vSqlCompilerDoExplain(void) {
    * This function takes two parameters off the data stack - the name of the
    * current stage that was just processed, and the plan itself.
    */
+
+  // get the streamSet table
+  Table* pTableDef = _pTable(m_pDataStack->pPopPtr(__func__));
 
   // Get the compiler stage
   s256 sCompilerStage;
@@ -333,11 +340,12 @@ void Step::vSqlCompilerDoExplain(void) {
     }
 
 
-    Row *pRow = pPdsRowBuffer->pAllotRow(C_VARGS_BEGIN,
-                                    iStageNum,
-                                    sCompilerStage.szStz(),
-                                    sExplainBuf.szStz(),
-                                    C_VARGS_END);
+    Row *pRow = pPdsRowBuffer->pAllotRow(pTableDef->pStreamDef(),
+                                         C_VARGS_BEGIN,
+                                         iStageNum,
+                                         sCompilerStage.szStz(),
+                                         sExplainBuf.szStz(),
+                                         C_VARGS_END);
     ASSERT(pRow);
     UNUSED(pRow);
   }
@@ -352,7 +360,7 @@ void Step::vSqlCompilerDoExplain(void) {
 }
 
 /*----------------------------------------------------------------------------*/
-/* sqlCompiler::doExplainTliterate -- (potentially) create the explain of the plan     */
+/* sqlCompiler::doExplainTliterate -- (potentially) create the explain of plan */
 /*----------------------------------------------------------------------------*/
 void Step::vSqlCompilerDoExplainTliterate(void) {
   ENTRY();
@@ -362,6 +370,9 @@ void Step::vSqlCompilerDoExplainTliterate(void) {
    * has an explain operator. We simply want to put the transliterated pipeline
    * command in the row set.
    */
+
+  // get the streamSet table
+  Table* pTableDef = _pTable(m_pDataStack->pPopPtr(__func__));
 
   // Get the compiler stage
   s256 sCompilerStage;
@@ -408,11 +419,12 @@ void Step::vSqlCompilerDoExplainTliterate(void) {
 
     i8 iStageNum = ExplainOp::iStageCount(pExplainOp);
 
-    Row *pRow = pPdsRowBuffer->pAllotRow(C_VARGS_BEGIN,
-                                    iStageNum,
-                                    sCompilerStage.szStz(),
-                                    sPipelineCmd.szStz(),
-                                    C_VARGS_END);
+    Row *pRow = pPdsRowBuffer->pAllotRow(pTableDef->pStreamDef(),
+                                         C_VARGS_BEGIN,
+                                         iStageNum,
+                                         sCompilerStage.szStz(),
+                                         sPipelineCmd.szStz(),
+                                         C_VARGS_END);
     ASSERT(pRow);
     UNUSED(pRow);
   }
@@ -543,13 +555,15 @@ void Step::vSqlCompilerExprPushdown(void)
   } catch (Parser::SqlException& e) {
     Grid* pGrid = AM::pGrid();
 		Pds* pPds = _pPds(*m_pLogicUnit->m_xpPdsErr);
-    Row* pRow = pPds->pAllotRow(C_VARGS_BEGIN,
-                                    pGrid->pThisNode()->szNodeNm(),
-                                    EC_SEMANTIC_ERROR,
-                                    0,
-                                    0,
-                                    e.szError(),
-                                    C_VARGS_END);
+    Table* pTableErr = _pTable(*m_pLogicUnit->m_xpTableDefErr);
+    Row* pRow = pPds->pAllotRow(pTableErr->pStreamDef(),
+                                C_VARGS_BEGIN,
+                                pGrid->pThisNode()->szNodeNm(),
+                                EC_SEMANTIC_ERROR,
+                                0,
+                                0,
+                                e.szError(),
+                                C_VARGS_END);
     ASSERT(pRow);
     UNUSED(pRow);
     delete pPlanRoot;
@@ -594,13 +608,15 @@ void Step::vSqlCompilerJoinOptimisation(void)
   } catch (Parser::SqlException& e) {
     Grid* pGrid = AM::pGrid();
 		Pds* pPds = _pPds(*m_pLogicUnit->m_xpPdsErr);
-    Row* pRow = pPds->pAllotRow(C_VARGS_BEGIN,
-                                    pGrid->pThisNode()->szNodeNm(),
-                                    EC_SEMANTIC_ERROR,
-                                    0,
-                                    0,
-                                    e.szError(),
-                                    C_VARGS_END);
+    Table* pTableErr = _pTable(*m_pLogicUnit->m_xpTableDefErr);
+    Row* pRow = pPds->pAllotRow(pTableErr->pStreamDef(),
+                                C_VARGS_BEGIN,
+                                pGrid->pThisNode()->szNodeNm(),
+                                EC_SEMANTIC_ERROR,
+                                0,
+                                0,
+                                e.szError(),
+                                C_VARGS_END);
     ASSERT(pRow);
     UNUSED(pRow);
     delete pPlanRoot;
@@ -658,13 +674,15 @@ void Step::vSqlCompilerExprValidate(void)
   } catch (Parser::SqlException& e) {
     Grid* pGrid = AM::pGrid();
 		Pds* pPds = _pPds(*m_pLogicUnit->m_xpPdsErr);
-    Row* pRow = pPds->pAllotRow(C_VARGS_BEGIN,
-                                    pGrid->pThisNode()->szNodeNm(),
-                                    EC_SEMANTIC_ERROR,
-                                    0,
-                                    0,
-                                    e.szError(),
-                                    C_VARGS_END);
+    Table* pTableErr = _pTable(*m_pLogicUnit->m_xpTableDefErr);
+    Row* pRow = pPds->pAllotRow(pTableErr->pStreamDef(),
+                                C_VARGS_BEGIN,
+                                pGrid->pThisNode()->szNodeNm(),
+                                EC_SEMANTIC_ERROR,
+                                0,
+                                0,
+                                e.szError(),
+                                C_VARGS_END);
     ASSERT(pRow);
     UNUSED(pRow);
     delete pPlanRoot;
@@ -776,13 +794,15 @@ void Step::vSqlCompilerNameValidate(void)
   } catch (Parser::SqlException& e) {
     Grid* pGrid = AM::pGrid();
 		Pds* pPds = _pPds(*m_pLogicUnit->m_xpPdsErr);
-    Row* pRow = pPds->pAllotRow(C_VARGS_BEGIN,
-                                    pGrid->pThisNode()->szNodeNm(),
-                                    EC_SEMANTIC_ERROR,
-                                    0,
-                                    0,
-                                    e.szError(),
-                                    C_VARGS_END);
+    Table* pTableErr = _pTable(*m_pLogicUnit->m_xpTableDefErr);
+    Row* pRow = pPds->pAllotRow(pTableErr->pStreamDef(),
+                                C_VARGS_BEGIN,
+                                pGrid->pThisNode()->szNodeNm(),
+                                EC_SEMANTIC_ERROR,
+                                0,
+                                0,
+                                e.szError(),
+                                C_VARGS_END);
     ASSERT(pRow);
     UNUSED(pRow);
     delete pPlanRoot;
@@ -881,13 +901,14 @@ void Step::vSqlCompilerParser(void)
     //vTrace("SyntaxException at %lld:%lld : %s\n"_Stz, e.i_Line(), e.iColumn(), e.szError());
     Pds* pPds = _pPds(*m_pLogicUnit->m_xpPdsErr);
     Grid* pGrid = AM::pGrid();
-    Row* pRow = pPds->pAllotRow(C_VARGS_BEGIN,
-                                    pGrid->pThisNode()->szNodeNm(),
-                                    EC_SYNTAX_ERROR,
-                                    e.iLine(),
-                                    e.iColumn(),
-                                    e.szError(),
-                                    C_VARGS_END);
+    Table* pTableErr = _pTable(*m_pLogicUnit->m_xpTableDefErr);
+    Row* pRow = pPds->pAllotRow(pTableErr->pStreamDef(),C_VARGS_BEGIN,
+                                pGrid->pThisNode()->szNodeNm(),
+                                EC_SYNTAX_ERROR,
+                                e.iLine(),
+                                e.iColumn(),
+                                e.szError(),
+                                C_VARGS_END);
     ASSERT(pRow);
     UNUSED(pRow);
     
@@ -898,13 +919,15 @@ void Step::vSqlCompilerParser(void)
     //vTrace("SemanticException: %s\n"_Stz, e.szError());
     Grid* pGrid = AM::pGrid();
 		Pds* pPds = _pPds(*m_pLogicUnit->m_xpPdsErr);
-    Row* pRow = pPds->pAllotRow(C_VARGS_BEGIN,
-                                    pGrid->pThisNode()->szNodeNm(),
-                                    EC_SEMANTIC_ERROR,
-                                    0,
-                                    0,
-                                    e.szError(),
-                                    C_VARGS_END);
+    Table* pTableErr = _pTable(*m_pLogicUnit->m_xpTableDefErr);
+    Row* pRow = pPds->pAllotRow(pTableErr->pStreamDef(),
+                                C_VARGS_BEGIN,
+                                pGrid->pThisNode()->szNodeNm(),
+                                EC_SEMANTIC_ERROR,
+                                0,
+                                0,
+                                e.szError(),
+                                C_VARGS_END);
     ASSERT(pRow);
     UNUSED(pRow);
     m_pDataStack->vPushPtr(nullptr);
@@ -975,13 +998,15 @@ void Step::vSqlCompilerPartitionPlan(void)
   } catch (Parser::SqlException& e) {
     Grid* pGrid = AM::pGrid();
 		Pds* pPds = _pPds(*m_pLogicUnit->m_xpPdsErr);
-    Row* pRow = pPds->pAllotRow(C_VARGS_BEGIN,
-                                    pGrid->pThisNode()->szNodeNm(),
-                                    EC_SEMANTIC_ERROR,
-                                    0,
-                                    0,
-                                    e.szError(),
-                                    C_VARGS_END);
+    Table* pTableErr = _pTable(*m_pLogicUnit->m_xpTableDefErr);
+    Row* pRow = pPds->pAllotRow(pTableErr->pStreamDef(),
+                                C_VARGS_BEGIN,
+                                pGrid->pThisNode()->szNodeNm(),
+                                EC_SEMANTIC_ERROR,
+                                0,
+                                0,
+                                e.szError(),
+                                C_VARGS_END);
     ASSERT(pRow);
     UNUSED(pRow);
     delete pRootNode;
@@ -1040,13 +1065,15 @@ void Step::vSqlCompilerPostProject(void)
   } catch (Parser::SqlException& e) {
     Grid* pGrid = AM::pGrid();
 		Pds* pPds = _pPds(*m_pLogicUnit->m_xpPdsErr);
-    Row* pRow = pPds->pAllotRow(C_VARGS_BEGIN,
-                                    pGrid->pThisNode()->szNodeNm(),
-                                    EC_SEMANTIC_ERROR,
-                                    0,
-                                    0,
-                                    e.szError(),
-                                    C_VARGS_END);
+    Table* pTableErr = _pTable(*m_pLogicUnit->m_xpTableDefErr);
+    Row* pRow = pPds->pAllotRow(pTableErr->pStreamDef(),
+                                C_VARGS_BEGIN,
+                                pGrid->pThisNode()->szNodeNm(),
+                                EC_SEMANTIC_ERROR,
+                                0,
+                                0,
+                                e.szError(),
+                                C_VARGS_END);
     ASSERT(pRow);
     UNUSED(pRow);
     delete pRootNode;
@@ -1096,13 +1123,15 @@ void Step::vSqlCompilerProjValidation(void)
   } catch (Parser::SqlException& e) {
     Grid* pGrid = AM::pGrid();
 		Pds* pPds = _pPds(*m_pLogicUnit->m_xpPdsErr);
-    Row* pRow = pPds->pAllotRow(C_VARGS_BEGIN,
-                                    pGrid->pThisNode()->szNodeNm(),
-                                    EC_SEMANTIC_ERROR,
-                                    0,
-                                    0,
-                                    e.szError(),
-                                    C_VARGS_END);
+    Table* pTableErr = _pTable(*m_pLogicUnit->m_xpTableDefErr);
+    Row* pRow = pPds->pAllotRow(pTableErr->pStreamDef(),
+                                C_VARGS_BEGIN,
+                                pGrid->pThisNode()->szNodeNm(),
+                                EC_SEMANTIC_ERROR,
+                                0,
+                                0,
+                                e.szError(),
+                                C_VARGS_END);
     ASSERT(pRow);
     UNUSED(pRow);
     delete pPlanRoot;
@@ -1152,13 +1181,15 @@ void Step::vSqlCompilerSetOpValidate(void)
   } catch (Parser::SqlException& e) {
     Grid* pGrid = AM::pGrid();
 		Pds* pPds = _pPds(*m_pLogicUnit->m_xpPdsErr);
-    Row* pRow = pPds->pAllotRow(C_VARGS_BEGIN,
-                                    pGrid->pThisNode()->szNodeNm(),
-                                    EC_SEMANTIC_ERROR,
-                                    0,
-                                    0,
-                                    e.szError(),
-                                    C_VARGS_END);
+    Table* pTableErr = _pTable(*m_pLogicUnit->m_xpTableDefErr);
+    Row* pRow = pPds->pAllotRow(pTableErr->pStreamDef(),
+                                C_VARGS_BEGIN,
+                                pGrid->pThisNode()->szNodeNm(),
+                                EC_SEMANTIC_ERROR,
+                                0,
+                                0,
+                                e.szError(),
+                                C_VARGS_END);
     ASSERT(pRow);
     UNUSED(pRow);
     delete pPlanRoot;
@@ -1200,13 +1231,15 @@ void Step::vSqlCompilerStageMarkers(void)
   } catch (Parser::SqlException& e) {
     Grid* pGrid = AM::pGrid();
 		Pds* pPds = _pPds(*m_pLogicUnit->m_xpPdsErr);
-    Row* pRow = pPds->pAllotRow(C_VARGS_BEGIN,
-                                    pGrid->pThisNode()->szNodeNm(),
-                                    EC_SEMANTIC_ERROR,
-                                    0,
-                                    0,
-                                    e.szError(),
-                                    C_VARGS_END);
+    Table* pTableErr = _pTable(*m_pLogicUnit->m_xpTableDefErr);
+    Row* pRow = pPds->pAllotRow(pTableErr->pStreamDef(),
+                                C_VARGS_BEGIN,
+                                pGrid->pThisNode()->szNodeNm(),
+                                EC_SEMANTIC_ERROR,
+                                0,
+                                0,
+                                e.szError(),
+                                C_VARGS_END);
     ASSERT(pRow);
     UNUSED(pRow);
     delete pPlanRoot;

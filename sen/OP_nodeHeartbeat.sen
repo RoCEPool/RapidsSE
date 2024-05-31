@@ -24,7 +24,7 @@
   BT_DATA TableDef[] Pds[].new
 
   // add nodeStatus to the infoSet
-  Pds[].addNodeheartbeat assert
+  TableDef[] Pds[].addNodeheartbeat assert
 
   // pipeout the Pds
   Pds[].pipeOut

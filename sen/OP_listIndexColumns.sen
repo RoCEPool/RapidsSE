@@ -35,11 +35,11 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // insert a row in the Pds for each index column
   iColumns 0 do
-    I Index[].column@
-    Pds[].addColumnDef  not if
+    I Index[].column@ TableDef[]
+    Pds[].addColumnDef not if
       Pds[].pipeOut
       BT_DATA TableDef[] Pds[].new
-      I Index[].column@
+      I Index[].column@ TableDef[]
       Pds[].addColumnDef assert
     then
   loop

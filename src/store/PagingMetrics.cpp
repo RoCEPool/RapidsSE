@@ -90,7 +90,7 @@ void PagingMetrics::vReportDerefMetrics(Tub* pTub)
   Pds* pPdsRowBuffer = _pPds(pTub->pWorkingBuffer());
   
   if (! pPdsRowBuffer) {
-		pPdsRowBuffer = new Pds(pStreamDef, false,BT_DEREFMETRICS);
+		pPdsRowBuffer = new Pds(pStreamDef, BT_DEREFMETRICS);
     pTub->vAddBuffer(pPdsRowBuffer);
   }
 
@@ -103,6 +103,7 @@ void PagingMetrics::vReportDerefMetrics(Tub* pTub)
     L_RETRY:
     Row* pRow = pPdsRowBuffer->pAllotRow
                 (
+                  pStreamDef,
                   C_VARGS_BEGIN
                  
                  ,pDerefMetrics->iObjectNo()
@@ -114,7 +115,7 @@ void PagingMetrics::vReportDerefMetrics(Tub* pTub)
                 );
     
     if (! pRow) {
-			pPdsRowBuffer = new Pds(pStreamDef, false,BT_DEREFMETRICS);
+			pPdsRowBuffer = new Pds(pStreamDef, BT_DEREFMETRICS);
       pTub->vAddBuffer(pPdsRowBuffer);
       goto L_RETRY;
     }

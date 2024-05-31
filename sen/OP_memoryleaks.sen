@@ -112,7 +112,7 @@
   BT_DATA TableDef[] Pds[].new
 
   // Record the memory object allocations
-  Pds[].addMemoryLeaks if
+  TableDef[] Pds[].addMemoryLeaks if
     Pds[].pipeOut
   else
     Pds[].delete

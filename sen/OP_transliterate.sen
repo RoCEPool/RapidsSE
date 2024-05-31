@@ -99,8 +99,14 @@
   "transliterate" to sOperatorName
   PlanOperand[] sOperatorName sqlCompiler::hasExplain if
 
+   // Get the tabledef for the explain format
+    PlanOperand[] sqlCompiler::explainFormat to stringA[]
+
+    // find the explain tabledef
+    stringA[] op__tableDef assert
+
     // execute special explain for this operator
-    PlanOperand[] Text[] sOperatorName sqlCompiler::doExplainTliterate
+    PlanOperand[] Text[] sOperatorName TableDef[] sqlCompiler::doExplainTliterate
 
     // pipeout explain
     Pds[].isNull not assert

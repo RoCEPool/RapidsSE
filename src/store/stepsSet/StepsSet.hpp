@@ -1485,7 +1485,6 @@ void vJobIdLastJobIdFetch(void);
   void vPotRluIsNull(void);
   void vPotRluNew(void);
   void vPotRluPushBuffer(void);
-  void vPotRluRowPixStore(void);
 
   // procedure
   void vProcedureAdd(void);

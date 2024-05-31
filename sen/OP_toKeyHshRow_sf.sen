@@ -88,7 +88,7 @@
   ToKeyHshRow[].countersAreZero not if
     BT_AFFECTEDROWS TableDef[] Pds[].new
 
-    0 0 0 toKeyHshRow[].counters@@ 6 Pds[].addRowVargs
+    0 0 0 toKeyHshRow[].counters@@ 6 TableDef[] Pds[].addRowVargs
 
     Pds[].pipeOut
   then

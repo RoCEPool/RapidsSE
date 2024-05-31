@@ -10,7 +10,7 @@ namespace BASE
     friend class Queue;
     
   private:
-    static const i8 C_SIZE_AREA = 120;
+    static const i8 C_SIZE_AREA = 480;
 
     i8       m_nPointers;     // number of pointers in this buffer
     Object** m_ppTopObject;   // the top Object*

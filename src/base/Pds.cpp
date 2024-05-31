@@ -103,80 +103,14 @@ void Pds::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Pds::Pds(RowPix* pRowPix, eBT eBufferType)
+Pds::Pds(StreamDef* pStreamDef, eBT eBufferType)
     : DataBuffer(CN_PDS, false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
 
   ASSERT(CacheLine::bOnCacheLineBoundary(this));
 
-  i8 iRowSizeProper = Row::nRowProper(pRowPix->m_nColumns);
-
-  // Calculate block size and padding ------------------
-  m_nBlockSize = sizeof(SkipListNode) + iRowSizeProper + sizeof(m_iSynthRowKey);
-  m_nPaddingPerBlk = 0;
-
-  // Ensure block size is a multiple of 16 bytes
-  i8 iMod = m_nBlockSize % 16;
-  if(iMod != 0) {
-    m_nPaddingPerBlk = 16 - iMod;
-    m_nBlockSize += m_nPaddingPerBlk;
-  }
-
-  m_iSynthRowKey  = 0;
-  m_eBufferType = eBufferType;
-
-  // Init temp variables -------------------------------
-  m_aRowCur  = nullptr;
-  m_i_RowCrs = C_UNKNOWN;
-  m_i_ColCrs = C_UNKNOWN;
-  m_aStzSet  = nullptr;
-  m_nRowStringBytes = 0;
-
-  // Set compare function ------------------------------
-  m_fpCompare = PdsUtils::iIntCompare;
-
-  // Initialise the workspace --------------------------
-  m_iFreeListEntries = 0;
-  m_xWsp.vInit(m_nBlockSize);
-
-  // Add dummy root nodes to the Free and In Use skip lists
-  // Note: Dummy root blocks are zeroed since we don't know what the key type is
-
-  SkipListBlock* aFreeListRootOffset = aAllotSkipListBlock();
-  MemLib::vZero(aFreeListRootOffset,m_nBlockSize,CN_NONE);
-  m_uFreeListRootOffset = uGetOffsetFromBase((void*)aFreeListRootOffset);
-
-  SkipListBlock* aInUseRootOffset = aAllotSkipListBlock();
-  MemLib::vZero(aInUseRootOffset,m_nBlockSize,CN_NONE);
-  m_uInUseRootOffset = uGetOffsetFromBase((void*)aInUseRootOffset);
-
-
-  // Reset the number of entries to zero since we don't count the dummy blocks
-  m_iFreeListEntries = 0;
-  for (i8 i_Level = 0; i_Level < C_MAX_LVL_LEVELS; i_Level++) {
-    m_iNumEntries[i_Level] = 0;
-    // Init the tail vector to the dummy root
-    m_auTailOffsets[i_Level] = m_uInUseRootOffset;
-  }
-
-  // Init RowPix object -------------------------------
-  vInitPix(pRowPix);
-
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-Pds::Pds(StreamDef* pStreamDef, bool bAddKeyHash, eBT eBufferType)
-    : DataBuffer(CN_PDS, false)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
-
-  ASSERT(CacheLine::bOnCacheLineBoundary(this));
-
-  i8 iRowSizeProper = Row::nRowProper(pStreamDef->nColumns() + (bAddKeyHash ? 1 : 0));
+  i8 iRowSizeProper = Row::nRowProper(pStreamDef->nColumns());
 
   // Calculate block size and padding ------------------
   m_nBlockSize = sizeof(SkipListNode) + iRowSizeProper + sizeof(m_iSynthRowKey);
@@ -228,9 +162,6 @@ Pds::Pds(StreamDef* pStreamDef, bool bAddKeyHash, eBT eBufferType)
     // Init the tail vector to the dummy root
     m_auTailOffsets[i_Level] = m_uInUseRootOffset;
   }
-
-  // Init RowPix object -------------------------------
-  vInitPix(pStreamDef, bAddKeyHash);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
 }
@@ -304,8 +235,6 @@ Pds::Pds(i8 nBytes, CompareFunc fpCompare, bool bAddToHashMap)
     // Init the tail vector to the dummy root
     m_auTailOffsets[i_Level] = m_uInUseRootOffset;
   }
-
-  m_oRowPix.m_bInitialised = false;
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
 }
@@ -404,7 +333,7 @@ Row* Pds::pAllotRow(void)
 /*----------------------------------------------------------------------------*/
 /* allot a row copying the rowSingle into it                                  */
 /*----------------------------------------------------------------------------*/
-Row* Pds::pAllotRow(i8 iVArgsBegin, ...)
+Row* Pds::pAllotRow(StreamDef* pStreamDef, i8 iVArgsBegin, ...)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
 
@@ -420,9 +349,11 @@ Row* Pds::pAllotRow(i8 iVArgsBegin, ...)
 
   va_start(xVarArgs,iVArgsBegin);
 
-  for (i8 i_Col = 0; i_Col < m_oRowPix.m_nColumns; i_Col++) {
+  for (i8 i_Col = 0; i_Col < pStreamDef->nColumns(); i_Col++) {
 
-    eDM eDatum = (eDM)m_oRowPix.m_xaColPix[i_Col].m_uDatum;
+    Column* pColumn = pStreamDef->pGetColumn(i_Col);
+
+    eDM eDatum = pColumn->eDatum();
 
     if (DM_VCH == eDatum) {
       // STRING_DEPOSIT
@@ -601,10 +532,9 @@ void Pds::vBufferType(eBT eBufferType)
 /*----------------------------------------------------------------------------*/
 /* Allot a row and copy given row into it                                     */
 /*----------------------------------------------------------------------------*/
-Row* Pds::pCopyRow(Row* pRow, bool bSrcHasPtnHash, bool bCopyPtnHash)
+Row* Pds::pCopyRow(StreamDef* pStreamDef, Row* pRow, bool bSrcHasPtnHash, bool bCopyPtnHash)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
-  ASSERT(m_oRowPix.m_bInitialised);
 
   Row* pNewRow = pAllotRow();
   if (! pNewRow) {
@@ -615,11 +545,12 @@ Row* Pds::pCopyRow(Row* pRow, bool bSrcHasPtnHash, bool bCopyPtnHash)
   i8 iVal;
   Stz* szSrcStz;
 
-  i8 nCols = m_oRowPix.m_nColumns;
+  i8 nCols = pStreamDef->nColumns();
   i8 i_Col;
   for (i_Col = 0; i_Col < nCols; i_Col++) {
 
-    eDM eDatum = (eDM)m_oRowPix.m_xaColPix[i_Col].m_uDatum;
+    Column* pColumn = pStreamDef->pGetColumn(i_Col);
+    eDM eDatum = pColumn->eDatum();
 
     if (DM_VCH == eDatum) {
       // vch datum
@@ -1181,77 +1112,6 @@ i8 Pds::nFreeBytes(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Init the RowPix structure                                                  */
-/*----------------------------------------------------------------------------*/
-void Pds::vInitPix(RowPix* pRowPix)
-{
-  ASSERT(pRowPix);
-
-  m_oRowPix.vCopyRowPix(pRowPix);
-
-//  i8 nCols = m_oRowPix.m_nColumns;
-//  i8 iTotalStzArea = 0;
-//
-//  // Calculate total size of string area needed per row
-//  for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
-//    eDM eDatum = (eDM)m_oRowPix.m_xaColPix[i_Col].m_uDatum;
-//    if (DM_VCH == eDatum) {
-//      i8 nBytes = m_oRowPix.m_xaColPix[i_Col].m_uLength;
-//
-//      if (nBytes) {
-//        iTotalStzArea += String_d::iBytesToAlloc(nBytes);
-//      }
-//    }
-//  }
-//  // Set size of StzSet area
-//  vStzSetSize(iTotalStzArea);
-
-  i8 iRowSizeProper = Row::nRowProper(m_oRowPix.m_nColumns);
-	UNUSED(iRowSizeProper);
-  // Assert the space we are allocating for the row + key is less than or equal to the block size
-  ASSERT((iRowSizeProper + (i8)sizeof(m_iSynthRowKey)) <= m_nBlockSize);
-
-}
-
-/*----------------------------------------------------------------------------*/
-/* Init the RowPix structure from a streamdef                                 */
-/*----------------------------------------------------------------------------*/
-void Pds::vInitPix(StreamDef* pStreamDef, bool bAddKeyHash)
-{
-
-  pStreamDef->vToRowPix(&m_oRowPix, bAddKeyHash);
-
-//  i8 nCols = m_oRowPix.m_nColumns;
-//  i8 iTotalStzArea = 0;
-//
-//  // Calculate total size of string area needed per row
-//  for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
-//    eDM eDatum = (eDM)m_oRowPix.m_xaColPix[i_Col].m_uDatum;
-//    if (DM_VCH == eDatum) {
-//      i8 nBytes = m_oRowPix.m_xaColPix[i_Col].m_uLength;
-//
-//      // TODO: Hack, till we get the proper length
-//      if (nBytes) {
-//        if(nBytes > 800) {
-//          iTotalStzArea += String_d::iBytesToAlloc(800);
-//          m_oRowPix.m_xaColPix[i_Col].m_uLength = 800;
-//        }
-//        else
-//          iTotalStzArea += String_d::iBytesToAlloc(nBytes);
-//      }
-//    }
-//  }
-//  // Set size of StzSet area
-//  vStzSetSize(iTotalStzArea);
-
-  i8 iRowSizeProper = Row::nRowProper(m_oRowPix.m_nColumns);
-	UNUSED(iRowSizeProper);
-
-  // Assert the space we are allocating for the row + key is less than or equal to the block size
-  ASSERT((iRowSizeProper + (i8)sizeof(m_iSynthRowKey)) <= m_nBlockSize);
-
-}
-/*----------------------------------------------------------------------------*/
 /* Number of elements in this Skip List                                       */
 /*----------------------------------------------------------------------------*/
 i8 Pds::nItems(void)
@@ -1322,14 +1182,12 @@ Row* Pds::pNextRow(Row* pCurr)
 /*----------------------------------------------------------------------------*/
 /* print rows                                                                 */
 /*----------------------------------------------------------------------------*/
-void Pds::vPrintRows(File* pFilePtr, Stz* szLabel)
+void Pds::vPrintRows(StreamDef* pStreamDef, File* pFilePtr, Stz* szLabel)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
   UNUSED(pFilePtr);
 
-  ASSERT(m_oRowPix.m_bInitialised);
-
-  HV_Record hvRecord(&m_oRowPix);
+  HV_Record hvRecord(pStreamDef);
 
   PdsCursor* pCursor = new PdsCursor(this);
 
@@ -1355,15 +1213,6 @@ void Pds::vReset(void)
   m_i_ColCrs = C_UNKNOWN;
   m_aStzSet  = nullptr;
   m_nRowStringBytes = 0;
-}
-
-/*----------------------------------------------------------------------------*/
-/* return address of RowPix                                                   */
-/*----------------------------------------------------------------------------*/
-RowPix* Pds::pRowPix(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
-  return &m_oRowPix;
 }
 
 /*----------------------------------------------------------------------------*/

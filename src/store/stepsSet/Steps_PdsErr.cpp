@@ -63,6 +63,10 @@ void Step::vPdsErrAddExecError(void)
 
   Pds* pPds = _pPds(*m_pLogicUnit->m_xpPdsErr);
 
+  // get the streamSet table
+  Table* pTableDef = _pTable(m_pDataStack->pPopPtr(__func__));
+
+
   // get the error information
   eEC eErrorCode = (eEC) m_pDataStack->iPopInt(__func__);
   m_pDataStack->vPopStr(sErrorText, __func__);
@@ -71,11 +75,12 @@ void Step::vPdsErrAddExecError(void)
 
   //pStreamDef->vListContents(1);
 
-  Row* pRow = pPds->pAllotRow(C_VARGS_BEGIN,
-                                    pGrid->pThisNode()->szNodeNm(),
-                                    (i8)eErrorCode,
-                                    sErrorText.azChar(),
-                                    C_VARGS_END);
+  Row* pRow = pPds->pAllotRow(pTableDef->pStreamDef(),
+                              C_VARGS_BEGIN,
+                              pGrid->pThisNode()->szNodeNm(),
+                              (i8)eErrorCode,
+                              sErrorText.azChar(),
+                              C_VARGS_END);
 
   //pRow->vDump(pStreamDef);
 
@@ -176,7 +181,7 @@ void Step::vPdsErrNew(void)
 
   StreamDef* pStreamDef = pTable->pStreamDef();
 
-  m_pLogicUnit->m_xpPdsErr = new Pds(pStreamDef, false, eBufferType);
+  m_pLogicUnit->m_xpPdsErr = new Pds(pStreamDef, eBufferType);
 
   EXIT();
 }

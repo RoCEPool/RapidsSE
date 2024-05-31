@@ -158,17 +158,6 @@ Op::~Op(void) noexcept(false)
 				RASSERT(0);
 		}
 
-		if (m_pPipeInSecondary[iIndex]->pQueueRight()->nItems() != 0) {
-			vTrace("Operand Queue not empty\n"_Stz);
-			Operand *pOperand = m_pPipeInSecondary[iIndex]->pQueueRight()->pPopQueue();
-			while (pOperand) {
-				vTrace("Operand Queue for OP %s has %s\n"_Stz, szOpNm(), AM::pOperandName(pOperand));
-				pOperand = m_pPipeInSecondary[iIndex]->pQueueRight()->pPopQueue();
-			}
-			RASSERT(0);
-		}
-
-
 		// drain the OOO queue
 		if (m_pPipeInSecondary[iIndex]->pQueueOoO()->nItems() != 0) {
 			vTrace("Operand OOO Queue not empty\n"_Stz);
@@ -2025,38 +2014,6 @@ Operand* Op::pPopOoOLeft(Task* pTask, bool* pbPageIn)
   }
   return pOperand;
 
-}
-
-/*----------------------------------------------------------------------------*/
-/* pop operand queue B                                                        */
-/*----------------------------------------------------------------------------*/
-Operand* Op::pPopRight(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-
-  Operand* pOperand = nullptr;
-
-  vGrabTaskLock();
-
-  pOperand = m_pPipeIn->pQueueRight()->pPopQueue();
-
-  if (pOperand) {
-    vDropTaskLock();
-
-    AM::vOperandsDec();
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  if (pOperand) {
-    if (m_bTraceOp)
-      vTrace("%s::pPopQueueRight : %s %p\n"_Stz,
-             szOpNm(),
-             AM::pOperandName(pOperand),
-             pOperand);
-  }
-
-  return pOperand;
 }
 
 /*----------------------------------------------------------------------------*/

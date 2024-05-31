@@ -420,29 +420,6 @@ void EntWrk::vAppendElement(Row* aRow, Column* pColumn)
 /*----------------------------------------------------------------------------*/
 /* add element from row to key                                                */
 /*----------------------------------------------------------------------------*/
-void EntWrk::vAppendElement(Row* aRow, RowPix* pRowPix, i8 i_Col)
-{
-  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
-  
-  eDM eDatum = (eDM)pRowPix->m_xaColPix[i_Col].m_uDatum;
-    
-  if (aRow->bIsColNull(i_Col)) {
-    vAppendNull();
-    return;
-  }
-  
-  if (DM_VCH == eDatum) {
-    Stz* szSrc = aRow->szColVal_ofs(i_Col);
-    vAppendStz(szSrc);
-  }
-  else {
-    vAppendInt(aRow->iColVal_int(i_Col));
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* add element from row to key                                                */
-/*----------------------------------------------------------------------------*/
 void EntWrk::vAppendElementInt(Row* aRow, i8 iInt)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);

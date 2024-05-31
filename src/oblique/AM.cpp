@@ -2441,9 +2441,9 @@ void* AM::PROMPT::pToPromptOut(Stz* szStz)
   if (! pStreamDef)
     return nullptr;
 
-  Pds* pPdsRowBuffer = new Pds(pStreamDef, false, BT_PROMPTOUT);
+  Pds* pPdsRowBuffer = new Pds(pStreamDef, BT_PROMPTOUT);
 
-  ASSERT(pPdsRowBuffer->pAllotRow(C_VARGS_BEGIN,szStz,C_VARGS_END));
+  ASSERT(pPdsRowBuffer->pAllotRow(pStreamDef,C_VARGS_BEGIN,szStz,C_VARGS_END));
 
   return (void*)pPdsRowBuffer;
 }

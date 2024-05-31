@@ -22,8 +22,6 @@ C_INSTALLER_FILESPEC = "rapidsse-*.run"
 # and be ready to use?
 C_SE_BUILD_TIMEOUT_SEC = 1200
 
-OP_CTX = f"{C_TEST_NAME}: "
-
 
 class BuildRunner:
 
@@ -43,6 +41,8 @@ class BuildRunner:
         self.remote_home_dir: pathlib.Path = None
         self.remote_repo_dir: pathlib.Path = None
         self.installer_path: pathlib.Path = None
+
+        self.ctx = f"{self.config.get_build_name()} (build): "
 
     def run(self):
         """
@@ -95,7 +95,7 @@ class BuildRunner:
         """Start the build EC2 instance and save its instance_id and ip_addr"""
 
         LOG.debug(f"Getting the image name for image_id: {self.config.get_build_image()}")
-        image_name = ec2.get_image_desc(self.config.get_build_image(), ctx=OP_CTX)
+        image_name = ec2.get_image_desc(self.config.get_build_image(), ctx=self.ctx)
 
         # Start the EC2 instance to build RapidsSE.
         LOG.info(f"About to start the instance to build RapidsSE on "
@@ -112,7 +112,7 @@ class BuildRunner:
                                                      name_tag,
                                                      C_INSTANCE_START_TIMEOUT,
                                                      False,
-                                                     ctx=OP_CTX)
+                                                     ctx=self.ctx)
 
         assert len(instance_ids) == 1
         assert len(ip_addrs) == 1
@@ -129,7 +129,7 @@ class BuildRunner:
         LOG.debug("About to try to get the home directory of the default user on the remote EC2 instance")
 
         try:
-            result: subprocess.CompletedProcess = ssh.run_ssh(self.ip_addr, command, 10, ctx=OP_CTX)
+            result: subprocess.CompletedProcess = ssh.run_ssh(self.ip_addr, command, 10, ctx=self.ctx)
 
         except errors.SshError:
             LOG.error(f"Error while trying to get the user home directory on host {self.ip_addr}: {command}")
@@ -157,7 +157,7 @@ class BuildRunner:
             return
 
         LOG.info(f"About to stop EC2 instance with ID: {self.instance_id}")
-        ec2.terminate_instances([self.instance_id], ctx=OP_CTX)
+        ec2.terminate_instances([self.instance_id], ctx=self.ctx)
 
     def __copy_repo_to_instance(self) -> None:
         """Copies the repository from the local machine to the remote instance"""
@@ -208,7 +208,7 @@ class BuildRunner:
         LOG.debug("About to build RapidsSE on the remote EC2 instance")
 
         try:
-            result = ssh.run_ssh(self.ip_addr, command, C_SE_BUILD_TIMEOUT_SEC, ctx=OP_CTX)
+            result = ssh.run_ssh(self.ip_addr, command, C_SE_BUILD_TIMEOUT_SEC, ctx=self.ctx)
 
             # Write build log to the artifact path
             self.__write_build_log_as_artifact(result.stdout, result.stderr)
@@ -274,7 +274,7 @@ class BuildRunner:
         LOG.debug(f"About to copy the cloud-init-log from {src} to {dest}")
 
         try:
-            ssh.run_scp(src, dest, timeout=command_timeout, ctx=OP_CTX)
+            ssh.run_scp(src, dest, timeout=command_timeout, ctx=self.ctx)
 
         except errors.SshError:
             LOG.error(f"Error while copying the cloud-init-log from {src} to {dest}.")
@@ -297,7 +297,7 @@ class BuildRunner:
         LOG.debug(f"About to copy the texlive log from {src} to {dest}")
 
         try:
-            ssh.run_scp(src, dest, timeout=command_timeout, ctx=OP_CTX)
+            ssh.run_scp(src, dest, timeout=command_timeout, ctx=self.ctx)
 
         except errors.SshError:
             LOG.error(f"Error while copying the texlive log from {src} to {dest}.")
@@ -325,7 +325,7 @@ class BuildRunner:
         LOG.debug(f"About to copy the RapidsSE installer from {src} to {dest}")
 
         try:
-            ssh.run_scp(src, dest, command_timeout, ctx=OP_CTX)
+            ssh.run_scp(src, dest, command_timeout, ctx=self.ctx)
 
         except errors.SshError:
             LOG.error(f"Error while copying the RapidsSE installer from {src} to {dest}.")
@@ -361,7 +361,7 @@ class BuildRunner:
         LOG.debug(f"About to copy the installer checksums from {src} to {dest}")
 
         try:
-            ssh.run_scp(src, dest, command_timeout, ctx=OP_CTX)
+            ssh.run_scp(src, dest, command_timeout, ctx=self.ctx)
 
         except errors.SshError:
             LOG.error(f"Error while copying the installer checksums from {src} to {dest}.")
@@ -383,7 +383,7 @@ class BuildRunner:
         LOG.debug(f"About to copy the documentation from {src} to {dest}")
 
         try:
-            ssh.run_scp(src, dest, command_timeout, ctx=OP_CTX)
+            ssh.run_scp(src, dest, command_timeout, ctx=self.ctx)
 
         except errors.SshError:
             LOG.error(f"Error while copying the documentation from {src} to {dest}.")

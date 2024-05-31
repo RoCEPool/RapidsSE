@@ -388,33 +388,39 @@ bool Optimiser::bTransform(Error& rxError, Pds* pPdsRowBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
 
-  Job* pJob = MY::pJob();
-  TagSet* pJobTags = pJob->pJobTags();
-
-  bool bJoinOrder = pJobTags->bHasName("<joinOrder>"_Stz);
-  bool bJoinPermutations = pJobTags->bHasName("<JoinPermutations>"_Stz);
+  UNUSED(pPdsRowBuffer);
 
   bool bClean = bApplyTransformations(rxError);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  if (bJoinOrder) {
-    RASSERT(pPdsRowBuffer);
-    Row *pRow = pPdsRowBuffer->pAllotRow(C_VARGS_BEGIN,
-                                    m_sJoinOrder.szStz(),
-                                    C_VARGS_END);
-    UNUSED(pRow);
+  // Alka commented code to allotRow for JoinOrder and JoinPermutations : date 20/5/2024
+  // Don't think we support this in this version of the optimiser.
+  // In removing ROWPIX work, need to handle streamDef being passed to AllotRow.
+  // So commenting it for now as never used.
 
-  }
-  else if (bJoinPermutations) {
-    RASSERT(pPdsRowBuffer);
-    for (i8 iIndex = 0; iIndex < m_nJoinPermutations; iIndex++) {
-      Row* pRow = pPdsRowBuffer->pAllotRow(C_VARGS_BEGIN,
-                                      m_sJoinPermutation[iIndex].szStz(),
-                                      C_VARGS_END);
-      UNUSED(pRow);
-    }
-  }
+//  Job* pJob = MY::pJob();
+//  TagSet* pJobTags = pJob->pJobTags();
+//  bool bJoinOrder = pJobTags->bHasName("<joinOrder>"_Stz);
+//  bool bJoinPermutations = pJobTags->bHasName("<JoinPermutations>"_Stz);
+
+//  if (bJoinOrder) {
+//    RASSERT(pPdsRowBuffer);
+//    Row *pRow = pPdsRowBuffer->pAllotRow(C_VARGS_BEGIN,
+//                                    m_sJoinOrder.szStz(),
+//                                    C_VARGS_END);
+//    UNUSED(pRow);
+//
+//  }
+//  else if (bJoinPermutations) {
+//    RASSERT(pPdsRowBuffer);
+//    for (i8 iIndex = 0; iIndex < m_nJoinPermutations; iIndex++) {
+//      Row* pRow = pPdsRowBuffer->pAllotRow(C_VARGS_BEGIN,
+//                                      m_sJoinPermutation[iIndex].szStz(),
+//                                      C_VARGS_END);
+//      UNUSED(pRow);
+//    }
+//  }
 
    return bClean;
 }

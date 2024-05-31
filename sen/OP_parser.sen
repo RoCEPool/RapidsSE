@@ -49,7 +49,7 @@
     BT_EXPLAIN TableDef[] Pds[].new
 
     // execute explain for this operator
-    PlanOperand[] "parser" sqlCompiler::doExplain
+    PlanOperand[] "parser" TableDef[] sqlCompiler::doExplain
 
     // pipeout streamDef of explain
     StreamDefLft[].pipeout

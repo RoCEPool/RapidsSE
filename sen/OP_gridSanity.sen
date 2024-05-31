@@ -29,7 +29,7 @@
   BT_DATA TableDef[] Pds[].new
 
   // add nodeInfo to the Pds
-  Row[] Pds[].addgridSanity assert
+  Row[] TableDef[] Pds[].addgridSanity assert
 
   // pipeout the Pds
   Pds[].pipeOut

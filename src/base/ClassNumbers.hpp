@@ -298,7 +298,6 @@ enum eCN : u2 // Class Number
   /* */ CN_ROWCOMPACTOR,
   /* */ CN_ROWCOUNTS,
   /* */ CN_ROWONCE,
-  /* */ CN_ROWPIX,
   /* */ CN_ROWSINGLE,
   /* */ CN_ROWSINGLELIST,
   /* */ CN_ROWTRAY,

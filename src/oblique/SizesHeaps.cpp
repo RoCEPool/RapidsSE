@@ -610,7 +610,7 @@ SizeHeap gxaSizeHeap[]
   { CN_QUERYNODELIST,            sizeof(QueryNodeList),          HT_T_TINY    , FILL },
   { CN_QUERYNODESTACK,           sizeof(QueryNodeStack),         HT_T_MEDIUM  , FILL },
   { CN_QUEUE,                    sizeof(Queue),                  HT_T_TINY    , FILL },
-  { CN_QUEUEBUFFER,              sizeof(QueueBuffer),            HT_T_TINY    , FILL },
+  { CN_QUEUEBUFFER,              sizeof(QueueBuffer),            HT_T_SMALL   , FILL },
 
   {CN__R__,                     'R' - ('A' - 1),                HT_INVALID   , FILL },
   {CN_READER,                   sizeof(Reader),                 HT_T_TINY    , FILL },
@@ -631,7 +631,6 @@ SizeHeap gxaSizeHeap[]
   { CN_ROWCOMPACTOR,             sizeof(RowCompactor),       HT_T_SMALL   ,FILL },
   { CN_ROWCOUNTS,                sizeof(RowCounts),          HT_T_TINY   ,FILL },
   { CN_ROWONCE,                  sizeof(RowOnce),            HT_T_TINY    ,FILL },
-  { CN_ROWPIX,                   sizeof(RowPix),             HT_T_MEDIUM  ,FILL },
   { CN_ROWSINGLE,                sizeof(RowSingle),          HT_T_MEDIUM  ,FILL },
   { CN_ROWSINGLELIST,            sizeof(RowSingleList),      HT_T_TINY    ,FILL },
   { CN_ROWTRAY,                  sizeof(RowTray),            HT_T_LARGE   ,FILL },

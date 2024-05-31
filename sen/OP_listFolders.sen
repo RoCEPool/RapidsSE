@@ -39,11 +39,11 @@
       object@ execute dic.kindString@
     then
 
-    object@ word.name@
+    object@ word.name@ TableDef[]
     Pds[].addListFolder not if
       Pds[].pipeOut
       BT_DATA TableDef[] Pds[].new
-      object@ word.name@
+      object@ word.name@ TableDef[]
       Pds[].addListFolder assert
     then
 

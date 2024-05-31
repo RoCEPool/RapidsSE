@@ -55,10 +55,10 @@
 
     object@ word.name@ Folder[].findSymbol execute to pIndex
 
-    pIndex Pds[].addListIndex  not if
+    pIndex TableDef[] Pds[].addListIndex  not if
       Pds[].pipeOut
       BT_DATA TableDef[] Pds[].new
-      pIndex Pds[].addListIndex assert
+      pIndex TableDef[] Pds[].addListIndex assert
     then
 
     object@ word.prev object!      // step backwards thru words

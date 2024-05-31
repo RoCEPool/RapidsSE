@@ -216,7 +216,8 @@ void Step::vDynamicStreamDefOut(void)
 
   Dynamic* pDynamic = *m_pLogicUnit->m_xpDynamic;
 
-  m_pDataStack->vPushPtr((Object*)pDynamic->aDynamicT()->m_aStreamDefOut);
+  StreamDef* pStreamDef = new StreamDef((StreamDef*)pDynamic->aDynamicT()->m_aStreamDefOut);
+  m_pDataStack->vPushPtr(pStreamDef);
 
   EXIT();
 }

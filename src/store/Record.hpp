@@ -10,7 +10,7 @@ namespace STORE
   class Record : public Object
   {
   public:
-    RowPix*    m_pRowPix;
+    StreamDef* m_pStreamDef;
     char       m_caRecord[C_MAX_RECORD];
     char*      m_azCursor;    // append cursor for StrLib::vAppend()
 
@@ -21,7 +21,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Record(RowPix* pRowPix);
+    Record(StreamDef* pStreamDef);
    ~Record(void) noexcept(false);
   
     char* az(void);
@@ -47,7 +47,7 @@ namespace STORE
   Record* _pRecord(void* aAddr);
 
 
-  typedef HV<Record,RowPix>       HV_Record;
+  typedef HV<Record,StreamDef>       HV_Record;
 }
 
 /*============================================================================*/

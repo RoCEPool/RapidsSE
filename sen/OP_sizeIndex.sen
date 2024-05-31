@@ -32,7 +32,7 @@
   0 iIndexSize number.magnitude >str iIndexSize
 
   // insert index size
-  Pds[].addSizeIndex assert
+  TableDef[] Pds[].addSizeIndex assert
 
   // pipeout the Pds
   Pds[].pipeOut

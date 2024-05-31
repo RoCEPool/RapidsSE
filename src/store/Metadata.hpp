@@ -36,6 +36,7 @@ namespace STORE
     void vListContents(i8 i_Depth, Dic* pDic);
   
     void vSearch(Pds* pInfoPdsSet,
+                 StreamDef* pLookupStreamDef,
                  i8 iScope,
                  Stz* szCatalogName,
                  Stz* szSchemaName,
@@ -48,64 +49,70 @@ namespace STORE
                  Dic* pSchema = nullptr);
 
     void vSearchCatalogs(Pds* pPds,
+                         StreamDef* pLookupStreamDef,
                          Dic* pCatalog);
   
     void vSearchColumns(Pds* pPds,
+                        StreamDef* pLookupStreamDef,
                         Dic* pCatalog,
                         Dic* pSchema,
                         Table* pTable,
                         Stz* szColumnName);
 
     void vSearchIndexColumns(Pds* pPds,
-                        Dic* pCatalog,
-                        Dic* pSchema,
-                        Table* pTable,
-                        Index* pIndex,
-                        Stz* szColumnName);
+                             StreamDef* pLookupStreamDef,
+                             Dic* pCatalog,
+                             Dic* pSchema,
+                             Table* pTable,
+                             Index* pIndex,
+                             Stz* szColumnName);
 
     void vSearchIndexes(Pds* pPds,
+                        StreamDef* pLookupStreamDef,
                         Dic* pCatalog,
                         Dic* pSchema,
                         Table* pTable,
                         Stz* szIndexName);
 
     void vSearchSchemas(Pds* pPds,
+                        StreamDef* pLookupStreamDef,
                         Dic* pCatalog,
                         Dic* pSchema);
   
     void vSearchTables(Pds* pPds,
+                       StreamDef* pLookupStreamDef,
                        Dic* pCatalog,
                        Dic* pSchema,
                        Table* pTable);
 
 		Pds* pColumnDefs(Stz* szCatalogName,
-                         Stz* szSchemaName,
-                         Stz* szTableName,
-                         Stz* szColumnName);
+                     Stz* szSchemaName,
+                     Stz* szTableName,
+                     Stz* szColumnName);
 
 		Pds* pIndexColumnDefs(Stz* szCatalogName,
-                              Stz* szSchemaName,
-                              Stz* szTableName,
-                              Stz* szIndexName,
-                              Stz* szColumnName);
+                          Stz* szSchemaName,
+                          Stz* szTableName,
+                          Stz* szIndexName,
+                          Stz* szColumnName);
 
 		Pds* pPartitionKey(Stz* szCatalogName,
-                         Stz* szSchemaName,
-                         Stz* szTableName);
+                       Stz* szSchemaName,
+                       Stz* szTableName);
 
 		Pds* pLookupCatalog(Stz* szCatalogName);
 
 		Pds* pLookupIndex(Stz* szCatalogName,
-                          Stz* szSchemaName,
-                          Stz* szTableName,
-                          Stz* szIndexName);
+                      Stz* szSchemaName,
+                      Stz* szTableName,
+                      Stz* szIndexName);
 
 		Pds* pLookupSchema(Stz* szCatalogName,
-                             Stz* szSchemaName);
+                       Stz* szSchemaName);
 
 		Pds* pLookupTable(Stz* szCatalogName,
-                            Stz* szSchemaName,
-                            Stz* szTableName);
+                      Stz* szSchemaName,
+                      Stz* szTableName);
   
     bool bTest(Stz* szCatalogNm);
     bool bTest(Stz* szCatalogNm, Stz* szSchemaNm);

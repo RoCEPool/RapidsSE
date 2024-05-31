@@ -475,7 +475,7 @@ bool Output::bProcessOperand(Operand* pOperand)
       else {
         m_ixRowsProcessed += pPdsRowBuffer->nItems();
         vTrace("\n"_Stz);
-        pPdsRowBuffer->vPrintRows(nullptr, nullptr);
+        pPdsRowBuffer->vPrintRows(m_pStreamDef_result, nullptr, nullptr);
       }
       AM::vDeleteOperand(pOperand, nullptr);
       break;

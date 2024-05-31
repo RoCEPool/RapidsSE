@@ -68,7 +68,7 @@ void SysReport::vSysLocks(Tub* pTub)
 
   if (! pPds) {
     // new a Pds
-		pPds = new Pds(pStreamDef, false, BT_SYSLOCKS);
+		pPds = new Pds(pStreamDef,  BT_SYSLOCKS);
 
     // add the named buffer to the tub
     pTub->vAddBuffer(pPds);
@@ -98,6 +98,7 @@ void SysReport::vSysLocks(Tub* pTub)
     L_RETRY:
     Row* pRow = pPds->pAllotRow
                 (
+                  pStreamDef,
                   C_VARGS_BEGIN
                  
                  ,pThisNode->iNodeId()
@@ -120,7 +121,7 @@ void SysReport::vSysLocks(Tub* pTub)
                 );
       
     if (! pRow) {
-      pPds = new Pds(pStreamDef, false, BT_SYSLOCKS);
+      pPds = new Pds(pStreamDef,  BT_SYSLOCKS);
 
       // add the Pds to the tub
       pTub->vAddBuffer(pPds);
@@ -165,7 +166,7 @@ void SysReport::vSysMetrics(Tub* pTub)
 
   if (! pPds) {
     // new a Pds
-		pPds = new Pds(pStreamDef, false, BT_SYSMETRICS);
+		pPds = new Pds(pStreamDef,  BT_SYSMETRICS);
 
     // add the Pds to the tub
     pTub->vAddBuffer(pPds);
@@ -183,6 +184,7 @@ void SysReport::vSysMetrics(Tub* pTub)
     L_RETRY:
     Row* pRow = pPds->pAllotRow
                 (
+                  pStreamDef,
                   C_VARGS_BEGIN
                  
                  ,pThisNode->iNodeId()
@@ -205,7 +207,7 @@ void SysReport::vSysMetrics(Tub* pTub)
                 );
       
       if (! pRow) {
-				pPds = new Pds(pStreamDef, false, BT_SYSMETRICS);
+				pPds = new Pds(pStreamDef,  BT_SYSMETRICS);
 
         // add the Pds to the tub
         pTub->vAddBuffer(pPds);

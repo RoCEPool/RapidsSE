@@ -16,7 +16,7 @@
   BT_NODEINFO TableDef[] Pds[].new
 
   // add nodeInfo to the Pds
-  Pds[].addnodeInfo assert
+  TableDef[] Pds[].addnodeInfo assert
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // send node info job to the other node

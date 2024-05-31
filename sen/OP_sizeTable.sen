@@ -32,7 +32,7 @@
   0 iTableSize number.magnitude >str iTableSize
 
   // insert index size
-  Pds[].addSizeTable assert
+  TableDef[] Pds[].addSizeTable assert
 
   // pipeout the Pds
   Pds[].pipeOut

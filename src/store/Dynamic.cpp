@@ -304,12 +304,10 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
 	m_xDynamicT.m_fp_aExtern_PdsNextRowCellArray   = nullptr;
 	m_xDynamicT.m_fp_vExtern_PotAllotRowPds   = nullptr;
 	m_xDynamicT.m_fp_vExtern_PotRowStrSize    = nullptr;
-	m_xDynamicT.m_fp_vExtern_PotRowPix        = nullptr;
 
 	m_xDynamicT.m_fp_aExtern_StreamDefNew = nullptr;
 
 	m_xDynamicT.m_fp_vExtern_TubAllotRowPds = nullptr;
-	m_xDynamicT.m_fp_vExtern_TubRowPix      = nullptr;
 	m_xDynamicT.m_fp_vExtern_TubRowStrSize  = nullptr;
 
   _checkInitialised_(CN_DYNAMIC);
@@ -323,6 +321,9 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
 Dynamic::~Dynamic(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMIC,_FOOTER_);
+
+  StreamDef* pStreamDef = _pStreamDef(m_xDynamicT.m_aStreamDefOut);
+  delete pStreamDef;
 
   if (m_xDynamicT.m_xIndexInfoPL[0].m_aIndexTree) {
     IndexTree* pIndexTree = _pIndexTree(m_xDynamicT.m_xIndexInfoPL[0].m_aIndexTree);

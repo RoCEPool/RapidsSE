@@ -30,7 +30,7 @@
   BT_DATA TableDef[] Pds[].new
 
   // add pingInfo to the Pds
-  "pong" 1 Pds[].addRowVargs assert
+  "pong" 1 TableDef[] Pds[].addRowVargs assert
 
   // pipeout the Pds
   Pds[].pipeOut

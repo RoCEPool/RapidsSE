@@ -35,11 +35,11 @@
 
   // insert a row in the Pds for each column
   nPtnCols 0 do
-    I PtnDef[].column@
-    Pds[].addColumnDef  not if
+    I PtnDef[].column@ TableDef[]
+    Pds[].addColumnDef not if
       Pds[].pipeOut
       BT_DATA TableDef[] Pds[].new
-      I PtnDef[].column@
+      I PtnDef[].column@ TableDef[]
       Pds[].addColumnDef assert
     then
   loop

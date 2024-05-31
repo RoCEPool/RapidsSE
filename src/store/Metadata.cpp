@@ -247,6 +247,7 @@ void Metadata::vListContents(i8 i_Depth, Dic* pDic)
 /* search all metadata                                                        */
 /*----------------------------------------------------------------------------*/
 void Metadata::vSearch(Pds* pPds,
+                       StreamDef* pLookupStreamDef,
                        i8 iScope,
                        Stz* szCatalogName,
                        Stz* szSchemaName,
@@ -263,7 +264,7 @@ void Metadata::vSearch(Pds* pPds,
   if (! pDic) {
     Dic* pDic = pCurrTenant();
     //vTrace("\nTENANT %s \\folder\n"_Stz,pDic->szDicNm());
-    vSearch(pPds,iScope,
+    vSearch(pPds,pLookupStreamDef,iScope,
             szCatalogName,szSchemaName,szTableName,szColumnName,szIndexName,szIndexColumnName,
             pDic,nullptr,nullptr);
     return;
@@ -285,7 +286,7 @@ void Metadata::vSearch(Pds* pPds,
           continue;
         pCatalog = pDic;
         if (1 == iScope) {
-          vSearchCatalogs(pPds,pCatalog);
+          vSearchCatalogs(pPds,pLookupStreamDef,pCatalog);
           continue;
         }
       }
@@ -295,11 +296,11 @@ void Metadata::vSearch(Pds* pPds,
           continue;
         pSchema = pDic;
         if (2 == iScope) {
-          vSearchSchemas(pPds,pCatalog,pSchema);
+          vSearchSchemas(pPds,pLookupStreamDef,pCatalog,pSchema);
           continue;
         }
       }
-      vSearch(pPds,iScope,
+      vSearch(pPds,pLookupStreamDef,iScope,
               szCatalogName,szSchemaName,szTableName,szColumnName,szIndexName,szIndexColumnName,
               pDic,pCatalog,pSchema);
       continue;
@@ -313,10 +314,10 @@ void Metadata::vSearch(Pds* pPds,
       if (szTableName && ! pTable->szTableNm()->bSame(szTableName))
         continue;
       if (3 == iScope)
-        vSearchTables(pPds,pCatalog,pSchema,pTable);
+        vSearchTables(pPds,pLookupStreamDef,pCatalog,pSchema,pTable);
       else
       if (4 == iScope)
-        vSearchColumns(pPds,pCatalog,pSchema,pTable,szColumnName);
+        vSearchColumns(pPds,pLookupStreamDef,pCatalog,pSchema,pTable,szColumnName);
       continue;
     }
 
@@ -329,12 +330,12 @@ void Metadata::vSearch(Pds* pPds,
       if (szIndexName && ! pIndex->szIndexNm()->bSame(szIndexName))
         continue;
       if (5 == iScope) {
-        vSearchIndexes(pPds, pCatalog, pSchema, pTable, szIndexName);
+        vSearchIndexes(pPds, pLookupStreamDef, pCatalog, pSchema, pTable, szIndexName);
         break;
       }
       else
       if (6 == iScope)
-        vSearchIndexColumns(pPds,pCatalog,pSchema,pTable,pIndex,szColumnName);
+        vSearchIndexColumns(pPds,pLookupStreamDef,pCatalog,pSchema,pTable,pIndex,szColumnName);
       continue;
     }
 
@@ -347,13 +348,15 @@ void Metadata::vSearch(Pds* pPds,
 /* search catalogs                                                            */
 /*----------------------------------------------------------------------------*/
 void Metadata::vSearchCatalogs(Pds* pPds,
+                               StreamDef* pLookupStreamDef,
                                Dic* pCatalog)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_METADATA,_FOOTER_);
   
-  Row* pRow = pPds->pAllotRow(C_VARGS_BEGIN,
-                                  pCatalog->szDicNm(),
-                                  C_VARGS_END);
+  Row* pRow = pPds->pAllotRow(pLookupStreamDef,
+                              C_VARGS_BEGIN,
+                              pCatalog->szDicNm(),
+                              C_VARGS_END);
   ASSERT(pRow);
   UNUSED(pRow);
 }
@@ -362,6 +365,7 @@ void Metadata::vSearchCatalogs(Pds* pPds,
 /* search columns                                                             */
 /*----------------------------------------------------------------------------*/
 void Metadata::vSearchColumns(Pds* pPds,
+                              StreamDef* pLookupStreamDef,
                               Dic* pCatalog,
                               Dic* pSchema,
                               Table* pTable,
@@ -380,19 +384,20 @@ void Metadata::vSearchColumns(Pds* pPds,
     if (szColumnName && ! pColumn->szColNm()->bSame(szColumnName))
       continue;
 
-    pRow = pPds->pAllotRow(C_VARGS_BEGIN,
-                               pCatalog->szDicNm(),
-                               pSchema->szDicNm(),
-                               pTable->szTableNm(),
+    pRow = pPds->pAllotRow(pLookupStreamDef,
+                           C_VARGS_BEGIN,
+                           pCatalog->szDicNm(),
+                           pSchema->szDicNm(),
+                           pTable->szTableNm(),
 
-                               pColumn->iColumnNo(),
-                               pColumn->szColNm(),
-                               (i8)pColumn->eColumnType(),
-                               aCT[pColumn->eColumnType()],
-                               pColumn->iColumnLength(),
-                               pColumn->iColumnScale(),
-                               (i8)pColumn->bIsNullable(),
-                               (i8)pColumn->bIsPtnKey(),
+                           pColumn->iColumnNo(),
+                           pColumn->szColNm(),
+                           (i8)pColumn->eColumnType(),
+                           aCT[pColumn->eColumnType()],
+                           pColumn->iColumnLength(),
+                           pColumn->iColumnScale(),
+                           (i8)pColumn->bIsNullable(),
+                           (i8)pColumn->bIsPtnKey(),
 
                                C_VARGS_END);
     ASSERT(pRow);
@@ -404,6 +409,7 @@ void Metadata::vSearchColumns(Pds* pPds,
 /* search indexes                                                             */
 /*----------------------------------------------------------------------------*/
 void Metadata::vSearchIndexes(Pds* pPds,
+                              StreamDef* pLookupStreamDef,
                               Dic* pCatalog,
                               Dic* pSchema,
                               Table* pTable,
@@ -425,7 +431,8 @@ void Metadata::vSearchIndexes(Pds* pPds,
     // Temporary, until we support non-unique indexes
     b1 bIsUnique = false;
 
-    pRow = pPds->pAllotRow(C_VARGS_BEGIN,
+    pRow = pPds->pAllotRow(pLookupStreamDef,
+                           C_VARGS_BEGIN,
 
                                pCatalog->szDicNm(),
                                pSchema->szDicNm(),
@@ -443,11 +450,12 @@ void Metadata::vSearchIndexes(Pds* pPds,
 /* search index columns                                                       */
 /*----------------------------------------------------------------------------*/
 void Metadata::vSearchIndexColumns(Pds* pPds,
-                              Dic* pCatalog,
-                              Dic* pSchema,
-                              Table* pTable,
-                              Index* pIndex,
-                              Stz* szColumnName)
+                                   StreamDef* pLookupStreamDef,
+                                   Dic* pCatalog,
+                                   Dic* pSchema,
+                                   Table* pTable,
+                                   Index* pIndex,
+                                   Stz* szColumnName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_METADATA,_FOOTER_);
 
@@ -462,22 +470,23 @@ void Metadata::vSearchIndexColumns(Pds* pPds,
     if (szColumnName && ! pColumn->szColNm()->bSame(szColumnName))
       continue;
 
-    pRow = pPds->pAllotRow(C_VARGS_BEGIN,
-                               pCatalog->szDicNm(),
-                               pSchema->szDicNm(),
-                               pTable->szTableNm(),
-                               pIndex->szIndexNm(),
+    pRow = pPds->pAllotRow(pLookupStreamDef,
+                           C_VARGS_BEGIN,
+                           pCatalog->szDicNm(),
+                           pSchema->szDicNm(),
+                           pTable->szTableNm(),
+                           pIndex->szIndexNm(),
 
-                               pColumn->iColumnNo(),
-                               pColumn->szColNm(),
-                               (i8)pColumn->eColumnType(),
-                               aCT[pColumn->eColumnType()],
-                               pColumn->iColumnLength(),
-                               pColumn->iColumnScale(),
-                               (i8)pColumn->bIsNullable(),
-                               (i8)pColumn->bIsPtnKey(),
+                           pColumn->iColumnNo(),
+                           pColumn->szColNm(),
+                           (i8)pColumn->eColumnType(),
+                           aCT[pColumn->eColumnType()],
+                           pColumn->iColumnLength(),
+                           pColumn->iColumnScale(),
+                           (i8)pColumn->bIsNullable(),
+                           (i8)pColumn->bIsPtnKey(),
 
-                               C_VARGS_END);
+                           C_VARGS_END);
     ASSERT(pRow);
     UNUSED(pRow);
   }
@@ -487,15 +496,17 @@ void Metadata::vSearchIndexColumns(Pds* pPds,
 /* search schemas                                                             */
 /*----------------------------------------------------------------------------*/
 void Metadata::vSearchSchemas(Pds* pPds,
+                              StreamDef* pLookupStreamDef,
                               Dic* pCatalog,
                               Dic* pSchema)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_METADATA,_FOOTER_);
   
-  Row* pRow = pPds->pAllotRow(C_VARGS_BEGIN,
-                                  pCatalog->szDicNm(),
-                                  pSchema->szDicNm(),
-                                  C_VARGS_END);
+  Row* pRow = pPds->pAllotRow(pLookupStreamDef,
+                              C_VARGS_BEGIN,
+                              pCatalog->szDicNm(),
+                              pSchema->szDicNm(),
+                              C_VARGS_END);
   ASSERT(pRow);
   UNUSED(pRow);
 }
@@ -504,17 +515,19 @@ void Metadata::vSearchSchemas(Pds* pPds,
 /* search tables                                                              */
 /*----------------------------------------------------------------------------*/
 void Metadata::vSearchTables(Pds* pPds,
+                             StreamDef* pLookupStreamDef,
                              Dic* pCatalog,
                              Dic* pSchema,
                              Table* pTable)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_METADATA,_FOOTER_);
-  
-  Row* pRow = pPds->pAllotRow(C_VARGS_BEGIN,
-                                  pCatalog->szDicNm(),
-                                  pSchema->szDicNm(),
-                                  pTable->szTableNm(),
-                                  C_VARGS_END);
+
+  Row* pRow = pPds->pAllotRow(pLookupStreamDef,
+                              C_VARGS_BEGIN,
+                              pCatalog->szDicNm(),
+                              pSchema->szDicNm(),
+                              pTable->szTableNm(),
+                              C_VARGS_END);
   ASSERT(pRow);
   UNUSED(pRow);
 }
@@ -523,9 +536,9 @@ void Metadata::vSearchTables(Pds* pPds,
 /* get column set matching given arguments                                    */
 /*----------------------------------------------------------------------------*/
 Pds* Metadata::pColumnDefs(Stz* szCatalogName,
-                               Stz* szSchemaName,
-                               Stz* szTableName,
-                               Stz* szColumnName)
+                           Stz* szSchemaName,
+                           Stz* szTableName,
+                           Stz* szColumnName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_METADATA,_FOOTER_);
 
@@ -558,21 +571,22 @@ Pds* Metadata::pColumnDefs(Stz* szCatalogName,
     for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
       Column* pColumn = pStreamDef->pGetColumn(i_Col);
       
-      pRow = pPds->pAllotRow(C_VARGS_BEGIN,
-                                 szCatalogName,
-                                 szSchemaName,
-                                 szTableName,
+      pRow = pPds->pAllotRow(pLookupStreamDef,
+                             C_VARGS_BEGIN,
+                             szCatalogName,
+                             szSchemaName,
+                             szTableName,
 
-                                 pColumn->iColumnNo(),
-                                 pColumn->szColNm(),
-                                 (i8)pColumn->eColumnType(),
-                                 aCT[pColumn->eColumnType()],
-                                 pColumn->iColumnLength(),
-                                 pColumn->iColumnScale(),
-                                 (i8)pColumn->bIsNullable(),
-                                 (i8)pColumn->bIsPtnKey(),
+                             pColumn->iColumnNo(),
+                             pColumn->szColNm(),
+                             (i8)pColumn->eColumnType(),
+                             aCT[pColumn->eColumnType()],
+                             pColumn->iColumnLength(),
+                             pColumn->iColumnScale(),
+                             (i8)pColumn->bIsNullable(),
+                             (i8)pColumn->bIsPtnKey(),
 
-                                 C_VARGS_END);
+                             C_VARGS_END);
       ASSERT(pRow);
       UNUSED(pRow);
     }
@@ -627,22 +641,23 @@ Pds* Metadata::pIndexColumnDefs(Stz* szCatalogName,
     for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
       Column* pColumn = pIndexDef->pGetColumn(i_Col);
 
-      pRow = pPds->pAllotRow(C_VARGS_BEGIN,
-                                 szCatalogName,
-                                 szSchemaName,
-                                 szTableName,
-                                 szIndexName,
+      pRow = pPds->pAllotRow(pLookupStreamDef,
+                             C_VARGS_BEGIN,
+                             szCatalogName,
+                             szSchemaName,
+                             szTableName,
+                             szIndexName,
 
-                                 pColumn->iColumnNo(),
-                                 pColumn->szColNm(),
-                                 (i8)pColumn->eColumnType(),
-                                 aCT[pColumn->eColumnType()],
-                                 pColumn->iColumnLength(),
-                                 pColumn->iColumnScale(),
-                                 (i8)pColumn->bIsNullable(),
-                                 (i8)pColumn->bIsPtnKey(),
+                             pColumn->iColumnNo(),
+                             pColumn->szColNm(),
+                             (i8)pColumn->eColumnType(),
+                             aCT[pColumn->eColumnType()],
+                             pColumn->iColumnLength(),
+                             pColumn->iColumnScale(),
+                             (i8)pColumn->bIsNullable(),
+                             (i8)pColumn->bIsPtnKey(),
 
-                                 C_VARGS_END);
+                             C_VARGS_END);
       ASSERT(pRow);
       UNUSED(pRow);
     }
@@ -692,15 +707,16 @@ Pds* Metadata::pPartitionKey(Stz* szCatalogName,
     for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
       Column* pColumn = pPtnDef->pGetColumn(i_Col);
       
-      pRow = pPds->pAllotRow(C_VARGS_BEGIN,
-                                 szCatalogName,
-                                 szSchemaName,
-                                 szTableName,
+      pRow = pPds->pAllotRow(pLookupStreamDef,
+                             C_VARGS_BEGIN,
+                             szCatalogName,
+                             szSchemaName,
+                             szTableName,
 
-                                 i_Col,
-                                 pColumn->szColNm(),
+                             i_Col,
+                             pColumn->szColNm(),
 
-                                 C_VARGS_END);
+                             C_VARGS_END);
       ASSERT(pRow);
       UNUSED(pRow);
     }
@@ -727,9 +743,10 @@ Pds* Metadata::pLookupCatalog(Stz* szCatalogName)
   DicStack* pDicStack = new DicStack;
 
   if (pDicStack->bTest(szCatalogName)) {
-    Row* pRow = pPds->pAllotRow(C_VARGS_BEGIN,
-                                    szCatalogName,
-                                    C_VARGS_END);
+    Row* pRow = pPds->pAllotRow(pLookupStreamDef,
+                                C_VARGS_BEGIN,
+                                szCatalogName,
+                                C_VARGS_END);
     ASSERT(pRow);
     UNUSED(pRow);
   }
@@ -740,12 +757,12 @@ Pds* Metadata::pLookupCatalog(Stz* szCatalogName)
 }
 
 /*----------------------------------------------------------------------------*/
-/* lookup a index and return an Pds about it                              */
+/* lookup a index and return an Pds about it                                  */
 /*----------------------------------------------------------------------------*/
 Pds* Metadata::pLookupIndex(Stz* szCatalogName,
-                                Stz* szSchemaName,
-                                Stz* szTableName,
-                                Stz* szIndexName)
+                            Stz* szSchemaName,
+                            Stz* szTableName,
+                            Stz* szIndexName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_METADATA,_FOOTER_);
 
@@ -758,12 +775,13 @@ Pds* Metadata::pLookupIndex(Stz* szCatalogName,
   DicStack* pDicStack = new DicStack;
 
   if (pDicStack->bTest(szCatalogName,szSchemaName,szTableName,szIndexName)) {
-    Row* pRow = pPds->pAllotRow(C_VARGS_BEGIN,
-                                    szCatalogName,
-                                    szSchemaName,
-                                    szTableName,
-                                    szIndexName,
-                                    C_VARGS_END);
+    Row* pRow = pPds->pAllotRow(pLookupStreamDef,
+                                C_VARGS_BEGIN,
+                                szCatalogName,
+                                szSchemaName,
+                                szTableName,
+                                szIndexName,
+                                C_VARGS_END);
     ASSERT(pRow);
     UNUSED(pRow);
   }
@@ -777,7 +795,7 @@ Pds* Metadata::pLookupIndex(Stz* szCatalogName,
 /* lookup a schema and return an Pds about it                                 */
 /*----------------------------------------------------------------------------*/
 Pds* Metadata::pLookupSchema(Stz* szCatalogName,
-                                 Stz* szSchemaName)
+                             Stz* szSchemaName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_METADATA,_FOOTER_);
     
@@ -789,10 +807,11 @@ Pds* Metadata::pLookupSchema(Stz* szCatalogName,
   DicStack* pDicStack = new DicStack;
   
   if (pDicStack->bTest(szCatalogName,szSchemaName)) {
-    Row* pRow = pPds->pAllotRow(C_VARGS_BEGIN,
-                                    szCatalogName,
-                                    szSchemaName,
-                                    C_VARGS_END);
+    Row* pRow = pPds->pAllotRow(pLookupStreamDef,
+                                C_VARGS_BEGIN,
+                                szCatalogName,
+                                szSchemaName,
+                                C_VARGS_END);
     ASSERT(pRow);
     UNUSED(pRow);
   }
@@ -806,8 +825,8 @@ Pds* Metadata::pLookupSchema(Stz* szCatalogName,
 /* lookup a table and return an Pds about it                                  */
 /*----------------------------------------------------------------------------*/
 Pds* Metadata::pLookupTable(Stz* szCatalogName,
-                                Stz* szSchemaName,
-                                Stz* szTableName)
+                            Stz* szSchemaName,
+                            Stz* szTableName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_METADATA,_FOOTER_);
     
@@ -819,11 +838,12 @@ Pds* Metadata::pLookupTable(Stz* szCatalogName,
   DicStack* pDicStack = new DicStack;
   
   if (pDicStack->bTest(szCatalogName,szSchemaName,szTableName)) {
-    Row* pRow = pPds->pAllotRow(C_VARGS_BEGIN,
-                                    szCatalogName,
-                                    szSchemaName,
-                                    szTableName,
-                                    C_VARGS_END);
+    Row* pRow = pPds->pAllotRow(pLookupStreamDef,
+                                C_VARGS_BEGIN,
+                                szCatalogName,
+                                szSchemaName,
+                                szTableName,
+                                C_VARGS_END);
     ASSERT(pRow);
     UNUSED(pRow);
   }

@@ -23,7 +23,6 @@ PipeIn::PipeIn(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPEIN,_FOOTER_);
   
   m_pQueueLeft  = new OperandQueue;
-  m_pQueueRight = new OperandQueue;
   m_pQueueOoO   = new OperandQueue;
 
   _checkInitialised_(CN_PIPEIN);
@@ -39,7 +38,6 @@ PipeIn::~PipeIn(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPEIN,_FOOTER_);
   
   delete m_pQueueLeft;
-  delete m_pQueueRight;
   delete m_pQueueOoO;
 }
 
@@ -55,16 +53,6 @@ OperandQueue* PipeIn::pQueueLeft(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPEIN,_FOOTER_);
 
   return m_pQueueLeft;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get right input queue                                                      */
-/*----------------------------------------------------------------------------*/
-OperandQueue* PipeIn::pQueueRight(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPEIN,_FOOTER_);
-
-  return m_pQueueRight;
 }
 
 /*----------------------------------------------------------------------------*/

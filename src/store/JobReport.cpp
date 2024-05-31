@@ -127,7 +127,7 @@ eEC JobReport::eMetricsReport(Job* pJob, Tub* pTub)
 
   if (! pPds) {
     // new a Pds
-		pPds = new Pds(pStreamDef, false, BT_JOBMETRICS);
+		pPds = new Pds(pStreamDef,  BT_JOBMETRICS);
 
     // add the Pds to the tub
     pTub->vAddBuffer(pPds);
@@ -161,6 +161,7 @@ eEC JobReport::eMetricsReport(Job* pJob, Tub* pTub)
           L_RETRY:
           Row* pRow = pPds->pAllotRow
                       (
+                        pStreamDef,
                         C_VARGS_BEGIN
                        
                        ,pJobMetrics->tJobId().uJobNo()
@@ -187,7 +188,7 @@ eEC JobReport::eMetricsReport(Job* pJob, Tub* pTub)
                       );
           
           if (! pRow) {
-            pPds = new Pds(pStreamDef, false, BT_JOBMETRICS);
+            pPds = new Pds(pStreamDef,  BT_JOBMETRICS);
 
             // add the Pds to the tub
             pTub->vAddBuffer(pPds);
@@ -236,7 +237,7 @@ eEC JobReport::eNetDissectReport(Job* pJob, Tub* pTub)
 
   if (! pPds) {
     // new a Pds
-    pPds = new Pds(pStreamDef, false, BT_JOBNETDISSECT);
+    pPds = new Pds(pStreamDef,  BT_JOBNETDISSECT);
 
     // add the Pds to the tub
     pTub->vAddBuffer(pPds);
@@ -268,6 +269,7 @@ eEC JobReport::eNetDissectReport(Job* pJob, Tub* pTub)
       L_RETRY_1a:
       Row* pRow = pPds->pAllotRow
                   (
+                    pStreamDef,
                     C_VARGS_BEGIN
                    
                    ,pJob->tJobId().uJobNo()
@@ -288,7 +290,7 @@ eEC JobReport::eNetDissectReport(Job* pJob, Tub* pTub)
                   );
       
       if (! pRow) {
-				pPds = new Pds(pStreamDef, false, BT_JOBNETDISSECT);
+				pPds = new Pds(pStreamDef,  BT_JOBNETDISSECT);
 
         // add the Pds to the tub
         pTub->vAddBuffer(pPds);
@@ -306,6 +308,7 @@ eEC JobReport::eNetDissectReport(Job* pJob, Tub* pTub)
       L_RETRY_1b:
       Row* pRow = pPds->pAllotRow
                   (
+                    pStreamDef,
                     C_VARGS_BEGIN
                    
                    ,pJob->tJobId().uJobNo()
@@ -326,7 +329,7 @@ eEC JobReport::eNetDissectReport(Job* pJob, Tub* pTub)
                   );
       
       if (! pRow) {
-				pPds = new Pds(pStreamDef, false, BT_JOBNETDISSECT);
+				pPds = new Pds(pStreamDef,  BT_JOBNETDISSECT);
 
         // add the Pds to the tub
         pTub->vAddBuffer(pPds);
@@ -346,6 +349,7 @@ eEC JobReport::eNetDissectReport(Job* pJob, Tub* pTub)
       L_RETRY_2a:
       Row* pRow = pPds->pAllotRow
                   (
+                    pStreamDef,
                     C_VARGS_BEGIN
                    
                    ,pJob->tJobId().uJobNo()
@@ -366,7 +370,7 @@ eEC JobReport::eNetDissectReport(Job* pJob, Tub* pTub)
                   );
       
       if (! pRow) {
-				pPds = new Pds(pStreamDef, false, BT_JOBNETDISSECT);
+				pPds = new Pds(pStreamDef,  BT_JOBNETDISSECT);
 
         // add the Pds to the tub
         pTub->vAddBuffer(pPds);
@@ -384,6 +388,7 @@ eEC JobReport::eNetDissectReport(Job* pJob, Tub* pTub)
       L_RETRY_2b:
       Row* pRow = pPds->pAllotRow
                   (
+                    pStreamDef,
                     C_VARGS_BEGIN
                    
                    ,pJob->tJobId().uJobNo()
@@ -404,7 +409,7 @@ eEC JobReport::eNetDissectReport(Job* pJob, Tub* pTub)
                   );
       
       if (! pRow) {
-				pPds = new Pds(pStreamDef, false, BT_JOBNETDISSECT);
+				pPds = new Pds(pStreamDef,  BT_JOBNETDISSECT);
 
         // add the Pds to the tub
         pTub->vAddBuffer(pPds);
@@ -447,7 +452,7 @@ eEC JobReport::eNetworkReport(Job* pJob, Tub* pTub)
 
   if (! pPds) {
     // new a Pds
-		pPds = new Pds(pStreamDef, false, BT_JOBNETWORK);
+		pPds = new Pds(pStreamDef,  BT_JOBNETWORK);
 
     // add the Pds to the tub
     pTub->vAddBuffer(pPds);
@@ -468,7 +473,7 @@ eEC JobReport::eNetworkReport(Job* pJob, Tub* pTub)
 
     L_HACK:
     Row* pRow = pPds->pAllotRow
-                (
+                ( pStreamDef,
                   C_VARGS_BEGIN
                  
                  ,pJob->tJobId().uJobNo()
@@ -493,7 +498,7 @@ eEC JobReport::eNetworkReport(Job* pJob, Tub* pTub)
                 );
     
     if (! pRow) {
-			pPds = new Pds(pStreamDef, false, BT_JOBNETWORK);
+			pPds = new Pds(pStreamDef,  BT_JOBNETWORK);
 
       // add the Pds to the tub
       pTub->vAddBuffer(pPds);
@@ -534,7 +539,7 @@ eEC JobReport::eOperandReport(Job* pJob, Tub* pTub)
 
   if (! pPds) {
     // new a Pds
-		pPds = new Pds(pStreamDef, false, BT_JOBOPERANDS);
+		pPds = new Pds(pStreamDef,  BT_JOBOPERANDS);
 
     // add the Pds to the tub
     pTub->vAddBuffer(pPds);
@@ -577,7 +582,7 @@ eEC JobReport::eOperandReport(Job* pJob, Tub* pTub)
           
           L_HACK:
           Row* pRow = pPds->pAllotRow
-                      (
+                      ( pStreamDef,
                         C_VARGS_BEGIN
                        
                        ,pJob->tJobId().uJobNo()
@@ -606,7 +611,7 @@ eEC JobReport::eOperandReport(Job* pJob, Tub* pTub)
                       );
           
           if (! pRow) {
-            pPds = new Pds(pStreamDef, false, BT_JOBOPERANDS);
+            pPds = new Pds(pStreamDef,  BT_JOBOPERANDS);
 
             // add the Pds to the tub
             pTub->vAddBuffer(pPds);
@@ -654,7 +659,7 @@ eEC JobReport::eOperatorReport(Job* pJob, Tub* pTub)
 
   if (! pPds) {
     // new a Pds
-		pPds = new Pds(pStreamDef, false, BT_JOBOPERATORS);
+		pPds = new Pds(pStreamDef,  BT_JOBOPERATORS);
 
     // add the Pds to the tub
     pTub->vAddBuffer(pPds);
@@ -716,7 +721,7 @@ eEC JobReport::eOperatorReport(Job* pJob, Tub* pTub)
         // allot a row for the stats in the Pds
         L_RETRY_3a:
         Row* pRow = pPds->pAllotRow
-                    (
+                    ( pStreamDef,
                       C_VARGS_BEGIN
                                             
                      ,pJob->tJobId().uJobNo()
@@ -749,7 +754,7 @@ eEC JobReport::eOperatorReport(Job* pJob, Tub* pTub)
         if (! pRow) {
 
           // new a Pds
-          pPds = new Pds(pStreamDef, false, BT_JOBOPERATORS);
+          pPds = new Pds(pStreamDef,  BT_JOBOPERATORS);
 
           // add the Pds to the tub
           pTub->vAddBuffer(pPds);
