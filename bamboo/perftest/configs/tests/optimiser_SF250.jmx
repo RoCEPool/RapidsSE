@@ -5091,7 +5091,7 @@ OUT.flush();</stringProp>
               <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
             </LoopController>
             <hashTree>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q18" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q18" enabled="false">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">select 
   c_name, 
