@@ -2,7 +2,6 @@
 /* __Q2_POC3_OPT1                                                             */
 /*============================================================================*/
 
-/pipeline_def
 /optimise_passthru
 pipeline Query2
 begin
