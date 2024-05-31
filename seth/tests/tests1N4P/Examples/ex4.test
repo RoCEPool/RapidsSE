@@ -25,9 +25,9 @@ success
 -- Now let's switch to connection c2 and verify that the table and index exist.
 USE 'c2';
 
-lstbl;
-rows:
-  ('${testName2}_foo')
+select * from tableOfTables where TableType = 'NORMAL';
+contains rows:
+  (*, *, '${testName2}_foo', 'NORMAL', *)
 
 select * from tableIndexes where TableName = '${testName2}_foo';
 contains rows:
@@ -49,7 +49,7 @@ success
 -- Go to connection c2 and verify that the table has been dropped.
 USE 'c2';
 
-lstbl;
+select * from tableOfTables where TableType = 'NORMAL';
 rows: 0
 
 

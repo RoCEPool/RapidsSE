@@ -14,7 +14,7 @@ rows:
   ('/tables/public/schemas/rapids/catalogs/boray/tenants/')
 
 // Example where we expect zero rows to be returned.
-lstbl;
+select * from tableOfTables where TableType = 'NORMAL';
 rows: 0
 
 // Example where we expect the command to not fail, but we don't care whether
@@ -27,12 +27,12 @@ success
 
 // Example where we expect 1 row to be returned but we don't care about the
 // contents of that row.
-lstbl;
-rows: 1
+select * from tableOfTables where TableType = 'NORMAL';
+rows: [1, )
 
-lstbl;
-rows:
-  ('${testName2}_j10')
+select * from tableOfTables where TableType = 'NORMAL';
+contains rows:
+  (*, *, '${testName2}_j10', 'NORMAL', *)
 
 
 // Example where we not only expect the command to succeed, but it should

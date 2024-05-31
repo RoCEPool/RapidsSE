@@ -31,9 +31,9 @@ success
 
 
 // Table should exist
-lstbl;
+select * from tableOfTables where TableType = 'NORMAL';
 contains rows:
-  ('${testName2}_nation')
+  (*, *, '${testName2}_nation', 'NORMAL', *)
 
 
 // Describe the columns in the table
@@ -178,9 +178,9 @@ success
 
 
 // Table should no longer exist
-lstbl;
+select * from tableOfTables where TableType = 'NORMAL';
 does not contain rows:
-  ('${testName2}_nation')
+  (*, *, '${testName2}_nation', 'NORMAL', *)
 
 
 CLEANUP {

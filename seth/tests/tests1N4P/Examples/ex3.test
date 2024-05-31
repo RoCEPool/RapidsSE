@@ -16,9 +16,9 @@ CREATE 2 THREADS {
   -- Child threads wait for table and index to be created by main thread.
   SYNCHRONIZE;
   
-  lstbl;
-  rows: 
-    ('${testName2}_foo')
+  select * from tableOfTables where TableType = 'NORMAL';
+  contains rows:
+    (*, *, '${testName2}_foo', 'NORMAL', *)
 
   select * from tableIndexes where TableName = '${testName2}_foo';
   contains rows:

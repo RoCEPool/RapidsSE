@@ -14,7 +14,7 @@
     CatalogName   VARCHAR NOT NULL ,
     SchemaName    VARCHAR NOT NULL ,
     TableName     VARCHAR NOT NULL ,
-    TableType     INTEGER NOT NULL ,
+    TableType     VARCHAR NOT NULL ,
     TableAddr     INTEGER NOT NULL
   ) < metaData > = 1 ;
   "

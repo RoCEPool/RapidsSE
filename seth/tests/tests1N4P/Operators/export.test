@@ -61,8 +61,8 @@ success
 
 
 // check existence of table
-//lstbl;
-//rows: 0
+select * from tableOfTables where TableType = 'NORMAL';
+rows: 0
 
 // get memory leaks
 memoryLeaks;

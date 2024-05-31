@@ -388,7 +388,6 @@ antlrcpp::Any CommandParser::visitStatementChoice(Parser::sqlParser::StatementCh
   else if (pCtx->emptyCmd())          { m_szProcName = C_EMPTY_CMD;          return nullptr; }
   else if (pCtx->fileCmd())           { m_szProcName = nullptr;              return visitChildren(pCtx); }
   else if (pCtx->logCmd())            { m_szProcName = "logMsg"_Stz;         return visitChildren(pCtx); }
-  else if (pCtx->lstblCmd())          { m_szProcName = "lstbl"_Stz;          return nullptr; }
   else if (pCtx->lsptncolCmd())       { m_szProcName = "lsptncol"_Stz;       return visitChildren(pCtx); }
   else if (pCtx->memoryleaksCmd())    { m_szProcName = "memoryleaks"_Stz;    return nullptr; }
 	else if (pCtx->metricsCtlCmd())     { m_szProcName = "metricsCtl"_Stz;     return visitChildren(pCtx); }

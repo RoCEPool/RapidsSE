@@ -34,7 +34,7 @@
 
   // create row in metadata table with catalogNm, schemaNm, tableNm
   // Pass the table type (eTT)
-  TT_INTERNAL MetaDataTable[].initTables
+  "INTERNAL" MetaDataTable[].initTables
 
   nullptr to StreamDefLft[]
 ;

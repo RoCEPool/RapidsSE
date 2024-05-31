@@ -29,7 +29,6 @@ statementChoice   :
                     | loadReplicatedCmd
                     | logCmd
                     | lsptncolCmd
-                    | lstblCmd
                     | metricsCtlCmd
                     | pipelineCmd
                     | queryCmd    // (select)
@@ -214,7 +213,6 @@ loadOptionKeys    : FIELD_DELIMITER | ESCAPE_CHAR | DATE_FORMAT | RECORD_ENDS
                     | ENCLOSED_BY_LEADING | ENCLOSED_BY_TRAILING | RECORD_TERMINATOR ;
 logCmd            : LOG msg=stringLiteral (ECHO (SQL_TRUE | ON | SQL_FALSE | OFF))?;
 lsptncolCmd       : LSPTNCOL tableName ;
-lstblCmd          : LSTBL;
 
 // M
 memoryleaksCmd    : MEMORYLEAKS ;
@@ -618,7 +616,7 @@ nonReservedWord   :
                   | HASH | HASHKEY | HOURS
                   | IF | IFNULL | INDEX | INTERVAL_DT | INTERVAL_YM
                   | KEY
-                  | LIMIT | LOAD | LOADREPLICATED | LOG | LOOP | LSPTNCOL | LSTBL
+                  | LIMIT | LOAD | LOADREPLICATED | LOG | LOOP | LSPTNCOL
                   | MEMORYLEAKS | METRICSCTL | MILLIS | MILLISECOND | MILLISECONDS | MINUTES
                   | MONOTONIC | MONTHS | MS | MULTIPLE
                   | NODE | NODES | NOOP | NOP | NOW
@@ -755,7 +753,6 @@ LOAD                  : L O A D;
 LOG                   : L O G;
 LOOP                  : L O O P;
 LSPTNCOL              : L S P T N C O L;
-LSTBL                 : L S T B L;
 MAX                   : M A X;
 MEMORYLEAKS           : M E M O R Y L E A K S;
 METRICSCTL            : M E T R I C S C T L;

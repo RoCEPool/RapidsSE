@@ -53,8 +53,6 @@ lsPtn         - List partitions
 .br 
 lssch          - List schemas
 .br 
-lstbl          - List tables
-.br 
 ld             - Load table from csv file
 .br 
 monitor        - Run the monitor job

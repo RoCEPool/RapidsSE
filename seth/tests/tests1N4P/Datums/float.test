@@ -63,8 +63,8 @@ drop table ${testName2}_fltTbl;
 success
 
 // check existence of table
-lstbl;
-does not contain rows: ('${testName2}_fltTbl')
+select * from tableOfTables where TableType = 'NORMAL';
+does not contain rows: (*, *, '${testName2}_fltTbl', 'NORMAL', *)
 
 // get memory leaks
 memoryLeaks;

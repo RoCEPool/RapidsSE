@@ -20,9 +20,9 @@ LOOP FOR 5 SECONDS {
   create table ${testName2}_foo (col0 integer, col1 varchar);
   success
 
-  lstbl;
+  select * from tableOfTables where TableType = 'NORMAL';
   contains rows:
-    ('${testName2}_foo')
+    (*, *, '${testName2}_foo', 'NORMAL', *)
 
   create index fooIdx on ${testName2}_foo (col0);
   success

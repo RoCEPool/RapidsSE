@@ -200,8 +200,8 @@ drop table ${testName2}_VchTbl;
 success
 
 // check existence of table
-lstbl;
-does not contain rows: ('${testName2}_VchTbl')
+select * from tableOfTables where TableType = 'NORMAL';
+does not contain rows: (*, *, '${testName2}_VchTbl', 'NORMAL', *)
 
 // get memory leaks
 memoryLeaks;

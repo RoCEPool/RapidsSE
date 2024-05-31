@@ -31,8 +31,8 @@ drop table ${testName2}_nulTbl;
 success
 
 // check existence of table
-lstbl;
-does not contain rows: ('${testName2}_nulTbl')
+select * from tableOfTables where TableType = 'NORMAL';
+does not contain rows: (*, *, '${testName2}_nulTbl', 'NORMAL', *)
 
 // get memory leaks
 memoryLeaks;

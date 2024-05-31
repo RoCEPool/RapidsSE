@@ -16,9 +16,9 @@ create table ${testName2}_lstTbl1 (
 success
 
 // list tables
-lstbl;
+select * from tableOfTables where TableType = 'NORMAL';
 contains rows:
-  ('${testName2}_lstTbl1')
+  (*, *, '${testName2}_lstTbl1', 'NORMAL', *)
 
 // create aanother table
 create table ${testName2}_lstTbl2 (
@@ -34,29 +34,25 @@ create table ${testName2}_lstTbl2 (
 success
 
 // list tables
-lstbl;
+select * from tableOfTables where TableType = 'NORMAL';
 contains rows:
-  ('${testName2}_lstTbl1')
-  ('${testName2}_lstTbl2')
+  (*, *, '${testName2}_lstTbl1', 'NORMAL', *)
+  (*, *, '${testName2}_lstTbl2', 'NORMAL', *)
 
 /*
 // change folder
 cf ..;
 success
 
-// list tables
-lstbl;
-failure contains: 'not in tables'
-
 // change folder
 cf "tables";
 success
 
 // list columns of the table
-lstbl;
+select * from tableOfTables where TableType = 'NORMAL';
 contains rows:
-  ('${testName2}_lstTbl1')
-  ('${testName2}_lstTbl2')
+  (*, *, '${testName2}_lstTbl1', 'NORMAL', *)
+  (*, *, '${testName2}_lstTbl2', 'NORMAL', *)
 */
 // drop the tables
 drop table ${testName2}_lstTbl1;

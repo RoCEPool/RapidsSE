@@ -104,7 +104,8 @@ void Step::vMetaDataTableCreateTable(void)
 
   s256 szTableNm;
 
-  eTT eTableType = (eTT) m_pDataStack->iPopInt(__func__);
+  s256 sTableType;
+  m_pDataStack->vPopStr(sTableType,__func__);
 
   Table* pNewTable = _pTable(*m_pLogicUnit->m_xpTable);
   szTableNm = pNewTable->szTableNm();
@@ -150,7 +151,7 @@ void Step::vMetaDataTableCreateTable(void)
                                        "rapids"_Stz,
                                        "public"_Stz,
                                        szTableNm.szStz(),
-                                       eTableType,
+                                       sTableType.szStz(),
                                        iTableAddr,
                                        C_VARGS_END);
 
@@ -494,7 +495,8 @@ void Step::vMetaDataTableInitTables(void)
 
   s256 szTableNm;
 
-  eTT eTableType = (eTT) m_pDataStack->iPopInt(__func__);
+  s256 sTableType;
+  m_pDataStack->vPopStr(sTableType,__func__);
 
   Table* pNewTable = _pTable(*m_pLogicUnit->m_xpTable);
   i8 iTableAddr = (i8) pNewTable;
@@ -537,7 +539,7 @@ void Step::vMetaDataTableInitTables(void)
                                        "rapids"_Stz,
                                        "public"_Stz,
                                        szTableNm.szStz(),
-                                       eTableType,
+                                       sTableType.szStz(),
                                        iTableAddr,
                                        C_VARGS_END);
 

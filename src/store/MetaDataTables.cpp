@@ -77,7 +77,9 @@ bool MetaDataTables::bDeleteFromTableOfTables(Stz* szTableNm)
       Row* pRow = pRowCursor->pCurrRow();
 
       Stz* szRowTableNm = pRow->szColVal_ofs(2);
-      eTT eTableType = (eTT)pRow->iColVal_int(3);
+      Stz* szTableType = pRow->szColVal_ofs(3);
+
+      eTT eTableType = eStzToTT(szTableType);
 
       if(szRowTableNm->bSame(szTableNm)) {
 
@@ -314,6 +316,27 @@ Table* MetaDataTables::pTableFind(Stz *szTableNm)
   pHashMap->vDropKeyLock(oRootBufferId.m_pvAsAddress);
 
   return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get stream def for given metadata table                                    */
+/*----------------------------------------------------------------------------*/
+eTT MetaDataTables::eStzToTT(Stz *szTableType)
+{
+  _static_
+
+  if(szTableType->bSame("INFOSET"_Stz)) {
+    return TT_INFOSET;
+  } else if(szTableType->bSame("INTERNAL"_Stz)) {
+    return TT_INTERNAL;
+  } else if(szTableType->bSame("METADATA"_Stz)) {
+    return TT_METADATA;
+  } else if(szTableType->bSame("NORMAL"_Stz)) {
+    return TT_NORMAL;
+  } else if(szTableType->bSame("REPLICATED"_Stz)) {
+    return TT_REPLICATED;
+  } else return TT_NONE;
+
 }
 
 /*----------------------------------------------------------------------------*/

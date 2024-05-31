@@ -49,8 +49,8 @@ drop table ${testName2}_orders;
 success
 
 // check existence of table
-lstbl;
-does not contain rows: ('${testName2}_orders')
+select * from tableOfTables where TableType = 'NORMAL';
+does not contain rows: (*, *, '${testName2}_orders', 'NORMAL', *)
 
 CLEANUP {
 
