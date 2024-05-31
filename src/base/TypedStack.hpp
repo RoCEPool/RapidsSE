@@ -34,8 +34,7 @@ namespace BASE
   private:
     eKK     m_eKind;  // kind of stack
     StkTop  m_rTop;   // current top of stack
-    StkTop  m_rRetry; // retry point of stack
-    
+
     Footer  m_xHazard;
     Wsp_t<C_WSP_STACK> m_xWsp;
     
@@ -87,8 +86,6 @@ namespace BASE
     void vPushLocalVar(LocalVar* axLocalVar);
 
     void vReset(void);
-    void vRetry(void);
-    void vRetryPoint(void);
   
     void vStackContents(s48K& sStackContents);
 
