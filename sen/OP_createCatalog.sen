@@ -44,6 +44,8 @@
   // make the catalog
   <catalogNm> :makeCatalogFolder ( )
 
+  <catalogNm> MetaDataTable[].insertCatalog
+
   true
 ;
 

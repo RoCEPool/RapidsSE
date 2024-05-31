@@ -11,38 +11,38 @@ rows:
   ('/tables/public/schemas/rapids/catalogs/boray/tenants/')
 
 // list catalogs when not in catalogs folder
-lscat;
-failure contains: 'not in catalogs'
+//lscat;
+//failure contains: 'not in catalogs'
 
 // cf to tenants
 cf "~";
 success
 
 // list catalogs when not in catalogs folder
-lscat;
-failure contains: 'not in catalogs'
+//lscat;
+//failure contains: 'not in catalogs'
 
 // cf to boray tenant
 cf "boray";
 success
 
 // list catalogs when not in catalogs folder
-lscat;
-failure contains: 'not in catalogs'
+//lscat;
+//failure contains: 'not in catalogs'
 
 // cf to catalogs
 cf "catalogs";
 success
 
 // list catalogs when not in catalogs folder
-lscat;
-rows: ('rapidsse')
+select * from catalog;
+contains rows: ('rapidsse')
 
 create catalog ${testName2}_myCatalog;
 success
 
-lscat;
-rows:
+select * from catalog;
+contains rows:
   ('rapidsse')
   ('${testName2}_myCatalog')
 
@@ -52,8 +52,8 @@ success
 create catalog ${testName2}_myCatalog;
 success
 
-lscat;
-rows:
+select * from catalog;
+contains rows:
   ('rapidsse')
   ('${testName2}_myCatalog')
 

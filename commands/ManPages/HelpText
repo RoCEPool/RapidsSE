@@ -46,15 +46,7 @@ ingest         - Ingest data into a table
 insert         - Insert row(s) into a table
 .br 
 lf             - List contents of folder
-.br 
-lscat          - List catalogs
-.br 
-lscol          - List columns of a table
-.br 
-lsidxcol       - List columns of an index
-.br 
-lsidx          - List indexes of a table
-.br 
+.br
 lsPtncol      - List partition columns of a table
 .br 
 lsPtn         - List partitions
