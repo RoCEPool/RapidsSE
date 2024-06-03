@@ -479,7 +479,7 @@ void OpSketch::vGenerateExprStacks(Stz* sExpr, bool bConstraint)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // iterate tokens of the expression
-  for (i8 i_Tkn = 0; i_Tkn < pTokenVec->nItems(); i_Tkn++) {
+  for (i8 i_Tkn = 0; i_Tkn < pTokenVec->nTokens(); i_Tkn++) {
 
     pTkn = pTokenVec->pGet(i_Tkn);
 

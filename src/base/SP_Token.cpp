@@ -34,7 +34,7 @@ SP_Token::~SP_Token(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* sprint Header and return Stz* to result                                    */
 /*----------------------------------------------------------------------------*/
-Stz* SP_Token::sz(Token* pToken)
+Stz* SP_Token::sz(Token* pToken, i8 iTknIdx)
 {
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
     
@@ -43,7 +43,7 @@ Stz* SP_Token::sz(Token* pToken)
                   nullptr,
                   "Token[%02lld] %s %s L%03lld C%02lld"_Stz,
                   
-                  pToken->i_Token(),
+                  iTknIdx,
                   
                   pToken->szChars(),
                   aTN[pToken->eToken()],

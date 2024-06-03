@@ -820,7 +820,7 @@ Ent* IndexTree::aFindEntry_CS2_v9(IndexTree* pIndexTree, Key* aKey)
   EntBuffer* pEntBuffer = pIndexTree->m_pRootEntBuffer->pFindLeafBuffer(aKey);
 
   ///////////////////////////////////////////////////////////////////////////
-  /// FLATTEN MiniHeap_t<ITEM>::nItems() ; aItemArray()
+  /// FLATTEN MiniHeap_t<ITEM>::nTokens() ; aItemArray()
 
   // position on entry prior to given key
 

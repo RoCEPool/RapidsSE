@@ -356,7 +356,7 @@ void Input::vInspect(void)
          d_nUseBegin,
          d_nReadCommand,
          d_nCollectOneToken,
-         spTkn.sz(m_pCurrTkn)
+         spTkn.sz(m_pCurrTkn, m_pInpTknVec->iCurrToken())
          );
 
   m_pCharser->vInspect();
@@ -462,7 +462,7 @@ bool Input::bReadCommand(eEC& eInputError)
   vSingleLineCmd(true);
     
   if (d_iDebugMode)
-    m_pInpTknVec->vDumpVec(16);
+    m_pInpTknVec->vDumpVec();
   
   if (! bCollectVecFirstLine(eInputError))
     goto L_Exit;
@@ -470,9 +470,11 @@ bool Input::bReadCommand(eEC& eInputError)
   //vTrace(" : >>>%s<<<\n"_Stz,m_pCharser->szRawInput());
 
   if (d_iDebugMode)
-    m_pInpTknVec->vDumpVec(16);
+    m_pInpTknVec->vDumpVec();
 
+#ifdef WITH_TOKENVEC_INTEGRITY
   m_pInpTknVec->vIntegrityCheck();
+#endif
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for empty file
@@ -499,8 +501,10 @@ bool Input::bReadCommand(eEC& eInputError)
   
   if (m_pInpTknVec->bHasSemicolon()) {
     m_pInpTknVec->vRemoveSemicolon();
+#ifdef WITH_TOKENVEC_INTEGRITY
     m_pInpTknVec->vIntegrityCheck();
     m_pInpTknVec->vListTokens();
+#endif
     goto L_Exit;
   }
   
@@ -512,7 +516,7 @@ bool Input::bReadCommand(eEC& eInputError)
   
   // read more till ;
   if (d_iDebugMode)
-    m_pInpTknVec->vDumpVec(16);
+    m_pInpTknVec->vDumpVec();
   
   if (! bCollectVecTillSemicolon(eInputError))
     goto L_Exit;
@@ -520,9 +524,12 @@ bool Input::bReadCommand(eEC& eInputError)
   //vTrace(" : %s\n"_Stz,m_pCharser->szRawInput());
   
   if (d_iDebugMode)
-    m_pInpTknVec->vDumpVec(16);
+    m_pInpTknVec->vDumpVec();
 
+#ifdef WITH_TOKENVEC_INTEGRITY
   m_pInpTknVec->vIntegrityCheck();
+#endif
+
   if (d_iDebugMode) {
     vJot1('r',"collected till semicolon"_Stz);
     m_pInpTknVec->vListTokens();
@@ -533,14 +540,9 @@ bool Input::bReadCommand(eEC& eInputError)
   
   // stip off ;
   m_pInpTknVec->vStripSemicolon();
+#ifdef WITH_TOKENVEC_INTEGRITY
   m_pInpTknVec->vIntegrityCheck();
-
-  // stip off &
-  //m_pTknVec->vStripAmpersand();
-  //m_pTknVec->vIntegrityCheck();
-
-  m_pInpTknVec->vIntegrityCheck();
-  
+#endif
   
 L_Exit:
 
@@ -800,7 +802,8 @@ void Input::vCollectOneToken(void)
 
   if (d_iDebugMode) {
     SP_Token spTkn;
-    vJot2('<',(Stz*)__func__,spTkn.sz(m_pCurrTkn));
+    vJot2('<',(Stz*)__func__,spTkn.sz(m_pCurrTkn,
+                                                            m_pInpTknVec->iCurrToken()));
   }
 }
 
@@ -832,12 +835,12 @@ bool Input::bCollectVecFirstLine(eEC& eInputError)
       return false;
     
     if (d_iDebugMode)
-      m_pInpTknVec->vDumpVec(16);
+      m_pInpTknVec->vDumpVec();
 
     vCollectOneToken();
 
     if (d_iDebugMode)
-      m_pInpTknVec->vDumpVec(16);
+      m_pInpTknVec->vDumpVec();
 
     if (m_pCurrTkn->bInvalidToken()) {
       eInputError = EC_INVALID_TOKEN;
@@ -896,7 +899,7 @@ bool Input::bCollectVecTillSemicolon(eEC& eInputError)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
   if (d_iDebugMode)
-    m_pInpTknVec->vDumpVec(16);
+    m_pInpTknVec->vDumpVec();
   
   // get tokens delimited by ';'
   for (;;) {
@@ -912,7 +915,7 @@ bool Input::bCollectVecTillSemicolon(eEC& eInputError)
     }
 
     if (TN_NULL == m_pCurrTkn->eToken())
-      m_pInpTknVec->vDumpVec(0);
+      m_pInpTknVec->vDumpVec();
 
     ASSERT(TN_NULL != m_pCurrTkn->eToken());
     
@@ -942,6 +945,7 @@ void Input::vCollectCpp(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
   ASSERT(UF_CPP_TOKENS == m_eTknForm);
+  ASSERT(m_pCurrTkn);
 
   char* azTermCrs = m_pCurrTkn->azChars();
   UNUSED(azTermCrs);
@@ -954,7 +958,20 @@ void Input::vCollectCpp(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  vTokenCollectBegin();
+  //vTokenCollectBegin();
+  // Note: We are removing vTokenCollectBegin(), which would get a pointer into
+  // the TokenVecs byte array so it could write the token string directly into it.
+  // While this would be quite performant, it means that the byte array must be
+  // big enough for all supported inputs so as not to overflow.
+  // Instead we will collect it into a string on the stack and then copy it to
+  // the TokenVecs byte array when we append the token.
+  s1M sTokenStr;
+  m_pCurrTkn->vLineNo(m_xAnnChar.m_iLine);
+  m_pCurrTkn->vColNo(m_xAnnChar.m_iCol);
+  // The implementation below will use the string pointer from here, which points
+  // to the stack string. At the end of this we will copy the stack string into
+  // the TokenVec.
+  m_pCurrTkn->vChars(sTokenStr.szStz());
 
   // end of input?
   if (bHitEOF()) {
@@ -990,7 +1007,10 @@ void Input::vCollectCpp(void)
     vCollectCppOther();
   }
   
-  vTokenCollectEnd();
+  //vTokenCollectEnd();
+  // Copy the string that we've collected on the stack into the TokenVec bytespace.
+  ASSERT(m_pInpTknVec->pGet(m_pInpTknVec->nTokens() - 1) == m_pCurrTkn); // always the last token
+  m_pInpTknVec->szCopyStrForLastToken(m_pCurrTkn, sTokenStr.szStz());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  
@@ -1560,7 +1580,19 @@ void Input::vCollectSen(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  vTokenCollectBegin();
+  //vTokenCollectBegin();
+  // Note: We are removing vTokenCollectBegin(), which would get a pointer into
+  // the TokenVecs byte array so it could write the token string directly into it.
+  // While this would be quite performant, it means that the byte array must be
+  // big enough for all supported inputs so as not to overflow.
+  // Instead we will collect it into a string on the stack and then copy it to
+  // the TokenVecs byte array when we append the token.
+  s1M sTokenStr;
+  m_pCurrTkn->vLineNo(m_xAnnChar.m_iLine);
+  m_pCurrTkn->vColNo(m_xAnnChar.m_iCol);
+  // The implementation below will use the string pointer from here, which points
+  // to the stack string.
+  m_pCurrTkn->vChars(sTokenStr.szStz());
 
   // end of input?
   if (bHitEOF()) {
@@ -1590,7 +1622,9 @@ void Input::vCollectSen(void)
     vCollectSenName();
   }
   
-  vTokenCollectEnd();
+  //vTokenCollectEnd();
+  // Copy the string that we've collected on the stack into the TokenVec bytespace.
+  m_pInpTknVec->szCopyStrForLastToken(m_pCurrTkn, sTokenStr.szStz());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -2141,44 +2175,6 @@ void Input::vUngetAnnCharStripped(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* begin collecting a new token                                               */
-/*----------------------------------------------------------------------------*/
-void Input::vTokenCollectBegin(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
-    
-//  Stz* szLatter = m_pTknVec->szLaterChars();
-//
-//  * szLatter->azChar() = '\0';
-//
-//  m_pCurrTkn->vChars(szLatter);
-  
-  m_pInpTknVec->vCollectBegin(m_pCurrTkn);
-    
-  m_pCurrTkn->vLineNo(m_xAnnChar.m_iLine);
-  m_pCurrTkn->vColNo(m_xAnnChar.m_iCol);
-}
-
-/*----------------------------------------------------------------------------*/
-/* end collecting a token                                                     */
-/*----------------------------------------------------------------------------*/
-void Input::vTokenCollectEnd(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
-  
-//  i8 nChars = m_pCurrTkn->nChars();
-//
-//  m_pTknVec->vTakeCharsBytes(nChars + 1);
-//
-//  Stz* szLatter = m_pTknVec->szLaterChars();
-//  * szLatter->azChar() = '\0';
-//
-//  vTrace("Chars: %s\n"_Stz,m_pCurrTkn->szChars());
-  
-  m_pInpTknVec->vCollectEnd(m_pCurrTkn);
-}
-
-/*----------------------------------------------------------------------------*/
 /* test for end of input                                                      */
 /*----------------------------------------------------------------------------*/
 bool Input::bHitEOF(void)
@@ -2197,12 +2193,9 @@ bool Input::bHitEOF(void)
 bool Input::bCursorAdvance(eEC& eError)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_INPUT, _FOOTER_);
+  UNUSED(eError);
 
-  if (!m_pInpTknVec->bAdvanceCurr(true)) {
-    eError = EC_COMMAND_TOO_LONG;
-    return false;
-  }
-
+  m_pInpTknVec->vAdvanceCurr();
   m_pCurrTkn = m_pInpTknVec->pCurrToken();
 
   return true;
@@ -2255,7 +2248,9 @@ void Input::vTestSwitchToSen(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
 
-  if (m_pCurrTkn && 0 == m_pCurrTkn->i_Token() && m_pCurrTkn->bIsPipeline()) {
+  if (m_pInpTknVec->nTokens() == 1 &&
+      m_pInpTknVec->pGet(0) == m_pCurrTkn &&
+      m_pCurrTkn->bIsPipeline()) {
     m_bRevertToCpp = true;
     vFormSenTokens();
   }

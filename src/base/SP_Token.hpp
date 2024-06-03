@@ -16,7 +16,7 @@ namespace BASE
     SP_Token(void);
    ~SP_Token(void) noexcept(false);
   
-    Stz* sz(Token* pToken);
+    Stz* sz(Token* pToken, i8 iTknIdx);
 
     Footer* aFooter(void);
   };

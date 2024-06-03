@@ -18,6 +18,8 @@ namespace BASE
 
     // must be last
     Footer m_xFooter;
+
+    static constexpr i8 C_MAX_SIZE_FOR_INITIALISATION_CHECK = C_64KB;
     
   public:    
     String_t(void);
@@ -103,14 +105,19 @@ String_t<AREA>::String_t(void)
   m__reserved__ = C_UNKNOWN;
   m__reserved2__ = C_UNKNOWN;
 #ifdef WITH_CHECK_INITIALISED
-  MemLib::vZero(m_caCharArea,AREA,CN_STRING_T);
+  if (AREA < C_MAX_SIZE_FOR_INITIALISATION_CHECK)
+    MemLib::vZero(m_caCharArea,AREA,CN_STRING_T);
+  else
+    m_caCharArea[0] = '\0';
 #else
   m_caCharArea[0] = '\0';
 #endif
 
   ASSERT(AREA == nFreeBytes());
 
-  _checkInitialisedSize_(AREA);
+  if (AREA < C_MAX_SIZE_FOR_INITIALISATION_CHECK) {
+    _checkInitialisedSize_(AREA);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -127,14 +134,19 @@ String_t<AREA>::String_t(i8 iArg)
   m__reserved2__ = C_UNKNOWN;
 
 #ifdef WITH_CHECK_INITIALISED
-  MemLib::vZero(m_caCharArea,AREA,CN_STRING_T);
+  if (AREA < C_MAX_SIZE_FOR_INITIALISATION_CHECK)
+    MemLib::vZero(m_caCharArea,AREA,CN_STRING_T);
+  else
+    m_caCharArea[0] = '\0';
 #endif
 
   ASSERT(AREA == nFreeBytes());
 
   StrLib::vToString(m_caCharArea, AREA, iArg);
 
-  _checkInitialisedSize_(AREA);
+  if (AREA < C_MAX_SIZE_FOR_INITIALISATION_CHECK) {
+    _checkInitialisedSize_(AREA);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -151,14 +163,19 @@ String_t<AREA>::String_t(const char* azArg)
   m__reserved2__ = C_UNKNOWN;
 
 #ifdef WITH_CHECK_INITIALISED
-  MemLib::vZero(m_caCharArea,AREA,CN_STRING_T);
+  if (AREA < C_MAX_SIZE_FOR_INITIALISATION_CHECK)
+    MemLib::vZero(m_caCharArea,AREA,CN_STRING_T);
+  else
+    m_caCharArea[0] = '\0';
 #endif
 
   ASSERT(AREA == nFreeBytes());
 
   StrLib::vCopy(m_caCharArea, AREA, azArg);
 
-  _checkInitialisedSize_(AREA);
+  if (AREA < C_MAX_SIZE_FOR_INITIALISATION_CHECK) {
+    _checkInitialisedSize_(AREA);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -175,14 +192,19 @@ String_t<AREA>::String_t(Stz* szArg)
   m__reserved2__ = C_UNKNOWN;
 
 #ifdef WITH_CHECK_INITIALISED
-  MemLib::vZero(m_caCharArea,AREA,CN_STRING_T);
+  if (AREA < C_MAX_SIZE_FOR_INITIALISATION_CHECK)
+    MemLib::vZero(m_caCharArea,AREA,CN_STRING_T);
+  else
+    m_caCharArea[0] = '\0';
 #endif
 
   ASSERT(AREA == nFreeBytes());
 
   StrLib::vCopy(m_caCharArea, AREA, szArg->azChar());
-  
-  _checkInitialisedSize_(AREA);
+
+  if (AREA < C_MAX_SIZE_FOR_INITIALISATION_CHECK) {
+    _checkInitialisedSize_(AREA);
+  }
 }
 
 /*----------------------------------------------------------------------------*/

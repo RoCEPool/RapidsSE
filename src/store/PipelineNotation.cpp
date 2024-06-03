@@ -141,7 +141,7 @@ void PipelineNotation::vShorten(TokenVec* pTknVec)
     {
       if(pToken->bSame(aNM[i].sFullForm))
       {
-        pToken->vUpdateChars(aNM[i].sShortForm,pTknVec);
+        pTknVec->vUpdateToken(i_Token, pToken, aNM[i].sShortForm);
       }
     }
   }

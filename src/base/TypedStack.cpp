@@ -71,9 +71,6 @@ TypedStack::TypedStack(eKK eKind)
   
   m_rTop.m_ayStackPtr = ayStackBase();
   m_rTop.m_nItems     = 0;
- 
-  m_rRetry.m_ayStackPtr = ayStackBase();
-  m_rRetry.m_nItems     = 0;
   
 #ifdef WITH_CHECK_INITIALISED
   m_xWsp.vFill(0x00,CN_STACK);
@@ -699,28 +696,6 @@ void TypedStack::vReset(void)
   
   m_rTop.m_ayStackPtr  = ayStackBase();
   m_rTop.m_nItems       = 0;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set stack back to retry point                                              */
-/*----------------------------------------------------------------------------*/
-void TypedStack::vRetry(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-
-  m_rTop.m_aTypeValueArea = m_rRetry.m_aTypeValueArea;
-  m_rTop.m_nItems  = m_rRetry.m_nItems;
-}
-
-/*----------------------------------------------------------------------------*/
-/* mark retry point                                                           */
-/*----------------------------------------------------------------------------*/
-void TypedStack::vRetryPoint(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  m_rRetry.m_aTypeValueArea = m_rTop.m_aTypeValueArea;
-  m_rRetry.m_nItems  = m_rTop.m_nItems;
 }
 
 /*----------------------------------------------------------------------------*/

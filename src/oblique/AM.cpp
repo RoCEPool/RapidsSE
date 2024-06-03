@@ -3439,7 +3439,9 @@ void AM::TOKENISE::vTokeniseSen(TokenVec* pTknVec, Stz* szString)
   _static_
   
   pTknVec->vSoftReset();
+#ifdef WITH_TOKENVEC_INTEGRITY
   pTknVec->vIntegrityCheck();
+#endif
 
   s1M sToken;
   

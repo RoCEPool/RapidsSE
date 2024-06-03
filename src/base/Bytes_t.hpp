@@ -24,18 +24,23 @@ namespace BASE
     i8   nArea(void);
     Stz* szArea(void);
     Stz* szBoundary(void);
+    bool bContains(Stz* szAddr);
     Stz* szGet(i8 i_Area);
     void vGive(i8 nBytes);
+    bool bIsEmpty(void);
     i8   i_Latter(void);
     Stz* szLatter(void);
     void vListAll(void);
     void vMoveLeft(Stz* szAtAddr, i8 nBytesRem);
     void vMoveRight(Stz* szAtAddr, i8 nBytesIns);
     void vPrintAll(void);
+    i8   iRemaining(void);
     void vReset(void);
     i8   nSize(void);
     void vTake(i8 nBytes);
     void vTrim(Stz* szTrim);
+    void vWipe(void);
+    void vWipe(Stz* szAddr);
   
     Footer* aFooter(void);
   };
@@ -144,6 +149,19 @@ Stz* Bytes_t<AREA>::szBoundary(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* returns true if the given address is within this object                    */
+/*----------------------------------------------------------------------------*/
+template <i8 AREA>
+bool Bytes_t<AREA>::bContains(Stz* szAddr)
+{
+  _precondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
+
+  ASSERT(szAddr);
+
+  return (szAddr >= szArea() && szAddr <= szBoundary());
+}
+
+/*----------------------------------------------------------------------------*/
 /* get address at given offset in m_yaArea                                    */
 /*----------------------------------------------------------------------------*/
 template <i8 AREA>
@@ -165,6 +183,17 @@ void Bytes_t<AREA>::vGive(i8 nBytes)
   _precondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
   
   m_i_Latter -= nBytes;
+}
+
+/*----------------------------------------------------------------------------*/
+/* give nBytes back to latter area                                            */
+/*----------------------------------------------------------------------------*/
+template <i8 AREA>
+bool Bytes_t<AREA>::bIsEmpty(void)
+{
+  _precondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
+
+  return m_i_Latter == 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -290,6 +319,17 @@ void Bytes_t<AREA>::vPrintAll(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* return the remaining space                                                 */
+/*----------------------------------------------------------------------------*/
+template <i8 AREA>
+i8 Bytes_t<AREA>::iRemaining(void)
+{
+  _precondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
+
+  return AREA - i_Latter();
+}
+
+/*----------------------------------------------------------------------------*/
 /* reset                                                                      */
 /*----------------------------------------------------------------------------*/
 template <i8 AREA>
@@ -333,6 +373,32 @@ void Bytes_t<AREA>::vTrim(Stz* szTrim)
   m_i_Latter = nDifference(szArea(),szTrim);
   
   m_yaArea[m_i_Latter] = '\0';
+}
+
+/*----------------------------------------------------------------------------*/
+/* wipe all data in the buffer space                                          */
+/*----------------------------------------------------------------------------*/
+template <i8 AREA>
+void Bytes_t<AREA>::vWipe(void)
+{
+  _precondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
+
+  MemLib::vZero(m_yaArea,AREA,CN_BYTES_T);
+}
+
+/*----------------------------------------------------------------------------*/
+/* wipe all data in the buffer space                                          */
+/*----------------------------------------------------------------------------*/
+template <i8 AREA>
+void Bytes_t<AREA>::vWipe(Stz* szAddr)
+{
+  _precondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
+
+  ASSERT(szAddr >= this->szArea());
+  ASSERT(szAddr <= this->szBoundary());
+
+  i8 nLen = szAddr->nLength();
+  MemLib::vZero(szAddr,nLen,CN_BYTES_T);
 }
 
 /*----------------------------------------------------------------------------*/

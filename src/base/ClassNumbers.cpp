@@ -62,6 +62,7 @@ Stz* BASE::aCN[CN_ENUMS+1]
     /* */ "BYTES_T"_Stz,              // CN_BYTES_T
 
     /* */ "_C__"_Stz,                 // CN__C__
+    /* */ "CALLFRAME"_Stz,            // CN_CALLFRAME
     /* */ "CARD"_Stz,                 // CN_CARD
     /* */ "CARDITER"_Stz,             // CN_CARDITER
     /* */ "CARDUSAGE"_Stz,            // CN_CARDUSAGE
@@ -242,6 +243,10 @@ Stz* BASE::aCN[CN_ENUMS+1]
     /* */ "OTHEROPERAND"_Stz,         // CN_OTHEROPERAND
 
     /* */ "_P__"_Stz,                 // CN__P__
+    /* */ "PACKEDSTRINGBUFTINY"_Stz,  // CN_PACKEDSTRINGBUFTINY
+    /* */ "PACKEDSTRINGBUFSMALL"_Stz, // CN_PACKEDSTRINGBUFSMALL
+    /* */ "PACKEDSTRINGBUFMEDIUM"_Stz,// CN_PACKEDSTRINGBUFMEDIUM
+    /* */ "PACKEDSTRINGBUFLARGE"_Stz, // CN_PACKEDSTRINGBUFLARGE
     /* */ "PAGEFILE"_Stz,             // CN_PAGEFILE
     /* */ "PAGEINBUFFER"_Stz,         // CN_PAGEINBUFFER
     /* */ "PAGINGMETRICS"_Stz,        // CN_PAGINGMETRICS
@@ -335,6 +340,7 @@ Stz* BASE::aCN[CN_ENUMS+1]
     /* */ "SEAPI"_Stz,                // CN_SEAPI
     /* */ "SEDEPUTY"_Stz,             // CN_SEDEPUTY
     /* */ "SEEME"_Stz,                // CN_SEEME
+    /* */ "SEGMENTEDARRAYITER"_Stz,   // CN_SEGMENTEDARRAYITER
     /* */ "SENCELL"_Stz,              // CN_SENCELL
     /* */ "SENCOMPILER"_Stz,          // CN_SENCOMPILER
     /* */ "SENDS"_Stz,                // CN_SENDS
@@ -430,6 +436,7 @@ Stz* BASE::aCN[CN_ENUMS+1]
     /* */ "TINYVIRTUAL"_Stz,          // CN_TINYVIRTUAL
     /* */ "TMEVAL"_Stz,               // CN_TMEVAL
     /* */ "TOKEN"_Stz,                // CN_TOKEN
+    /* */ "TOKENARRAY"_Stz,           // CN_TOKENARRAY
     /* */ "TOKENVEC"_Stz,             // CN_TOKENVEC
     /* */ "TOKEYHSHROW"_Stz,          // CN_TOKEYHSHROW
     /* */ "TOLGLPTNCRW"_Stz,          // CN_TOLGLPTNCRW

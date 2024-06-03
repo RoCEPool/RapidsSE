@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+#include "CallFrame.hpp"
+
 namespace BASE
 {
   static const i8 C_STACK_BACKTRACE = 32;
@@ -11,6 +13,7 @@ namespace BASE
   void vThreadCallStackDump(void);
   void vThreadCallStackDump_Mangled(void);
   void vThreadCallStackDump_Demangled(void);
+  void vThreadCallStack(CallFrame aCallFrame[], i8 nFrames);
   b1   bAddrsToLines(void** pvAddrs,
                      i8     iArrSize,
                      s256*  psModules,
@@ -19,6 +22,10 @@ namespace BASE
                      i8*    piLines,
                      i8*    piOffsets);
   b1   bParseBacktraceSymbol(const char* pBtLine, s256& sModule, s2K& sFuncName, i8& iOffset);
+
+  // Write the calling function, filename and line number to the string argument
+  void vGetCaller(CallFrame& oFrame);
+  void vGetCaller(CallFrame& oFrame, i8 iOffset);
 
   // the [[ noreturn ]] attribute is the C++11 standard for indicating a
   // function never returns

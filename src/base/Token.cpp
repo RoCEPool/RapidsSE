@@ -22,9 +22,6 @@ Token::Token(void)
 {
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
   
-  m_p_ExoTknVec = nullptr;
-  m_i_Token     = C_UNKNOWN;
-  
   vReset();
   
   _checkInitialised_(CN_TOKEN);
@@ -54,73 +51,6 @@ void Token::vDump(eCN eClass, Object* pObject, Stz* aTab)
          pToken->azChars());
 }
 
-/*----------------------------------------------------------------------------*/
-/* test for start of normal integer                                           */
-/*----------------------------------------------------------------------------*/
-bool Token::bStartCppInteger(char cArg)
-{
-  _static_
-  
-  if (StrLib::bIsDigit(cArg))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* test for start of normal name                                              */
-/*----------------------------------------------------------------------------*/
-bool Token::bStartCppName(char cArg)
-{
-  _static_
-
-  //if ('$' == cArg)
-  //  return true;
-  
-  if (StrLib::bIsNameStartChar(cArg))
-    return true;
-  
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* test for start of normal other                                             */
-/*----------------------------------------------------------------------------*/
-bool Token::bStartCppOther(char cArg)
-{
-  _static_
-
-  if (! StrLib::bIsNameBodyChar(cArg))
-    return true;
-  
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* test for start of normal string                                            */
-/*----------------------------------------------------------------------------*/
-bool Token::bStartCppString(char cArg)
-{
-  _static_
-
-  if (StrLib::bIsDoubleQuote(cArg))
-    return true;
-  
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* test for end of normal string                                              */
-/*----------------------------------------------------------------------------*/
-bool Token::bEndCppString(char cArg)
-{
-  _static_
-
-  if (StrLib::bIsDoubleQuote(cArg))
-    return true;
-  
-  return false;
-}
 
 /*----------------------------------------------------------------------------*/
 /* test for start of Sen integer                                              */
@@ -527,76 +457,6 @@ eTN Token::eCollectSenToken(char** aazCrs, Stz* szString)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* copy given chars into this token                                           */
-/*----------------------------------------------------------------------------*/
-void Token::vUpdateChars(Stz* szArgChars, TokenVec* pExoTknVec)
-{
-  _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
-  UNUSED(pExoTknVec);
-
-  ASSERT(pExoTknVec == m_p_ExoTknVec);
-
-  m_p_ExoTknVec->vUpdateToken(this,szArgChars);
-}
-
-/*----------------------------------------------------------------------------*/
-/* copy given token into this token                                           */
-/*----------------------------------------------------------------------------*/
-void Token::vCopyToken_restricted(Token* pSrcToken, TokenVec* pExoTknVec)
-{
-  _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
-  UNUSED(pExoTknVec);
-
-  ASSERT(pExoTknVec == m_p_ExoTknVec);
-  
-  m_p_ExoTknVec->vReplaceToken(this,pSrcToken);
-}
-
-/*----------------------------------------------------------------------------*/
-/* init this token                                                            */
-/*----------------------------------------------------------------------------*/
-void Token::vInitToken_restricted(i8 i_Token, TokenVec* pExoTknVec)
-{
-  _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
-
-  ASSERT(! m_p_ExoTknVec);
-  
-  m_p_ExoTknVec = pExoTknVec;
-  m_i_Token     = i_Token;
-}
-
-/*----------------------------------------------------------------------------*/
-/* ripple copy given token into this token                                    */
-/*----------------------------------------------------------------------------*/
-void Token::vRippleCopy_restricted(Token* pSrcToken, i8 nAdjCharsBytes,
-                                   TokenVec* pExoTknVec)
-{
-  _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
-  UNUSED(pExoTknVec);
-
-  ASSERT(pExoTknVec == m_p_ExoTknVec);
-  
-  m_eToken  = pSrcToken->m_eToken;
-  m_szChars = aAdd<Stz*>(pSrcToken->m_szChars,nAdjCharsBytes);
-  m_iLineNo = pSrcToken->m_iLineNo;
-  m_iColNo  = pSrcToken->m_iColNo;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set chars of this token to given arg                                       */
-/*----------------------------------------------------------------------------*/
-void Token::vSetChars_restricted(Stz* szArg, TokenVec* pExoTknVec)
-{
-  _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
-  UNUSED(pExoTknVec);
-
-  ASSERT(pExoTknVec == m_p_ExoTknVec);
-  
-  m_szChars = szArg;
-}
-
-
-/*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -982,16 +842,6 @@ bool Token::bSame(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get which token                                                            */
-/*----------------------------------------------------------------------------*/
-i8 Token::i_Token(void)
-{
-  _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
-    
-  return m_i_Token;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get the i8 of the chars                                                    */
 /*----------------------------------------------------------------------------*/
 i8 Token::iToI8(void)
@@ -1017,12 +867,12 @@ void Token::vSetNull(void)
 /*----------------------------------------------------------------------------*/
 /* show token                                                                 */
 /*----------------------------------------------------------------------------*/
-void Token::vShow(void)
+void Token::vShow(i8 iTknIdx)
 {
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
 
   vTrace("[%lld] %s %s\n"_Stz
-         ,m_i_Token
+         ,iTknIdx
          ,aTN[m_eToken]
          ,m_szChars
          );

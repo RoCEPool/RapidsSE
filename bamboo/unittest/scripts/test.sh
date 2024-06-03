@@ -89,8 +89,8 @@ fi
 # TODO: Add any other tests here
 # The array of unit test harnesses to run. The format here is:
 #  <testName> <testFunctionToCall>
-#  "ConnectionStorm" "runConnectionStormTest"
 TEST_TO_RUN=(
+  "ConnectionStorm" "runConnectionStormTest"
   "SETH"            "runSethTest"
 )
 
@@ -162,20 +162,31 @@ function onExit() {
 
 function processArgs() {
 
-  if [ "$#" -lt 4  ] || [ "$#" -gt 6  ]; then
+  if [ "$#" -lt 4  ] || [ "$#" -gt 7  ]; then
     errorExit "Incorrect arguments provided\n" "Usage: ./${SCRIPT_NAME} " \
               "[ --testsuffix <suffix> ]" \
+              "[ --alwaysCollectLogs ]" \
               "{ *debug* | *release* } " \
               "path/of/cluster.config " \
               "<logfile output dir> " \
               "path/of/testlistFile"
   fi
 
-  if [ "$1" == "--testsuffix" ]; then
-    TEST_SUFFIX="$2"
-    shift
-    shift
-  fi
+  # Handle optional arguments
+  local i
+  for i in 1 2; do
+
+    if [ "${1,,}" == "--testsuffix" ]; then
+      TEST_SUFFIX="$2"
+      shift
+      shift
+
+    elif [ "${1,,}" == "--alwayscollectlogs" ]; then
+      shift
+    else
+      break
+    fi
+  done
 
   TARGET="$1"
   shift
@@ -185,7 +196,7 @@ function processArgs() {
 
   # Adjust the Seth timeout value if we are running in debug.
   # Note that SETH_TIMEOUT is output as an integer value.
-  if [[ "${TARGET}" = *debug* ]]; then
+  if [[ "${TARGET,,}" = *debug* ]]; then
     SETH_TIMEOUT="$(echo "(${SETH_TIMEOUT_BASE} * ${SETH_TIMEOUT_DEBUG_MULTIPLIER}" $ | bc -l)"
     echo "Extending the Seth timeout value from ${SETH_TIMEOUT_BASE} to ${SETH_TIMEOUT} seconds "\
          "because we are running against a debug build of SE."
@@ -234,7 +245,8 @@ function writeHarnessFailureJUnitResult() {
   local failureDetail="$4"
 
   local outputFile="${RESULTS_DIR}/harnessFailure-${harnessName// /}-${TARGET}.xml"
-  local outputDir="$(dirname "${outputFile}")"
+  local outputDir
+  outputDir="$(dirname "${outputFile}")"
   mkdir -p "${outputDir}"
 
   cat << EOF > "${outputFile}"

@@ -819,8 +819,12 @@ bool SePrompt::bPromptFunction(eEC* eErrorCode)
   
   Timer oTimer;
 
+  Token* pToken0 = pTkn(0);
+  Token* pToken1 = pTkn(1);
+  Stz* szToken0 = pToken0 ? pToken0->szChars() : ""_Stz;
+  Stz* szToken1 = pToken1 ? pToken1->szChars() : ""_Stz;
   PromptFun* pPromptDesc =
-    gxPromptCatalog.pFindFun(pTkn(0)->szChars(), pTkn(1)->szChars(), eErrorCode);
+    gxPromptCatalog.pFindFun(szToken0, szToken1, eErrorCode);
 
   if (*eErrorCode == EC_DISABLED_STATEMENT)
     return true;
@@ -900,8 +904,10 @@ bool SePrompt::bReadCommand(eEC& eInputError)
     return false;
   }
   */
-  
+
+#ifdef WITH_TOKENVEC_INTEGRITY
   m_pInpTknVec->vIntegrityCheck();
+#endif
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // special case: initial command supplied as an SE command line argument
@@ -912,7 +918,9 @@ bool SePrompt::bReadCommand(eEC& eInputError)
     s4K szInitial = AM::szInitial();
     AM::TOKENISE::vTokeniseSen(m_pInpTknVec,szInitial);
     m_pInpTknVec->vStripSemicolon();
+#ifdef WITH_TOKENVEC_INTEGRITY
     m_pInpTknVec->vIntegrityCheck();
+#endif
     return true;
   }
   
@@ -925,7 +933,9 @@ bool SePrompt::bReadCommand(eEC& eInputError)
     s4K szCommand = AM::szCommand();
     AM::TOKENISE::vTokeniseSen(m_pInpTknVec,szCommand);
     m_pInpTknVec->vStripSemicolon();
+#ifdef WITH_TOKENVEC_INTEGRITY
     m_pInpTknVec->vIntegrityCheck();
+#endif
     return true;
   }
   
@@ -937,7 +947,9 @@ bool SePrompt::bReadCommand(eEC& eInputError)
     m_pInpTknVec->vStripSemicolon();
 
     vToDo(""_Stz);
+#ifdef WITH_TOKENVEC_INTEGRITY
     m_pInpTknVec->vIntegrityCheck();
+#endif
     return true;
   }
   
@@ -945,7 +957,9 @@ bool SePrompt::bReadCommand(eEC& eInputError)
   // special case:
   
   if (m_bOneCommand && m_pInput_deputy->bIsStdin()) {
+#ifdef WITH_TOKENVEC_INTEGRITY
     m_pInpTknVec->vIntegrityCheck();
+#endif
     m_bContinue = false;
     return false;
   }
@@ -956,8 +970,10 @@ bool SePrompt::bReadCommand(eEC& eInputError)
   if (! m_pInput_deputy->bReadCommand(eInputError))
     return false;
 
+#ifdef WITH_TOKENVEC_INTEGRITY
   m_pInpTknVec->vIntegrityCheck();
-  
+#endif
+
   return true;
 }
 
@@ -1187,7 +1203,7 @@ bool SePrompt::bTagCommand(eEC* eErrorCode)
   
   Token* pTkn0 = pTkn(0);
   
-  if (! pTkn0->bSame("tag"_Stz))
+  if (!pTkn0 || ! pTkn0->bSame("tag"_Stz))
     return false;
   
   bool b = bPromptFunction(eErrorCode);
@@ -1213,7 +1229,7 @@ Token* SePrompt::pTkn(i8 i_Token)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  Token* pTkn = m_pInpTknVec->pGet(i_Token,true);
+  Token* pTkn = m_pInpTknVec->pGet(i_Token);
   
   return pTkn;
 }

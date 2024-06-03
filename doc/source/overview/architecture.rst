@@ -151,8 +151,8 @@ contiguous shared memory address space, but RapidsSE does not use all of that
 memory initially.
 
 This will often be represented in tools like ``top`` as the ``rapidsse`` process
-having a large reserved (column ``RES`` in ``top``) memory space but a much
-smaller *committed* (column ``VIRT`` in ``top``) memory space. While the memory
+having a large reserved or virtual memory space (column ``VIRT`` in ``top``) but a much
+smaller *committed* or resident (column ``RES`` (resident) in ``top``) memory space. While the memory
 is reserved but not committed the system is able to use the available memory
 for any other tasks. As RapidsSE actually uses the shared memory for data and
 queries, the process's *committed* memory usage will increase. This *committed*

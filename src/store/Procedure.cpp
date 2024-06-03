@@ -34,15 +34,18 @@ Procedure::Procedure(TokenVec* pTokenVec)
   m_pTagSet   = nullptr;
   
   m_pTokenVec = pTokenVec;
-  m_nTokens = m_pTokenVec->nItems();
+  m_nTokens = m_pTokenVec->nTokens();
 
   m_i_Tkn = 0;
   m_pToken = m_pTokenVec->pGet(m_i_Tkn);
   m_pProcNmToken = nullptr;
+  m_iProcNmToken = C_UNKNOWN;
   
   _checkInitialised_(CN_PROCEDURE);
-  
+
+#ifdef WITH_TOKENVEC_INTEGRITY
   m_pTokenVec->vIntegrityCheck();
+#endif
 
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_PROCEDURE,_FOOTER_);
@@ -110,10 +113,10 @@ bool Procedure::bTranslateToPipeline(Stz* szProcedureName,
   Token* pTkn0 = pPrdTxtVec->pGet(0);
 
   if (pTkn0->bSame("procedure"_Stz))
-    pTkn0->vUpdateChars("pipeline"_Stz,pPrdTxtVec);
+    pPrdTxtVec->vUpdateToken(0, pTkn0, "pipeline"_Stz);
   else {
     ASSERT(pTkn0->bSame("procedureLocal"_Stz));
-    pTkn0->vUpdateChars("pipelineLocal"_Stz,pPrdTxtVec);
+    pPrdTxtVec->vUpdateToken(0, pTkn0, "pipelineLocal"_Stz);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -163,7 +166,7 @@ bool Procedure::bTranslateToPipeline(Stz* szProcedureName,
         pEtcTknVec->vToTknString(sEtcSubStr);
         //vTrace("sEtcSubStr=%s\n"_Stz,sEtcSubStr.szStz());
 
-        if (i_Etc < pArgValues->nItems())
+        if (i_Etc < pArgValues->nTokens())
           pArgValues->vTrimTokens(i_Etc);
         dPV("pInpArgVec(t)"_Stz, pArgValues);
 
@@ -332,12 +335,11 @@ bool Procedure::bTranslateToPipeline(String* pToPipelineStmt,
   // convert procedure into pipeline
   
   Token* pTkn0 = pPrdTxtVec->pGet(0);
-
   if (pTkn0->bSame("procedure"_Stz))
-    pTkn0->vUpdateChars("pipeline"_Stz,pPrdTxtVec);
+    pPrdTxtVec->vUpdateToken(0, pTkn0, "pipeline"_Stz);
   else {
     ASSERT(pTkn0->bSame("procedureLocal"_Stz));
-    pTkn0->vUpdateChars("pipelineLocal"_Stz,pPrdTxtVec);
+    pPrdTxtVec->vUpdateToken(0, pTkn0, "pipelineLocal"_Stz);
   }
   
   
@@ -391,7 +393,7 @@ bool Procedure::bTranslateToPipeline(String* pToPipelineStmt,
       pEtcTknVec->vToTknString(sEtcSubStr);
       //vTrace("sEtcSubStr=%s\n"_Stz,sEtcSubStr.szStz());
       
-      if (i_Etc < pInpArgVec->nItems())
+      if (i_Etc < pInpArgVec->nTokens())
         pInpArgVec->vTrimTokens(i_Etc);
       dPV("pInpArgVec(t)"_Stz,pInpArgVec);
 
@@ -597,7 +599,7 @@ Word* Procedure::pFindProcedure(TokenVec* pTokenVec)
     
     pTokenVec->vRemoveToken(1);
     
-    pTkn0_CalledProcNm_a->vUpdateChars(sProcNm_compound,pTokenVec);
+    pTokenVec->vUpdateToken(0, pTkn0_CalledProcNm_a, sProcNm_compound);
     
     if (iJotDebug())
       pTokenVec->vListTokens();
@@ -632,8 +634,8 @@ Word* Procedure::pFindProcedure(TokenVec* pTokenVec)
   // found two-part; correct the command token vector
   pTokenVec->vRemoveToken(1);
   pTokenVec->vRemoveToken(1);
-  pTkn0_CalledProcNm_a->vUpdateChars(sProcNm_compound_3,pTokenVec);
-  
+  pTokenVec->vUpdateToken(0, pTkn0_CalledProcNm_a, sProcNm_compound_3);
+
   if (iJotDebug())
     pTokenVec->vListTokens();
   
@@ -658,8 +660,10 @@ void Procedure::vParseAndAdd(void)
   if (AM::TRACE::bVerbose(C_VB_PROCEDURE))
     vTrace("%s\n"_Stz,sProc.azChar());
 
+#ifdef WITH_TOKENVEC_INTEGRITY
   m_pTokenVec->vIntegrityCheck();
-  
+#endif
+
   Token* pTkn1_ProcNm = m_pTokenVec->pGet(1);
   
   m_sProcNm = pTkn1_ProcNm->szChars();
@@ -672,10 +676,16 @@ void Procedure::vParseAndAdd(void)
     m_sProcNm.vConcat(m_pTokenVec->pGet(2)->szChars());
     
     m_pTokenVec->vRemoveToken(2);
-    m_pTokenVec->vIntegrityCheck();
 
-    pTkn1_ProcNm->vUpdateChars(m_sProcNm,m_pTokenVec);
+#ifdef WITH_TOKENVEC_INTEGRITY
     m_pTokenVec->vIntegrityCheck();
+#endif
+
+    m_pTokenVec->vUpdateToken(1, pTkn1_ProcNm, m_sProcNm);
+
+#ifdef WITH_TOKENVEC_INTEGRITY
+    m_pTokenVec->vIntegrityCheck();
+#endif
 
     //m_pTokenVec->vDumpTokens();
   }
@@ -688,11 +698,17 @@ void Procedure::vParseAndAdd(void)
     m_sProcNm.vConcat(m_pTokenVec->pGet(2)->szChars());
         
     m_pTokenVec->vRemoveToken(2);
+
+#ifdef WITH_TOKENVEC_INTEGRITY
     m_pTokenVec->vIntegrityCheck();
-    
-    pTkn1_ProcNm->vUpdateChars(m_sProcNm,m_pTokenVec);
+#endif
+
+    m_pTokenVec->vUpdateToken(1, pTkn1_ProcNm, m_sProcNm);
+
+#ifdef WITH_TOKENVEC_INTEGRITY
     m_pTokenVec->vIntegrityCheck();
-    
+#endif
+
     //m_pTokenVec->vDumpTokens();
   }
 
@@ -870,6 +886,7 @@ bool Procedure::bParse_Name(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PROCEDURE,_FOOTER_);
 
   m_pProcNmToken = m_pToken;
+  m_iProcNmToken = m_i_Tkn;
   m_sProcNm = m_pToken->szChars();
   
   if (m_sProcNm.bSame("std_start"_Stz))
@@ -1135,10 +1152,7 @@ bool Procedure::bRemoveToken(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PROCEDURE,_FOOTER_);
   
   m_pTokenVec->vRemoveToken(m_i_Tkn);
-  
-  m_pTokenVec->vIntegrityCheck();
-  
-  m_nTokens = m_pTokenVec->nItems();
+  m_nTokens = m_pTokenVec->nTokens();
   
   if (m_i_Tkn >= m_nTokens)
     return false;
@@ -1154,8 +1168,8 @@ bool Procedure::bRemoveToken(void)
 void Procedure::vUpdateProcNmToken(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PROCEDURE,_FOOTER_);
-  
-  m_pProcNmToken->vUpdateChars(m_sProcNm,m_pTokenVec);
+  ASSERT(m_iProcNmToken >= 0);
+  m_pTokenVec->vUpdateToken(m_iProcNmToken, m_pProcNmToken, m_sProcNm);
 }
 
 /*============================================================================*/

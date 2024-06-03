@@ -34,6 +34,7 @@
 
 #include "backend/Backend.hpp"
 
+#include "CallFrame.hpp"
 #include "CmdLineArgs.hpp"
 
 #include "DdlLock.hpp"
@@ -127,6 +128,7 @@
 #include "Op.hpp"
 #include "OpSpec.hpp"
 
+#include "PackedStringBuf.hpp"
 #include "PathIdentifier.hpp"
 #include "VertexSpec.hpp"
 #include "Pipeline.hpp"
@@ -181,6 +183,7 @@
 #include "SN_Vch.hpp"
 
 #include "ThreadList.hpp"
+#include "TokenArray.hpp"
 #include "ToLglPtnCrw.hpp"
 #include "ToLglPtnRow.hpp"
 #include "TraceLock.hpp"
@@ -373,6 +376,7 @@ SizeHeap gxaSizeHeap[]
   {CN_BYTES_T,                  sizeof(s32),              HT_INVALID   , FILL },
 
   {CN__C__,                     'C' - ('A' - 1),          HT_INVALID   , FILL },
+  {CN_CALLFRAME,                sizeof(CallFrame),        HT_T_SMALL   , FILL },
   {CN_CARD,                     sizeof(Card),             HT_T_SMALL   , FILL },
   {CN_CARDITER,                 sizeof(CardIter),         HT_T_MEDIUM  , FILL },
   {CN_CARDUSAGE,                sizeof(CardUsage),        HT_T_SMALL   , FILL },
@@ -543,26 +547,30 @@ SizeHeap gxaSizeHeap[]
   {CN_OUTPUT,                   sizeof(Output),             HT_T_TINY    , FILL },
   {CN_OP,                       sizeof(Op),                 HT_T_TINY    , FILL },
   {CN_OPDEF,                    sizeof(OpDef),              HT_T_TINY    , FILL },
-  {CN_OPENFILES,                sizeof(OpenFiles),          HT_T_TINY    , FILL },
-  {CN_OPERANDQUEUE,             sizeof(OperandQueue),       HT_T_TINY    , FILL },
-  {CN_OPERANDWATCH,             sizeof(OperandWatch),       HT_T_SMALL   , FILL },
-  {CN_OPSKETCH,                 sizeof(OpSketch),           HT_T_MEDIUM  , FILL },
-  {CN_OPMETRICS,                sizeof(OpMetrics),          HT_T_TINY    , FILL },
-  {CN_OPSPEC,                   sizeof(OpSpec),             HT_T_MEDIUM  , FILL },
-  {CN_OPTIMISER,                sizeof(Optimiser),          HT_T_LARGE   , FILL },
-  {CN_OTHEROPERAND,             sizeof(OtherOperand),       HT_T_TINY    , FILL },
+  {CN_OPENFILES,                sizeof(OpenFiles),               HT_T_TINY    , FILL },
+  {CN_OPERANDQUEUE,             sizeof(OperandQueue),             HT_T_TINY    , FILL },
+  {CN_OPERANDWATCH,             sizeof(OperandWatch),              HT_T_SMALL   , FILL },
+  {CN_OPSKETCH,                 sizeof(OpSketch),                  HT_T_MEDIUM  , FILL },
+  {CN_OPMETRICS,                sizeof(OpMetrics),                 HT_T_TINY    , FILL },
+  {CN_OPSPEC,                   sizeof(OpSpec),                    HT_T_MEDIUM  , FILL },
+  {CN_OPTIMISER,                sizeof(Optimiser),                 HT_T_LARGE   , FILL },
+  {CN_OTHEROPERAND,             sizeof(OtherOperand),              HT_T_TINY    , FILL },
 
-  {CN__P__,                     'P' - ('A' - 1),            HT_INVALID   , FILL },
-  {CN_PAGEFILE,                 sizeof(PageFile),           HT_T_TINY    , FILL },
-  {CN_PAGEINBUFFER,             sizeof(CrwBuffer),          HT_T_LARGE   ,FILL },
-  {CN_PAGINGMETRICS,            sizeof(PagingMetrics),      HT_T_LARGE   , FILL },
-  {CN_PARAMSPEC,                sizeof(ParamSpec),          HT_T_TINY    , FILL },
-  {CN_PARAMSSPEC,               sizeof(ParamsSpec),         HT_T_TINY    , FILL },
-  {CN_PARCEL,                   sizeof(Parcel),             HT_T_TINY    , FILL },
-  {CN_PATHIDENTIFIER,           sizeof(PathIdentifier),     HT_T_MEDIUM  , FILL },
-  { CN_PATHVEC,                  sizeof(PathVec),            HT_T_MEDIUM  ,FILL },
-  { CN_PAYLOADLIST,              sizeof(PayloadList),        HT_T_TINY    ,FILL },
-  { CN_PAYLOADOBJ,               sizeof(WLP::PayloadObj),    HT_T_LARGE   ,FILL },
+  {CN__P__,                     'P' - ('A' - 1),                   HT_INVALID   , FILL },
+  {CN_PACKEDSTRINGBUFTINY,      sizeof(PackedStringSegmentTiny),   HT_T_TINY    , FILL },
+  {CN_PACKEDSTRINGBUFSMALL,     sizeof(PackedStringSegmentSmall),  HT_T_SMALL  ,  FILL },
+  {CN_PACKEDSTRINGBUFMEDIUM,    sizeof(PackedStringSegmentMedium), HT_T_MEDIUM,   FILL },
+  {CN_PACKEDSTRINGBUFLARGE,     sizeof(PackedStringSegmentLarge),  HT_T_LARGE  ,  FILL },
+  {CN_PAGEFILE,                 sizeof(PageFile),                  HT_T_TINY    , FILL },
+  {CN_PAGEINBUFFER,             sizeof(CrwBuffer),                 HT_T_LARGE   , FILL },
+  {CN_PAGINGMETRICS,            sizeof(PagingMetrics),             HT_T_LARGE   , FILL },
+  {CN_PARAMSPEC,                sizeof(ParamSpec),                 HT_T_TINY    , FILL },
+  {CN_PARAMSSPEC,               sizeof(ParamsSpec),                HT_T_TINY    , FILL },
+  {CN_PARCEL,                   sizeof(Parcel),                    HT_T_TINY    , FILL },
+  {CN_PATHIDENTIFIER,           sizeof(PathIdentifier),            HT_T_MEDIUM  , FILL },
+  { CN_PATHVEC,                  sizeof(PathVec),                  HT_T_MEDIUM  , FILL },
+  { CN_PAYLOADLIST,              sizeof(PayloadList),              HT_T_TINY    , FILL },
+  { CN_PAYLOADOBJ,               sizeof(WLP::PayloadObj),          HT_T_LARGE   , FILL },
   { CN_PAYSTR,                   sizeof(PayStr),             HT_INVALID   ,FILL },
   { CN_PAYSTRBUFFER,             sizeof(PayStrBuffer),       HT_T_LARGE   ,FILL },
   { CN_PDS,                      sizeof(Pds),                HT_T_LARGE   , FILL },
@@ -646,6 +654,7 @@ SizeHeap gxaSizeHeap[]
   { CN_SEAPI,                    sizeof(SeApi),              HT_T_LARGE   ,FILL },
   { CN_SEDEPUTY,        sizeof(SeDeputy),           HT_T_MEDIUM  , FILL },
   { CN_SEEME,           sizeof(SeeMe),              HT_INVALID   , FILL },
+  { CN_SEGMENTEDARRAYITER, 0,                       HT_INVALID   , FILL },
   { CN_SENCELL,         sizeof(SenCell),            HT_INVALID   , FILL },
   { CN_SENCOMPILER,     sizeof(SenCompiler),        HT_T_TINY    , FILL },
   { CN_SENDS,           sizeof(Sends),              HT_T_TINY    , FILL },
@@ -741,7 +750,8 @@ SizeHeap gxaSizeHeap[]
   { CN_TINYVIRTUAL,              sizeof(Heap),/*correct*/    HT_INVALID   ,FILL },
   { CN_TMEVAL,                   sizeof(TypeValueArea),/*yes*/   HT_INVALID   ,FILL },
   { CN_TOKEN,                    sizeof(Token),                  HT_T_TINY    , FILL },
-  { CN_TOKENVEC,                 sizeof(TokenVec),               HT_T_LARGE   , FILL },
+  { CN_TOKENARRAY,               sizeof(TokenArray),             HT_T_TINY    , FILL },
+  { CN_TOKENVEC,                 sizeof(TokenVec),               HT_T_TINY    , FILL },
   { CN_TOKEYHSHROW,              sizeof(ToKeyHshRow),            HT_T_MEDIUM  , FILL },
   { CN_TOLGLPTNCRW,              sizeof(ToLglPtnCrw),            HT_T_LARGE   , FILL },
   { CN_TOLGLPTNROW,              sizeof(ToLglPtnRow),            HT_T_LARGE   , FILL },

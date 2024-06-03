@@ -59,9 +59,11 @@ void Step::vProcedureAdd(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   TokenVec* pDmnTknVec = AM::TOKENISE::pTokeniseSen(sProc);
-  
+
+#ifdef WITH_TOKENVEC_INTEGRITY
   pDmnTknVec->vIntegrityCheck();
-  
+#endif
+
   Token* pTkn0 = pDmnTknVec->pGet(0);
   ASSERT(pTkn0->bSame("procedure"_Stz) || pTkn0->bSame("procedureLocal"_Stz));
   UNUSED(pTkn0);
