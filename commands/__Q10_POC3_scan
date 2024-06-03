@@ -1,0 +1,98 @@
+/*============================================================================*/
+/* __Q10_run                                                                  */
+/*============================================================================*/
+
+/keepCodeFile
+/optimise_passthru
+pipeline Query10
+begin
+
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
+
+  stage S01 on all partitions multiple threads 4:
+    scan Orders
+    | project "type INTEGER ( 19 ) as O_CUSTKEY  O_CUSTKEY ,
+                   type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY ,
+                   type DATE ( 0 ) as O_ORDERDATE O_ORDERDATE"
+    | filter " type BOOLEAN O_ORDERDATE date '1993-10-01' >=  O_ORDERDATE date '1994-01-01' < and "
+    | indexJoin Customer IxC_CUSTKEY "BOUND $I1 O_CUSTKEY =="
+    | project "type INTEGER ( 19 ) as O_CUSTKEY O_CUSTKEY ,
+               type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY"
+    | hash expr type INTEGER ( 19 ) O_ORDERKEY
+    | combined 0
+    | next hashcast
+
+  stage S02 on all partitions:
+    indexJoin Lineitem IxL_ORDERKEY "BOUND $I1 O_ORDERKEY =="
+    | project "type INTEGER ( 19 ) as O_CUSTKEY O_CUSTKEY ,
+               type DECIMAL ( 19 2 ) as L_EXTENDEDPRICE L_EXTENDEDPRICE ,
+               type DECIMAL ( 19 2 ) as L_DISCOUNT L_DISCOUNT ,
+               type VARCHAR ( 0 ) as L_RETURNFLAG L_RETURNFLAG"
+    | filter  "type BOOLEAN L_RETURNFLAG 'R' =="
+    | gbyAgg  "groupby    type INTEGER ( 19 ) O_CUSTKEY
+               aggregates type INTEGER ( 19 ) as O_CUSTKEY $K1 ,
+                          type DECIMAL ( 19  2 ) as REVENUE ) L_EXTENDEDPRICE 1.0  L_DISCOUNT -  *  sum "
+    | combined 0
+    | next
+
+  stage S03 on all nodes :
+    gbyAgg "groupby    type INTEGER ( 19 ) O_CUSTKEY
+            aggregates type INTEGER ( 19 ) as O_CUSTKEY $K1 ,
+                       type DECIMAL ( 19  2 ) as REVENUE ) REVENUE  sum "
+    | combined 0
+    | next
+
+  stage S04 on origin :
+    gbyAgg "groupby    type INTEGER ( 19 ) O_CUSTKEY
+            aggregates type INTEGER ( 19 ) as O_CUSTKEY $K1 ,
+                       type DECIMAL ( 19  2 ) as REVENUE ) REVENUE  sum"
+                       | limit 20
+    | combined 0
+    | next
+
+  stage S05 on origin :
+    top " type DECIMAL ( 19  2 ) REVENUE " 20
+    | hash expr type INTEGER ( 19 ) O_CUSTKEY
+    | combined 0
+    | next hashcast
+
+  stage S06 on all partitions:
+    indexJoin Customer IxC_CUSTKEY "BOUND $I1 O_CUSTKEY =="
+    | project "type INTEGER ( 19 ) as O_CUSTKEY O_CUSTKEY ,
+               type INTEGER ( 19 ) as C_NATIONKEY C_NATIONKEY ,
+               type VARCHAR ( 0 ) as C_NAME C_NAME ,
+               type DECIMAL ( 19  2 ) as REVENUE ) REVENUE ,
+               type DECIMAL ( 19  2 ) as C_ACCTBAL C_ACCTBAL ,
+               type VARCHAR ( 0 ) as C_ADDRESS C_ADDRESS ,
+               type VARCHAR ( 0 ) as C_PHONE C_PHONE ,
+               type VARCHAR ( 0 ) as C_COMMENT C_COMMENT"
+    | indexjoin Nation IxN_NATIONKEY "BOUND $I1 C_NATIONKEY =="
+    | project "type INTEGER ( 19 ) as O_CUSTKEY O_CUSTKEY ,
+               type VARCHAR ( 0 ) as C_NAME C_NAME ,
+               type DECIMAL ( 19  2 ) as REVENUE ) REVENUE ,
+               type DECIMAL ( 19  2 ) as C_ACCTBAL C_ACCTBAL ,
+               type VARCHAR ( 0 ) as N_NAME N_NAME ,
+               type VARCHAR ( 0 ) as C_ADDRESS C_ADDRESS ,
+               type VARCHAR ( 0 ) as C_PHONE C_PHONE ,
+               type VARCHAR ( 0 ) as C_COMMENT C_COMMENT"
+    | combined 0
+    | next
+
+  stage S07 on origin :
+    sort " type DECIMAL ( 19  2 ) REVENUE DESC  "
+    | combined 0
+    | next
+
+  stage S08 on origin :
+    output
+    | sink
+    | first
+end ;
+
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

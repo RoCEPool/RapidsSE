@@ -7,6 +7,9 @@
 #include "OpSketch.hpp"
 
 namespace STORE {
+
+#define TOP_FULLBUFFER 0
+
   class CodeSynthUtils {
   public:
     static bool bExtract(File *pFile, OpSketch *pOpSketch,
@@ -36,6 +39,7 @@ namespace STORE {
     static bool bReplacePrevOp(String* sLine, String* sReplacedLine, OpSketch *pOpSketch);
     static void vReplaceIndexPosition(String* sLine, OpSketch *pOpSketch);
     static void vReplaceInsertEnt(String* sLine, OpSketch* pOpSketch);
+    static void vReplaceTopCountColumn(String* sLine, OpSketch* pOpSketch);
     static void vReplaceKeyKind(String* sLine, OpSketch *pOpSketch);
     static void vReplaceNumColumns(String* sLine, OpSketch *pOpSketch);
     static void vReplaceOperatorName(String* sLine, OpSketch *pOpSketch);

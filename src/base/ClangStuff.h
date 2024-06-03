@@ -19,6 +19,8 @@ extern void* aExtern_IndexTreeAllotPayStr(void* pIndexTree, char* sStr) __attrib
 extern void* aExtern_IndexTreeBegin(void* pIndexTree, void** ppEntBuffer) __attribute__((weak_import));
 extern void* aExtern_IndexTreeInsertEntTop(void* aIndexTree, void* aEnt, void** aaEntBottom, i8 iTopCount, i8* piErrorCode)
 __attribute__((weak_import));
+extern void vExtern_IndexTreeTop(void* aDynamic, i8 iTopCol, i8 iTopCount) __attribute__((weak_import));
+
 extern void* aExtern_IndexTreeFindEntryAsc(void* aIndexTree, void* aKey) __attribute__((weak_import));
 extern void* aExtern_IndexTreeFindEntryAscDsc(void* aIndexTree, void* aKey) __attribute__((weak_import));
 extern void* aExtern_IndexTreeFindInsertGenAsc(void* aDynamicT, i8 nPayloadBytes, bool* pbInsertedEntry) __attribute__((weak_import));

@@ -2,6 +2,7 @@
 /* _alka                                                                      */
 /*============================================================================*/
 
+/pipeline_def
 /keepCodeFile
 /weaved
 /optimise_passthru
@@ -15,16 +16,15 @@ begin
 
   stage S01 on all partitions :
     scan      Orders
-    | project   "   type INTEGER ( 19 ) as C0_O_CUSTKEY $2
-                  , type INTEGER ( 19 ) as C1_O_ORDERKEY $1 "
-    | hash      "type INTEGER ( 19 ) $2"
-    | combined 0
-    | next      hashcast
-
-  stage S02 on all partitions :
-    indexJoin Lineitem IxL_ORDERKEY " BOUND $I1 $2 == " " type BOOLEAN } DATE '1995-01-01' DATE '1996-12-31' $11 between "
+    | project   "   type INTEGER ( 19 ) as O_CUSTKEY O_CUSTKEY
+                  , type VARCHAR ( 0 ) as O_ORDERPRIORITY O_ORDERPRIORITY "
     | combined 0
     | next
+
+  stage S02 on origin :
+      top " type INTEGER ( 19 ) O_CUSTKEY " 2
+      | combined 0
+      | next hashcast
 
   stage S15 on origin :
       output

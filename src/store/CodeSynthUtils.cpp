@@ -112,6 +112,7 @@ bool CodeSynthUtils::bExtract(File* pFile, OpSketch* pOpSketch, Stz* szFunMkr,
         vReplaceKeyKind(sLine, pOpSketch);
 
         vReplaceInsertEnt(sLine, pOpSketch);
+        vReplaceTopCountColumn(sLine, pOpSketch);
 
         // cater to multiple replaces of IndexInfo
         if (bReplaceCurrentDupOp(sLine, sReplacedLine, pOpSketch))
@@ -259,6 +260,7 @@ bool CodeSynthUtils::bExtract(File* pFile, OpSketch* pOpSketch, Stz* szFunMkr,
 				vReplaceKeyKind(sLine, pOpSketch);
 
 				vReplaceInsertEnt(sLine, pOpSketch);
+        vReplaceTopCountColumn(sLine, pOpSketch);
 
 				vReplaceTubPot(sLine, pOpSketch);
 
@@ -708,6 +710,28 @@ void CodeSynthUtils::vReplaceInsertEnt(String* sLine, OpSketch* pOpSketch) {
     }
 
 
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* Extract code for function from file                                        */
+/*----------------------------------------------------------------------------*/
+void CodeSynthUtils::vReplaceTopCountColumn(String* sLine, OpSketch* pOpSketch) {
+
+  _static_
+
+  bool bResult;
+
+  if (StrLib::bContains(sLine->azStr(), "__TOP_COUNT__")) {
+      bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(), "__TOP_COUNT__",pOpSketch->m_sLimitExpr.azChar());
+      RASSERT(bResult);
+  }
+
+  if (StrLib::bContains(sLine->azStr(), "__TOP_COLUMN__")) {
+    s256 sTopColumn;
+    sTopColumn.vSprint("%lld"_Stz,pOpSketch->m_iTopColumn);
+    bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(), "__TOP_COLUMN__", sTopColumn.azChar());
+    RASSERT(bResult);
   }
 }
 

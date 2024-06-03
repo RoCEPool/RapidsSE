@@ -241,6 +241,15 @@ eEC Stencil::eSynthesise(StageDef *pStageDef)
         continue;
       }
       else {
+
+        bInflateGenerated = true;
+
+#ifdef TOP_FULLBUFFER
+        m_eHandlerKind = HK_PDSROWBUFFER_FULL;
+        OpDef *pOpDefNext = pStageDef->pGet(i_Op+1);
+        if (pOpDefNext->szOpNm()->bSame("top"_Stz))
+          continue;
+#endif
         m_eHandlerKind = HK_PDSROWBUFFER;
         m_sLabelLoop = "L_AdvanceNextRowT"_Stz;
 
@@ -248,7 +257,6 @@ eEC Stencil::eSynthesise(StageDef *pStageDef)
         pOpSketch = pSketchPdsRow(pStageDef, pOpDef);
         vAppend(pOpSketch);
 
-        bInflateGenerated = true;
         m_ePreviousStencil = SR_IT;
         m_iPrevOpNo = pOpSketch->m_iOperatorNo;
         m_iPrevDupOpNo = pOpSketch->m_iDupOpNo;
@@ -277,14 +285,23 @@ eEC Stencil::eSynthesise(StageDef *pStageDef)
 		// generate the code for pdsRow
 		if (pOpDef->szOpNm()->bSame("pdsRow"_Stz)) {
 
-			m_eHandlerKind = HK_PDSROWBUFFER;
+      bInflateGenerated = true;
+
+#ifdef TOP_FULLBUFFER
+      m_eHandlerKind = HK_PDSROWBUFFER_FULL;
+
+      OpDef *pOpDefNext = pStageDef->pGet(i_Op+1);
+      if (pOpDefNext->szOpNm()->bSame("top"_Stz))
+        continue;
+#endif
+
+      m_eHandlerKind = HK_PDSROWBUFFER;
 			m_sLabelLoop = "L_AdvanceNextRowT"_Stz;
 
 			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 			pOpSketch = pSketchPdsRow(pStageDef, pOpDef);
 			vAppend(pOpSketch);
 
-			bInflateGenerated = true;
 			m_ePreviousStencil = SR_IT;
       m_iPrevOpNo = pOpSketch->m_iOperatorNo;
       m_iPrevDupOpNo = pOpSketch->m_iDupOpNo;
@@ -1576,6 +1593,15 @@ OpSketch* Stencil::pSketchTop(StageDef* pStageDef, OpDef* pOpDef)
 
   // set the top count
   pOpSketch->vLimitExpr(szTopCount);
+
+  // set the top column
+  for (i8 iCol = 0; iCol < pColsMap->m_nCols; iCol++) {
+
+    if ( ! pColsMap->m_axCol[iCol].m_bPayload ) {
+      pOpSketch->vTopColumn(pColsMap->m_axCol[iCol].m_i_EmittedCol);
+    }
+
+  }
 
   // generate the expression stacks
   pOpSketch->vGenerateExprStacks(sTopExpr);

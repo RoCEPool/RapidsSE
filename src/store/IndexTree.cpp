@@ -181,6 +181,78 @@ extern "C" void* aExtern_IndexTreeInsertEntTop(void* aIndexTree, void* aEnt, voi
   return IndexTree::aInsertEntTop((IndexTree*)aIndexTree, (Ent*)aEnt, (Ent**)aaEntBottom,
                                   iTopCount, piErrorCode);
 }
+extern "C" void vExtern_IndexTreeTop(void* aDynamic, i8 iTopCol, i8 iTopCount) {
+
+  Dynamic_T *pDynamicT = (Dynamic_T *) aDynamic;
+  StreamDef* pStreamDef = _pStreamDef(pDynamicT->m_aStreamDefOut);
+
+  IndexTree *pIndexTree = _pIndexTree(pDynamicT->m_xIndexInfoPL[0].m_aIndexTree);
+  Pds *pPdsRowBuffer = _pPds(pDynamicT->m_xRowInfoIT[0].m_aPdsRowBuffer);
+
+  try {
+    Row *pRow = pPdsRowBuffer->pFirstRow();
+    while (pRow) {
+
+      *(i8 *) pDynamicT->m_xIndexInfoPL[0].m_aEntKey = pRow->iColVal_int(iTopCol);
+      Ent::vPayloadCreate((Ent *) pDynamicT->m_xIndexInfoPL[0].m_aEntInt, pStreamDef->nColumns() - 1);
+
+      Ent* pEnt = pIndexTree->pInsertEntTop_((Ent *) pDynamicT->m_xIndexInfoPL[0].m_aEntInt,
+                                 (Ent **) &(pDynamicT->m_xIndexInfoPL[0].m_aEntBottom), iTopCount);
+
+      if (pEnt) {
+        pDynamicT->m_iRowsProcessed++;
+        pDynamicT->m_aiPayload = (i8 *) ((char *) pEnt
+                                         + sizeof(struct Ent_int)
+                                         + 8);
+
+        i8 iPayloadCol = 0;
+        for (i8 iCol = 0; iCol < pStreamDef->nColumns(); iCol++) {
+          if (iCol == iTopCol)
+            continue;
+          Column* pColumn = pStreamDef->pGetColumn(iCol);
+          switch(pColumn->eColumnType()) {
+            case CT_VARCHAR:
+            case CT_CHAR: {
+              //RASSERT(iPrevOp == 0);
+              Stz* szSrcStz = pRow->szColVal_ofs(iCol);
+              if ((i8)szSrcStz == C_DATUM_NULL) {
+                pDynamicT->m_aiPayload[iPayloadCol++] = C_DATUM_NULL;
+              }
+              else {
+                i8 nSrcSize = StrLib::nLength((char*)szSrcStz) + 1;
+                pDynamicT->m_aiPayload[iPayloadCol] = (i8)pIndexTree->pAllotPayStr(szSrcStz)->szStz();
+                // get the destination string
+                char* szDstStz = (char*)pDynamicT->m_aiPayload[iPayloadCol++];
+
+                char *d = szDstStz;
+                const char *s = (char*)szSrcStz;
+
+                i8 iBytesToCopy = nSrcSize - 1;
+                while (iBytesToCopy--)
+                  *d++ = *s++;
+
+                *d = '\0';
+              }
+            }
+              break;
+            default:
+              pDynamicT->m_aiPayload[iPayloadCol++] = pRow->iColVal_int(iCol);
+              break;
+          }
+
+        }
+
+      }
+
+      pRow = pPdsRowBuffer->pNextRow(pRow);
+
+    }
+  }
+  catch (LowMemory xLowMemory) {
+    pDynamicT->m_iErrorCode = EC_LOW_MEMORY;
+  }
+}
+
 extern "C" void* aExtern_IndexTreeNew(void* aIndexDef, i8* aiKeyKind) {
 	IndexTree *pIndexTree = new IndexTree(nullptr, (IndexDef *) aIndexDef, C_UNKNOWN);
 	*aiKeyKind = (i8) ((IndexDef *) aIndexDef)->eKeyKind();

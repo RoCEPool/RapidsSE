@@ -696,7 +696,24 @@ void CombinedSrc::vSynthesizeCode(Stencil* pStencil, bool bFirstStage, bool bLas
 
       case SK_SORT:
       case SK_TOP:
+#ifdef TOP_FULLBUFFER
+        // Apply an optimisation where we can send the pdsBuffer as is to the indexTreeTop function
+        if (pOpSketch->eSketchKind() == SK_TOP && pOpSketch->m_iOperatorNo == 1) {
+          // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+          // new ROWBUFFER handler
+          vAppendFunctionHeader(pOpSketch, eCurrentHandler, pStencil->szStageNm(), bHasIndexInflate);
 
+          // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+          // operator stub
+          vAppendCodeFragment(pOpSketch, "vOperatorStub"_Stz);
+
+          vAppendCodeFragment(pOpSketch, "vIndexDefBegin"_Stz);
+          vAppendCodeIndexCols(pOpSketch);
+          vAppendCodeFragment(pOpSketch, "vIndexDefContinue"_Stz);
+          vAppendCodeFragment(pOpSketch, "vIndexTreeTop"_Stz);
+          break;
+        }
+#endif
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // operator stub
         vAppendCodeFragment(pOpSketch, "vOperatorStub"_Stz);
@@ -1273,21 +1290,7 @@ void CombinedSrc::vAppendFunctionFooter(OpSketch* pOpSketch, eHK eHandlerKind, b
 			else
 			  szFunction = "vIndexScanEnd";
       break;
-			/*
-    case HK_PDSROWBUFFER:
-      if (bHasOrdAgg) {
-        if (bHasIndexInflate)
-          szFunction = "vInflatePdsRowIndexEnd_OA";
-        else
-          szFunction = "vInflatePdsRowEnd_OA";
-      }
-      else {
-        if (bHasIndexInflate)
-          szFunction = "vInflatePdsRowIndexEnd";
-        else
-          szFunction = "vInflatePdsRowEnd";
-      }
-      */
+
     case HK_ROWBUFFER:
 		case HK_PDSROWBUFFER:
 			if (bHasOrdAgg) {
@@ -1304,6 +1307,11 @@ void CombinedSrc::vAppendFunctionFooter(OpSketch* pOpSketch, eHK eHandlerKind, b
 			}
 
       break;
+
+    case HK_PDSROWBUFFER_FULL:
+      szFunction = "vNoInflateRowEnd";
+      break;
+
     case HK_STREAMDEF:
       szFunction = "iStreamDefEnd";
       break;
@@ -1351,6 +1359,7 @@ void CombinedSrc::vAppendFunctionHeader(OpSketch* pOpSketch, eHK eHandlerKind, S
       sFunSignature = "iIndexHandler_";
       break;
     case HK_PDSROWBUFFER:
+    case HK_PDSROWBUFFER_FULL:
       szFunction = "__FUNCTION_PDSROW__";
       sFunSignature = "iPdsRowHandler_";
       break;
@@ -1397,15 +1406,8 @@ void CombinedSrc::vAppendFunctionHeader(OpSketch* pOpSketch, eHK eHandlerKind, S
     case HK_CRWBUFFER:
       szFunction = "vCrwContinue";
       break;
-			/*
-    case HK_PDSROWBUFFER:
-      if (bHasIndexInflate)
-        szFunction = "vPdsRowIndexContinue";
-      else
-        szFunction = "vPdsRowContinue";
-      break;
-      */
 		case HK_PDSROWBUFFER:
+    case HK_PDSROWBUFFER_FULL:
     case HK_ROWBUFFER:
       if (bHasIndexInflate)
         szFunction = "vRowIndexContinue";

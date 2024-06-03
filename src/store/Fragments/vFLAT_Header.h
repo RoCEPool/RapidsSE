@@ -133,6 +133,7 @@ i8 iStartHandler(struct Dynamic_T* aDynamicT) {
 	aDynamicT->m_fp_aExtern_IndexTreeFindInsertGenAsc = &aExtern_IndexTreeFindInsertGenAsc;
 	aDynamicT->m_fp_aExtern_IndexTreeInsertEnt        = &aExtern_IndexTreeInsertEnt;
   aDynamicT->m_fp_aExtern_IndexTreeInsertEntTop     = &aExtern_IndexTreeInsertEntTop;
+  aDynamicT->m_fp_vExtern_IndexTreeTop              = &vExtern_IndexTreeTop;
 
 	aDynamicT->m_fp_vExtern_IndexTreePositionGE_gen = &vExtern_IndexTreePositionGE_gen;
 	aDynamicT->m_fp_vExtern_IndexTreePositionGT_gen = &vExtern_IndexTreePositionGT_gen;

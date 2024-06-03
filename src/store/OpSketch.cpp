@@ -77,6 +77,7 @@ OpSketch::OpSketch(StageDef* pStageDef, Stz* sExprStr, eHK eHandlerKind, eSK eSk
   m_sExprString  = sExprStr;
   m_sLimitExpr   = ""_Stz;
   m_iTopCount    = 0;
+  m_iTopColumn   = 0;
 
   // definitions
   m_pStreamDefLft = nullptr;
@@ -404,6 +405,16 @@ void OpSketch::vTopCount(i8 iTopCount)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
 
   m_iTopCount = iTopCount;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set top column                                                             */
+/*----------------------------------------------------------------------------*/
+void OpSketch::vTopColumn(i8 iTopColumn)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
+
+  m_iTopColumn = iTopColumn - 1;
 }
 
 /*----------------------------------------------------------------------------*/

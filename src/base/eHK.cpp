@@ -12,6 +12,7 @@ Stz* aHK[HK_ENUMS]
   /*    */ "HK_EOS"_Stz,
   /*    */ "HK_INDEXBUFFER"_Stz,
   /*    */ "HK_PDSROWBUFFER"_Stz,
+  /*    */ "HK_PDSROWBUFFER_FULL"_Stz,
   /*    */ "HK_ROWBUFFER"_Stz,
   /*    */ "HK_STREAMDEF"_Stz,
 

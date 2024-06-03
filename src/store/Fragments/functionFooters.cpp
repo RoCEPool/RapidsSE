@@ -143,6 +143,28 @@ int vInflateRowEnd(struct Dynamic_T* aDynamicT)
   // marker-end
 }
 
+
+// function-vNoInflateRowEnd
+/*--------------------------------------------------------------------*/
+/* vNoInflateRowEnd                                                   */
+/*--------------------------------------------------------------------*/
+int vNoInflateRowEnd(struct Dynamic_T* aDynamicT)
+{
+  {
+
+    i8* paW;
+
+    __L_LABEL_LOOP__:
+
+    // marker-start
+
+    L_Return:
+      return 1;
+  }
+  // marker-end
+}
+
+
 // function-vInflateRowEnd_OA
 /*--------------------------------------------------------------------*/
 /* vInflateRowEnd_OA                                                  */

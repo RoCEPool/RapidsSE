@@ -313,6 +313,36 @@ void vIndexInsertContinue(Dynamic_T* aDynamicT) {
 }
 
 /*----------------------------------------------------------------------------*/
+/*-- vIndexTreeTop -----------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-vIndexTreeTop
+i8 vIndexTreeTop(Dynamic_T* aDynamicT) {
+
+  void* aEntInserted;
+  void* aEntFound;
+  i8 __PAYLOADBYTES__;
+
+  // marker-start
+
+  __L_LABEL__:
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // insert pds buffer in the top index
+#ifdef WITH_CLANG
+  aDynamicT->m_fp_vExtern_IndexTreeTop(aDynamicT,__TOP_COLUMN__, __TOP_COUNT__);
+#endif
+
+  // check for error
+  if (aDynamicT->m_iErrorCode != (i8)EC_NONE) {
+    return 0;
+  }
+
+// marker-end
+
+  return 0;
+
+}
+/*----------------------------------------------------------------------------*/
 /*-- vCloseBraces ------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-vCloseBraces

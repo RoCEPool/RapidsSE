@@ -57,6 +57,7 @@ namespace STORE
 
     s4K m_sLimitExpr;
     i8  m_iTopCount;
+    i8  m_iTopColumn;
 
     // definitions
     StreamDef* m_pStreamDefLft;
@@ -148,6 +149,7 @@ namespace STORE
     void vStreamDefs(StreamDef* pStreamDefLft, StreamDef* pStreamDefRht, StreamDef* pStreamDefOut);
     eSK  eSketchKind(void);
     void vTopCount(i8 iTopCount);
+    void vTopColumn(i8 iTopColumn);
 
   private:
 
