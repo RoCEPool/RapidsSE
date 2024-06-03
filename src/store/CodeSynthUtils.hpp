@@ -8,7 +8,7 @@
 
 namespace STORE {
 
-#define TOP_FULLBUFFER 0
+//#define TOP_FULLBUFFER EndDefine
 
   class CodeSynthUtils {
   public:
