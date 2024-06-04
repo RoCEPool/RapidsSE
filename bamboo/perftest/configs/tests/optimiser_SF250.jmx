@@ -282,6 +282,36 @@
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createDummy" enabled="true">
+              <stringProp name="dataSource">SEConnPool</stringProp>
+              <stringProp name="query">create table dummy (
+  L_ORDERKEY      INTEGER       NOT NULL,
+  L_PARTKEY       INTEGER       NOT NULL,
+  L_SUPPKEY       INTEGER       NOT NULL,
+  L_LINENUMBER    INTEGER       NOT NULL,
+  L_QUANTITY      DECIMAL(15,2) NOT NULL,
+  L_EXTENDEDPRICE DECIMAL(15,2) NOT NULL,
+  L_DISCOUNT      DECIMAL(15,2) NOT NULL,
+  L_TAX           DECIMAL(15,2) NOT NULL,
+  L_RETURNFLAG    CHAR(1)       NOT NULL,
+  L_LINESTATUS    CHAR(1)       NOT NULL,
+  L_SHIPDATE      DATE          NOT NULL,
+  L_COMMITDATE    DATE          NOT NULL,
+  L_RECEIPTDATE   DATE          NOT NULL,
+  L_SHIPINSTRUCT  CHAR(25)      NOT NULL,
+  L_SHIPMODE      CHAR(10)      NOT NULL,
+  L_COMMENT       VARCHAR(44)   NOT NULL
+);</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createOrders" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">create table orders (
@@ -1679,6 +1709,85 @@ OUT.flush();</stringProp>
             <stringProp name="scriptLanguage">groovy</stringProp>
           </JSR223Sampler>
           <hashTree/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Dummy Group" enabled="true"/>
+          <hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
+              <stringProp name="dataSource">SEConnPool</stringProp>
+              <stringProp name="query">sleep ${SLEEP_TIME} ;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
+              <stringProp name="cacheKey">true</stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="script">log.info(&apos;Running Q1&apos;);
+OUT.println(&quot;Running Q1&quot;);
+OUT.flush();</stringProp>
+              <stringProp name="scriptLanguage">groovy</stringProp>
+            </JSR223Sampler>
+            <hashTree/>
+            <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="DummyLoop" enabled="true">
+              <boolProp name="LoopController.continue_forever">true</boolProp>
+              <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
+            </LoopController>
+            <hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="dummyQuery" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">select
+  l_returnflag,
+  l_linestatus,
+  sum(l_quantity) as sum_qty,
+  sum(l_extendedprice) as sum_base_price,
+  sum(l_extendedprice * (1 - l_discount)) as sum_disc_price,
+  sum(l_extendedprice * (1 - l_discount) * (1 + l_tax)) as sum_charge,
+  avg(l_quantity) as avg_qty,
+  avg(l_extendedprice) as avg_price,
+  avg(l_discount) as avg_disc,
+  count(*) as count_order
+from
+  dummy
+where
+  l_shipdate &lt;= date &apos;1998-12-01&apos; - interval &apos;90&apos; day
+group by
+  l_returnflag,
+  l_linestatus
+order by
+  l_returnflag,
+  l_linestatus;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <IfController guiclass="IfControllerPanel" testclass="IfController" testname="Check for error" enabled="true">
+                <stringProp name="IfController.condition">${__jexl3(!${JMeterThread.last_sample_ok},)}</stringProp>
+                <boolProp name="IfController.evaluateAll">false</boolProp>
+                <boolProp name="IfController.useExpression">true</boolProp>
+              </IfController>
+              <hashTree>
+                <BeanShellListener guiclass="TestBeanGUI" testclass="BeanShellListener" testname="BeanShell Listener" enabled="true">
+                  <stringProp name="filename"></stringProp>
+                  <stringProp name="parameters"></stringProp>
+                  <boolProp name="resetInterpreter">false</boolProp>
+                  <stringProp name="script">vars.put(&quot;HAS_FAILED_QUERY&quot;, &quot;true&quot;);</stringProp>
+                </BeanShellListener>
+                <hashTree/>
+              </hashTree>
+            </hashTree>
+          </hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q1 Group" enabled="true"/>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
@@ -2115,6 +2224,109 @@ begin
     | first
 end ;
 </stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q2_poc3_opt1_iscan" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">/optimise_passthru
+pipeline Query5
+begin
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
+
+  stage S01 on all partitions:
+    indexscan Orders IxO_ORDERDATE &quot; LBOUND DATE &apos;1994-01-01&apos;  &gt;=
+                                     UBOUND DATE &apos;1995-01-01&apos;  &lt; &quot;
+    | project &quot;type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY ,
+             type INTEGER ( 19 ) as O_CUSTKEY O_CUSTKEY &quot;
+    | indexJoin Customer IxC_CUSTKEY &quot;BOUND $I1 O_CUSTKEY ==&quot;
+    | project &quot;type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY ,
+               type INTEGER ( 19 ) as C_NATIONKEY C_NATIONKEY&quot;
+    | hash &quot;type INTEGER ( 19 ) O_ORDERKEY&quot;
+    | combined 0
+    | next hashcast
+
+  stage S02 on all partitions multiple threads 4:
+    indexJoin Lineitem IxL_ORDERKEY &quot;bound $I1 O_ORDERKEY ==&quot;
+    | project &quot;type INTEGER ( 19 ) as C_NATIONKEY C_NATIONKEY ,
+                   type INTEGER ( 19 ) as L_SUPPKEY L_SUPPKEY ,
+                   type DECIMAL ( 19  2 ) as L_EXTENDEDPRICE L_EXTENDEDPRICE ,
+                   type DECIMAL ( 19  2 ) as L_DISCOUNT L_DISCOUNT&quot;
+    | hash &quot;type INTEGER ( 19 ) L_SUPPKEY&quot;
+    | combined 0
+    | next hashcast
+
+  stage S03 on all partitions :
+    indexJoin Supplier IxS_SUPPKEY expr &quot;bound $I1 L_SUPPKEY ==&quot;
+    | project &quot;type INTEGER ( 19 ) as C_NATIONKEY C_NATIONKEY ,
+               type DECIMAL ( 19  2 ) as L_EXTENDEDPRICE L_EXTENDEDPRICE ,
+               type DECIMAL ( 19  2 ) as L_DISCOUNT L_DISCOUNT ,
+               type INTEGER ( 19 ) as S_NATIONKEY S_NATIONKEY&quot;
+    | filter &quot; type BOOLEAN C_NATIONKEY S_NATIONKEY == &quot;
+    | project &quot;type DECIMAL ( 19  2 ) as L_EXTENDEDPRICE L_EXTENDEDPRICE ,
+               type DECIMAL ( 19  2 ) as L_DISCOUNT L_DISCOUNT ,
+               type INTEGER ( 19 ) as S_NATIONKEY S_NATIONKEY&quot;
+    | hash &quot;type INTEGER ( 19 ) S_NATIONKEY&quot;
+    | combined 0
+    | next hashcast
+
+  stage S04 on all partitions :
+    indexJoin Nation IxN_NATIONKEY expr &quot;bound $I1 S_NATIONKEY ==&quot;
+    | project &quot;type DECIMAL ( 19  2 ) as L_EXTENDEDPRICE L_EXTENDEDPRICE ,
+               type DECIMAL ( 19  2 ) as L_DISCOUNT L_DISCOUNT ,
+               type VARCHAR ( 0 ) as N_NAME N_NAME ,
+               type INTEGER ( 19 ) as N_REGIONKEY N_REGIONKEY&quot;
+    | hash &quot;type INTEGER ( 19 ) N_REGIONKEY&quot;
+    | combined 0
+    | next hashcast
+
+  stage S05 on all partitions :
+    indexJoin Region IxR_REGIONKEY expr &quot;bound $I1 N_REGIONKEY ==&quot;
+    | project &quot;type DECIMAL ( 19  2 ) as L_EXTENDEDPRICE L_EXTENDEDPRICE ,
+                   type DECIMAL ( 19  2 ) as L_DISCOUNT L_DISCOUNT ,
+                   type VARCHAR ( 0 ) as N_NAME N_NAME ,
+                   type VARCHAR ( 0 ) as R_NAME R_NAME&quot;
+    | filter &quot; type BOOLEAN R_NAME &apos;ASIA&apos;  ==  &quot;
+    | gbyAgg &quot; GroupBy    type VARCHAR ( 0 ) as N_NAME N_NAME
+             aggregates type VARCHAR ( 0 ) as N_NAME $K1 ,
+                        type DECIMAL ( 19  2 ) as REVENUE )  L_EXTENDEDPRICE 1.  L_DISCOUNT -  *  sum  &quot;
+    | combined 0
+    | next
+
+  stage S06 on all nodes :
+    gbyAgg &quot; GroupBy    type VARCHAR ( 0 ) as N_NAME N_NAME
+             aggregates type VARCHAR ( 0 ) as N_NAME $K1 ,
+                        type DECIMAL ( 19  2 ) as REVENUE ) REVENUE sum  &quot;
+    | combined 0
+    | next
+
+  stage S07 on origin :
+    gbyAgg &quot; GroupBy    type VARCHAR ( 0 ) as N_NAME N_NAME
+             aggregates type VARCHAR ( 0 ) as N_NAME $K1 ,
+             type DECIMAL ( 19  2 ) as REVENUE ) REVENUE sum  &quot;
+    | combined 0
+    | next
+
+  stage S08 on origin :
+    sort &quot; type DECIMAL ( 19  2 ) REVENUE DESC  &quot;
+    | combined 0
+    | next
+
+  stage S09 on origin :
+    output
+    | sink
+    | first
+end ;</stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="queryTimeout"></stringProp>
@@ -3763,7 +3975,7 @@ begin
     | combined 0
     | next hashcast
 
-  stage S03 on all partitions  multiple threads 4:
+  stage S02 on all partitions multiple threads 4:
     indexJoin Lineitem IxL_ORDERKEY &quot;BOUND $I1 O_ORDERKEY ==&quot;
     | project &quot;type INTEGER ( 19 ) as O_CUSTKEY O_CUSTKEY ,
                type DECIMAL ( 19 2 ) as L_EXTENDEDPRICE L_EXTENDEDPRICE ,
@@ -3776,27 +3988,28 @@ begin
     | combined 0
     | next
 
-  stage S04 on all nodes :
+  stage S03 on all nodes :
     gbyAgg &quot;groupby    type INTEGER ( 19 ) O_CUSTKEY
             aggregates type INTEGER ( 19 ) as O_CUSTKEY $K1 ,
                        type DECIMAL ( 19  2 ) as REVENUE ) REVENUE  sum &quot;
     | combined 0
     | next
 
-  stage S05 on origin :
+  stage S04 on origin :
     gbyAgg &quot;groupby    type INTEGER ( 19 ) O_CUSTKEY
             aggregates type INTEGER ( 19 ) as O_CUSTKEY $K1 ,
                        type DECIMAL ( 19  2 ) as REVENUE ) REVENUE  sum&quot;
+                       | limit 20
     | combined 0
     | next
 
-  stage S06 on origin :
+  stage S05 on origin :
     top &quot; type DECIMAL ( 19  2 ) REVENUE &quot; 20
     | hash expr type INTEGER ( 19 ) O_CUSTKEY
     | combined 0
     | next hashcast
 
-  stage S07 on all partitions :
+  stage S06 on all partitions multiple threads 4:
     indexJoin Customer IxC_CUSTKEY &quot;BOUND $I1 O_CUSTKEY ==&quot;
     | project &quot;type INTEGER ( 19 ) as O_CUSTKEY O_CUSTKEY ,
                type INTEGER ( 19 ) as C_NATIONKEY C_NATIONKEY ,
@@ -3818,12 +4031,113 @@ begin
     | combined 0
     | next
 
-  stage S09 on origin :
+  stage S07 on origin :
     sort &quot; type DECIMAL ( 19  2 ) REVENUE DESC  &quot;
     | combined 0
     | next
 
-  stage S10 on origin :
+  stage S08 on origin :
+    output
+    | sink
+    | first
+end ;
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q10_poc3_scan" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">/optimise_passthru
+pipeline Query10
+begin
+
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
+
+  stage S01 on all partitions multiple threads 4:
+    scan Orders
+    | project &quot;type INTEGER ( 19 ) as O_CUSTKEY  O_CUSTKEY ,
+                   type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY ,
+                   type DATE ( 0 ) as O_ORDERDATE O_ORDERDATE&quot;
+    | filter &quot; type BOOLEAN O_ORDERDATE date &apos;1993-10-01&apos; &gt;=  O_ORDERDATE date &apos;1994-01-01&apos; &lt; and &quot;
+    | indexJoin Customer IxC_CUSTKEY &quot;BOUND $I1 O_CUSTKEY ==&quot;
+    | project &quot;type INTEGER ( 19 ) as O_CUSTKEY O_CUSTKEY ,
+               type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY&quot;
+    | hash expr type INTEGER ( 19 ) O_ORDERKEY
+    | combined 0
+    | next hashcast
+
+  stage S02 on all partitions:
+    indexJoin Lineitem IxL_ORDERKEY &quot;BOUND $I1 O_ORDERKEY ==&quot;
+    | project &quot;type INTEGER ( 19 ) as O_CUSTKEY O_CUSTKEY ,
+               type DECIMAL ( 19 2 ) as L_EXTENDEDPRICE L_EXTENDEDPRICE ,
+               type DECIMAL ( 19 2 ) as L_DISCOUNT L_DISCOUNT ,
+               type VARCHAR ( 0 ) as L_RETURNFLAG L_RETURNFLAG&quot;
+    | filter  &quot;type BOOLEAN L_RETURNFLAG &apos;R&apos; ==&quot;
+    | gbyAgg  &quot;groupby    type INTEGER ( 19 ) O_CUSTKEY
+               aggregates type INTEGER ( 19 ) as O_CUSTKEY $K1 ,
+                          type DECIMAL ( 19  2 ) as REVENUE ) L_EXTENDEDPRICE 1.0  L_DISCOUNT -  *  sum &quot;
+    | combined 0
+    | next
+
+  stage S03 on all nodes :
+    gbyAgg &quot;groupby    type INTEGER ( 19 ) O_CUSTKEY
+            aggregates type INTEGER ( 19 ) as O_CUSTKEY $K1 ,
+                       type DECIMAL ( 19  2 ) as REVENUE ) REVENUE  sum &quot;
+    | combined 0
+    | next
+
+  stage S04 on origin :
+    gbyAgg &quot;groupby    type INTEGER ( 19 ) O_CUSTKEY
+            aggregates type INTEGER ( 19 ) as O_CUSTKEY $K1 ,
+                       type DECIMAL ( 19  2 ) as REVENUE ) REVENUE  sum&quot;
+                       | limit 20
+    | combined 0
+    | next
+
+  stage S05 on origin :
+    top &quot; type DECIMAL ( 19  2 ) REVENUE &quot; 20
+    | hash expr type INTEGER ( 19 ) O_CUSTKEY
+    | combined 0
+    | next hashcast
+
+  stage S06 on all partitions:
+    indexJoin Customer IxC_CUSTKEY &quot;BOUND $I1 O_CUSTKEY ==&quot;
+    | project &quot;type INTEGER ( 19 ) as O_CUSTKEY O_CUSTKEY ,
+               type INTEGER ( 19 ) as C_NATIONKEY C_NATIONKEY ,
+               type VARCHAR ( 0 ) as C_NAME C_NAME ,
+               type DECIMAL ( 19  2 ) as REVENUE ) REVENUE ,
+               type DECIMAL ( 19  2 ) as C_ACCTBAL C_ACCTBAL ,
+               type VARCHAR ( 0 ) as C_ADDRESS C_ADDRESS ,
+               type VARCHAR ( 0 ) as C_PHONE C_PHONE ,
+               type VARCHAR ( 0 ) as C_COMMENT C_COMMENT&quot;
+    | indexjoin Nation IxN_NATIONKEY &quot;BOUND $I1 C_NATIONKEY ==&quot;
+    | project &quot;type INTEGER ( 19 ) as O_CUSTKEY O_CUSTKEY ,
+               type VARCHAR ( 0 ) as C_NAME C_NAME ,
+               type DECIMAL ( 19  2 ) as REVENUE ) REVENUE ,
+               type DECIMAL ( 19  2 ) as C_ACCTBAL C_ACCTBAL ,
+               type VARCHAR ( 0 ) as N_NAME N_NAME ,
+               type VARCHAR ( 0 ) as C_ADDRESS C_ADDRESS ,
+               type VARCHAR ( 0 ) as C_PHONE C_PHONE ,
+               type VARCHAR ( 0 ) as C_COMMENT C_COMMENT&quot;
+    | combined 0
+    | next
+
+  stage S07 on origin :
+    sort &quot; type DECIMAL ( 19  2 ) REVENUE DESC  &quot;
+    | combined 0
+    | next
+
+  stage S08 on origin :
     output
     | sink
     | first
@@ -5964,7 +6278,7 @@ OUT.flush();</stringProp>
               <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
             </LoopController>
             <hashTree>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q22" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q22" enabled="false">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">select 
   cntrycode, 

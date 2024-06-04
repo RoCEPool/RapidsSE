@@ -2,6 +2,7 @@
 /* __Q10_run                                                                  */
 /*============================================================================*/
 
+/keepCodeFile
 /optimise_passthru
 pipeline Query10
 begin
@@ -22,7 +23,7 @@ begin
     | combined 0
     | next hashcast
 
-  stage S03 on all partitions  multiple threads 4:
+  stage S02 on all partitions multiple threads 4:
     indexJoin Lineitem IxL_ORDERKEY "BOUND $I1 O_ORDERKEY =="
     | project "type INTEGER ( 19 ) as O_CUSTKEY O_CUSTKEY ,
                type DECIMAL ( 19 2 ) as L_EXTENDEDPRICE L_EXTENDEDPRICE ,
@@ -35,27 +36,28 @@ begin
     | combined 0
     | next
 
-  stage S04 on all nodes :
+  stage S03 on all nodes :
     gbyAgg "groupby    type INTEGER ( 19 ) O_CUSTKEY
             aggregates type INTEGER ( 19 ) as O_CUSTKEY $K1 ,
                        type DECIMAL ( 19  2 ) as REVENUE ) REVENUE  sum "
     | combined 0
     | next
 
-  stage S05 on origin :
+  stage S04 on origin :
     gbyAgg "groupby    type INTEGER ( 19 ) O_CUSTKEY
             aggregates type INTEGER ( 19 ) as O_CUSTKEY $K1 ,
                        type DECIMAL ( 19  2 ) as REVENUE ) REVENUE  sum"
+                       | limit 20
     | combined 0
     | next
 
-  stage S06 on origin :
+  stage S05 on origin :
     top " type DECIMAL ( 19  2 ) REVENUE " 20
     | hash expr type INTEGER ( 19 ) O_CUSTKEY
     | combined 0
     | next hashcast
 
-  stage S07 on all partitions :
+  stage S06 on all partitions multiple threads 4:
     indexJoin Customer IxC_CUSTKEY "BOUND $I1 O_CUSTKEY =="
     | project "type INTEGER ( 19 ) as O_CUSTKEY O_CUSTKEY ,
                type INTEGER ( 19 ) as C_NATIONKEY C_NATIONKEY ,
@@ -77,12 +79,12 @@ begin
     | combined 0
     | next
 
-  stage S09 on origin :
+  stage S07 on origin :
     sort " type DECIMAL ( 19  2 ) REVENUE DESC  "
     | combined 0
     | next
 
-  stage S10 on origin :
+  stage S08 on origin :
     output
     | sink
     | first
