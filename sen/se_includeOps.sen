@@ -125,7 +125,6 @@ assert::stack_0
   "OP_listPartitions.sen"       include
   "OP_listParts.sen"            include
   "OP_listSchemas.sen"          include
-  "OP_listTables.sen"           include
   "OP_listTenants.sen"          include
   "OP_locks.sen"                include
   "OP_locksReset.sen"           include
