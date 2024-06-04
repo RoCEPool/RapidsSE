@@ -25,6 +25,8 @@
 
 #define TYPE_DETAILED EndDefine
 
+#define NO_SEPROMPT
+
 //------------------------------------------------------------------------------
 
 namespace BASE { } using namespace BASE;
