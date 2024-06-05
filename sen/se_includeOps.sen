@@ -121,8 +121,6 @@ assert::stack_0
 
   "OP_limit.sen"                include
   "OP_listFolders.sen"          include
-  "OP_listPartitions.sen"       include
-  "OP_listParts.sen"            include
   "OP_locks.sen"                include
   "OP_locksReset.sen"           include
   "OP_log.sen"                  include

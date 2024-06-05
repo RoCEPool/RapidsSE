@@ -46,12 +46,8 @@ ingest         - Ingest data into a table
 insert         - Insert row(s) into a table
 .br 
 lf             - List contents of folder
-.br
-lsPtncol      - List partition columns of a table
 .br 
 lsPtn         - List partitions
-.br 
-lssch          - List schemas
 .br 
 ld             - Load table from csv file
 .br 
