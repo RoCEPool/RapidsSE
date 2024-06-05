@@ -837,7 +837,7 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#ifndef NO_SE_PROMPT
+#ifndef NO_SE_PROMPT_1BY1
     if (szArg->bSame("--script"_Stz)) {
       if (m_xSysArgs.m_bStop) {
         vPrintErrorMarker(argv, i_Arg);
@@ -1448,7 +1448,7 @@ bool CmdLineArgs::bParseTraceFileArgs(i8 argc, s256 argv[])
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#ifndef NO_SE_PROMPT
+#ifndef NO_SE_PROMPT_1BY1
     if (szArg->bSame("--script"_Stz)) {
       if (m_xSysArgs.m_bStop) {
         vPrintErrorMarker(argv, i_Arg);
