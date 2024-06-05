@@ -576,10 +576,10 @@ if [ ${INTERACTIVE_INSTALL} -eq 1 ]; then
   if [ "${CLUSTER_IS_RUNNING}" -eq 1 ]; then
 
     # Issue __forgetNode command
-    if ! clusterForgetNodes "${REMOVED_NODE_LIST[@]}"; then
-      removeConfig "${backupSuffix}" "${ORIGINAL_NODE_LIST[@]}"
-      errorExit "Node removal has failed while trying to inactivate nodes."
-    fi
+#    if ! clusterForgetNodes "${REMOVED_NODE_LIST[@]}"; then
+#      removeConfig "${backupSuffix}" "${ORIGINAL_NODE_LIST[@]}"
+#      errorExit "Node removal has failed while trying to inactivate nodes."
+#    fi
     
     # TODO: Wait until the status prompt no longer shows rows for the nodes being removed.
 
