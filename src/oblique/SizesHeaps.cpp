@@ -64,6 +64,7 @@
 #include "LglPtnMap.hpp"
 
 
+#include "BinaryStack.hpp"
 #include "BufferMap.hpp"
 
 #include "ChildExit.hpp"
@@ -689,7 +690,7 @@ SizeHeap gxaSizeHeap[]
   { CN_SPMEDIUM,                 sizeof(SPmedium),           HT_INVALID   ,FILL },
   { CN_SPSMALL,                  sizeof(SPsmall),            HT_INVALID   ,FILL },
   { CN_SQLPLANNER,               sizeof(SqlPlanner),         HT_V_MEDIUM  ,FILL },
-  { CN_STACK,                    sizeof(TypedStack), /*yes*/ HT_T_MEDIUM  ,FILL },
+  { CN_STACK,                    sizeof(TypedStack),         HT_T_TINY    ,FILL },
   { CN_STAGE,                    sizeof(Stage),              HT_T_SMALL   ,FILL },
   { CN_STAGEDEF,                 sizeof(StageDef),           HT_T_MEDIUM  ,FILL },
   { CN_STAGEMETRICS,             sizeof(StageMetrics),       HT_T_TINY    ,FILL },
@@ -763,7 +764,11 @@ SizeHeap gxaSizeHeap[]
   { CN_TX,                       sizeof(Tx),                     HT_T_TINY    , FILL },
   { CN_TXSET,                    sizeof(TxSet),                  HT_T_TINY    , FILL },
   { CN_TYPEMAP1D,                sizeof(TypeMap1D),              HT_T_TINY    , FILL },
-  { CN_TYPEMAP2D,                sizeof(TypeMap2D),    HT_T_TINY    , FILL },
+  { CN_TYPEMAP2D,                sizeof(TypeMap2D),              HT_T_TINY    , FILL },
+  { CN_TYPESTACKLARGE,           sizeof(BinaryStackLarge),       HT_T_LARGE   , FILL },
+  { CN_TYPESTACKMEDIUM,          sizeof(BinaryStackMedium),      HT_T_MEDIUM  , FILL },
+  { CN_TYPESTACKSMALL,           sizeof(BinaryStackSmall),       HT_T_SMALL   , FILL },
+  { CN_TYPESTACKTINY,            sizeof(BinaryStackTiny),        HT_T_TINY    , FILL },
 
   {CN__U__,                     'U' - ('A' - 1),             HT_INVALID   , FILL },
   {CN_UNITINT,                  sizeof(UnitInt),            HT_T_TINY    , FILL },

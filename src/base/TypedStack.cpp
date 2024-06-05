@@ -8,6 +8,7 @@
 #include "LocalVar.hpp"
 #include "LocalStr.hpp"
 #include "SizeArea.hpp"
+#include "BinaryStack.hpp"
 
 /*
 
@@ -68,18 +69,9 @@ TypedStack::TypedStack(eKK eKind)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   m_eKind = eKind;
-  
-  m_rTop.m_ayStackPtr = ayStackBase();
-  m_rTop.m_nItems     = 0;
-  
-#ifdef WITH_CHECK_INITIALISED
-  m_xWsp.vFill(0x00,CN_STACK);
-#endif
-  
-  _checkInitialised_(CN_STACK);
-  
-  _hazard_();
+  m_pStack = BinaryStack::pCreate(eSS::TINY, eSizeToCls);
 
+  _checkInitialised_(CN_STACK);
   _postcondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
 }
 
@@ -89,25 +81,12 @@ TypedStack::TypedStack(eKK eKind)
 TypedStack::~TypedStack(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  BinaryStack::vDestroy(m_pStack);
 }
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* discard value on top of stack                                              */
-/*----------------------------------------------------------------------------*/
-void TypedStack::vDiscardTop(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  _hazard_();
-  
-  m_rTop.vRewind();
-  
-  _hazard_();
-}
 
 /*----------------------------------------------------------------------------*/
 /* dump contents of the stack                                                 */
@@ -116,7 +95,7 @@ void TypedStack::vDump(DicStack* pDicStack, Stz* aTitle)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  vTrace("%s: this %p m_ayStackPtr %p\n"_Stz,aTitle,this,m_rTop.m_ayStackPtr);
+  vTrace("%s: this %p m_ayStackPtr %p\n"_Stz,aTitle,this,pStackHead());
 
   i8 nValues = this->nValues();
   for (i8 i_Item = 0; i_Item < nValues; i_Item++) {
@@ -208,7 +187,7 @@ void TypedStack::vDump(DicStack* pDicStack, Stz* aTitle)
         
     }
   }
-  
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -217,16 +196,17 @@ void TypedStack::vDump(DicStack* pDicStack, Stz* aTitle)
 TypeValueArea* TypedStack::aPeekItem(i8 i_Item)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  TypeValueArea* aPeeked = aTopVal();
-  while (i_Item--) {
-    char* aAddress = reinterpret_cast<char*>(aPeeked);
-    i8 iSize = aPeeked->nStackUsage();
-    aAddress += iSize;
-    aPeeked = reinterpret_cast<TypeValueArea*>(aAddress);
-  }
-  
-  return aPeeked;
+
+  // Lambda function to get the size of an item on the stack
+  auto fStackItemSize = [](byte* pyAddr) -> i8 {
+    TypeValueArea* pyPeeked = reinterpret_cast<TypeValueArea*>(pyAddr);
+    i8 iSize = pyPeeked->nStackUsage();
+    return iSize;
+  };
+
+  byte* pyItem = m_pStack->pyPeekItem(i_Item, fStackItemSize);
+  TypeValueArea* pyPeekItem = reinterpret_cast<TypeValueArea*>(pyItem);
+  return pyPeekItem;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -264,8 +244,9 @@ i8 TypedStack::iPopAsInt(const char* azCallingFunNm)
     BASE::vThrow(FK_DSTACK,
                         azCallingFunNm,__FILE__,__LINE__,
                         "Invalid d-stack"_Stz);
-  
-  i8 iInt = m_rTop.m_aTypeValueArea->iAsInt();
+
+  TypeValueArea* pHead = pStackHead();
+  i8 iInt = pHead->iAsInt();
   vDiscardTop();
   
   return iInt;
@@ -282,8 +263,9 @@ i8 TypedStack::iPopBcd(const char* azCallingFunNm)
     BASE::vThrow(FK_DSTACK,
                         azCallingFunNm,__FILE__,__LINE__,
                         "Invalid d-stack"_Stz);
-  
-  i8 iBcd = m_rTop.m_aTypeValueArea->iBcd();
+
+  TypeValueArea* pHead = pStackHead();
+  i8 iBcd = pHead->iBcd();
   
   vDiscardTop();
   
@@ -301,8 +283,9 @@ i8 TypedStack::iPopBol(const char* azCallingFunNm)
     BASE::vThrow(FK_DSTACK,
                         azCallingFunNm,__FILE__,__LINE__,
                         "Invalid d-stack"_Stz);
-  
-  i8 iBol = m_rTop.m_aTypeValueArea->iBol();
+
+  TypeValueArea* pHead = pStackHead();
+  i8 iBol = pHead->iBol();
   
   vDiscardTop();
   
@@ -320,8 +303,9 @@ CodeCell* TypedStack::aPopFip(const char* azCallingFunNm)
     BASE::vThrow(FK_DSTACK,
                         azCallingFunNm,__FILE__,__LINE__,
                         "Invalid d-stack"_Stz);
-  
-  CodeCell* aFip = m_rTop.m_aTypeValueArea->aFip();
+
+  TypeValueArea* pHead = pStackHead();
+  CodeCell* aFip = pHead->aFip();
   
   vDiscardTop();
   
@@ -339,8 +323,9 @@ d8 TypedStack::dPopFlt(const char* azCallingFunNm)
     BASE::vThrow(FK_DSTACK,
                         azCallingFunNm,__FILE__,__LINE__,
                         "Invalid d-stack"_Stz);
-  
-  d8 dFlt = m_rTop.m_aTypeValueArea->dFlt();
+
+  TypeValueArea* pHead = pStackHead();
+  d8 dFlt = pHead->dFlt();
   
   vDiscardTop();
   
@@ -358,8 +343,9 @@ i8 TypedStack::iPopInt(const char* azCallingFunNm)
     BASE::vThrow(FK_DSTACK,
                         azCallingFunNm,__FILE__,__LINE__,
                         "Invalid d-stack"_Stz);
-  
-  i8 iInt = m_rTop.m_aTypeValueArea->iInt();
+
+  TypeValueArea* pHead = pStackHead();
+  i8 iInt = pHead->iInt();
   
   vDiscardTop();
   
@@ -377,8 +363,9 @@ i8 TypedStack::iPopIntBol(const char* azCallingFunNm)
     BASE::vThrow(FK_DSTACK,
                         azCallingFunNm,__FILE__,__LINE__,
                         "Invalid d-stack"_Stz);
-  
-  i8 iInt = m_rTop.m_aTypeValueArea->iInt();
+
+  TypeValueArea* pHead = pStackHead();
+  i8 iInt = pHead->iInt();
   
   vDiscardTop();
   
@@ -396,8 +383,9 @@ Object* TypedStack::pPopPtr(const char* azCallingFunNm)
     BASE::vThrow(FK_DSTACK,
                         azCallingFunNm,__FILE__,__LINE__,
                         "Invalid d-stack"_Stz);
-  
-  Object* pObj = m_rTop.m_aTypeValueArea->pObj();
+
+  TypeValueArea* pHead = pStackHead();
+  Object* pObj = pHead->pObj();
 
   vDiscardTop();
   
@@ -417,10 +405,10 @@ void TypedStack::vPopStr(String* pString, const char* azCallingFunNm)
                         "Invalid d-stack"_Stz);
   
   _hazard_();
+
+  TypeValueArea* pHead = pStackHead();
   
-  TypeValueArea* aTypedCell = _aTypeValueArea(aTopVal());
-  
-  pString->vCopy(aTypedCell->szStz());
+  pString->vCopy(pHead->szStz());
     
   vDiscardTop();
   
@@ -440,10 +428,10 @@ void TypedStack::vPopStz(Text* psText, const char* azCallingFunNm)
                         "Invalid d-stack"_Stz);
   
   _hazard_();
-  
-  TypeValueArea* aTypedCell = _aTypeValueArea(aTopVal());
-  
-  psText->vSet(aTypedCell->szStz());
+
+  TypeValueArea* pHead = pStackHead();
+
+  psText->vSet(pHead->szStz());
     
   vDiscardTop();
   
@@ -464,11 +452,12 @@ void TypedStack::vPopSenCell(SenCell* aSenCell, const char* azCallingFunNm)
 
   _hazard_();
 
-  i8 nBytes = aTopVal()->nStackUsage();
+  TypeValueArea* pHead = pStackHead();
+  i8 nBytes = pHead->nStackUsage();
 
-  aSenCell->aTypeValueArea()->vCopy(m_rTop.m_aTypeValueArea,nBytes);
+  aSenCell->aTypeValueArea()->vCopy(pHead,nBytes);
 
-  m_rTop.vRewind();
+  vDiscardTop();
 
   _hazard_();
 }
@@ -487,12 +476,13 @@ void TypedStack::vPopTypeValueArea(TypeValueArea* aTypeValueArea,
                         "Invalid d-stack"_Stz);
   
   _hazard_();
+
+  TypeValueArea* pHead = pStackHead();
+  i8 nBytes = pHead->nStackUsage();
   
-  i8 nBytes = aTopVal()->nStackUsage();
+  aTypeValueArea->vCopy(pHead,nBytes);
   
-  aTypeValueArea->vCopy(m_rTop.m_aTypeValueArea,nBytes);
-  
-  m_rTop.vRewind();
+  vDiscardTop();
     
   _hazard_();
 }
@@ -505,23 +495,28 @@ void TypedStack::vPopLocalVar(LocalVar* axLocalVar,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   UNUSED(azCallingFunNm);
-  
-//  static i8 nCount = 0;
-  
-//  s48K sStackContents;
-//  vStackContents(sStackContents);
-//  vTrace("POP %02lld %p %lld %p>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n%s\n"_Stz,
-//         nCount,axLocalVar,axLocalVar->i_LocalVar(),axLocalVar->aDiscardPoint(),
-//         sStackContents.szStz());
 
-  axLocalVar->vSet(m_rTop.m_aTypeValueArea);
+  TypeValueArea* pHead = pStackHead();
+  axLocalVar->vSet(pHead);
 
-  m_rTop.vRewind();
-  
-//  vStackContents(sStackContents);
-//  vTrace("POP %02lld<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n%s\n"_Stz,
-//         nCount++,sStackContents.szStz());
+  vDiscardTop();
 }
+
+/*----------------------------------------------------------------------------*/
+/* A function mapping binary stack size to a class enum                       */
+/*----------------------------------------------------------------------------*/
+eCN TypedStack::eSizeToCls(eSS eSize)
+{
+  switch (eSize) {
+
+    case TINY:    return CN_TYPESTACKTINY;
+    case SMALL:   return CN_TYPESTACKSMALL;
+    case MEDIUM:  return CN_TYPESTACKMEDIUM;
+    case LARGE:   return CN_TYPESTACKLARGE;
+    default:      NEVER_REACH
+  }
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* push BCD onto stack                                                        */
@@ -790,16 +785,6 @@ bool TypedStack::bTopIsZero(void)
     return true;
   
   return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* peek at value on top of stack                                              */
-/*----------------------------------------------------------------------------*/
-TypeValueArea* TypedStack::aTopVal(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  return m_rTop.m_aTypeValueArea;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1092,13 +1077,26 @@ TypeValueArea* TypedStack::aAllotTypedCell(eCN eType, i8 nWithAdditionalBytes)
 /*----------------------------------------------------------------------------*/
 /* guard stack has at least nValues on it                                     */
 /*----------------------------------------------------------------------------*/
+void TypedStack::vDiscardTop(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+
+  TypeValueArea* pHead = pStackHead();
+  i8 nBytes = pHead->nStackUsage();
+
+  m_pStack->vRewind(nBytes);
+}
+
+/*----------------------------------------------------------------------------*/
+/* guard stack has at least nValues on it                                     */
+/*----------------------------------------------------------------------------*/
 bool TypedStack::bGuard(i8 nItems)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  if (m_rTop.m_nItems < nItems)
+
+  if (m_pStack->nItems() < nItems)
     return false;
-  
+
   return true;
 }
 
@@ -1163,6 +1161,17 @@ bool TypedStack::bGuard(eCN eClass0, eCN eClass1, eCN eClass2)
     return false;
   
   return true;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* Get the head of the stack as a TypeValueArea*                              */
+/*----------------------------------------------------------------------------*/
+TypeValueArea* TypedStack::pStackHead(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_STACK, _FOOTER_);
+
+  return reinterpret_cast<TypeValueArea*>(m_pStack->pyStackHead());
 }
 
 /*----------------------------------------------------------------------------*/

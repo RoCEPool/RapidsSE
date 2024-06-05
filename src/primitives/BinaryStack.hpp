@@ -26,12 +26,13 @@ namespace PRIMITIVES
   class BinaryStack;
 
   // Typedefs of the 4 actual types of buffer segments
-  typedef BinaryStackSegment<eSS::TINY,   C_SIZE_TINY_OBJECT   - (10 * C_BYTES_PER_WORD) - sizeof(Bytes_t<1>)> BinaryStackTiny;
-  typedef BinaryStackSegment<eSS::SMALL,  C_SIZE_SMALL_OBJECT  - (10 * C_BYTES_PER_WORD) - sizeof(Bytes_t<1>)> BinaryStackSmall;
-  typedef BinaryStackSegment<eSS::MEDIUM, C_SIZE_MEDIUM_OBJECT - (10 * C_BYTES_PER_WORD) - sizeof(Bytes_t<1>)> BinaryStackMedium;
-  typedef BinaryStackSegment<eSS::LARGE,  C_SIZE_LARGE_OBJECT  - (10 * C_BYTES_PER_WORD) - sizeof(Bytes_t<1>)> BinaryStackLarge;
+  typedef BinaryStackSegment<eSS::TINY,   C_SIZE_TINY_OBJECT   - (11 * C_BYTES_PER_WORD) - sizeof(Bytes_t<1>)> BinaryStackTiny;
+  typedef BinaryStackSegment<eSS::SMALL,  C_SIZE_SMALL_OBJECT  - (11 * C_BYTES_PER_WORD) - sizeof(Bytes_t<1>)> BinaryStackSmall;
+  typedef BinaryStackSegment<eSS::MEDIUM, C_SIZE_MEDIUM_OBJECT - (11 * C_BYTES_PER_WORD) - sizeof(Bytes_t<1>)> BinaryStackMedium;
+  typedef BinaryStackSegment<eSS::LARGE,  C_SIZE_LARGE_OBJECT  - (11 * C_BYTES_PER_WORD) - sizeof(Bytes_t<1>)> BinaryStackLarge;
 
-  // Note: The 12 * C_BYTES_PER_WORD is for the other elements in the BinaryStack and BinaryStackSegment classes:
+  // Note: The 11 * C_BYTES_PER_WORD is for the other elements in the BinaryStack and BinaryStackSegment classes:
+  //   - Object header    (1 word)
   //   - m_pHead          (1 word)
   //   - m_pNext          (1 word)
   //   - m_eSegmentSize   (1 word)
@@ -60,8 +61,6 @@ namespace PRIMITIVES
     BinaryStack*  m_pNext;
     eSS           m_eSegmentSize;
     i8            m_nItems;
-    byte*         m_ayStackHead;  // Head of the overall stack, not the current segment.
-                                  // Only valid if this is the head node.
     fStackSizeToClass m_fStackSizeToClass; // maps StackSize to the class number to be used
 
     union { // For debugging purposes only
@@ -73,23 +72,29 @@ namespace PRIMITIVES
     } u;
 
   protected:
-    // Constructors and destructor are protected, so they aren't instantiated directly
+    // Constructors and destructor are protected, so they aren't instantiated directly.
+    // Instead call pCreate() and vDestroy().
     explicit BinaryStack(eCN eClassNo, eSS eSize, fStackSizeToClass fSizeToCls);
     explicit BinaryStack(eCN eClassNo, eSS eSize, fStackSizeToClass fSizeToCls, BinaryStack* pHead);
     ~BinaryStack() noexcept(false);
 
   public:
-    void    vAdvance(i8 nBytes);
+    static BinaryStack* pCreate(eSS eSize, fStackSizeToClass fSizeToCls);
+    static void vDestroy(BinaryStack* pSegment);
+
+    byte*   pyAdvance(i8 nBytes);
     Footer* aFooter(void);
-    void    vRewind(i8 nBytes);
-    i8      nSegments(void);
-    byte*   pbStackHead(void);
     i8      nItems(void);
+    byte*   pyPeekItem(i8 iItem, std::function<i8(byte*)> fStackItemSize);
+    void vRewind(i8 nBytes);
+    i8      nSegments(void);
+    byte*   pyStackHead(void);
 
   private:
     BinaryStack* pAddSegmentFor(i8 nBytes);
     bool         bCanFitInCurrentSeg(i8 nBytes);
     BinaryStack* pLastSegment(void);
+    bool         bSegmentIsEmpty(void);
   };
 
 
@@ -103,7 +108,7 @@ namespace PRIMITIVES
 
   protected:
     i8      m_nSegEntries;
-    byte*   m_aySegmentHead;
+    byte*   m_pySegmentHead;
     Bytes_t<AREA> m_xBytes;
 
     // must be last
@@ -118,20 +123,13 @@ namespace PRIMITIVES
     ~BinaryStackSegment(void) noexcept(false);
 
     static i8 nArea(void);
-    bool bSegCanFit(i8 nBytes);
 
-//    static i8 nArea(void);
-//
-//    Stz*    pAddToSeg(Stz* szItem);
-//    bool    bCanFitInSeg(i8 iSize);
-//    void    vDestroy(void);
-//    i8      nEntriesInSeg();
-//    bool    bSegContainsAddr(Stz* szAddr);
-//    Footer* aFooter(void);
-//    void    vResetSeg(void);
-//    void    vRemoveFromSeg(Stz* szItem, bool* pbIsEmpty);
-//    void    vUpdateInPlace(Stz* szOldItem, i8 iOldSize, Stz* szNewItem);
-
+    Footer*   aFooter(void);
+    byte*     pySegAdvance(i8 nBytes);
+    i8        nSegEntries(void);
+    bool      bSegCanFit(i8 nBytes);
+    byte*     pySegmentHead(void);
+    bool      bSegIsEmpty(void);
   };
 
 
