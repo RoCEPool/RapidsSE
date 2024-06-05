@@ -242,8 +242,7 @@ bool Engine::bTraceStart(void)
   switch (eBootOption) {
 
     case BO_PROMPT:
-    case BO_SETH_PROMPT:
-      vOpenTrace(true);
+       vOpenTrace(true);
       break;
 
     case BO_START:
@@ -273,26 +272,6 @@ void Engine::vRunCommandLine(void)
   
   eBO eBootOption = eDecodeCommandLine();
 
-//  if (AM::AM::TRACE::bVerbose(C_VB_BOOT)) {
-//    vTrace("\n+\n+ %lld) Run Command Line\n+\n"_Stz,giProgressPoint++);
-//    switch (eBootOption) {
-//
-//      case BO_ADD_NODE:     vTrace("BO_ADD_NODE\n"_Stz);     break;
-//      case BO_PROMPT:       vTrace("BO_PROMPT\n"_Stz);       break;
-//      case BO_SETH_PROMPT:  vTrace("BO_SETH_PROMPT\n"_Stz);  break;
-//      case BO_START:        vTrace("BO_START\n"_Stz);        break;
-//      case BO_START_PROMPT: vTrace("BO_START_PROMPT\n"_Stz); break;
-//      case BO_STATUS:       vTrace("BO_STATUS\n"_Stz);       break;
-//      case BO_STOP:         vTrace("BO_STOP\n"_Stz);         break;
-//      case BO_UNLINK:       vTrace("BO_UNLINK\n"_Stz);       break;
-//
-//      default:
-//        vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
-//               "Unknown command line argument\n"_Stz);
-//    }
-//
-//  }
-  
   try {
     switch (eBootOption) {
         
@@ -312,18 +291,7 @@ void Engine::vRunCommandLine(void)
         }
         vCallPrompt();
         break;
-        
-      case BO_SETH_PROMPT:
-        //NEVER_REACH
-        // wait for the attachmap to be ready
-        if (gpAttachMap->uAttachMapState() != C_READY)
-          vTrace("Waiting for SE to start...\n"_Stz);
-        while (gpAttachMap->uAttachMapState() != C_READY) {
-          AM::vNapMsec(1,CN_NONE);
-        }
-        vCallPrompt();
-        break;
-        
+
       case BO_START:
         vStartSystem();
         //AM::SYSTEM::vSystemReady(); // Process has completed the boot sequence
@@ -713,8 +681,7 @@ eBO Engine::eDecodeCommandLine(void)
   if (gxCmdLineArgs.m_xSysArgs.m_bStatus)                      return BO_STATUS;
   if (gxCmdLineArgs.m_xSysArgs.m_bStop)                        return BO_STOP;
   if (gxCmdLineArgs.m_xSysArgs.m_bUnlink)                      return BO_UNLINK;
-  if (gxCmdLineArgs.m_xSysArgs.m_bSethScript)                  return BO_SETH_PROMPT;
-  
+
   if (gxCmdLineArgs.m_xSysArgs.m_bAddNode)                     return BO_ADD_NODE;
 
   return BO_NONE;
@@ -1189,7 +1156,7 @@ void Engine::vOpenPool(void)
     return;
   }
   
-  if (gxCmdLineArgs.m_xSysArgs.m_bPrompt || gxCmdLineArgs.m_xSysArgs.m_bSethScript) {
+  if (gxCmdLineArgs.m_xSysArgs.m_bPrompt) {
     if (! Region::bTest(gxCmdLineArgs.m_xSysArgs.m_sRegionName)) {
       vTrace("Error: Instance %s was not started\n"_Stz,gxCmdLineArgs.m_xSysArgs.m_sRegionName.azChar());
       Process::vExitFailure();

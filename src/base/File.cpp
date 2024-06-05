@@ -349,9 +349,6 @@ void File::vClose(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-//  if (! gxCmdLineArgs.m_xSysArgs.m_bSethScript)
-//    vTrace("Close: %p %s\n"_Stz,m_aFile,szPath());
-
   errno = 0;
   i8 iResult = fclose(m_aFile);
 
@@ -722,9 +719,6 @@ bool File::bOpenMode(Stz* szFilePath, Stz* szOpenMode)
 
   m_aFile_check = m_aFile;
   m_bIsOpen = true;
-
-//  if (! gxCmdLineArgs.m_xSysArgs.m_bSethScript)
-//    vTrace("Open: %p %s\n"_Stz,m_aFile,szPath());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

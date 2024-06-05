@@ -713,10 +713,7 @@ void SePrompt::vOutputEnabled(bool bOutputEnabled)
 void SePrompt::vPrintPrompt(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  if (gxCmdLineArgs.m_xSysArgs.m_bSethScript)
-    return;
-  
+
   if (gxCmdLineArgs.bUserPrompt()) {
     vTrace("se> "_Stz);
     fflush(stdin);
