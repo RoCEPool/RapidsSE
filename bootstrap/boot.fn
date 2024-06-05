@@ -778,16 +778,16 @@ function getNonXConnectedNodes() {
 ## Returns a non-zero exit code if the rebalance fails.
 ## Params: None
 
-function clusterRebalance() {
-  echo -n "Waiting for the cluster to rebalance data across all nodes..."
-
-  if runLocalPromptCommand "${REBALANCE_COMMAND}" "${DEFAULT_CLUSTER_REBALANCE_TIMEOUT}"; then
-    echo "Done"
-    return 0
-  fi
-
-  return 1
-}
+#function clusterRebalance() {
+#  echo -n "Waiting for the cluster to rebalance data across all nodes..."
+#
+#  if runLocalPromptCommand "${REBALANCE_COMMAND}" "${DEFAULT_CLUSTER_REBALANCE_TIMEOUT}"; then
+#    echo "Done"
+#    return 0
+#  fi
+#
+#  return 1
+#}
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Issues a "__forgetNode" command to the local SE instance. This forces the
@@ -799,25 +799,25 @@ function clusterRebalance() {
 ## Params:
 ##  $@ - the list of node names to be forgotten
 
-function clusterForgetNodes() {
-
-  [ "$#" -gt 0 ] || errorExit "Function ${FUNCNAME[0]} must be called with at least one argument."
-
-  local -a nodeNames=("$@")
-
-  # We need to turn the array of node names into a comma separated string
-  local forgetNodeArgs
-  forgetNodeArgs="$(arrayToCommaSeparatedString "${nodeNames[@]}")"
-
-  echo -n "Waiting for the cluster to rebalance data and deactivate the nodes being removed..."
-
-  if runLocalPromptCommand "${FORGET_NODE_COMMAND} ${forgetNodeArgs}" "${DEFAULT_CLUSTER_FORGET_NODE_TIMEOUT}"; then
-    echo "Done"
-    return 0
-  fi
-
-  return 1
-}
+#function clusterForgetNodes() {
+#
+#  [ "$#" -gt 0 ] || errorExit "Function ${FUNCNAME[0]} must be called with at least one argument."
+#
+#  local -a nodeNames=("$@")
+#
+#  # We need to turn the array of node names into a comma separated string
+#  local forgetNodeArgs
+#  forgetNodeArgs="$(arrayToCommaSeparatedString "${nodeNames[@]}")"
+#
+#  echo -n "Waiting for the cluster to rebalance data and deactivate the nodes being removed..."
+#
+#  if runLocalPromptCommand "${FORGET_NODE_COMMAND} ${forgetNodeArgs}" "${DEFAULT_CLUSTER_FORGET_NODE_TIMEOUT}"; then
+#    echo "Done"
+#    return 0
+#  fi
+#
+#  return 1
+#}
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Runs a command on the current node.
@@ -827,69 +827,69 @@ function clusterForgetNodes() {
 ##  $1 - the command and arguments to be run
 ##  $2 - the timeout to wait, or -1 if no timeout.
 
-function runLocalPromptCommand() {
-
-  [ "$#" -ge 1 ] || errorExit "Function ${FUNCNAME[0]} must be called with at least one argument."
-
-  local promptCmd="$1"
-  local timeout=-1
-  [ "$#" -gt 1 ] && timeout="$2"
-
-  if [ -z "${CURRENT_NODE_NAME:-}" ]; then
-    errorExit "The name of the local node has not been loaded."
-  fi
-
-  local host
-  host="$(nodeCfgGetValue "${CURRENT_NODE_NAME}" "${NODE_CFG_HOST_KEY}")"
-
-
-  declare -a cmd=()
-  cmd+=("${EXE}")
-  cmd+=("--name")
-  cmd+=("${CURRENT_NODE_NAME}")
-  cmd+=("--munged")
-  cmd+=("--commands")
-  cmd+=("${ROOT_DIR}/commands")
-  cmd+=("--command")
-  cmd+=("${promptCmd}")
-  cmd+=("--appendTrace")
-
-  debugPrint "\nAbout to execute the following cluster prompt command: ${cmd[*]}"
-
-  local cmdOutputFile="${ROOT_DIR}/.lastPromptCommand.log"
-
-  if [ "${timeout}" -gt 0 ]; then
-    # Run the prompt command but if it doesn't return after a given number of seconds then
-    # kill the process. If the process is killed then the exit status will be 124
-    # so we can explicitly check for that.
-    timeout -k "${timeout}s" "${timeout}s" "${cmd[@]}" 1>"${cmdOutputFile}" 2>&1 &
-    local cmdExitStatus
-    cmdExitStatus=0
-    wait $! || cmdExitStatus="$?"
-
-    if [ "${cmdExitStatus}" -eq 124 ]
-    then
-      printError "\nThe command \"${promptCmd}\" timed out on RapidsSE. RapidsSE may have crashed. Please refer to the log files of each node as well as the output file for this cluster operation (${cmdOutputFile}). The script ./${COLLECTLOGS_SCRIPT} can be used to gather all log files."
-      return 1
-
-    elif [ "${cmdExitStatus}" -ne 0 ]
-    then
-      printError "\nThe command \"${promptCmd}\" failed. Please refer to the log files of each node as well as the output file for this cluster operation (${cmdOutputFile}). The script ./${COLLECTLOGS_SCRIPT} can be used to gather all log files."
-      return 1
-    fi
-
-  else
-    # Run the command without a timeout.
-    if ! "${cmd[@]}" 1>"${cmdOutputFile}" 2>&1 ; then
-      printError "\nThe command \"${promptCmd}\" failed. Please refer to the log files of each node as well as the output file for this cluster operation (${cmdOutputFile}). The script ./${COLLECTLOGS_SCRIPT} can be used to gather all log files."
-      return 1
-    fi
-  fi
-
-  # Remove the output file on success
-  rm "${cmdOutputFile}" &>/dev/null
-  return 0
-}
+#function runLocalPromptCommand() {
+#
+#  [ "$#" -ge 1 ] || errorExit "Function ${FUNCNAME[0]} must be called with at least one argument."
+#
+#  local promptCmd="$1"
+#  local timeout=-1
+#  [ "$#" -gt 1 ] && timeout="$2"
+#
+#  if [ -z "${CURRENT_NODE_NAME:-}" ]; then
+#    errorExit "The name of the local node has not been loaded."
+#  fi
+#
+#  local host
+#  host="$(nodeCfgGetValue "${CURRENT_NODE_NAME}" "${NODE_CFG_HOST_KEY}")"
+#
+#
+#  declare -a cmd=()
+#  cmd+=("${EXE}")
+#  cmd+=("--name")
+#  cmd+=("${CURRENT_NODE_NAME}")
+#  cmd+=("--munged")
+#  cmd+=("--commands")
+#  cmd+=("${ROOT_DIR}/commands")
+#  cmd+=("--command")
+#  cmd+=("${promptCmd}")
+#  cmd+=("--appendTrace")
+#
+#  debugPrint "\nAbout to execute the following cluster prompt command: ${cmd[*]}"
+#
+#  local cmdOutputFile="${ROOT_DIR}/.lastPromptCommand.log"
+#
+#  if [ "${timeout}" -gt 0 ]; then
+#    # Run the prompt command but if it doesn't return after a given number of seconds then
+#    # kill the process. If the process is killed then the exit status will be 124
+#    # so we can explicitly check for that.
+#    timeout -k "${timeout}s" "${timeout}s" "${cmd[@]}" 1>"${cmdOutputFile}" 2>&1 &
+#    local cmdExitStatus
+#    cmdExitStatus=0
+#    wait $! || cmdExitStatus="$?"
+#
+#    if [ "${cmdExitStatus}" -eq 124 ]
+#    then
+#      printError "\nThe command \"${promptCmd}\" timed out on RapidsSE. RapidsSE may have crashed. Please refer to the log files of each node as well as the output file for this cluster operation (${cmdOutputFile}). The script ./${COLLECTLOGS_SCRIPT} can be used to gather all log files."
+#      return 1
+#
+#    elif [ "${cmdExitStatus}" -ne 0 ]
+#    then
+#      printError "\nThe command \"${promptCmd}\" failed. Please refer to the log files of each node as well as the output file for this cluster operation (${cmdOutputFile}). The script ./${COLLECTLOGS_SCRIPT} can be used to gather all log files."
+#      return 1
+#    fi
+#
+#  else
+#    # Run the command without a timeout.
+#    if ! "${cmd[@]}" 1>"${cmdOutputFile}" 2>&1 ; then
+#      printError "\nThe command \"${promptCmd}\" failed. Please refer to the log files of each node as well as the output file for this cluster operation (${cmdOutputFile}). The script ./${COLLECTLOGS_SCRIPT} can be used to gather all log files."
+#      return 1
+#    fi
+#  fi
+#
+#  # Remove the output file on success
+#  rm "${cmdOutputFile}" &>/dev/null
+#  return 0
+#}
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Prints whether each node in the cluster is running or not.
