@@ -303,6 +303,7 @@ void Engine::vRunCommandLine(void)
         break;
         
       case BO_PROMPT:
+        NEVER_REACH
         // wait for the attachmap to be ready
         if (gpAttachMap->uAttachMapState() != C_READY)
           vTrace("Waiting for SE to start...\n"_Stz);
@@ -313,6 +314,7 @@ void Engine::vRunCommandLine(void)
         break;
         
       case BO_SETH_PROMPT:
+        NEVER_REACH
         // wait for the attachmap to be ready
         if (gpAttachMap->uAttachMapState() != C_READY)
           vTrace("Waiting for SE to start...\n"_Stz);
@@ -330,6 +332,7 @@ void Engine::vRunCommandLine(void)
         break;
         
       case BO_START_PROMPT:
+        NEVER_REACH
         vStartSystem();
 
 
