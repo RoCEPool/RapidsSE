@@ -607,11 +607,12 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#ifndef NO_SE_PROMPT_1BY1
     if (szArg->bSame("--metadata"_Stz)) {
       m_xSysArgs.m_bMetadata = true;
       continue;
     }
-
+#endif
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--metricsSleep"_Stz)) {
       m_xSysArgs.m_nMetricsSleep = argv[++i_Arg].iToI8();
@@ -1615,8 +1616,7 @@ void CmdLineArgs::vPrintStartupInfo(void)
 
     if (m_xSysArgs.m_bMetadata) vTrace("  --metadata\n"_Stz);
     if (m_xSysArgs.m_bKillPrev) vTrace("  --killPrev\n"_Stz);
-    if (m_xSysArgs.m_bMunged) vTrace("  --munged\n"_Stz);
-    if (m_xSysArgs.m_bMetadata) vTrace("  --metadata\n"_Stz);
+    if (m_xSysArgs.m_bMunged)   vTrace("  --munged\n"_Stz);
 
 #ifdef WITH_DEBUG_VERSION
     vTrace("  --commands %s\n"_Stz,m_xSysArgs.m_sCommandsDir.azChar());

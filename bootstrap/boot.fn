@@ -367,7 +367,6 @@ function startCurrentNode() {
   startCmd+=("${CURRENT_NODE_NAME}")
   startCmd+=("--start")
   startCmd+=("--munged")
-  startCmd+=("--metadata")
   startCmd+=("--commands")
   startCmd+=("${ROOT_DIR}/commands")
   startCmd+=("--cid")
