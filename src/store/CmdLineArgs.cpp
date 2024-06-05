@@ -286,6 +286,7 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#ifndef NO_SE_PROMPT
     if (szArg->bSame("--command"_Stz)) {
       m_xSysArgs.m_sCommand = (Stz*)argv[++i_Arg];
       vTrace("command %s\n"_Stz, m_xSysArgs.m_sCommand.azChar());
@@ -294,6 +295,7 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
       m_xSysArgs.m_bWelcome = false;
       continue;
     }
+#endif
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--commands"_Stz)) {
@@ -762,6 +764,7 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#ifndef NO_SE_PROMPT
     if (szArg->bSame("--prompt"_Stz)) {
 
       if (m_xSysArgs.m_bStop) {
@@ -779,6 +782,7 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
       m_xSysArgs.m_bPrompt = true;
       continue;
     }
+#endif
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--promptDebug"_Stz)) {
@@ -833,6 +837,7 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#ifndef NO_SE_PROMPT
     if (szArg->bSame("--script"_Stz)) {
       if (m_xSysArgs.m_bStop) {
         vPrintErrorMarker(argv, i_Arg);
@@ -848,12 +853,15 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
       m_xSysArgs.m_bWelcome = false;
       continue;
     }
+#endif
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#ifndef NO_SE_PROMPT
     if (szArg->bSame("--seprompt"_Stz)) {
       m_xSysArgs.m_bPrompt = true;
       continue;
     }
+#endif
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--sen"_Stz)) {
@@ -1181,6 +1189,7 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#ifndef NO_SE_PROMPT
 
   // if not in prompt mode, log file path should not be given
   if ( ! m_xSysArgs.m_sLogFile.bIsEmpty() ) {
@@ -1191,6 +1200,7 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
       return false;
     }
   }
+#endif
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -1288,6 +1298,7 @@ bool CmdLineArgs::bParseTraceFileArgs(i8 argc, s256 argv[])
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#ifndef NO_SE_PROMPT
     if (szArg->bSame("--command"_Stz)) {
       m_xSysArgs.m_sCommand = (Stz*)argv[++i_Arg];
       vTrace("command %s\n"_Stz, m_xSysArgs.m_sCommand.azChar());
@@ -1296,6 +1307,7 @@ bool CmdLineArgs::bParseTraceFileArgs(i8 argc, s256 argv[])
       m_xSysArgs.m_bWelcome = false;
       continue;
     }
+#endif
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--commands"_Stz)) {
@@ -1345,6 +1357,7 @@ bool CmdLineArgs::bParseTraceFileArgs(i8 argc, s256 argv[])
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#ifndef NO_SE_PROMPT
     if (szArg->bSame("--prompt"_Stz)) {
 
       if (m_xSysArgs.m_bStop) {
@@ -1362,6 +1375,7 @@ bool CmdLineArgs::bParseTraceFileArgs(i8 argc, s256 argv[])
       m_xSysArgs.m_bPrompt = true;
       continue;
     }
+#endif
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--start"_Stz)) {
@@ -1382,11 +1396,12 @@ bool CmdLineArgs::bParseTraceFileArgs(i8 argc, s256 argv[])
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#ifndef NO_SE_PROMPT
     if (szArg->bSame("--seprompt"_Stz)) {
       m_xSysArgs.m_bPrompt = true;
       continue;
     }
-
+#endif
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--status"_Stz)) {
       if (m_xSysArgs.m_bStop) {
@@ -1433,6 +1448,7 @@ bool CmdLineArgs::bParseTraceFileArgs(i8 argc, s256 argv[])
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#ifndef NO_SE_PROMPT
     if (szArg->bSame("--script"_Stz)) {
       if (m_xSysArgs.m_bStop) {
         vPrintErrorMarker(argv, i_Arg);
@@ -1448,6 +1464,7 @@ bool CmdLineArgs::bParseTraceFileArgs(i8 argc, s256 argv[])
       m_xSysArgs.m_bWelcome = false;
       continue;
     }
+#endif
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--unlink"_Stz)) {
@@ -1457,6 +1474,7 @@ bool CmdLineArgs::bParseTraceFileArgs(i8 argc, s256 argv[])
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#ifndef NO_SE_PROMPT
   // if not in prompt mode, log file path should not be given
   if ( ! m_xSysArgs.m_sLogFile.bIsEmpty() ) {
 
@@ -1466,6 +1484,7 @@ bool CmdLineArgs::bParseTraceFileArgs(i8 argc, s256 argv[])
       return false;
     }
   }
+#endif
 
   return true;
 }

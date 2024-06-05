@@ -25,7 +25,7 @@
 
 #define TYPE_DETAILED EndDefine
 
-#define NO_SE_PROMPT
+//#define NO_SE_PROMPT
 
 //------------------------------------------------------------------------------
 
