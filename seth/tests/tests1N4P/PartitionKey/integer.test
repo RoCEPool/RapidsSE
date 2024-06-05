@@ -16,9 +16,9 @@ create table ${testName2}_dataTable (
 success
 
 // check columns of partition key
-lsPtncol ${testName2}_dataTable;
-rows:
-  ('key','INTEGER',19,0,false,true)
+select * from columns where TableName = '${testName2}_dataTable' and IsPartitionKey = true;
+contains rows:
+  (*, *, '${testName2}_dataTable', 0, 'key', 6,'INTEGER',19,0,false,true)
 
 // load data into the table
 load ${testName2}_dataTable "../DATA/PartitionKey/data.csv";

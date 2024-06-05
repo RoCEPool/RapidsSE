@@ -270,10 +270,6 @@ success
 // lsPtncol //
 ///////////////
 
-// lsPtncol on invalid table
-lsPtncol noTable;
-failure contains: 'Table does not exist'
-
 // (17) create table t1
 create table ${testName2}_T1 (
    key   INTEGER NOT NULL,
@@ -306,9 +302,9 @@ success
 //  success
 
 // lsPtncol
-lsPtncol ${testName2}_T1;
-rows:
- ('key','INTEGER',19,0,false,true)
+select * from columns where TableName = '${testName2}_T1' and IsPartitionKey = true;
+contains rows:
+ (*, *, '${testName2}_T1', 0, 'key', 6,'INTEGER',19,0,false,true)
 
 // () drop table t1
 drop table ${testName2}_T1 ;
@@ -322,9 +318,9 @@ create table ${testName2}_T1 (
 success
 
 // lsPtncol
-lsPtncol ${testName2}_T1;
-rows:
-  ('name','VARCHAR',32,0,false,true)
+select * from columns where TableName = '${testName2}_T1' and IsPartitionKey = true;
+contains rows:
+  (*, *, '${testName2}_T1', 1, 'name', 11,'VARCHAR',32,0,false,true)
 
 // () drop table t1
 drop table ${testName2}_T1 ;
@@ -342,10 +338,10 @@ create table ${testName2}_T1 (
 success
 
 // lsPtncol
-lsPtncol ${testName2}_T1;
-rows:
-  ('name','VARCHAR',32,0,false,true)
-  ('key','INTEGER',19,0,false,true)
+select * from columns where TableName = '${testName2}_T1' and IsPartitionKey = true;
+contains rows:
+  (*, *, '${testName2}_T1', 1, 'name', 11,'VARCHAR',32,0,false,true)
+  (*, *, '${testName2}_T1', 0, 'key', 6,'INTEGER',19,0,false,true)
 
 // () drop table t1
 drop table ${testName2}_T1 ;

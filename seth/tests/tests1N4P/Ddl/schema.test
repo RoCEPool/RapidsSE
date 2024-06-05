@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------------*/
-/* lssch.test -- list schemas                                                 */
+/* schema.test -- list schemas                                                 */
 /*----------------------------------------------------------------------------*/
 
 // track memory
@@ -10,57 +10,37 @@ pwf;
 rows:
   ('/tables/public/schemas/rapids/catalogs/boray/tenants/')
 
-// list schemas when not in schemas folder
-lssch;
-failure contains: 'not in schemas'
-
 // cf to tenants
 cf "tenants";
 success
-
-// list schemas when not in schemas folder
-lssch;
-failure contains: 'not in schemas'
 
 // cf to boray tenant
 cf "boray";
 success
 
-// list schemas when not in schemas folder
-lssch;
-failure contains: 'not in schemas'
-
 // cf to catalogs
 cf "catalogs";
 success
 
-// list schemas when not in schemas folder
-lssch;
-failure contains: 'not in schemas'
-
 // cf to catalogs
 cf "rapids";
 success
-
-// list schemas when not in schemas folder
-lssch;
-failure contains: 'not in schemas'
 
 // cf to schemas
 cf "schemas";
 success
 
 // list schemas when not in schemas folder
-lssch;
-rows: ('public')
+select * from schema;
+contains rows: (*, 'public')
 
 create schema ${testName2}_mySchema;
 success
 
-lssch;
-rows:
-  ('public')
-  ('${testName2}_mySchema')
+select * from schema;
+contains rows:
+  (*, 'public')
+  (*, '${testName2}_mySchema')
 
 drop schema ${testName2}_mySchema;
 success
@@ -68,10 +48,10 @@ success
 create schema ${testName2}_mySchema;
 success
 
-lssch;
-rows:
-('public')
-('${testName2}_mySchema')
+select * from schema;
+contains rows:
+(*, 'public')
+(*, '${testName2}_mySchema')
 
 drop schema ${testName2}_mySchema;
 success
@@ -79,10 +59,10 @@ success
 create schema ${testName2}_mySchema;
 success
 
-lssch;
-rows:
-('public')
-('${testName2}_mySchema')
+select * from schema;
+contains rows:
+(*, 'public')
+(*, '${testName2}_mySchema')
 
 cf ${testName2}_mySchema;
 success

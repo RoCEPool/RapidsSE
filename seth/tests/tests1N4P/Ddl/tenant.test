@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------------*/
-/* lssch.test -- list schemas                                                 */
+/* tenant.test -- list schemas                                                 */
 /*----------------------------------------------------------------------------*/
 
 // track memory
@@ -9,10 +9,6 @@ success
 pwf;
 rows:
   ('/tables/public/schemas/rapids/catalogs/boray/tenants/')
-
-// list tenants when not in schemas folder
-lsten;
-failure contains: 'not in tenants'
 
 // cf to tenants
 cf tenants;

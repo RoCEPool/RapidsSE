@@ -14,17 +14,17 @@ create table ${testName2}_createT1 (
 success
 
 -- check columns of partition key
-lsPtncol ${testName2}_createT1;
-rows:
-  ('key','INTEGER',19,0,false,true)
+select * from columns where TableName = '${testName2}_createT1' and IsPartitionKey = true;
+contains rows:
+  (*, *, '${testName2}_createT1', 0, 'key', 6,'INTEGER',19,0,false,true)
 
 -- drop the table
 drop table ${testName2}_createT1;
 success
 
 -- check existence of partition key
-lsPtncol ${testName2}_createT1;
-failure contains: 'Table does not exist'
+select * from columns where TableName = '${testName2}_createT1' and IsPartitionKey = true;
+rows: 0
 
 create table ${testName2}_createT1 (
   key   INTEGER NOT NULL,
@@ -32,19 +32,11 @@ create table ${testName2}_createT1 (
 ) partition ;
 failure contains: "EC_SYNTAX_ERROR; Line: 4; Column: 12; mismatched input ';' expecting BY"
 
--- check existence of partition key
-lsPtncol ${testName2}_createT1;
-failure contains: 'Table does not exist'
-
 create table ${testName2}_createT1 (
   key   INTEGER NOT NULL,
   name  VARCHAR(32) NOT NULL
 ) partition by;
 failure contains: "EC_SYNTAX_ERROR; Line: 4; Column: 14; mismatched input ';' expecting '('"
-
--- check existence of partition key
-lsPtncol ${testName2}_createT1;
-failure contains: 'Table does not exist'
 
 create table ${testName2}_createT1 (
   key   INTEGER NOT NULL,
@@ -83,9 +75,9 @@ name  VARCHAR(32) NOT NULL
 success
 
 -- check existence of partition key
-lsPtncol ${testName2}_createT1;
-rows:
-  ('key','INTEGER',19,0,false,true)
+select * from columns where TableName = '${testName2}_createT1' and IsPartitionKey = true;
+contains rows:
+  (*, *, '${testName2}_createT1', 0, 'key', 6,'INTEGER',19,0,false,true)
 
 -- drop the table
 drop table ${testName2}_createT1;
@@ -98,9 +90,9 @@ name  VARCHAR(32) NOT NULL
 success
 
 -- check existence of partition key
-lsPtncol ${testName2}_createT1;
-rows:
-  ('name','VARCHAR',32,0,false,true)
+select * from columns where TableName = '${testName2}_createT1' and IsPartitionKey = true;
+contains rows:
+  (*, *, '${testName2}_createT1', 1, 'name', 11,'VARCHAR',32,0,false,true)
 
 -- drop the table
 drop table ${testName2}_createT1;
@@ -117,10 +109,10 @@ name  VARCHAR(32) NOT NULL
 success
 
 -- check existence of partition key
-lsPtncol ${testName2}_createT1;
-rows:
- ('key','INTEGER',19,0,false,true)
- ('name','VARCHAR',32,0,false,true)
+select * from columns where TableName = '${testName2}_createT1' and IsPartitionKey = true;
+contains rows:
+ (*, *, '${testName2}_createT1', 0, 'key', 6,'INTEGER',19,0,false,true)
+ (*, *, '${testName2}_createT1', 1, 'name', 11,'VARCHAR',32,0,false,true)
 
 -- drop the table
 drop table ${testName2}_createT1;
@@ -133,10 +125,10 @@ name  VARCHAR(32) NOT NULL
 success
 
 -- check existence of partition key
-lsPtncol ${testName2}_createT1;
-rows:
-  ('key','INTEGER',19,0,false,true)
-  ('name','VARCHAR',32,0,false,true)
+select * from columns where TableName = '${testName2}_createT1' and IsPartitionKey = true;
+contains rows:
+ (*, *, '${testName2}_createT1', 0, 'key', 6,'INTEGER',19,0,false,true)
+ (*, *, '${testName2}_createT1', 1, 'name', 11,'VARCHAR',32,0,false,true)
 
 -- drop the table
 drop table ${testName2}_createT1;

@@ -15,9 +15,9 @@ create table ${testName2}_boolTable (
 success
 
 // check columns of partition key
-lsPtncol ${testName2}_boolTable;
-rows:
-  ('key1','BOOLEAN',0,0,false,true)
+select * from columns where TableName = '${testName2}_boolTable' and IsPartitionKey = true;
+contains rows:
+  (*, *, '${testName2}_boolTable', 0, 'key1', 1,'BOOLEAN',0,0,false,true)
 
 // create an index
 create index idx1 on ${testName2}_boolTable (key1);

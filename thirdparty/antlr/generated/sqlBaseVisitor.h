@@ -249,10 +249,6 @@ public:
     return visitChildren(ctx);
   }
 
-  virtual std::any visitLsptncolCmd(sqlParser::LsptncolCmdContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
   virtual std::any visitMemoryleaksCmd(sqlParser::MemoryleaksCmdContext *ctx) override {
     return visitChildren(ctx);
   }

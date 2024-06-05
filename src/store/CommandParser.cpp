@@ -388,7 +388,6 @@ antlrcpp::Any CommandParser::visitStatementChoice(Parser::sqlParser::StatementCh
   else if (pCtx->emptyCmd())          { m_szProcName = C_EMPTY_CMD;          return nullptr; }
   else if (pCtx->fileCmd())           { m_szProcName = nullptr;              return visitChildren(pCtx); }
   else if (pCtx->logCmd())            { m_szProcName = "logMsg"_Stz;         return visitChildren(pCtx); }
-  else if (pCtx->lsptncolCmd())       { m_szProcName = "lsptncol"_Stz;       return visitChildren(pCtx); }
   else if (pCtx->memoryleaksCmd())    { m_szProcName = "memoryleaks"_Stz;    return nullptr; }
 	else if (pCtx->metricsCtlCmd())     { m_szProcName = "metricsCtl"_Stz;     return visitChildren(pCtx); }
 	else if (pCtx->noopCmd())           { m_szProcName = "noop"_Stz;           return nullptr; }
@@ -984,20 +983,6 @@ antlrcpp::Any CommandParser::visitLogCmd(Parser::sqlParser::LogCmdContext *pCtx)
   m_pArgValues->vAppendToken(bEcho ? "true"_Stz : "false"_Stz, TN_BOOLEAN);
 
   delete pLogMsg;
-  return nullptr; // No need to visit any further down the tree
-}
-
-/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-/* Add command parameters for an LSPTNCOL statement                           */
-/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-antlrcpp::Any CommandParser::visitLsptncolCmd(Parser::sqlParser::LsptncolCmdContext *pCtx)
-{
-  // Add command parameters
-  s256 sTableName;
-  vCleanString(pCtx->tableName()->identifier(), sTableName, EC_MAX_TABLE_NAME_LENGTH);
-
-  m_pArgValues->vAppendToken(sTableName.szStz(), TN_STRING);
-
   return nullptr; // No need to visit any further down the tree
 }
 
