@@ -930,6 +930,7 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--status"_Stz)) {
+      NEVER_REACH
       if (m_xSysArgs.m_bStop) {
         vPrintErrorMarker(argv, i_Arg);
         vTrace("Incorrect argument: --stop with %s\n"_Stz,argv[i_Arg].szStz());
@@ -1387,6 +1388,7 @@ bool CmdLineArgs::bParseTraceFileArgs(i8 argc, s256 argv[])
 #endif
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--status"_Stz)) {
+      NEVER_REACH
       if (m_xSysArgs.m_bStop) {
         vPrintErrorMarker(argv, i_Arg);
         vTrace("Incorrect argument: --stop with %s\n"_Stz,argv[i_Arg].szStz());
