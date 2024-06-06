@@ -120,7 +120,6 @@ assert::stack_0
 "l" .verbose
 
   "OP_limit.sen"                include
-  "OP_listFolders.sen"          include
   "OP_locks.sen"                include
   "OP_locksReset.sen"           include
   "OP_log.sen"                  include
