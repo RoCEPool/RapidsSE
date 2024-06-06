@@ -245,6 +245,11 @@ bool Engine::bTraceStart(void)
        vOpenTrace(true);
       break;
 
+    case BO_START_PROMPT:
+      NEVER_REACH
+      vOpenTrace(false);
+      break;
+
     case BO_START:
        vOpenTrace(false);
       break;
@@ -297,7 +302,36 @@ void Engine::vRunCommandLine(void)
         vTrace("\nNodeId %lld\n\n"_Stz,AM::NODE::iThisNodeId());
         vWaitStop();
         break;
+        
+      case BO_START_PROMPT:
+        NEVER_REACH
+        vStartSystem();
 
+
+
+
+        if (C_UNKNOWN != gxCmdLineArgs.m_xSysArgs.m_iTest) {
+
+          switch (gxCmdLineArgs.m_xSysArgs.m_iTest) {
+
+            case 0: vCmdLineTest0(); break;
+            case 1: vCmdLineTest1(); break;
+            case 2: vCmdLineTest2(); break;
+
+          }
+        }
+
+
+
+        //AM::SYSTEM::vSystemReady(); // Process has completed the boot sequence
+        vTrace("\nNodeId %lld\n\n"_Stz,AM::NODE::iThisNodeId());
+#ifdef WITH_APPLE
+        if (! gxCmdLineArgs.m_xSysArgs.m_bNoMunge )
+          vMungeCheck();
+#endif
+        vCallPrompt();
+        break;
+        
       case BO_STATUS:
         vPrintStatus();
         break;
@@ -645,13 +679,14 @@ void Engine::vCreateTmpDir(void)
 /*----------------------------------------------------------------------------*/
 eBO Engine::eDecodeCommandLine(void)
 {
-  if (gxCmdLineArgs.m_xSysArgs.m_bStart)    return BO_START;
-  if (gxCmdLineArgs.m_xSysArgs.m_bPrompt)   return BO_PROMPT;
-  if (gxCmdLineArgs.m_xSysArgs.m_bStatus)   return BO_STATUS;
-  if (gxCmdLineArgs.m_xSysArgs.m_bStop)     return BO_STOP;
-  if (gxCmdLineArgs.m_xSysArgs.m_bUnlink)   return BO_UNLINK;
+  if (gxCmdLineArgs.m_xSysArgs.m_bStart && gxCmdLineArgs.m_xSysArgs.m_bPrompt)   return BO_START_PROMPT;
+  if (gxCmdLineArgs.m_xSysArgs.m_bStart)                       return BO_START;
+  if (gxCmdLineArgs.m_xSysArgs.m_bPrompt)                      return BO_PROMPT;
+  if (gxCmdLineArgs.m_xSysArgs.m_bStatus)                      return BO_STATUS;
+  if (gxCmdLineArgs.m_xSysArgs.m_bStop)                        return BO_STOP;
+  if (gxCmdLineArgs.m_xSysArgs.m_bUnlink)                      return BO_UNLINK;
 
-  if (gxCmdLineArgs.m_xSysArgs.m_bAddNode)  return BO_ADD_NODE;
+  if (gxCmdLineArgs.m_xSysArgs.m_bAddNode)                     return BO_ADD_NODE;
 
   return BO_NONE;
 }
@@ -983,6 +1018,68 @@ void Engine::vMetaDataTables(void)
 
   pStreamDef = AM::pStreamDefFind(C_TDEF_TABLES);
   gpAttachMap->m_pMetaDataTables->vStreamDef(MD_TABLES,pStreamDef);
+}
+
+/*----------------------------------------------------------------------------*/
+/* munge check                                                                */
+/*----------------------------------------------------------------------------*/
+void Engine::vMungeCheck(void)
+{
+  // get the time of the Sen files in the Sen folder
+  Dir* pDir = new Dir(nullptr);
+  bool bResult = pDir->bOpen("../sen"_Stz);
+  ASSERT(bResult);
+  UNUSED(bResult);
+  
+  s256 sEntryNm;
+  s256 sFilePath;
+  s256 sLastModified;
+  
+  time_t tSenTime = 0;
+  time_t tMungedTime;
+  time_t tModTime;
+  
+  while (pDir->bRead()) {
+    
+    // get the entry
+    sEntryNm = pDir->szEntryNm();
+    
+    // skip . and ..
+    if (sEntryNm.bSame("."_Stz) || sEntryNm.bSame(".."_Stz))
+      continue;
+    
+    // create the complete filepath
+    sFilePath = "../sen/"_Stz;
+    sFilePath.vConcat(sEntryNm);
+    
+    // get the last modification time of the file
+    bResult = File::bModTime(sFilePath, tModTime);
+    ASSERT(bResult);
+    
+    // get the last modified sen file time
+    if (tModTime > tSenTime) {
+      sLastModified = sEntryNm;
+      tSenTime = tModTime;
+    }
+  }
+  pDir->vClose();
+  
+  delete pDir;
+  
+  // get the time of the Munged file
+  bResult = File::bModTime("../munge/Task_AddMunged.cpp"_Stz, tMungedTime);
+  ASSERT(bResult);
+  
+  // is the last modified sen file time after the last munge ?
+  if (tSenTime > tMungedTime) {
+    
+    vTrace("\n******************************************************************\n"_Stz);
+    vTrace("\n MUNGING!!! (Last modified Sen file : %s)        \n\n"_Stz, sLastModified.azChar());
+    vTrace("******************************************************************\n"_Stz);
+    
+    gxCmdLineArgs.m_xSysArgs.m_sCommand = "docol munge"_Stz;
+    gxCmdLineArgs.m_xSysArgs.m_bCommand = true;
+  }
 }
 
 /*----------------------------------------------------------------------------*/

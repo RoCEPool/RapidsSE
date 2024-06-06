@@ -4350,7 +4350,7 @@ void AM::vWriteTrace_vargs(Stz* aFormat, va_list xArgs)
     Now spNow;
 
     // Roll over trace file only if we are SE main
-    if(iBootOptions == BO_START) {
+    if(iBootOptions == BO_START || iBootOptions == BO_START_PROMPT) {
       // Calculate length of message
       // Note: the 15 bits at the end is for low memory message that may be added
       // Save the size of the file instead of syscall for size

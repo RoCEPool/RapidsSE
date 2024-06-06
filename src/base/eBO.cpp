@@ -11,6 +11,7 @@ Stz* aBO[BO_ENUMS]
   /*    */ "ADD_NODE"_Stz,
   /*    */ "PROMPT"_Stz,
   /*    */ "START"_Stz,
+  /*    */ "START_PROMPT"_Stz,
   /*    */ "STATUS"_Stz,
   /*    */ "STOP"_Stz,
   /*    */ "UNLINK"_Stz,
