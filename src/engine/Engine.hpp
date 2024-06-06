@@ -41,8 +41,7 @@ namespace ENGINE
     static void vLoadTables(void);
     static void vLowMemoryDiscard(void);
     static void vMetaDataTables(void);
-    static void vMungeCheck(void);
-    static void vNoMemoryLogging(void);
+     static void vNoMemoryLogging(void);
     static void vOpenPool(void);
     static bool bOpenPool(s32& sPoolName);
     static void vOpenTrace(bool bPrompt);
