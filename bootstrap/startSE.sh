@@ -169,10 +169,10 @@ debugPrint "EXTRA_START_ARGS = ${EXTRA_START_ARGS[*]}"
 loadClusterConfig
 
 if [ ${CLUSTER_OP} -eq 1 ]; then
-  if [ "${CLUSTER_INIT}" -eq 1 ]; then
-    remoteClusterXConnect
-    exit
-  fi
+#  if [ "${CLUSTER_INIT}" -eq 1 ]; then
+#    remoteClusterXConnect
+#    exit
+#  fi
 
   if [ -n "${RELOAD_PATH:-}" ]; then
     # Validate the reload path exists on all nodes
@@ -185,10 +185,10 @@ if [ ${CLUSTER_OP} -eq 1 ]; then
 else
   loadNodeName
 
-#  if [ "${CLUSTER_INIT}" -eq 1 ]; then
-#    localClusterXConnect
-#    exit
-#  fi
+  if [ "${CLUSTER_INIT}" -eq 1 ]; then
+    localClusterXConnect
+    exit
+  fi
 
   startCurrentNode "${EXTRA_START_ARGS[@]}"
 fi
