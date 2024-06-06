@@ -1326,7 +1326,7 @@ void Task::vSetSenRecoverContext(void)
 #ifdef WITH_LOCALS_OOM
     
     if (m_pLocalVars) {
-      void* aDiscardPoint_return = m_pReturnStack->aTopVal();
+      void* aDiscardPoint_return = m_pReturnStack->pStackHead();
       if (m_pLocalVars->aDiscardPoint() == aDiscardPoint_return) {
         m_pLocalVars->vFramePop(aDiscardPoint_return);
       }
@@ -1336,7 +1336,7 @@ void Task::vSetSenRecoverContext(void)
     
     if (m_pLocalFrame
         && m_pLocalFrame->aDiscardPoint() ==
-             (TypeValueArea*)m_pReturnStack->aTopVal())
+             (TypeValueArea*)m_pReturnStack->pStackHead())
       vLocalsPop();
 
 #endif
@@ -1372,7 +1372,7 @@ void Task::vSetSenInternalErrorContext(void)
 #ifdef WITH_LOCALS_OOM
 
     if (m_pLocalVars) {
-      void* aDiscardPoint_return = m_pReturnStack->aTopVal();
+      void* aDiscardPoint_return = m_pReturnStack->pStackHead();
       if (m_pLocalVars->aDiscardPoint() == aDiscardPoint_return) {
         m_pLocalVars->vFramePop(aDiscardPoint_return);
       }
@@ -1382,7 +1382,7 @@ void Task::vSetSenInternalErrorContext(void)
 
     if (m_pLocalFrame
         && m_pLocalFrame->aDiscardPoint() ==
-           (TypeValueArea*)m_pReturnStack->aTopVal())
+           (TypeValueArea*)m_pReturnStack->pStackHead())
       vLocalsPop();
 
 #endif
@@ -1418,7 +1418,7 @@ void Task::vSetSenLowMemContext(void)
 #ifdef WITH_LOCALS_OOM
 
     if (m_pLocalVars) {
-      void* aDiscardPoint_return = m_pReturnStack->aTopVal();
+      void* aDiscardPoint_return = m_pReturnStack->pStackHead();
       if (m_pLocalVars->aDiscardPoint() == aDiscardPoint_return) {
         m_pLocalVars->vFramePop(aDiscardPoint_return);
       }
@@ -1428,7 +1428,7 @@ void Task::vSetSenLowMemContext(void)
 
     if (m_pLocalFrame
         && m_pLocalFrame->aDiscardPoint() ==
-             (TypeValueArea*)m_pReturnStack->aTopVal())
+             (TypeValueArea*)m_pReturnStack->pStackHead())
       vLocalsPop();
 
 #endif

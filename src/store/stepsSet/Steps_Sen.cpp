@@ -263,7 +263,7 @@ void Step::vSenExit_RT(void)
     Task::vTracePoint("<"_Stz);
   
   if (m_pLocalFrame
-      && m_pLocalFrame->aDiscardPoint() == (TypeValueArea*)m_pReturnStack->aTopVal())
+      && m_pLocalFrame->aDiscardPoint() == (TypeValueArea*)m_pReturnStack->pStackHead())
     vLocalsFramePop();
   
   // make sure we don't return to nowhere

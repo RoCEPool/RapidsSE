@@ -559,7 +559,7 @@ void Step::vLocalsFramePop(void)
   ENTRY();
     
   RASSERT(0 == m_pReturnStack->nValues() ||
-          CN_FIPVAL == m_pReturnStack->aTopVal()->eType());
+          CN_FIPVAL == m_pReturnStack->pStackHead()->eType());
 
   if (! m_pLocalVars)
     vSeeFrameStack();
@@ -570,7 +570,7 @@ void Step::vLocalsFramePop(void)
   if (0 == m_pReturnStack->nValues())
     aDiscardPoint_return = nullptr;
   else
-    aDiscardPoint_return = m_pReturnStack->aTopVal();
+    aDiscardPoint_return = m_pReturnStack->pStackHead();
   
   m_pLocalVars->vFramePop(aDiscardPoint_return);
 
@@ -610,7 +610,7 @@ void Step::vLocalsFramePush(void)
     m_pLocalVars = new LocalVars(m_pLocalStrs);
 
 
-  TypeValueArea* axDiscardPoint = m_pReturnStack->aTopVal();
+  TypeValueArea* axDiscardPoint = m_pReturnStack->pStackHead();
   
   RASSERT(0 == m_pReturnStack->nValues() ||
           CN_FIPVAL == axDiscardPoint->eType());
@@ -639,7 +639,7 @@ void Step::vLocalsFramePush(void)
 
   LocalFrame* pLocalsFrame = new LocalFrame;
   
-  pLocalsFrame->vDiscardPoint((TypeValueArea*)m_pReturnStack->aTopVal());
+  pLocalsFrame->vDiscardPoint((TypeValueArea*)m_pReturnStack->pStackHead());
   
   pLocalsFrame->vNext(m_pLocalFrame);
   

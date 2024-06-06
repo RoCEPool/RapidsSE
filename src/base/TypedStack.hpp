@@ -44,6 +44,7 @@ namespace BASE
     static TypedStack* _pStack(void* aAddr);
 
     void vDump(DicStack* pDicStack, Stz* szTitle);
+    void vDiscardTop(void);
 
     TypeValueArea* aPeekItem(i8 i_Item);
     void vPeekTypeValueArea(i8 i_Item, TypeValueArea* aTypedCell);
@@ -85,6 +86,7 @@ namespace BASE
     void vValSprint(s48K& sFormat, s48K& sString);
 
     i8   nValues(void);
+    TypeValueArea* pStackHead();
   
   private:
     static eCN eSizeToCls(eSS eSize);
@@ -99,20 +101,12 @@ namespace BASE
 
     TypeValueArea* aAllotTypedCell(eCN eType, i8 nWithAdditionalBytes);
 
-    void vDiscardTop(void);
-
     bool bGuard(i8 nValues);
     bool bGuard(eCN eClass0);
     bool bGuard(eCN eClass0, eCN eClass1);
     bool bGuard(eCN eClass0, eCN eClass1, eCN eClass2);
 
-
-    TypeValueArea* pStackHead();
-    byte* ayStackBase(void);
-    byte* ayStackLimit(void);
-
     Footer* aFooter(void);
-    Footer* aHazard(void);
   };
 }
 

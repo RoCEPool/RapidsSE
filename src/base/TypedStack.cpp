@@ -403,16 +403,12 @@ void TypedStack::vPopStr(String* pString, const char* azCallingFunNm)
     BASE::vThrow(FK_DSTACK,
                         azCallingFunNm,__FILE__,__LINE__,
                         "Invalid d-stack"_Stz);
-  
-  _hazard_();
 
   TypeValueArea* pHead = pStackHead();
   
   pString->vCopy(pHead->szStz());
     
   vDiscardTop();
-  
-  _hazard_();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -427,15 +423,11 @@ void TypedStack::vPopStz(Text* psText, const char* azCallingFunNm)
                         azCallingFunNm,__FILE__,__LINE__,
                         "Invalid d-stack"_Stz);
   
-  _hazard_();
-
   TypeValueArea* pHead = pStackHead();
 
   psText->vSet(pHead->szStz());
     
   vDiscardTop();
-  
-  _hazard_();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -450,16 +442,12 @@ void TypedStack::vPopSenCell(SenCell* aSenCell, const char* azCallingFunNm)
                         azCallingFunNm,__FILE__,__LINE__,
                         "Invalid d-stack"_Stz);
 
-  _hazard_();
-
   TypeValueArea* pHead = pStackHead();
   i8 nBytes = pHead->nStackUsage();
 
   aSenCell->aTypeValueArea()->vCopy(pHead,nBytes);
 
   vDiscardTop();
-
-  _hazard_();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -475,16 +463,12 @@ void TypedStack::vPopTypeValueArea(TypeValueArea* aTypeValueArea,
                         azCallingFunNm,__FILE__,__LINE__,
                         "Invalid d-stack"_Stz);
   
-  _hazard_();
-
   TypeValueArea* pHead = pStackHead();
   i8 nBytes = pHead->nStackUsage();
   
   aTypeValueArea->vCopy(pHead,nBytes);
   
   vDiscardTop();
-    
-  _hazard_();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -625,16 +609,11 @@ void TypedStack::vPushSenCell(SenCell* aSenCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
 
-  _hazard_();
-  
   i8 nBytes = aSenCell->nStackUsage();
-  
-  m_rTop.vAdvance(nBytes);
-  
-  m_rTop.m_aTypeValueArea->vCopy(aSenCell->aTypeValueArea(),nBytes);
-    
-  _hazard_();
-  
+
+  TypeValueArea* pHead = reinterpret_cast<TypeValueArea*>(m_pStack->pyAdvance(nBytes));
+  pHead->vCopy(aSenCell->aTypeValueArea(),nBytes);
+
   _postcondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
 }
 
@@ -645,16 +624,11 @@ void TypedStack::vPushTypeValueArea(TypeValueArea* aTypeValueArea)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
 
-  _hazard_();
-  
   i8 nBytes = aTypeValueArea->nStackUsage();
-  
-  m_rTop.vAdvance(nBytes);
-  
-  m_rTop.m_aTypeValueArea->vCopy(aTypeValueArea,nBytes);
-    
-  _hazard_();
-  
+
+  TypeValueArea* pHead = reinterpret_cast<TypeValueArea*>(m_pStack->pyAdvance(nBytes));
+  pHead->vCopy(aTypeValueArea,nBytes);
+
   _postcondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
 }
 
@@ -665,21 +639,10 @@ void TypedStack::vPushLocalVar(LocalVar* axLocalVar)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
 
-//  s48K sStackContents;
-//  vStackContents(sStackContents);
-//  vTrace("PUSH %02lld %p %lld %p>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n%s\n"_Stz,
-//         nCount,axLocalVar,axLocalVar->i_LocalVar(),axLocalVar->aDiscardPoint(),
-//         sStackContents.szStz());
-
   i8 jStackNeeded = axLocalVar->jStackUsage();
-  m_rTop.vAdvance(jStackNeeded);
+  TypeValueArea* pHead = reinterpret_cast<TypeValueArea*>(m_pStack->pyAdvance(jStackNeeded));
 
-  axLocalVar->vGet(m_rTop.m_aTypeValueArea);
-  
-//  vStackContents(sStackContents);
-//  vTrace("PUSH %02lld<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n%s\n"_Stz,
-//         nCount++,sStackContents.szStz());
-  
+  axLocalVar->vGet(pHead);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -688,9 +651,8 @@ void TypedStack::vPushLocalVar(LocalVar* axLocalVar)
 void TypedStack::vReset(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  m_rTop.m_ayStackPtr  = ayStackBase();
-  m_rTop.m_nItems       = 0;
+
+  m_pStack->vReset();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -779,13 +741,14 @@ void TypedStack::vStackContents(s48K& sStackContents)
 bool TypedStack::bTopIsZero(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  if (CN_INTVAL == m_rTop.m_aTypeValueArea->eType() &&
-      0 == m_rTop.m_aTypeValueArea->iInt())
+
+  TypeValueArea* pTop = pStackHead();
+  if (CN_INTVAL == pTop->eType() && 0 == pTop->iInt())
     return true;
   
   return false;
 }
+
 
 /*----------------------------------------------------------------------------*/
 /* sprint of stack using given format string                                  */
@@ -962,7 +925,7 @@ i8 TypedStack::nValues(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  return m_rTop.m_nItems;
+  return m_pStack->nItems();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1063,15 +1026,14 @@ TypeValueArea* TypedStack::aAllotTypedCell(eCN eType, i8 nWithAdditionalBytes)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   i8 nAllotBytes = sizeof(_Header) + sizeof(Dtm) + nWithAdditionalBytes;
-  
-  m_rTop.vAdvance(nAllotBytes);
-  ASSERT(m_rTop.m_ayStackPtr >= ayStackLimit());
-  
-  m_rTop.m_aTypeValueArea->vMagic();
 
-  m_rTop.m_aTypeValueArea->vType(eType);
+  TypeValueArea* pTop = reinterpret_cast<TypeValueArea*>(m_pStack->pyAdvance(nAllotBytes));
+  ASSERT(pTop);
+
+  pTop->vMagic();
+  pTop->vType(eType);
   
-  return m_rTop.m_aTypeValueArea;
+  return pTop;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1174,39 +1136,11 @@ TypeValueArea* TypedStack::pStackHead(void)
   return reinterpret_cast<TypeValueArea*>(m_pStack->pyStackHead());
 }
 
-/*----------------------------------------------------------------------------*/
-/* compute the base of this stack                                             */
-/*----------------------------------------------------------------------------*/
-byte* TypedStack::ayStackBase(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  byte* ayBase = & m_xWsp.ayArea()[C_WSP_STACK - 1];
-  
-  return pPoolCheck<byte*>(ayBase,__func__);
-}
-
-/*----------------------------------------------------------------------------*/
-/* compute the limit of this stack                                            */
-/*----------------------------------------------------------------------------*/
-byte* TypedStack::ayStackLimit(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  byte* aLimit = & m_xWsp.ayArea()[0];
-  
-  return pPoolCheck<byte*>(aLimit,__func__);
-}
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 __aFooterFunction(TypedStack)
-
-/*----------------------------------------------------------------------------*/
-/*-- Hazard ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-__aHazardFunction(TypedStack,CN_STACK)
 
 /*============================================================================*/
 /* end                                                                        */

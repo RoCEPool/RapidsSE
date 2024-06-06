@@ -56,7 +56,7 @@ void Step::vAssertClass(void)
   
   i8 iAssertClassNo = m_pDataStack->iPopAsInt(__func__);
   
-  TypeValueArea* aTypedCell = m_pDataStack->aTopVal();
+  TypeValueArea* aTypedCell = m_pDataStack->pStackHead();
   
   eCN eAssertClassNo = (eCN)iAssertClassNo;
   eCN eClassNo = aTypedCell->eType();

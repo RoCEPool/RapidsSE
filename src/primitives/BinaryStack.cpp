@@ -50,11 +50,18 @@ BinaryStack::BinaryStack(eCN eClassNo,
                          eSS eSegmentSize,
                          fStackSizeToClass fSizeToCls)
  : Object(eClassNo)
+
 {
   this->m_pHead = this;
   this->m_pNext = nullptr;
   this->m_eSegmentSize = eSegmentSize;
   this->m_nItems = 0;
+
+#ifdef WITH_CHECK_INITIALISED
+  // The m_fStackSizeToClass leaves a word uninitialised
+  MemLib::vZero(&(this->m_fStackSizeToClass), sizeof(m_fStackSizeToClass), eClassNo);
+#endif
+
   this->m_fStackSizeToClass = fSizeToCls;
   this->u.m_pBase = this;
 
@@ -74,6 +81,12 @@ BinaryStack::BinaryStack(eCN eClassNo,
   this->m_pNext = nullptr;
   this->m_eSegmentSize = eSegmentSize;
   this->m_nItems = 0;
+
+#ifdef WITH_CHECK_INITIALISED
+  // The m_fStackSizeToClass leaves a word uninitialised
+  MemLib::vZero(&(this->m_fStackSizeToClass), sizeof(m_fStackSizeToClass), eClassNo);
+#endif
+
   this->m_fStackSizeToClass = fSizeToCls;
   this->u.m_pBase = this;
 
@@ -106,6 +119,8 @@ BinaryStack::~BinaryStack() noexcept(false)
 /*----------------------------------------------------------------------------*/
 byte* BinaryStack::pyAdvance(i8 nBytes)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+
   ASSERT(nBytes > 0);
   ASSERT(this == m_pHead);
 
@@ -125,10 +140,10 @@ byte* BinaryStack::pyAdvance(i8 nBytes)
   byte* pyHead;
 
   switch (pSeg->m_eSegmentSize) {
-    case TINY: pyHead = _pBinaryStackTiny(pSeg)->pyAdvance(nBytes); break;
-    case SMALL: pyHead = _pBinaryStackSmall(pSeg)->pyAdvance(nBytes); break;
-    case MEDIUM: pyHead = _pBinaryStackMedium(pSeg)->pyAdvance(nBytes); break;
-    case LARGE: pyHead = _pBinaryStackLarge(pSeg)->pyAdvance(nBytes); break;
+    case TINY:   pyHead =   _pBinaryStackTiny(pSeg)->pySegAdvance(nBytes); break;
+    case SMALL:  pyHead =  _pBinaryStackSmall(pSeg)->pySegAdvance(nBytes); break;
+    case MEDIUM: pyHead = _pBinaryStackMedium(pSeg)->pySegAdvance(nBytes); break;
+    case LARGE:  pyHead =  _pBinaryStackLarge(pSeg)->pySegAdvance(nBytes); break;
     default:      NEVER_REACH
   }
 
@@ -201,6 +216,8 @@ Footer* BinaryStack::aFooter(void)
 /*----------------------------------------------------------------------------*/
 i8 BinaryStack::nItems(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+
   ASSERT(this == m_pHead || m_pHead);
 
   return m_pHead->m_nItems;
@@ -212,6 +229,8 @@ i8 BinaryStack::nItems(void)
 /*----------------------------------------------------------------------------*/
 byte* BinaryStack::pyPeekItem(i8 iItem, std::function<i8(byte*)> fStackItemSize)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+
   ASSERT(this == m_pHead);
   ASSERT(iItem >= 0);
   ASSERT(iItem < m_nItems);
@@ -232,14 +251,15 @@ byte* BinaryStack::pyPeekItem(i8 iItem, std::function<i8(byte*)> fStackItemSize)
   // Work out which segment this is in
   BinaryStack* pSeg = this;
 
-  i8 iSegEntries = pSeg->nSegEntries();
+  i8 iSegEntries = pSeg->nSegmentEntries();
   i8 iFirstSegIdx = m_nItems - iSegEntries;
   i8 iLastSegIdx = m_nItems - 1;
+  UNUSED(iLastSegIdx);
 
-  while (iItem < iFirstSegIdx) {
-    ASSERT(pSeg->m_Next);
+  while (iSegEntries == 0 || iItem < iFirstSegIdx) {
+    ASSERT(pSeg->m_pNext);
     pSeg = pSeg->m_pNext;
-    iSegEntries = pSeg->nSegEntries();
+    iSegEntries = pSeg->nSegmentEntries();
     iLastSegIdx = iFirstSegIdx - 1;
     iFirstSegIdx -= iSegEntries;
   }
@@ -267,11 +287,36 @@ byte* BinaryStack::pyPeekItem(i8 iItem, std::function<i8(byte*)> fStackItemSize)
 }
 
 
+
+/*----------------------------------------------------------------------------*/
+/* Resets a stack back to it's original empty condition                       */
+/*----------------------------------------------------------------------------*/
+void BinaryStack::vReset(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+
+  ASSERT(this == m_pHead);
+
+  BinaryStack::vDestroy(m_pNext);
+  m_pNext = nullptr;
+  m_nItems = 0;
+
+  switch (this->m_eSegmentSize) {
+    case TINY:     _pBinaryStackTiny(this)->vSegReset(); break;
+    case SMALL:   _pBinaryStackSmall(this)->vSegReset(); break;
+    case MEDIUM: _pBinaryStackMedium(this)->vSegReset(); break;
+    case LARGE:   _pBinaryStackLarge(this)->vSegReset(); break;
+    default:     NEVER_REACH
+  }
+}
+
 /*----------------------------------------------------------------------------*/
 /* Rewinds the stack head by a given number of bytes                          */
 /*----------------------------------------------------------------------------*/
 void BinaryStack::vRewind(i8 nBytes)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+
   ASSERT(nBytes > 0);
   ASSERT(this == m_pHead);
 
@@ -281,25 +326,24 @@ void BinaryStack::vRewind(i8 nBytes)
   ASSERT(!pLastSeg->m_pNext);
   ASSERT(!pLastSeg->bSegmentIsEmpty());
 
-  // Rewind the stack in this segment and get the new head pointer
-  byte* pyHead;
+  // Rewind the stack in this segment
 
   switch (pLastSeg->m_eSegmentSize) {
-    case TINY: pyHead = _pBinaryStackTiny(pLastSeg)->vRewind(nBytes); break;
-    case SMALL: pyHead = _pBinaryStackSmall(pLastSeg)->vRewind(nBytes); break;
-    case MEDIUM: pyHead = _pBinaryStackMedium(pLastSeg)->vRewind(nBytes); break;
-    case LARGE: pyHead = _pBinaryStackLarge(pLastSeg)->vRewind(nBytes); break;
+    case TINY:     _pBinaryStackTiny(pLastSeg)->vSegRewind(nBytes); break;
+    case SMALL:   _pBinaryStackSmall(pLastSeg)->vSegRewind(nBytes); break;
+    case MEDIUM: _pBinaryStackMedium(pLastSeg)->vSegRewind(nBytes); break;
+    case LARGE:   _pBinaryStackLarge(pLastSeg)->vSegRewind(nBytes); break;
     default:      NEVER_REACH
   }
 
   // If the segment is empty then we will need to remove it and update the stack head ptr
   if (pLastSeg->bSegmentIsEmpty()) {
 
-    if (this == m_pHead) {
+    if (pLastSeg == pLastSeg->m_pHead) {
       // This is the first segment. Entire stack is empty
       --m_nItems;
       ASSERT(m_nItems == 0);
-      return nullptr;
+      return;
     }
 
     // Get the second to last segment
@@ -311,12 +355,10 @@ void BinaryStack::vRewind(i8 nBytes)
     ASSERT(pSecondLastSeg);
     pSecondLastSeg->m_pNext = nullptr;
     BinaryStack::vDestroy(pLastSeg);
-
-    pyHead = pyStackHead();
   }
 
   --m_nItems;
-  return pyHead;
+  return;
 }
 
 
@@ -325,6 +367,8 @@ void BinaryStack::vRewind(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 i8 BinaryStack::nSegments(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+
   ASSERT(this == m_pHead || m_pHead);
 
   i8 iCount = 1;
@@ -343,6 +387,8 @@ i8 BinaryStack::nSegments(void)
 /*----------------------------------------------------------------------------*/
 byte* BinaryStack::pyStackHead(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+
   ASSERT(this == m_pHead);
 
   if (m_nItems == 0) {
@@ -361,10 +407,10 @@ byte* BinaryStack::pyStackHead(void)
   byte* pStackHead;
 
   switch (pLastSeg->m_eSegmentSize) {
-    case TINY:    pStackHead = _pBinaryStackTiny(pLastSeg)->pySegmentHead(); break;
-    case SMALL:   pStackHead = _pBinaryStackSmall(pLastSeg)->pySegmentHead(); break;
+    case TINY:    pStackHead =   _pBinaryStackTiny(pLastSeg)->pySegmentHead(); break;
+    case SMALL:   pStackHead =  _pBinaryStackSmall(pLastSeg)->pySegmentHead(); break;
     case MEDIUM:  pStackHead = _pBinaryStackMedium(pLastSeg)->pySegmentHead(); break;
-    case LARGE:   pStackHead = _pBinaryStackLarge(pLastSeg)->pySegmentHead(); break;
+    case LARGE:   pStackHead =  _pBinaryStackLarge(pLastSeg)->pySegmentHead(); break;
     default:      NEVER_REACH
   }
 
@@ -377,9 +423,11 @@ byte* BinaryStack::pyStackHead(void)
 /*----------------------------------------------------------------------------*/
 BinaryStack* BinaryStack::pAddSegmentFor(i8 nBytes)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+
   ASSERT(nBytes > 0);
   ASSERT(this == m_pHead);
-  ASSERT(this->m_nItems > 0);
+  ASSERT(this->m_nItems >= 0);
 
   BinaryStack* pNewSegment;
   eCN eClassNo;
@@ -418,6 +466,8 @@ BinaryStack* BinaryStack::pAddSegmentFor(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 bool BinaryStack::bCanFitInCurrentSeg(i8 nBytes)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+
   ASSERT(this == m_pHead || m_pHead);
 
   switch (this->m_eSegmentSize) {
@@ -435,14 +485,35 @@ bool BinaryStack::bCanFitInCurrentSeg(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 BinaryStack* BinaryStack::pLastSegment(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+
   ASSERT(this == m_pHead || m_pHead);
 
   BinaryStack* pSeg = this;
-  while (m_pNext) {
-    pSeg = m_pNext;
+  while (pSeg->m_pNext) {
+    pSeg = pSeg->m_pNext;
   }
 
   return pSeg;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* Returns the number of entries in the current segment                       */
+/*----------------------------------------------------------------------------*/
+i8 BinaryStack::nSegmentEntries(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+
+  ASSERT(this == m_pHead || m_pHead);
+
+  switch (this->m_eSegmentSize) {
+    case TINY:    return   _pBinaryStackTiny(this)->nSegEntries();
+    case SMALL:   return  _pBinaryStackSmall(this)->nSegEntries();
+    case MEDIUM:  return _pBinaryStackMedium(this)->nSegEntries();
+    case LARGE:   return  _pBinaryStackLarge(this)->nSegEntries();
+    default:      NEVER_REACH
+  }
 }
 
 
@@ -451,6 +522,8 @@ BinaryStack* BinaryStack::pLastSegment(void)
 /*----------------------------------------------------------------------------*/
 bool BinaryStack::bSegmentIsEmpty(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+
   ASSERT(this == m_pHead || m_pHead);
 
   switch (this->m_eSegmentSize) {
@@ -564,9 +637,11 @@ Footer* BinaryStackSegment<SEGMENT_SIZE, AREA>::aFooter(void)
 template <eSS SEGMENT_SIZE, i8 AREA>
 byte* BinaryStackSegment<SEGMENT_SIZE, AREA>::pySegAdvance(i8 nBytes)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+
   ASSERT(nBytes > 0);
   ASSERT(bSegCanFit(nBytes));
-  ASSERT(m_pySegmentHead <= m_xBytes.szBoundary());
+  ASSERT(m_pySegmentHead <= (byte*) m_xBytes.szBoundary());
 
   m_pySegmentHead -= nBytes;
   ++m_nSegEntries;
@@ -581,6 +656,8 @@ byte* BinaryStackSegment<SEGMENT_SIZE, AREA>::pySegAdvance(i8 nBytes)
 template <eSS SEGMENT_SIZE, i8 AREA>
 i8 BinaryStackSegment<SEGMENT_SIZE, AREA>::nSegEntries(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+
   return m_nSegEntries;
 }
 
@@ -591,11 +668,13 @@ i8 BinaryStackSegment<SEGMENT_SIZE, AREA>::nSegEntries(void)
 template <eSS SEGMENT_SIZE, i8 AREA>
 bool BinaryStackSegment<SEGMENT_SIZE, AREA>::bSegCanFit(i8 nBytes)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+
   // Byte buffer is used from back to front
   byte* pyAddr = m_pySegmentHead - nBytes;
   byte* pyLimit = (byte*) m_xBytes.szArea();
 
-  return pyAddr < pyLimit;
+  return pyAddr >= pyLimit;
 }
 
 
@@ -605,6 +684,8 @@ bool BinaryStackSegment<SEGMENT_SIZE, AREA>::bSegCanFit(i8 nBytes)
 template <eSS SEGMENT_SIZE, i8 AREA>
 byte* BinaryStackSegment<SEGMENT_SIZE, AREA>::pySegmentHead(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+
   return m_pySegmentHead;
 }
 
@@ -615,10 +696,46 @@ byte* BinaryStackSegment<SEGMENT_SIZE, AREA>::pySegmentHead(void)
 template <eSS SEGMENT_SIZE, i8 AREA>
 bool BinaryStackSegment<SEGMENT_SIZE, AREA>::bSegIsEmpty(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+
   ASSERT(  (m_nSegEntries == 0 && m_pySegmentHead == (byte*) m_xBytes.szBoundary())
         || (m_nSegEntries  > 0 && m_pySegmentHead  < (byte*) m_xBytes.szBoundary()) );
 
   return m_nSegEntries == 0;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* Returns this segment to its original empty condition                       */
+/*----------------------------------------------------------------------------*/
+template <eSS SEGMENT_SIZE, i8 AREA>
+void BinaryStackSegment<SEGMENT_SIZE, AREA>::vSegReset(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+
+  m_nSegEntries = 0;
+  m_pySegmentHead = (byte*) m_xBytes.szBoundary();
+  m_xBytes.vReset();
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* Removes the top item off the stack in this segment                         */
+/*----------------------------------------------------------------------------*/
+template <eSS SEGMENT_SIZE, i8 AREA>
+void BinaryStackSegment<SEGMENT_SIZE, AREA>::vSegRewind(i8 nBytes)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+
+  ASSERT(nBytes > 0);
+  ASSERT(m_nSegEntries > 0);
+  ASSERT(m_pySegmentHead < (byte*) m_xBytes.szBoundary());
+
+  m_pySegmentHead += nBytes;
+  --m_nSegEntries;
+
+  ASSERT(m_pySegmentHead <= (byte*) m_xBytes.szBoundary());
+  ASSERT(m_nSegEntries >= 0);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -26,25 +26,24 @@ namespace PRIMITIVES
   class BinaryStack;
 
   // Typedefs of the 4 actual types of buffer segments
-  typedef BinaryStackSegment<eSS::TINY,   C_SIZE_TINY_OBJECT   - (11 * C_BYTES_PER_WORD) - sizeof(Bytes_t<1>)> BinaryStackTiny;
-  typedef BinaryStackSegment<eSS::SMALL,  C_SIZE_SMALL_OBJECT  - (11 * C_BYTES_PER_WORD) - sizeof(Bytes_t<1>)> BinaryStackSmall;
-  typedef BinaryStackSegment<eSS::MEDIUM, C_SIZE_MEDIUM_OBJECT - (11 * C_BYTES_PER_WORD) - sizeof(Bytes_t<1>)> BinaryStackMedium;
-  typedef BinaryStackSegment<eSS::LARGE,  C_SIZE_LARGE_OBJECT  - (11 * C_BYTES_PER_WORD) - sizeof(Bytes_t<1>)> BinaryStackLarge;
+  typedef BinaryStackSegment<eSS::TINY,   C_SIZE_TINY_OBJECT   - (14 * C_BYTES_PER_WORD) - sizeof(Bytes_t<1>)> BinaryStackTiny;
+  typedef BinaryStackSegment<eSS::SMALL,  C_SIZE_SMALL_OBJECT  - (14 * C_BYTES_PER_WORD) - sizeof(Bytes_t<1>)> BinaryStackSmall;
+  typedef BinaryStackSegment<eSS::MEDIUM, C_SIZE_MEDIUM_OBJECT - (14 * C_BYTES_PER_WORD) - sizeof(Bytes_t<1>)> BinaryStackMedium;
+  typedef BinaryStackSegment<eSS::LARGE,  C_SIZE_LARGE_OBJECT  - (14 * C_BYTES_PER_WORD) - sizeof(Bytes_t<1>)> BinaryStackLarge;
 
-  // Note: The 11 * C_BYTES_PER_WORD is for the other elements in the BinaryStack and BinaryStackSegment classes:
+  // Note: The 14 * C_BYTES_PER_WORD is for the other elements in the BinaryStack and BinaryStackSegment classes:
   //   - Object header    (1 word)
   //   - m_pHead          (1 word)
   //   - m_pNext          (1 word)
   //   - m_eSegmentSize   (1 word)
   //   - m_nItems         (1 word)
-  //   - m_fStackSizeToClass (1 word)
+  //   - m_fStackSizeToClass (4 words)
   //   - union u          (1 word)
   //   - m_nSegEntries    (1 word)
   //   - m_aySegmentHead  (1 word)
   //   - m_xFooter        (2 words)
 
-  // Typedefs for functions that translate class numbers to stack sizes and vice versa
-  typedef std::function<eSS(eCN eClassNo)> fClassToStackSize;
+  // Typedef for the function that translates stack sizes to class numbers
   typedef std::function<eCN(eSS eSize)>    fStackSizeToClass;
 
 
@@ -86,7 +85,8 @@ namespace PRIMITIVES
     Footer* aFooter(void);
     i8      nItems(void);
     byte*   pyPeekItem(i8 iItem, std::function<i8(byte*)> fStackItemSize);
-    void vRewind(i8 nBytes);
+    void    vReset();
+    void    vRewind(i8 nBytes);
     i8      nSegments(void);
     byte*   pyStackHead(void);
 
@@ -94,6 +94,7 @@ namespace PRIMITIVES
     BinaryStack* pAddSegmentFor(i8 nBytes);
     bool         bCanFitInCurrentSeg(i8 nBytes);
     BinaryStack* pLastSegment(void);
+    i8           nSegmentEntries(void);
     bool         bSegmentIsEmpty(void);
   };
 
@@ -130,6 +131,8 @@ namespace PRIMITIVES
     bool      bSegCanFit(i8 nBytes);
     byte*     pySegmentHead(void);
     bool      bSegIsEmpty(void);
+    void      vSegReset(void);
+    void      vSegRewind(i8 nBytes);
   };
 
 
