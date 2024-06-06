@@ -601,7 +601,7 @@ SizeHeap gxaSizeHeap[]
   {CN_PROCEDURE,            sizeof(Procedure),              HT_T_MEDIUM  , FILL },
   {CN_PROFILE,              sizeof(Profile),                HT_T_MEDIUM  , FILL },
   {CN_PSXTHD,               sizeof(PsxThd),                 HT_T_TINY    , FILL },
-  {CN_PTNDEF,               sizeof(PtnDef),                 HT_T_LARGE   , FILL },
+  {CN_PTNDEF,               sizeof(PtnDef),                 HT_T_MEDIUM  , FILL },
   {CN_PTNID,                sizeof(LglPtn),                 HT_T_TINY    , FILL },
   {CN_PTRVAL,               sizeof(TypeValueArea),/*yes*/   HT_INVALID   , FILL },
 
