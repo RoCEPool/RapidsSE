@@ -245,9 +245,13 @@ bool Engine::bTraceStart(void)
        vOpenTrace(true);
       break;
 
-    case BO_START:
     case BO_START_PROMPT:
+      NEVER_REACH
       vOpenTrace(false);
+      break;
+
+    case BO_START:
+       vOpenTrace(false);
       break;
 
     case BO_ADD_NODE:
@@ -300,7 +304,7 @@ void Engine::vRunCommandLine(void)
         break;
         
       case BO_START_PROMPT:
-        //NEVER_REACH
+        NEVER_REACH
         vStartSystem();
 
 
