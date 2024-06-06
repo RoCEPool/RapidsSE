@@ -48,7 +48,7 @@ void Step::vDynamicGet(void)
   
   Dynamic* pDynamic = * m_pLogicUnit->m_xpDynamic;
   
-  m_pDataStack->vPushPtr(pDynamic);
+  m_oDataStack.vPushPtr(pDynamic);
 
   EXIT();
 }
@@ -72,16 +72,16 @@ void Step::vDynamicExecute(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the trace flag
-  bool bTrace = m_pDataStack->iPopBol(__func__);
+  bool bTrace = m_oDataStack.iPopBol(__func__);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the function pointer
   bool (*afFun)(void*);
-  afFun = (bool (*)(void*))m_pDataStack->iPopInt(__func__);
+  afFun = (bool (*)(void*))m_oDataStack.iPopInt(__func__);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the data buffer
-  DataBuffer* pDataBuffer = _pDataBuffer(m_pDataStack->pPopPtr(__func__));
+  DataBuffer* pDataBuffer = _pDataBuffer(m_oDataStack.pPopPtr(__func__));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // setup DynamicT
@@ -147,9 +147,9 @@ void Step::vDynamicExecute(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push error
   if ( !iResult )
-    m_pDataStack->vPushInt(aDynamicT->m_iErrorCode);
+    m_oDataStack.vPushInt(aDynamicT->m_iErrorCode);
 
-  m_pDataStack->vPushInt(iResult);
+  m_oDataStack.vPushInt(iResult);
 
   EXIT();
 }
@@ -163,7 +163,7 @@ void Step::vDynamicHashRowsFetch(void) {
   Dynamic *pDynamic = *m_pLogicUnit->m_xpDynamic;
   Dynamic_T *aDynamicT = pDynamic->aDynamicT();
 
-  m_pDataStack->vPushInt(aDynamicT->m_bGeneratePot);
+  m_oDataStack.vPushInt(aDynamicT->m_bGeneratePot);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -174,7 +174,7 @@ void Step::vDynamicIsIndexScanStore(void)
   ENTRY();
 
   Dynamic* pDynamic = * m_pLogicUnit->m_xpDynamic;
-  bool bIndexScan = m_pDataStack->iPopBol(__func__);
+  bool bIndexScan = m_oDataStack.iPopBol(__func__);
 
   pDynamic->aDynamicT()->m_bIndexScan = bIndexScan;
 
@@ -190,7 +190,7 @@ void Step::vDynamicIsIndexScanFetch(void)
 
   Dynamic* pDynamic = * m_pLogicUnit->m_xpDynamic;
 
-  m_pDataStack->vPushBol(pDynamic->aDynamicT()->m_bIndexScan);
+  m_oDataStack.vPushBol(pDynamic->aDynamicT()->m_bIndexScan);
 
   EXIT();
 }
@@ -217,7 +217,7 @@ void Step::vDynamicStreamDefOut(void)
   Dynamic* pDynamic = *m_pLogicUnit->m_xpDynamic;
 
   StreamDef* pStreamDef = new StreamDef((StreamDef*)pDynamic->aDynamicT()->m_aStreamDefOut);
-  m_pDataStack->vPushPtr(pStreamDef);
+  m_oDataStack.vPushPtr(pStreamDef);
 
   EXIT();
 }

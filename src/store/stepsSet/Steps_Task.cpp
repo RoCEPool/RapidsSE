@@ -71,12 +71,12 @@ void Step::vTaskIsWaiting(void)
 {
   ENTRY();
 
-  Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
+  Task* pThatTask = _pTask(m_oDataStack.pPopPtr(__func__));
 
   // should never s=check for DEDICATED tasks
   RASSERT(! pThatTask->bDedicatedThread());
 
-  m_pDataStack->vPushInt(pThatTask->eState() == TS_WAITING ? true : false);
+  m_oDataStack.vPushInt(pThatTask->eState() == TS_WAITING ? true : false);
 
   EXIT();
 }
@@ -90,7 +90,7 @@ void Step::vTaskNameFetch(void)
 
   s256 sTaskNm((Stz*)szTaskNm());
 
-  m_pDataStack->vPushStr(sTaskNm);
+  m_oDataStack.vPushStr(sTaskNm);
 
   EXIT();
 }
@@ -109,7 +109,7 @@ void Step::vTaskAcksStore(void)
 {
   ENTRY();
 
-  i8 nAcksRequired = m_pDataStack->iPopAsInt(__func__);
+  i8 nAcksRequired = m_oDataStack.iPopAsInt(__func__);
 
   ASSERT(0 == m_oAcksRmg.iPrintOnlyValue());
 
@@ -137,7 +137,7 @@ void Step::vTaskDebugMarkFetch(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt(m_iDebugMark);
+  m_oDataStack.vPushInt(m_iDebugMark);
 
   EXIT();
 }
@@ -149,7 +149,7 @@ void Step::vTaskDebugMarkStore(void)
 {
   ENTRY();
 
-  m_iDebugMark = m_pDataStack->iPopInt(__func__);
+  m_iDebugMark = m_oDataStack.iPopInt(__func__);
 
   EXIT();
 }
@@ -185,7 +185,7 @@ void Step::vTaskGet(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushPtr(this);
+  m_oDataStack.vPushPtr(this);
 
   EXIT();
 }
@@ -212,7 +212,7 @@ void Step::vTaskException(void)
 
                      );
 
-  m_pDataStack->vPushStr(sException);
+  m_oDataStack.vPushStr(sException);
 
   EXIT();
 }
@@ -250,7 +250,7 @@ void Step::vTaskIsLocked(void)
 
   bool bLocked = m_okLock.bIsLocked();
 
-  m_pDataStack->vPushInt(bLocked);
+  m_oDataStack.vPushInt(bLocked);
 
   EXIT();
 }
@@ -262,7 +262,7 @@ void Step::vTaskOperandYieldFetch(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt(m_nOperandYield);
+  m_oDataStack.vPushInt(m_nOperandYield);
 
   EXIT();
 }
@@ -274,7 +274,7 @@ void Step::vTaskOperandYieldStore(void)
 {
   ENTRY();
 
-  m_nOperandYield = m_pDataStack->iPopInt(__func__);
+  m_nOperandYield = m_oDataStack.iPopInt(__func__);
 
   EXIT();
 }
@@ -286,9 +286,9 @@ void Step::vTaskPreHibernate(void)
 {
   ENTRY();
 
-//  m_pAuxStack->vBeginEach_forward();
-//  m_pDataStack->vBeginEach_forward();
-//  m_pReturnStack->vBeginEach_forward();
+//  m_oAuxStack.vBeginEach_forward();
+//  m_oDataStack.vBeginEach_forward();
+//  m_oReturnStack.vBeginEach_forward();
 
   while (m_pLocalFrame) {
 
@@ -384,7 +384,7 @@ void Step::vTaskSleepMsec(void)
 {
   ENTRY();
   
-  i8 nMilliSeconds = m_pDataStack->iPopInt(__func__);
+  i8 nMilliSeconds = m_oDataStack.iPopInt(__func__);
   
   i8 nMicroSeconds = nMilliSeconds * C_1K;
   
@@ -402,7 +402,7 @@ void Step::vTaskSleepSsec(void)
 {
   ENTRY();
   
-  i8 nSeconds = m_pDataStack->iPopInt(__func__);
+  i8 nSeconds = m_oDataStack.iPopInt(__func__);
   i8 nMicroSeconds = nSeconds * C_1M;
   
   vSleepUsec(nMicroSeconds);
@@ -419,7 +419,7 @@ void Step::vTaskSleepUsec(void)
 {
   ENTRY();
   
-  i8 nMicroSeconds = m_pDataStack->iPopInt(__func__);
+  i8 nMicroSeconds = m_oDataStack.iPopInt(__func__);
   
   vSleepUsec(nMicroSeconds);
   vGrabTaskLock((Stz*)__func__);
@@ -435,7 +435,7 @@ void Step::vTaskThreadFetch(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(m_pThread);
+  m_oDataStack.vPushPtr(m_pThread);
   
   EXIT();
 }
@@ -447,7 +447,7 @@ void Step::vTaskTraceFetch(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(m_iTraceMask);
+  m_oDataStack.vPushInt(m_iTraceMask);
   
   EXIT();
 }
@@ -459,7 +459,7 @@ void Step::vTaskTraceStore(void)
 {
   ENTRY();
   
-  m_iTraceMask = m_pDataStack->iPopInt(__func__);
+  m_iTraceMask = m_oDataStack.iPopInt(__func__);
   
   EXIT();
 }
@@ -471,7 +471,7 @@ void Step::vTaskTransitionStore(void)
 {
   ENTRY();
   
-  eTR eTransition = (eTR)m_pDataStack->iPopInt(__func__);
+  eTR eTransition = (eTR)m_oDataStack.iPopInt(__func__);
 
   RASSERT(bIsLocked());
   m_eTransition = eTransition;

@@ -26,12 +26,12 @@ void Step::vBytesMagnitude(void)
 {
   ENTRY();
   
-  i8 iBytes = m_pDataStack->iPopInt(__func__);
+  i8 iBytes = m_oDataStack.iPopInt(__func__);
   
   s256 sMag;
   MagLib::vByteMag(iBytes, sMag);
   
-  m_pDataStack->vPushStr(sMag);
+  m_oDataStack.vPushStr(sMag);
   
   EXIT();
 }
@@ -43,15 +43,15 @@ void Step::vNumberMagnitude(void)
 {
   ENTRY();
   
-  i8 iNumber = m_pDataStack->iPopInt(__func__);
+  i8 iNumber = m_oDataStack.iPopInt(__func__);
   
-  i8 iScale = m_pDataStack->iPopInt(__func__);
+  i8 iScale = m_oDataStack.iPopInt(__func__);
   
   s256 s;
   
   MagLib::vByteMag(iNumber, iScale, s);
   
-  m_pDataStack->vPushStr(s);
+  m_oDataStack.vPushStr(s);
   
   EXIT();
 }

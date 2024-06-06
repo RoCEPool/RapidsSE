@@ -32,11 +32,11 @@ void Step::vObjectClassFetch(void)
 {
   ENTRY();
   
-  Object* pObject = m_pDataStack->pPopPtr(__func__);
+  Object* pObject = m_oDataStack.pPopPtr(__func__);
   
   eCN eClassNo = pObject->eGetClassNo();
   
-  m_pDataStack->vPushInt(eClassNo);
+  m_oDataStack.vPushInt(eClassNo);
   
   EXIT();
 }
@@ -48,9 +48,9 @@ void Step::vObjectClassStore(void)
 {
   ENTRY();
   
-  Object* pObject = m_pDataStack->pPopPtr(__func__);
+  Object* pObject = m_oDataStack.pPopPtr(__func__);
   
-  i8 iClassNo = m_pDataStack->iPopInt(__func__);
+  i8 iClassNo = m_oDataStack.iPopInt(__func__);
 
   pObject->vSetClassNo((eCN)iClassNo);
   
@@ -68,9 +68,9 @@ void Step::vObjectFetch(void)
   
   SenCell xObjectVar;
   
-  m_pReturnStack->vPeekTypeValueArea(iPick,xObjectVar);
+  m_oReturnStack.vPeekTypeValueArea(iPick, xObjectVar);
   
-  m_pDataStack->vPushSenCell(xObjectVar);
+  m_oDataStack.vPushSenCell(xObjectVar);
   
   EXIT();
 }
@@ -82,7 +82,7 @@ void Step::vObjectMagicMark(void)
 {
   ENTRY();
   
-  Object* pObject = m_pDataStack->pPopPtr(__func__);
+  Object* pObject = m_oDataStack.pPopPtr(__func__);
   
   pObject->vSetMagic();
   
@@ -96,13 +96,13 @@ void Step::vObjectPostRecvWordFetch(void)
 {
   ENTRY();
   
-  Object* pObject = m_pDataStack->pPopPtr(__func__);
+  Object* pObject = m_oDataStack.pPopPtr(__func__);
   
   eCN eClassNo = pObject->eGetClassNo();
   
   Word* pWord = gxaSizeHeap[eClassNo].m_pPostRecvWord;
   
-  m_pDataStack->vPushPtr(pWord);
+  m_oDataStack.vPushPtr(pWord);
   
   EXIT();
 }
@@ -114,13 +114,13 @@ void Step::vObjectPreSendWordFetch(void)
 {
   ENTRY();
   
-  Object* pObject = m_pDataStack->pPopPtr(__func__);
+  Object* pObject = m_oDataStack.pPopPtr(__func__);
   
   eCN eClassNo = pObject->eGetClassNo();
   
   Word* pWord = gxaSizeHeap[eClassNo].m_pPreSendWord;
   
-  m_pDataStack->vPushPtr(pWord);
+  m_oDataStack.vPushPtr(pWord);
   
   EXIT();
 }
@@ -136,9 +136,9 @@ void Step::vObjectStore(void)
   
   SenCell xObjectVar;
   
-  m_pDataStack->vPopSenCell(xObjectVar,__func__);
+  m_oDataStack.vPopSenCell(xObjectVar, __func__);
   
-  m_pReturnStack->vPokeItem(iPeek,xObjectVar);
+  m_oReturnStack.vPokeItem(iPeek, xObjectVar);
   
   EXIT();
 }

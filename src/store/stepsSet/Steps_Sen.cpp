@@ -114,7 +114,7 @@ void Step::vSenCreateFromInRoot(void)
   ENTRY();
   
   s256 sName;
-  m_pDataStack->vPopStr(sName,__func__);
+  m_oDataStack.vPopStr(sName, __func__);
   
   Dic* pDic = AM::DIC::pRoot();
   
@@ -123,7 +123,7 @@ void Step::vSenCreateFromInRoot(void)
   
   //m_pSenCompiler->vCurrentWord(pNewWord);
   
-  m_pDataStack->vPushPtr(pNewWord);
+  m_oDataStack.vPushPtr(pNewWord);
 
   EXIT();
 }
@@ -149,7 +149,7 @@ void Step::vSenDoColon(void)
   CodeCell* aStartCellOfCalledCodeBlock = * aAddressOf__m_aInxPtr;
   
   
-  m_pReturnStack->vPushFip(m_aInxPtr);
+  m_oReturnStack.vPushFip(m_aInxPtr);
   
   
   m_aInxPtr = aStartCellOfCalledCodeBlock;
@@ -168,7 +168,7 @@ void Step::vSenDoColon(void)
 //  fpSTEPFN* afpEntryCell =
 //    (fpSTEPFN*) ((m_aInxPtr - 1)->m_afpStepFn + 1);
 //
-//  m_pReturnStack->vPushFip(m_aInxPtr);
+//  m_oReturnStack.vPushFip(m_aInxPtr);
 //  m_aInxPtr = *(CodeCell**)afpEntryCell;
 //
 //   if ( (m_iTraceMask & C_TRACE_ROUTINES) )
@@ -186,7 +186,7 @@ void Step::vSenEnterTrace(void)
   ENTRY();
   
   SenCell xVariable;
-  m_pDataStack->vPopSenCell(xVariable,__func__);
+  m_oDataStack.vPopSenCell(xVariable, __func__);
   
   Stz* szVal = xVariable.szStz();
   vTrace(">>> %s\n"_Stz,szVal);
@@ -203,13 +203,13 @@ void Step::vSenExecute(void)
   
   fpSTEPFN fpStepFn;
 
-  Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
+  Word* pWord = _pWord(m_oDataStack.pPopPtr(__func__));
   
   eWK eWord = pWord->eWord();
   
   switch(eWord) {
     case WK_CPPOBJECT:
-      m_pReturnStack->vPushFip(m_aInxPtr);
+      m_oReturnStack.vPushFip(m_aInxPtr);
       m_aInxPtr = pWord->aEntryCell();
       break;
           
@@ -223,7 +223,7 @@ void Step::vSenExecute(void)
       break;
           
     case WK_COLON:
-      m_pReturnStack->vPushFip(m_aInxPtr);
+      m_oReturnStack.vPushFip(m_aInxPtr);
       m_aInxPtr = pWord->aEntryCell();
       break;
           
@@ -242,7 +242,7 @@ void Step::vSenExitTrace(void)
   ENTRY();
   
   SenCell xVariable;
-  m_pDataStack->vPopSenCell(xVariable,__func__);
+  m_oDataStack.vPopSenCell(xVariable, __func__);
   
   Stz* szVal = xVariable.szStz();
   vTrace("<<< %s\n"_Stz,szVal);
@@ -257,19 +257,19 @@ void Step::vSenExit_RT(void)
 {
   ENTRY();
   
-  //vTrace("Exit: r eturn stack %lld\n"_Stz, m_pReturnStack->iValues());
+  //vTrace("Exit: r eturn stack %lld\n"_Stz, m_oReturnStack.iValues());
   
   if ( (m_iTraceMask & C_TRACE_ROUTINES) )
     Task::vTracePoint("<"_Stz);
   
   if (m_pLocalFrame
-      && m_pLocalFrame->aDiscardPoint() == (TypeValueArea*)m_pReturnStack->pStackHead())
+      && m_pLocalFrame->aDiscardPoint() == (TypeValueArea*)m_oReturnStack.pStackHead())
     vLocalsFramePop();
   
   // make sure we don't return to nowhere
-  ASSERT(m_pReturnStack->nValues());
+  ASSERT(m_oReturnStack.nValues());
   
-  CodeCell* aCell = m_pReturnStack->aPopFip(__func__);
+  CodeCell* aCell = m_oReturnStack.aPopFip(__func__);
   
   m_aInxPtr = aCell;
   
@@ -306,7 +306,7 @@ void Step::vSenFind(void)
     pCurrentWord->vEncodePush(xVar);
   }
   else {
-    m_pDataStack->vPushPtr(pWord);
+    m_oDataStack.vPushPtr(pWord);
   }
   
   EXIT();
@@ -643,7 +643,7 @@ void Step::vSenJumpFalse(void)
 {
   ENTRY();
   
-  i8 iVal = m_pDataStack->iPopAsInt(__func__);
+  i8 iVal = m_oDataStack.iPopAsInt(__func__);
   
   // n.b. the IP points to the jump arg
   
@@ -664,7 +664,7 @@ void Step::vSenJumpTrue(void)
 {
   ENTRY();
   
-  i8 iVal = m_pDataStack->iPopAsInt(__func__);
+  i8 iVal = m_oDataStack.iPopAsInt(__func__);
   
   // n.b. the IP points to the jump arg
   
@@ -685,13 +685,13 @@ void Step::vSenMungedText(void)
 {
   ENTRY();
 
-  i8 i_Text = m_pDataStack->iPopInt(__func__);
+  i8 i_Text = m_oDataStack.iPopInt(__func__);
   
   Stz* szText = gszaMungedText[i_Text];
   
   //vTrace("MungedText[%lld]:\n%s\n"_Stz,i_Text,szText);
   
-  m_pDataStack->vPushStz(szText);
+  m_oDataStack.vPushStz(szText);
   
   EXIT();
 }
@@ -916,7 +916,7 @@ void Step::vSenSeriesName(void)
   ENTRY();
   
   s256 sName;
-  m_pDataStack->vPopStr(sName,__func__);
+  m_oDataStack.vPopStr(sName, __func__);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -947,7 +947,7 @@ void Step::vSenSeriesName(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  m_pDataStack->vPushStr(sNextName);
+  m_oDataStack.vPushStr(sNextName);
 
   EXIT();
 }

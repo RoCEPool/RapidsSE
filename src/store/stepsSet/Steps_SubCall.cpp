@@ -28,7 +28,7 @@ void Step::vSubCallGet(void)
 {
   ENTRY();
     
-  m_pDataStack->vPushPtr(* m_pLogicUnit->m_xpSubCall);
+  m_oDataStack.vPushPtr(* m_pLogicUnit->m_xpSubCall);
 
   EXIT();
 }
@@ -40,7 +40,7 @@ void Step::vSubCallSet(void)
 {
   ENTRY();
 
-  SubCall* pSubCall = _pSubCall(m_pDataStack->pPopPtr(__func__));
+  SubCall* pSubCall = _pSubCall(m_oDataStack.pPopPtr(__func__));
 
   m_pLogicUnit->m_xpSubCall = pSubCall;
 

@@ -58,7 +58,7 @@ void Step::vRowCountsGet(void)
   
   RowCounts* pRowCounts = _pRowCounts(*m_pLogicUnit->m_xpRowCounts);
   
-  m_pDataStack->vPushPtr(pRowCounts);
+  m_oDataStack.vPushPtr(pRowCounts);
   
   EXIT();
 }
@@ -70,7 +70,7 @@ void Step::vRowCountsIsNull(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(m_pLogicUnit->m_xpRowCounts.bIsNull() ? 1 : 0);
+  m_oDataStack.vPushInt(m_pLogicUnit->m_xpRowCounts.bIsNull() ? 1 : 0);
   
   EXIT();
 }
@@ -95,7 +95,7 @@ void Step::vRowCountsAddProcessed(void)
 {
   ENTRY();
   
-  i8 nRows = m_pDataStack->iPopInt(__func__);
+  i8 nRows = m_oDataStack.iPopInt(__func__);
   ASSERT(nRows >= 0);
 
   ASSERT(!m_pLogicUnit->m_xpRowCounts.bIsNull());
@@ -112,7 +112,7 @@ void Step::vRowCountsAddSkipped(void)
 {
   ENTRY();
 
-  i8 nRows = m_pDataStack->iPopInt(__func__);
+  i8 nRows = m_oDataStack.iPopInt(__func__);
   ASSERT(nRows >= 0);
 
   ASSERT(!m_pLogicUnit->m_xpRowCounts.bIsNull());
@@ -129,7 +129,7 @@ void Step::vRowCountsAddInvalid(void)
 {
   ENTRY();
 
-  i8 nRows = m_pDataStack->iPopInt(__func__);
+  i8 nRows = m_oDataStack.iPopInt(__func__);
   ASSERT(nRows >= 0);
 
   ASSERT(!m_pLogicUnit->m_xpRowCounts.bIsNull());
@@ -146,7 +146,7 @@ void Step::vRowCountsAddInserted(void)
 {
   ENTRY();
 
-  i8 nRows = m_pDataStack->iPopInt(__func__);
+  i8 nRows = m_oDataStack.iPopInt(__func__);
   ASSERT(nRows >= 0);
 
   ASSERT(!m_pLogicUnit->m_xpRowCounts.bIsNull());
@@ -163,7 +163,7 @@ void Step::vRowCountsAddUpdated(void)
 {
   ENTRY();
 
-  i8 nRows = m_pDataStack->iPopInt(__func__);
+  i8 nRows = m_oDataStack.iPopInt(__func__);
   ASSERT(nRows >= 0);
 
   ASSERT(!m_pLogicUnit->m_xpRowCounts.bIsNull());
@@ -180,7 +180,7 @@ void Step::vRowCountsAddDeleted(void)
 {
   ENTRY();
 
-  i8 nRows = m_pDataStack->iPopInt(__func__);
+  i8 nRows = m_oDataStack.iPopInt(__func__);
   ASSERT(nRows >= 0);
 
   ASSERT(!m_pLogicUnit->m_xpRowCounts.bIsNull());
@@ -208,7 +208,7 @@ void Step::vRowCountsAreAllZeros(void)
                pRowCounts->nRowsSkipped()  +
                pRowCounts->nRowsProcessed();
 
-  m_pDataStack->vPushBol(iCount == 0);
+  m_oDataStack.vPushBol(iCount == 0);
   EXIT();
 }
 
@@ -223,12 +223,12 @@ void Step::vRowCountsGetAllCounts(void)
   RowCounts* pRowCounts = _pRowCounts(*m_pLogicUnit->m_xpRowCounts);
 
   // These are pushed in reverse order so they can be added to the __affectedRows infoset
-  m_pDataStack->vPushInt(pRowCounts->nRowsDeleted());
-  m_pDataStack->vPushInt(pRowCounts->nRowsUpdated());
-  m_pDataStack->vPushInt(pRowCounts->nRowsInserted());
-  m_pDataStack->vPushInt(pRowCounts->nRowsInvalid());
-  m_pDataStack->vPushInt(pRowCounts->nRowsSkipped());
-  m_pDataStack->vPushInt(pRowCounts->nRowsProcessed());
+  m_oDataStack.vPushInt(pRowCounts->nRowsDeleted());
+  m_oDataStack.vPushInt(pRowCounts->nRowsUpdated());
+  m_oDataStack.vPushInt(pRowCounts->nRowsInserted());
+  m_oDataStack.vPushInt(pRowCounts->nRowsInvalid());
+  m_oDataStack.vPushInt(pRowCounts->nRowsSkipped());
+  m_oDataStack.vPushInt(pRowCounts->nRowsProcessed());
 
   EXIT();
 }
@@ -240,7 +240,7 @@ void Step::vRowCountsGetNumCounters(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt(6);
+  m_oDataStack.vPushInt(6);
 
   EXIT();
 }

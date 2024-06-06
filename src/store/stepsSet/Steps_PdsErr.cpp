@@ -47,7 +47,7 @@ void Step::vPdsErrBufferTypeFetch(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt(m_pLogicUnit->m_xpPdsErr->eBufferType());
+  m_oDataStack.vPushInt(m_pLogicUnit->m_xpPdsErr->eBufferType());
 
   EXIT();
 }
@@ -64,12 +64,12 @@ void Step::vPdsErrAddExecError(void)
   Pds* pPds = _pPds(*m_pLogicUnit->m_xpPdsErr);
 
   // get the streamSet table
-  Table* pTableDef = _pTable(m_pDataStack->pPopPtr(__func__));
+  Table* pTableDef = _pTable(m_oDataStack.pPopPtr(__func__));
 
 
   // get the error information
-  eEC eErrorCode = (eEC) m_pDataStack->iPopInt(__func__);
-  m_pDataStack->vPopStr(sErrorText, __func__);
+  eEC eErrorCode = (eEC) m_oDataStack.iPopInt(__func__);
+  m_oDataStack.vPopStr(sErrorText, __func__);
 
   Grid* pGrid = AM::pGrid();
 
@@ -84,7 +84,7 @@ void Step::vPdsErrAddExecError(void)
 
   //pRow->vDump(pStreamDef);
 
-  m_pDataStack->vPushInt(pRow ? true : false);
+  m_oDataStack.vPushInt(pRow ? true : false);
 
   EXIT();
 }
@@ -96,7 +96,7 @@ void Step::vPdsErrGet(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpPdsErr);
+  m_oDataStack.vPushPtr(*m_pLogicUnit->m_xpPdsErr);
 
   EXIT();
 }
@@ -108,7 +108,7 @@ void Step::vPdsErrGetAndClear(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpPdsErr);
+  m_oDataStack.vPushPtr(*m_pLogicUnit->m_xpPdsErr);
 
   m_pLogicUnit->m_xpPdsErr = nullptr;
 
@@ -124,7 +124,7 @@ void Step::vPdsErrGetBufferIdAsAddr(void)
 
   Pds* pPds = *m_pLogicUnit->m_xpPdsErr;
 
-  m_pDataStack->vPushPtr((Object*)pPds->oGetBufferId().m_pvAsAddress);
+  m_oDataStack.vPushPtr((Object*)pPds->oGetBufferId().m_pvAsAddress);
 
   EXIT();
 }
@@ -150,7 +150,7 @@ void Step::vPdsErrIsNotNull(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt(m_pLogicUnit->m_xpPdsErr.bIsNull() ? 0 : 1);
+  m_oDataStack.vPushInt(m_pLogicUnit->m_xpPdsErr.bIsNull() ? 0 : 1);
 
   EXIT();
 }
@@ -162,7 +162,7 @@ void Step::vPdsErrIsNull(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt(m_pLogicUnit->m_xpPdsErr.bIsNull() ? 1 : 0);
+  m_oDataStack.vPushInt(m_pLogicUnit->m_xpPdsErr.bIsNull() ? 1 : 0);
 
   EXIT();
 }
@@ -176,8 +176,8 @@ void Step::vPdsErrNew(void)
 
   ASSERT(m_pLogicUnit->m_xpPdsErr.bIsNull());
 
-  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
-  eBT eBufferType = (eBT)m_pDataStack->iPopInt(__func__);
+  Table* pTable = _pTable(m_oDataStack.pPopPtr(__func__));
+  eBT eBufferType = (eBT)m_oDataStack.iPopInt(__func__);
 
   StreamDef* pStreamDef = pTable->pStreamDef();
 
@@ -193,7 +193,7 @@ void Step::vPdsErrRows(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt(m_pLogicUnit->m_xpPdsErr->nItems());
+  m_oDataStack.vPushInt(m_pLogicUnit->m_xpPdsErr->nItems());
 
   EXIT();
 }
@@ -205,7 +205,7 @@ void Step::vPdsErrSet(void)
 {
   ENTRY();
 
-  Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
+  Operand* pOperand = _pOperand(m_oDataStack.pPopPtr(__func__));
 
   ASSERT(! pOperand || m_pLogicUnit->m_xpPdsErr.bIsNull());
 

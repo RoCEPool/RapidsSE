@@ -66,11 +66,11 @@ void Step::vDynamoCompile(void)
       vTraceM("%s\n"_Stz,spPipeSpec.sz());
     }
 
-    m_pDataStack->vPushPtr(pPipeSpec);
-    m_pDataStack->vPushInt(EC_NONE);
+    m_oDataStack.vPushPtr(pPipeSpec);
+    m_oDataStack.vPushInt(EC_NONE);
   }
   else {
-    m_pDataStack->vPushInt(EC_INVALID_COMMAND);
+    m_oDataStack.vPushInt(EC_INVALID_COMMAND);
   }
   
   EXIT();
@@ -100,7 +100,7 @@ void Step::vDynamoFileNameFetch(void)
 	Dynamo* pDynamo = (* m_pLogicUnit->m_xpDynamo);
 	sFileNm.vSprint("%s_%s_%lld"_Stz,
 	  pDynamo->szName(), AM::GRID::pGetThisNode()->szNodeNm(), AM::FILE::iNextFileNo());
-	m_pDataStack->vPushStr(sFileNm);
+	m_oDataStack.vPushStr(sFileNm);
 
 	EXIT();
 }
@@ -113,9 +113,9 @@ void Step::vDynamoGet(void)
   ENTRY();
 
   if (m_pLogicUnit->m_xpDynamo.bIsNotNull())
-    m_pDataStack->vPushPtr(* m_pLogicUnit->m_xpDynamo);
+    m_oDataStack.vPushPtr(* m_pLogicUnit->m_xpDynamo);
   else
-    m_pDataStack->vPushPtr(nullptr);
+    m_oDataStack.vPushPtr(nullptr);
   
   EXIT();
 }
@@ -131,7 +131,7 @@ void Step::vDynamoNameFetch(void)
 
   Dynamo* pDynamo = (* m_pLogicUnit->m_xpDynamo);
   szName = pDynamo->szName();
-  m_pDataStack->vPushStr(szName);
+  m_oDataStack.vPushStr(szName);
 
   EXIT();
 }

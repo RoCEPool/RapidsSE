@@ -53,7 +53,7 @@ void Step::vListedJobCycleTaskLock(void)
 {
   ENTRY();
   
-  //Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
+  //Task* pThatTask = _pTask(m_oDataStack.pPopPtr(__func__));
   Job* pJob = m_pLogicUnit->m_xpListedJob.pReferencedObject();
 
   Task* pThatTask = pJob->pTask();
@@ -72,7 +72,7 @@ void Step::vListedJobFindOriginator(void)
   ENTRY();
 
   JobId tJobId;
-  tJobId = m_pDataStack->iPopAsInt(__func__);
+  tJobId = m_oDataStack.iPopAsInt(__func__);
 
   Job* pJobFound = AM::pJob_FindOriginating(tJobId, true);
 
@@ -81,10 +81,10 @@ void Step::vListedJobFindOriginator(void)
     //! borrow the job ref [ this needs to be done under lock ]
     pJobFound->vBorrowRefBy(&m_pLogicUnit->m_xpListedJob);
 
-    m_pDataStack->vPushBol(true);
+    m_oDataStack.vPushBol(true);
   }
   else {
-    m_pDataStack->vPushBol(false);
+    m_oDataStack.vPushBol(false);
   }
 
   EXIT();
@@ -98,7 +98,7 @@ void Step::vListedJobFindParticipant(void)
   ENTRY();
 
   JobId tJobId;
-  tJobId = m_pDataStack->iPopAsInt(__func__);
+  tJobId = m_oDataStack.iPopAsInt(__func__);
 
   Job* pJobFound = AM::pJob_FindParticipating(tJobId, true);
 
@@ -107,10 +107,10 @@ void Step::vListedJobFindParticipant(void)
     //! borrow the job ref [ this needs to be done under lock ]
     pJobFound->vBorrowRefBy(&m_pLogicUnit->m_xpListedJob);
 
-    m_pDataStack->vPushBol(true);
+    m_oDataStack.vPushBol(true);
   }
   else {
-    m_pDataStack->vPushBol(false);
+    m_oDataStack.vPushBol(false);
   }
 
   EXIT();
@@ -125,7 +125,7 @@ void Step::vListedJobHasTask(void)
   
   Job* pJob = m_pLogicUnit->m_xpListedJob.pReferencedObject();
   
-  m_pDataStack->vPushInt(pJob->pTask() ? true : false);
+  m_oDataStack.vPushInt(pJob->pTask() ? true : false);
   
   EXIT();
 }
@@ -140,7 +140,7 @@ void Step::vListedJobNodeLossFetch(void)
 
   Job* pJob = m_pLogicUnit->m_xpListedJob.pReferencedObject();
 
-  m_pDataStack->vPushInt(pJob->bNodeLoss());
+  m_oDataStack.vPushInt(pJob->bNodeLoss());
 
   EXIT();
 }
@@ -154,7 +154,7 @@ void Step::vListedJobPointer(void)
   
   Job* pJob = m_pLogicUnit->m_xpListedJob.pReferencedObject();
 
-  m_pDataStack->vPushPtr(pJob);
+  m_oDataStack.vPushPtr(pJob);
 
   EXIT();
 }
@@ -166,7 +166,7 @@ void Step::vListedJobReferences(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt(m_pLogicUnit->m_xpListedJob.nReferences());
+  m_oDataStack.vPushInt(m_pLogicUnit->m_xpListedJob.nReferences());
   
   EXIT();
 }
@@ -193,7 +193,7 @@ void Step::vListedJobScheduleNextPhase(void)
 {
   ENTRY();
     
-  //Job* pJobParticipant = _pJob(m_pDataStack->pPopPtr(__func__));
+  //Job* pJobParticipant = _pJob(m_oDataStack.pPopPtr(__func__));
   Job* pJob = m_pLogicUnit->m_xpListedJob.pReferencedObject();
 
   Task* pTaskParticipant = pJob->pTask();
@@ -240,7 +240,7 @@ void Step::vListedJobTaskFetch(void)
   
   Job* pJob = m_pLogicUnit->m_xpListedJob.pReferencedObject();
 
-  m_pDataStack->vPushPtr(pJob->pTask());
+  m_oDataStack.vPushPtr(pJob->pTask());
 
   EXIT();
 }
@@ -252,14 +252,14 @@ void Step::vListedJobTaskStateFetch(void)
 {
   ENTRY();
   
-  //Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
+  //Task* pThatTask = _pTask(m_oDataStack.pPopPtr(__func__));
   Job* pJob = m_pLogicUnit->m_xpListedJob.pReferencedObject();
 
   Task* pThatTask = pJob->pTask();
 
   eTS eState = pThatTask->m_eState;
   
-  m_pDataStack->vPushInt((i8)eState);
+  m_oDataStack.vPushInt((i8)eState);
   
   EXIT();
 }

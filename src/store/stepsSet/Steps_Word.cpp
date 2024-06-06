@@ -65,9 +65,9 @@ void Step::vWordAllot(void)
 {
   ENTRY();
   
-  Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
+  Word* pWord = _pWord(m_oDataStack.pPopPtr(__func__));
   
-  i8 nBytes = m_pDataStack->iPopInt(__func__);
+  i8 nBytes = m_oDataStack.iPopInt(__func__);
   RASSERT(nBytes);
 
   Object* pEmbObject = (Object*)pWord->ayAllot(nBytes);
@@ -76,7 +76,7 @@ void Step::vWordAllot(void)
   pEmbObject->vSetMagic();
   pEmbObject->vSetClassNo(CN_NONE);
 
-  m_pDataStack->vPushPtr(pEmbObject);
+  m_oDataStack.vPushPtr(pEmbObject);
 
   EXIT();
 }
@@ -88,11 +88,11 @@ void Step::vWordBreakPtFetch(void)
 {
   ENTRY();
   
-  Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
+  Word* pWord = _pWord(m_oDataStack.pPopPtr(__func__));
   
   bool bBreakPt = pWord->bBreakPt();
   
-  m_pDataStack->vPushInt(bBreakPt);
+  m_oDataStack.vPushInt(bBreakPt);
   
   EXIT();
 }
@@ -104,9 +104,9 @@ void Step::vWordBreakPtStore(void)
 {
   ENTRY();
   
-  Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
+  Word* pWord = _pWord(m_oDataStack.pPopPtr(__func__));
   
-  i8 iBreakPt = m_pDataStack->iPopInt(__func__);
+  i8 iBreakPt = m_oDataStack.iPopInt(__func__);
   
   pWord->vBreakPt(iBreakPt);
   
@@ -122,9 +122,9 @@ void Step::vWordCategoryFetch(void)
 {
   ENTRY();
 
-  Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
+  Word* pWord = _pWord(m_oDataStack.pPopPtr(__func__));
 
-  m_pDataStack->vPushInt((pWord->eCategoryEnum()));
+  m_oDataStack.vPushInt((pWord->eCategoryEnum()));
 
   EXIT();
 }
@@ -136,9 +136,9 @@ void Step::vWordCategoryStore(void)
 {
   ENTRY();
 
-  Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
+  Word* pWord = _pWord(m_oDataStack.pPopPtr(__func__));
 
-  eWC eCategory = (eWC) m_pDataStack->iPopInt(__func__);
+  eWC eCategory = (eWC) m_oDataStack.iPopInt(__func__);
 
   pWord->vCategoryEnum(eCategory);
 
@@ -152,11 +152,11 @@ void Step::vWordCategoryString(void)
 {
   ENTRY();
 
-  Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
+  Word* pWord = _pWord(m_oDataStack.pPopPtr(__func__));
 
 	s256 eCategory = aWC[pWord->eCategoryEnum()];
 
-  m_pDataStack->vPushStr(eCategory);
+  m_oDataStack.vPushStr(eCategory);
 
   EXIT();
 }
@@ -168,7 +168,7 @@ void Step::vWordDump(void)
 {
   ENTRY();
   
-  Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
+  Word* pWord = _pWord(m_oDataStack.pPopPtr(__func__));
   
   pWord->vContentDump();
   
@@ -182,13 +182,13 @@ void Step::vWordEmbObject(void)
 {
   ENTRY();
   
-  Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
+  Word* pWord = _pWord(m_oDataStack.pPopPtr(__func__));
   
   char* aWsp = pWord->aWspArea();
   
   Object* pEmbObject = reinterpret_cast<Object*>(aWsp);
   
-  m_pDataStack->vPushPtr(pEmbObject);
+  m_oDataStack.vPushPtr(pEmbObject);
   
   EXIT();
 }
@@ -200,11 +200,11 @@ void Step::vWordEnmSetFetch(void)
 {
   ENTRY();
   
-  Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
+  Word* pWord = _pWord(m_oDataStack.pPopPtr(__func__));
   
   TagSet* pWrdTagSet = pWord->pWrdTagSet();
   
-   m_pDataStack->vPushPtr(pWrdTagSet);
+   m_oDataStack.vPushPtr(pWrdTagSet);
   
   EXIT();
 }
@@ -216,9 +216,9 @@ void Step::vWordEnmSetStore(void)
 {
   ENTRY();
   
-  Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
+  Word* pWord = _pWord(m_oDataStack.pPopPtr(__func__));
   
-  TagSet* pWrdTagSet = _pTagSet(m_pDataStack->pPopPtr(__func__));
+  TagSet* pWrdTagSet = _pTagSet(m_oDataStack.pPopPtr(__func__));
   
   pWord->vWrdTagSet(pWrdTagSet);
   
@@ -232,11 +232,11 @@ void Step::vWordExitHookGet(void)
 {
   ENTRY();
   
-  Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
+  Word* pWord = _pWord(m_oDataStack.pPopPtr(__func__));
 
 	s256 sExitHook(pWord->szExitHook());
   
-  m_pDataStack->vPushStr(sExitHook);
+  m_oDataStack.vPushStr(sExitHook);
   
   EXIT();
 }
@@ -248,10 +248,10 @@ void Step::vWordExitHookSet(void)
 {
   ENTRY();
   
-  Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
+  Word* pWord = _pWord(m_oDataStack.pPopPtr(__func__));
 
 	s256 sExitHook;
-  m_pDataStack->vPopStr(sExitHook,__func__);
+  m_oDataStack.vPopStr(sExitHook, __func__);
   
   pWord->vExitHook(sExitHook);
   
@@ -266,11 +266,11 @@ void Step::vWordFind(void)
   ENTRY();
   
   s256 sWordNm;
-  m_pDataStack->vPopStr(sWordNm,__func__);
+  m_oDataStack.vPopStr(sWordNm, __func__);
     
   Word* pWordFound = m_oDicStack.pFindWord(sWordNm);
   
-  m_pDataStack->vPushPtr(pWordFound);
+  m_oDataStack.vPushPtr(pWordFound);
 
   EXIT();
 }
@@ -282,13 +282,13 @@ void Step::vWordDelete(void)
 {
   ENTRY();
   
-  Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
+  Word* pWord = _pWord(m_oDataStack.pPopPtr(__func__));
   
   Word* pRemovedWord = m_oDicStack.pRemoveWord(pWord->szWordNm());
   ASSERT(pRemovedWord);
   
   if (AM::TRACE::bVerbose(C_VB_WORD))
-    m_pReturnStack->vDump(&m_oDicStack,"ReturnStack:"_Stz);
+    m_oReturnStack.vDump(&m_oDicStack, "ReturnStack:"_Stz);
   
   delete pRemovedWord;
   
@@ -302,11 +302,11 @@ void Step::vWordImmediateGet(void)
 {
   ENTRY();
   
-  Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
+  Word* pWord = _pWord(m_oDataStack.pPopPtr(__func__));
   
   i8 iImmediate = pWord->bImmediate();
   
-  m_pDataStack->vPushInt(iImmediate);
+  m_oDataStack.vPushInt(iImmediate);
   
   EXIT();
 }
@@ -318,9 +318,9 @@ void Step::vWordImmediateSet(void)
 {
   ENTRY();
   
-  Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
+  Word* pWord = _pWord(m_oDataStack.pPopPtr(__func__));
   
-  i8 iImmediate = m_pDataStack->iPopBol(__func__);
+  i8 iImmediate = m_oDataStack.iPopBol(__func__);
   
   pWord->vImmediate(iImmediate);
   
@@ -336,11 +336,11 @@ void Step::vWordIsImmediate(void)
   
   // we should just modify the pointers rather than actually pop
   
-  Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
+  Word* pWord = _pWord(m_oDataStack.pPopPtr(__func__));
   
   i8 iIsImmediate = pWord->bImmediate() ? 1 : 0;
   
-  m_pDataStack->vPushInt(iIsImmediate);
+  m_oDataStack.vPushInt(iIsImmediate);
   
   EXIT();
 }
@@ -352,11 +352,11 @@ void Step::vWordIsIntrinsic(void)
 {
   ENTRY();
   
-  Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
+  Word* pWord = _pWord(m_oDataStack.pPopPtr(__func__));
   
   i8 iIsPrimitive = WK_INTRINSIC == pWord->eWord() ? 1 : 0;
   
-  m_pDataStack->vPushInt(iIsPrimitive);
+  m_oDataStack.vPushInt(iIsPrimitive);
   
   EXIT();
 }
@@ -368,11 +368,11 @@ void Step::vWordKindFetch(void)
 {
   ENTRY();
   
-  Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
+  Word* pWord = _pWord(m_oDataStack.pPopPtr(__func__));
   
   eWK eWord = pWord->eWord();
   
-  m_pDataStack->vPushInt(eWord);
+  m_oDataStack.vPushInt(eWord);
   
   EXIT();
 }
@@ -384,9 +384,9 @@ void Step::vWordKindStore(void)
 {
   ENTRY();
   
-  Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
+  Word* pWord = _pWord(m_oDataStack.pPopPtr(__func__));
   
-  i8 iWordKind = m_pDataStack->iPopInt(__func__);
+  i8 iWordKind = m_oDataStack.iPopInt(__func__);
   
   pWord->vWord((eWK)iWordKind);
   
@@ -400,18 +400,18 @@ void Step::vWordLocate(void)
 {
   ENTRY();
   
-  CodeCell* aHasCell = m_pDataStack->aPopFip(__func__);
+  CodeCell* aHasCell = m_oDataStack.aPopFip(__func__);
   
   Word* pLocatedWord = m_oDicStack.pLocateRoutine(aHasCell);
   
   if (pLocatedWord) {
     s256 sName;
     sName = pLocatedWord->szWordNm();
-    m_pDataStack->vPushStr(sName);
+    m_oDataStack.vPushStr(sName);
   }
   else {
     i8 iZero = 0;
-    m_pDataStack->vPushInt(iZero);
+    m_oDataStack.vPushInt(iZero);
   }
 
   EXIT();
@@ -424,11 +424,11 @@ void Step::vWordNameFetch(void)
 {
   ENTRY();
   
-  Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
+  Word* pWord = _pWord(m_oDataStack.pPopPtr(__func__));
   
   s256 sWordName(pWord->szWordNm());
   
-  m_pDataStack->vPushStr(sWordName);
+  m_oDataStack.vPushStr(sWordName);
   
   EXIT();
 }
@@ -440,10 +440,10 @@ void Step::vWordNameStore(void)
 {
   ENTRY();
   
-  Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
+  Word* pWord = _pWord(m_oDataStack.pPopPtr(__func__));
 
   s256 sWordNm;
-  m_pDataStack->vPopStr(sWordNm,__func__);
+  m_oDataStack.vPopStr(sWordNm, __func__);
 
   pWord->vWordNm(sWordNm);
     
@@ -458,7 +458,7 @@ void Step::vWordNew(void)
   ENTRY();
   
   s256 sWordNm;
-  m_pDataStack->vPopStr(sWordNm,__func__);
+  m_oDataStack.vPopStr(sWordNm, __func__);
   
   Dic* pDic;
   if (m_oDicStack.nItems())
@@ -468,7 +468,7 @@ void Step::vWordNew(void)
 
   Word* pNewWord = new(pDic) Word(sWordNm);
     
-  m_pDataStack->vPushPtr(pNewWord);
+  m_oDataStack.vPushPtr(pNewWord);
   //m_pSenCompiler->vCurrentWord(pNewWord);
 
   EXIT();
@@ -481,11 +481,11 @@ void Step::vWordNext(void)
 {
   ENTRY();
   
-  Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
+  Word* pWord = _pWord(m_oDataStack.pPopPtr(__func__));
   
   Word* pNextWord = pWord->pNextWord();
   
-  m_pDataStack->vPushPtr(pNextWord);
+  m_oDataStack.vPushPtr(pNextWord);
   
   EXIT();
 }
@@ -497,11 +497,11 @@ void Step::vWordObjectFetch(void)
 {
   ENTRY();
   
-  Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
+  Word* pWord = _pWord(m_oDataStack.pPopPtr(__func__));
   
   Object* pObject = pWord->pObject();
   
-  m_pDataStack->vPushPtr(pObject);
+  m_oDataStack.vPushPtr(pObject);
   
   EXIT();
 }
@@ -513,9 +513,9 @@ void Step::vWordObjectStore(void)
 {
   ENTRY();
   
-  Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
+  Word* pWord = _pWord(m_oDataStack.pPopPtr(__func__));
   
-  Object* pObject = m_pDataStack->pPopPtr(__func__);
+  Object* pObject = m_oDataStack.pPopPtr(__func__);
   
   pWord->vObject(pObject);
   
@@ -529,11 +529,11 @@ void Step::vWordPrev(void)
 {
   ENTRY();
   
-  Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
+  Word* pWord = _pWord(m_oDataStack.pPopPtr(__func__));
   
   Word* pPrevWord = pWord->pPrevWord();
   
-  m_pDataStack->vPushPtr(pPrevWord);
+  m_oDataStack.vPushPtr(pPrevWord);
   
   EXIT();
 }
@@ -545,7 +545,7 @@ void Step::vWordResetRoutine(void)
 {
   ENTRY();
   
-  Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
+  Word* pWord = _pWord(m_oDataStack.pPopPtr(__func__));
   
   pWord->vResetCodeBlock();
   
@@ -559,7 +559,7 @@ void Step::vWordSee(void)
 {
   ENTRY();
   
-  Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
+  Word* pWord = _pWord(m_oDataStack.pPopPtr(__func__));
   
   AM::WORD::vDisassemble(pWord,&m_oDicStack);
   
@@ -573,7 +573,7 @@ void Step::vWordXcheckInxPtr(void)
 {
   ENTRY();
   
-  Word* pTestWord = _pWord(m_pDataStack->pPopPtr(__func__));
+  Word* pTestWord = _pWord(m_oDataStack.pPopPtr(__func__));
   UNUSED(pTestWord);
 
   Word* pExeWord  = CodeBlock::pToWord(m_aInxPtr);

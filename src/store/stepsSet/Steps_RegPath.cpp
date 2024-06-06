@@ -36,7 +36,7 @@ void Step::vRegPathGet(void)
     
   Object* pPtrDicStack = & m_oDicStack;
   
-  m_pDataStack->vPushPtr(pPtrDicStack);
+  m_oDataStack.vPushPtr(pPtrDicStack);
   
   EXIT();
 }
@@ -50,7 +50,7 @@ void Step::vRegPathDepth(void)
   
   i8 iDepth =  m_oDicStack.nItems();
   
-  m_pDataStack->vPushInt(iDepth);
+  m_oDataStack.vPushInt(iDepth);
   
   EXIT();
 }
@@ -99,11 +99,11 @@ void Step::vRegPathPick(void)
 {
   ENTRY();
   
-  i8 iDic = m_pDataStack->iPopInt(__func__);
+  i8 iDic = m_oDataStack.iPopInt(__func__);
   
   Object* pPtrDic =  m_oDicStack.pPick(iDic);
 
-  m_pDataStack->vPushPtr(pPtrDic);
+  m_oDataStack.vPushPtr(pPtrDic);
   
   EXIT();
 }
@@ -115,7 +115,7 @@ void Step::vRegPathPush(void)
 {
   ENTRY();
   
-  Dic* pDic = _pDic(m_pDataStack->pPopPtr(__func__));
+  Dic* pDic = _pDic(m_oDataStack.pPopPtr(__func__));
   
    m_oDicStack.vPush(pDic);
   

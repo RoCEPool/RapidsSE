@@ -56,7 +56,7 @@ void Step::vTracePoint(void)
   
   s256 sPointName;
   
-  m_pDataStack->vPopStr(sPointName,__func__);
+  m_oDataStack.vPopStr(sPointName, __func__);
   
   if (AM::bTracepoint())
     Task::vTracePoint(sPointName);
@@ -71,7 +71,7 @@ void Step::vTraceSet(void)
 {
   ENTRY();
   
-  i8 iTrace = m_pDataStack->iPopInt(__func__);
+  i8 iTrace = m_oDataStack.iPopInt(__func__);
   
   m_iTraceMask = iTrace;
   
@@ -90,8 +90,8 @@ void Step::vTraceSetComponent(void)
   SenCell xSenCell;
   bool bVal;
 
-  m_pDataStack->vPopStr(sKey, __func__);
-  m_pDataStack->vPopSenCell(xSenCell, __func__);
+  m_oDataStack.vPopStr(sKey, __func__);
+  m_oDataStack.vPopSenCell(xSenCell, __func__);
 
   if (xSenCell.bIsIntVal()) {
     bVal = (bool) xSenCell.iGetColVal();
@@ -108,13 +108,13 @@ void Step::vTraceSetComponent(void)
     eErrCode = EC_INVALID_TRACE_NAME;
     sErrMsg.vSprint("%s: %s"_Stz, aErrorMsg[eErrCode]);
     // Push an error message and error code onto the stack
-    m_pDataStack->vPushStr(sErrMsg);
-    m_pDataStack->vPushInt(eErrCode);
+    m_oDataStack.vPushStr(sErrMsg);
+    m_oDataStack.vPushInt(eErrCode);
     return;
   }
 
   AM::TRACE::vTraceComponent(eComponent, bVal);
-  m_pDataStack->vPushInt(eErrCode);
+  m_oDataStack.vPushInt(eErrCode);
 
   EXIT();
 }
@@ -131,13 +131,13 @@ void Step::vTraceGetComponent(void)
   SenCell xSenCell;
   eTC eComponent;
 
-  m_pDataStack->vPopSenCell(xSenCell, __func__);
+  m_oDataStack.vPopSenCell(xSenCell, __func__);
 
   if (xSenCell.bIsIntVal()) {
     iKey = xSenCell.iGetColVal();
 
     if (iKey == TC_NONE || iKey >= TC_ENUMS) {
-      m_pDataStack->vPushBol(false);
+      m_oDataStack.vPushBol(false);
       return;
     }
     eComponent = (eTC) iKey;
@@ -146,12 +146,12 @@ void Step::vTraceGetComponent(void)
     eComponent = eFromEnumTC(xSenCell.szGetColVal());
 
     if (eComponent == TC_NONE || eComponent >= TC_ENUMS) {
-      m_pDataStack->vPushBol(false);
+      m_oDataStack.vPushBol(false);
       return;
     }
   }
 
-  m_pDataStack->vPushBol(AM::TRACE::bTraceComponent(eComponent));
+  m_oDataStack.vPushBol(AM::TRACE::bTraceComponent(eComponent));
 
   EXIT();
 }
@@ -162,7 +162,7 @@ void Step::vTraceGetComponent(void)
 void Step::vTraceWithWlp(void)
 {
   ENTRY();
-  m_pDataStack->vPushBol(AM::TRACE::bTraceComponent(TC_WLP));
+  m_oDataStack.vPushBol(AM::TRACE::bTraceComponent(TC_WLP));
   EXIT();
 }
 

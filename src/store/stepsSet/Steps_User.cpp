@@ -26,7 +26,7 @@ void Step::vUserName(void)
   
   s32 sUserNme( (Stz*)getenv("USER") );
   
-  m_pDataStack->vPushStr(sUserNme);
+  m_oDataStack.vPushStr(sUserNme);
 
   EXIT();
 }

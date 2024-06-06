@@ -79,6 +79,9 @@ Task::Task(Stz* szTaskNm, Job* pJob)
 , m_okLock(this,false)
 , m_oReadLocks(this)
 , m_oWriteLocks(this)
+, m_oAuxStack(KK_AUX_STACK)
+, m_oDataStack(KK_DATA_STACK)
+, m_oReturnStack(KK_RETURN_STACK)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
@@ -96,6 +99,9 @@ Task::Task(Stz* szTaskNm, Op* pOp)
 , m_okLock(this,false)
 , m_oReadLocks(this)
 , m_oWriteLocks(this)
+, m_oAuxStack(KK_AUX_STACK)
+, m_oDataStack(KK_DATA_STACK)
+, m_oReturnStack(KK_RETURN_STACK)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
 
@@ -110,10 +116,6 @@ Task::Task(Stz* szTaskNm, Op* pOp)
   m_pSearchWord = nullptr;
 
   m_aInxPtr      = nullptr;
-
-  m_pAuxStack    = nullptr;
-  m_pDataStack   = nullptr;
-  m_pReturnStack = nullptr;
 
   m_pLocalFrame = nullptr;
   m_pLocalVars   = nullptr;
@@ -136,9 +138,9 @@ Task::Task(Stz* szTaskNm, Op* pOp)
   catch (LowMemory xLowMemory) {
     delete m_pSearchWord;
 
-    delete m_pDataStack;
-    delete m_pReturnStack;
-    delete m_pAuxStack;
+    m_oDataStack.vReset();
+    m_oReturnStack.vReset();
+    m_oAuxStack.vReset();
 
     while (m_pLocalFrame) {
 
@@ -200,11 +202,6 @@ void Task::vTask(void)
   m_pSearchWord = new(nullptr) Word(""_Stz);
 
   m_aInxPtr      = nullptr;
-  
-  m_pAuxStack    = new TypedStack(KK_AUX_STACK);
-  m_pDataStack   = new TypedStack(KK_DATA_STACK);
-  m_pReturnStack = new TypedStack(KK_RETURN_STACK);
-
 
   m_pSenCompiler = new SenCompiler;
   m_pInput       = nullptr;
@@ -244,10 +241,6 @@ Task::~Task(void) noexcept(false)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   delete m_pSearchWord;
-
-  delete m_pDataStack;
-  delete m_pReturnStack;
-  delete m_pAuxStack;
   
   while (m_pLocalFrame) {
     
@@ -917,9 +910,9 @@ void Task::vDump(void)
          m_pRecoveryWord ? m_pRecoveryWord->szWordNm() : C_NO_NAME,
          m_pRecoveryWord);
 
-  m_pDataStack->vDump(&m_oDicStack,  "m_pDataStack:"_Stz);
-  m_pReturnStack->vDump(&m_oDicStack,"m_pReturnStack:"_Stz);
-  m_pAuxStack->vDump(&m_oDicStack,   "m_pAuxStack:"_Stz);
+  m_oDataStack.vDump(&m_oDicStack, "m_pDataStack:"_Stz);
+  m_oReturnStack.vDump(&m_oDicStack, "m_pReturnStack:"_Stz);
+  m_oAuxStack.vDump(&m_oDicStack, "m_pAuxStack:"_Stz);
 
   if (m_pLocalFrame)
     m_pLocalFrame->vDump();
@@ -965,9 +958,9 @@ Word* Task::pEventHandler(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  i8 nItems = m_pReturnStack->nValues();
+  i8 nItems = m_oReturnStack.nValues();
   for (i8 i_Item = nItems; i_Item >= 0; i_Item--) {
-    TypeValueArea* aPeekedItem = m_pReturnStack->aPeekItem(i_Item);
+    TypeValueArea* aPeekedItem = m_oReturnStack.aPeekItem(i_Item);
     eCN eType = aPeekedItem->eType();
     if (CN_FIPVAL != eType)
       continue;
@@ -983,7 +976,7 @@ Word* Task::pEventHandler(void)
   }
   
 //  if (! pEventHandler) {
-//    m_pReturnStack->vDump(&m_oDicStack,
+//    m_oReturnStack.vDump(&m_oDicStack,
 //                          "ReturnStack:"_Stz);
 //
 //  }
@@ -1316,17 +1309,17 @@ void Task::vSetSenRecoverContext(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
 
-  m_pAuxStack->vReset();
-  m_pDataStack->vReset();
+  m_oAuxStack.vReset();
+  m_oDataStack.vReset();
   
   //Task::vSeeFrameStack();
   
-  while (m_pReturnStack->nValues() > 2) {
+  while (m_oReturnStack.nValues() > 2) {
     
 #ifdef WITH_LOCALS_OOM
     
     if (m_pLocalVars) {
-      void* aDiscardPoint_return = m_pReturnStack->pStackHead();
+      void* aDiscardPoint_return = m_oReturnStack.pStackHead();
       if (m_pLocalVars->aDiscardPoint() == aDiscardPoint_return) {
         m_pLocalVars->vFramePop(aDiscardPoint_return);
       }
@@ -1336,12 +1329,12 @@ void Task::vSetSenRecoverContext(void)
     
     if (m_pLocalFrame
         && m_pLocalFrame->aDiscardPoint() ==
-             (TypeValueArea*)m_pReturnStack->pStackHead())
+             (TypeValueArea*)m_oReturnStack.pStackHead())
       vLocalsPop();
 
 #endif
     
-    m_pReturnStack->vDiscardTop();
+    m_oReturnStack.vDiscardTop();
   }
   
   //Task::vSeeFrameStack();
@@ -1362,17 +1355,17 @@ void Task::vSetSenInternalErrorContext(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
 
-  m_pAuxStack->vReset();
-  m_pDataStack->vReset();
+  m_oAuxStack.vReset();
+  m_oDataStack.vReset();
 
   //Task::vSeeFrameStack();
   //WHY: why > 2
-  while (m_pReturnStack->nValues() > 2) {
+  while (m_oReturnStack.nValues() > 2) {
 
 #ifdef WITH_LOCALS_OOM
 
     if (m_pLocalVars) {
-      void* aDiscardPoint_return = m_pReturnStack->pStackHead();
+      void* aDiscardPoint_return = m_oReturnStack.pStackHead();
       if (m_pLocalVars->aDiscardPoint() == aDiscardPoint_return) {
         m_pLocalVars->vFramePop(aDiscardPoint_return);
       }
@@ -1382,12 +1375,12 @@ void Task::vSetSenInternalErrorContext(void)
 
     if (m_pLocalFrame
         && m_pLocalFrame->aDiscardPoint() ==
-           (TypeValueArea*)m_pReturnStack->pStackHead())
+           (TypeValueArea*)m_oReturnStack.pStackHead())
       vLocalsPop();
 
 #endif
 
-    m_pReturnStack->vDiscardTop();
+    m_oReturnStack.vDiscardTop();
   }
 
   //Task::vSeeFrameStack();
@@ -1408,17 +1401,17 @@ void Task::vSetSenLowMemContext(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
 
-  m_pAuxStack->vReset();
-  m_pDataStack->vReset();
+  m_oAuxStack.vReset();
+  m_oDataStack.vReset();
 
   //Task::vSeeFrameStack();
 
-  while (m_pReturnStack->nValues() > 2) {
+  while (m_oReturnStack.nValues() > 2) {
 
 #ifdef WITH_LOCALS_OOM
 
     if (m_pLocalVars) {
-      void* aDiscardPoint_return = m_pReturnStack->pStackHead();
+      void* aDiscardPoint_return = m_oReturnStack.pStackHead();
       if (m_pLocalVars->aDiscardPoint() == aDiscardPoint_return) {
         m_pLocalVars->vFramePop(aDiscardPoint_return);
       }
@@ -1428,12 +1421,12 @@ void Task::vSetSenLowMemContext(void)
 
     if (m_pLocalFrame
         && m_pLocalFrame->aDiscardPoint() ==
-             (TypeValueArea*)m_pReturnStack->pStackHead())
+             (TypeValueArea*)m_oReturnStack.pStackHead())
       vLocalsPop();
 
 #endif
 
-    m_pReturnStack->vDiscardTop();
+    m_oReturnStack.vDiscardTop();
   }
 
   //Task::vSeeFrameStack();
@@ -1516,9 +1509,9 @@ void Task::vResetSenContext(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
 
-  m_pAuxStack->vReset();
-  m_pDataStack->vReset();
-  m_pReturnStack->vReset();
+  m_oAuxStack.vReset();
+  m_oDataStack.vReset();
+  m_oReturnStack.vReset();
   
   while (m_pLocalFrame) {
     
@@ -1573,7 +1566,7 @@ void Task::vSeeFrameStack(void)
   vTrace("Current Frame =%s\n"_Stz,spWord.sz(pWord));
   vTrace("\n"_Stz,spWord.sz(pWord));
 
-  m_pReturnStack->vDump(&m_oDicStack,"Frame Stack"_Stz);
+  m_oReturnStack.vDump(&m_oDicStack, "Frame Stack"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1787,9 +1780,9 @@ void Task::vTracePoint(Stz* aMark)
   else
     sWordWithCodeCell = "<unknown>"_Stz;
   
-  i8 iAuxValues    = m_pAuxStack->nValues();
-  i8 iDataValues   = m_pDataStack->nValues();
-  i8 iReturnValues = m_pReturnStack->nValues();
+  i8 iAuxValues    = m_oAuxStack.nValues();
+  i8 iDataValues   = m_oDataStack.nValues();
+  i8 iReturnValues = m_oReturnStack.nValues();
   
   vTrace("[%s(N%d):%8s\\%lld %-11s] %-16s : a%2lld="_Stz,
         
@@ -1803,13 +1796,13 @@ void Task::vTracePoint(Stz* aMark)
          iAuxValues);
          
   s48K sStackContents;
-  m_pAuxStack->vStackContents(sStackContents);
+  m_oAuxStack.vStackContents(sStackContents);
   
   vTrace("%s"_Stz,sStackContents.azChar());
   
   vTrace(" r%2lld  d%2lld="_Stz, iReturnValues, iDataValues);
 
-  m_pDataStack->vStackContents(sStackContents);
+  m_oDataStack.vStackContents(sStackContents);
   
   vTrace("%s\n"_Stz,sStackContents.azChar());
 }
@@ -1830,8 +1823,8 @@ void Task::vTraceStep(Stz* aStepNm)
   else
     sWordWithCodeCell = "<unknown>"_Stz;
   
-  i8 iDataValues   = m_pDataStack->nValues();
-  i8 iReturnValues = m_pReturnStack->nValues();
+  i8 iDataValues   = m_oDataStack.nValues();
+  i8 iReturnValues = m_oReturnStack.nValues();
   vTrace("%-15s %15s : r%lld ; d%2d="_Stz,
          sWordWithCodeCell.azChar(),
          aStepNm,
@@ -1839,7 +1832,7 @@ void Task::vTraceStep(Stz* aStepNm)
          iDataValues);
   
   s48K sStackContents;
-  m_pDataStack->vStackContents(sStackContents);
+  m_oDataStack.vStackContents(sStackContents);
   vTrace("%s\n"_Stz,sStackContents.azChar());
 }
 

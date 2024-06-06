@@ -60,7 +60,7 @@ void Step::vParcelDeleteOld(void)
 {
   ENTRY();
 
-  Parcel* pParcel = _pParcel(m_pDataStack->pPopPtr(__func__));
+  Parcel* pParcel = _pParcel(m_oDataStack.pPopPtr(__func__));
   delete pParcel;
 
   EXIT();
@@ -77,7 +77,7 @@ void Step::vParcelDemonOut(void)
   
   //vTrace("vParcelDemonOut\n"_Stz);
 
-  Parcel* pParcel = _pParcel(m_pDataStack->pPopPtr(__func__));
+  Parcel* pParcel = _pParcel(m_oDataStack.pPopPtr(__func__));
   
   Operand* pOperand = pParcel->pGetOperand();
 
@@ -108,11 +108,11 @@ void Step::vParcelDemonNmFetch(void)
 {
   ENTRY();
 
-  Parcel* pParcel = _pParcel(m_pDataStack->pPopPtr(__func__));
+  Parcel* pParcel = _pParcel(m_oDataStack.pPopPtr(__func__));
 
   Stz* szDemonNm = pParcel->szDemonNm();
 
-  m_pDataStack->vPushStz(szDemonNm);
+  m_oDataStack.vPushStz(szDemonNm);
 
   EXIT();
 }
@@ -124,10 +124,10 @@ void Step::vParcelDemonNmStore(void)
 {
   ENTRY();
 
-  Parcel* pParcel = _pParcel(m_pDataStack->pPopPtr(__func__));
+  Parcel* pParcel = _pParcel(m_oDataStack.pPopPtr(__func__));
   
   s256 sDemonNm;
-  m_pDataStack->vPopStr(sDemonNm,__func__);
+  m_oDataStack.vPopStr(sDemonNm, __func__);
 
   pParcel->vDemonNm(sDemonNm);
 
@@ -141,11 +141,11 @@ void Step::vParcelJobIdFetch(void)
 {
   ENTRY();
 
-  Parcel* pParcel = _pParcel(m_pDataStack->pPopPtr(__func__));
+  Parcel* pParcel = _pParcel(m_oDataStack.pPopPtr(__func__));
 
   i8 iJobid = pParcel->iPipelineJobId();
   
-  m_pDataStack->vPushInt(iJobid);
+  m_oDataStack.vPushInt(iJobid);
 
   EXIT();
 }
@@ -160,7 +160,7 @@ void Step::vParcelLabel(void)
   Op* pOp = *m_pOp;
   OpSpec* pOpSpec = pOp->pOpSpec();;
 
-  Parcel* pParcel = _pParcel(m_pDataStack->pPopPtr(__func__));
+  Parcel* pParcel = _pParcel(m_oDataStack.pPopPtr(__func__));
 
   pParcel->vLabel(pOp->pOuterJobOfOp()->tDistId().iAsI8(),
                   pOpSpec->eParcelForward());
@@ -177,7 +177,7 @@ void Step::vParcelPipeOut(void)
   
   //vTrace("vParcelPipeOut\n"_Stz);
 
-  Parcel* pParcel = _pParcel(m_pDataStack->pPopPtr(__func__));
+  Parcel* pParcel = _pParcel(m_oDataStack.pPopPtr(__func__));
   
   Operand* pOperand = pParcel->pGetOperand();
 
@@ -428,7 +428,7 @@ void Step::vParcelSendOutOld(void)
 {
   ENTRY();
     
-  Parcel* pParcel = _pParcel(m_pDataStack->pPopPtr(__func__));
+  Parcel* pParcel = _pParcel(m_oDataStack.pPopPtr(__func__));
   
   // revised job/op model
   Op* pCurrOp = *m_pOp;
@@ -457,7 +457,7 @@ void Step::vParcelAddOperand(void)
   Op* pOp = *m_pOp;
   OpSpec* pOpSpec = pOp->pOpSpec();
 
-  Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
+  Operand* pOperand = _pOperand(m_oDataStack.pPopPtr(__func__));
 
   Parcel* pParcel =  *m_pLogicUnit->m_xpParcel;
 
@@ -498,7 +498,7 @@ void Step::vParcelGet(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpParcel);
+  m_oDataStack.vPushPtr(*m_pLogicUnit->m_xpParcel);
 
   EXIT();
 }
@@ -510,7 +510,7 @@ void Step::vParcelGetAndClear(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpParcel);
+  m_oDataStack.vPushPtr(*m_pLogicUnit->m_xpParcel);
 
   m_pLogicUnit->m_xpParcel = nullptr;
 
@@ -524,7 +524,7 @@ void Step::vParcelIsNotNull(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt(m_pLogicUnit->m_xpParcel.bIsNull() ? 0 : 1);
+  m_oDataStack.vPushInt(m_pLogicUnit->m_xpParcel.bIsNull() ? 0 : 1);
 
   EXIT();
 }
@@ -536,7 +536,7 @@ void Step::vParcelIsNull(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt(m_pLogicUnit->m_xpParcel.bIsNull() ? 1 : 0);
+  m_oDataStack.vPushInt(m_pLogicUnit->m_xpParcel.bIsNull() ? 1 : 0);
 
   EXIT();
 }
@@ -604,7 +604,7 @@ void Step::vParcelSet(void)
 {
   ENTRY();
 
-  Parcel* pParcel = _pParcel(m_pDataStack->pPopPtr(__func__));
+  Parcel* pParcel = _pParcel(m_oDataStack.pPopPtr(__func__));
 
   ASSERT(! pParcel || m_pLogicUnit->m_xpParcel.bIsNull());
 

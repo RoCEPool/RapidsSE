@@ -42,21 +42,21 @@ void Step::vIntAdd(void)
   /*
   i8 r, j, i;
   
-  if ( ! m_pDataStack->bPop(j,i) ) THROW_DSTACK();
+  if ( ! m_oDataStack.bPop(j,i) ) THROW_DSTACK();
   
   r = i + j;
   
-  m_pDataStack->vPush(r);
+  m_oDataStack.vPush(r);
   */
   
   // get pointer to value on the top of the stack
-  TypeValueArea* j = (TypeValueArea*)m_pDataStack->pStackHead();
+  TypeValueArea* j = (TypeValueArea*)m_oDataStack.pStackHead();
   
   // discard the value
-  m_pDataStack->vDiscardTop();
+  m_oDataStack.vDiscardTop();
   
   // get pointer to value on the top of the stack
-  TypeValueArea* i = (TypeValueArea*)m_pDataStack->pStackHead();
+  TypeValueArea* i = (TypeValueArea*)m_oDataStack.pStackHead();
   
   // add the two values and leave the result on the stack
   i->vInt(j->iInt() + i->iInt());
@@ -71,12 +71,12 @@ void Step::vIntDivide(void)
 {
   ENTRY();
   
-  i8 j = m_pDataStack->iPopInt(__func__);
-  i8 i = m_pDataStack->iPopInt(__func__);
+  i8 j = m_oDataStack.iPopInt(__func__);
+  i8 i = m_oDataStack.iPopInt(__func__);
 
   i8 r = DIV(i,j);
   
-  m_pDataStack->vPushInt(r);
+  m_oDataStack.vPushInt(r);
   
   EXIT();
 }
@@ -88,12 +88,12 @@ void Step::vIntEqual(void)
 {
   ENTRY();
   
-  i8 j = m_pDataStack->iPopIntBol(__func__);
-  i8 i = m_pDataStack->iPopIntBol(__func__);
+  i8 j = m_oDataStack.iPopIntBol(__func__);
+  i8 i = m_oDataStack.iPopIntBol(__func__);
 
   i8 r = i == j;
   
-  m_pDataStack->vPushInt(r);
+  m_oDataStack.vPushInt(r);
   
   EXIT();
 }
@@ -105,12 +105,12 @@ void Step::vIntGreater(void)
 {
   ENTRY();
   
-  i8 j = m_pDataStack->iPopInt(__func__);
-  i8 i = m_pDataStack->iPopInt(__func__);
+  i8 j = m_oDataStack.iPopInt(__func__);
+  i8 i = m_oDataStack.iPopInt(__func__);
 
   i8 r = i > j;
   
-  m_pDataStack->vPushInt(r);
+  m_oDataStack.vPushInt(r);
   
   EXIT();
 }
@@ -122,12 +122,12 @@ void Step::vIntGreaterEqual(void)
 {
   ENTRY();
   
-  i8 j = m_pDataStack->iPopInt(__func__);
-  i8 i = m_pDataStack->iPopInt(__func__);
+  i8 j = m_oDataStack.iPopInt(__func__);
+  i8 i = m_oDataStack.iPopInt(__func__);
 
   i8 r = i >= j;
   
-  m_pDataStack->vPushInt(r);
+  m_oDataStack.vPushInt(r);
   
   EXIT();
 }
@@ -140,13 +140,13 @@ void Step::vIntHash(void)
   ENTRY();
   
   s48K sString;
-  m_pDataStack->vPopStr(sString,__func__);
+  m_oDataStack.vPopStr(sString, __func__);
   
   i8 nLength = sString.nLength();
   
   i8 iHash = HshLib::iHash(sString.ayByte(),nLength);
   
-  m_pDataStack->vPushInt(iHash);
+  m_oDataStack.vPushInt(iHash);
   
   EXIT();
 }
@@ -158,9 +158,9 @@ void Step::vIntHo16(void)
 {
   ENTRY();
   
-  i8 i = m_pDataStack->iPopInt(__func__);
+  i8 i = m_oDataStack.iPopInt(__func__);
   
-  m_pDataStack->vPushInt(i >> 48);
+  m_oDataStack.vPushInt(i >> 48);
   
   EXIT();
 }
@@ -172,12 +172,12 @@ void Step::vIntLess(void)
 {
   ENTRY();
   
-  i8 j = m_pDataStack->iPopInt(__func__);
-  i8 i = m_pDataStack->iPopInt(__func__);
+  i8 j = m_oDataStack.iPopInt(__func__);
+  i8 i = m_oDataStack.iPopInt(__func__);
 
   i8 r = i < j;
   
-  m_pDataStack->vPushInt(r);
+  m_oDataStack.vPushInt(r);
   
   EXIT();
 }
@@ -189,12 +189,12 @@ void Step::vIntLessEqual(void)
 {
   ENTRY();
   
-  i8 j = m_pDataStack->iPopInt(__func__);
-  i8 i = m_pDataStack->iPopInt(__func__);
+  i8 j = m_oDataStack.iPopInt(__func__);
+  i8 i = m_oDataStack.iPopInt(__func__);
 
   i8 r = i <= j;
   
-  m_pDataStack->vPushInt(r);
+  m_oDataStack.vPushInt(r);
   
   EXIT();
 }
@@ -206,12 +206,12 @@ void Step::vIntModulo(void)
 {
   ENTRY();
   
-  i8 j = m_pDataStack->iPopInt(__func__);
-  i8 i = m_pDataStack->iPopInt(__func__);
+  i8 j = m_oDataStack.iPopInt(__func__);
+  i8 i = m_oDataStack.iPopInt(__func__);
 
   i8 r = MOD(i,j);
   
-  m_pDataStack->vPushInt(r);
+  m_oDataStack.vPushInt(r);
   
   EXIT();
 }
@@ -223,12 +223,12 @@ void Step::vIntMultiply(void)
 {
   ENTRY();
   
-  i8 j = m_pDataStack->iPopInt(__func__);
-  i8 i = m_pDataStack->iPopInt(__func__);
+  i8 j = m_oDataStack.iPopInt(__func__);
+  i8 i = m_oDataStack.iPopInt(__func__);
 
   i8 r = i * j;
   
-  m_pDataStack->vPushInt(r);
+  m_oDataStack.vPushInt(r);
   
   EXIT();
 }
@@ -240,11 +240,11 @@ void Step::vIntNeg(void)
 {
   ENTRY();
   
-  i8 i = m_pDataStack->iPopInt(__func__);
+  i8 i = m_oDataStack.iPopInt(__func__);
   
  i8 r = -1 * i;
   
-  m_pDataStack->vPushInt(r);
+  m_oDataStack.vPushInt(r);
   
   EXIT();
 }
@@ -256,12 +256,12 @@ void Step::vIntNotEqual(void)
 {
   ENTRY();
   
-  i8 j = m_pDataStack->iPopInt(__func__);
-  i8 i = m_pDataStack->iPopInt(__func__);
+  i8 j = m_oDataStack.iPopInt(__func__);
+  i8 i = m_oDataStack.iPopInt(__func__);
 
   i8 r = i != j;
   
-  m_pDataStack->vPushInt(r);
+  m_oDataStack.vPushInt(r);
   
   EXIT();
 }
@@ -273,13 +273,13 @@ void Step::vIntPercent(void)
 {
   ENTRY();
   
-  i8 j = m_pDataStack->iPopInt(__func__);
+  i8 j = m_oDataStack.iPopInt(__func__);
   
-  i8 i = m_pDataStack->iPopInt(__func__);
+  i8 i = m_oDataStack.iPopInt(__func__);
   
   i8 iPercent = IntLib::iPercent(i,j);
   
-  m_pDataStack->vPushInt(iPercent);
+  m_oDataStack.vPushInt(iPercent);
   
   EXIT();
 }
@@ -291,13 +291,13 @@ void Step::vIntRandom(void)
 {
   ENTRY();
   
-  i8 iHigh = m_pDataStack->iPopInt(__func__);
+  i8 iHigh = m_oDataStack.iPopInt(__func__);
   
-  i8 iLow = m_pDataStack->iPopInt(__func__);
+  i8 iLow = m_oDataStack.iPopInt(__func__);
   
   i8 iRandom = RndLib::iInteger(iLow,iHigh);
   
-  m_pDataStack->vPushInt(iRandom);
+  m_oDataStack.vPushInt(iRandom);
   
   EXIT();
 }
@@ -309,12 +309,12 @@ void Step::vIntSubtract(void)
 {
   ENTRY();
   
-  i8 j = m_pDataStack->iPopInt(__func__);
-  i8 i = m_pDataStack->iPopInt(__func__);
+  i8 j = m_oDataStack.iPopInt(__func__);
+  i8 i = m_oDataStack.iPopInt(__func__);
 
   i8 r = i - j;
   
-  m_pDataStack->vPushInt(r);
+  m_oDataStack.vPushInt(r);
   
   EXIT();
 }
@@ -326,13 +326,13 @@ void Step::vUnsignedIntRandom(void)
 {
   ENTRY();
   
-  i8 iHigh = m_pDataStack->iPopInt(__func__);
+  i8 iHigh = m_oDataStack.iPopInt(__func__);
   
-  i8 iLow = m_pDataStack->iPopInt(__func__);
+  i8 iLow = m_oDataStack.iPopInt(__func__);
   
   u8 uRandom = RndLib::uInteger(iLow,iHigh);
   
-  m_pDataStack->vPushInt(uRandom);
+  m_oDataStack.vPushInt(uRandom);
   
   EXIT();
 }

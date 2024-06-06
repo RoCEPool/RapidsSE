@@ -32,9 +32,9 @@ void Step::vDiscernRdCsvChunk(void)
   //vTrace("nSumQueued %lld\n"_Stz,nSumQueued);
   
   if (nSumQueued < 100)
-    m_pDataStack->vPushInt(true);
+    m_oDataStack.vPushInt(true);
   else
-    m_pDataStack->vPushInt(false);
+    m_oDataStack.vPushInt(false);
 
   EXIT();
 }

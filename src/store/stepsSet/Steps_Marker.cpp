@@ -98,7 +98,7 @@ void Step::vMarkerGet(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpMarker);
+  m_oDataStack.vPushPtr(*m_pLogicUnit->m_xpMarker);
   
   EXIT();
 }
@@ -110,7 +110,7 @@ void Step::vMarkerGetAndClear(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpMarker);
+  m_oDataStack.vPushPtr(*m_pLogicUnit->m_xpMarker);
   
   m_pLogicUnit->m_xpMarker = nullptr;
 
@@ -124,7 +124,7 @@ void Step::vMarkerIsNotNull(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(m_pLogicUnit->m_xpMarker.bIsNull() ? 0 : 1);
+  m_oDataStack.vPushInt(m_pLogicUnit->m_xpMarker.bIsNull() ? 0 : 1);
   
   EXIT();
 }
@@ -136,7 +136,7 @@ void Step::vMarkerIsNull(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(m_pLogicUnit->m_xpMarker.bIsNull() ? 1 : 0);
+  m_oDataStack.vPushInt(m_pLogicUnit->m_xpMarker.bIsNull() ? 1 : 0);
   
   EXIT();
 }
@@ -591,7 +591,7 @@ void Step::vMarkerSet(void)
 {
   ENTRY();
   
-  Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
+  Operand* pOperand = _pOperand(m_oDataStack.pPopPtr(__func__));
   
   ASSERT(! pOperand || m_pLogicUnit->m_xpMarker.bIsNull());
   

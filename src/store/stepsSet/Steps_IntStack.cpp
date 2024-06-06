@@ -33,7 +33,7 @@ void Step::vIntStackNew(void)
   
   IntStack* pIntStack = new IntStack;
   
-  m_pDataStack->vPushPtr(pIntStack);
+  m_oDataStack.vPushPtr(pIntStack);
 
   EXIT();
 }
@@ -45,7 +45,7 @@ void Step::vIntStackDelete(void)
 {
   ENTRY();
   
-  IntStack* pIntStack = _pIntStack(m_pDataStack->pPopPtr(__func__));
+  IntStack* pIntStack = _pIntStack(m_oDataStack.pPopPtr(__func__));
   
   delete pIntStack;
 
@@ -59,11 +59,11 @@ void Step::vIntStackItemsFetch(void)
 {
   ENTRY();
   
-  IntStack* pIntStack = _pIntStack(m_pDataStack->pPopPtr(__func__));
+  IntStack* pIntStack = _pIntStack(m_oDataStack.pPopPtr(__func__));
 
   i8 nItems = pIntStack->nItems();
   
-  m_pDataStack->vPushInt(nItems);
+  m_oDataStack.vPushInt(nItems);
 
   EXIT();
 }
@@ -75,11 +75,11 @@ void Step::vIntStackPop(void)
 {
   ENTRY();
   
-  IntStack* pIntStack = _pIntStack(m_pDataStack->pPopPtr(__func__));
+  IntStack* pIntStack = _pIntStack(m_oDataStack.pPopPtr(__func__));
 
   i8 iInt = pIntStack->iPop();
   
-  m_pDataStack->vPushInt(iInt);
+  m_oDataStack.vPushInt(iInt);
 
   EXIT();
 }
@@ -91,9 +91,9 @@ void Step::vIntStackPush(void)
 {
   ENTRY();
   
-  i8 iInt = m_pDataStack->iPopInt(__func__);
+  i8 iInt = m_oDataStack.iPopInt(__func__);
 
-  IntStack* pIntStack = _pIntStack(m_pDataStack->pPopPtr(__func__));
+  IntStack* pIntStack = _pIntStack(m_oDataStack.pPopPtr(__func__));
 
   pIntStack->vPush(iInt);
   EXIT();

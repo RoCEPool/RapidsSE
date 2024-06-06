@@ -34,7 +34,7 @@ void Step::vEntBufferDump(void)
 {
   ENTRY();
   
-  EntBuffer* pIndexBuffer = _pEntBuffer(m_pDataStack->pPopPtr(__func__));
+  EntBuffer* pIndexBuffer = _pEntBuffer(m_oDataStack.pPopPtr(__func__));
   
   pIndexBuffer->vShow();
   
@@ -48,9 +48,9 @@ void Step::vEntBufferIndexFetch(void)
 {
   ENTRY();
   
-  EntBuffer* pIndexBuffer = _pEntBuffer(m_pDataStack->pPopPtr(__func__));
+  EntBuffer* pIndexBuffer = _pEntBuffer(m_oDataStack.pPopPtr(__func__));
   
-  m_pDataStack->vPushPtr(pIndexBuffer->pIndex());
+  m_oDataStack.vPushPtr(pIndexBuffer->pIndex());
   
   EXIT();
 }
@@ -62,14 +62,14 @@ void Step::vEntBufferNextBuffer(void)
 {
   ENTRY();
   
-  EntBuffer* pIndexBuffer = _pEntBuffer(m_pDataStack->pPopPtr(__func__));
+  EntBuffer* pIndexBuffer = _pEntBuffer(m_oDataStack.pPopPtr(__func__));
   
   if (pIndexBuffer->pNextEntBuffer()) {
     i8 nBuffer = pIndexBuffer->pNextEntBuffer()->iBufferNo();
     UNUSED(nBuffer);
   }
   
-  m_pDataStack->vPushPtr(pIndexBuffer->pNextEntBuffer());
+  m_oDataStack.vPushPtr(pIndexBuffer->pNextEntBuffer());
   
   EXIT();
 }
@@ -81,9 +81,9 @@ void Step::vEntBufferPartitionFetch(void)
 {
   ENTRY();
   
-  EntBuffer* pIndexBuffer = _pEntBuffer(m_pDataStack->pPopPtr(__func__));
+  EntBuffer* pIndexBuffer = _pEntBuffer(m_oDataStack.pPopPtr(__func__));
 
-  m_pDataStack->vPushInt(pIndexBuffer->tLglPtn().iAsI8());
+  m_oDataStack.vPushInt(pIndexBuffer->tLglPtn().iAsI8());
 
   EXIT();
 }
@@ -95,10 +95,10 @@ void Step::vEntBufferPartitionStore(void)
 {
   ENTRY();
   
-  EntBuffer* pIndexBuffer = _pEntBuffer(m_pDataStack->pPopPtr(__func__));
+  EntBuffer* pIndexBuffer = _pEntBuffer(m_oDataStack.pPopPtr(__func__));
 
   LglPtn tLglPtn;
-  tLglPtn = m_pDataStack->iPopInt(__func__);
+  tLglPtn = m_oDataStack.iPopInt(__func__);
 
   pIndexBuffer->vLglPtn(tLglPtn);
 
@@ -114,11 +114,11 @@ void Step::vEntBufferToEntBuffer(void)
   
   s48K sString;
   
-  m_pDataStack->vPopStr(sString,__func__);
+  m_oDataStack.vPopStr(sString, __func__);
   
   EntBuffer* pEntBuffer = _pEntBuffer((void*)sString.iToI8());
   
-  m_pDataStack->vPushPtr(pEntBuffer);
+  m_oDataStack.vPushPtr(pEntBuffer);
   
   EXIT();
 }

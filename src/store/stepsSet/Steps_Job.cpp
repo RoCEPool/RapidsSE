@@ -136,7 +136,7 @@ void Step::vJobAddDemon(void)
 {
   ENTRY();
   
-  //Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
+  //Job* pJob = _pJob(m_oDataStack.pPopPtr(__func__));
   
   // add the job to the originating jobs
   //  AM::pOriginatingJobs()->vGrabLock();
@@ -160,7 +160,7 @@ void Step::vJobAddExited(void)
 {
   ENTRY();
 
-  //Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
+  //Job* pJob = _pJob(m_oDataStack.pPopPtr(__func__));
 
 //  AM::pParticipatingJobs()->vGrabLock();
 //  AM::pParticipatingJobs()->vAddJob(pJob);
@@ -189,7 +189,7 @@ void Step::vJobAddLocal(void)
 {
   ENTRY();
   
-  //Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
+  //Job* pJob = _pJob(m_oDataStack.pPopPtr(__func__));
 
   Job* pJob = pOuterJobOfTask();
   RASSERT(*m_pJob == pJob);
@@ -208,7 +208,7 @@ void Step::vJobAddOriginator(void)
 {
   ENTRY();
   
-  //Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
+  //Job* pJob = _pJob(m_oDataStack.pPopPtr(__func__));
     
   // add the job to the originating jobs
 //  AM::pOriginatingJobs()->vGrabLock();
@@ -220,12 +220,12 @@ void Step::vJobAddOriginator(void)
 
   if (AM::pOriginatingJobs()->bLatch()) {
     vTrace("Unable to append job to OL as list is latched due to NODELOSS\n"_Stz);
-    m_pDataStack->vPushInt(false);
+    m_oDataStack.vPushInt(false);
   }
   else {
     pJob->vOriginatorJob(true);
     AM::vJob_AddOriginating(pJob);
-    m_pDataStack->vPushInt(true);
+    m_oDataStack.vPushInt(true);
   }
 
 
@@ -241,7 +241,7 @@ void Step::vJobAddParticipant(void)
 {
   ENTRY();
   
-  //Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
+  //Job* pJob = _pJob(m_oDataStack.pPopPtr(__func__));
   
 //  AM::pParticipatingJobs()->vGrabLock();
 //  AM::pParticipatingJobs()->vAddJob(pJob);
@@ -255,11 +255,11 @@ void Step::vJobAddParticipant(void)
 
   if (AM::pOriginatingJobs()->bLatch()) {
     vTrace("Unable to append job to OL as list is latched due to NODELOSS\n"_Stz);
-    m_pDataStack->vPushInt(false);
+    m_oDataStack.vPushInt(false);
   }
   else {
     AM::vJob_AddParticipating(pJob);
-    m_pDataStack->vPushInt(true);
+    m_oDataStack.vPushInt(true);
   }
 
   //vTrace("%p ID %lld added to participant\n"_Stz, pJob, pJob->tJobId().iAsI8());
@@ -275,7 +275,7 @@ void Step::vJobAssertBegin(void)
 {
   ENTRY();
   
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
+  Job* pJob = _pJob(m_oDataStack.pPopPtr(__func__));
   
 
   if ((i8)pJob->tJobId().uNodeId() == AM::pGrid()->iThisNodeId()) {
@@ -502,7 +502,7 @@ void Step::vJobCodeBlockFetch(void)
 
   ExtendedText* pCodeBlock = m_pJob->pCodeBlock();
 
-  m_pDataStack->vPushPtr(pCodeBlock);
+  m_oDataStack.vPushPtr(pCodeBlock);
 
   EXIT();
 }
@@ -554,7 +554,7 @@ void Step::vJobDistIdFetch(void)
   ENTRY();
 
   Job* pJob = pOuterJobOfTask();
-  m_pDataStack->vPushInt(pJob->tDistId().iAsI8());
+  m_oDataStack.vPushInt(pJob->tDistId().iAsI8());
   
   EXIT();
 }
@@ -611,7 +611,7 @@ void Step::vJobEntryPointFetch(void)
 
   Job* pJob = pOuterJobOfTask();
 
-  m_pDataStack->vPushStz(pJob->szEntryPoint());
+  m_oDataStack.vPushStz(pJob->szEntryPoint());
   
   EXIT();
 }
@@ -626,7 +626,7 @@ void Step::vJobEntryPointStore(void)
   Job* pJob = pOuterJobOfTask();
 
   s4K sEntry;
-  m_pDataStack->vPopStr(sEntry,__func__);
+  m_oDataStack.vPopStr(sEntry, __func__);
   
   pJob->vEntryPoint(sEntry);
   
@@ -642,7 +642,7 @@ void Step::vJobErrorFetch(void)
 
   Job* pJob = pOuterJobOfTask();
 
-  m_pDataStack->vPushInt(pJob->eJobError());
+  m_oDataStack.vPushInt(pJob->eJobError());
   
   EXIT();
 }
@@ -656,7 +656,7 @@ void Step::vJobErrorStore(void)
 
   Job* pJob = pOuterJobOfTask();
 
-  i8 iJobError = m_pDataStack->iPopAsInt(__func__);
+  i8 iJobError = m_oDataStack.iPopAsInt(__func__);
   
   //pJob->m_xNode[iNode].m_eErrorCode = (eEC)iJobError;
   pJob->vJobError((eEC)iJobError);
@@ -673,7 +673,7 @@ void Step::vJobGet(void)
 
   Job* pJob = pOuterJobOfTask();
   
-  m_pDataStack->vPushPtr(pJob);
+  m_oDataStack.vPushPtr(pJob);
 
   
   EXIT();
@@ -688,9 +688,9 @@ void Step::vJobHasCodeBlock(void)
 
   Job* pJob = * m_pJob;
   if (pJob->pCodeBlock())
-    m_pDataStack->vPushInt(true);
+    m_oDataStack.vPushInt(true);
   else
-    m_pDataStack->vPushInt(false);
+    m_oDataStack.vPushInt(false);
   EXIT();
 }
 
@@ -702,7 +702,7 @@ void Step::vJobLabelObjectTracker(void)
   ENTRY();
 
   s256 sEntry;
-  m_pDataStack->vPopStr(sEntry,__func__);
+  m_oDataStack.vPopStr(sEntry, __func__);
 
   Job* pJob = * m_pJob;
   UNUSED(pJob);
@@ -721,7 +721,7 @@ void Step::vJobListFetch(void)
 
   Job* pJob = pOuterJobOfTask();
 
-  m_pDataStack->vPushInt(pJob->eJobList());
+  m_oDataStack.vPushInt(pJob->eJobList());
 
   EXIT();
 }
@@ -737,12 +737,12 @@ void Step::vJobMasterJobId(void)
 
   JobId tJobId = pJob->tOriginId();
   if ( ! tJobId.bIsUnknown() ) {
-    m_pDataStack->vPushInt(tJobId.iAsI8());
+    m_oDataStack.vPushInt(tJobId.iAsI8());
   }
   else {
     tJobId = pJob->tJobId();
     RASSERT(! tJobId.bIsUnknown() );
-    m_pDataStack->vPushInt(tJobId.iAsI8());
+    m_oDataStack.vPushInt(tJobId.iAsI8());
   }
 
   EXIT();
@@ -757,7 +757,7 @@ void Step::vJobMutexFetch(void)
 
   Job* pJob = pOuterJobOfTask();
 
-  m_pDataStack->vPushInt(pJob->eMutexSide());
+  m_oDataStack.vPushInt(pJob->eMutexSide());
   
   EXIT();
 }
@@ -772,7 +772,7 @@ void Step::vJobNameFetch(void)
   Job* pJob = pOuterJobOfTask();
 
   s32 szName = pJob->szJobNm();
-  m_pDataStack->vPushStr(szName);
+  m_oDataStack.vPushStr(szName);
 
   EXIT();
 }
@@ -835,7 +835,7 @@ void Step::vJobOriginIdFetch(void)
   ENTRY();
 
   Job* pJob = pOuterJobOfTask();
-  m_pDataStack->vPushInt(pJob->tOriginId().iAsI8());
+  m_oDataStack.vPushInt(pJob->tOriginId().iAsI8());
   
   EXIT();
 }
@@ -852,7 +852,7 @@ void Step::vJobOriginNodeIdFetch(void)
   
   i8 iOriginNodeId = (i8)tOriginId.uNodeId();
   
-  m_pDataStack->vPushInt(iOriginNodeId);
+  m_oDataStack.vPushInt(iOriginNodeId);
   
   EXIT();
 }
@@ -865,7 +865,7 @@ void Step::vJobParentIdFetch(void)
   ENTRY();
 
   Job* pJob = pOuterJobOfTask();
-  m_pDataStack->vPushInt(pJob->tParentId().iAsI8());
+  m_oDataStack.vPushInt(pJob->tParentId().iAsI8());
   
   EXIT();
 }
@@ -882,7 +882,7 @@ void Step::vJobParentOriginNodeIdFetch(void)
   
   i8 iNodeId = (i8)tParentJobId.uNodeId();
   
-  m_pDataStack->vPushInt(iNodeId);
+  m_oDataStack.vPushInt(iNodeId);
   
   EXIT();
 }
@@ -897,7 +897,7 @@ void Step::vJobPhaseFetch(void)
 
   Job* pJob = pOuterJobOfTask();
 
-  m_pDataStack->vPushInt(pJob->eJobPhase());
+  m_oDataStack.vPushInt(pJob->eJobPhase());
   
   EXIT();
 }
@@ -914,7 +914,7 @@ void Step::vJobPreExecuteDist(void)
 
   eEC eError = AM::JOB::ePreExecuteDist(pJob);
 
-  m_pDataStack->vPushInt(eError);
+  m_oDataStack.vPushInt(eError);
 
   EXIT();
 }
@@ -930,7 +930,7 @@ void Step::vJobPreExecuteLocal(void)
 
   eEC eError = AM::JOB::ePreExecuteLocal(pJob);
 
-  m_pDataStack->vPushInt(eError);
+  m_oDataStack.vPushInt(eError);
 
   EXIT();
 }
@@ -944,7 +944,7 @@ void Step::vJobPhaseStore(void)
 
   Job* pJob = pOuterJobOfTask();
 
-  i8 iJobPhase = m_pDataStack->iPopAsInt(__func__);
+  i8 iJobPhase = m_oDataStack.iPopAsInt(__func__);
   
   pJob->vJobPhase((eJP)iJobPhase);
   
@@ -979,7 +979,7 @@ void Step::vJobProgress(void)
   pProgress->vUpdate();
   
   s4K sPrint;
-  m_pDataStack->vPopStr(sPrint,__func__);
+  m_oDataStack.vPopStr(sPrint, __func__);
   
   vTrace("%s %lldus\n"_Stz
          ,sPrint.szStz()
@@ -1019,7 +1019,7 @@ void Step::vJobProgressSeconds(void)
   
   i8 iSeconds = pProgress->iSeconds();
 
-  m_pDataStack->vPushInt(iSeconds);
+  m_oDataStack.vPushInt(iSeconds);
 
   EXIT();
 }
@@ -1032,7 +1032,7 @@ void Step::vJobRejectJobErrorStore(void)
   ENTRY();
 
   Job* pJob = pOuterJobOfTask();
- eEC eRejectError = (eEC) m_pDataStack->iPopInt(__func__);
+ eEC eRejectError = (eEC) m_oDataStack.iPopInt(__func__);
 
   pJob->pRejectJob()->vError(eRejectError);
 
@@ -1048,7 +1048,7 @@ void Step::vJobRejectJobFetch(void)
 
   Job* pJob = pOuterJobOfTask();
 
-  m_pDataStack->vPushPtr(pJob->pRejectJob());
+  m_oDataStack.vPushPtr(pJob->pRejectJob());
 
   EXIT();
 }
@@ -1146,7 +1146,7 @@ void Step::vJobResponseOpFetch(void)
 
   Job* pJob = pOuterJobOfTask();
 
-  m_pDataStack->vPushPtr(pJob->p_ResponseOp());
+  m_oDataStack.vPushPtr(pJob->p_ResponseOp());
 
   EXIT();
 }
@@ -1160,7 +1160,7 @@ void Step::vJobResponseOpStore(void)
 
   Job* pJob = pOuterJobOfTask();
 
-  Op* pResponseOp = _pOp(m_pDataStack->pPopPtr(__func__));
+  Op* pResponseOp = _pOp(m_oDataStack.pPopPtr(__func__));
 
   pJob->vResponseOp(pResponseOp);
   
@@ -1223,10 +1223,10 @@ void Step::vJobSignalParent(void)
   eEC eErrorCode = AM::JLIST::eSignalParent(pJob);
 
   if (eErrorCode == EC_NONE) {
-    m_pDataStack->vPushInt(true);
+    m_oDataStack.vPushInt(true);
   }
   else {
-    m_pDataStack->vPushInt(false);
+    m_oDataStack.vPushInt(false);
   }
 
   EXIT();
@@ -1241,7 +1241,7 @@ void Step::vJobTagSetFetch(void)
 
   Job* pJob = pOuterJobOfTask();
 
-  m_pDataStack->vPushPtr(pJob->pJobTags());
+  m_oDataStack.vPushPtr(pJob->pJobTags());
   
   EXIT();
 }
@@ -1255,7 +1255,7 @@ void Step::vJobTaskFetch(void)
 
   Job* pJob = pOuterJobOfTask();
 
-  m_pDataStack->vPushPtr(pJob->pTask());
+  m_oDataStack.vPushPtr(pJob->pTask());
   
   EXIT();
 }
@@ -1270,13 +1270,13 @@ void Step::vJobTrace(void)
   Job* pJob = pOuterJobOfTask();
 
   s256 sNote;
-  m_pDataStack->vPopStr(sNote,__func__);
+  m_oDataStack.vPopStr(sNote, __func__);
   s256 sAtPoint;
-  m_pDataStack->vPopStr(sAtPoint,__func__);
+  m_oDataStack.vPopStr(sAtPoint, __func__);
   s256 sAtRoutine;
-  m_pDataStack->vPopStr(sAtRoutine,__func__);
+  m_oDataStack.vPopStr(sAtRoutine, __func__);
   s256 sAtCmd;
-  m_pDataStack->vPopStr(sAtCmd,__func__);
+  m_oDataStack.vPopStr(sAtCmd, __func__);
 
   pJob->vJobTrace(sAtCmd,sAtRoutine,sAtPoint,sNote);
 
@@ -1548,10 +1548,10 @@ void Step::vJobUpdateParent(void)
   L_Exit:
 
   if (eErrorCode == EC_NONE) {
-    m_pDataStack->vPushInt(true);
+    m_oDataStack.vPushInt(true);
   }
   else {
-    m_pDataStack->vPushInt(false);
+    m_oDataStack.vPushInt(false);
   }
   EXIT();
 }
@@ -1567,8 +1567,8 @@ void Step::vJobOtherIdFetch(void)
 {
   ENTRY();
 
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  m_pDataStack->vPushInt(pJob->tJobId().iAsI8());
+  Job* pJob = _pJob(m_oDataStack.pPopPtr(__func__));
+  m_oDataStack.vPushInt(pJob->tJobId().iAsI8());
 
   EXIT();
 }

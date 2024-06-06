@@ -70,7 +70,7 @@ void Step::vPortAcceptConnection_reg(void)
   // return the socket
   Socket* pNewSocket = new Socket(this,iSocketId, pPort);
   
-  m_pDataStack->vPushPtr(pNewSocket);
+  m_oDataStack.vPushPtr(pNewSocket);
   
   EXIT();
 }
@@ -84,7 +84,7 @@ void Step::vPortNewListen_reg(void)
   
   SysCall oSysCall;
   
-  i8 iPortNo = m_pDataStack->iPopInt(__func__);
+  i8 iPortNo = m_oDataStack.iPopInt(__func__);
   
   //- - - - - - - - - - - - - - - - - - -  - - - - - - - - - - - - - - - - - - -
   // attempt to create server-side listening socket/port
@@ -125,7 +125,7 @@ void Step::vPortNewListen_reg(void)
 //  }
 
   // return socket
-  //m_pDataStack->vPushPtr(pSocket);
+  //m_oDataStack.vPushPtr(pSocket);
   
   EXIT();
 }

@@ -39,11 +39,11 @@ void Step::vToLglPtnRowCompleted(void)
   
   ToLglPtnRow* pToLglPtnRow = *m_pLogicUnit->m_xpToLglPtnRow;
   
-  i8 i_Ptn = m_pDataStack->iPopInt(__func__);
+  i8 i_Ptn = m_oDataStack.iPopInt(__func__);
 
   Pds* pPdsRowBuffer = pToLglPtnRow->pCompleted(i_Ptn);
 
-  m_pDataStack->vPushPtr(pPdsRowBuffer);
+  m_oDataStack.vPushPtr(pPdsRowBuffer);
 
   EXIT();
 }
@@ -57,8 +57,8 @@ void Step::vToLglPtnRowConvert(void)
 
   ToLglPtnRow* pToLglPtnRow = *m_pLogicUnit->m_xpToLglPtnRow;
 
-  Pds* pPdsRowBuffer = _pPds(m_pDataStack->pPopPtr(__func__));
-  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
+  Pds* pPdsRowBuffer = _pPds(m_oDataStack.pPopPtr(__func__));
+  Table* pTable = _pTable(m_oDataStack.pPopPtr(__func__));
 
   pToLglPtnRow->vConvert(pTable, pPdsRowBuffer);
 
@@ -88,11 +88,11 @@ void Step::vToLglPtnRowDangling(void)
   
   ToLglPtnRow* pToLglPtnRow = *m_pLogicUnit->m_xpToLglPtnRow;
   
-  i8 i_Ptn = m_pDataStack->iPopInt(__func__);
+  i8 i_Ptn = m_oDataStack.iPopInt(__func__);
 
   Pds* pPdsRowBuffer = pToLglPtnRow->pDangling(i_Ptn);
   
-  m_pDataStack->vPushPtr(pPdsRowBuffer);
+  m_oDataStack.vPushPtr(pPdsRowBuffer);
 
   EXIT();
 }

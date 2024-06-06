@@ -32,7 +32,7 @@ void Step::vSendNodeGet(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpSendNode);
+  m_oDataStack.vPushPtr(*m_pLogicUnit->m_xpSendNode);
 
   EXIT();
 }
@@ -44,7 +44,7 @@ void Step::vSendNodeSet(void)
 {
   ENTRY();
   
-  Node* pSendNode = _pNode(m_pDataStack->pPopPtr(__func__));
+  Node* pSendNode = _pNode(m_oDataStack.pPopPtr(__func__));
   
   ASSERT(! pSendNode || m_pLogicUnit->m_xpSendNode.bIsNull());
   

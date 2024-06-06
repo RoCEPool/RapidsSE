@@ -90,9 +90,9 @@ namespace ENGINE
 
     CodeCell*    m_aInxPtr;       // instruction/cell pointer
 
-    TypedStack*  m_pAuxStack;     // auxiliary stack
-    TypedStack*  m_pDataStack;    // data stack
-    TypedStack*  m_pReturnStack;  // return stack
+    TypedStack   m_oAuxStack;     // auxiliary stack
+    TypedStack   m_oDataStack;    // data stack
+    TypedStack   m_oReturnStack;  // return stack
 
     LocalFrame*  m_pLocalFrame;   // locals| | register frame chain
     LocalVars*   m_pLocalVars;

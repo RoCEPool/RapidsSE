@@ -36,7 +36,7 @@ void Step::vArrangeNew(void)
   
   Arrange* pArrange = new Arrange;
      
-  m_pDataStack->vPushPtr(pArrange);
+  m_oDataStack.vPushPtr(pArrange);
 
   EXIT();
 }
@@ -51,13 +51,13 @@ void Step::vArrangeBegin(void)
 {
   ENTRY();
 
-  Arrange* pArrange = _pArrange(m_pDataStack->pPopPtr(__func__));
+  Arrange* pArrange = _pArrange(m_oDataStack.pPopPtr(__func__));
   
   SkipNode* pSkipNode;
 
   pArrange->vBeginIter((void**)&pSkipNode);
   
-  m_pDataStack->vPushPtr(pSkipNode);
+  m_oDataStack.vPushPtr(pSkipNode);
 
   EXIT();
 }
@@ -69,7 +69,7 @@ void Step::vArrangeDelete(void)
 {
   ENTRY();
   
-  Arrange* pArrange = _pArrange(m_pDataStack->pPopPtr(__func__));
+  Arrange* pArrange = _pArrange(m_oDataStack.pPopPtr(__func__));
 
   delete pArrange;
   
@@ -83,9 +83,9 @@ void Step::vArrangeEnd(void)
 {
   ENTRY();
   
-  Arrange* pArrange = _pArrange(m_pDataStack->pPopPtr(__func__));
+  Arrange* pArrange = _pArrange(m_oDataStack.pPopPtr(__func__));
   
-  SkipNode* pSkipNode = _pSkipNode(m_pDataStack->pPopPtr(__func__));
+  SkipNode* pSkipNode = _pSkipNode(m_oDataStack.pPopPtr(__func__));
 
   pArrange->vEndIter((void**)&pSkipNode);
 
@@ -99,17 +99,17 @@ void Step::vArrangeFirst(void)
 {
   ENTRY();
 
-  Arrange* pArrange = _pArrange(m_pDataStack->pPopPtr(__func__));
+  Arrange* pArrange = _pArrange(m_oDataStack.pPopPtr(__func__));
   
-  SkipNode* pSkipNode = _pSkipNode(m_pDataStack->pPopPtr(__func__));
+  SkipNode* pSkipNode = _pSkipNode(m_oDataStack.pPopPtr(__func__));
 
   bool bFirst = pArrange->bFirst((void**)&pSkipNode);
   
   if (bFirst) {
-    m_pDataStack->vPushPtr(pSkipNode);
+    m_oDataStack.vPushPtr(pSkipNode);
   }
   else {
-    m_pDataStack->vPushPtr(nullptr);
+    m_oDataStack.vPushPtr(nullptr);
   }
   
   EXIT();
@@ -122,12 +122,12 @@ void Step::vArrangeInsert(void)
 {
   ENTRY();
 
-  Arrange* pArrange = _pArrange(m_pDataStack->pPopPtr(__func__));
+  Arrange* pArrange = _pArrange(m_oDataStack.pPopPtr(__func__));
 
-  Object* pObject = m_pDataStack->pPopPtr(__func__);
+  Object* pObject = m_oDataStack.pPopPtr(__func__);
 
   s256 sObjNm;
-  m_pDataStack->vPopStr(sObjNm,__func__);
+  m_oDataStack.vPopStr(sObjNm, __func__);
   
   pArrange->vInsert(sObjNm,pObject);
 
@@ -141,13 +141,13 @@ void Step::vArrangeName(void)
 {
   ENTRY();
 
-  Arrange* pArrange = _pArrange(m_pDataStack->pPopPtr(__func__));
+  Arrange* pArrange = _pArrange(m_oDataStack.pPopPtr(__func__));
     
-  SkipNode* pSkipNode = _pSkipNode(m_pDataStack->pPopPtr(__func__));
+  SkipNode* pSkipNode = _pSkipNode(m_oDataStack.pPopPtr(__func__));
 
   Stz* szObjNm = pArrange->szObjNm((void**)&pSkipNode);
   
-  m_pDataStack->vPushStz(szObjNm);
+  m_oDataStack.vPushStz(szObjNm);
 
   EXIT();
 }
@@ -159,17 +159,17 @@ void Step::vArrangeNext(void)
 {
   ENTRY();
 
-  Arrange* pArrange = _pArrange(m_pDataStack->pPopPtr(__func__));
+  Arrange* pArrange = _pArrange(m_oDataStack.pPopPtr(__func__));
 
-  SkipNode* pSkipNode = _pSkipNode(m_pDataStack->pPopPtr(__func__));
+  SkipNode* pSkipNode = _pSkipNode(m_oDataStack.pPopPtr(__func__));
   
   bool bNext = pArrange->bNext((void**)&pSkipNode);
   
   if (bNext) {
-    m_pDataStack->vPushPtr(pSkipNode);
+    m_oDataStack.vPushPtr(pSkipNode);
   }
   else {
-    m_pDataStack->vPushPtr(nullptr);
+    m_oDataStack.vPushPtr(nullptr);
   }
   
   EXIT();
@@ -182,13 +182,13 @@ void Step::vArrangeObject(void)
 {
   ENTRY();
 
-  Arrange* pArrange = _pArrange(m_pDataStack->pPopPtr(__func__));
+  Arrange* pArrange = _pArrange(m_oDataStack.pPopPtr(__func__));
 
-  SkipNode* pSkipNode = _pSkipNode(m_pDataStack->pPopPtr(__func__));
+  SkipNode* pSkipNode = _pSkipNode(m_oDataStack.pPopPtr(__func__));
 
   Object* pObject = pArrange->pObject((void**)&pSkipNode);
   
-  m_pDataStack->vPushPtr(pObject);
+  m_oDataStack.vPushPtr(pObject);
   
   EXIT();
 }
@@ -200,13 +200,13 @@ void Step::vArrangeSeqNo(void)
 {
   ENTRY();
 
-  Arrange* pArrange = _pArrange(m_pDataStack->pPopPtr(__func__));
+  Arrange* pArrange = _pArrange(m_oDataStack.pPopPtr(__func__));
   
-  SkipNode* pSkipNode = _pSkipNode(m_pDataStack->pPopPtr(__func__));
+  SkipNode* pSkipNode = _pSkipNode(m_oDataStack.pPopPtr(__func__));
 
   i8 iSeqNo = pArrange->iSeqNo((void**)&pSkipNode);
   
-  m_pDataStack->vPushInt(iSeqNo);
+  m_oDataStack.vPushInt(iSeqNo);
 
   EXIT();
 }
@@ -218,7 +218,7 @@ void Step::vArrangeSequence(void)
 {
   ENTRY();
   
-  Arrange* pArrange = _pArrange(m_pDataStack->pPopPtr(__func__));
+  Arrange* pArrange = _pArrange(m_oDataStack.pPopPtr(__func__));
   
   pArrange->vSequence();
 

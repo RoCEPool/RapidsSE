@@ -76,13 +76,13 @@ void Step::vPdsAddAnalyzeIndex(void)
   ENTRY();
 
   // get the streamSet table
-  Table* pTableDef = _pTable(m_pDataStack->pPopPtr(__func__));
+  Table* pTableDef = _pTable(m_oDataStack.pPopPtr(__func__));
 
   // get the index to be analyzed
-  Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
+  Index* pIndex = _pIndex(m_oDataStack.pPopPtr(__func__));
 
   // get the tablePtn
-  i8 i_TablePtn = m_pDataStack->iPopInt(__func__);
+  i8 i_TablePtn = m_oDataStack.iPopInt(__func__);
 
   // get the Pds
   Pds* pPds = _pPds(*m_pLogicUnit->m_xpPds);
@@ -103,7 +103,7 @@ void Step::vPdsAddAnalyzeIndex(void)
   //ASSERT(pRow);
   //pRow->vDump(pStreamDef);
 
-  m_pDataStack->vPushInt(pRow ? true : false);
+  m_oDataStack.vPushInt(pRow ? true : false);
 
   EXIT();
 }
@@ -116,11 +116,11 @@ void Step::vPdsAddAnalyzeTable(void)
   ENTRY();
 
   // get the streamSet table
-  Table* pTableDef = _pTable(m_pDataStack->pPopPtr(__func__));
+  Table* pTableDef = _pTable(m_oDataStack.pPopPtr(__func__));
 
-  TablePtn* pTablePtn = _pTablePtn(m_pDataStack->pPopPtr(__func__));
+  TablePtn* pTablePtn = _pTablePtn(m_oDataStack.pPopPtr(__func__));
 
-  i8 i_LglPtn = m_pDataStack->iPopInt(__func__);
+  i8 i_LglPtn = m_oDataStack.iPopInt(__func__);
 
   // get the pds row buffer
   Pds* pPdsRowBuffer = _pPds(*m_pLogicUnit->m_xpPds);
@@ -142,7 +142,7 @@ void Step::vPdsAddAnalyzeTable(void)
   //ASSERT(pRow);
   //pRow->vDump(pStreamDef);
 
-  m_pDataStack->vPushInt(pRow ? true : false);
+  m_oDataStack.vPushInt(pRow ? true : false);
   EXIT();
 }
 
@@ -236,9 +236,9 @@ void Step::vPdsAddColumnDef(void)
   ENTRY();
 
   // get the streamSet table
-  Table* pTableDef = _pTable(m_pDataStack->pPopPtr(__func__));
+  Table* pTableDef = _pTable(m_oDataStack.pPopPtr(__func__));
 
-  Column* pColumn = _pColumn(m_pDataStack->pPopPtr(__func__));
+  Column* pColumn = _pColumn(m_oDataStack.pPopPtr(__func__));
 
   Pds* pPds = _pPds(*m_pLogicUnit->m_xpPds);
 
@@ -254,7 +254,7 @@ void Step::vPdsAddColumnDef(void)
   //ASSERT(pRow);
   //pRow->vDump(pStreamDef);
 
-  m_pDataStack->vPushInt(pRow ? true : false);
+  m_oDataStack.vPushInt(pRow ? true : false);
   EXIT();
 }
 
@@ -266,9 +266,9 @@ void Step::vPdsAddGridSanity(void)
   ENTRY();
 
   // get the streamSet table
-  Table* pTableDef = _pTable(m_pDataStack->pPopPtr(__func__));
+  Table* pTableDef = _pTable(m_oDataStack.pPopPtr(__func__));
 
-  Row* pNodeInfo = _pRow(m_pDataStack->pPopPtr(__func__));
+  Row* pNodeInfo = _pRow(m_oDataStack.pPopPtr(__func__));
 
   Pds* pPdsRowBuffer = _pPds(*m_pLogicUnit->m_xpPds);
 
@@ -296,7 +296,7 @@ void Step::vPdsAddGridSanity(void)
                                        C_VARGS_END);
   //ASSERT(pRow);
   //pRow->vDump(pStreamDef);
-  m_pDataStack->vPushInt(pRow ? true : false);
+  m_oDataStack.vPushInt(pRow ? true : false);
 
   EXIT();
 }
@@ -309,15 +309,15 @@ void Step::vPdsAddListFolder(void)
   ENTRY();
 
   // get the streamSet table
-  Table* pTableDef = _pTable(m_pDataStack->pPopPtr(__func__));
+  Table* pTableDef = _pTable(m_oDataStack.pPopPtr(__func__));
 
   // get the name
   s256 sName;
-  m_pDataStack->vPopStr(sName, __func__);
+  m_oDataStack.vPopStr(sName, __func__);
 
   // get the kind
   s256 sKind;
-  m_pDataStack->vPopStr(sKind, __func__);
+  m_oDataStack.vPopStr(sKind, __func__);
 
   Pds* pPdsRowBuffer = _pPds(*m_pLogicUnit->m_xpPds);
 
@@ -329,7 +329,7 @@ void Step::vPdsAddListFolder(void)
   //ASSERT(pRow);
   //pRow->vDump(pStreamDef);
 
-  m_pDataStack->vPushInt(pRow ? true : false);
+  m_oDataStack.vPushInt(pRow ? true : false);
 
   EXIT();
 }
@@ -342,10 +342,10 @@ void Step::vPdsAddListIndex(void)
   ENTRY();
 
   // get the streamSet table
-  Table* pTableDef = _pTable(m_pDataStack->pPopPtr(__func__));
+  Table* pTableDef = _pTable(m_oDataStack.pPopPtr(__func__));
 
   // get the index
-  Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
+  Index* pIndex = _pIndex(m_oDataStack.pPopPtr(__func__));
 
   Pds* pPds = _pPds(*m_pLogicUnit->m_xpPds);
 
@@ -358,7 +358,7 @@ void Step::vPdsAddListIndex(void)
   //ASSERT(pRow);
   //pRow->vDump(pStreamDef);
 
-  m_pDataStack->vPushInt(pRow ? true : false);
+  m_oDataStack.vPushInt(pRow ? true : false);
 
   EXIT();
 }
@@ -371,10 +371,10 @@ void Step::vPdsAddListPartitions(void)
   ENTRY();
 
   // get the streamSet table
-  Table* pTableDef = _pTable(m_pDataStack->pPopPtr(__func__));
+  Table* pTableDef = _pTable(m_oDataStack.pPopPtr(__func__));
 
   LglPtn tLglPtn;
-  tLglPtn = m_pDataStack->iPopInt(__func__);
+  tLglPtn = m_oDataStack.iPopInt(__func__);
 
   Pds* pPds = _pPds(*m_pLogicUnit->m_xpPds);
 
@@ -393,7 +393,7 @@ void Step::vPdsAddListPartitions(void)
   //ASSERT(pRow);
   //pRow->vDump(pStreamDef);
 
-  m_pDataStack->vPushInt(pRow ? true : false);
+  m_oDataStack.vPushInt(pRow ? true : false);
 
   EXIT();
 }
@@ -406,7 +406,7 @@ void Step::vPdsAddLockStats(void)
   ENTRY();
 
   // get the streamSet table
-  Table* pTableDef = _pTable(m_pDataStack->pPopPtr(__func__));
+  Table* pTableDef = _pTable(m_oDataStack.pPopPtr(__func__));
 
   Pds* pPdsRowBuffer = _pPds(*m_pLogicUnit->m_xpPds);
 
@@ -414,7 +414,7 @@ void Step::vPdsAddLockStats(void)
 
   //pRow->vDump(pStreamDef);
 
-  m_pDataStack->vPushInt(pRow ? true : false);
+  m_oDataStack.vPushInt(pRow ? true : false);
 
   EXIT();
 }
@@ -427,7 +427,7 @@ void Step::vPdsAddMemoryLeaks(void)
   ENTRY();
 
   // get the streamSet table
-  Table* pTableDef = _pTable(m_pDataStack->pPopPtr(__func__));
+  Table* pTableDef = _pTable(m_oDataStack.pPopPtr(__func__));
 
   Pds* pPds = _pPds(*m_pLogicUnit->m_xpPds);
 
@@ -461,7 +461,7 @@ void Step::vPdsAddMemoryLeaks(void)
                                     C_VARGS_END);
   }
 
-  m_pDataStack->vPushBol(nLeaks > 0);
+  m_oDataStack.vPushBol(nLeaks > 0);
 
   EXIT();
 }
@@ -474,7 +474,7 @@ void Step::vPdsAddNodeHeartbeat(void)
   ENTRY();
 
   // get the streamSet table
-  Table* pTableDef = _pTable(m_pDataStack->pPopPtr(__func__));
+  Table* pTableDef = _pTable(m_oDataStack.pPopPtr(__func__));
 
   Pds *pPds = _pPds(*m_pLogicUnit->m_xpPds);
 
@@ -499,7 +499,7 @@ void Step::vPdsAddNodeHeartbeat(void)
   }
 
   // done
-  m_pDataStack->vPushInt(pRow ? true : false);
+  m_oDataStack.vPushInt(pRow ? true : false);
 
   EXIT();
 }
@@ -512,7 +512,7 @@ void Step::vPdsAddNodeInfo(void)
   ENTRY();
 
   // get the streamSet table
-  Table* pTableDef = _pTable(m_pDataStack->pPopPtr(__func__));
+  Table* pTableDef = _pTable(m_oDataStack.pPopPtr(__func__));
 
   Pds* pPdsRowBuffer = _pPds(*m_pLogicUnit->m_xpPds);
 
@@ -528,7 +528,7 @@ void Step::vPdsAddNodeInfo(void)
   //ASSERT(pRow);
   //pRow->vDump(pStreamDef);
 
-  m_pDataStack->vPushInt(pRow ? true : false);
+  m_oDataStack.vPushInt(pRow ? true : false);
   EXIT();
 }
 
@@ -540,7 +540,7 @@ void Step::vPdsAddNodeStatus(void)
   ENTRY();
 
   // get the streamSet table
-  Table* pTableDef = _pTable(m_pDataStack->pPopPtr(__func__));
+  Table* pTableDef = _pTable(m_oDataStack.pPopPtr(__func__));
 
   Pds *pPds = _pPds(*m_pLogicUnit->m_xpPds);
 
@@ -558,7 +558,7 @@ void Step::vPdsAddNodeStatus(void)
   //ASSERT(pRow);
   //pRow->vDump(pStreamDef);
 
-  m_pDataStack->vPushInt(pRow ? true : false);
+  m_oDataStack.vPushInt(pRow ? true : false);
   */
   Row *pRow = nullptr;
   for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
@@ -574,13 +574,13 @@ void Step::vPdsAddNodeStatus(void)
 
     if (!pRow) {
       // call again
-      m_pDataStack->vPushInt(oNode_I.i_Node());
+      m_oDataStack.vPushInt(oNode_I.i_Node());
       break;
     }
   }
 
   // done
-  m_pDataStack->vPushInt(pRow ? true : false);
+  m_oDataStack.vPushInt(pRow ? true : false);
 
   EXIT();
 }
@@ -593,10 +593,10 @@ void Step::vPdsAddProgressUnits(void)
   ENTRY();
 
   // get the streamSet table
-  Table* pTableDef = _pTable(m_pDataStack->pPopPtr(__func__));
+  Table* pTableDef = _pTable(m_oDataStack.pPopPtr(__func__));
 
   // get no of progress units
-  i8 iProgressUnits = m_pDataStack->iPopInt(__func__);
+  i8 iProgressUnits = m_oDataStack.iPopInt(__func__);
 
   // get the Pds
   Pds* pPdsRowBuffer = _pPds(*m_pLogicUnit->m_xpPds);
@@ -608,7 +608,7 @@ void Step::vPdsAddProgressUnits(void)
   //ASSERT(pRow);
   //pRow->vDump(pStreamDef);
 
-  m_pDataStack->vPushInt(pRow ? true : false);
+  m_oDataStack.vPushInt(pRow ? true : false);
 
   EXIT();
 }
@@ -621,10 +621,10 @@ void Step::vPdsAddRowCount(void)
   ENTRY();
 
   // get the streamSet table
-  Table* pTableDef = _pTable(m_pDataStack->pPopPtr(__func__));
+  Table* pTableDef = _pTable(m_oDataStack.pPopPtr(__func__));
 
   // get the table
-  TablePtn* pTablePtn = _pTablePtn(m_pDataStack->pPopPtr(__func__));
+  TablePtn* pTablePtn = _pTablePtn(m_oDataStack.pPopPtr(__func__));
 
   Pds* pPdsRowBuffer = _pPds(*m_pLogicUnit->m_xpPds);
   pPdsRowBuffer->vBufferType(BT_COUNT);
@@ -646,7 +646,7 @@ void Step::vPdsAddRowCount(void)
   //ASSERT(pRow);
   //pRow->vDump(pStreamDef);
 
-  m_pDataStack->vPushInt(pRow ? true : false);
+  m_oDataStack.vPushInt(pRow ? true : false);
 
   EXIT();
 }
@@ -659,9 +659,9 @@ void Step::vPdsAddRowVargs(void)
   ENTRY();
 
   // get the streamSet table
-  Table* pTableDef = _pTable(m_pDataStack->pPopPtr(__func__));
+  Table* pTableDef = _pTable(m_oDataStack.pPopPtr(__func__));
 
-  i8 nArgs = m_pDataStack->iPopInt(__func__);
+  i8 nArgs = m_oDataStack.iPopInt(__func__);
 
   Pds* pPdsRowBuffer = _pPds(*m_pLogicUnit->m_xpPds);
 
@@ -672,7 +672,7 @@ void Step::vPdsAddRowVargs(void)
   Row* pRow = pPdsRowBuffer->pAllotRow();
 
   if( ! pRow) {
-    m_pDataStack->vPushInt(false);
+    m_oDataStack.vPushInt(false);
     return;
   }
 
@@ -690,20 +690,20 @@ void Step::vPdsAddRowVargs(void)
     switch (eDatum) {
 
       case DM_INT:
-        iInt = m_pDataStack->iPopInt(__func__);
+        iInt = m_oDataStack.iPopInt(__func__);
         pPdsRowBuffer->vDepositColVal(iInt);
         break;
 
       case DM_VCH:
 
         // STRING_DEPOSIT
-        m_pDataStack->vPopStr(sStr,__func__);
+        m_oDataStack.vPopStr(sStr, __func__);
 
         bResult = pPdsRowBuffer->bDepositColVal(sStr);
 
         if( ! bResult ) {
           pPdsRowBuffer->vDiscardInvalidRow();
-          m_pDataStack->vPushInt(false);
+          m_oDataStack.vPushInt(false);
           return;
         }
         // END STRING_DEPOSIT
@@ -716,7 +716,7 @@ void Step::vPdsAddRowVargs(void)
 
   }
 
-  m_pDataStack->vPushInt(true);
+  m_oDataStack.vPushInt(true);
 
   EXIT();
 }
@@ -729,9 +729,9 @@ void Step::vPdsAddShowCluster(void)
   ENTRY();
 
   // get the streamSet table
-  Table* pTableDef = _pTable(m_pDataStack->pPopPtr(__func__));
+  Table* pTableDef = _pTable(m_oDataStack.pPopPtr(__func__));
 
-  i8 i_Node = m_pDataStack->iPopInt(__func__);
+  i8 i_Node = m_oDataStack.iPopInt(__func__);
 
   Pds* pPds = _pPds(*m_pLogicUnit->m_xpPds);
 
@@ -746,7 +746,7 @@ void Step::vPdsAddShowCluster(void)
   //ASSERT(pRow);
   //pRow->vDump(pStreamDef);
 
-  m_pDataStack->vPushInt(pRow ? true : false);
+  m_oDataStack.vPushInt(pRow ? true : false);
 
   EXIT();
 }
@@ -759,12 +759,12 @@ void Step::vPdsAddSizeIndex(void)
   ENTRY();
 
   // get the streamSet table
-  Table* pTableDef = _pTable(m_pDataStack->pPopPtr(__func__));
+  Table* pTableDef = _pTable(m_oDataStack.pPopPtr(__func__));
 
-  i8 iSize = m_pDataStack->iPopInt(__func__);
+  i8 iSize = m_oDataStack.iPopInt(__func__);
 
   s256 sSize;
-  m_pDataStack->vPopStr(sSize, __func__);
+  m_oDataStack.vPopStr(sSize, __func__);
 
   Pds* pPds = _pPds(*m_pLogicUnit->m_xpPds);
 
@@ -777,7 +777,7 @@ void Step::vPdsAddSizeIndex(void)
   //ASSERT(pRow);
   //pRow->vDump(pStreamDef);
 
-  m_pDataStack->vPushInt(pRow ? true : false);
+  m_oDataStack.vPushInt(pRow ? true : false);
 
   EXIT();
 }
@@ -790,12 +790,12 @@ void Step::vPdsAddSizeTable(void)
   ENTRY();
 
   // get the streamSet table
-  Table* pTableDef = _pTable(m_pDataStack->pPopPtr(__func__));
+  Table* pTableDef = _pTable(m_oDataStack.pPopPtr(__func__));
 
-  i8 iSize = m_pDataStack->iPopInt(__func__);
+  i8 iSize = m_oDataStack.iPopInt(__func__);
 
   s256 sSize;
-  m_pDataStack->vPopStr(sSize, __func__);
+  m_oDataStack.vPopStr(sSize, __func__);
 
   Pds* pPds = _pPds(*m_pLogicUnit->m_xpPds);
 
@@ -808,7 +808,7 @@ void Step::vPdsAddSizeTable(void)
   //ASSERT(pRow);
   //pRow->vDump(pStreamDef);
 
-  m_pDataStack->vPushInt(pRow ? true : false);
+  m_oDataStack.vPushInt(pRow ? true : false);
 
   EXIT();
 }
@@ -821,7 +821,7 @@ void Step::vPdsAddSpaceInfo(void)
   ENTRY();
 
   // get the streamSet table
-  Table* pTableDef = _pTable(m_pDataStack->pPopPtr(__func__));
+  Table* pTableDef = _pTable(m_oDataStack.pPopPtr(__func__));
 
   Pds* pPds = _pPds(*m_pLogicUnit->m_xpPds);
 
@@ -856,7 +856,7 @@ void Step::vPdsAddSpaceInfo(void)
   //ASSERT(pRow);
   //pRow->vDump(pStreamDef);
 
-  m_pDataStack->vPushInt(pRow ? true : false);
+  m_oDataStack.vPushInt(pRow ? true : false);
 
   EXIT();
 }
@@ -869,13 +869,13 @@ void Step::vPdsAddTableSizes(void)
   ENTRY();
 
   // get the streamSet table
-  Table* pTableDef = _pTable(m_pDataStack->pPopPtr(__func__));
+  Table* pTableDef = _pTable(m_oDataStack.pPopPtr(__func__));
 
   s256 sTableName;
-  m_pDataStack->vPopStr(sTableName, __func__);
+  m_oDataStack.vPopStr(sTableName, __func__);
 
   s256 sSize;
-  m_pDataStack->vPopStr(sSize, __func__);
+  m_oDataStack.vPopStr(sSize, __func__);
 
   Pds* pPds = _pPds(*m_pLogicUnit->m_xpPds);
 
@@ -888,7 +888,7 @@ void Step::vPdsAddTableSizes(void)
   //ASSERT(pRow);
   //pRow->vDump(pStreamDef);
 
-  m_pDataStack->vPushInt(pRow ? true : false);
+  m_oDataStack.vPushInt(pRow ? true : false);
 
   EXIT();
 }
@@ -901,15 +901,15 @@ void Step::vPdsAddVerifyIndex(void)
   ENTRY();
 
   // get the streamSet table
-  Table* pTableDef = _pTable(m_pDataStack->pPopPtr(__func__));
+  Table* pTableDef = _pTable(m_oDataStack.pPopPtr(__func__));
 
   // get the index
-  Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
+  Index* pIndex = _pIndex(m_oDataStack.pPopPtr(__func__));
 
   // get the table from the index
   Table* pTable = pIndex->pTable();
 
-  i8 iStatus = m_pDataStack->iPopInt(__func__);
+  i8 iStatus = m_oDataStack.iPopInt(__func__);
 
   Pds* pPds = _pPds(*m_pLogicUnit->m_xpPds);
 
@@ -923,7 +923,7 @@ void Step::vPdsAddVerifyIndex(void)
   //ASSERT(pRow);
   //pRow->vDump(pStreamDef);
 
-  m_pDataStack->vPushInt(pRow ? true : false);
+  m_oDataStack.vPushInt(pRow ? true : false);
 
   EXIT();
 }
@@ -936,12 +936,12 @@ void Step::vPdsAddVerifyTable(void)
   ENTRY();
 
   // get the streamSet table
-  Table* pTableDef = _pTable(m_pDataStack->pPopPtr(__func__));
+  Table* pTableDef = _pTable(m_oDataStack.pPopPtr(__func__));
 
   // get the table
-  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
+  Table* pTable = _pTable(m_oDataStack.pPopPtr(__func__));
 
-  i8 iStatus = m_pDataStack->iPopInt(__func__);
+  i8 iStatus = m_oDataStack.iPopInt(__func__);
 
   Pds* pPds = _pPds(*m_pLogicUnit->m_xpPds);
 
@@ -954,7 +954,7 @@ void Step::vPdsAddVerifyTable(void)
   //ASSERT(pRow);
   //pRow->vDump(pStreamDef);
 
-  m_pDataStack->vPushInt(pRow ? true : false);
+  m_oDataStack.vPushInt(pRow ? true : false);
 
   EXIT();
 }
@@ -966,7 +966,7 @@ void Step::vPdsGet(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpPds);
+  m_oDataStack.vPushPtr(*m_pLogicUnit->m_xpPds);
 
   EXIT();
 }
@@ -980,7 +980,7 @@ void Step::vPdsGetBufferIdAsAddr(void)
 
   Pds* pPds = *m_pLogicUnit->m_xpPds;
 
-  m_pDataStack->vPushPtr((Object*)pPds->oGetBufferId().m_pvAsAddress);
+  m_oDataStack.vPushPtr((Object*)pPds->oGetBufferId().m_pvAsAddress);
 
   EXIT();
 }
@@ -992,7 +992,7 @@ void Step::vPdsBufferTypeFetch(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt(m_pLogicUnit->m_xpPds->eBufferType());
+  m_oDataStack.vPushInt(m_pLogicUnit->m_xpPds->eBufferType());
 
   EXIT();
 }
@@ -1004,7 +1004,7 @@ void Step::vPdsBufferTypeStore(void)
 {
   ENTRY();
 
-  eBT eBufferType = (eBT)m_pDataStack->iPopInt(__func__);
+  eBT eBufferType = (eBT)m_oDataStack.iPopInt(__func__);
 
   m_pLogicUnit->m_xpPds->vBufferType(eBufferType);
 
@@ -1115,7 +1115,7 @@ void Step::vPdsChunkFile(void)
   if (MY::pJob()->pJobTags()->bHasName("<OP_Chunk>"_Stz))
     vTrace("<OP_Chunk>: nSumBytes %lld\n"_Stz,nSumBytes);
 
-  m_pDataStack->vPushInt(nSumBytes);
+  m_oDataStack.vPushInt(nSumBytes);
 
   EXIT();
 }
@@ -1143,7 +1143,7 @@ void Step::vPdsFirstRow(void)
 
   Pds* pPdsRowBuffer = _pPds(*m_pLogicUnit->m_xpPds);
 
-  m_pDataStack->vPushPtr(pPdsRowBuffer->pFirstRow());
+  m_oDataStack.vPushPtr(pPdsRowBuffer->pFirstRow());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1153,7 +1153,7 @@ void Step::vPdsIsNull(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt(m_pLogicUnit->m_xpPds.bIsNull() ? 1 : 0);
+  m_oDataStack.vPushInt(m_pLogicUnit->m_xpPds.bIsNull() ? 1 : 0);
 
   EXIT();
 }
@@ -1167,9 +1167,9 @@ void Step::vPdsNew(void)
 
   ASSERT(m_pLogicUnit->m_xpPds.bIsNull());
 
-  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
+  Table* pTable = _pTable(m_oDataStack.pPopPtr(__func__));
 
-  eBT eBufferType = (eBT)m_pDataStack->iPopInt(__func__);
+  eBT eBufferType = (eBT)m_oDataStack.iPopInt(__func__);
 
   StreamDef* pStreamDef = pTable->pStreamDef();
 
@@ -1185,9 +1185,9 @@ void Step::vPdsOperandDump(void)
 {
   ENTRY();
 
-  Pds* pPds = _pPds(m_pDataStack->pPopPtr(__func__));
+  Pds* pPds = _pPds(m_oDataStack.pPopPtr(__func__));
 
-  i8 iDetail = m_pDataStack->iPopInt(__func__);
+  i8 iDetail = m_oDataStack.iPopInt(__func__);
 
   UNUSED(pPds);
   UNUSED(iDetail);
@@ -1215,7 +1215,7 @@ void Step::vPdsRdCsvChunk(void)
   File* pCsvFile = _pFile(*m_pLogicUnit->m_xpFile0);
   Stz* szFilePath = pCsvFile->sFilePath();
 
-  Row* pInfoRow = _pRow(m_pDataStack->pPopPtr(__func__));
+  Row* pInfoRow = _pRow(m_oDataStack.pPopPtr(__func__));
   i8 iOffset = pInfoRow->iColVal_int(0);
   i8 nBytes = pInfoRow->iColVal_int(1);
 
@@ -1260,10 +1260,10 @@ void Step::vPdsRdCsvChunk(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // return the CsvBuffer
 
-  m_pDataStack->vPushInt(nBytes);
-  m_pDataStack->vPushInt(iOffset);
+  m_oDataStack.vPushInt(nBytes);
+  m_oDataStack.vPushInt(iOffset);
 
-  m_pDataStack->vPushPtr(pCsvBuffer);
+  m_oDataStack.vPushPtr(pCsvBuffer);
 
   EXIT();
 }
@@ -1275,7 +1275,7 @@ void Step::vPdsSet(void)
 {
   ENTRY();
 
-  m_pLogicUnit->m_xpPds = _pPds(m_pDataStack->pPopPtr(__func__));
+  m_pLogicUnit->m_xpPds = _pPds(m_oDataStack.pPopPtr(__func__));
 
   EXIT();
 }
@@ -1287,7 +1287,7 @@ void Step::vPdsSetLglPtn(void)
 {
   ENTRY();
 
-  i8 iLglPtn = m_pDataStack->iPopInt(__func__);
+  i8 iLglPtn = m_oDataStack.iPopInt(__func__);
 
   m_pLogicUnit->m_xpPds->vLglPtn((LglPtn)iLglPtn);
 
@@ -1385,7 +1385,7 @@ void Step::vPdsTableDefNameFetch(void)
       NEVER_REACH
   }
 
-  m_pDataStack->vPushStr(sTdefNm);
+  m_oDataStack.vPushStr(sTdefNm);
 
   EXIT();
 }
@@ -1399,9 +1399,9 @@ void Step::vPdsToCsv(void)
 
   Pds* pPds = _pPds(*m_pLogicUnit->m_xpPds);
 
-  StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
+  StreamDef* pStreamDef = _pStreamDef(m_oDataStack.pPopPtr(__func__));
 
-  Tub* pTub = _pTub(m_pDataStack->pPopPtr(__func__));
+  Tub* pTub = _pTub(m_oDataStack.pPopPtr(__func__));
 
   Tub::vToCsv(pStreamDef, pTub, pPds);
 
@@ -1417,7 +1417,7 @@ void Step::vPdsWriteCsv(void)
 
   ASSERT(*m_pLogicUnit->m_xpPds);
 
-  Table* pTableDef = _pTable(m_pDataStack->pPopPtr(__func__));
+  Table* pTableDef = _pTable(m_oDataStack.pPopPtr(__func__));
 
   Pds* pPdsRowBuffer = _pPds(*m_pLogicUnit->m_xpPds);
 

@@ -34,9 +34,9 @@ void Step::vPushI(void)
 {
   ENTRY();
   
-  TypeValueArea* aLoopIndex_I = m_pReturnStack->pStackHead();
+  TypeValueArea* aLoopIndex_I = m_oReturnStack.pStackHead();
   
-  m_pDataStack->vPushTypeValueArea(aLoopIndex_I);
+  m_oDataStack.vPushTypeValueArea(aLoopIndex_I);
   
   EXIT();
 }
@@ -48,9 +48,9 @@ void Step::vPushJ(void)
 {
   ENTRY();
   
-  TypeValueArea* aLoopIndex_J = m_pReturnStack->aPeekItem(3);
+  TypeValueArea* aLoopIndex_J = m_oReturnStack.aPeekItem(3);
   
-  m_pDataStack->vPushTypeValueArea(aLoopIndex_J);
+  m_oDataStack.vPushTypeValueArea(aLoopIndex_J);
   
   EXIT();
 }
@@ -62,7 +62,7 @@ void Step::vPushNullPtr(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(nullptr);
+  m_oDataStack.vPushPtr(nullptr);
   
   EXIT();
 }
@@ -80,7 +80,7 @@ void Step::vPushBcdVal(void)
     
   TypeValueArea* aTypedCell = _aTypeValueArea(& m_aInxPtr->m_xTypedValue);
   
-  m_pDataStack->vPushBcd(aTypedCell->iBcd());
+  m_oDataStack.vPushBcd(aTypedCell->iBcd());
   
   vAdjustFIP(aTypedCell->nStackUsage());
 
@@ -100,7 +100,7 @@ void Step::vPushBolVal(void)
     
   TypeValueArea* aTypedCell = _aTypeValueArea(& m_aInxPtr->m_xTypedValue);
   
-  m_pDataStack->vPushBol(aTypedCell->iBol());
+  m_oDataStack.vPushBol(aTypedCell->iBol());
   
   vAdjustFIP(aTypedCell->nStackUsage());
 
@@ -120,7 +120,7 @@ void Step::vPushFipVal(void)
   
   TypeValueArea* aTypedCell = _aTypeValueArea(& m_aInxPtr->m_xTypedValue);
   
-  m_pDataStack->vPushFip(aTypedCell->aFip());
+  m_oDataStack.vPushFip(aTypedCell->aFip());
   
   vAdjustFIP(aTypedCell->nStackUsage());
   
@@ -140,7 +140,7 @@ void Step::vPushFltVal(void)
   
   TypeValueArea* aTypedCell = _aTypeValueArea(& m_aInxPtr->m_xTypedValue);
   
-  m_pDataStack->vPushFlt(aTypedCell->dFlt());
+  m_oDataStack.vPushFlt(aTypedCell->dFlt());
   
   vAdjustFIP(aTypedCell->nStackUsage());
   
@@ -160,7 +160,7 @@ void Step::vPushIntVal(void)
     
   TypeValueArea* aTypedCell = _aTypeValueArea(& m_aInxPtr->m_xTypedValue);
   
-  m_pDataStack->vPushInt(aTypedCell->iInt());
+  m_oDataStack.vPushInt(aTypedCell->iInt());
   
   vAdjustFIP(aTypedCell->nStackUsage());
 
@@ -180,7 +180,7 @@ void Step::vPushPtrVal(void)
   
   TypeValueArea* aTypedCell = _aTypeValueArea(& m_aInxPtr->m_xTypedValue);
   
-  m_pDataStack->vPushPtr(aTypedCell->pObj());
+  m_oDataStack.vPushPtr(aTypedCell->pObj());
   
   vAdjustFIP(aTypedCell->nStackUsage());
   
@@ -205,7 +205,7 @@ void Step::vPushStzVal(void)
 //    BASE::vDebugPoint();
 //  }
   
-  m_pDataStack->vPushStz(aTypedCell->szStz());
+  m_oDataStack.vPushStz(aTypedCell->szStz());
   
   vAdjustFIP(aTypedCell->nStackUsage());
   

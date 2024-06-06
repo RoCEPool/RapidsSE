@@ -33,7 +33,7 @@ void Step::vJobMetricsCollect(void)
 {
   ENTRY();
 
-  i8 iJobNo = m_pDataStack->iPopInt(__func__);
+  i8 iJobNo = m_oDataStack.iPopInt(__func__);
   JobId tDistId = iJobNo;
   JobMetrics::vCollect(tDistId);
 
@@ -47,7 +47,7 @@ void Step::vJobMetricsDelete(void)
 {
   ENTRY();
 
-  JobMetrics* pJobMetrics = _pJobMetrics(m_pDataStack->pPopPtr(__func__));
+  JobMetrics* pJobMetrics = _pJobMetrics(m_oDataStack.pPopPtr(__func__));
 
   //Pipeline* pPipeline = pJobMetrics->pJob()->pMetricsPipeline();
   //delete pPipeline;
@@ -64,7 +64,7 @@ void Step::vJobMetricsJobSet(void)
 {
   ENTRY();
   
-  IntStack* pIntStack = _pIntStack(m_pDataStack->pPopPtr(__func__));
+  IntStack* pIntStack = _pIntStack(m_oDataStack.pPopPtr(__func__));
 
   JobMetrics::vJobSet(pIntStack);
   
@@ -78,14 +78,14 @@ void Step::vJobMetricsNew(void)
 {
   ENTRY();
 
-  i8 iJob = m_pDataStack->iPopInt(__func__);
+  i8 iJob = m_oDataStack.iPopInt(__func__);
 
   JobId tJobId;
   tJobId = iJob;
 
  JobMetrics* pJobMetrics = new JobMetrics(tJobId);
 
-  m_pDataStack->vPushPtr(pJobMetrics);
+  m_oDataStack.vPushPtr(pJobMetrics);
 
   EXIT();
 }
@@ -97,7 +97,7 @@ void Step::vJobMetricsUpdate(void)
 {
   ENTRY();
 /*
-  JobMetrics* pJobMetrics = _pJobMetrics(m_pDataStack->pPopPtr(__func__));
+  JobMetrics* pJobMetrics = _pJobMetrics(m_oDataStack.pPopPtr(__func__));
 
   ? bool bReaping = AM::SYSTEM::bReapEnabled();
 
@@ -108,7 +108,7 @@ void Step::vJobMetricsUpdate(void)
   if (! bUpdated || ! bAppendList)
     delete pJobMetrics;
   
-  m_pDataStack->vPushInt(bUpdated);
+  m_oDataStack.vPushInt(bUpdated);
 */
   EXIT();
 }

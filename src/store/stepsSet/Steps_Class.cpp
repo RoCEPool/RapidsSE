@@ -27,13 +27,13 @@ void Step::vClassName(void)
 {
   ENTRY();
   
-  i8 iClassNo = m_pDataStack->iPopInt(__func__);
+  i8 iClassNo = m_oDataStack.iPopInt(__func__);
   
   s32 sClassName;
   
   sClassName = aCN[iClassNo];
   
-  m_pDataStack->vPushStr(sClassName);
+  m_oDataStack.vPushStr(sClassName);
   
   EXIT();
 }
@@ -45,9 +45,9 @@ void Step::vClassPreSendWordStore(void)
 {
   ENTRY();
   
-  eCN eClassNo = _eClassNo(m_pDataStack->iPopInt(__func__));
+  eCN eClassNo = _eClassNo(m_oDataStack.iPopInt(__func__));
   
-  Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
+  Word* pWord = _pWord(m_oDataStack.pPopPtr(__func__));
     
   gxaSizeHeap[eClassNo].m_pPreSendWord = pWord;
 
@@ -62,9 +62,9 @@ void Step::vClassPostRecvWordStore(void)
 {
   ENTRY();
   
-  eCN eClassNo = _eClassNo(m_pDataStack->iPopInt(__func__));
+  eCN eClassNo = _eClassNo(m_oDataStack.iPopInt(__func__));
   
-  Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
+  Word* pWord = _pWord(m_oDataStack.pPopPtr(__func__));
     
   gxaSizeHeap[eClassNo].m_pPostRecvWord = pWord;
   

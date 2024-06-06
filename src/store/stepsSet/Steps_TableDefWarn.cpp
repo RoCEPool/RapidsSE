@@ -38,11 +38,11 @@ void Step::vTableDefWarnColumnFetch(void)
   
   Table* pTable = _pTable(*m_pLogicUnit->m_xpTableDefWarn);
   
-  i8 iColumnNo = m_pDataStack->iPopInt(__func__);
+  i8 iColumnNo = m_oDataStack.iPopInt(__func__);
   
   StreamDef* pStreamDef = pTable->pStreamDef();
   
-  m_pDataStack->vPushPtr(pStreamDef->pGetColumn(iColumnNo));
+  m_oDataStack.vPushPtr(pStreamDef->pGetColumn(iColumnNo));
   
   EXIT();
 }
@@ -74,7 +74,7 @@ void Step::vTableDefWarnGet(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpTableDefWarn);
+  m_oDataStack.vPushPtr(*m_pLogicUnit->m_xpTableDefWarn);
   
   EXIT();
 }
@@ -86,7 +86,7 @@ void Step::vTableDefWarnSet(void)
 {
   ENTRY();
   
-  m_pLogicUnit->m_xpTableDefWarn = _pTable(m_pDataStack->pPopPtr(__func__));
+  m_pLogicUnit->m_xpTableDefWarn = _pTable(m_oDataStack.pPopPtr(__func__));
   
   EXIT();
 }

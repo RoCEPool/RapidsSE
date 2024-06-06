@@ -27,7 +27,7 @@ void Step::vTagGet(void)
   ENTRY();
   
   s32 sTagNm;
-  m_pDataStack->vPopStr(sTagNm,__func__);
+  m_oDataStack.vPopStr(sTagNm, __func__);
 
   TagSet* pTags = nullptr;
 
@@ -59,12 +59,12 @@ void Step::vTagGet(void)
   if (TN_STRING == pTags->eToken(i_Tag)) {
     Stz* szValue = pTags->szValue(i_Tag);
     //vTrace("TagGet %s stz %s\n"_Stz,sTagNm.azChar(),szValue);
-    m_pDataStack->vPushStz(szValue);
+    m_oDataStack.vPushStz(szValue);
   }
   else {
     i8 iValue = pTags->iValue(i_Tag);
     //vTrace("TagGet %s int %lld\n"_Stz,sTagNm.azChar(),iValue);
-    m_pDataStack->vPushInt(iValue);
+    m_oDataStack.vPushInt(iValue);
   }
 
   EXIT();
@@ -79,7 +79,7 @@ void Step::vTagGet(void)
 //  i8 i_Tag = C_UNKNOWN;
 //  
 //  s32 sTagNm;
-//  m_pDataStack->vPopStr(sTagNm,__func__);
+//  m_oDataStack.vPopStr(sTagNm,__func__);
 //
 //  TagSet* pTagSet = nullptr;
 //
@@ -116,11 +116,11 @@ void Step::vTagGet(void)
 //  
 //  if (TN_STRING == pTagSet->eToken(i_Tag)) {
 //    Stz* szValue = pTagSet->szValue(i_Tag);
-//    m_pDataStack->vPushStz(szValue);
+//    m_oDataStack.vPushStz(szValue);
 //  }
 //  else {
 //    i8 iValue = pTagSet->iValue(i_Tag);
-//    m_pDataStack->vPushInt(iValue);
+//    m_oDataStack.vPushInt(iValue);
 //  }
 //
 //  EXIT();

@@ -62,9 +62,9 @@ void Step::vVertexGet(void)
   ENTRY();
    
   if (m_pLogicUnit->m_xpVertex.bIsNull())
-    m_pDataStack->vPushPtr(nullptr);
+    m_oDataStack.vPushPtr(nullptr);
   else
-    m_pDataStack->vPushPtr(* m_pLogicUnit->m_xpVertex);
+    m_oDataStack.vPushPtr(* m_pLogicUnit->m_xpVertex);
 
   EXIT();
 }
@@ -77,7 +77,7 @@ void Step::vVertexSet(void)
   ENTRY();
   
   m_pLogicUnit->m_xpVertex =
-    _pVertex(m_pDataStack->pPopPtr(__func__));
+    _pVertex(m_oDataStack.pPopPtr(__func__));
 
   EXIT();
 }

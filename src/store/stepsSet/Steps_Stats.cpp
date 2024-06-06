@@ -71,7 +71,7 @@ void Step::vStatsMicrosecs(void)
   
   i8 iMicroseconds = pStats->iMicroseconds();
   
-  m_pDataStack->vPushInt(iMicroseconds);
+  m_oDataStack.vPushInt(iMicroseconds);
   
   EXIT();
 }
@@ -88,7 +88,7 @@ void Step::vStatsMillisecs(void)
   
   i8 iMilliseconds = pStats->iMilliseconds();
   
-  m_pDataStack->vPushInt(iMilliseconds);
+  m_oDataStack.vPushInt(iMilliseconds);
   
   EXIT();
 }
@@ -105,7 +105,7 @@ void Step::vStatsNanosecs(void)
   
   i8 iNanoseconds = pStats->iNanoseconds();
   
-  m_pDataStack->vPushInt(iNanoseconds);
+  m_oDataStack.vPushInt(iNanoseconds);
   
   EXIT();
 }
@@ -146,7 +146,7 @@ void Step::vStatsSecs(void)
   
   i8 iSeconds = pStats->iSeconds();
   
-  m_pDataStack->vPushInt(iSeconds);
+  m_oDataStack.vPushInt(iSeconds);
   
   EXIT();
 }

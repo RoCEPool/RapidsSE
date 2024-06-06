@@ -62,7 +62,7 @@ void Step::vCrwHandlerGet(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt((i8)* m_pLogicUnit->m_afCrwHandler);
+  m_oDataStack.vPushInt((i8)* m_pLogicUnit->m_afCrwHandler);
 
   EXIT();
 }
@@ -74,7 +74,7 @@ void Step::vCrwHandlerSet(void)
 {
   ENTRY();
 
-  i8 iFun = m_pDataStack->iPopInt(__func__);
+  i8 iFun = m_oDataStack.iPopInt(__func__);
 
   m_pLogicUnit->m_afCrwHandler = (bool (*)(void*)) iFun;
 
@@ -88,7 +88,7 @@ void Step::vEosHandlerGet(void)
 {
 	ENTRY();
 
-	m_pDataStack->vPushInt((i8)* m_pLogicUnit->m_afEosHandler);
+	m_oDataStack.vPushInt((i8)* m_pLogicUnit->m_afEosHandler);
 
 	EXIT();
 }
@@ -100,7 +100,7 @@ void Step::vEosHandlerSet(void)
 {
 	ENTRY();
 
-	i8 iFun = m_pDataStack->iPopInt(__func__);
+	i8 iFun = m_oDataStack.iPopInt(__func__);
 
 	m_pLogicUnit->m_afEosHandler = (bool (*)(void*)) iFun;
 
@@ -114,7 +114,7 @@ void Step::vIndexHandlerGet(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt((i8)* m_pLogicUnit->m_afIndexHandler);
+  m_oDataStack.vPushInt((i8)* m_pLogicUnit->m_afIndexHandler);
 
   EXIT();
 }
@@ -126,7 +126,7 @@ void Step::vIndexHandlerIsNotNull(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt(m_pLogicUnit->m_afIndexHandler ? 1 : 0);
+  m_oDataStack.vPushInt(m_pLogicUnit->m_afIndexHandler ? 1 : 0);
 
   EXIT();
 }
@@ -138,7 +138,7 @@ void Step::vIndexHandlerSet(void)
 {
   ENTRY();
 
-  i8 iFun = m_pDataStack->iPopInt(__func__);
+  i8 iFun = m_oDataStack.iPopInt(__func__);
 
   m_pLogicUnit->m_afIndexHandler = (bool (*)(void*)) iFun;
 
@@ -152,7 +152,7 @@ void Step::vStartHandlerGet(void)
 {
 	ENTRY();
 
-	m_pDataStack->vPushInt((i8)* m_pLogicUnit->m_afStartHandler);
+	m_oDataStack.vPushInt((i8)* m_pLogicUnit->m_afStartHandler);
 
 	EXIT();
 }
@@ -164,7 +164,7 @@ void Step::vStartHandlerSet(void)
 {
 	ENTRY();
 
-	i8 iFun = m_pDataStack->iPopInt(__func__);
+	i8 iFun = m_oDataStack.iPopInt(__func__);
 
 	m_pLogicUnit->m_afStartHandler = (bool (*)(void*)) iFun;
 
@@ -178,7 +178,7 @@ void Step::vPdsHandlerGet(void)
 {
 	ENTRY();
 
-	m_pDataStack->vPushInt((i8)* m_pLogicUnit->m_afPdsHandler);
+	m_oDataStack.vPushInt((i8)* m_pLogicUnit->m_afPdsHandler);
 
 	EXIT();
 }
@@ -190,7 +190,7 @@ void Step::vPdsHandlerSet(void)
 {
 	ENTRY();
 
-	i8 iFun = m_pDataStack->iPopInt(__func__);
+	i8 iFun = m_oDataStack.iPopInt(__func__);
 
 	m_pLogicUnit->m_afPdsHandler = (bool (*)(void*)) iFun;
 
@@ -204,7 +204,7 @@ void Step::vStreamDefHandlerGet(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt((i8)* m_pLogicUnit->m_afStreamDefHandler);
+  m_oDataStack.vPushInt((i8)* m_pLogicUnit->m_afStreamDefHandler);
 
   EXIT();
 }
@@ -216,7 +216,7 @@ void Step::vStreamDefHandlerSet(void)
 {
   ENTRY();
 
-  i8 iFun = m_pDataStack->iPopInt(__func__);
+  i8 iFun = m_oDataStack.iPopInt(__func__);
 
   m_pLogicUnit->m_afStreamDefHandler = (bool (*)(void*)) iFun;
 

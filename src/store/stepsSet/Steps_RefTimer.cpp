@@ -31,7 +31,7 @@ void Step::vRefTimerMilliseconds(void)
 
   i8 nMilliseconds = pReferenceTimer->iMilliseconds();
   
-  m_pDataStack->vPushInt(nMilliseconds);
+  m_oDataStack.vPushInt(nMilliseconds);
 
   EXIT();
 }
