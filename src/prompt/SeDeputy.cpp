@@ -143,6 +143,9 @@ void SeDeputy::vDeputyLoop(void)
 
     try {
 
+      // prompt not yet signalled
+      bPromptSignalled = false;
+
       vMutexLock(this);
       m_bAvailable = true;
       vMutexWaitAndUnlock(this);
@@ -168,8 +171,6 @@ void SeDeputy::vDeputyLoop(void)
 
 #endif
 
-      // prompt not yet signalled
-      bPromptSignalled = false;
 
       if ( pInpTagSet->bHasName(C_TAG_NOWAIT)) {
         NEVER_REACH
