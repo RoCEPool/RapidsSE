@@ -48,7 +48,7 @@ namespace PROMPT
     void vDeputyLoop(void);
 
     void vDelete_Job(Job* pJob);
-    eEC  eExecute_Job(Job* pJob, TokenVec *pInpTknVec, TagSet *pInpTagSet);
+    eEC  eExecute_Job(TokenVec *pInpTknVec, TagSet *pInpTagSet);
     Job* pNew_Job(void);
 
     // -- -- -- -- -- --
@@ -60,9 +60,7 @@ namespace PROMPT
     Input* pInput(void);
     JobId tLastJobId(void);
     void vMutexLock(Object* pLockBy);
-    void vMutexSignalAndUnlock(Object* pLockBy);
     void vMutexWaitAndUnlock(Object* pLockBy);
-    void vReportTime(void);
     void vReset(void);
     void vTerminate(void);
     bool bTerminated(void);

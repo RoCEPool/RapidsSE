@@ -66,24 +66,6 @@ SeDeputy::SeDeputy(i8 i_Deputy, SePrompt* pSePrompt)
   m_eError   = EC_NONE;
 
   _checkInitialised_(CN_SEDEPUTY);
-  
-  //m_sFolderPath = C_SE_PATH;
-  
-//  JobId tParentId;
-//  RASSERT(tParentId.bIsUnknown());
-//
-//  JobId tOriginId;
-//  RASSERT(tOriginId.bIsUnknown());
-//
-//  JobId tDistId;
-//  RASSERT(tDistId.bIsUnknown());
-//
-//  m_pRootJob = Api::pNewRootJob("SeDeputy"_Stz,tParentId,tOriginId,tDistId);
-//  m_pRootJob->vFolderPath(C_SE_PATH);
-//  m_pRootJob->vSystemCloser(false);
-//  m_pRootJob->vOutputCreate();
-//  m_pRootJob->vOutputBeginProc();
-//  m_pRootJob->vOutputEnabled(true);
 
   m_pRootJob = pNew_Job();
 
@@ -149,7 +131,7 @@ void SeDeputy::vDeputyLoop(void)
       TokenVec *pInpTknVec = m_pInput->pInpTknVec();
       TagSet *pInpTagSet = m_pInput->pInpTagSet();
 
-      m_eError = eExecute_Job(m_pRootJob,pInpTknVec, pInpTagSet);
+      m_eError = eExecute_Job(pInpTknVec, pInpTagSet);
 
 //      if (EC_NONE != m_eError) {
 //        m_pSePrompt->vMutexLock(this);
@@ -190,8 +172,10 @@ void SeDeputy::vDelete_Job(Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* execute job                                                                */
 /*----------------------------------------------------------------------------*/
-eEC SeDeputy::eExecute_Job(Job* pJob, TokenVec *pInpTknVec, TagSet *pInpTagSet)
+eEC SeDeputy::eExecute_Job(TokenVec *pInpTknVec, TagSet *pInpTagSet)
 {
+  Job* pJob = pNew_Job();
+
   bool bIsPipeline = false;
 
   pInpTagSet->vReplace(C_TAG_WAIT, 1);
@@ -223,8 +207,10 @@ eEC SeDeputy::eExecute_Job(Job* pJob, TokenVec *pInpTknVec, TagSet *pInpTagSet)
                                   true, /* update parent */
                                   bIsPipeline);
 
-  if (EC_NONE != eError)
+  if (EC_NONE != eError) {
+    vDelete_Job(pJob);
     return eError;
+  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -240,6 +226,7 @@ eEC SeDeputy::eExecute_Job(Job* pJob, TokenVec *pInpTknVec, TagSet *pInpTagSet)
   pJob->pJobTags()->vDelete(C_TAG_NOWAIT);
   pJob->pJobTags()->vDelete(C_TAG_JOBMETRICS);
 
+  vDelete_Job(pJob);
   return eError;
 }
 
@@ -347,20 +334,6 @@ void SeDeputy::vMutexLock(Object* pLockBy)
 }
 
 /*----------------------------------------------------------------------------*/
-/* signal this job's mutex                                                    */
-/*----------------------------------------------------------------------------*/
-void SeDeputy::vMutexSignalAndUnlock(Object* pLockBy)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
-
-  Mutex* pMutex = m_pThread->pMutex();
-
-  //pMutex->vLock(pLockBy);
-
-  pMutex->vSignalAndUnlock(pLockBy);
-}
-
-/*----------------------------------------------------------------------------*/
 /* wait on this prompt's mutex                                                */
 /*----------------------------------------------------------------------------*/
 void SeDeputy::vMutexWaitAndUnlock(Object* pLockBy)
@@ -372,70 +345,6 @@ void SeDeputy::vMutexWaitAndUnlock(Object* pLockBy)
   pMutex->vWaitForSignalLoop(this);
     
   pMutex->vUnlock(pLockBy);
-
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* report time taken by last command                                          */
-/*----------------------------------------------------------------------------*/
-void SeDeputy::vReportTime(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
-  
-  //m_pJob->pTagSet()->vPrint();
-
-  /*
-  if (! m_pRootJob->bHasTag(C_TAG_TIME))
-    return;
-  
-  if (m_pRootJob->bHasTag(C_TAG_SUMMARY)) {
-    
-    Stz* szNote = m_pRootJob->pJobTags()->szValue(C_TAG_NOTE);
-    
-    Now spNow;
-    vTrace("[%s %lldN%lldP%lldT %s %s] "_Stz,
-           szNote,
-           AM::GRID::nKnownNodes(),
-           AM::PTNMAP::nPtnsPerNode(),
-           AM::nThreads(),
-           AM::szBuild(),
-           spNow.sz()
-           );
-  }
- */
-
-  if (! m_pRootJob->bHasTag(C_TAG_TIME))
-    return;
-
-  //vTrace("time %lldms\n\n"_Stz,m_pRootJob->iResponseTimerMsec());
-  vTrace("time %lldms\n\n"_Stz,(m_pRootJob->iGetSysTimerEnd() - m_pRootJob->iGetSysTimerStart()) / 1000000);
-
-  Timer oTimer;
-
-  oTimer.vSet(m_pRootJob->iResponseTimerStart(),
-              m_pRootJob->iTscBeginning());
-  vTrace("Begin    %lldus\n"_Stz,oTimer.iMicroseconds());
-
-  oTimer.vSet(m_pRootJob->iResponseTimerStart(),
-              m_pRootJob->iTscBegun());
-  vTrace("Begun    %lldus\n"_Stz,oTimer.iMicroseconds());
-
-  oTimer.vSet(m_pRootJob->iResponseTimerStart(),
-              m_pRootJob->iTscExecuting());
-  vTrace("Execute  %lldus\n"_Stz,oTimer.iMicroseconds());
-
-  oTimer.vSet(m_pRootJob->iResponseTimerStart(),
-              m_pRootJob->iTscExecuted());
-  vTrace("Executed %lldus\n"_Stz,oTimer.iMicroseconds());
-
-  oTimer.vSet(m_pRootJob->iResponseTimerStart(),
-              m_pRootJob->iTscEnding());
-  vTrace("End      %lldus\n"_Stz,oTimer.iMicroseconds());
-
-  oTimer.vSet(m_pRootJob->iResponseTimerStart(),
-              m_pRootJob->iTscEnded());
-  vTrace("Ended    %lldus\n"_Stz,oTimer.iMicroseconds());
 
 }
 
