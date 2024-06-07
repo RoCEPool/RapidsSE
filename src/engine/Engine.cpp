@@ -246,7 +246,6 @@ bool Engine::bTraceStart(void)
       break;
 
     case BO_START_PROMPT:
-      NEVER_REACH
       vOpenTrace(false);
       break;
 
@@ -304,8 +303,7 @@ void Engine::vRunCommandLine(void)
         break;
         
       case BO_START_PROMPT:
-        NEVER_REACH
-        vStartSystem();
+         vStartSystem();
 
 
 

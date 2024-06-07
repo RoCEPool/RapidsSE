@@ -255,6 +255,7 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--addNode"_Stz)) {
+      NEVER_REACH
       m_xSysArgs.m_bAddNode = true;
       continue;
     }
@@ -1277,6 +1278,7 @@ bool CmdLineArgs::bParseTraceFileArgs(i8 argc, s256 argv[])
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--addNode"_Stz)) {
+      NEVER_REACH
       m_xSysArgs.m_bAddNode = true;
       continue;
     }
