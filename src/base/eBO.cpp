@@ -8,7 +8,6 @@ Stz* aBO[BO_ENUMS]
 {
   /*  0 */ "NONE"_Stz,
   
-  /*    */ "ADD_NODE"_Stz,
   /*    */ "PROMPT"_Stz,
   /*    */ "START"_Stz,
   /*    */ "START_PROMPT"_Stz,

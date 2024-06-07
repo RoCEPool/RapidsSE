@@ -7,7 +7,6 @@ enum eBO // boot options
 {
   /*  0 */ BO_NONE=0,
   
-  /*    */ BO_ADD_NODE,
   /*    */ BO_PROMPT,
   /*    */ BO_START,
   /*    */ BO_START_PROMPT,

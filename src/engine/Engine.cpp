@@ -253,8 +253,7 @@ bool Engine::bTraceStart(void)
        vOpenTrace(false);
       break;
 
-    case BO_ADD_NODE:
-    case BO_STATUS:
+     case BO_STATUS:
     case BO_STOP:
     case BO_UNLINK:
       break;
@@ -277,13 +276,7 @@ void Engine::vRunCommandLine(void)
 
   try {
     switch (eBootOption) {
-        
-      case BO_ADD_NODE:
-        vStartSystem();
-        //AM::SYSTEM::vSystemReady(); // Process has completed the boot sequence
-        vWaitStop();
-        break;
-        
+
       case BO_PROMPT:
         //NEVER_REACH
         // wait for the attachmap to be ready
@@ -683,8 +676,6 @@ eBO Engine::eDecodeCommandLine(void)
   if (gxCmdLineArgs.m_xSysArgs.m_bStatus)                      return BO_STATUS;
   if (gxCmdLineArgs.m_xSysArgs.m_bStop)                        return BO_STOP;
   if (gxCmdLineArgs.m_xSysArgs.m_bUnlink)                      return BO_UNLINK;
-
-  if (gxCmdLineArgs.m_xSysArgs.m_bAddNode)                     return BO_ADD_NODE;
 
   return BO_NONE;
 }

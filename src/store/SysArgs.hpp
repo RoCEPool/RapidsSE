@@ -54,7 +54,6 @@ namespace STORE
     TagSet m_oSysTags;  // system level tag set
 
     // command
-    bool m_bAddNode;     // add node
     bool m_bAppendTrace; // append to trace file
     bool m_bCommand;     // run command
     bool m_bHelp;        // display help

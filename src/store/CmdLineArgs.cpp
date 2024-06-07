@@ -112,7 +112,6 @@ void CmdLineArgs::vInit(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // commands
-  m_xSysArgs.m_bAddNode     = false;
   m_xSysArgs.m_bAppendTrace = false;
   m_xSysArgs.m_bCommand     = false;
   m_xSysArgs.m_bHelp        = false;
@@ -252,13 +251,6 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
   for (i8 i_Arg = 1; i_Arg < argc; i_Arg++) {
     
     Stz* szArg = argv[i_Arg];
-    
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (szArg->bSame("--addNode"_Stz)) {
-      NEVER_REACH
-      m_xSysArgs.m_bAddNode = true;
-      continue;
-    }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--address"_Stz)) {
@@ -1275,13 +1267,6 @@ bool CmdLineArgs::bParseTraceFileArgs(i8 argc, s256 argv[])
   for (i8 i_Arg = 1; i_Arg < argc; i_Arg++) {
 
     Stz *szArg = argv[i_Arg];
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (szArg->bSame("--addNode"_Stz)) {
-      NEVER_REACH
-      m_xSysArgs.m_bAddNode = true;
-      continue;
-    }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #ifndef NO_SE_PROMPT

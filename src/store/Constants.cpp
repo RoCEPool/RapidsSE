@@ -84,7 +84,6 @@ void Constants::vAddConstant(Stz* szName, Stz* szVal)
 void Constants::vAddConstantsArgs(void)
 {
   // CmdLineArgs
-  Constants::vAddConstant("[args].addNode"_Stz,           gxCmdLineArgs.m_xSysArgs.m_bAddNode);
   Constants::vAddConstant("[args].m_nDefinedNodes"_Stz,   gxCmdLineArgs.m_xSysArgs.m_nDefinedNodes);
   Constants::vAddConstant("[args].condCode"_Stz,          gxCmdLineArgs.m_xSysArgs.m_iCondCode);
   Constants::vAddConstant("[args].config"_Stz,            gxCmdLineArgs.m_xSysArgs.m_bConfig);
