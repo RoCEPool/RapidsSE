@@ -46,10 +46,6 @@ namespace PROMPT
   
     void vDeputyLoop(void);
 
-    void vDelete_Job(Job* pJob);
-    eEC  eExecute_Job(TokenVec *pInpTknVec, TagSet *pInpTagSet);
-    Job* pNew_Job(void);
-
     // -- -- -- -- -- --
   
     bool bAvailable(void);

@@ -457,6 +457,79 @@ Job* Api::pCreateJob2PC(Job* pParentJob, Stz* sCmd)
 }
 
 /*----------------------------------------------------------------------------*/
+/* execute job                                                                */
+/*----------------------------------------------------------------------------*/
+eEC Api::eExecute_Job(TokenVec *pInpTknVec, TagSet *pInpTagSet)
+{
+  _static_
+
+  JobId tParentId;
+  RASSERT(tParentId.bIsUnknown());
+
+  JobId tOriginId;
+  RASSERT(tOriginId.bIsUnknown());
+
+  JobId tDistId;
+  RASSERT(tDistId.bIsUnknown());
+
+  Job* pJob  = Api::pNewRootJob("SeDeputy"_Stz,tParentId,tOriginId,tDistId);
+  pJob->vFolderPath(C_SE_PATH);
+  pJob->vSystemCloser(false);
+  pJob->vOutputCreate();
+  pJob->vOutputBeginProc();
+  pJob->vOutputEnabled(true);
+
+  bool bIsPipeline = false;
+
+  pInpTagSet->vReplace(C_TAG_WAIT, 1);
+  pInpTagSet->vReplace(C_TAG_SIGNALPARENT, 1);
+
+  pInpTagSet->vReplace(C_TAG_PATH, pJob->szFolderPath());
+  pInpTagSet->vReplace(C_TAG_LASTJOBID, pJob->tLastJobId().iAsI8());
+  pInpTagSet->vReplace(C_TAG_SYSTEMCLOSER, pJob->bSystemCloser());
+
+  //pInpTknVec->vDumpVec();
+  //pInpTagSet->vDumpSet();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  tParentId = pJob->tJobId();
+  tOriginId = pJob->tOriginId();
+  tDistId = pJob->tDistId();
+
+  JobId tChildJobId;
+  eEC eError = Api::eForkJobChild(tChildJobId,
+                                  pInpTknVec, pInpTagSet,
+                                  nullptr,
+                                  tParentId, tOriginId, tDistId,
+                                  pJob,
+                                  true, /* update parent */
+                                  bIsPipeline);
+
+  if (EC_NONE != eError) {
+    Api::vDeleteRootJob(pJob);
+    return eError;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // process the output bufferQueue
+  if (bIsPipeline)
+    pJob->vProcessOutput();
+
+  pJob->vResetOutput();
+  pJob->vCleanupOutput();
+
+  // reset the C_TAG_TIME and C_TAG_NOWAIT
+  pJob->pJobTags()->vDelete(C_TAG_TIME);
+  pJob->pJobTags()->vDelete(C_TAG_NOWAIT);
+  pJob->pJobTags()->vDelete(C_TAG_JOBMETRICS);
+
+  Api::vDeleteRootJob(pJob);
+  return eError;
+}
+
+/*----------------------------------------------------------------------------*/
 /* fork a child job for given command                                         */
 /*----------------------------------------------------------------------------*/
 eEC Api::eForkJobChild(JobId& rtChildJobId,

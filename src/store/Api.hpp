@@ -23,20 +23,23 @@ namespace STORE
   static Job* pCreateJob2PC(Job* pParentJob, Stz* sCmd);
   static void vDeleteRootJob(Job*& rpJob);
 
+  static eEC eExecute_Job(TokenVec *pInpTknVec, TagSet *pInpTagSet);
+
   static eEC  eForkJobChild(JobId& rtChildJobId,
-                           TokenVec* pCmdTknVec, TagSet* pCmdTagSet,
-                           ExtendedText* pCodeBlock,
-                           JobId tParentId, JobId tOriginId, JobId tDistId,
-                           Job* pParentJob,
-                           bool bUpdateParent,
-                           bool& bIsPipeline);
-    static eEC  eForkJobChildNested(JobId& rtChildJobId,
-                              TokenVec* pCmdTknVec, TagSet* pCmdTagSet,
-                              ExtendedText* pCodeBlock,
-                              JobId tParentId, JobId tOriginId, JobId tDistId,
-                              Job* pParentJob,
-                              bool bUpdateParent,
-                              bool& bIsPipeline);
+                         TokenVec* pCmdTknVec, TagSet* pCmdTagSet,
+                         ExtendedText* pCodeBlock,
+                         JobId tParentId, JobId tOriginId, JobId tDistId,
+                         Job* pParentJob,
+                         bool bUpdateParent,
+                         bool& bIsPipeline);
+
+  static eEC  eForkJobChildNested(JobId& rtChildJobId,
+                            TokenVec* pCmdTknVec, TagSet* pCmdTagSet,
+                            ExtendedText* pCodeBlock,
+                            JobId tParentId, JobId tOriginId, JobId tDistId,
+                            Job* pParentJob,
+                            bool bUpdateParent,
+                            bool& bIsPipeline);
 
   static eEC  eForkJob2PC(JobId& rtChildJobId,
                             TokenVec* pCmdTknVec, TagSet* pCmdTagSet,
