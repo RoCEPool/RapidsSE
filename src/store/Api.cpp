@@ -459,6 +459,24 @@ Job* Api::pCreateJob2PC(Job* pParentJob, Stz* sCmd)
 /*----------------------------------------------------------------------------*/
 /* execute job                                                                */
 /*----------------------------------------------------------------------------*/
+eEC Api::eExecute_Job(Stz* szCmd)
+{
+  _static_
+
+  TokenVec* pTknVec = AM::TOKENISE::pTokeniseSen(szCmd);
+  TagSet*   pTagSet = new TagSet;
+
+  eEC eError = eExecute_Job(pTknVec, pTagSet);
+
+  delete pTagSet;
+  delete pTknVec;
+
+  return  eError;
+}
+
+/*----------------------------------------------------------------------------*/
+/* execute job                                                                */
+/*----------------------------------------------------------------------------*/
 eEC Api::eExecute_Job(TokenVec *pInpTknVec, TagSet *pInpTagSet)
 {
   _static_
