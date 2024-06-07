@@ -241,6 +241,9 @@ bool Engine::bTraceStart(void)
 
   switch (eBootOption) {
 
+    case BO_COMMAND:
+      break;
+
     case BO_PROMPT:
        vOpenTrace(true);
       break;
@@ -253,7 +256,7 @@ bool Engine::bTraceStart(void)
        vOpenTrace(false);
       break;
 
-     case BO_STATUS:
+    case BO_STATUS:
     case BO_STOP:
     case BO_UNLINK:
       break;
@@ -276,6 +279,9 @@ void Engine::vRunCommandLine(void)
 
   try {
     switch (eBootOption) {
+
+      case BO_COMMAND:
+        break;
 
       case BO_PROMPT:
         //NEVER_REACH
@@ -671,11 +677,13 @@ void Engine::vCreateTmpDir(void)
 eBO Engine::eDecodeCommandLine(void)
 {
   if (gxCmdLineArgs.m_xSysArgs.m_bStart && gxCmdLineArgs.m_xSysArgs.m_bPrompt)   return BO_START_PROMPT;
-  if (gxCmdLineArgs.m_xSysArgs.m_bStart)                       return BO_START;
-  if (gxCmdLineArgs.m_xSysArgs.m_bPrompt)                      return BO_PROMPT;
-  if (gxCmdLineArgs.m_xSysArgs.m_bStatus)                      return BO_STATUS;
-  if (gxCmdLineArgs.m_xSysArgs.m_bStop)                        return BO_STOP;
-  if (gxCmdLineArgs.m_xSysArgs.m_bUnlink)                      return BO_UNLINK;
+  if (gxCmdLineArgs.m_xSysArgs.m_bStart)   return BO_START;
+  if (gxCmdLineArgs.m_xSysArgs.m_bPrompt)  return BO_PROMPT;
+  if (gxCmdLineArgs.m_xSysArgs.m_bStatus)  return BO_STATUS;
+  if (gxCmdLineArgs.m_xSysArgs.m_bStop)    return BO_STOP;
+  if (gxCmdLineArgs.m_xSysArgs.m_bUnlink)  return BO_UNLINK;
+
+  if (gxCmdLineArgs.m_xSysArgs.m_bCommand) return BO_COMMAND;
 
   return BO_NONE;
 }
