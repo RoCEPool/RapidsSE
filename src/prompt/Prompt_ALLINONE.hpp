@@ -81,7 +81,6 @@ namespace PROMPT
   bool bPrompt_job(SePrompt* pPrompt);
   bool bPrompt_jobs(SePrompt* pPrompt);
 
-  bool bPrompt_lastJob(SePrompt* pPrompt);
   bool bPrompt_limits(SePrompt* pPrompt);
   bool bPrompt_llist(SePrompt* pPrompt);
   bool bPrompt_locks(SePrompt* pPrompt);

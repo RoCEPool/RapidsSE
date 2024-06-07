@@ -58,7 +58,6 @@ namespace PROMPT
     eEC  eError(void);
     void vError(eEC eError);
     Input* pInput(void);
-    JobId tLastJobId(void);
     void vMutexLock(Object* pLockBy);
     void vMutexWaitAndUnlock(Object* pLockBy);
     void vReset(void);

@@ -2062,42 +2062,6 @@ bool PROMPT::bPrompt_jobs(SePrompt* pPrompt)
 }
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-/* Prompt_lastJob.cpp -- last job id                                          */
-/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-
-PromptFun __Prompt_lastJob (
-  PF_LASTJOB,           // prompt function
-  "Prompt_lastJob"_Stz, // name of the prompt function
-  "comment"_Stz,        // comment about the function
-  "lastJob"_Stz,        // the prompt command
-  nullptr,              // the second word
-  bPrompt_lastJob,      // prompt function
-  true,                 // enabled
-
-  true,                 // visible
-  "lastJob"_Stz,        // help
-  ""_Stz                // description
-);
-
-/*----------------------------------------------------------------------------*/
-/* prompt function                                                            */
-/*----------------------------------------------------------------------------*/
-bool PROMPT::bPrompt_lastJob(SePrompt* pPrompt)
-{
-  RASSERT(pPrompt);
-
-  SeDeputy* pDeputy = pPrompt->pDeputyCurrent();
-  
-  JobId tLastJobId = pDeputy->tLastJobId();
-  
-  vTrace("Last Job Id : %llu\n"_Stz
-         ,tLastJobId.uJobNo()
-         );
-  
-  return true;
-}
-
-/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /* Prompt_limits.cpp -- system limits                                         */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 

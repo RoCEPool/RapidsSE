@@ -181,9 +181,9 @@ eEC SeDeputy::eExecute_Job(TokenVec *pInpTknVec, TagSet *pInpTagSet)
   pInpTagSet->vReplace(C_TAG_WAIT, 1);
   pInpTagSet->vReplace(C_TAG_SIGNALPARENT, 1);
 
-  pInpTagSet->vReplace(C_TAG_PATH, m_pRootJob->szFolderPath());
-  pInpTagSet->vReplace(C_TAG_LASTJOBID, m_pRootJob->tLastJobId().iAsI8());
-  pInpTagSet->vReplace(C_TAG_SYSTEMCLOSER, m_pRootJob->bSystemCloser());
+  pInpTagSet->vReplace(C_TAG_PATH, pJob->szFolderPath());
+  pInpTagSet->vReplace(C_TAG_LASTJOBID, pJob->tLastJobId().iAsI8());
+  pInpTagSet->vReplace(C_TAG_SYSTEMCLOSER, pJob->bSystemCloser());
 
   //pInpTknVec->vDumpVec();
   //pInpTagSet->vDumpSet();
@@ -309,16 +309,6 @@ Input* SeDeputy::pInput(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
   
   return m_pInput;
-}
-
-/*----------------------------------------------------------------------------*/
-/* last job run                                                               */
-/*----------------------------------------------------------------------------*/
-JobId SeDeputy::tLastJobId(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
-
-  return m_pRootJob->tLastJobId();;
 }
 
 /*----------------------------------------------------------------------------*/
