@@ -132,10 +132,6 @@ void SeDeputy::vDeputyLoop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
 
-  bool bIsPipeline = false;
-  bool bPromptWaitCompletion = true;
-  bool bPromptSignalled;
-
   m_pThread->vThisTLSThread();
   RASSERT(AM::THREAD::pThisThread());
   
@@ -143,110 +139,40 @@ void SeDeputy::vDeputyLoop(void)
 
     try {
 
-      // prompt not yet signalled
-      bPromptSignalled = false;
-
       vMutexLock(this);
       m_bAvailable = true;
       vMutexWaitAndUnlock(this);
 
-      if (!m_bContinue)
+      if (! m_bContinue)
         break;
 
       TokenVec *pInpTknVec = m_pInput->pInpTknVec();
       TagSet *pInpTagSet = m_pInput->pInpTagSet();
 
-#ifdef WITH_OOM_FAULTINJECTION
+      m_eError = eExecute_Job(m_pRootJob,pInpTknVec, pInpTagSet);
 
-      if (pInpTagSet->bHasName(C_TAG_FAULTINJECTION)) {
+//      if (EC_NONE != m_eError) {
+//        m_pSePrompt->vMutexLock(this);
+//        m_pSePrompt->vMutexSignalAndUnlock(this);
+//        continue;
+//      }
 
-        RASSERT(pInpTagSet->bHasName(C_TAG_FAULTPOINT));
-        i8 iFaultPoint =  StrLib::iToI8((char*)pInpTagSet->szValue(C_TAG_FAULTPOINT));
-        RASSERT(iFaultPoint);
-
-        PsxThd::vTlsSet(gbTLS_FaultInjection,(void*)true);
-        PsxThd::vTlsSet(giTLS_FaultPoint,(void*)iFaultPoint);
-        //PsxThd::vTlsSet(giTLS_CurrentPoint,(void*)1);
-      }
-
-#endif
-
-
-      if ( pInpTagSet->bHasName(C_TAG_NOWAIT)) {
-        NEVER_REACH
-        bPromptWaitCompletion = false;
-        pInpTagSet->vDelete(C_TAG_WAIT);
-        pInpTagSet->vDelete(C_TAG_SIGNALPARENT);
-      }
-      else {
-        bPromptWaitCompletion = true;
-        pInpTagSet->vReplace(C_TAG_WAIT, 1);
-        pInpTagSet->vReplace(C_TAG_SIGNALPARENT, 1);
-      }
-
-      pInpTagSet->vReplace(C_TAG_PATH, m_pRootJob->szFolderPath());
-      pInpTagSet->vReplace(C_TAG_LASTJOBID, m_pRootJob->tLastJobId().iAsI8());
-      pInpTagSet->vReplace(C_TAG_SYSTEMCLOSER, m_pRootJob->bSystemCloser());
-
-      m_eError = eExecute_Job(m_pRootJob,pInpTknVec, pInpTagSet,bIsPipeline);
-
-      if (EC_NONE != m_eError) {
-        m_pSePrompt->vMutexLock(this);
-        m_pSePrompt->vMutexSignalAndUnlock(this);
-        continue;
-      }
-
-      if ( ! bPromptWaitCompletion ) {
-        NEVER_REACH
-        m_pSePrompt->vMutexLock(this);
-        m_pSePrompt->vMutexSignalAndUnlock(this);
-        bPromptSignalled = true;
-      }
-
-      // process the output bufferQueue
-      if (bIsPipeline)
-        m_pRootJob->vProcessOutput();
-
-      m_pRootJob->vResetOutput();
-      m_pRootJob->vCleanupOutput();
-
-      // reset the C_TAG_TIME and C_TAG_NOWAIT
-      m_pRootJob->pJobTags()->vDelete(C_TAG_TIME);
-      m_pRootJob->pJobTags()->vDelete(C_TAG_NOWAIT);
-      m_pRootJob->pJobTags()->vDelete(C_TAG_JOBMETRICS);
-
-      //vReportTime();
-
-      if (bPromptWaitCompletion) {
-        m_pSePrompt->vMutexLock(this);
-        m_pSePrompt->vMutexSignalAndUnlock(this);
-        bPromptSignalled = true;
-      }
-
+      m_pSePrompt->vMutexLock(this);
+      m_pSePrompt->vMutexSignalAndUnlock(this);
     }
 
     catch (LowMemory xLowMemory) {
       m_eError = EC_LOW_MEMORY;
-      if ( ! bPromptSignalled) {
-        m_pSePrompt->vMutexLock(this);
-        m_pSePrompt->vMutexSignalAndUnlock(this);
-      }
+      m_pSePrompt->vMutexLock(this);
+      m_pSePrompt->vMutexSignalAndUnlock(this);
     }
 
     catch (InternalError xInternalError) {
       vTrace("got Internal Error\n"_Stz);
       m_eError = EC_INTERNAL_ERROR;
-      if ( ! bPromptSignalled) {
-        m_pSePrompt->vMutexLock(this);
-        m_pSePrompt->vMutexSignalAndUnlock(this);
-      }
+      m_pSePrompt->vMutexLock(this);
+      m_pSePrompt->vMutexSignalAndUnlock(this);
     }
-
-#ifdef WITH_OOM_FAULTINJECTION
-    PsxThd::vTlsSet(gbTLS_FaultInjection,(void*)false);
-    PsxThd::vTlsSet(giTLS_FaultPoint,(void*)C_UNKNOWN);
-    PsxThd::vTlsSet(giTLS_CurrentPoint,(void*)C_UNKNOWN);
-#endif
 
   }
 
@@ -264,10 +190,21 @@ void SeDeputy::vDelete_Job(Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* execute job                                                                */
 /*----------------------------------------------------------------------------*/
-eEC SeDeputy::eExecute_Job(Job* pJob, TokenVec *pInpTknVec, TagSet *pInpTagSet, bool& rbIsPipeline)
+eEC SeDeputy::eExecute_Job(Job* pJob, TokenVec *pInpTknVec, TagSet *pInpTagSet)
 {
+  bool bIsPipeline = false;
+
+  pInpTagSet->vReplace(C_TAG_WAIT, 1);
+  pInpTagSet->vReplace(C_TAG_SIGNALPARENT, 1);
+
+  pInpTagSet->vReplace(C_TAG_PATH, m_pRootJob->szFolderPath());
+  pInpTagSet->vReplace(C_TAG_LASTJOBID, m_pRootJob->tLastJobId().iAsI8());
+  pInpTagSet->vReplace(C_TAG_SYSTEMCLOSER, m_pRootJob->bSystemCloser());
+
   //pInpTknVec->vDumpVec();
   //pInpTagSet->vDumpSet();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   JobId tParentId;
   JobId tOriginId;
@@ -284,7 +221,24 @@ eEC SeDeputy::eExecute_Job(Job* pJob, TokenVec *pInpTknVec, TagSet *pInpTagSet, 
                                   tParentId, tOriginId, tDistId,
                                   pJob,
                                   true, /* update parent */
-                                  rbIsPipeline);
+                                  bIsPipeline);
+
+  if (EC_NONE != eError)
+    return eError;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // process the output bufferQueue
+  if (bIsPipeline)
+    pJob->vProcessOutput();
+
+  pJob->vResetOutput();
+  pJob->vCleanupOutput();
+
+  // reset the C_TAG_TIME and C_TAG_NOWAIT
+  pJob->pJobTags()->vDelete(C_TAG_TIME);
+  pJob->pJobTags()->vDelete(C_TAG_NOWAIT);
+  pJob->pJobTags()->vDelete(C_TAG_JOBMETRICS);
 
   return eError;
 }
