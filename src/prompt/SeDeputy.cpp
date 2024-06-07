@@ -182,6 +182,17 @@ void SeDeputy::vDeputyLoop(void)
       pInpTagSet->vReplace(C_TAG_LASTJOBID, m_pRootJob->tLastJobId().iAsI8());
       pInpTagSet->vReplace(C_TAG_SYSTEMCLOSER, m_pRootJob->bSystemCloser());
 
+
+      //pInpTknVec->vDumpVec();
+      //pInpTagSet->vDumpSet();
+
+      i8 iStart;
+      i8 iEnd;
+      u4 uProc_start;
+      u4 uProc_end;
+      iStart = Hardware::iReadTsc(&uProc_start);
+
+#if 0
       JobId tChildJobId;
 
       JobId tParentId;
@@ -193,16 +204,6 @@ void SeDeputy::vDeputyLoop(void)
       JobId tDistId;
       tDistId = m_pRootJob->tDistId();
 
-      //pInpTknVec->vDumpVec();
-      //pInpTagSet->vDumpSet();
-
-      i8 iStart;
-      i8 iEnd;
-      u4 uProc_start;
-      u4 uProc_end;
-      iStart = Hardware::iReadTsc(&uProc_start);
-
-
       m_eError = Api::eForkJobChild(tChildJobId,
                                     pInpTknVec, pInpTagSet,
                                     nullptr,
@@ -211,6 +212,9 @@ void SeDeputy::vDeputyLoop(void)
                                     true, /* update parent */
                                     bIsPipeline
       );
+#else
+      m_eError = eExecuteJob(pInpTknVec, pInpTagSet,bIsPipeline);
+#endif
 
       if (EC_NONE != m_eError) {
         m_pSePrompt->vMutexLock(this);
@@ -280,6 +284,32 @@ void SeDeputy::vDeputyLoop(void)
   m_bTerminated = true;
 }
 
+/*----------------------------------------------------------------------------*/
+/* execute job                                                                */
+/*----------------------------------------------------------------------------*/
+eEC SeDeputy::eExecuteJob(TokenVec *pInpTknVec, TagSet *pInpTagSet, bool& rbIsPipeline)
+{
+  JobId tChildJobId;
+
+  JobId tParentId;
+  tParentId = m_pRootJob->tJobId();
+
+  JobId tOriginId;
+  tOriginId = m_pRootJob->tOriginId();
+
+  JobId tDistId;
+  tDistId = m_pRootJob->tDistId();
+
+  eEC eError = Api::eForkJobChild(tChildJobId,
+                                  pInpTknVec, pInpTagSet,
+                                  nullptr,
+                                  tParentId, tOriginId, tDistId,
+                                  m_pRootJob,
+                                  true, /* update parent */
+                                  rbIsPipeline);
+
+  return eError;
+}
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

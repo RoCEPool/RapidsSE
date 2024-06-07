@@ -47,6 +47,8 @@ namespace PROMPT
   
     void vDeputyLoop(void);
 
+    eEC  eExecuteJob(TokenVec *pInpTknVec, TagSet *pInpTagSet, bool& rbIsPipeline);
+
     // -- -- -- -- -- --
   
     bool bAvailable(void);
