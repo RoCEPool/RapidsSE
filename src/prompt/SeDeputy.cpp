@@ -62,12 +62,9 @@ SeDeputy::SeDeputy(i8 i_Deputy, SePrompt* pSePrompt)
   m_bTerminated   = false;
   //m_bSystemCloser = false;
 
-  m_pRootJob = nullptr;
-  m_eError   = EC_NONE;
+   m_eError   = EC_NONE;
 
   _checkInitialised_(CN_SEDEPUTY);
-
-  m_pRootJob = pNew_Job();
 
   m_pThread->vSpawnPsxThd(SeDeputy::aEntryPoint,this);
 }
@@ -83,8 +80,6 @@ SeDeputy::~SeDeputy(void) noexcept(false)
     m_pInput = m_pInput->pDeleteInput();
 
   //Api::vDeleteRootJob(m_pRootJob);
-
-  vDelete_Job(m_pRootJob);
 
   AM::THREAD::vDeleteThread(m_pThread);
 }
