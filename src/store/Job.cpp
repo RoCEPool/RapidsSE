@@ -1761,12 +1761,12 @@ void Job::vPostRecv(void)
 /*----------------------------------------------------------------------------*/
 /* pipeout the operand                                                        */
 /*----------------------------------------------------------------------------*/
-void Job::vProcessOutput(void)
+void Job::vProcessOutput(bool bDeleteOperand)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
   RASSERT(m_pOutput);
-  m_pOutput->vProcessBufferQueue();
+  m_pOutput->vProcessBufferQueue(bDeleteOperand);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -283,7 +283,7 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
       m_xSysArgs.m_sCommand = (Stz*)argv[++i_Arg];
       vTrace("command %s\n"_Stz, m_xSysArgs.m_sCommand.azChar());
       m_xSysArgs.m_bCommand = true;
-      m_xSysArgs.m_bPrompt  = true;
+      m_xSysArgs.m_bPrompt  = false;
       m_xSysArgs.m_bWelcome = false;
       continue;
     }
@@ -1274,7 +1274,7 @@ bool CmdLineArgs::bParseTraceFileArgs(i8 argc, s256 argv[])
       m_xSysArgs.m_sCommand = (Stz*)argv[++i_Arg];
       vTrace("command %s\n"_Stz, m_xSysArgs.m_sCommand.azChar());
       m_xSysArgs.m_bCommand = true;
-      m_xSysArgs.m_bPrompt  = true;
+      m_xSysArgs.m_bPrompt  = false;
       m_xSysArgs.m_bWelcome = false;
       continue;
     }

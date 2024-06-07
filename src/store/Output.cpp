@@ -204,7 +204,7 @@ void Output::vPipeToThis(Operand* pOperand)
 /*----------------------------------------------------------------------------*/
 /* process the result/output queue                                            */
 /*----------------------------------------------------------------------------*/
-void Output::vProcessBufferQueue(void)
+void Output::vProcessBufferQueue( bool bDeleteOperand)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
   
@@ -212,7 +212,7 @@ void Output::vProcessBufferQueue(void)
   
   while ( (pOperand = pPopBufferQueue_blocking()) ) {
 
-    if (! bProcessOperand(pOperand))
+    if (! bProcessOperand(pOperand,bDeleteOperand))
       break;
 
   }
@@ -295,7 +295,7 @@ Operand* Output::pPopBufferQueue_blocking(void)
 /*----------------------------------------------------------------------------*/
 /* process an operand from the result/output queue                            */
 /*----------------------------------------------------------------------------*/
-bool Output::bProcessOperand(Operand* pOperand)
+bool Output::bProcessOperand(Operand* pOperand, bool bDeleteOperand)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
   
@@ -477,7 +477,8 @@ bool Output::bProcessOperand(Operand* pOperand)
         vTrace("\n"_Stz);
         pPdsRowBuffer->vPrintRows(m_pStreamDef_result, nullptr, nullptr);
       }
-      AM::vDeleteOperand(pOperand, nullptr);
+      if (bDeleteOperand)
+        AM::vDeleteOperand(pOperand, nullptr);
       break;
     }
 

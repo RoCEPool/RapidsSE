@@ -49,13 +49,13 @@ namespace STORE
     void vFileOut(bool bFileOut);
     void vFilePath(Stz* szFilePath);
     void vPipeToThis(Operand* pOperand);
-    void vProcessBufferQueue(void);
+    void vProcessBufferQueue(bool bDeleteOperand=true);
 
     void vPrintResult(void);
   
 //  private:
     Operand* pPopBufferQueue_blocking(void);
-    bool bProcessOperand(Operand* pOperand);
+    bool bProcessOperand(Operand* pOperand, bool bDeleteOperand=true);
         
     Footer* aFooter(void);
   };

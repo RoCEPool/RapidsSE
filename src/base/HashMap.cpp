@@ -174,6 +174,11 @@ void HashMap::vDeleteKey(void* pKey)
   u8 uIndex = uHashFunction(pKey);
 
   m_pHashMapSlot[uIndex]->m_okSlotLock.vGrabWrite();
+  Pds* pPds = m_pHashMapSlot[uIndex]->m_pPdsOfEntries;
+  UNUSED(pPds);
+  SkipListBlock* pSlb = pPds->pFind(pKey);
+  UNUSED(pSlb);
+
   HashMapEntry* pEntry = _pHashMapEntry(m_pHashMapSlot[uIndex]->m_pPdsOfEntries->pFind(pKey)->aItem());
   pEntry->vDropLock();
   ASSERT(pEntry->bLocked() == false);

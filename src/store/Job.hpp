@@ -249,7 +249,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     void vPrintJobContents(void);
     void vPrintJobLine(void);
     void vPostRecv(void);
-    void vProcessOutput(void);
+    void vProcessOutput(bool bDeleteOperand=true);
     Timer* pProgressTimer(void);
     void vPtpJobNodeFailure(void);
 

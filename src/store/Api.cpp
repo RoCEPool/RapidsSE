@@ -533,7 +533,7 @@ eEC Api::eExecute_Job(TokenVec *pInpTknVec, TagSet *pInpTagSet)
 
   // process the output bufferQueue
   if (bIsPipeline)
-    pJob->vProcessOutput();
+    pJob->vProcessOutput(false);
 
   pJob->vResetOutput();
   pJob->vCleanupOutput();

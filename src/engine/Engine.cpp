@@ -281,6 +281,7 @@ void Engine::vRunCommandLine(void)
     switch (eBootOption) {
 
       case BO_COMMAND:
+        (void)Api::eExecute_Job(AM::szCommand());
         break;
 
       case BO_PROMPT:
