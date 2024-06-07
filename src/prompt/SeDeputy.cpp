@@ -69,21 +69,23 @@ SeDeputy::SeDeputy(i8 i_Deputy, SePrompt* pSePrompt)
   
   //m_sFolderPath = C_SE_PATH;
   
-  JobId tParentId;
-  RASSERT(tParentId.bIsUnknown());
-  
-  JobId tOriginId;
-  RASSERT(tOriginId.bIsUnknown());
+//  JobId tParentId;
+//  RASSERT(tParentId.bIsUnknown());
+//
+//  JobId tOriginId;
+//  RASSERT(tOriginId.bIsUnknown());
+//
+//  JobId tDistId;
+//  RASSERT(tDistId.bIsUnknown());
+//
+//  m_pRootJob = Api::pNewRootJob("SeDeputy"_Stz,tParentId,tOriginId,tDistId);
+//  m_pRootJob->vFolderPath(C_SE_PATH);
+//  m_pRootJob->vSystemCloser(false);
+//  m_pRootJob->vOutputCreate();
+//  m_pRootJob->vOutputBeginProc();
+//  m_pRootJob->vOutputEnabled(true);
 
-  JobId tDistId;
-  RASSERT(tDistId.bIsUnknown());
-
-  m_pRootJob = Api::pNewRootJob("SeDeputy"_Stz,tParentId,tOriginId,tDistId);
-  m_pRootJob->vFolderPath(C_SE_PATH);
-  m_pRootJob->vSystemCloser(false);
-  m_pRootJob->vOutputCreate();
-  m_pRootJob->vOutputBeginProc();
-  m_pRootJob->vOutputEnabled(true);
+  m_pRootJob = pNew_Job();
 
   m_pThread->vSpawnPsxThd(SeDeputy::aEntryPoint,this);
 }
@@ -98,8 +100,10 @@ SeDeputy::~SeDeputy(void) noexcept(false)
   while (m_pInput)
     m_pInput = m_pInput->pDeleteInput();
 
-  Api::vDeleteRootJob(m_pRootJob);
-  
+  //Api::vDeleteRootJob(m_pRootJob);
+
+  vDelete_Job(m_pRootJob);
+
   AM::THREAD::vDeleteThread(m_pThread);
 }
 
@@ -167,54 +171,23 @@ void SeDeputy::vDeputyLoop(void)
       // prompt not yet signalled
       bPromptSignalled = false;
 
-     if ( pInpTagSet->bHasName(C_TAG_NOWAIT)) {
-       bPromptWaitCompletion = false;
-       pInpTagSet->vDelete(C_TAG_WAIT);
-       pInpTagSet->vDelete(C_TAG_SIGNALPARENT);
-     }
-     else {
-       bPromptWaitCompletion = true;
-       pInpTagSet->vReplace(C_TAG_WAIT, 1);
-       pInpTagSet->vReplace(C_TAG_SIGNALPARENT, 1);
-     }
+      if ( pInpTagSet->bHasName(C_TAG_NOWAIT)) {
+        NEVER_REACH
+        bPromptWaitCompletion = false;
+        pInpTagSet->vDelete(C_TAG_WAIT);
+        pInpTagSet->vDelete(C_TAG_SIGNALPARENT);
+      }
+      else {
+        bPromptWaitCompletion = true;
+        pInpTagSet->vReplace(C_TAG_WAIT, 1);
+        pInpTagSet->vReplace(C_TAG_SIGNALPARENT, 1);
+      }
 
       pInpTagSet->vReplace(C_TAG_PATH, m_pRootJob->szFolderPath());
       pInpTagSet->vReplace(C_TAG_LASTJOBID, m_pRootJob->tLastJobId().iAsI8());
       pInpTagSet->vReplace(C_TAG_SYSTEMCLOSER, m_pRootJob->bSystemCloser());
 
-
-      //pInpTknVec->vDumpVec();
-      //pInpTagSet->vDumpSet();
-
-      i8 iStart;
-      i8 iEnd;
-      u4 uProc_start;
-      u4 uProc_end;
-      iStart = Hardware::iReadTsc(&uProc_start);
-
-#if 0
-      JobId tChildJobId;
-
-      JobId tParentId;
-      tParentId = m_pRootJob->tJobId();
-
-      JobId tOriginId;
-      tOriginId = m_pRootJob->tOriginId();
-
-      JobId tDistId;
-      tDistId = m_pRootJob->tDistId();
-
-      m_eError = Api::eForkJobChild(tChildJobId,
-                                    pInpTknVec, pInpTagSet,
-                                    nullptr,
-                                    tParentId, tOriginId, tDistId,
-                                    m_pRootJob,
-                                    true, /* update parent */
-                                    bIsPipeline
-      );
-#else
-      m_eError = eExecuteJob(pInpTknVec, pInpTagSet,bIsPipeline);
-#endif
+      m_eError = eExecute_Job(m_pRootJob,pInpTknVec, pInpTagSet,bIsPipeline);
 
       if (EC_NONE != m_eError) {
         m_pSePrompt->vMutexLock(this);
@@ -223,6 +196,7 @@ void SeDeputy::vDeputyLoop(void)
       }
 
       if ( ! bPromptWaitCompletion ) {
+        NEVER_REACH
         m_pSePrompt->vMutexLock(this);
         m_pSePrompt->vMutexSignalAndUnlock(this);
         bPromptSignalled = true;
@@ -232,28 +206,21 @@ void SeDeputy::vDeputyLoop(void)
       if (bIsPipeline)
         m_pRootJob->vProcessOutput();
 
-
-      iEnd = Hardware::iReadTsc(&uProc_end);
-      if (uProc_end == uProc_start) {
-        vTrace("Ticks %lld (%lldms)\n"_Stz, iEnd-iStart, TickingDevice::iToMsec(iEnd-iStart));
-     }
-
-
-      vReportTime();
-
       m_pRootJob->vResetOutput();
       m_pRootJob->vCleanupOutput();
+
+      // reset the C_TAG_TIME and C_TAG_NOWAIT
+      m_pRootJob->pJobTags()->vDelete(C_TAG_TIME);
+      m_pRootJob->pJobTags()->vDelete(C_TAG_NOWAIT);
+      m_pRootJob->pJobTags()->vDelete(C_TAG_JOBMETRICS);
+
+      //vReportTime();
 
       if (bPromptWaitCompletion) {
         m_pSePrompt->vMutexLock(this);
         m_pSePrompt->vMutexSignalAndUnlock(this);
         bPromptSignalled = true;
       }
-
-      // reset the C_TAG_TIME and C_TAG_NOWAIT
-      m_pRootJob->pJobTags()->vDelete(C_TAG_TIME);
-      m_pRootJob->pJobTags()->vDelete(C_TAG_NOWAIT);
-      m_pRootJob->pJobTags()->vDelete(C_TAG_JOBMETRICS);
 
     }
 
@@ -279,37 +246,72 @@ void SeDeputy::vDeputyLoop(void)
     PsxThd::vTlsSet(giTLS_FaultPoint,(void*)C_UNKNOWN);
     PsxThd::vTlsSet(giTLS_CurrentPoint,(void*)C_UNKNOWN);
 #endif
+
   }
 
   m_bTerminated = true;
 }
 
 /*----------------------------------------------------------------------------*/
+/* delete job                                                                 */
+/*----------------------------------------------------------------------------*/
+void SeDeputy::vDelete_Job(Job* pJob)
+{
+  Api::vDeleteRootJob(pJob);
+}
+
+/*----------------------------------------------------------------------------*/
 /* execute job                                                                */
 /*----------------------------------------------------------------------------*/
-eEC SeDeputy::eExecuteJob(TokenVec *pInpTknVec, TagSet *pInpTagSet, bool& rbIsPipeline)
+eEC SeDeputy::eExecute_Job(Job* pJob, TokenVec *pInpTknVec, TagSet *pInpTagSet, bool& rbIsPipeline)
 {
-  JobId tChildJobId;
+  //pInpTknVec->vDumpVec();
+  //pInpTagSet->vDumpSet();
 
   JobId tParentId;
-  tParentId = m_pRootJob->tJobId();
-
   JobId tOriginId;
-  tOriginId = m_pRootJob->tOriginId();
-
   JobId tDistId;
-  tDistId = m_pRootJob->tDistId();
 
+  tParentId = pJob->tJobId();
+  tOriginId = pJob->tOriginId();
+  tDistId = pJob->tDistId();
+
+  JobId tChildJobId;
   eEC eError = Api::eForkJobChild(tChildJobId,
                                   pInpTknVec, pInpTagSet,
                                   nullptr,
                                   tParentId, tOriginId, tDistId,
-                                  m_pRootJob,
+                                  pJob,
                                   true, /* update parent */
                                   rbIsPipeline);
 
   return eError;
 }
+
+/*----------------------------------------------------------------------------*/
+/* new job                                                                    */
+/*----------------------------------------------------------------------------*/
+Job* SeDeputy::pNew_Job(void)
+{
+  JobId tParentId;
+  RASSERT(tParentId.bIsUnknown());
+
+  JobId tOriginId;
+  RASSERT(tOriginId.bIsUnknown());
+
+  JobId tDistId;
+  RASSERT(tDistId.bIsUnknown());
+
+  Job* pJob  = Api::pNewRootJob("SeDeputy"_Stz,tParentId,tOriginId,tDistId);
+  pJob->vFolderPath(C_SE_PATH);
+  pJob->vSystemCloser(false);
+  pJob->vOutputCreate();
+  pJob->vOutputBeginProc();
+  pJob->vOutputEnabled(true);
+
+  return pJob;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

@@ -47,7 +47,10 @@ namespace PROMPT
   
     void vDeputyLoop(void);
 
-    eEC  eExecuteJob(TokenVec *pInpTknVec, TagSet *pInpTagSet, bool& rbIsPipeline);
+    void vDelete_Job(Job* pJob);
+    eEC  eExecute_Job(Job* pJob, TokenVec *pInpTknVec, TagSet *pInpTagSet,
+                     bool& rbIsPipeline);
+    Job* pNew_Job(void);
 
     // -- -- -- -- -- --
   
