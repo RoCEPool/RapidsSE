@@ -677,9 +677,9 @@ void Engine::vCreateTmpDir(void)
 /*----------------------------------------------------------------------------*/
 eBO Engine::eDecodeCommandLine(void)
 {
-  if (gxCmdLineArgs.m_xSysArgs.m_bStart && gxCmdLineArgs.m_xSysArgs.m_bPrompt)  NEVER_REACH;
+  if (gxCmdLineArgs.m_xSysArgs.m_bStart && gxCmdLineArgs.m_xSysArgs.m_bPrompt)   return BO_START_PROMPT;
   if (gxCmdLineArgs.m_xSysArgs.m_bStart)   return BO_START;
-  if (gxCmdLineArgs.m_xSysArgs.m_bPrompt)  NEVER_REACH;
+  if (gxCmdLineArgs.m_xSysArgs.m_bPrompt)  return BO_PROMPT;
   if (gxCmdLineArgs.m_xSysArgs.m_bStatus)  return BO_STATUS;
   if (gxCmdLineArgs.m_xSysArgs.m_bStop)    return BO_STOP;
   if (gxCmdLineArgs.m_xSysArgs.m_bUnlink)  return BO_UNLINK;
