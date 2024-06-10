@@ -8,7 +8,9 @@ enum eBO // boot options
   /*  0 */ BO_NONE=0,
 
   /*    */ BO_COMMAND,
+  /*    */ BO_PROMPT,
   /*    */ BO_START,
+  /*    */ BO_START_PROMPT,
   /*    */ BO_STATUS,
   /*    */ BO_STOP,
   /*    */ BO_UNLINK,
