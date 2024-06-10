@@ -723,6 +723,7 @@ void Constants::vAddConstantsCpp(void)
   
   // ZK_ : operand kind
   /*  0 */ vAddConstant("EV_NONE"_Stz,              EV_NONE);
+  /*  0 */ vAddConstant("EV_D_BFRBUFFER"_Stz,       EV_D_BFRBUFFER);
   /*  0 */ vAddConstant("EV_D_CRWBUFFER"_Stz,       EV_D_CRWBUFFER);
   /*  0 */ vAddConstant("EV_D_CSVBUFFER"_Stz,       EV_D_CSVBUFFER);
   /*  0 */ vAddConstant("EV_D_INDEXDEF"_Stz,        EV_D_INDEXDEF);

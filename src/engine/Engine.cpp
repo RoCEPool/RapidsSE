@@ -1002,6 +1002,7 @@ void Engine::vLoadTables(void)
 /*----------------------------------------------------------------------------*/
 void Engine::vLowMemoryDiscard(void)
 {
+  gxaSizeHeap[CN_BFRBUFFER].m_bLowMemoryDiscard = true;
   gxaSizeHeap[CN_CRWBUFFER].m_bLowMemoryDiscard = true;
   gxaSizeHeap[CN_CSVBUFFER].m_bLowMemoryDiscard = true;
   gxaSizeHeap[CN_PROFILE].m_bLowMemoryDiscard   = true;

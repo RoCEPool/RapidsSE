@@ -38,7 +38,8 @@
   op__topology
 
   find: respond_EosMarker  EV_M_EOS        [op].handler!
-  
+
+  find: respond_redirect   EV_D_BFRBUFFER  [op].handler!
   find: respond_redirect   EV_D_CRWBUFFER  [op].handler!
   find: respond_redirect   EV_D_CSVBUFFER  [op].handler!
   find: respond_redirect   EV_D_PDSROWBUFFER  [op].handler!

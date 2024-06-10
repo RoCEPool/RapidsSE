@@ -53,6 +53,7 @@ Stz* BASE::aCN[CN_ENUMS+1]
     /* */ "BALLOON"_Stz,              // CN_BALLOON
     /* */ "BCDVAL"_Stz,               // CN_BCDVAL
     /* */ "BENCH"_Stz,                // CN_BENCH
+    /* */ "BFRBUFFER"_Stz,            // CN_BFRBUFFER
     /* */ "BIRTH"_Stz,                // CN_BIRTH
     /* */ "BOARD"_Stz,                // CN_BOARD
     /* */ "BOLVAL"_Stz,               // CN_BOLVAL

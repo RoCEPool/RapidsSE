@@ -53,7 +53,8 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Assert();
   Step::vAddSteps_Astack();
   Step::vAddSteps_AttachMap();
-  
+
+  Step::vAddSteps_BfrBuffer();
   Step::vAddSteps_Bp();
   Step::vAddSteps_Build();
   Step::vAddSteps_BufferId();

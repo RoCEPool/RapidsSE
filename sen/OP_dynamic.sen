@@ -5,6 +5,68 @@
 " OP_dynamic.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* on EV_D_BFRBUFFER ...                                            BFRBUFFER */
+/*----------------------------------------------------------------------------*/
+: dynamic_BfrBuffer \handler
+
+  0 EV_M_START EG_ZK LogicUnit[].diaryNote
+
+  0 locals| errorCode |
+
+  "OP_dynamic got a BFRBUFFER" .
+/*
+  Pipein[]\clear to CrwBuffer[]
+
+  //CrwBuffer[] "OP_dynamic got a CrwBuffer %v" str.format .
+
+  CrwBuffer[] CrwHandler[] false dynamic[].execute not if
+    to errorCode
+
+    // cleanup
+    CrwBuffer[].delete
+    Tub[].deleteAllBuffers
+    Pot[].deleteAllBuffers
+
+    errorCode EC_LOW_MEMORY == if
+
+      // not already detected low memory ?
+      [pipeline].lowMemory@ not if
+
+        Marker[].newLowMemory
+        Marker[]
+            nullptr to Marker[]
+
+        [op].pipeout
+        //"dynamicOP PIPED OUT LOW MEMORY!!!" .
+      else
+        "dynamicOP ALREADY DETECTED LOW MEMORY!!!" .
+      then
+
+      //"dynamicOP TOGGLING TO ABNORMAL HANDLERS FOR OP"  .
+      "default_abnormalHandlers" FIND execute
+      "toggle_PdsRowBufferHandler" FIND execute
+      //"dynamicOP TOGGLED TO ABNORMAL HANDLERS FOR OP" .
+    else
+      errorCode op__execErr
+    then
+
+    true
+    exit
+  then
+
+  CrwBuffer[].delete
+
+  // pipeout all completed Tub[]/Pot[]
+  dynamic[].hashRows@ if
+    Pot[].pipeOutCompletedPtns
+  else
+    Tub[].pipeOutCompleted
+  then
+*/
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* handler for ZK_CANCELLINGMARKER ...                                        */
 /*----------------------------------------------------------------------------*/
 : dynamic_CancellingMarker \handler
@@ -316,6 +378,7 @@
 
   op__topology
 
+  find: dynamic_BfrBuffer     EV_D_BFRBUFFER [op].handler!
   find: dynamic_CancellingMarker  EV_M_CANCELLING [op].handler!
   find: dynamic_Cleaning      EV_M_CLEANING      [op].handler!
   find: dynamic_CrwBuffer     EV_D_CRWBUFFER     [op].handler!

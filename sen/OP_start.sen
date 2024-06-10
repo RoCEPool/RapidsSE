@@ -251,6 +251,7 @@
   find: start_StartedMarker     EV_M_STARTED     [op].handler!
   find: start_TriggeredMarker   EV_M_TRIGGERED   [op].handler!
 
+  find: INVALID_OPERAND_handler EV_D_BFRBUFFER       [op].handler!
   find: INVALID_OPERAND_handler EV_D_CRWBUFFER       [op].handler!
   find: INVALID_OPERAND_handler EV_D_CSVBUFFER       [op].handler!
   find: INVALID_OPERAND_handler EV_D_PDSROWBUFFER    [op].handler!

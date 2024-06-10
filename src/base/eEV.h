@@ -7,6 +7,7 @@ enum eEV // events
 {
   /*  0 */ EV_NONE=0,
 
+  /*    */ EV_D_BFRBUFFER,
   /*    */ EV_D_CRWBUFFER,
   /*    */ EV_D_CSVBUFFER,
   /*    */ EV_D_INDEXDEF,

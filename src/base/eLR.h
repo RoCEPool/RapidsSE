@@ -11,7 +11,8 @@ enum eLR // Logic Unit Registers
   /*  */ LR_AGGTIMER,
   /*  */ LR_AGGTYPESTACK,
   /*  */ LR_ANSWERWL,
-  
+
+  /*  */ LR_BFRBUFFER,
   /*  */ LR_BKTMAP,
 
   /*  */ LR_CHILDEXIT,

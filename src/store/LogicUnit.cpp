@@ -88,6 +88,7 @@ LogicUnit::LogicUnit(void)
 ,   m_xpAggTypeStack(this,RF_REPAIR_DELETE,      IntStack::vRepair,   LR_AGGTYPESTACK)
 ,       m_xpAnswerWL(this,RF_REPAIR_DELETE,      AnswerWL::vRepair,       LR_ANSWERWL)
 
+,      m_xpBfrBuffer(this,RF_REPAIR_DELETE,     BfrBuffer::vRepair,  LR_BFRBUFFER)
 ,      m_xpCrwBuffer(this,RF_REPAIR_DELETE,     CrwBuffer::vRepair,  LR_CRWBUFFER)
 ,      m_xpCsvBuffer(this,RF_REPAIR_DELETE,     CsvBuffer::vRepair,  LR_CSVBUFFER)
 
@@ -296,6 +297,7 @@ LogicUnit::~LogicUnit(void) noexcept(false)
   // registers should have been repaired
   RASSERT(m_xpAggTimer.bIsNull());
 
+  RASSERT(m_xpBfrBuffer.bIsNull());
   RASSERT(m_xpCrwBuffer.bIsNull());
   RASSERT(m_xpCsvBuffer.bIsNull());
 
@@ -486,6 +488,7 @@ void LogicUnit::vCleanup(void)
                "operands %6lld [buffIn %6lld buffOut %6lld] "
                "NewRowBuffers %6lld [DelRowBuffers %6lld] "
                "NewCsvBuffers %6lld [DelCsvBuffers %6lld] "
+               "NewBfrBuffers %6lld [DefBfrBuffers %6lld] "
                "Allocs %6lld [BytesAlloc %6s] "
                "Frees %6lld [BytesFree %6s] "
                "MaxBytes %6s "
@@ -507,6 +510,8 @@ void LogicUnit::vCleanup(void)
                ,m_xpStats->m_nDelRowBuffer
                ,m_xpStats->m_nNewCsvBuffer
                ,m_xpStats->m_nDelCsvBuffer
+               ,m_xpStats->m_nNewBfrBuffer
+               ,m_xpStats->m_nDelBfrBuffer
                ,m_xpStats->m_nAllocs
                ,sBytesAlloc.azChar()
                ,m_xpStats->m_nFrees

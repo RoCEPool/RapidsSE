@@ -84,6 +84,7 @@ namespace STORE
     REG<IntStack,       CN_AGGTIMER      > m_xpAggTypeStack;
     REG<AnswerWL,       CN_ANSWERWL      > m_xpAnswerWL;
 
+    REG<BfrBuffer,      CN_BFRBUFFER     > m_xpBfrBuffer;
     REG<CrwBuffer,      CN_CRWBUFFER     > m_xpCrwBuffer;
     REG<CsvBuffer,      CN_CSVBUFFER     > m_xpCsvBuffer;
 

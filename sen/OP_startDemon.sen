@@ -265,6 +265,7 @@
   find: startDemon_StartedMarker     EV_M_STARTED     [op].handler!
   find: startDemon_TriggeredMarker   EV_M_TRIGGERED   [op].handler!
 
+  find: INVALID_OPERAND_handler EV_D_BFRBUFFER       [op].handler!
   find: INVALID_OPERAND_handler EV_D_CRWBUFFER       [op].handler!
   find: INVALID_OPERAND_handler EV_D_CSVBUFFER       [op].handler!
   find: INVALID_OPERAND_handler EV_D_STREAMDEF       [op].handler!

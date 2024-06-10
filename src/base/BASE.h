@@ -391,6 +391,7 @@ extern d8 C_D8_MID;
 #include "DataBuffer.hpp"
 #include "ObjBuffer.hpp"
 
+#include "BfrBuffer.hpp"
 #include "CsvMeta.hpp"
 #include "CsvBuffer.hpp"
 #include "Reader.hpp"

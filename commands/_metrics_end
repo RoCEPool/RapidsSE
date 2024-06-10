@@ -85,6 +85,11 @@ print "CRWBUFFERS received by stage ..............";
 select thisNodeName, stageName , sum(operand) from se__jobOperands where operandName = 'EV_D_CRWBUFFER' and opName = 'consumeOp' group by stageName, thisNodeName;
 
 print "-------------------------------------------";
+print "BFRBUFFERS received by stage ..............";
+
+select thisNodeName, stageName , sum(operand) from se__jobOperands where operandName = 'EV_D_BRFBUFFER' and opName = 'consumeOp' group by stageName, thisNodeName;
+
+print "-------------------------------------------";
 print "ROWBUFFERS received by stage ..............";
 
 select thisNodeName, stageName , sum(operand) from se__jobOperands where operandName = 'EV_D_ROWBUFFER' and opName = 'consumeOp' group by stageName, thisNodeName;

@@ -51,6 +51,21 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* on EV_D_BFRBUFFER ...                                            BFRBUFFER */
+/*----------------------------------------------------------------------------*/
+: testResponse_BfrBuffer \handler
+
+  EC_NONE locals| eError |
+
+  0 EV_D_BFRBUFFER EG_ZK LogicUnit[].diaryNote
+
+  "testResponse_BfrBuffer: GOT A BFRBUFFER" .
+  Pipein[].delete
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* on EV_D_CRWBUFFER ...                                            CRWBUFFER */
 /*----------------------------------------------------------------------------*/
 : testResponse_CrwBuffer \handler
@@ -101,6 +116,7 @@
 
   op__topology
 
+  find: testResponse_BfrBuffer    EV_D_BFRBUFFER     [op].handler!
   find: testResponse_CrwBuffer    EV_D_CRWBUFFER     [op].handler!
   find: testResponse_StreamDef    EV_D_STREAMDEF     [op].handler!
 

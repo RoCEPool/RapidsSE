@@ -922,6 +922,7 @@ bool Op::bIsEventValid(i8 i_OperandKind, i8 i_BufferType)
       }
       break;
 
+    case EV_D_BFRBUFFER:
     case EV_D_CRWBUFFER:
 			if (i_BufferType != BT_NONE) {
 				vTrace("%s %s %lld\n"_Stz, aEV[i_OperandKind], aBT[i_BufferType], i_BufferType);

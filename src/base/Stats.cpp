@@ -74,6 +74,10 @@ Stats::Stats(void)
   m_nBytesWrite = 0;
 
   // memory
+  m_nNewBfrBuffer = 0;
+  m_nDelBfrBuffer = 0;
+  m_nMaxBfrBuffer = 0;
+
   m_nNewRowBuffer = 0;
   m_nDelRowBuffer = 0;
   m_nMaxRowBuffer = 0;

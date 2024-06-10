@@ -52,6 +52,7 @@
 
 #include "LglPtnMap.hpp"
 
+#include "BfrBuffer.hpp"
 #include "ChildExit.hpp"
 #include "CrwPacker.hpp"
 #include "CrwBuffer.hpp"
@@ -3848,6 +3849,19 @@ void AM::vDeleteOperand(Operand* pOperand, Job* pJob)
   
   switch(eClass) {
 
+    case CN_BFRBUFFER: {
+      BfrBuffer* pBfrBuffer = _pBfrBuffer(pOperand);
+
+      if (pBfrBuffer->bIsPermanent()) {
+        AM::pHashMap()->vDropKeyLock(pBfrBuffer->oGetBufferId().m_pvAsAddress);
+        ASSERT( ! AM::pHashMap()->bIsLocked(pCsvBuffer->oGetBufferId().m_pvAsAddress));
+        break;
+      }
+
+      delete pBfrBuffer;
+      break;
+    }
+
     case CN_CHILDEXIT: {
       ChildExit* pChildExit = _pChildExit(pOperand);
       delete pChildExit;
@@ -4515,6 +4529,7 @@ i8 AM::iOperandEvKind(Operand* pOperand)
   
   switch (eClass_opd) {
 
+    case CN_BFRBUFFER:   eOperand = EV_D_BFRBUFFER; break;
     case CN_CRWBUFFER:   eOperand = EV_D_CRWBUFFER; break;
     case CN_CSVBUFFER:   eOperand = EV_D_CSVBUFFER; break;
     case CN_INDEXDEF:    eOperand = EV_D_INDEXDEF; break;

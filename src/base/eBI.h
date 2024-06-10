@@ -7,12 +7,13 @@ enum eBI // buffer id type
 {
   /*  0 */ BI_NONE=0,
 
-  /*  1 */ BI_CRW,
-  /*  2 */ BI_CSV,
-  /*  3 */ BI_ENT,
-  /*  4 */ BI_HASHMAPSLOT,
-  /*  5 */ BI_ROW,
-  /*  6 */ BI_TASKLOCK,
+  /*  1 */ BI_BFR,
+  /*  2 */ BI_CRW,
+  /*  3 */ BI_CSV,
+  /*  4 */ BI_ENT,
+  /*  5 */ BI_HASHMAPSLOT,
+  /*  6 */ BI_ROW,
+  /*  7 */ BI_TASKLOCK,
 
   /*    */ BI_ENUMS,
 };

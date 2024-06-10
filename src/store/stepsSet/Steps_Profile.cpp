@@ -10,6 +10,7 @@
 
 #include "RowCoder.hpp"
 #include "HeadLine.hpp"
+#include "BfrBuffer.hpp"
 #include "Crw.hpp"
 #include "CrwPacker.hpp"
 #include "CrwBuffer.hpp"
@@ -72,7 +73,14 @@ void Step::vProfileStart(void)
     i8 nRowCount = 0;
     
     switch (eClassNo) {
-      
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      case CN_BFRBUFFER: {
+        BfrBuffer* pBfrBuffer = _pBfrBuffer(pDataBuffer);
+        nRowCount = pBfrBuffer->nKeys();
+        break;
+      }
+
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case CN_CRWBUFFER: {
         CrwBuffer* pCrwBuffer = _pCrwBuffer(pDataBuffer);

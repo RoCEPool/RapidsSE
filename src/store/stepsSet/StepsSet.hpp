@@ -228,6 +228,20 @@ public:
   void vAttachMapTenantsFetch(void);
   void vAttachMapTenantsStore(void);
 
+  // bfr buffer
+  void vBfrBufferOperandDump(void);
+  //void vBfrBufferPrint(void);
+
+  void vBfrBufferCsvAppend(void);
+  void vBfrBufferCsvData(void);
+  void vBfrBufferDelete(void);
+  void vBfrBufferGet(void);
+  void vBfrBufferGetAndClear(void);
+  void vBfrBufferIsNotNull(void);
+  void vBfrBufferIsNull(void);
+  void vBfrBufferNew(void);
+  void vBfrBufferSet(void);
+
   // bp
   void vBpReadBufferPool(void);
   void vBpWriteBufferPool(void);

@@ -367,6 +367,7 @@ SizeHeap gxaSizeHeap[]
   {CN_BALLOON,                  sizeof(Balloon),                HT_T_TINY    , FILL },
   {CN_BCDVAL,                   sizeof(TypeValueArea),/*yes*/   HT_INVALID   , FILL },
   {CN_BENCH,                    sizeof(Bench),                  HT_T_SMALL   , FILL },
+  {CN_BFRBUFFER,                sizeof(BfrBuffer),              HT_T_LARGE   , FILL },
   {CN_BIRTH,                    sizeof(Birth),                  HT_INVALID   , FILL },
   { CN_BOARD,                    sizeof(Board),              HT_T_SMALL   ,FILL },
   { CN_BOLVAL,                   sizeof(TypeValueArea),/*yes*/   HT_INVALID   ,FILL },

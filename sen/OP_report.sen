@@ -5,7 +5,24 @@
 " OP_report.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for EV_D_CRWBUFFER ...                                               */
+/* handler for EV_D_BFRBUFFER ...                                             */
+/*----------------------------------------------------------------------------*/
+: report_BfrBuffer \handler
+/*
+  //"Operand:- EV_D_BFRBUFFER" .verbose
+  PipeIn[]\clear to BfrBuffer[]
+
+  BfrBuffer[].isReport if
+    BfrBuffer[].writeToFile0
+  else
+    BfrBuffer[].pipeOut
+  then
+*/
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for EV_D_CRWBUFFER ...                                             */
 /*----------------------------------------------------------------------------*/
 : report_CrwBuffer \handler
 
@@ -75,6 +92,7 @@
 
   op__topology
 
+  find: report_BfrBuffer   EV_D_BFRBUFFER   [op].handler!
   find: report_CrwBuffer   EV_D_CRWBUFFER   [op].handler!
   find: report_CsvBuffer   EV_D_CSVBUFFER   [op].handler!
   find: report_EosMarker   EV_M_EOS   [op].handler!

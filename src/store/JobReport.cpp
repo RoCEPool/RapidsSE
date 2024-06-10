@@ -742,12 +742,13 @@ eEC JobReport::eOperatorReport(Job* pJob, Tub* pTub)
                      ,pStats->m_nNewRowBuffer
                      ,pStats->m_nDelRowBuffer
                      ,pStats->m_nNewCsvBuffer
-
-                    ,pStats->m_nDelCsvBuffer
-                    ,pStats->m_nAllocs
-                    ,sBytesAlloc.azChar()
-                    ,pStats->m_nFrees
-                    ,sBytesFree.azChar()
+                     ,pStats->m_nDelCsvBuffer
+                     ,pStats->m_nNewBfrBuffer
+                     ,pStats->m_nDelBfrBuffer
+                     ,pStats->m_nAllocs
+                     ,sBytesAlloc.azChar()
+                     ,pStats->m_nFrees
+                     ,sBytesFree.azChar()
                      ,C_VARGS_END
                     );
         // is their space in the buffer ?

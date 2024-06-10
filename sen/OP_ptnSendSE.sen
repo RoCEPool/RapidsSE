@@ -69,7 +69,18 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for EV_M_EXITING operand                                           */
+/* handler for EV_D_BFRBUFFER operand                                         */
+/*----------------------------------------------------------------------------*/
+: ptnSendSE_BFRBUFFER \handler
+
+  //PipeIn[] "BFRBUFFER: %v" str.format .
+  PipeIn[].sendToPtnTasks discard
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for EV_D_CRWBUFFER operand                                         */
 /*----------------------------------------------------------------------------*/
 : ptnSendSE_CRWBUFFER \handler
 
@@ -106,6 +117,8 @@
   find: ptnSendSE_CANCELLING  EV_M_CANCELLING  [op].handler!
   find: ptnSendSE_CLEANING    EV_M_CLEANING    [op].handler!
   find: ptnSendSE_EXITING     EV_M_EXITING     [op].handler!
+
+  find: ptnSendSE_BFRBUFFER   EV_D_BFRBUFFER   [op].handler!
   find: ptnSendSE_STREAMDEF   EV_D_STREAMDEF   [op].handler!
   find: ptnSendSE_CRWBUFFER   EV_D_CRWBUFFER   [op].handler!
 

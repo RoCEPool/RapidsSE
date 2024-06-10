@@ -37,6 +37,10 @@ namespace BASE
     i8 m_nBytesWrite; // total bytes write
 
     // memory
+    i8 m_nNewBfrBuffer;  // new of bfr buffers
+    i8 m_nDelBfrBuffer;  // delete of bfr buffers
+    i8 m_nMaxBfrBuffer;  // max bfr buffers
+
     i8 m_nNewRowBuffer;  // new of row buffers
     i8 m_nDelRowBuffer;  // delete of row buffers
     i8 m_nMaxRowBuffer;  // max row buffers

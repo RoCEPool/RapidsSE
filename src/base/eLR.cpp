@@ -13,6 +13,7 @@ Stz* aLR[LR_ENUMS]
   /*  */ "LR_AGGTYPESTACK"_Stz,
   /*  */ "LR_ANSWERWL"_Stz,
 
+  /*  */ "LR_BFRBUFFER"_Stz,
   /*  */ "LR_BKTMAP"_Stz,
   
   /*  */ "LR_CHILDEXIT"_Stz,

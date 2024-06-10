@@ -153,6 +153,7 @@ eBI HashMap::eClassToBI(eCN eClass)
 
   switch (eClass) {
     case CN_PDS:        return BI_ROW;
+    case CN_BFRBUFFER:  return BI_BFR;
     case CN_CRWBUFFER:  return BI_CRW;
     case CN_CSVBUFFER:  return BI_CSV;
     case CN_ENTBUFFER:  return BI_ENT;
@@ -497,6 +498,15 @@ bool HashMap::bValidDataBuffer(DataBuffer* pDataBuffer)
   eCN eClass = pDataBuffer->eGetClassNo();
   bool bResult = false;
   switch (eClass) {
+
+    case CN_BFRBUFFER: {
+      BfrBuffer *pBfrBuffer = _pBfrBuffer(pDataBuffer);
+      bResult = pBfrBuffer->bValidBfrBuffer();
+      if(! bResult)
+        vTrace("Validate failed\n"_Stz);
+      break;
+    }
+
     case CN_PDS: {
       Pds *pPds = _pPds(pDataBuffer);
       bResult = pPds->bValidPdsBuffer();

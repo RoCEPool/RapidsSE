@@ -7,6 +7,7 @@
 Stz* aEV[EV_ENUMS]
 {
   /*  0 */ "NONE"_Stz,
+  /*    */ "EV_D_BFRBUFFER"_Stz,
   /*    */ "EV_D_CRWBUFFER"_Stz,
   /*    */ "EV_D_CSVBUFFER"_Stz,
   /*    */ "EV_D_INDEXDEF"_Stz,

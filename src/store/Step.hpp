@@ -34,7 +34,8 @@ namespace STORE
     static void vAddSteps_Assert(void);
     static void vAddSteps_Astack(void);
     static void vAddSteps_AttachMap(void);
-  
+
+    static void vAddSteps_BfrBuffer(void);
     static void vAddSteps_Bp(void);
     static void vAddSteps_Build(void);
     static void vAddSteps_BufferId(void);

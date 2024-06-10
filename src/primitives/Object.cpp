@@ -128,7 +128,7 @@ Object* Object::pMemoryCopy(void)
   // the object lives in and then set that rowbuffer member which was overwritten.
 
   if (DataBuffer::bIsDataBuffer(eClass)) {
-    DataBuffer* pDataBuffer = _pDataBuffer(pCopy);
+    DataBuffer *pDataBuffer = _pDataBuffer(pCopy);
     i8 iPoolBufferNo = pDataBuffer->iBufferNo();
     pDataBuffer->vSetBufferNo(iPoolBufferNo);
 #ifdef WITHOUT_BUFFERIDHASHMAP
@@ -136,9 +136,14 @@ Object* Object::pMemoryCopy(void)
     pDataBuffer->vSetBufferId((void*) pDataBuffer);
 #else
     pDataBuffer->vSetBufferId(
-        AM::pFileMap()->oGetNewBufferId().m_pvAsAddress);
+            AM::pFileMap()->oGetNewBufferId().m_pvAsAddress);
 #endif
-    if(eClass == BASE::CN_CRWBUFFER) {
+    if(eClass == BASE::CN_BFRBUFFER){
+      AM::pHashMap()->vInsertKeyValue(
+              (void *) pDataBuffer->oGetBufferId().m_pvAsAddress,
+              (Object *) pCopy,
+              BI_BFR);
+    } else if(eClass == BASE::CN_CRWBUFFER) {
       AM::pHashMap()->vInsertKeyValue(
           (void *) pDataBuffer->oGetBufferId().m_pvAsAddress,
           (Object *) pCopy,

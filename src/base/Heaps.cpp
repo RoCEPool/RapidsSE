@@ -215,7 +215,8 @@ void Heaps::vFree(Object* pObject, bool bPersistent)
     
     if (gpBufferPool->bFreeSpecific() ) {
       
-//      if ( CN_ENTBUFFER == eWasClass ||
+//      if ( CN_BFRBUFFER == eWasClass ||
+//           CN_ENTBUFFER == eWasClass ||
 //           CN_CRWBUFFER == eWasClass ||
 //           CN_ROWBUFFER == eWasClass ||
 //           CN_CSVBUFFER == eWasClass ) {

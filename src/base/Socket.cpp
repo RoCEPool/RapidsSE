@@ -683,7 +683,12 @@ Object* Socket::pObjectRecv(eCN eClass)
       pDataBuffer->vSetBufferId(
           AM::pFileMap()->oGetNewBufferId().m_pvAsAddress);
 #endif
-      if(eClass == BASE::CN_CRWBUFFER) {
+      if(eClass == BASE::CN_BFRBUFFER) {
+        AM::pHashMap()->vInsertKeyValue(
+                (void *) pDataBuffer->oGetBufferId().m_pvAsAddress,
+                (Object *) pReceivedObject,
+                BI_BFR);
+      } else if(eClass == BASE::CN_CRWBUFFER) {
         AM::pHashMap()->vInsertKeyValue(
             (void *) pDataBuffer->oGetBufferId().m_pvAsAddress,
             (Object *) pReceivedObject,

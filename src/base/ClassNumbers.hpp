@@ -34,6 +34,7 @@ enum eCN : u2 // Class Number
   /* */ CN_BALLOON,
   /* */ CN_BCDVAL,
   /* */ CN_BENCH,
+  /* */ CN_BFRBUFFER,
   /* */ CN_BIRTH,
   /* */ CN_BOARD,
   /* */ CN_BOLVAL,

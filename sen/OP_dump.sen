@@ -5,7 +5,21 @@
 " OP_dump.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* on EV_D_CRWBUFFER ...                                                        */
+/* on EV_D_BFRBUFFER ...                                                      */
+/*----------------------------------------------------------------------------*/
+: dump_BfrBuffer \handler
+
+  <operand> "bfrBuffer" str.same if
+    "OPERAND DUMP: bfrBuffer" .
+
+    <detail> >int PipeIn[] bfrBuffer.operandDump
+  then
+
+  EV_D_CRWBUFFER_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* on EV_D_CRWBUFFER ...                                                      */
 /*----------------------------------------------------------------------------*/
 : dump_CrwBuffer \handler
 
@@ -19,7 +33,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on EV_D_CSVBUFFER ...                                                        */
+/* on EV_D_CSVBUFFER ...                                                      */
 /*----------------------------------------------------------------------------*/
 : dump_CsvBuffer \handler
 
@@ -55,6 +69,7 @@
 
   op__topology
 
+  find: dump_BfrBuffer   EV_D_BFRBUFFER   [op].handler!
   find: dump_CrwBuffer   EV_D_CRWBUFFER   [op].handler!
   find: dump_CsvBuffer   EV_D_CSVBUFFER   [op].handler!
   find: dump_PdsRowBuffer   EV_D_PDSROWBUFFER   [op].handler!
