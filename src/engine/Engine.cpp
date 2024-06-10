@@ -244,14 +244,6 @@ bool Engine::bTraceStart(void)
     case BO_COMMAND:
       break;
 
-    case BO_PROMPT:
-       vOpenTrace(true);
-      break;
-
-    case BO_START_PROMPT:
-      vOpenTrace(false);
-      break;
-
     case BO_START:
        vOpenTrace(false);
       break;
@@ -284,52 +276,13 @@ void Engine::vRunCommandLine(void)
         (void)Api::eExecute_Job(AM::szCommand());
         break;
 
-      case BO_PROMPT:
-        //NEVER_REACH
-        // wait for the attachmap to be ready
-        if (gpAttachMap->uAttachMapState() != C_READY)
-          vTrace("Waiting for SE to start...\n"_Stz);
-        while (gpAttachMap->uAttachMapState() != C_READY) {
-          AM::vNapMsec(1,CN_NONE);
-        }
-        vCallPrompt();
-        break;
-
       case BO_START:
         vStartSystem();
         //AM::SYSTEM::vSystemReady(); // Process has completed the boot sequence
         vTrace("\nNodeId %lld\n\n"_Stz,AM::NODE::iThisNodeId());
         vWaitStop();
         break;
-        
-      case BO_START_PROMPT:
-         vStartSystem();
 
-
-
-
-        if (C_UNKNOWN != gxCmdLineArgs.m_xSysArgs.m_iTest) {
-
-          switch (gxCmdLineArgs.m_xSysArgs.m_iTest) {
-
-            case 0: vCmdLineTest0(); break;
-            case 1: vCmdLineTest1(); break;
-            case 2: vCmdLineTest2(); break;
-
-          }
-        }
-
-
-
-        //AM::SYSTEM::vSystemReady(); // Process has completed the boot sequence
-        vTrace("\nNodeId %lld\n\n"_Stz,AM::NODE::iThisNodeId());
-#ifdef WITH_APPLE
-        if (! gxCmdLineArgs.m_xSysArgs.m_bNoMunge )
-          vMungeCheck();
-#endif
-        vCallPrompt();
-        break;
-        
       case BO_STATUS:
         vPrintStatus();
         break;
@@ -677,9 +630,9 @@ void Engine::vCreateTmpDir(void)
 /*----------------------------------------------------------------------------*/
 eBO Engine::eDecodeCommandLine(void)
 {
-  if (gxCmdLineArgs.m_xSysArgs.m_bStart && gxCmdLineArgs.m_xSysArgs.m_bPrompt)   return BO_START_PROMPT;
+  if (gxCmdLineArgs.m_xSysArgs.m_bStart && gxCmdLineArgs.m_xSysArgs.m_bPrompt)  NEVER_REACH;
   if (gxCmdLineArgs.m_xSysArgs.m_bStart)   return BO_START;
-  if (gxCmdLineArgs.m_xSysArgs.m_bPrompt)  return BO_PROMPT;
+  if (gxCmdLineArgs.m_xSysArgs.m_bPrompt)  NEVER_REACH;
   if (gxCmdLineArgs.m_xSysArgs.m_bStatus)  return BO_STATUS;
   if (gxCmdLineArgs.m_xSysArgs.m_bStop)    return BO_STOP;
   if (gxCmdLineArgs.m_xSysArgs.m_bUnlink)  return BO_UNLINK;
