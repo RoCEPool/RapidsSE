@@ -1044,7 +1044,7 @@ void Engine::vNoMemoryLogging(void)
 void Engine::vOpenPool(void)
 {
   bool bResult;
-  
+
   if (gxCmdLineArgs.m_xSysArgs.m_bUnlink) {
     //vUnlink();
     return;
@@ -1104,7 +1104,7 @@ void Engine::vOpenPool(void)
     bResult = Region::bAttach(gxCmdLineArgs.m_xSysArgs.m_sRegionName,
                               gxCmdLineArgs.m_xSysArgs.m_bTraceableComponents[TC_VERBOSE],
                               gxCmdLineArgs.m_xSysArgs.m_aRegionAddr);
-    ASSERT(bResult);
+    RASSERT(bResult);
     vAttachRegion();
     return;
   }
@@ -1114,7 +1114,7 @@ void Engine::vOpenPool(void)
   bResult = Region::bAttach(gxCmdLineArgs.m_xSysArgs.m_sRegionName,
                             gxCmdLineArgs.m_xSysArgs.m_bTraceableComponents[TC_VERBOSE],
                             gxCmdLineArgs.m_xSysArgs.m_aRegionAddr);
-  ASSERT(bResult);
+  RASSERT(bResult);
   vAttachRegion();
 }
 
