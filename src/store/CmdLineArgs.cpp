@@ -117,7 +117,6 @@ void CmdLineArgs::vInit(void)
   m_xSysArgs.m_bHelp        = false;
   m_xSysArgs.m_bInitial     = false;
   m_xSysArgs.m_bStart       = false;
-  m_xSysArgs.m_bStatus      = false;
   m_xSysArgs.m_bStop        = false;
   m_xSysArgs.m_bUnlink      = false;
 
@@ -533,11 +532,6 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
         vTrace("Incorrect argument: --start with %s\n"_Stz,argv[i_Arg].szStz());
         return false;
       }
-      if (m_xSysArgs.m_bStatus) {
-        vPrintErrorMarker(argv, i_Arg);
-        vTrace("Incorrect argument: --status with %s\n"_Stz,argv[i_Arg].szStz());
-        return false;
-      }
       if (m_xSysArgs.m_bStop) {
         vPrintErrorMarker(argv, i_Arg);
         vTrace("Incorrect argument: --stop with %s\n"_Stz,argv[i_Arg].szStz());
@@ -878,31 +872,8 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
         vTrace("Incorrect argument: --stop with %s\n"_Stz,argv[i_Arg].szStz());
         return false;
       }
-      if (m_xSysArgs.m_bStatus) {
-        vPrintErrorMarker(argv, i_Arg);
-        vTrace("Incorrect argument: --status with %s\n"_Stz,argv[i_Arg].szStz());
-        return false;
-      }
 
       m_xSysArgs.m_bStart = true;
-      continue;
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (szArg->bSame("--status"_Stz)) {
-      NEVER_REACH
-      if (m_xSysArgs.m_bStop) {
-        vPrintErrorMarker(argv, i_Arg);
-        vTrace("Incorrect argument: --stop with %s\n"_Stz,argv[i_Arg].szStz());
-        return false;
-      }
-      if (m_xSysArgs.m_bStart) {
-        vPrintErrorMarker(argv, i_Arg);
-        vTrace("Incorrect argument: --start with %s\n"_Stz,argv[i_Arg].szStz());
-        return false;
-      }
-
-      m_xSysArgs.m_bStatus = true;
       continue;
     }
 
@@ -912,11 +883,6 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
       if (m_xSysArgs.m_bStart) {
         vPrintErrorMarker(argv, i_Arg);
         vTrace("Incorrect argument: --start with %s\n"_Stz,argv[i_Arg].szStz());
-        return false;
-      }
-      if (m_xSysArgs.m_bStatus) {
-        vPrintErrorMarker(argv, i_Arg);
-        vTrace("Incorrect argument: --status with %s\n"_Stz,argv[i_Arg].szStz());
         return false;
       }
 
@@ -1259,11 +1225,6 @@ bool CmdLineArgs::bParseTraceFileArgs(i8 argc, s256 argv[])
         vTrace("Incorrect argument: --start with %s\n"_Stz,argv[i_Arg].szStz());
         return false;
       }
-      if (m_xSysArgs.m_bStatus) {
-        vPrintErrorMarker(argv, i_Arg);
-        vTrace("Incorrect argument: --status with %s\n"_Stz,argv[i_Arg].szStz());
-        return false;
-      }
       if (m_xSysArgs.m_bStop) {
         vPrintErrorMarker(argv, i_Arg);
         vTrace("Incorrect argument: --stop with %s\n"_Stz,argv[i_Arg].szStz());
@@ -1288,31 +1249,8 @@ bool CmdLineArgs::bParseTraceFileArgs(i8 argc, s256 argv[])
         vTrace("Incorrect argument: --stop with %s\n"_Stz,argv[i_Arg].szStz());
         return false;
       }
-      if (m_xSysArgs.m_bStatus) {
-        vPrintErrorMarker(argv, i_Arg);
-        vTrace("Incorrect argument: --status with %s\n"_Stz,argv[i_Arg].szStz());
-        return false;
-      }
 
       m_xSysArgs.m_bStart = true;
-      continue;
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (szArg->bSame("--status"_Stz)) {
-      NEVER_REACH
-      if (m_xSysArgs.m_bStop) {
-        vPrintErrorMarker(argv, i_Arg);
-        vTrace("Incorrect argument: --stop with %s\n"_Stz,argv[i_Arg].szStz());
-        return false;
-      }
-      if (m_xSysArgs.m_bStart) {
-        vPrintErrorMarker(argv, i_Arg);
-        vTrace("Incorrect argument: --start with %s\n"_Stz,argv[i_Arg].szStz());
-        return false;
-      }
-
-      m_xSysArgs.m_bStatus = true;
       continue;
     }
 
@@ -1322,11 +1260,6 @@ bool CmdLineArgs::bParseTraceFileArgs(i8 argc, s256 argv[])
       if (m_xSysArgs.m_bStart) {
         vPrintErrorMarker(argv, i_Arg);
         vTrace("Incorrect argument: --start with %s\n"_Stz,argv[i_Arg].szStz());
-        return false;
-      }
-      if (m_xSysArgs.m_bStatus) {
-        vPrintErrorMarker(argv, i_Arg);
-        vTrace("Incorrect argument: --status with %s\n"_Stz,argv[i_Arg].szStz());
         return false;
       }
 
@@ -1437,7 +1370,6 @@ void CmdLineArgs::vPrintStartupInfo(void)
     if (m_xSysArgs.m_bHelp)        vTrace("  --help\n"_Stz);
     if (m_xSysArgs.m_bProgress)    vTrace("  --progress\n"_Stz);
     if (m_xSysArgs.m_bStart)       vTrace("  --start\n"_Stz);
-    if (m_xSysArgs.m_bStatus)      vTrace("  --status\n"_Stz);
     if (m_xSysArgs.m_bStop)        vTrace("  --stop\n"_Stz);
     if (m_xSysArgs.m_bTraceableComponents[TC_VERBOSE]) vTrace("  --verbose\n"_Stz);
 #endif
@@ -1588,10 +1520,7 @@ bool CmdLineArgs::bUserPrompt(void)
   
   if (m_xSysArgs.m_bStart)
     return false;
-  
-  if (m_xSysArgs.m_bStatus)
-    return false;
-  
+
   if (m_xSysArgs.m_bStop)
     return false;
   

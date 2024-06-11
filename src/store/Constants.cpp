@@ -115,7 +115,6 @@ void Constants::vAddConstantsArgs(void)
   Constants::vAddConstant("[args].senDir"_Stz,            gxCmdLineArgs.m_xSysArgs.m_sSenDir);
   Constants::vAddConstant("[args].shmlock"_Stz,           gxCmdLineArgs.m_xSysArgs.m_bShmLock);
   Constants::vAddConstant("[args].start"_Stz,             gxCmdLineArgs.m_xSysArgs.m_bStart);
-  Constants::vAddConstant("[args].status"_Stz,            gxCmdLineArgs.m_xSysArgs.m_bStatus);
   Constants::vAddConstant("[args].stop"_Stz,              gxCmdLineArgs.m_xSysArgs.m_bStop);
   Constants::vAddConstant("[args].demonSleep"_Stz,   gxCmdLineArgs.m_xSysArgs.m_nDemonSleep);
   Constants::vAddConstant("[args].tablePtns"_Stz,         gxCmdLineArgs.m_xSysArgs.m_nPtnsPerNode);

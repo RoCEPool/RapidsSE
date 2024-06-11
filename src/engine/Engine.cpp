@@ -1045,11 +1045,7 @@ void Engine::vOpenPool(void)
     
     return;
   }
-  
-  if (gxCmdLineArgs.m_xSysArgs.m_bStatus) {
-    return;
-  }
-  
+
   if (gxCmdLineArgs.m_xSysArgs.m_bStop) {
     if (! Region::bTest(gxCmdLineArgs.m_xSysArgs.m_sRegionName)) {
       vTrace("Error: Instance %s was not started\n"_Stz,
@@ -1466,7 +1462,7 @@ void Engine::vPrintWelcome(void)
   vGetWelcome(sWelcome);
   vGetCopyright(sCopyright);
 
-  if (gxCmdLineArgs.m_xSysArgs.m_bWelcome && ! gxCmdLineArgs.m_xSysArgs.m_bStatus) {
+  if (gxCmdLineArgs.m_xSysArgs.m_bWelcome) {
     vTrace("\n%s\n"_Stz,sWelcome.szStz());
     vTrace("%s\n"_Stz,sCopyright.szStz());
   }
