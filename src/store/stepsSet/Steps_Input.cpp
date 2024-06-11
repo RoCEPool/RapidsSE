@@ -44,7 +44,7 @@ void Step::vInputChars(void)
   
   s48K sTkn(m_pInput->szChars());
   
-  m_pDataStack->vPushStr(sTkn);
+  m_oDataStack.vPushStr(sTkn);
   
   EXIT();
 }
@@ -106,7 +106,7 @@ void Step::vInputKind(void)
   
   eTN eTokenType = m_pInput->eToken();
   
-  m_pDataStack->vPushInt(eTokenType);
+  m_oDataStack.vPushInt(eTokenType);
   
   EXIT();
 }
@@ -125,7 +125,7 @@ void Step::vInputNext(void)
 
   // push the token
   s48K sTkn(m_pInput->szChars());
-  m_pDataStack->vPushStr(sTkn);
+  m_oDataStack.vPushStr(sTkn);
   
   EXIT();
 }
@@ -139,7 +139,7 @@ void Step::vInputOpen(void)
   
   s256 sFilePath;
   
-  m_pDataStack->vPopStr(sFilePath,__func__);
+  m_oDataStack.vPopStr(sFilePath, __func__);
   
   bool bOpened = m_pInput->bUseFile(sFilePath);
   
@@ -187,7 +187,7 @@ void Step::vInputPushVecAsStr(void)
   
   pTknVec->vVecToString(sAsStr,0,false);
   
-  m_pDataStack->vPushStz(sAsStr.szStz());
+  m_oDataStack.vPushStz(sAsStr.szStz());
 
   
   EXIT();
@@ -304,7 +304,7 @@ void Step::vInputUseString(void)
   
   s48K sInput;                                             //! NEED STACK CHECKS
   
-  m_pDataStack->vPopStr(sInput,__func__);
+  m_oDataStack.vPopStr(sInput, __func__);
     
   m_pInput->vUseString(sInput);
   

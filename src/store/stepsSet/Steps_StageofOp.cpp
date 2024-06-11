@@ -61,9 +61,9 @@ void Step::vStageOfOpGet(void)
   ENTRY();
    
 //  if (m_pLogicUnit->m_xpVertex.bIsNull())
-//    m_pDataStack->vPushPtr(nullptr);
+//    m_oDataStack.vPushPtr(nullptr);
 //  else
-//    m_pDataStack->vPushPtr(* m_pLogicUnit->m_xpVertex);
+//    m_oDataStack.vPushPtr(* m_pLogicUnit->m_xpVertex);
 
   EXIT();
 }

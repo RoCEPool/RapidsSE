@@ -54,7 +54,7 @@ void Step::vExitOperandGet(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpExitOperand);
+  m_oDataStack.vPushPtr(*m_pLogicUnit->m_xpExitOperand);
 
   EXIT();
 }
@@ -66,7 +66,7 @@ void Step::vExitOperandGetAndClear(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpExitOperand);
+  m_oDataStack.vPushPtr(*m_pLogicUnit->m_xpExitOperand);
 
   m_pLogicUnit->m_xpExitOperand = nullptr;
 
@@ -80,7 +80,7 @@ void Step::vExitOperandIsNotNull(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt(m_pLogicUnit->m_xpExitOperand.bIsNull() ? 0 : 1);
+  m_oDataStack.vPushInt(m_pLogicUnit->m_xpExitOperand.bIsNull() ? 0 : 1);
 
   EXIT();
 }
@@ -92,7 +92,7 @@ void Step::vExitOperandIsNull(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt(m_pLogicUnit->m_xpExitOperand.bIsNull() ? 1 : 0);
+  m_oDataStack.vPushInt(m_pLogicUnit->m_xpExitOperand.bIsNull() ? 1 : 0);
 
   EXIT();
 }
@@ -170,7 +170,7 @@ void Step::vExitOperandSet(void)
 {
   ENTRY();
 
-  Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
+  Operand* pOperand = _pOperand(m_oDataStack.pPopPtr(__func__));
 
   ASSERT(! pOperand || m_pLogicUnit->m_xpExitOperand.bIsNull());
 

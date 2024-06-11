@@ -110,9 +110,9 @@ void Step::vSocketConnect(void)
   
   Socket* pSocket = *m_pLogicUnit->m_xpSocket;
 
-  m_pDataStack->vPopSenCell(xNodeVar,__func__);
+  m_oDataStack.vPopSenCell(xNodeVar, __func__);
   
-  i8 iPort = m_pDataStack->iPopInt(__func__);
+  i8 iPort = m_oDataStack.iPopInt(__func__);
   
   // get address of node
   Stz* sAddr = xNodeVar.szStz();
@@ -127,7 +127,7 @@ void Step::vSocketConnect(void)
 
   if (bResult) {
     // return the socket object
-    //m_pDataStack->vPushPtr(pSocket);
+    //m_oDataStack.vPushPtr(pSocket);
     EXIT();
     return;
   }
@@ -147,7 +147,7 @@ void Step::vSocketConnect(void)
            iError, strerror((int)iError));
   }
   
-  //m_pDataStack->vPushPtr(nullptr);
+  //m_oDataStack.vPushPtr(nullptr);
   m_pLogicUnit->m_xpSocket = nullptr;
 
   EXIT();
@@ -188,7 +188,7 @@ void Step::vSocketGet(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpSocket);
+  m_oDataStack.vPushPtr(*m_pLogicUnit->m_xpSocket);
 
   EXIT();
 }
@@ -214,7 +214,7 @@ void Step::vSocketIsNotNull(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(m_pLogicUnit->m_xpSocket.bIsNull() ? 0 : 1);
+  m_oDataStack.vPushInt(m_pLogicUnit->m_xpSocket.bIsNull() ? 0 : 1);
   
   EXIT();
 }
@@ -226,7 +226,7 @@ void Step::vSocketIsNull(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(m_pLogicUnit->m_xpSocket.bIsNull() ? 1 : 0);
+  m_oDataStack.vPushInt(m_pLogicUnit->m_xpSocket.bIsNull() ? 1 : 0);
   
   EXIT();
 }
@@ -241,7 +241,7 @@ void Step::vSocketNew(void)
   SysCall oSysCall;
   Socket* pSocket;
   
-  Node* pNode = _pNode(m_pDataStack->pPopPtr(__func__));
+  Node* pNode = _pNode(m_oDataStack.pPopPtr(__func__));
 
   pSocket = new Socket(pNode,C_UNKNOWN);
   bool bResult = pSocket->bCreateFdForSocket(oSysCall);
@@ -250,7 +250,7 @@ void Step::vSocketNew(void)
     vThrow(FK_CHECK,__func__,__FILE__,__LINE__,
            "Unable to create socket: Errno %d"_Stz, oSysCall.iError());
   
-  m_pDataStack->vPushPtr(pSocket);
+  m_oDataStack.vPushPtr(pSocket);
   
   EXIT();
 }
@@ -265,11 +265,11 @@ void Step::vSocketCopy(void)
   SysCall oSysCall;
   Socket* pSocket;
 
-  Socket* pOther = _pSocket(m_pDataStack->pPopPtr(__func__));
+  Socket* pOther = _pSocket(m_oDataStack.pPopPtr(__func__));
 
   pSocket = new Socket(pOther->m_pIsFor,pOther->m_iSocketFd, pOther, true);
 
-  m_pDataStack->vPushPtr(pSocket);
+  m_oDataStack.vPushPtr(pSocket);
 
   EXIT();
 }
@@ -285,7 +285,7 @@ void Step::vSocketObjectFetch(void)
 
   Object* pObject = pSocket->pReceivedObject();
 
-  m_pDataStack->vPushPtr(pObject);
+  m_oDataStack.vPushPtr(pObject);
 
   EXIT();
 }
@@ -302,7 +302,7 @@ void Step::vSocketObjectFetchClear(void)
   Object* pObject = pSocket->pReceivedObject();
   pSocket->vReceivedObject(nullptr);
   
-  m_pDataStack->vPushPtr(pObject);
+  m_oDataStack.vPushPtr(pObject);
 
   EXIT();
 }
@@ -335,7 +335,7 @@ void Step::vSocketObjectIsNull(void)
 
   Object* pObject = pSocket->pReceivedObject();
 
-  m_pDataStack->vPushInt(pObject == nullptr ? 1 : 0);
+  m_oDataStack.vPushInt(pObject == nullptr ? 1 : 0);
 
   EXIT();
 }
@@ -351,7 +351,7 @@ void Step::vSocketObjectIsNotNull(void)
 
   Object* pObject = pSocket->pReceivedObject();
 
-  m_pDataStack->vPushInt(pObject != nullptr ? 1 : 0);
+  m_oDataStack.vPushInt(pObject != nullptr ? 1 : 0);
 
   EXIT();
 }
@@ -412,7 +412,7 @@ void Step::vSocketSendObject(void)
 {
   ENTRY();
   
-  Object* pObject = m_pDataStack->pPopPtr(__func__);
+  Object* pObject = m_oDataStack.pPopPtr(__func__);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -430,7 +430,7 @@ void Step::vSocketSendObject(void)
 
   bool bResult = pSocket->bSendObject(pObject,oSysCall,SY_NONE);
 
-  m_pDataStack->vPushInt(bResult);
+  m_oDataStack.vPushInt(bResult);
 
   EXIT();
 }
@@ -444,7 +444,7 @@ void Step::vSocketSendStr(void)
   ENTRY();
 
   s256 sStr;
-  m_pDataStack->vPopStr(sStr, __func__);
+  m_oDataStack.vPopStr(sStr, __func__);
 
   SysCall oSysCall;
   Socket* pSocket = *m_pLogicUnit->m_xpSocket;
@@ -452,7 +452,7 @@ void Step::vSocketSendStr(void)
 
   bool bResult = pSocket->bSendStr(sStr,oSysCall, false);
 
-  m_pDataStack->vPushInt(bResult);
+  m_oDataStack.vPushInt(bResult);
 
   EXIT();
 }
@@ -464,7 +464,7 @@ void Step::vSocketSendWLMsg(void)
 {
   ENTRY();
 
-  WLP::PayloadObj* pPayload = WLP::_pPayloadObj(m_pDataStack->pPopPtr(__func__));
+  WLP::PayloadObj* pPayload = WLP::_pPayloadObj(m_oDataStack.pPopPtr(__func__));
   ASSERT(CN_PAYLOADOBJ == pPayload->eGetClassNo());
   ASSERT(pPayload->iPayloadSize() > 0);
 
@@ -474,7 +474,7 @@ void Step::vSocketSendWLMsg(void)
 
   bool bResult = pSocket->bSendWLMsg(pPayload,oSysCall,SY_NONE);
 
-  m_pDataStack->vPushInt(bResult);
+  m_oDataStack.vPushInt(bResult);
 
   EXIT();
 }
@@ -487,7 +487,7 @@ void Step::vSocketSet(void)
 {
   ENTRY();
 
-  Socket* pSocket = _pSocket(m_pDataStack->pPopPtr(__func__));
+  Socket* pSocket = _pSocket(m_oDataStack.pPopPtr(__func__));
 
 //  if ( ! pSocket)
 //    i8 i = 1;
@@ -509,7 +509,7 @@ void Step::vSocketSuccessFetch(void)
 
   bool bSuccess = pSocket->bSuccess();
 
-  m_pDataStack->vPushInt(bSuccess);
+  m_oDataStack.vPushInt(bSuccess);
 
   EXIT();
 }
@@ -521,7 +521,7 @@ void Step::vSocketSuccessStore(void)
 {
   ENTRY();
   
-  bool bSuccess = (bool)m_pDataStack->iPopInt(__func__);
+  bool bSuccess = (bool)m_oDataStack.iPopInt(__func__);
 
   Socket* pSocket = *m_pLogicUnit->m_xpSocket;
 
@@ -543,7 +543,7 @@ void Step::vSocketClientAddrFetch(void)
   s256 sBuf;
   pSocket->vClientAddr(sBuf);
 
-  m_pDataStack->vPushStz(sBuf.szStz());
+  m_oDataStack.vPushStz(sBuf.szStz());
 
   EXIT();
 }
@@ -555,14 +555,14 @@ void Step::vSocketStackClientAddrFetch(void)
 {
   ENTRY();
 
-  Socket* pSocket = _pSocket(m_pDataStack->pPopPtr(__func__));
+  Socket* pSocket = _pSocket(m_oDataStack.pPopPtr(__func__));
   ASSERT(pSocket);
   ASSERT(pSocket->bIsClassNo(CN_SOCKET));
 
   s256 sBuf;
   pSocket->vClientAddr(sBuf);
 
-  m_pDataStack->vPushStz(sBuf.szStz());
+  m_oDataStack.vPushStz(sBuf.szStz());
 
   EXIT();
 }

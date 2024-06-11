@@ -28,7 +28,7 @@ void Step::vSubReturnGet(void)
 {
   ENTRY();
     
-  m_pDataStack->vPushPtr(* m_pLogicUnit->m_xpSubReturn);
+  m_oDataStack.vPushPtr(* m_pLogicUnit->m_xpSubReturn);
 
   EXIT();
 }
@@ -40,7 +40,7 @@ void Step::vSubReturnSet(void)
 {
   ENTRY();
 
-  SubReturn* pSubReturn = _pSubReturn(m_pDataStack->pPopPtr(__func__));
+  SubReturn* pSubReturn = _pSubReturn(m_oDataStack.pPopPtr(__func__));
 
   m_pLogicUnit->m_xpSubReturn = pSubReturn;
 

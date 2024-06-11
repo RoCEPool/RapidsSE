@@ -136,7 +136,7 @@ void Step::vNodeMonitorInspectGrid(void)
 
   pGrid->vDropRead();
 
-  m_pDataStack->vPushInt(bGridHealthy);
+  m_oDataStack.vPushInt(bGridHealthy);
 
   EXIT();
 }

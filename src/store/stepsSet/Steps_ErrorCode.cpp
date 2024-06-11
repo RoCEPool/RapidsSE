@@ -36,7 +36,7 @@ void Step::vErrorCodeGet(void)
  
   eEC eError = (eEC)m_pLogicUnit->m_eErrorCode_reg;
   
-  m_pDataStack->vPushInt(eError);
+  m_oDataStack.vPushInt(eError);
 
   EXIT();
 }
@@ -48,11 +48,11 @@ void Step::vErrorCodeDecodeError(void)
 {
   ENTRY();
  
-  eEC eError = (eEC)m_pDataStack->iPopInt(__func__);
+  eEC eError = (eEC)m_oDataStack.iPopInt(__func__);
 
   Stz* szError = aEC[eError];
   
-  m_pDataStack->vPushStz(szError);
+  m_oDataStack.vPushStz(szError);
 
   EXIT();
 }
@@ -64,7 +64,7 @@ void Step::vErrorCodeSet(void)
 {
   ENTRY();
     
-  eEC eError = (eEC)m_pDataStack->iPopInt(__func__);
+  eEC eError = (eEC)m_oDataStack.iPopInt(__func__);
 
   m_pLogicUnit->m_eErrorCode_reg = eError;
 
@@ -79,7 +79,7 @@ void Step::vErrorStrGet(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushStr(m_pLogicUnit->m_sErrorStr_reg);
+  m_oDataStack.vPushStr(m_pLogicUnit->m_sErrorStr_reg);
 
   EXIT();
 }
@@ -93,7 +93,7 @@ void Step::vErrorStrSet(void)
   ENTRY();
 
   s256 sErr;
-  m_pDataStack->vPopStr(sErr, __func__);
+  m_oDataStack.vPopStr(sErr, __func__);
 
   m_pLogicUnit->m_sErrorStr_reg.vCopy(sErr.szStz());
 

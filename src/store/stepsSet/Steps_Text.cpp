@@ -30,7 +30,7 @@ void Step::vTextDelete(void)
 {
   ENTRY();
   
-  Text* pText = _pText(m_pDataStack->pPopPtr(__func__));
+  Text* pText = _pText(m_oDataStack.pPopPtr(__func__));
 
   delete pText;
     
@@ -46,7 +46,7 @@ void Step::vTextNew(void)
 
   Text* pText = new Text(C_TEXT_LARGE);
   
-  m_pDataStack->vPushPtr(pText);
+  m_oDataStack.vPushPtr(pText);
   
   EXIT();
 }
@@ -61,7 +61,7 @@ void Step::vTextGet(void)
     
   RASSERT(m_pLogicUnit->m_xpText.bIsNotNull());
   
-  m_pDataStack->vPushStz(m_pLogicUnit->m_xpText->szGet());
+  m_oDataStack.vPushStz(m_pLogicUnit->m_xpText->szGet());
 
   EXIT();
 }
@@ -76,7 +76,7 @@ void Step::vTextSet(void)
   if (m_pLogicUnit->m_xpText.bIsNull())
     m_pLogicUnit->m_xpText = new Text(C_32KB);
     
-  m_pDataStack->vPopStz(* m_pLogicUnit->m_xpText, __func__);
+  m_oDataStack.vPopStz(* m_pLogicUnit->m_xpText, __func__);
 
   EXIT();
 }

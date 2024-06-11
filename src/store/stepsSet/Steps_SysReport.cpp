@@ -27,7 +27,7 @@ void Step::vSysReportSysLocks(void)
 {
   ENTRY();
   
-  Tub* pTub = _pTub(m_pDataStack->pPopPtr(__func__));
+  Tub* pTub = _pTub(m_oDataStack.pPopPtr(__func__));
 
   SysReport::vSysLocks(pTub);
   
@@ -41,7 +41,7 @@ void Step::vSysReportSysMetrics(void)
 {
   ENTRY();
   
-  Tub* pTub = _pTub(m_pDataStack->pPopPtr(__func__));
+  Tub* pTub = _pTub(m_oDataStack.pPopPtr(__func__));
 
   SysReport::vSysMetrics(pTub);
   

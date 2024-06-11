@@ -63,7 +63,7 @@ void Step::vSenCompilerIsCompiling(void)
   
   i8 iIsCompiling = (CM_COMPILING == eMode) || (CM_CONDCOMPILING == eMode);
   
-  m_pDataStack->vPushInt(iIsCompiling);
+  m_oDataStack.vPushInt(iIsCompiling);
   
   EXIT();
 }
@@ -79,7 +79,7 @@ void Step::vSenCompilerIsDiscarding(void)
   
   i8 iIsDiscarding = CM_DISCARDING == eMode;
   
-  m_pDataStack->vPushInt(iIsDiscarding);
+  m_oDataStack.vPushInt(iIsDiscarding);
 
   EXIT();
 }
@@ -95,7 +95,7 @@ void Step::vSenCompilerIsInterpreting(void)
   
   i8 iIsInterpreting = CM_INTERPRETING == eMode;
   
-  m_pDataStack->vPushInt(iIsInterpreting);
+  m_oDataStack.vPushInt(iIsInterpreting);
 
   EXIT();
 }
@@ -111,7 +111,7 @@ void Step::vSenCompilerIsPostponing(void)
   
   i8 iIsPostponing = CM_POSTPONING == eMode;
   
-  m_pDataStack->vPushInt(iIsPostponing);
+  m_oDataStack.vPushInt(iIsPostponing);
 
   EXIT();
 }
@@ -186,7 +186,7 @@ void Step::vSenCompilerCurrentFetch(void)
 //  if (pCurrWord->szWordNm()->bSame("testProc"_Stz))
 //    BASE::vDebugPoint();
 
-  m_pDataStack->vPushPtr(pCurrWord);
+  m_oDataStack.vPushPtr(pCurrWord);
   
   EXIT();
 }
@@ -198,7 +198,7 @@ void Step::vSenCompilerCurrentStore(void)
 {
   ENTRY();
   
-  Word* pCurrWord = _pWord(m_pDataStack->pPopPtr(__func__));
+  Word* pCurrWord = _pWord(m_oDataStack.pPopPtr(__func__));
     
   m_pSenCompiler->vCurrentWord(pCurrWord);
   
@@ -219,7 +219,7 @@ void Step::vSenCompilerLocalsFetch(void)
     
   i8 nLocals = m_pSenCompiler->nLocals();
   
-  m_pDataStack->vPushInt(nLocals);
+  m_oDataStack.vPushInt(nLocals);
   
   EXIT();
 }
@@ -231,11 +231,11 @@ void Step::vSenCompilerNestedFetch(void)
 {
   ENTRY();
     
-  i8 i_Nested = m_pDataStack->iPopInt(__func__);
+  i8 i_Nested = m_oDataStack.iPopInt(__func__);
   
   Word* pNested = m_pSenCompiler->pNestedWord(i_Nested);
   
-  m_pDataStack->vPushPtr(pNested);
+  m_oDataStack.vPushPtr(pNested);
   
   EXIT();
 }
@@ -247,9 +247,9 @@ void Step::vSenCompilerNestedStore(void)
 {
   ENTRY();
   
-  Word* pNested = _pWord(m_pDataStack->pPopPtr(__func__));
+  Word* pNested = _pWord(m_oDataStack.pPopPtr(__func__));
   
-  i8 i_Nested = m_pDataStack->iPopInt(__func__);
+  i8 i_Nested = m_oDataStack.iPopInt(__func__);
     
   m_pSenCompiler->vNestedWord(i_Nested,pNested);
   
@@ -279,7 +279,7 @@ void Step::vSenCompilerCondTest(void)
 {
   ENTRY();
   
-  i8 iCondTest = m_pDataStack->iPopInt(__func__);
+  i8 iCondTest = m_oDataStack.iPopInt(__func__);
   
   if (iCondTest)
     m_pSenCompiler->vMode(CM_CONDCOMPILING);
@@ -331,7 +331,7 @@ void Step::vSenCompilerEnterExitFetch(void)
     
   b8 bEnterExit = m_pSenCompiler->bEnterExitTrace();
     
-  m_pDataStack->vPushInt(bEnterExit);
+  m_oDataStack.vPushInt(bEnterExit);
   
   EXIT();
 }
@@ -343,7 +343,7 @@ void Step::vSenCompilerEnterExitStore(void)
 {
   ENTRY();
   
-  b8 bEnterExit = m_pDataStack->iPopBol(__func__);
+  b8 bEnterExit = m_oDataStack.iPopBol(__func__);
     
   m_pSenCompiler->vEnterExitTrace(bEnterExit);
   

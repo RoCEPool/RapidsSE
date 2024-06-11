@@ -62,7 +62,7 @@ void Step::vNode_IMore(void)
   
   bool bMore = m_pLogicUnit->m_xpNode_I->bMore();
   
-  m_pDataStack->vPushInt(bMore);
+  m_oDataStack.vPushInt(bMore);
   
   EXIT();
 }
@@ -74,7 +74,7 @@ void Step::vNode_INew(void)
 {
   ENTRY();
   
-  //i8 iStipulate = m_pDataStack->iPopInt(__func__);
+  //i8 iStipulate = m_oDataStack.iPopInt(__func__);
   //UNUSED(iStipulate);
   
   Node_I* pNode_I = new Node_I;
@@ -106,7 +106,7 @@ void Step::vNode_INode(void)
   
   Node* pNode = m_pLogicUnit->m_xpNode_I->pNode();
 
-  m_pDataStack->vPushPtr(pNode);
+  m_oDataStack.vPushPtr(pNode);
 
   EXIT();
 }

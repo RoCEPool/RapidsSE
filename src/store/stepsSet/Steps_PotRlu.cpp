@@ -38,7 +38,7 @@ void Step::vPotRluCompleted(void)
     
   DataBuffer* pCompletedBuffer = pPot->pCompleted(0);
 
-  m_pDataStack->vPushPtr(pCompletedBuffer);
+  m_oDataStack.vPushPtr(pCompletedBuffer);
 
   EXIT();
 }
@@ -50,13 +50,13 @@ void Step::vPotRluCompletedPtn(void)
 {
   ENTRY();
   
-  i8 i_Ptn = m_pDataStack->iPopInt(__func__);
+  i8 i_Ptn = m_oDataStack.iPopInt(__func__);
 
   Pot* pPot = _pPot(m_pLogicUnit->m_xRluCommon.m_pPot);
     
   DataBuffer* pCompletedBuffer = pPot->pCompleted(i_Ptn);
 
-  m_pDataStack->vPushPtr(pCompletedBuffer);
+  m_oDataStack.vPushPtr(pCompletedBuffer);
 
   EXIT();
 }
@@ -72,7 +72,7 @@ void Step::vPotRluDangling(void)
     
   DataBuffer* pDanglingBuffer = pPot->pDangling(0);
 
-  m_pDataStack->vPushPtr(pDanglingBuffer);
+  m_oDataStack.vPushPtr(pDanglingBuffer);
 
   EXIT();
 }
@@ -84,13 +84,13 @@ void Step::vPotRluDanglingPtn(void)
 {
   ENTRY();
   
-  i8 i_Ptn = m_pDataStack->iPopInt(__func__);
+  i8 i_Ptn = m_oDataStack.iPopInt(__func__);
 
   Pot* pPot = _pPot(m_pLogicUnit->m_xRluCommon.m_pPot);
     
   DataBuffer* pDanglingBuffer = pPot->pDangling(i_Ptn);
 
-  m_pDataStack->vPushPtr(pDanglingBuffer);
+  m_oDataStack.vPushPtr(pDanglingBuffer);
 
   EXIT();
 }
@@ -119,7 +119,7 @@ void Step::vPotRluIsNull(void)
 
   Pot* pPot = _pPot(m_pLogicUnit->m_xRluCommon.m_pPot);
 
-  m_pDataStack->vPushInt(pPot == nullptr ? 1 : 0);
+  m_oDataStack.vPushInt(pPot == nullptr ? 1 : 0);
 
   EXIT();
 }
@@ -149,7 +149,7 @@ void Step::vPotRluPushBuffer(void)
     
   DataBuffer* pBuffer = pPot->pDangling(0);
 
-  m_pDataStack->vPushPtr(pBuffer);
+  m_oDataStack.vPushPtr(pBuffer);
 
   EXIT();
 }

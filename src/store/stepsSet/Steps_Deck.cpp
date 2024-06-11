@@ -51,9 +51,9 @@ void Step::vDeckGet(void)
   ENTRY();
    
   if (m_pLogicUnit->m_xpDeck.bIsNull())
-    m_pDataStack->vPushPtr(nullptr);
+    m_oDataStack.vPushPtr(nullptr);
   else
-    m_pDataStack->vPushPtr(* m_pLogicUnit->m_xpDeck);
+    m_oDataStack.vPushPtr(* m_pLogicUnit->m_xpDeck);
 
   EXIT();
 }
@@ -65,7 +65,7 @@ void Step::vDeckSet(void)
 {
   ENTRY();
   
-  m_pLogicUnit->m_xpDeck = _pDeck(m_pDataStack->pPopPtr(__func__));
+  m_pLogicUnit->m_xpDeck = _pDeck(m_oDataStack.pPopPtr(__func__));
 
   EXIT();
 }
@@ -84,10 +84,10 @@ void Step::vDeckEnqueueInvoke(void)
   Stage*  pStage0   = pDeck->pStage0();
 
   if (pStage0->bEnqueueInvoke()) {
-    m_pDataStack->vPushInt(true);
+    m_oDataStack.vPushInt(true);
   }
   else {
-    m_pDataStack->vPushInt(false);
+    m_oDataStack.vPushInt(false);
   }
 
   EXIT();
@@ -103,7 +103,7 @@ void Step::vDeckOp0Fetch(void)
     
   Op* pOp0 = m_pLogicUnit->m_xpDeck->pOp0();
     
-  m_pDataStack->vPushPtr(pOp0);
+  m_oDataStack.vPushPtr(pOp0);
 
   EXIT();
 }
@@ -119,7 +119,7 @@ void Step::vDeckOpsExeOnNodeFetch(void)
 
   i8 nOps = m_pLogicUnit->m_xpDeck->nOpsExeOnNode(iThisNodeId);
 
-  m_pDataStack->vPushInt(nOps);
+  m_oDataStack.vPushInt(nOps);
 
   EXIT();
 }
@@ -131,7 +131,7 @@ void Step::vDeckSetJobTask(void)
 {
   ENTRY();
 
-  Task* pJobTask = _pTask(m_pDataStack->pPopPtr(__func__));
+  Task* pJobTask = _pTask(m_oDataStack.pPopPtr(__func__));
   
   m_pLogicUnit->m_xpDeck->vSetJobTask(pJobTask);
   

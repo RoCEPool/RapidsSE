@@ -31,12 +31,12 @@ void Step::vJobReportAll(void)
 {
   ENTRY();
   /*
-  i8 iJobNo = m_pDataStack->iPopInt(__func__);
-  Tub* pTub = _pTub(m_pDataStack->pPopPtr(__func__));
+  i8 iJobNo = m_oDataStack.iPopInt(__func__);
+  Tub* pTub = _pTub(m_oDataStack.pPopPtr(__func__));
 
   eEC eError = JobReport::eMetricsReport(iJobNo, pTub);
 
-  m_pDataStack->vPushInt(eError);
+  m_oDataStack.vPushInt(eError);
   */
   EXIT();
 }
@@ -48,13 +48,13 @@ void Step::vJobReportMetrics(void)
 {
   ENTRY();
 
-  Job* pJob= _pJob(m_pDataStack->pPopPtr(__func__));
+  Job* pJob= _pJob(m_oDataStack.pPopPtr(__func__));
 
-  Tub* pTub = _pTub(m_pDataStack->pPopPtr(__func__));
+  Tub* pTub = _pTub(m_oDataStack.pPopPtr(__func__));
 
   eEC eError = JobReport::eMetricsReport(pJob, pTub);
 
-  m_pDataStack->vPushInt(eError);
+  m_oDataStack.vPushInt(eError);
 
   EXIT();
 }
@@ -66,12 +66,12 @@ void Step::vJobReportNetDissect(void)
 {
   ENTRY();
 
-  Job* pJob= _pJob(m_pDataStack->pPopPtr(__func__));
-  Tub* pTub = _pTub(m_pDataStack->pPopPtr(__func__));
+  Job* pJob= _pJob(m_oDataStack.pPopPtr(__func__));
+  Tub* pTub = _pTub(m_oDataStack.pPopPtr(__func__));
 
   eEC eError = JobReport::eNetDissectReport(pJob, pTub);
 
-  m_pDataStack->vPushInt(eError);
+  m_oDataStack.vPushInt(eError);
 
   EXIT();
 }
@@ -83,13 +83,13 @@ void Step::vJobReportNetwork(void)
 {
   ENTRY();
 
-  Job* pJob= _pJob(m_pDataStack->pPopPtr(__func__));
+  Job* pJob= _pJob(m_oDataStack.pPopPtr(__func__));
 
-  Tub* pTub = _pTub(m_pDataStack->pPopPtr(__func__));
+  Tub* pTub = _pTub(m_oDataStack.pPopPtr(__func__));
 
   eEC eError = JobReport::eNetworkReport(pJob, pTub);
 
-  m_pDataStack->vPushInt(eError);
+  m_oDataStack.vPushInt(eError);
 
   EXIT();
 }
@@ -101,12 +101,12 @@ void Step::vJobReportOperands(void)
 {
   ENTRY();
 
-  Job* pJob= _pJob(m_pDataStack->pPopPtr(__func__));
-  Tub* pTub = _pTub(m_pDataStack->pPopPtr(__func__));
+  Job* pJob= _pJob(m_oDataStack.pPopPtr(__func__));
+  Tub* pTub = _pTub(m_oDataStack.pPopPtr(__func__));
 
   eEC eError = JobReport::eOperandReport(pJob, pTub);
 
-  m_pDataStack->vPushInt(eError);
+  m_oDataStack.vPushInt(eError);
 
   EXIT();
 }
@@ -118,12 +118,12 @@ void Step::vJobReportOperators(void)
 {
   ENTRY();
 
-  Job* pJob= _pJob(m_pDataStack->pPopPtr(__func__));
-  Tub* pTub = _pTub(m_pDataStack->pPopPtr(__func__));
+  Job* pJob= _pJob(m_oDataStack.pPopPtr(__func__));
+  Tub* pTub = _pTub(m_oDataStack.pPopPtr(__func__));
 
   eEC eError = JobReport::eOperatorReport(pJob, pTub);
 
-  m_pDataStack->vPushInt(eError);
+  m_oDataStack.vPushInt(eError);
 
   EXIT();
 }

@@ -27,7 +27,7 @@ void Step::vPagingMetricsDelete(void)
 {
   ENTRY();
 
-  PagingMetrics* pPagingMetrics = _pPagingMetrics(m_pDataStack->pPopPtr(__func__));
+  PagingMetrics* pPagingMetrics = _pPagingMetrics(m_oDataStack.pPopPtr(__func__));
   
   delete pPagingMetrics;
 
@@ -41,9 +41,9 @@ void Step::vPagingMetricsUpdate(void)
 {
   ENTRY();
 
-  PagingMetrics* pPagingMetrics = _pPagingMetrics(m_pDataStack->pPopPtr(__func__));
+  PagingMetrics* pPagingMetrics = _pPagingMetrics(m_oDataStack.pPopPtr(__func__));
 
-  Tub* pTub = _pTub(m_pDataStack->pPopPtr(__func__));
+  Tub* pTub = _pTub(m_oDataStack.pPopPtr(__func__));
 
   pPagingMetrics->vReportDerefMetrics(pTub);
   

@@ -290,7 +290,7 @@ void Step::vMetaDataTableCreateIndex(void)
   s256 szTableNm;
 
   Table* pNewTable = _pTable(*m_pLogicUnit->m_xpTable);
-  Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__ ));
+  Index* pIndex = _pIndex(m_oDataStack.pPopPtr(__func__ ));
   szTableNm = pNewTable->szTableNm();
 
   //------------------------------------------------------------------------
@@ -455,10 +455,10 @@ void Step::vMetaDataTableDropIndex(void)
   ENTRY();
 
   s256 szTableNm;
-  m_pDataStack->vPopStr(szTableNm,__func__);
+  m_oDataStack.vPopStr(szTableNm, __func__);
 
   s256 szIndexNm;
-  m_pDataStack->vPopStr(szIndexNm,__func__);
+  m_oDataStack.vPopStr(szIndexNm, __func__);
 
   //------------------------------------------------------------------------
   // Delete table index info from indexes
@@ -560,7 +560,7 @@ void Step::vMetaDataTableDropTable(void)
   ENTRY();
 
   s256 szTableNm;
-  m_pDataStack->vPopStr(szTableNm,__func__);
+  m_oDataStack.vPopStr(szTableNm, __func__);
 
   //------------------------------------------------------------------------
   // Delete table row info from tableOfTables
@@ -609,7 +609,7 @@ void Step::vMetaDataTableCatalogInsert(void)
   } PdsBufferIdItem;
 
   s256 szCatalogNm;
-  m_pDataStack->vPopStr(szCatalogNm,__func__);
+  m_oDataStack.vPopStr(szCatalogNm, __func__);
 
   Table* pTable = AM::pMetaDataTableCatalog();
   if(!pTable) {
@@ -678,10 +678,10 @@ void Step::vMetaDataTableSchemaInsert(void)
   } PdsBufferIdItem;
 
   s256 szSchemaNm;
-  m_pDataStack->vPopStr(szSchemaNm,__func__);
+  m_oDataStack.vPopStr(szSchemaNm, __func__);
 
   s256 szCatalogNm;
-  m_pDataStack->vPopStr(szCatalogNm,__func__);
+  m_oDataStack.vPopStr(szCatalogNm, __func__);
 
   Table* pTable = AM::pMetaDataTableSchema();
   if(!pTable) {
@@ -746,7 +746,7 @@ void Step::vMetaDataTableSchemaDelete(void)
   ENTRY();
 
   s256 szCatalogNm;
-  m_pDataStack->vPopStr(szCatalogNm,__func__);
+  m_oDataStack.vPopStr(szCatalogNm, __func__);
 
   Table* pTable = AM::pMetaDataTableSchema();
   if(!pTable) {
@@ -766,7 +766,7 @@ void Step::vMetaDataTableCatalogDelete(void)
   ENTRY();
 
   s256 szCatalogNm;
-  m_pDataStack->vPopStr(szCatalogNm,__func__);
+  m_oDataStack.vPopStr(szCatalogNm, __func__);
 
   Table* pTable = AM::pMetaDataTableCatalog();
   if(!pTable) {

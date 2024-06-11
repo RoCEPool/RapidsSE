@@ -34,7 +34,7 @@ void Step::vPdsCursorItemAddr(void)
   PdsCursor* pPdsCursor = _pPdsCursor(*m_pLogicUnit->m_xpPdsCursor);
   SkipListBlock* pSLBlock = pPdsCursor->m_pCurrentBlock;
   RASSERT(pSLBlock != nullptr);
-  m_pDataStack->vPushPtr((Object*)pSLBlock->aItem());
+  m_oDataStack.vPushPtr((Object*)pSLBlock->aItem());
 
   EXIT();
 }
@@ -46,7 +46,7 @@ void Step::vPdsCursorGet(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpPdsCursor);
+  m_oDataStack.vPushPtr(*m_pLogicUnit->m_xpPdsCursor);
 
   EXIT();
 }
@@ -58,7 +58,7 @@ void Step::vPdsCursorCurrIsNotNull(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt(m_pLogicUnit->m_xpPdsCursor->bIsCurrNull() ? 0 : 1);
+  m_oDataStack.vPushInt(m_pLogicUnit->m_xpPdsCursor->bIsCurrNull() ? 0 : 1);
 
   EXIT();
 }
@@ -103,7 +103,7 @@ void Step::vPdsCursorRow(void)
   PdsCursor* pPdsCursor = _pPdsCursor(*m_pLogicUnit->m_xpPdsCursor);
   SkipListBlock* pSLBlock = pPdsCursor->m_pCurrentBlock;
   RASSERT(pSLBlock != nullptr);
-  m_pDataStack->vPushPtr((Row*)pSLBlock->aRow());
+  m_oDataStack.vPushPtr((Row*)pSLBlock->aRow());
 
   EXIT();
 }
@@ -115,7 +115,7 @@ void Step::vPdsCursorSet(void)
 {
   ENTRY();
 
-  m_pLogicUnit->m_xpPdsCursor = _pPdsCursor(m_pDataStack->pPopPtr(__func__));
+  m_pLogicUnit->m_xpPdsCursor = _pPdsCursor(m_oDataStack.pPopPtr(__func__));
 
   EXIT();
 }

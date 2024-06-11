@@ -46,9 +46,9 @@ void Step::vPtnDefColumnFetch(void)
   
   PtnDef* pPtnDef = _pPtnDef(*m_pLogicUnit->m_xpPtnDef);
                                       
-  i8 iColumn = m_pDataStack->iPopInt(__func__);
+  i8 iColumn = m_oDataStack.iPopInt(__func__);
   
-  m_pDataStack->vPushPtr(pPtnDef->pGetColumn(iColumn));
+  m_oDataStack.vPushPtr(pPtnDef->pGetColumn(iColumn));
   
   EXIT();
 }
@@ -62,7 +62,7 @@ void Step::vPtnDefColumnCountFetch(void)
   
   PtnDef* pPtnDef = _pPtnDef(*m_pLogicUnit->m_xpPtnDef);
   
-  m_pDataStack->vPushInt(pPtnDef->nColumns());
+  m_oDataStack.vPushInt(pPtnDef->nColumns());
   
   EXIT();
 }
@@ -74,7 +74,7 @@ void Step::vPtnDefGet(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpPtnDef);
+  m_oDataStack.vPushPtr(*m_pLogicUnit->m_xpPtnDef);
   
   EXIT();
 }
@@ -86,7 +86,7 @@ void Step::vPtnDefGetAndClear(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpPtnDef);
+  m_oDataStack.vPushPtr(*m_pLogicUnit->m_xpPtnDef);
 
   m_pLogicUnit->m_xpPtnDef = nullptr;
 
@@ -100,7 +100,7 @@ void Step::vPtnDefIsNull(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(m_pLogicUnit->m_xpPtnDef.bIsNull() ? 1 : 0);
+  m_oDataStack.vPushInt(m_pLogicUnit->m_xpPtnDef.bIsNull() ? 1 : 0);
   
   EXIT();
 }
@@ -126,7 +126,7 @@ void Step::vPtnDefSet(void)
 {
   ENTRY();
   
-  m_pLogicUnit->m_xpPtnDef = _pPtnDef(m_pDataStack->pPopPtr(__func__));
+  m_pLogicUnit->m_xpPtnDef = _pPtnDef(m_oDataStack.pPopPtr(__func__));
   
   EXIT();
 }

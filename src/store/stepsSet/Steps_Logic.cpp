@@ -26,13 +26,13 @@ void Step::vLogicAnd(void)
 {
   ENTRY();
   
-  i8 iArgB = m_pDataStack->iPopAsInt(__func__);
+  i8 iArgB = m_oDataStack.iPopAsInt(__func__);
   
-  i8 iArgA = m_pDataStack->iPopAsInt(__func__);
+  i8 iArgA = m_oDataStack.iPopAsInt(__func__);
   
   i8 iArgR = (iArgA && iArgB) ? 1 : 0;
   
-  m_pDataStack->vPushInt(iArgR);
+  m_oDataStack.vPushInt(iArgR);
   
   EXIT();
 }
@@ -44,11 +44,11 @@ void Step::vLogicNot(void)
 {
   ENTRY();
   
-  i8 iValA = m_pDataStack->iPopAsInt(__func__);
+  i8 iValA = m_oDataStack.iPopAsInt(__func__);
   
   i8 iNotA = iValA ? 0 : 1;
   
-  m_pDataStack->vPushInt(iNotA);
+  m_oDataStack.vPushInt(iNotA);
   
   EXIT();
 }
@@ -60,13 +60,13 @@ void Step::vLogicOr(void)
 {
   ENTRY();
   
-  i8 iArgB = m_pDataStack->iPopAsInt(__func__);
+  i8 iArgB = m_oDataStack.iPopAsInt(__func__);
   
-  i8 iArgA = m_pDataStack->iPopAsInt(__func__);
+  i8 iArgA = m_oDataStack.iPopAsInt(__func__);
   
   i8 iArgR = (iArgA || iArgB) ? 1 : 0;
   
-  m_pDataStack->vPushInt(iArgR);
+  m_oDataStack.vPushInt(iArgR);
   
   EXIT();
 }

@@ -34,7 +34,7 @@ void Step::vSysArgsDefinedNodes(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(AM::SYSARGS::nDefinedNodes());
+  m_oDataStack.vPushInt(AM::SYSARGS::nDefinedNodes());
   
   EXIT();
 }
@@ -46,7 +46,7 @@ void Step::vSysArgsDerefMetricsFetch(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(AM::SYSARGS::bDerefMetrics());
+  m_oDataStack.vPushInt(AM::SYSARGS::bDerefMetrics());
   
   EXIT();
 }
@@ -58,7 +58,7 @@ void Step::vSysArgsDerefMetricsStore(void)
 {
   ENTRY();
   
-  i8 iDerefMetrics = m_pDataStack->iPopInt(__func__);
+  i8 iDerefMetrics = m_oDataStack.iPopInt(__func__);
   
   AM::SYSARGS::vJobMetrics(iDerefMetrics);
   
@@ -72,7 +72,7 @@ void Step::vSysArgsJobMetricsFetch(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(AM::SYSARGS::bJobMetrics());
+  m_oDataStack.vPushInt(AM::SYSARGS::bJobMetrics());
   
   EXIT();
 }
@@ -84,7 +84,7 @@ void Step::vSysArgsJobMetricsStore(void)
 {
   ENTRY();
   
-  i8 iJobMetrics = m_pDataStack->iPopInt(__func__);
+  i8 iJobMetrics = m_oDataStack.iPopInt(__func__);
   
   AM::SYSARGS::vJobMetrics(iJobMetrics);
   
@@ -110,7 +110,7 @@ void Step::vSysArgsMetricsSleepFetch(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(AM::SYSARGS::nMetricsSleep());
+  m_oDataStack.vPushInt(AM::SYSARGS::nMetricsSleep());
   
   EXIT();
 }
@@ -122,7 +122,7 @@ void Step::vSysArgsMetricsSleepStore(void)
 {
   ENTRY();
   
-  i8 nMetricsSleep = m_pDataStack->iPopInt(__func__);
+  i8 nMetricsSleep = m_oDataStack.iPopInt(__func__);
   
   AM::SYSARGS::vMetricsSleep(nMetricsSleep);
   
@@ -136,7 +136,7 @@ void Step::vSysArgsSysMetricsFetch(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(AM::SYSARGS::bSysMetrics());
+  m_oDataStack.vPushInt(AM::SYSARGS::bSysMetrics());
   
   EXIT();
 }
@@ -148,7 +148,7 @@ void Step::vSysArgsSysMetricsStore(void)
 {
   ENTRY();
   
-  i8 iSysMetrics = m_pDataStack->iPopInt(__func__);
+  i8 iSysMetrics = m_oDataStack.iPopInt(__func__);
   
   AM::SYSARGS::vSysMetrics(iSysMetrics);
   
@@ -162,7 +162,7 @@ void Step::vSysArgsTagSet(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(AM::SYSARGS::pTagSet());
+  m_oDataStack.vPushPtr(AM::SYSARGS::pTagSet());
 
   EXIT();
 }

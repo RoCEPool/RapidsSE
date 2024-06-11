@@ -71,7 +71,7 @@ void Step::vStreamDefOutDuplicate(void)
   
   StreamDef* pStreamDef = new StreamDef(* m_pLogicUnit->m_xpStreamDefOut);
   
-  m_pDataStack->vPushPtr(pStreamDef);
+  m_oDataStack.vPushPtr(pStreamDef);
   
   EXIT();
 }
@@ -83,7 +83,7 @@ void Step::vStreamDefOutGet(void)
 {
   ENTRY();
     
-  m_pDataStack->vPushPtr(* m_pLogicUnit->m_xpStreamDefOut);
+  m_oDataStack.vPushPtr(* m_pLogicUnit->m_xpStreamDefOut);
 
   EXIT();
 }
@@ -95,7 +95,7 @@ void Step::vStreamDefOutIsNull(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(m_pLogicUnit->m_xpStreamDefOut.bIsNull() ? 1 : 0);
+  m_oDataStack.vPushInt(m_pLogicUnit->m_xpStreamDefOut.bIsNull() ? 1 : 0);
   
   EXIT();
 }
@@ -109,7 +109,7 @@ void Step::vStreamDefOutNameFetch(void)
     
   s32 sName = m_pLogicUnit->m_xpStreamDefOut->szStreamDefNm();
   
-  m_pDataStack->vPushStz(sName);
+  m_oDataStack.vPushStz(sName);
   
   EXIT();
 }
@@ -122,7 +122,7 @@ void Step::vStreamDefOutNameStore(void)
   ENTRY();
     
   s32 sName;
-  m_pDataStack->vPopStr(sName,__func__);
+  m_oDataStack.vPopStr(sName, __func__);
 
   m_pLogicUnit->m_xpStreamDefOut->vStreamDefNm(sName);
   
@@ -148,7 +148,7 @@ void Step::vStreamDefOutNewFromTable(void)
 {
   ENTRY();
 
-  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
+  Table* pTable = _pTable(m_oDataStack.pPopPtr(__func__));
 
   m_pLogicUnit->m_xpStreamDefOut = new StreamDef(pTable->pStreamDef());
 
@@ -176,7 +176,7 @@ void Step::vStreamDefOutSet(void)
 {
   ENTRY();
   
-  m_pLogicUnit->m_xpStreamDefOut = _pStreamDef(m_pDataStack->pPopPtr(__func__));
+  m_pLogicUnit->m_xpStreamDefOut = _pStreamDef(m_oDataStack.pPopPtr(__func__));
   
   EXIT();
 }

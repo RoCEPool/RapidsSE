@@ -756,7 +756,7 @@ void PoolHelper::vObjectSummary(Pds* pPds, StreamDef* pPdsDef, Pds* pPdsWarn, St
 
     MagLib::vByteMag(nSumObjSize,sMagObj);
 
-    bool bChgHeap = (nObjSize < C_SIZE_TINY_OBJECT);
+    bool bChgHeap = (nObjSize < C_SIZE_SMALL_OBJECT);
 
     Row* pRow = pPds->pAllotRow(pPdsDef,
                                 C_VARGS_BEGIN,
@@ -812,7 +812,7 @@ void PoolHelper::vObjectSummary(Pds* pPds, StreamDef* pPdsDef, Pds* pPdsWarn, St
 
     MagLib::vByteMag(nSumObjSize,sMagObj);
 
-    bool bChgHeap = (nObjSize < C_SIZE_TINY_OBJECT);
+    bool bChgHeap = (nObjSize < C_SIZE_MEDIUM_OBJECT);
 
     Row* pRow = pPds->pAllotRow(pPdsDef,
                                 C_VARGS_BEGIN,
@@ -978,7 +978,7 @@ void PoolHelper::vObjectSummary(Pds* pPds, StreamDef* pPdsDef, Pds* pPdsWarn, St
 
     MagLib::vByteMag(nSumObjSize,sMagObj);
 
-    bool bChgHeap = (nObjSize < C_SIZE_TINY_OBJECT);
+    bool bChgHeap = (nObjSize < C_SIZE_SMALL_OBJECT);
 
     Row* pRow = pPds->pAllotRow(pPdsDef,
                                 C_VARGS_BEGIN,
@@ -1034,7 +1034,7 @@ void PoolHelper::vObjectSummary(Pds* pPds, StreamDef* pPdsDef, Pds* pPdsWarn, St
 
     MagLib::vByteMag(nSumObjSize,sMagObj);
 
-    bool bChgHeap = (nObjSize < C_SIZE_TINY_OBJECT);
+    bool bChgHeap = (nObjSize < C_SIZE_MEDIUM_OBJECT);
 
     Row* pRow = pPds->pAllotRow(pPdsDef,
                                 C_VARGS_BEGIN,

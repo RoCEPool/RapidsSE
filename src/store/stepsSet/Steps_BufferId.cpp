@@ -59,7 +59,7 @@ void Step::vBufferIdGet(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushPtr((Object*)m_pLogicUnit->m_oBufferId.m_pvAsAddress);
+  m_oDataStack.vPushPtr((Object*)m_pLogicUnit->m_oBufferId.m_pvAsAddress);
 
   EXIT();
 }
@@ -73,7 +73,7 @@ void Step::vBufferIdGetDataBuffer(void)
 
   DataBuffer* pDataBuffer = _pDataBuffer(AM::pHashMap()->pValueAt(m_pLogicUnit->m_oBufferId.m_pvAsAddress));
   RASSERT(pDataBuffer != nullptr);
-  m_pDataStack->vPushPtr(pDataBuffer);
+  m_oDataStack.vPushPtr(pDataBuffer);
 
   EXIT();
 }
@@ -85,7 +85,7 @@ void Step::vBufferIdGetAndClear(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushPtr((Object*)m_pLogicUnit->m_oBufferId.m_pvAsAddress);
+  m_oDataStack.vPushPtr((Object*)m_pLogicUnit->m_oBufferId.m_pvAsAddress);
 
   m_pLogicUnit->m_oBufferId.m_pvAsAddress = nullptr;
 
@@ -99,7 +99,7 @@ void Step::vBufferIdIsNotNull(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt(m_pLogicUnit->m_oBufferId.m_pvAsAddress == nullptr ? 0 : 1);
+  m_oDataStack.vPushInt(m_pLogicUnit->m_oBufferId.m_pvAsAddress == nullptr ? 0 : 1);
 
   EXIT();
 }
@@ -111,7 +111,7 @@ void Step::vBufferIdIsNull(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt(m_pLogicUnit->m_oBufferId.m_pvAsAddress == nullptr ? 1 : 0);
+  m_oDataStack.vPushInt(m_pLogicUnit->m_oBufferId.m_pvAsAddress == nullptr ? 1 : 0);
 
   EXIT();
 }
@@ -123,7 +123,7 @@ void Step::vBufferIdSet(void)
 {
   ENTRY();
 
-  m_pLogicUnit->m_oBufferId.m_pvAsAddress = m_pDataStack->pPopPtr(__func__);
+  m_pLogicUnit->m_oBufferId.m_pvAsAddress = m_oDataStack.pPopPtr(__func__);
   if(m_pLogicUnit->m_oBufferId.m_pvAsAddress != nullptr) {
     RASSERT(BufferId::bIsBufferId(m_pLogicUnit->m_oBufferId));
   }
@@ -138,7 +138,7 @@ void Step::vBufferIdDeRefSet(void)
 {
   ENTRY();
 
-  BufferId* pBufferId = (BufferId*)m_pDataStack->pPopPtr(__func__);
+  BufferId* pBufferId = (BufferId*)m_oDataStack.pPopPtr(__func__);
 
   RASSERT(pBufferId != nullptr);
   m_pLogicUnit->m_oBufferId.m_pvAsAddress = pBufferId->m_pvAsAddress;

@@ -49,7 +49,7 @@ void Step::vOptimiserDissect(void)
   ENTRY();
     
   VertexSpec* pUnOptPlineSpec =
-  _pVertexSpec(m_pDataStack->pPopPtr(__func__));
+  _pVertexSpec(m_oDataStack.pPopPtr(__func__));
 
   m_pLogicUnit->m_xpOptimiser->vDissect(pUnOptPlineSpec);
 
@@ -64,9 +64,9 @@ void Step::vOptimiserGet(void)
   ENTRY();
 
   if (m_pLogicUnit->m_xpOptimiser.bIsNotNull())
-    m_pDataStack->vPushPtr(* m_pLogicUnit->m_xpOptimiser);
+    m_oDataStack.vPushPtr(* m_pLogicUnit->m_xpOptimiser);
   else
-    m_pDataStack->vPushPtr(nullptr);
+    m_oDataStack.vPushPtr(nullptr);
   
   EXIT();
 }
@@ -123,11 +123,11 @@ void Step::vOptimiserTransform(void)
 
   // push error code
   if (! bResult) {
-    m_pDataStack->vPushStz(xError.aErrorMsg());
-    m_pDataStack->vPushInt((i8) xError.eErrorCode());
+    m_oDataStack.vPushStz(xError.aErrorMsg());
+    m_oDataStack.vPushInt((i8) xError.eErrorCode());
   }
 
-  m_pDataStack->vPushBol(bResult);
+  m_oDataStack.vPushBol(bResult);
 
   EXIT();
 }

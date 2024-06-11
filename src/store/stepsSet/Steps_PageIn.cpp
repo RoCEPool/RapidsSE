@@ -28,10 +28,10 @@ void Step::vPageInPopRequest(void) {
   ENTRY();
 #ifdef WITH_PAGING
   BufferId oBufferId;
-  oBufferId.m_iAsI8 = m_pDataStack->iPopAsInt(__func__ );
+  oBufferId.m_iAsI8 = m_oDataStack.iPopAsInt(__func__ );
   RASSERT(BufferId::bIsBufferId(oBufferId));
 
-  Task* pReqTask = _pTask(m_pDataStack->iPopAsInt(__func__));
+  Task* pReqTask = _pTask(m_oDataStack.iPopAsInt(__func__));
 
 #ifdef WITH_PAGING_DEBUG
   vTrace("Page In got TaskPtr %p and BufferId %p\n"_Stz, pReqTask, oBufferId.m_pvAsAddress);

@@ -45,18 +45,18 @@ void Step::vJobIdFolderPathStore(void)
 {
   ENTRY();
 
-  JobId tJobId = m_pDataStack->iPopInt(__func__);
+  JobId tJobId = m_oDataStack.iPopInt(__func__);
 
   s256 sFolderPath;
-  m_pDataStack->vPopStr(sFolderPath,__func__);
+  m_oDataStack.vPopStr(sFolderPath, __func__);
 
   eEC eError = AM::JLIST::eFolderPathSet(tJobId, sFolderPath);
 
   if (eError == EC_NONE) {
-    m_pDataStack->vPushInt(true);
+    m_oDataStack.vPushInt(true);
   }
   else {
-    m_pDataStack->vPushInt(false);
+    m_oDataStack.vPushInt(false);
   }
 
   EXIT();
@@ -71,16 +71,16 @@ void Step::vJobIdLastJobIdFetch(void)
 
   JobId tLastJobId;
 
-  JobId tJobId = m_pDataStack->iPopInt(__func__);
+  JobId tJobId = m_oDataStack.iPopInt(__func__);
 
   eEC eError = AM::JLIST::eLastJobId(tJobId, tLastJobId);
 
   if (eError == EC_NONE) {
-    m_pDataStack->vPushInt(true);
-    m_pDataStack->vPushInt(tLastJobId.iAsI8());
+    m_oDataStack.vPushInt(true);
+    m_oDataStack.vPushInt(tLastJobId.iAsI8());
   }
   else {
-    m_pDataStack->vPushInt(false);
+    m_oDataStack.vPushInt(false);
   }
 
   EXIT();
@@ -93,19 +93,19 @@ void Step::vJobIdPipeToOp0(void)
 {
   ENTRY();
 
-  JobId tJobId = m_pDataStack->iPopInt(__func__);
+  JobId tJobId = m_oDataStack.iPopInt(__func__);
 
-  Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
+  Operand* pOperand = _pOperand(m_oDataStack.pPopPtr(__func__));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   eEC eError = AM::JLIST::ePipeToOp0(tJobId, pOperand, this);
 
   if (eError == EC_NONE) {
-    m_pDataStack->vPushInt(true);
+    m_oDataStack.vPushInt(true);
   }
   else {
-    m_pDataStack->vPushInt(false);
+    m_oDataStack.vPushInt(false);
   }
 
 
@@ -119,9 +119,9 @@ void Step::vJobIdIsUnknown(void)
 {
   ENTRY();
 
-  JobId tJobId = m_pDataStack->iPopInt(__func__);
+  JobId tJobId = m_oDataStack.iPopInt(__func__);
 
-  m_pDataStack->vPushInt(tJobId.bIsUnknown());
+  m_oDataStack.vPushInt(tJobId.bIsUnknown());
 
   EXIT();
 }
@@ -133,17 +133,17 @@ void Step::vJobIdSystemCloserStore(void)
 {
   ENTRY();
 
-  JobId tJobId = m_pDataStack->iPopInt(__func__);
+  JobId tJobId = m_oDataStack.iPopInt(__func__);
 
-  i8 iSystemCloser = m_pDataStack->iPopInt(__func__);
+  i8 iSystemCloser = m_oDataStack.iPopInt(__func__);
 
   eEC eError = AM::JLIST::eSystemCloserSet(tJobId, iSystemCloser);
 
   if (eError == EC_NONE) {
-    m_pDataStack->vPushInt(true);
+    m_oDataStack.vPushInt(true);
   }
   else {
-    m_pDataStack->vPushInt(false);
+    m_oDataStack.vPushInt(false);
   }
   
   EXIT();

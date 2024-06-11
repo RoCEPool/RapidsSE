@@ -49,7 +49,7 @@ void Step::vTimerDelete(void)
 {
   ENTRY();
   
-  Timer* pTimer = _pTimer(m_pDataStack->pPopPtr(__func__));
+  Timer* pTimer = _pTimer(m_oDataStack.pPopPtr(__func__));
   ASSERT(CN_TIMER == pTimer->eGetClassNo());
   
   Object* pTimerObject = reinterpret_cast<Object*>(pTimer);
@@ -68,7 +68,7 @@ void Step::vTimerInit(void)
 {
   ENTRY();
   
-//  Timer* pTimer = _pTimer(m_pDataStack->pPopPtr(__func__));
+//  Timer* pTimer = _pTimer(m_oDataStack.pPopPtr(__func__));
 //  ASSERT(CN_TIMER == pTimer->eGetClassNo());
 //
 //  new(pTimer) Timer;
@@ -83,12 +83,12 @@ void Step::vTimerMicrosecs(void)
 {
   ENTRY();
   
-  Timer* pTimer = _pTimer(m_pDataStack->pPopPtr(__func__));
+  Timer* pTimer = _pTimer(m_oDataStack.pPopPtr(__func__));
   ASSERT(CN_TIMER == pTimer->eGetClassNo());
   
   i8 iMicroseconds = pTimer->iMicroseconds();
   
-  m_pDataStack->vPushInt(iMicroseconds);
+  m_oDataStack.vPushInt(iMicroseconds);
   
   EXIT();
 }
@@ -100,12 +100,12 @@ void Step::vTimerMillisecs(void)
 {
   ENTRY();
   
-  Timer* pTimer = _pTimer(m_pDataStack->pPopPtr(__func__));
+  Timer* pTimer = _pTimer(m_oDataStack.pPopPtr(__func__));
   ASSERT(CN_TIMER == pTimer->eGetClassNo());
   
   i8 iMilliseconds = pTimer->iMilliseconds();
   
-  m_pDataStack->vPushInt(iMilliseconds);
+  m_oDataStack.vPushInt(iMilliseconds);
   
   EXIT();
 }
@@ -117,12 +117,12 @@ void Step::vTimerNanosecs(void)
 {
   ENTRY();
   
-  Timer* pTimer = _pTimer(m_pDataStack->pPopPtr(__func__));
+  Timer* pTimer = _pTimer(m_oDataStack.pPopPtr(__func__));
   ASSERT(CN_TIMER == pTimer->eGetClassNo());
   
   i8 iNanoseconds = pTimer->iNanoseconds();
   
-  m_pDataStack->vPushInt(iNanoseconds);
+  m_oDataStack.vPushInt(iNanoseconds);
   
   EXIT();
 }
@@ -136,7 +136,7 @@ void Step::vTimerNew(void)
 
   Timer* pTimer = new Timer;
      
-  m_pDataStack->vPushPtr(pTimer);
+  m_oDataStack.vPushPtr(pTimer);
   
   EXIT();
 }
@@ -148,12 +148,12 @@ void Step::vTimerReportStr(void)
 {
   ENTRY();
   
-  Timer* pTimer = _pTimer(m_pDataStack->pPopPtr(__func__));
+  Timer* pTimer = _pTimer(m_oDataStack.pPopPtr(__func__));
   ASSERT(CN_TIMER == pTimer->eGetClassNo());
   
   SP_Timer spTimer;
   
-  m_pDataStack->vPushStz(spTimer.sz(pTimer));
+  m_oDataStack.vPushStz(spTimer.sz(pTimer));
 
   EXIT();
 }
@@ -165,7 +165,7 @@ void Step::vTimerReset(void)
 {
   ENTRY();
   
-  Timer* pTimer = _pTimer(m_pDataStack->pPopPtr(__func__));
+  Timer* pTimer = _pTimer(m_oDataStack.pPopPtr(__func__));
   ASSERT(CN_TIMER == pTimer->eGetClassNo());
   
   pTimer->vReset();
@@ -180,12 +180,12 @@ void Step::vTimerSecs(void)
 {
   ENTRY();
   
-  Timer* pTimer = _pTimer(m_pDataStack->pPopPtr(__func__));
+  Timer* pTimer = _pTimer(m_oDataStack.pPopPtr(__func__));
   ASSERT(CN_TIMER == pTimer->eGetClassNo());
   
   i8 iSeconds = pTimer->iSeconds();
   
-  m_pDataStack->vPushInt(iSeconds);
+  m_oDataStack.vPushInt(iSeconds);
   
   EXIT();
 }
@@ -197,7 +197,7 @@ void Step::vTimerStart(void)
 {
   ENTRY();
   
-  Timer* pTimer = _pTimer(m_pDataStack->pPopPtr(__func__));
+  Timer* pTimer = _pTimer(m_oDataStack.pPopPtr(__func__));
   ASSERT(CN_TIMER == pTimer->eGetClassNo());
   
   pTimer->vStart();
@@ -212,7 +212,7 @@ void Step::vTimerUpdate(void)
 {
   ENTRY();
   
-  Timer* pTimer = _pTimer(m_pDataStack->pPopPtr(__func__));
+  Timer* pTimer = _pTimer(m_oDataStack.pPopPtr(__func__));
   ASSERT(CN_TIMER == pTimer->eGetClassNo());
   
   pTimer->vUpdate();
@@ -232,7 +232,7 @@ void Step::vTimeCurrent(void)
   
   s32 s = xNow.sz();
   
-  m_pDataStack->vPushStr(s);
+  m_oDataStack.vPushStr(s);
   
   EXIT();
 }
@@ -249,7 +249,7 @@ void Step::vTimeCurrentTsp(void)
 
   i8 iTsp = xNow.wTsp();
 
-  m_pDataStack->vPushInt(iTsp);
+  m_oDataStack.vPushInt(iTsp);
 
   EXIT();
 }
@@ -261,12 +261,12 @@ void Step::vTimeTspToStr(void)
 {
   ENTRY();
 
-  i8 iTsp = m_pDataStack->iPopInt(__func__);
+  i8 iTsp = m_oDataStack.iPopInt(__func__);
 
   SP_Tsp oSpTsp;
   Stz* szTsp = oSpTsp.sz(iTsp);
 
-  m_pDataStack->vPushStz(szTsp);
+  m_oDataStack.vPushStz(szTsp);
 
   EXIT();
 }
@@ -278,7 +278,7 @@ void Step::vTimerGet(void)
 {
   ENTRY();
     
-  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpTimer);
+  m_oDataStack.vPushPtr(*m_pLogicUnit->m_xpTimer);
 
   EXIT();
 }
@@ -290,7 +290,7 @@ void Step::vTimerSet(void)
 {
   ENTRY();
     
-  m_pLogicUnit->m_xpTimer = _pTimer(m_pDataStack->pPopPtr(__func__));
+  m_pLogicUnit->m_xpTimer = _pTimer(m_oDataStack.pPopPtr(__func__));
 
   EXIT();
 }

@@ -431,6 +431,10 @@ enum eCN : u2 // Class Number
   /* */ CN_TXSET,
   /* */ CN_TYPEMAP1D,
   /* */ CN_TYPEMAP2D,
+  /* */ CN_TYPESTACKLARGE,
+  /* */ CN_TYPESTACKMEDIUM,
+  /* */ CN_TYPESTACKSMALL,
+  /* */ CN_TYPESTACKTINY,
 
   /* */ CN__U__,
   /* */ CN_UNITINT,

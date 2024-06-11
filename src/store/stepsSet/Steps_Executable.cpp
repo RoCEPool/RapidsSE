@@ -26,9 +26,9 @@ void Step::vExecutableIsDebug(void)
   ENTRY();
   
 #ifdef WITH_DEBUG_VERSION
-  m_pDataStack->vPushInt(true);
+  m_oDataStack.vPushInt(true);
 #else
-  m_pDataStack->vPushInt(false);
+  m_oDataStack.vPushInt(false);
 #endif
 
   EXIT();
@@ -42,9 +42,9 @@ void Step::vExecutableIsRelease(void)
   ENTRY();
 
 #ifdef WITH_RELEASE_VERSION
-  m_pDataStack->vPushInt(true);
+  m_oDataStack.vPushInt(true);
 #else
-  m_pDataStack->vPushInt(false);
+  m_oDataStack.vPushInt(false);
 #endif
 
   EXIT();

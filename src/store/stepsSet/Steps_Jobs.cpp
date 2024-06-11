@@ -50,7 +50,7 @@ void Step::vJobsAnyExited(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt(gpAttachMap->pJobs()->bAnyExitedJobs());
+  m_oDataStack.vPushInt(gpAttachMap->pJobs()->bAnyExitedJobs());
 
   EXIT();
 }
@@ -62,7 +62,7 @@ void Step::vJobsNumActive(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt(AM::JOBS::nJobsActive());
+  m_oDataStack.vPushInt(AM::JOBS::nJobsActive());
 
   EXIT();
 }
@@ -154,7 +154,7 @@ void Step::vJobsNumThreshold(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt(AM::JOBS::nJobsThreshold());
+  m_oDataStack.vPushInt(AM::JOBS::nJobsThreshold());
 
   EXIT();
 }
