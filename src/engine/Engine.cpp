@@ -243,7 +243,6 @@ bool Engine::bTraceStart(void)
        vOpenTrace(false);
       break;
 
-    case BO_STATUS:
     case BO_STOP:
     case BO_UNLINK:
       break;
@@ -278,10 +277,6 @@ void Engine::vRunCommandLine(void)
         vWaitStop();
         break;
 
-      case BO_STATUS:
-        vPrintStatus();
-        break;
-        
       case BO_STOP:
         vStopSystem();
         break;
@@ -595,12 +590,10 @@ void Engine::vCreateTmpDir(void)
 /*----------------------------------------------------------------------------*/
 eBO Engine::eDecodeCommandLine(void)
 {
+  if (gxCmdLineArgs.m_xSysArgs.m_bCommand) return BO_COMMAND;
   if (gxCmdLineArgs.m_xSysArgs.m_bStart)   return BO_START;
-  if (gxCmdLineArgs.m_xSysArgs.m_bStatus)  return BO_STATUS;
   if (gxCmdLineArgs.m_xSysArgs.m_bStop)    return BO_STOP;
   if (gxCmdLineArgs.m_xSysArgs.m_bUnlink)  return BO_UNLINK;
-
-  if (gxCmdLineArgs.m_xSysArgs.m_bCommand) return BO_COMMAND;
 
   return BO_NONE;
 }

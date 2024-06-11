@@ -10,7 +10,6 @@ Stz* aBO[BO_ENUMS]
 
   /*    */ "COMMAND"_Stz,
   /*    */ "START"_Stz,
-  /*    */ "STATUS"_Stz,
   /*    */ "STOP"_Stz,
   /*    */ "UNLINK"_Stz,
   
