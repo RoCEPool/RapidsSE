@@ -372,36 +372,6 @@ void Engine::vBootCheck(void)
   ASSERT(26 == gxaSizeHeap[CN__Z__].m_nClassSize);
 }
 
-/*----------------------------------------------------------------------------*/
-/* call the prompt loop                                                       */
-/*----------------------------------------------------------------------------*/
-void Engine::vCallPrompt(void)
-{
-//  SePrompt* pSePrompt = new SePrompt(gxCmdLineArgs.m_xSysArgs.m_bCommand);
-//
-//  pSePrompt->vPromptLoop();
-//
-//  delete pSePrompt;
-
-  if(AM::bDisableCmds()) {
-    PromptHelper::vDisableFuncs();
-  }
-  
-  if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
-    vTrace("\n>\n> %lld) Calling PROMPT\n>\n"_Stz,giProgressPoint++);
-
-  //AM::vPromptCall();
-
-  //if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
-  //  vTrace("  Adding Ignore memory leaks\n"_Stz);
-
-  SePrompt* pSePrompt = new SePrompt(gxCmdLineArgs.m_xSysArgs.m_bCommand);
-  
-  pSePrompt->vPromptLoop();
-  
-  delete pSePrompt;
-
-}
 
 /*----------------------------------------------------------------------------*/
 /* change current directory                                                   */

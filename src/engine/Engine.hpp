@@ -21,7 +21,6 @@ namespace ENGINE
 
     static void vAttachRegion(void);
     static void vBootCheck(void);
-    static void vCallPrompt(void);
     static void vChangeDirectory(void);
     static void vCheckGrid(void);
     static void vCheckNodes(void);
