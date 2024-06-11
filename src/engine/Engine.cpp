@@ -630,9 +630,7 @@ void Engine::vCreateTmpDir(void)
 /*----------------------------------------------------------------------------*/
 eBO Engine::eDecodeCommandLine(void)
 {
-  if (gxCmdLineArgs.m_xSysArgs.m_bStart && gxCmdLineArgs.m_xSysArgs.m_bPrompt)  NEVER_REACH;
   if (gxCmdLineArgs.m_xSysArgs.m_bStart)   return BO_START;
-  if (gxCmdLineArgs.m_xSysArgs.m_bPrompt)  NEVER_REACH;
   if (gxCmdLineArgs.m_xSysArgs.m_bStatus)  return BO_STATUS;
   if (gxCmdLineArgs.m_xSysArgs.m_bStop)    return BO_STOP;
   if (gxCmdLineArgs.m_xSysArgs.m_bUnlink)  return BO_UNLINK;
@@ -1110,28 +1108,7 @@ void Engine::vOpenPool(void)
     vAttachRegion();
     return;
   }
-  
-  if (gxCmdLineArgs.m_xSysArgs.m_bPrompt) {
-    if (! Region::bTest(gxCmdLineArgs.m_xSysArgs.m_sRegionName)) {
-      vTrace("Error: Instance %s was not started\n"_Stz,gxCmdLineArgs.m_xSysArgs.m_sRegionName.azChar());
-      Process::vExitFailure();
-      return;
-    }
-    if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
-      vTrace("\n*\n* Attach Region\n*\n"_Stz);
-    bResult = Region::bAttach(gxCmdLineArgs.m_xSysArgs.m_sRegionName,
-                              gxCmdLineArgs.m_xSysArgs.m_bTraceableComponents[TC_VERBOSE],
-                              gxCmdLineArgs.m_xSysArgs.m_aRegionAddr);
-    if ( ! bResult ) {
-      vTrace("Error: Unable to attach to instance %s\n"_Stz,gxCmdLineArgs.m_xSysArgs.m_sRegionName.azChar());
-      Process::vExitFailure();
-      return;
-      
-    }
-    vAttachRegion();
-    return;
-  }
-  
+
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vTrace("\n*\n* Attach Region\n*\n"_Stz);
   bResult = Region::bAttach(gxCmdLineArgs.m_xSysArgs.m_sRegionName,

@@ -105,7 +105,6 @@ void Constants::vAddConstantsArgs(void)
   Constants::vAddConstant("[args].partitionsPerNode"_Stz, gxCmdLineArgs.m_xSysArgs.m_nPtnsPerNode);
   Constants::vAddConstant("[args].periodicSleep"_Stz,     gxCmdLineArgs.m_xSysArgs.m_nPeriodicSleep);
   Constants::vAddConstant("[args].progress"_Stz,          gxCmdLineArgs.m_xSysArgs.m_bProgress);
-  Constants::vAddConstant("[args].prompt"_Stz,            gxCmdLineArgs.m_xSysArgs.m_bPrompt);
   Constants::vAddConstant("[args].regionPrefix"_Stz,      gxCmdLineArgs.m_xSysArgs.m_sRegionPrefix);
   Constants::vAddConstant("[args].regionName"_Stz,        gxCmdLineArgs.m_xSysArgs.m_sRegionName);
   Constants::vAddConstant("[args].regionSize"_Stz,        gxCmdLineArgs.m_xSysArgs.m_iRegionSize);

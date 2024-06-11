@@ -116,7 +116,6 @@ void CmdLineArgs::vInit(void)
   m_xSysArgs.m_bCommand     = false;
   m_xSysArgs.m_bHelp        = false;
   m_xSysArgs.m_bInitial     = false;
-  m_xSysArgs.m_bPrompt      = false;
   m_xSysArgs.m_bStart       = false;
   m_xSysArgs.m_bStatus      = false;
   m_xSysArgs.m_bStop        = false;
@@ -283,7 +282,6 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
       m_xSysArgs.m_sCommand = (Stz*)argv[++i_Arg];
       vTrace("command %s\n"_Stz, m_xSysArgs.m_sCommand.azChar());
       m_xSysArgs.m_bCommand = true;
-      m_xSysArgs.m_bPrompt  = false;
       m_xSysArgs.m_bWelcome = false;
       continue;
     }
@@ -757,27 +755,6 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#ifndef NO_SE_PROMPT
-    if (szArg->bSame("--prompt"_Stz)) {
-
-      if (m_xSysArgs.m_bStop) {
-        vPrintErrorMarker(argv, i_Arg);
-        vTrace("Incorrect argument: --stop with %s\n"_Stz,argv[i_Arg].szStz());
-        return false;
-      }
-
-      if (m_xSysArgs.m_bStatus) {
-        vPrintErrorMarker(argv, i_Arg);
-        vTrace("Incorrect argument: --status with %s\n"_Stz,argv[i_Arg].szStz());
-        return false;
-      }
-
-      m_xSysArgs.m_bPrompt = true;
-      continue;
-    }
-#endif
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--promptDebug"_Stz)) {
       m_xSysArgs.m_iPromptDebug = argv[++i_Arg].iToI8();
       continue;
@@ -828,16 +805,6 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
       m_xSysArgs.m_bRLUTimer = true;
       continue;
     }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#ifndef NO_SE_PROMPT
-    if (szArg->bSame("--seprompt"_Stz)) {
-      m_xSysArgs.m_bPrompt = true;
-      continue;
-    }
-#endif
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--sen"_Stz)) {
@@ -934,11 +901,6 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
         vTrace("Incorrect argument: --start with %s\n"_Stz,argv[i_Arg].szStz());
         return false;
       }
-      if (m_xSysArgs.m_bPrompt) {
-        vPrintErrorMarker(argv, i_Arg);
-        vTrace("Incorrect argument: --prompt with %s\n"_Stz,argv[i_Arg].szStz());
-        return false;
-      }
 
       m_xSysArgs.m_bStatus = true;
       continue;
@@ -955,11 +917,6 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
       if (m_xSysArgs.m_bStatus) {
         vPrintErrorMarker(argv, i_Arg);
         vTrace("Incorrect argument: --status with %s\n"_Stz,argv[i_Arg].szStz());
-        return false;
-      }
-      if (m_xSysArgs.m_bPrompt) {
-        vPrintErrorMarker(argv, i_Arg);
-        vTrace("Incorrect argument: --prompt with %s\n"_Stz,argv[i_Arg].szStz());
         return false;
       }
 
@@ -1171,11 +1128,8 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
   // if not in prompt mode, log file path should not be given
   if ( ! m_xSysArgs.m_sLogFile.bIsEmpty() ) {
 
-    if( ! m_xSysArgs.m_bPrompt)
-    {
       vTrace("Incorrect argument: --logFile, can only specify log file path with --prompt or --script\n"_Stz);
       return false;
-    }
   }
 #endif
 
@@ -1274,7 +1228,6 @@ bool CmdLineArgs::bParseTraceFileArgs(i8 argc, s256 argv[])
       m_xSysArgs.m_sCommand = (Stz*)argv[++i_Arg];
       vTrace("command %s\n"_Stz, m_xSysArgs.m_sCommand.azChar());
       m_xSysArgs.m_bCommand = true;
-      m_xSysArgs.m_bPrompt  = false;
       m_xSysArgs.m_bWelcome = false;
       continue;
     }
@@ -1328,27 +1281,6 @@ bool CmdLineArgs::bParseTraceFileArgs(i8 argc, s256 argv[])
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#ifndef NO_SE_PROMPT
-    if (szArg->bSame("--prompt"_Stz)) {
-
-      if (m_xSysArgs.m_bStop) {
-        vPrintErrorMarker(argv, i_Arg);
-        vTrace("Incorrect argument: --stop with %s\n"_Stz,argv[i_Arg].szStz());
-        return false;
-      }
-
-      if (m_xSysArgs.m_bStatus) {
-        vPrintErrorMarker(argv, i_Arg);
-        vTrace("Incorrect argument: --status with %s\n"_Stz,argv[i_Arg].szStz());
-        return false;
-      }
-
-      m_xSysArgs.m_bPrompt = true;
-      continue;
-    }
-#endif
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--start"_Stz)) {
 
       if (m_xSysArgs.m_bStop) {
@@ -1367,13 +1299,6 @@ bool CmdLineArgs::bParseTraceFileArgs(i8 argc, s256 argv[])
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#ifndef NO_SE_PROMPT
-    if (szArg->bSame("--seprompt"_Stz)) {
-      m_xSysArgs.m_bPrompt = true;
-      continue;
-    }
-#endif
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--status"_Stz)) {
       NEVER_REACH
       if (m_xSysArgs.m_bStop) {
@@ -1384,11 +1309,6 @@ bool CmdLineArgs::bParseTraceFileArgs(i8 argc, s256 argv[])
       if (m_xSysArgs.m_bStart) {
         vPrintErrorMarker(argv, i_Arg);
         vTrace("Incorrect argument: --start with %s\n"_Stz,argv[i_Arg].szStz());
-        return false;
-      }
-      if (m_xSysArgs.m_bPrompt) {
-        vPrintErrorMarker(argv, i_Arg);
-        vTrace("Incorrect argument: --prompt with %s\n"_Stz,argv[i_Arg].szStz());
         return false;
       }
 
@@ -1407,11 +1327,6 @@ bool CmdLineArgs::bParseTraceFileArgs(i8 argc, s256 argv[])
       if (m_xSysArgs.m_bStatus) {
         vPrintErrorMarker(argv, i_Arg);
         vTrace("Incorrect argument: --status with %s\n"_Stz,argv[i_Arg].szStz());
-        return false;
-      }
-      if (m_xSysArgs.m_bPrompt) {
-        vPrintErrorMarker(argv, i_Arg);
-        vTrace("Incorrect argument: --prompt with %s\n"_Stz,argv[i_Arg].szStz());
         return false;
       }
 
@@ -1433,11 +1348,8 @@ bool CmdLineArgs::bParseTraceFileArgs(i8 argc, s256 argv[])
   // if not in prompt mode, log file path should not be given
   if ( ! m_xSysArgs.m_sLogFile.bIsEmpty() ) {
 
-    if( ! m_xSysArgs.m_bPrompt)
-    {
-      vTrace("Incorrect argument: --logFile, can only specify log file path with --prompt or --script\n"_Stz);
+       vTrace("Incorrect argument: --logFile, can only specify log file path with --prompt or --script\n"_Stz);
       return false;
-    }
   }
 #endif
 
@@ -1524,7 +1436,6 @@ void CmdLineArgs::vPrintStartupInfo(void)
     if (m_xSysArgs.m_bCommand)     vTrace("  --command\n"_Stz);
     if (m_xSysArgs.m_bHelp)        vTrace("  --help\n"_Stz);
     if (m_xSysArgs.m_bProgress)    vTrace("  --progress\n"_Stz);
-    if (m_xSysArgs.m_bPrompt)      vTrace("  --seprompt\n"_Stz);
     if (m_xSysArgs.m_bStart)       vTrace("  --start\n"_Stz);
     if (m_xSysArgs.m_bStatus)      vTrace("  --status\n"_Stz);
     if (m_xSysArgs.m_bStop)        vTrace("  --stop\n"_Stz);

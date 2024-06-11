@@ -58,7 +58,6 @@ namespace STORE
     bool m_bCommand;     // run command
     bool m_bHelp;        // display help
     bool m_bInitial;     // run command is an initial command
-    bool m_bPrompt;      // run the se> prompt
     bool m_bStart;       // start system
                          //   (shm not exist, shm create, root thread & task)
     bool m_bStatus;      // get status
