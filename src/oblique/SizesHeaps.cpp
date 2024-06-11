@@ -154,9 +154,6 @@
 
 #include "OpSketch.hpp"
 #include "PtnDef.hpp"
-#include "ShortCut.hpp"
-#include "SeDeputy.hpp"
-#include "SePrompt.hpp"
 #include "Stage.hpp"
 #include "StepAccum.hpp"
 #include "StageSpec.hpp"
@@ -652,16 +649,12 @@ SizeHeap gxaSizeHeap[]
   { CN_SCHEMA,                   sizeof(Schema),             HT_T_TINY    ,FILL },
   { CN_SCOPE,                    sizeof(Scope),              HT_T_TINY    ,FILL },
   { CN_SEAPI,                    sizeof(SeApi),              HT_T_LARGE   ,FILL },
-  { CN_SEDEPUTY,        sizeof(SeDeputy),           HT_T_MEDIUM  , FILL },
   { CN_SEEME,           sizeof(SeeMe),              HT_INVALID   , FILL },
   { CN_SEGMENTEDARRAYITER, 0,                       HT_INVALID   , FILL },
   { CN_SENCELL,         sizeof(SenCell),            HT_INVALID   , FILL },
   { CN_SENCOMPILER,     sizeof(SenCompiler),        HT_T_TINY    , FILL },
   { CN_SENDS,           sizeof(Sends),              HT_T_TINY    , FILL },
   { CN_SENDWL,          sizeof(SendWL),             HT_T_TINY    , FILL },
-  { CN_SEPROMPT,        sizeof(SePrompt),           HT_T_MEDIUM  , FILL },
-  { CN_SHORTCUT,        sizeof(ShortCut),           HT_T_MEDIUM  , FILL },
-  { CN_SHORTCUTVEC,     sizeof(ShortCutVec),        HT_T_MEDIUM  , FILL },
    {CN_SINCE,           sizeof(Birth),              HT_INVALID   , FILL },
   {CN_SKETCHTKN,       sizeof(SketchTkn),          HT_T_TINY    , FILL },
   {CN_SKIPLIST,        sizeof(SkipListNL),         HT_T_TINY    , FILL },

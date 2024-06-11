@@ -338,16 +338,12 @@ Stz* BASE::aCN[CN_ENUMS+1]
     /* */ "SCHEMA"_Stz,               // CN_SCHEMA
     /* */ "SCOPE"_Stz,                // CN_SCOPE
     /* */ "SEAPI"_Stz,                // CN_SEAPI
-    /* */ "SEDEPUTY"_Stz,             // CN_SEDEPUTY
     /* */ "SEEME"_Stz,                // CN_SEEME
     /* */ "SEGMENTEDARRAYITER"_Stz,   // CN_SEGMENTEDARRAYITER
     /* */ "SENCELL"_Stz,              // CN_SENCELL
     /* */ "SENCOMPILER"_Stz,          // CN_SENCOMPILER
     /* */ "SENDS"_Stz,                // CN_SENDS
     /* */ "SENDWL"_Stz,               // CN_SENDWL
-    /* */ "SEPROMPT"_Stz,             // CN_SEPROMPT
-    /* */ "SHORTCUT"_Stz,             // CN_SHORTCUT
-    /* */ "SHORTCUTVEC"_Stz,          // CN_SHORTCUTVEC
     /* */ "SINCE"_Stz,                // CN_SINCE
     /* */ "SKETCHTKN"_Stz,            // CN_SKETCHTKN
     /* */ "SKIPLIST"_Stz,             // CN_SKIPLIST

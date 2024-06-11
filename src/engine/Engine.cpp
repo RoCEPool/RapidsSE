@@ -24,10 +24,6 @@
 #include "Node_I.hpp"
 #include "LogicUnit.hpp"
 
-#include "ShortCut.hpp"
-#include "SeDeputy.hpp"
-#include "SePrompt.hpp"
-
 #include "Step.hpp"
 
 #include "SkipRoots.hpp"
@@ -55,7 +51,6 @@
 
 #include "Heart.h"
 
-#include "PromptHelper.hpp"
 #include "CompileLib.hpp"
 #include "PlanDefinitionParser.hpp"
 
