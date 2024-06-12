@@ -134,6 +134,7 @@ void CmdLineArgs::vInit(void)
   m_xSysArgs.m_nDummySleep      = 10;
   m_xSysArgs.m_nDummyLoop       = 0;
   m_xSysArgs.m_nEntries         = 0;
+  m_xSysArgs.m_bEvents          = false;
   m_xSysArgs.m_bFreeSpecific    = false;
   m_xSysArgs.m_bGridTest        = false;
   m_xSysArgs.m_bHugePages       = false;
@@ -159,6 +160,7 @@ void CmdLineArgs::vInit(void)
   m_xSysArgs.m_bShmLock         = false;
   m_xSysArgs.m_iSocketLowMem    = C_UNKNOWN;
   m_xSysArgs.m_bSysMetrics      = false;
+  m_xSysArgs.m_iTest            = C_UNKNOWN;
   m_xSysArgs.m_i_ThisNode       = C_UNKNOWN;
   m_xSysArgs.m_nThreads         = 12;
   m_xSysArgs.m_bTouch           = false;
@@ -399,6 +401,13 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--entries"_Stz)) {
       m_xSysArgs.m_nEntries = argv[++i_Arg].iToI8();
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    if (szArg->bSame("--events"_Stz)) {
+      m_xSysArgs.m_bEvents = true;
       continue;
     }
 
@@ -897,6 +906,12 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
       else
         m_xSysArgs.m_oSysTags.vInsert(sTagName,szTagValue);
 
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (szArg->bSame("--test"_Stz)) {
+      m_xSysArgs.m_iTest = argv[++i_Arg].iToI8();
       continue;
     }
 
