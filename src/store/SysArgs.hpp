@@ -79,7 +79,6 @@ namespace STORE
     i8   m_nDummySleep;      // sleep period for dummy threads
     i8   m_nDummyLoop;       // loop count for dummy threads
     i8   m_nEntries;         // no of entries per buffer
-    bool m_bEvents;          // log events
     bool m_bFreeSpecific;    // but free CrwBuffers back to heap
     bool m_bGridTest;        // running a single machine multi-node test
     bool m_bHugePages;       // to use huge pages
@@ -106,7 +105,6 @@ namespace STORE
     bool m_bShmLock;         // lock shared memory pages in memory
     i8   m_iSocketLowMem;    // socket recv low memory test
     bool m_bSysMetrics;      // collect sys metrics
-    i8   m_iTest;            // which test to run
     i8   m_nThreads;         // number of general threads
     bool m_bTouch;           // touch all shm pages during region create
     bool m_bTracepoint;      // print tracepoint
