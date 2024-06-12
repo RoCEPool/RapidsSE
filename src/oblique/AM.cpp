@@ -3739,7 +3739,6 @@ bool AM::bDbgTag(Stz* szTagNm) {
 }
 
 Stz* AM::szCommand(void)      { return gxCmdLineArgs.m_xSysArgs.m_sCommand.szStz();             }
-Stz* AM::szInitial(void)      { return gxCmdLineArgs.m_xSysArgs.m_sInitial.szStz();             }
 
 // file names
 Stz* AM::szLogRegion(void)    { return gpAttachMap->m_sLogRegion;             }
