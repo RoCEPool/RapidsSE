@@ -143,7 +143,7 @@ void NameValidator::vValidateNames(PlanNode *pRootNode)
 /*----------------------------------------------------------------------------*/
 void NameValidator::vCheckDisabledFunctionality(PlanNode* pRootNode)
 {
-  if (!gpAttachMap->bDisablePromptCommands()) {
+  if (!gpAttachMap->bDisableCommands()) {
     return;
   }
 
