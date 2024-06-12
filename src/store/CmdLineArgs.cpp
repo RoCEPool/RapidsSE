@@ -106,7 +106,6 @@ void CmdLineArgs::vInit(void)
   m_xSysArgs.m_nDefinedHeartbeats = 0;
 
   m_xSysArgs.m_sCommand = ""_Stz;
-  m_xSysArgs.m_sInitial = ""_Stz;
 
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -115,7 +114,6 @@ void CmdLineArgs::vInit(void)
   m_xSysArgs.m_bAppendTrace = false;
   m_xSysArgs.m_bCommand     = false;
   m_xSysArgs.m_bHelp        = false;
-  m_xSysArgs.m_bInitial     = false;
   m_xSysArgs.m_bStart       = false;
   m_xSysArgs.m_bStop        = false;
   m_xSysArgs.m_bUnlink      = false;
@@ -131,7 +129,6 @@ void CmdLineArgs::vInit(void)
   m_xSysArgs.m_nDemonSleep      = 60;
   m_xSysArgs.m_bDerefMetrics    = false;
   m_xSysArgs.m_bDeveloper       = false;
-  m_xSysArgs.m_bDisablePromptCmds = false;
   m_xSysArgs.m_bDistJob         = false;
   m_xSysArgs.m_bDontFree        = false;
   m_xSysArgs.m_nDummyThreads    = 0;
@@ -406,14 +403,6 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-    if (szArg->bSame("--enableCommands"_Stz)) {
-      m_xSysArgs.m_bDisablePromptCmds = false;
-      continue;
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
     if (szArg->bSame("--entries"_Stz)) {
       m_xSysArgs.m_nEntries = argv[++i_Arg].iToI8();
       continue;
@@ -491,14 +480,6 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--hugepages"_Stz)) {
       m_xSysArgs.m_bHugePages = true;
-      continue;
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (szArg->bSame("--initial"_Stz)) {
-      NEVER_REACH
-      m_xSysArgs.m_bInitial = true;
-      m_xSysArgs.m_sInitial = (Stz*)argv[++i_Arg];
       continue;
     }
 
@@ -1421,8 +1402,6 @@ void CmdLineArgs::vPrintStartupInfo(void)
 #endif
 
   if (m_xSysArgs.m_bDeveloper) vTrace("  --developer\n"_Stz);
-
-  if (m_xSysArgs.m_bInitial) vTrace("  --initial %s\n"_Stz,m_xSysArgs.m_sInitial.szStz());
 
   for (i8 i=TC_NONE; i<TC_ENUMS; i++) {
     if (m_xSysArgs.m_bTraceableComponents[i]) {

@@ -143,10 +143,6 @@ void NameValidator::vValidateNames(PlanNode *pRootNode)
 /*----------------------------------------------------------------------------*/
 void NameValidator::vCheckDisabledFunctionality(PlanNode* pRootNode)
 {
-  if (!gpAttachMap->bDisablePromptCommands()) {
-    return;
-  }
-
   // In this mode we only want to support reasonably simple SELECT statements.
   // We want to disable these Sql operators:
   //  - Unions

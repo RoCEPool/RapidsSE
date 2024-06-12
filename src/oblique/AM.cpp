@@ -3712,7 +3712,6 @@ i8    AM::iFormatNumber(void)   { return C_VERSION_NUMBER;  }                   
 bool AM::bDebugIndex(void)    { return gpAttachMap->m_xSysArgs.m_bDebugIndex;        }
 bool AM::bDebugMode(void)     { return gpAttachMap->m_xSysArgs.m_bDebugMode;         }
 bool AM::bDeveloper(void)     { return gpAttachMap->m_xSysArgs.m_bDeveloper;         }
-bool AM::bDisableCmds(void)   { return gpAttachMap->m_xSysArgs.m_bDisablePromptCmds; }
 i8   AM::nDummyLoop(void)     { return gpAttachMap->m_xSysArgs.m_nDummyLoop;         }
 i8   AM::nDummySleep(void)    { return gpAttachMap->m_xSysArgs.m_nDummySleep;        }
 i8   AM::nDummyThreads(void)  { return gpAttachMap->m_xSysArgs.m_nDummyThreads;      }
@@ -3739,7 +3738,6 @@ bool AM::bDbgTag(Stz* szTagNm) {
 }
 
 Stz* AM::szCommand(void)      { return gxCmdLineArgs.m_xSysArgs.m_sCommand.szStz();             }
-Stz* AM::szInitial(void)      { return gxCmdLineArgs.m_xSysArgs.m_sInitial.szStz();             }
 
 // file names
 Stz* AM::szLogRegion(void)    { return gpAttachMap->m_sLogRegion;             }

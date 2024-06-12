@@ -54,10 +54,8 @@ namespace STORE
     TagSet m_oSysTags;  // system level tag set
 
     // command
-    bool m_bAppendTrace; // append to trace file
     bool m_bCommand;     // run command
     bool m_bHelp;        // display help
-    bool m_bInitial;     // run command is an initial command
     bool m_bStart;       // start system
                          //   (shm not exist, shm create, root thread & task)
     bool m_bStop;        // force stop system
@@ -65,6 +63,7 @@ namespace STORE
     bool m_bUnlink;      // unlink shm region only
 
     // options
+    bool m_bAppendTrace;     // append to trace file
     bool m_bCombined;        // to generate flattened files in combined folder
     s256 m_sCommand;         // command to run
     i8   m_iCondCode;        // conditional compilation cond value
@@ -75,7 +74,6 @@ namespace STORE
     i8   m_nDemonSleep;      // sleep period for demons
     bool m_bDerefMetrics;    // collect deref metrics
     bool m_bDeveloper;       // user is a developer
-    bool m_bDisablePromptCmds;// Disable prompt commands
     bool m_bDistJob;         // dist job trace
     bool m_bDontFree;        // dont actually free objects back to heap
     i8   m_nDummyThreads;    // number of dummy threads
@@ -87,7 +85,6 @@ namespace STORE
     bool m_bGridTest;        // running a single machine multi-node test
     bool m_bHugePages;       // to use huge pages
     i8   m_nIndexEntries;    // no of entries per buffer
-    s256 m_sInitial;         // initial to run
     bool m_bJobMetrics;      // collect job metrics
     bool m_bJot;             // jotting
     bool m_bKillPrev;        // kill previous se's (temporary)
