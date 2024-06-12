@@ -70,6 +70,7 @@ namespace PRIMITIVES
     void  operator delete(void*);
 
     SegmentedArrayNL_t();
+    SegmentedArrayNL_t(const SegmentedArrayNL_t& oOther);
    ~SegmentedArrayNL_t(void) noexcept(false);
 
     void  vAdd(const ITEM& oItem);
@@ -138,6 +139,33 @@ SegmentedArrayNL_t<CLASSNO,ITEM,OBJS_PER_SEG>::SegmentedArrayNL_t()
   m_pNext  = nullptr;
   m_pHead  = this;
   
+  _checkInitialisedSize_(sizeof(SegmentedArrayNL_t<CLASSNO,ITEM,OBJS_PER_SEG>));
+}
+
+/*----------------------------------------------------------------------------*/
+/* Copy constructor                                                           */
+/*----------------------------------------------------------------------------*/
+template <eCN CLASSNO, class ITEM, i8 OBJS_PER_SEG>
+SegmentedArrayNL_t<CLASSNO,ITEM,OBJS_PER_SEG>::SegmentedArrayNL_t(const SegmentedArrayNL_t<CLASSNO,ITEM,OBJS_PER_SEG>& oOther)
+: Object(CLASSNO)
+{
+  m_nItems = oOther.m_nItems;
+  m_pHead  = this;
+
+  if (oOther.m_pNext) {
+    // Take a copy of any other segments. This will recurse.
+    m_pNext = new SegmentedArrayNL_t<CLASSNO,ITEM,OBJS_PER_SEG>(oOther.m_pNext);
+    m_pNext->m_pHead = m_pHead;
+  } else {
+    m_pNext = nullptr;
+  }
+
+  // Copy the objects
+  i8 i = 0;
+  for (i=0; i<OBJS_PER_SEG && i<m_nItems; i++) {
+    m_aObjects[i] = oOther.m_aObjects[i];
+  }
+
   _checkInitialisedSize_(sizeof(SegmentedArrayNL_t<CLASSNO,ITEM,OBJS_PER_SEG>));
 }
 

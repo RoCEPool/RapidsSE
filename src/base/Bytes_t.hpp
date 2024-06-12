@@ -18,6 +18,7 @@ namespace BASE
     
   public:    
     Bytes_t(void);
+    Bytes_t(const Bytes_t& oOther);
    ~Bytes_t(void) noexcept(false);
   
     i8   iAppend(Stz* szStr);
@@ -71,6 +72,24 @@ Bytes_t<AREA>::Bytes_t(void)
 
   _checkInitialisedSize_(AREA);
   
+  _postcondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Copy constructor                                                           */
+/*----------------------------------------------------------------------------*/
+template <i8 AREA>
+Bytes_t<AREA>::Bytes_t(const Bytes_t& oOther)
+: Object(CN_BYTES_T)
+{
+  _precondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
+
+  m_i_Latter = oOther.m_i_Latter;
+  m_nArea = AREA;
+  MemLib::vCopy(m_yaArea, oOther.m_yaArea, AREA, CN_BYTES_T);
+
+  _checkInitialisedSize_(AREA);
+
   _postcondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
 }
 

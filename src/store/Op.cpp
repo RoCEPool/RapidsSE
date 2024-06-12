@@ -2158,7 +2158,7 @@ void Op::vSetTags(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
 
   TagSet* pPipeLineJobTags = AM::pJobTags(pOuterJobOfOp());
-  m_pOpTags = _pTagSet(pPipeLineJobTags->pMemoryCopy());
+  m_pOpTags = pPipeLineJobTags->pDuplicate();
   m_pOpTags->vReplace(C_TAG_JOBNM, szOpNm());
 }
 

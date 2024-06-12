@@ -400,7 +400,7 @@ void Stream::vCreateOps(void)
       
       TagSet* pTagSet_Op_0_0 = pOp_0_0->pOpTags();
 
-      TagSet* pTagSet_Op_New = _pTagSet(pTagSet_Op_0_0->pMemoryCopy());
+      TagSet* pTagSet_Op_New = pTagSet_Op_0_0->pDuplicate();
       
       pOp_New->vOpTags(pTagSet_Op_New);
       

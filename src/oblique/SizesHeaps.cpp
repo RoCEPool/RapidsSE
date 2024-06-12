@@ -726,6 +726,7 @@ SizeHeap gxaSizeHeap[]
   { CN_TABLEDEF,                 sizeof(Table),              HT_T_MEDIUM  ,FILL },
   { CN_TABLEPTN,                 sizeof(TablePtn),           HT_T_TINY    ,FILL },
   { CN_TABLEPTNVEC,              sizeof(TablePtnVec),        HT_T_TINY    ,FILL },
+  { CN_TAGARRAY,                 sizeof(TagArray),           HT_T_TINY    ,FILL },
   { CN_TAGSET,                   sizeof(TagSet),             HT_T_MEDIUM  ,FILL },
   { CN_TASK,                     sizeof(Task),               HT_T_MEDIUM  ,FILL },
   { CN_TASKLIST,                 sizeof(TaskList),           HT_T_TINY    ,FILL },

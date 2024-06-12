@@ -1728,9 +1728,9 @@ void Job::vPostRecv(void)
   /* 11 */ m_pJobsSkipNode    = nullptr;
   /* 12 */ m_pGenericSkipNode = nullptr;
 
-  /* 14 */// m_pCmdText = nullptr;
+  /* 14 */// m_pCmdText = nullptr;      // handled in Socket::pRecvObject(eCN)
 
-  /* 15 */ //RASSERT(! m_pCodeBlock);
+  /* 15 */ //RASSERT(! m_pCodeBlock);   // handled in Socket::pRecvObject(eCN)
 
   m_tJobId.vNextJobId();
 
