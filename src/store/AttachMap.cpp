@@ -176,6 +176,16 @@ i8 AttachMap::iCmdNoNext(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* are the commands disabled ?                                                */
+/*----------------------------------------------------------------------------*/
+b1 AttachMap::bDisablePromptCommands(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ATTACHMAP,_FOOTER_);
+
+  return m_xSysArgs.m_bDisablePromptCmds;
+}
+
+/*----------------------------------------------------------------------------*/
 /* dump this attachmap                                                        */
 /*----------------------------------------------------------------------------*/
 void AttachMap::vDump(eCN eClass, Object* pObject, Stz* aTab)
@@ -382,6 +392,7 @@ void AttachMap::vRecordArguments(CmdLineArgs* pCmdLineArgs)
   m_xSysArgs.m_bDebugMode       = pCmdLineArgs->m_xSysArgs.m_bDebugMode;
   m_xSysArgs.m_bDerefMetrics    = pCmdLineArgs->m_xSysArgs.m_bDerefMetrics;
   m_xSysArgs.m_bDeveloper       = pCmdLineArgs->m_xSysArgs.m_bDeveloper;
+  m_xSysArgs.m_bDisablePromptCmds = pCmdLineArgs->m_xSysArgs.m_bDisablePromptCmds;
   m_xSysArgs.m_bDistJob         = pCmdLineArgs->m_xSysArgs.m_bDistJob;
   m_xSysArgs.m_nDummyLoop       = pCmdLineArgs->m_xSysArgs.m_nDummyLoop;
   m_xSysArgs.m_nDummySleep      = pCmdLineArgs->m_xSysArgs.m_nDummySleep;
