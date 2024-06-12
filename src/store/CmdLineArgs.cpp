@@ -1360,78 +1360,76 @@ void CmdLineArgs::vPrintStartupInfo(void)
 #endif
   }
 
-  if (! gxCmdLineArgs.bUserPrompt()) {
-    vTrace("\n"_Stz);
-    vTrace("Args:\n"_Stz);
+  vTrace("\n"_Stz);
+  vTrace("Args:\n"_Stz);
 
 #ifdef WITH_DEBUG_VERSION
-    if (m_xSysArgs.m_bAppendTrace) vTrace("  --appendTrace\n"_Stz);
-    if (m_xSysArgs.m_bCommand)     vTrace("  --command\n"_Stz);
-    if (m_xSysArgs.m_bHelp)        vTrace("  --help\n"_Stz);
-    if (m_xSysArgs.m_bProgress)    vTrace("  --progress\n"_Stz);
-    if (m_xSysArgs.m_bStart)       vTrace("  --start\n"_Stz);
-    if (m_xSysArgs.m_bStop)        vTrace("  --stop\n"_Stz);
-    if (m_xSysArgs.m_bTraceableComponents[TC_VERBOSE]) vTrace("  --verbose\n"_Stz);
+  if (m_xSysArgs.m_bAppendTrace) vTrace("  --appendTrace\n"_Stz);
+  if (m_xSysArgs.m_bCommand)     vTrace("  --command\n"_Stz);
+  if (m_xSysArgs.m_bHelp)        vTrace("  --help\n"_Stz);
+  if (m_xSysArgs.m_bProgress)    vTrace("  --progress\n"_Stz);
+  if (m_xSysArgs.m_bStart)       vTrace("  --start\n"_Stz);
+  if (m_xSysArgs.m_bStop)        vTrace("  --stop\n"_Stz);
+  if (m_xSysArgs.m_bTraceableComponents[TC_VERBOSE]) vTrace("  --verbose\n"_Stz);
 #endif
 
-    vTrace("  --name %s\n"_Stz, m_xSysArgs.m_sNodeName.azChar());
-    vTrace("  --region %s\n"_Stz, m_xSysArgs.m_sRegionName.azChar());
+  vTrace("  --name %s\n"_Stz, m_xSysArgs.m_sNodeName.azChar());
+  vTrace("  --region %s\n"_Stz, m_xSysArgs.m_sRegionName.azChar());
 
 #ifdef WITH_DEBUG_VERSION
-    vTrace("  --address %p\n"_Stz,m_xSysArgs.m_aRegionAddr);
+  vTrace("  --address %p\n"_Stz,m_xSysArgs.m_aRegionAddr);
 #endif
 
-    s32 sSizeMag;
-    MagLib::vByteMag(m_xSysArgs.m_iRegionSize, sSizeMag);
-    vTrace("  --size %s\n"_Stz, sSizeMag.azChar());
+  s32 sSizeMag;
+  MagLib::vByteMag(m_xSysArgs.m_iRegionSize, sSizeMag);
+  vTrace("  --size %s\n"_Stz, sSizeMag.azChar());
 
-    for (i8 i_Index = 0; i_Index < m_xSysArgs.m_nDefinedNodes; i_Index++) {
-      vTrace("  --node %s %s %lld %lld\n"_Stz,
-             m_xSysArgs.m_xNodeDefn[i_Index].m_sNodeName.azChar(),
-             m_xSysArgs.m_xNodeDefn[i_Index].m_sIPAddress.azChar(),
-             m_xSysArgs.m_xNodeDefn[i_Index].m_iPortNo,
-             m_xSysArgs.m_xNodeDefn[i_Index].m_iPortNoWL);
-    }
-
-    for (i8 i_Index = 0; i_Index < m_xSysArgs.m_nDefinedHeartbeats; i_Index++) {
-      vTrace("  --heartbeat %s %lld\n"_Stz,
-             m_xSysArgs.m_xHeartbeatDefn[i_Index].m_sIPAddress.azChar(),
-             m_xSysArgs.m_xHeartbeatDefn[i_Index].m_iPortNo);
-    }
-
-    vTrace("  --cid %lld\n"_Stz, m_xSysArgs.m_iClusterID);
-    vTrace("  --partitionsPerNode %lld\n"_Stz, m_xSysArgs.m_nPtnsPerNode);
-    vTrace("  --threads %lld\n"_Stz, m_xSysArgs.m_nThreads);
-
-    if (m_xSysArgs.m_nDummyThreads) {
-      vTrace("  --dummyThreads %lld\n"_Stz, m_xSysArgs.m_nDummyThreads);
-      vTrace("  --dummySleep %lld\n"_Stz, m_xSysArgs.m_nDummySleep);
-      vTrace("  --dummyLoop %lld\n"_Stz, m_xSysArgs.m_nDummyLoop);
-      vTrace("  --periodicSleep %lld\n"_Stz, m_xSysArgs.m_nPeriodicSleep);
-    }
-
-    if (m_xSysArgs.m_bMetadata) vTrace("  --metadata\n"_Stz);
-    if (m_xSysArgs.m_bKillPrev) vTrace("  --killPrev\n"_Stz);
-    if (m_xSysArgs.m_bMunged)   vTrace("  --munged\n"_Stz);
-
-#ifdef WITH_DEBUG_VERSION
-    vTrace("  --commands %s\n"_Stz,m_xSysArgs.m_sCommandsDir.azChar());
-    vTrace("  --sen %s\n"_Stz,m_xSysArgs.m_sSenDir.azChar());
-    if (m_xSysArgs.m_bMunged) vTrace("  --munged\n"_Stz);
-#endif
-
-    if (m_xSysArgs.m_bDeveloper) vTrace("  --developer\n"_Stz);
-
-    if (m_xSysArgs.m_bInitial) vTrace("  --initial %s\n"_Stz,m_xSysArgs.m_sInitial.szStz());
-
-    for (i8 i=TC_NONE; i<TC_ENUMS; i++) {
-      if (m_xSysArgs.m_bTraceableComponents[i]) {
-        vTrace("  --trace %s\n"_Stz, aTCDesc[i]);
-      }
-    }
-
-    BASE::vTraceWith();
+  for (i8 i_Index = 0; i_Index < m_xSysArgs.m_nDefinedNodes; i_Index++) {
+    vTrace("  --node %s %s %lld %lld\n"_Stz,
+           m_xSysArgs.m_xNodeDefn[i_Index].m_sNodeName.azChar(),
+           m_xSysArgs.m_xNodeDefn[i_Index].m_sIPAddress.azChar(),
+           m_xSysArgs.m_xNodeDefn[i_Index].m_iPortNo,
+           m_xSysArgs.m_xNodeDefn[i_Index].m_iPortNoWL);
   }
+
+  for (i8 i_Index = 0; i_Index < m_xSysArgs.m_nDefinedHeartbeats; i_Index++) {
+    vTrace("  --heartbeat %s %lld\n"_Stz,
+           m_xSysArgs.m_xHeartbeatDefn[i_Index].m_sIPAddress.azChar(),
+           m_xSysArgs.m_xHeartbeatDefn[i_Index].m_iPortNo);
+  }
+
+  vTrace("  --cid %lld\n"_Stz, m_xSysArgs.m_iClusterID);
+  vTrace("  --partitionsPerNode %lld\n"_Stz, m_xSysArgs.m_nPtnsPerNode);
+  vTrace("  --threads %lld\n"_Stz, m_xSysArgs.m_nThreads);
+
+  if (m_xSysArgs.m_nDummyThreads) {
+    vTrace("  --dummyThreads %lld\n"_Stz, m_xSysArgs.m_nDummyThreads);
+    vTrace("  --dummySleep %lld\n"_Stz, m_xSysArgs.m_nDummySleep);
+    vTrace("  --dummyLoop %lld\n"_Stz, m_xSysArgs.m_nDummyLoop);
+    vTrace("  --periodicSleep %lld\n"_Stz, m_xSysArgs.m_nPeriodicSleep);
+  }
+
+  if (m_xSysArgs.m_bMetadata) vTrace("  --metadata\n"_Stz);
+  if (m_xSysArgs.m_bKillPrev) vTrace("  --killPrev\n"_Stz);
+  if (m_xSysArgs.m_bMunged)   vTrace("  --munged\n"_Stz);
+
+#ifdef WITH_DEBUG_VERSION
+  vTrace("  --commands %s\n"_Stz,m_xSysArgs.m_sCommandsDir.azChar());
+  vTrace("  --sen %s\n"_Stz,m_xSysArgs.m_sSenDir.azChar());
+  if (m_xSysArgs.m_bMunged) vTrace("  --munged\n"_Stz);
+#endif
+
+  if (m_xSysArgs.m_bDeveloper) vTrace("  --developer\n"_Stz);
+
+  if (m_xSysArgs.m_bInitial) vTrace("  --initial %s\n"_Stz,m_xSysArgs.m_sInitial.szStz());
+
+  for (i8 i=TC_NONE; i<TC_ENUMS; i++) {
+    if (m_xSysArgs.m_bTraceableComponents[i]) {
+      vTrace("  --trace %s\n"_Stz, aTCDesc[i]);
+    }
+  }
+
+  BASE::vTraceWith();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1508,24 +1506,6 @@ void CmdLineArgs::vScribble(void)
   MemLib::vSet(aDst,0xFF,nBytes,CN_CMDLINEARGS);
 }
 
-/*----------------------------------------------------------------------------*/
-/* is this a simple user prompt                                               */
-/*----------------------------------------------------------------------------*/
-bool CmdLineArgs::bUserPrompt(void)
-{
-  _precondition_(_MAGIC_,CN_CMDLINEARGS,_FOOTER_);
-
-  if (m_xSysArgs.m_bDeveloper)
-    return false;
-  
-  if (m_xSysArgs.m_bStart)
-    return false;
-
-  if (m_xSysArgs.m_bStop)
-    return false;
-  
-  return true;
-}
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/

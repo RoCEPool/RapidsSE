@@ -108,9 +108,7 @@ pthread_key_t giTLS_ThreadStackAddr  = C_UNKNOWN;
 /*----------------------------------------------------------------------------*/
 void Engine::vMainEntry(void)
 {
-  if (!gxCmdLineArgs.bUserPrompt()) {
-    vHeartInit();
-  }
+  vHeartInit();
 
   if (gxCmdLineArgs.m_xSysArgs.m_iDelay > 0) {
     vTrace("Delayed %lld seconds\n"_Stz, gxCmdLineArgs.m_xSysArgs.m_iDelay);
