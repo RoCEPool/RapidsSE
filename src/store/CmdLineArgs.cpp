@@ -496,6 +496,7 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--initial"_Stz)) {
+      NEVER_REACH
       m_xSysArgs.m_bInitial = true;
       m_xSysArgs.m_sInitial = (Stz*)argv[++i_Arg];
       continue;
