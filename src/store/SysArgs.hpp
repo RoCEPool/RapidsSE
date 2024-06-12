@@ -81,14 +81,12 @@ namespace STORE
     i8   m_nDummySleep;      // sleep period for dummy threads
     i8   m_nDummyLoop;       // loop count for dummy threads
     i8   m_nEntries;         // no of entries per buffer
-    bool m_bEvents;          // log events
     bool m_bFreeSpecific;    // but free CrwBuffers back to heap
     bool m_bGridTest;        // running a single machine multi-node test
     bool m_bHugePages;       // to use huge pages
     i8   m_nIndexEntries;    // no of entries per buffer
     s256 m_sInitial;         // initial to run
     bool m_bJobMetrics;      // collect job metrics
-    bool m_bJot;             // jotting
     bool m_bKillPrev;        // kill previous se's (temporary)
     bool m_bLockTracking;    // lock shared memory pages in memory
     i8   m_nLvlLevels;       // maximum number of levels
