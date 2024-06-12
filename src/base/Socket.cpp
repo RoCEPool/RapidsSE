@@ -376,6 +376,11 @@ bool Socket::bSendObject(Object* pObject, SysCall& roSysCall, eSY eSendWhy)
 {
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
 
+  // All objects being serialised should have a post receive function, even if empty.
+  // This is to force us to understand if there are any member objects that need to
+  // be handled.
+  fpPOSTFN* fpPostRecvFn = gxaSizeHeap[pObject->eGetClassNo()].m_fpPostRecvFn;
+  RASSERT(fpPostRecvFn);
 
   roSysCall.vClear();
   

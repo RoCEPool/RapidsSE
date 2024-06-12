@@ -51,11 +51,12 @@ namespace BASE
     void* operator new(size_t);
     void  operator delete(void*);
 
-Pds(StreamDef* pStreamDef, eBT eBufferType = BT_DATA);  // When Pds is used to store rows
+    Pds(StreamDef* pStreamDef, eBT eBufferType = BT_DATA);  // When Pds is used to store rows
     Pds(i8 nBytes, CompareFunc fpCompare, bool bAddToHashMap=true);                   // When Pds is used to track BufferIds
     ~Pds(void) noexcept(false);
 
     static void* aGetCellArray(Pds* pPdsRowBuffer, i8 iRow);
+    static void vPostRecv(void* pvPds);
     static void vRepair(Object* pObject);
     static Pds* pToPds(void* aAddr);
 

@@ -1289,6 +1289,7 @@ void Engine::vPostRecvFns(void)
   gxaSizeHeap[CN_JOB].m_fpPostRecvFn       = (fpPOSTFN*)Job::vPostRecv;
   gxaSizeHeap[CN_MARKER].m_fpPostRecvFn    = (fpPOSTFN*)Marker::vPostRecv;
   gxaSizeHeap[CN_PARCEL].m_fpPostRecvFn    = (fpPOSTFN*)Parcel::vPostRecv;
+  gxaSizeHeap[CN_PDS].m_fpPostRecvFn       = (fpPOSTFN*)Pds::vPostRecv;
   gxaSizeHeap[CN_PROFILE].m_fpPostRecvFn   = (fpPOSTFN*)Profile::vPostRecv;
   gxaSizeHeap[CN_REJECTJOB].m_fpPostRecvFn = (fpPOSTFN*)RejectJob::vPostRecv;
   gxaSizeHeap[CN_STREAMDEF].m_fpPostRecvFn = (fpPOSTFN*)StreamDef::vPostRecv;

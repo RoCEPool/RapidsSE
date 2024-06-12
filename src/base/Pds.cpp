@@ -1180,6 +1180,18 @@ Row* Pds::pNextRow(Row* pCurr)
 }
 
 /*----------------------------------------------------------------------------*/
+/* post recv function called after being received over a socket               */
+/*----------------------------------------------------------------------------*/
+void Pds::vPostRecv(void* pvPds)
+{
+  _static_
+  UNUSED(pvPds);
+
+  // TODO: fix up any dangling pointers here, or note whether things do
+  //  or do not need to be done
+}
+
+/*----------------------------------------------------------------------------*/
 /* print rows                                                                 */
 /*----------------------------------------------------------------------------*/
 void Pds::vPrintRows(StreamDef* pStreamDef, File* pFilePtr, Stz* szLabel)
