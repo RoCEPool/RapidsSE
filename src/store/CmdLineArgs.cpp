@@ -122,7 +122,6 @@ void CmdLineArgs::vInit(void)
 
   // options
   m_xSysArgs.m_iClusterID       = 0;
-  m_xSysArgs.m_bCombined        = false;
   m_xSysArgs.m_bConfig          = true;
   m_xSysArgs.m_iCondCode        = 0;
   m_xSysArgs.m_bDebugIndex      = false;
@@ -149,7 +148,6 @@ void CmdLineArgs::vInit(void)
   m_xSysArgs.m_bLockTracking    = false;
   m_xSysArgs.m_nLvlLevels       = C_DEF_LVL_LEVELS;
   m_xSysArgs.m_iLvlRatio        = C_DEF_LVL_RATIO;
-  m_xSysArgs.m_bNoMunge         = false;
   m_xSysArgs.m_nMaxLoadErrors   = 0;
   m_xSysArgs.m_nMaxReadyLP      = 32;
   m_xSysArgs.m_bMetadata        = false;
@@ -662,12 +660,6 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (szArg->bSame("--NoMunge"_Stz)) {
-      m_xSysArgs.m_bNoMunge = true;
-      continue;
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--noprogress"_Stz)) {
       m_xSysArgs.m_bProgress = false;
       continue;
@@ -1029,12 +1021,6 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--welcome"_Stz)) {
       m_xSysArgs.m_bWelcome = true;
-      continue;
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (szArg->bSame("--combined"_Stz)) {
-      m_xSysArgs.m_bCombined = true;
       continue;
     }
 
