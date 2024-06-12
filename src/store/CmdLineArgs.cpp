@@ -120,7 +120,6 @@ void CmdLineArgs::vInit(void)
 
   // options
   m_xSysArgs.m_iClusterID       = 0;
-  m_xSysArgs.m_bCombined        = false;
   m_xSysArgs.m_bConfig          = true;
   m_xSysArgs.m_iCondCode        = 0;
   m_xSysArgs.m_bDebugIndex      = false;
@@ -141,12 +140,10 @@ void CmdLineArgs::vInit(void)
   m_xSysArgs.m_bHugePages       = false;
   m_xSysArgs.m_nIndexEntries    = 0;
   m_xSysArgs.m_bJobMetrics      = false;
-  m_xSysArgs.m_bJot             = false;
   m_xSysArgs.m_bKillPrev        = false;
   m_xSysArgs.m_bLockTracking    = false;
   m_xSysArgs.m_nLvlLevels       = C_DEF_LVL_LEVELS;
   m_xSysArgs.m_iLvlRatio        = C_DEF_LVL_RATIO;
-  m_xSysArgs.m_bNoMunge         = false;
   m_xSysArgs.m_nMaxLoadErrors   = 0;
   m_xSysArgs.m_nMaxReadyLP      = 32;
   m_xSysArgs.m_bMetadata        = false;
@@ -156,7 +153,6 @@ void CmdLineArgs::vInit(void)
   m_xSysArgs.m_iOptimiserLvl    = 0;
   m_xSysArgs.m_nPeriodicSleep   = 10;
   m_xSysArgs.m_bProgress        = false;
-  m_xSysArgs.m_iPromptDebug     = 0;
   m_xSysArgs.m_bReload          = false;
   m_xSysArgs.m_bRestart         = true;
   m_xSysArgs.m_bRLUDiary        = false;
@@ -643,12 +639,6 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (szArg->bSame("--NoMunge"_Stz)) {
-      m_xSysArgs.m_bNoMunge = true;
-      continue;
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--noprogress"_Stz)) {
       m_xSysArgs.m_bProgress = false;
       continue;
@@ -727,12 +717,6 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--progress"_Stz)) {
       m_xSysArgs.m_bProgress = true;
-      continue;
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (szArg->bSame("--promptDebug"_Stz)) {
-      m_xSysArgs.m_iPromptDebug = argv[++i_Arg].iToI8();
       continue;
     }
 
@@ -1010,12 +994,6 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--welcome"_Stz)) {
       m_xSysArgs.m_bWelcome = true;
-      continue;
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (szArg->bSame("--combined"_Stz)) {
-      m_xSysArgs.m_bCombined = true;
       continue;
     }
 

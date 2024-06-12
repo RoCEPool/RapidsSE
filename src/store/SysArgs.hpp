@@ -64,7 +64,6 @@ namespace STORE
 
     // options
     bool m_bAppendTrace;     // append to trace file
-    bool m_bCombined;        // to generate flattened files in combined folder
     s256 m_sCommand;         // command to run
     i8   m_iCondCode;        // conditional compilation cond value
     bool m_bConfig;          // print configuration information
@@ -86,13 +85,11 @@ namespace STORE
     bool m_bHugePages;       // to use huge pages
     i8   m_nIndexEntries;    // no of entries per buffer
     bool m_bJobMetrics;      // collect job metrics
-    bool m_bJot;             // jotting
     bool m_bKillPrev;        // kill previous se's (temporary)
     bool m_bLockTracking;    // lock shared memory pages in memory
     i8   m_nLvlLevels;       // maximum number of levels
     i8   m_iLvlRatio;        // level ratio
     i8   m_nMetricsSleep;    // sleep period (ms) for metrics collection
-    bool m_bNoMunge;         // prompt not to munge
     i8   m_nMaxLoadErrors;   // maximum load errors
     i8   m_nMaxReadyLP;      // maximum ready lp queue
     bool m_bMetadata;        // print metadata information
@@ -102,7 +99,6 @@ namespace STORE
     i8   m_iOptimiserLvl;    // optimisation level
     i8   m_nPeriodicSleep;   // sleep period for periodic job
     bool m_bProgress;        // print initialisation progress
-    i8   m_iPromptDebug;     // prompt debug mode
     bool m_bReload;          // relaod from checkpoint files
     bool m_bRestart;         // restart if system already started
     bool m_bRLUDiary;        // RLU diary
