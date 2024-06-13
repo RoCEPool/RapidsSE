@@ -55,7 +55,11 @@ pipeline Query9
     | project "type INTEGER ( 19 ) as S_NATIONKEY S_NATIONKEY ,
                type INTEGER ( 19 ) as O_YEAR O_ORDERDATE extract_year ,
                type DECIMAL ( 19  2 ) as AMOUNT AMOUNT"
-    | indexJoin NATION IxN_NATIONKEY "bound $I1 S_NATIONKEY =="
+   | combined 0
+   | next
+
+   stage S05a on all partitions:
+    indexJoin NATION IxN_NATIONKEY "bound $I1 S_NATIONKEY =="
     | project "type VARCHAR ( 0 ) as NATION N_NAME ,
                type INTEGER ( 19 ) as O_YEAR O_YEAR ,
                type DECIMAL ( 19  2 ) as AMOUNT AMOUNT"

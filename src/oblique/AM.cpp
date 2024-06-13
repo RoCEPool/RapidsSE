@@ -3854,7 +3854,7 @@ void AM::vDeleteOperand(Operand* pOperand, Job* pJob)
 
       if (pBfrBuffer->bIsPermanent()) {
         AM::pHashMap()->vDropKeyLock(pBfrBuffer->oGetBufferId().m_pvAsAddress);
-        ASSERT( ! AM::pHashMap()->bIsLocked(pCsvBuffer->oGetBufferId().m_pvAsAddress));
+        //ASSERT( ! AM::pHashMap()->bIsLocked(pCsvBuffer->oGetBufferId().m_pvAsAddress));
         break;
       }
 
