@@ -109,6 +109,8 @@ pipeline Query9
   end ;
 
 metricsCtl disable;
+sleep 10;
+sysReport;
 
 /*============================================================================*/
 /* end                                                                        */
