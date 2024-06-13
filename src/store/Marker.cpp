@@ -10,6 +10,9 @@
 #include "eCF.h"
 #include "Job.hpp"
 #include "AM.hpp"
+#include "Socket.hpp"
+
+extern SizeHeap  gxaSizeHeap[];
 
 ClassFn __Marker_fn (CN_MARKER,CF_INSPECT,(fpCLASSFN*)Marker::bInspect,-1);
 
@@ -100,6 +103,38 @@ Marker::~Marker(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_);
 //  vTrace("delete Marker(%s) %p @%lld\n"_Stz,
 //         aOM[m_eOpMarker],this,m_xFooter.iWhenAllocated());
+}
+
+/*----------------------------------------------------------------------------*/
+/* Custom receive and deserialisation from a socket                           */
+/*----------------------------------------------------------------------------*/
+bool Marker::bObjRecv(Socket* pSocket, Object* pObjBase, SysCall& roSysCall,
+                         Object** ppObject, void* pvAuxBuf, i8 iAuxSize) {
+  _static_
+  ASSERT(pSocket);
+  ASSERT(pObjBase);
+  ASSERT(ppObject);
+  ASSERT(pvAuxBuf);
+  ASSERT(iAuxSize > 0);
+
+  UNUSED(iAuxSize);
+  ASSERT(iAuxSize >= (i8) sizeof(Marker));
+
+  // copy the object header into the LowBuffer
+  MemLib::vCopy(pvAuxBuf,pObjBase,sizeof(Object),CN_MARKER);
+
+  // receive body into the LowBuffer
+  i8 nRemainingBytes = gxaSizeHeap[CN_MARKER].m_nClassSize - sizeof(Object);
+  void* aLowBody = aAdd<void*>(pvAuxBuf,sizeof(Object));
+  bool bResult = pSocket->bBytesRecv(aLowBody,nRemainingBytes,roSysCall);
+  RASSERT(bResult);
+
+  // new a marker using info from received marker
+  Marker* pReceivedMarker = (Marker*)pvAuxBuf;
+  Marker* pMarker = AM::MARKER::pNewMarker(pReceivedMarker->eOpMarker(), nullptr);
+  (*ppObject) = pMarker;
+
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/

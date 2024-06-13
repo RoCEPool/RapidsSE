@@ -34,7 +34,9 @@ namespace STORE
    ~Marker(void) noexcept(false);
     
     static bool bInspect(Object* pObject);
-  
+
+    static bool bObjRecv(Socket* pSocket, Object* pObjBase, SysCall& roSysCall,
+                         Object** ppObject, void* pvAuxBuf, i8 iAuxSize);
     static void vPostRecv(void* aMarker);
 
     bool bDeletable(void);

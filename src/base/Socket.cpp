@@ -190,15 +190,6 @@ Object* Socket::pRecvObject(void)
   
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // markers are special case
-
-  if (CN_MARKER == eClass) {
-    Marker* pMarker = pMarkerRecv();
-    vSuccess(true);
-    return pMarker;
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // HACK : To simulate lowMemory
   //  if (eClass == CN_JOB) {
   //    nPipeline++;
@@ -545,35 +536,6 @@ void Socket::vJobRecv_lowmem(Job* pJob) {
     // send a rejectJob to originating node
     AM::JOB::vSendReject(m_pRejectJob);
   }
-}
-
-/*----------------------------------------------------------------------------*/
-/* complete the recv of next marker from this socket                          */
-/*----------------------------------------------------------------------------*/
-Marker* Socket::pMarkerRecv(void)
-{
-  _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
-  
-  
-  SysCall oSysCall;
-
-  // copy the object header into the LowBuffer
-  MemLib::vCopy(m_aLowBuff,m_pObject,sizeof(Object),CN_SOCKET);
-
-  // receive body into the LowBuffer
-  i8 nRemainingBytes = gxaSizeHeap[CN_MARKER].m_nClassSize - sizeof(Object);
-  void* aLowBody = aAdd<void*>(m_aLowBuff,sizeof(Object));
-  bool bResult = bBytesRecv(aLowBody,nRemainingBytes,oSysCall);
-  UNUSED(bResult);
-
-  // new a marker using info from received marker
-  Marker* pReceivedMarker = (Marker*)m_aLowBuff;
-  Marker* pMarker = AM::MARKER::pNewMarker(pReceivedMarker->eOpMarker(),
-                                           nullptr);
-
-  m_pTotup->vAdd(CN_MARKER,sizeof(CN_MARKER));
-  
-  return pMarker;
 }
 
 /*----------------------------------------------------------------------------*/

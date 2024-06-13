@@ -46,7 +46,7 @@ namespace BASE
     static void vRepair(Object* pObject);
 
     void    vJobRecv_lowmem(Job* pJob);
-    
+
     Object* pReceivedObject(void);
     void    vReceivedObject(Object* pReceivedObject);
     Object* pRecvObject(void);
@@ -62,7 +62,6 @@ namespace BASE
 
     bool    bHeaderRecv(void);
     bool    bWLHeaderRecv(void);
-    Marker* pMarkerRecv(void);
     Object* pObjectRecv(eCN eClass);
     Object* pObjectRecv_lowmem(eCN eClass);
     Object* pWLMsgRecv();

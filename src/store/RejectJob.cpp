@@ -55,8 +55,8 @@ RejectJob::~RejectJob(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* Custom receive and deserialisation from a socket                           */
 /*----------------------------------------------------------------------------*/
-bool Job::bObjRecv(Socket* pSocket, Object* pObjBase, SysCall& roSysCall,
-                   Object** ppObject, void* pvAuxBuf, i8 iAuxSize)
+bool RejectJob::bObjRecv(Socket* pSocket, Object* pObjBase, SysCall& roSysCall,
+                         Object** ppObject, void* pvAuxBuf, i8 iAuxSize)
 {
   _static_
   ASSERT(pSocket);
@@ -65,7 +65,6 @@ bool Job::bObjRecv(Socket* pSocket, Object* pObjBase, SysCall& roSysCall,
   ASSERT(pvAuxBuf);
   ASSERT(iAuxSize > 0);
 
-  UNUSED(pvAuxBuf);
   UNUSED(iAuxSize);
 
   // Allocate and receive the rest of the object
@@ -81,9 +80,7 @@ bool Job::bObjRecv(Socket* pSocket, Object* pObjBase, SysCall& roSysCall,
   void* pRemaining = aAdd<void*>(pRejectJob,sizeof(Object));
   i8 nRemainingBytes = gxaSizeHeap[eClass].m_nClassSize - sizeof(Object);
 
-  SysCall oSysCall;
-
-  bool bResult = pSocket->bBytesRecv(pRemaining,nRemainingBytes,oSysCall);
+  bool bResult = pSocket->bBytesRecv(pRemaining,nRemainingBytes,roSysCall);
   UNUSED(bResult);
 
   vTrace("Recvd RejectJob\n"_Stz);

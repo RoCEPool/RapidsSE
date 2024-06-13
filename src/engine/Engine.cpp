@@ -1121,6 +1121,7 @@ void Engine::vNoMemoryLogging(void)
 void Engine::vObjRecvFns(void)
 {
   gxaSizeHeap[CN_JOB].m_fpObjRecvFn       = (fpRECVFN *)       Job::bObjRecv;
+  gxaSizeHeap[CN_MARKER].m_fpObjRecvFn    = (fpRECVFN *)    Marker::bObjRecv;
   gxaSizeHeap[CN_REJECTJOB].m_fpObjRecvFn = (fpRECVFN *) RejectJob::bObjRecv;
 }
 
