@@ -174,3 +174,11 @@ begin
 
 end ;
 */
+
+select count(*)
+           from Part, LineItem, PartSupp
+
+          where     ps_suppkey  = l_suppkey
+                and ps_partkey  = l_partkey
+                and p_partkey   = l_partkey
+                and p_name      like '%green%' ;

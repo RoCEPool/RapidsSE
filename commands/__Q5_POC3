@@ -44,22 +44,12 @@ begin
     | project "type DECIMAL ( 19  2 ) as L_EXTENDEDPRICE L_EXTENDEDPRICE ,
                type DECIMAL ( 19  2 ) as L_DISCOUNT L_DISCOUNT ,
                type INTEGER ( 19 ) as S_NATIONKEY S_NATIONKEY"
-    | hash "type INTEGER ( 19 ) S_NATIONKEY"
-    | combined 0
-    | next hashcast
-
-  stage S04 on all partitions :
-    indexJoin Nation IxN_NATIONKEY expr "bound $I1 S_NATIONKEY =="
+    | indexJoin Nation IxN_NATIONKEY expr "bound $I1 S_NATIONKEY =="
     | project "type DECIMAL ( 19  2 ) as L_EXTENDEDPRICE L_EXTENDEDPRICE ,
                type DECIMAL ( 19  2 ) as L_DISCOUNT L_DISCOUNT ,
                type VARCHAR ( 0 ) as N_NAME N_NAME ,
                type INTEGER ( 19 ) as N_REGIONKEY N_REGIONKEY"
-    | hash "type INTEGER ( 19 ) N_REGIONKEY"
-    | combined 0
-    | next hashcast
-
-  stage S05 on all partitions :
-    indexJoin Region IxR_REGIONKEY expr "bound $I1 N_REGIONKEY =="
+    | indexJoin Region IxR_REGIONKEY expr "bound $I1 N_REGIONKEY =="
     | project "type DECIMAL ( 19  2 ) as L_EXTENDEDPRICE L_EXTENDEDPRICE ,
                    type DECIMAL ( 19  2 ) as L_DISCOUNT L_DISCOUNT ,
                    type VARCHAR ( 0 ) as N_NAME N_NAME ,
