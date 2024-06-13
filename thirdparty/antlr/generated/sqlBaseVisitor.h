@@ -1,5 +1,5 @@
 
-// Generated from /Users/craig/repos/rapidsse/thirdparty/antlr/sql.g4 by ANTLR 4.13.1
+// Generated from /Users/alka/rapidsse/thirdparty/antlr/sql.g4 by ANTLR 4.13.1
 
 #pragma once
 
@@ -322,6 +322,10 @@ public:
   }
 
   virtual std::any visitStatusCmd(sqlParser::StatusCmdContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitSysReportCmd(sqlParser::SysReportCmdContext *ctx) override {
     return visitChildren(ctx);
   }
 

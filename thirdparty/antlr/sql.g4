@@ -40,6 +40,7 @@ statementChoice   :
                     | sleepCmd
                     | spaceCmd
                     | statusCmd
+                    | sysReportCmd
                     | szidxCmd
                     | sztblCmd
                     | tableSizesCmd
@@ -283,6 +284,7 @@ sleepUnits        : seconds=( S_ONLY | SEC | SECOND | SECONDS) |
                     millis=(MS | MILLIS | MILLISECOND | MILLISECONDS);
 spaceCmd          : SPACE ;
 statusCmd         : STATUS ;
+sysReportCmd      : SYSREPORT ;
 szidxCmd          : SZIDX tableName indexName ;
 sztblCmd          : SZTBL tableName ;
 
@@ -633,7 +635,7 @@ nonReservedWord   :
                   | QUARTER| QUARTERS
                   | RECORD_ENDS | RECORD_TERMINATOR | REFERENCE | REGIONS | REPLICATED | ROWSIZE
                   | S_ONLY | SCHEMA | SEC | SECONDS | SKIPLIST | SLEEP | SPACE | STAGE | STATS
-                  | STATISTICS | STATUS | SUBSTR | SZIDX | SZTBL
+                  | STATISTICS | STATUS | SUBSTR | SYSREPORT | SZIDX | SZTBL
                   | TABLESIZE | TEXT | THREADS | TOP | TRACE | TRACKMEMORY | TREE | TRUNCATE | TYPE | TYPEOF
                   | UNLOAD
                   | VALUE
@@ -836,6 +838,7 @@ STATUS                : S T A T U S;
 SUBSTR                : S U B S T R;
 SUBSTRING             : S U B S T R I N G;
 SUM                   : S U M;
+SYSREPORT             : S Y S R E P O R T;
 SZIDX                 : S Z I D X;
 SZTBL                 : S Z T B L;
 S_ONLY                : S;

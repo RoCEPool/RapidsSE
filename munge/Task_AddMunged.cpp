@@ -36508,7 +36508,7 @@ void Task::vAddMunged(Task* )
   gszaMungedText[364] =
     "\" munged OP_jobExit.sen \" .verbose \n"
     "/*============================================================================*/\n"
-    "/* OP_jobExit.sen -- Operator job report                                */\n"
+    "/* OP_jobExit.sen -- Operator job report                                      */\n"
     "/*============================================================================*/\n"
     "\n"
     "\" OP_jobExit.sen\" .verbose\n"

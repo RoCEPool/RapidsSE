@@ -2,6 +2,9 @@
 /* __Q9_POC3_P_OPT2                                                           */
 /*============================================================================*/
 
+metricsCtl enable;
+
+/jobMetrics
 /optimise_passthru
 pipeline Query9
   begin
@@ -104,6 +107,8 @@ pipeline Query9
     | sink
     | first
   end ;
+
+metricsCtl disable;
 
 /*============================================================================*/
 /* end                                                                        */

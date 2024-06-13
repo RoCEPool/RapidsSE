@@ -400,6 +400,7 @@ antlrcpp::Any CommandParser::visitStatementChoice(Parser::sqlParser::StatementCh
   else if (pCtx->sleepCmd())          { m_szProcName = "sleepCmd"_Stz;       return visitChildren(pCtx); }
   else if (pCtx->spaceCmd())          { m_szProcName = "space"_Stz;          return nullptr; }
   else if (pCtx->statusCmd())         { m_szProcName = "status"_Stz;         return nullptr; }
+  else if (pCtx->sysReportCmd())      { m_szProcName = "sysReport"_Stz;      return nullptr; }
   else if (pCtx->szidxCmd())          { m_szProcName = "szidx"_Stz;          return visitChildren(pCtx); }
   else if (pCtx->sztblCmd())          { m_szProcName = "sztbl"_Stz;          return visitChildren(pCtx); }
   else if (pCtx->tableSizesCmd())     { m_szProcName = "tablesizes"_Stz;     return nullptr; }
