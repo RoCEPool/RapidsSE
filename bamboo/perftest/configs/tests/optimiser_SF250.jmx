@@ -4603,7 +4603,7 @@ pipeline Query9
     | next
 
   stage S08 on origin :
-    | sort &quot;type VARCHAR ( 0 ) as NATION NATION ASC ,
+    sort &quot;type VARCHAR ( 0 ) as NATION NATION ASC ,
             type INTEGER ( 19 ) as O_YEAR O_YEAR DESC&quot;
     | combined 0
     | next
