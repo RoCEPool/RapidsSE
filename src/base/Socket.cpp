@@ -251,7 +251,7 @@ Object* Socket::pRecvObject(void)
     try {
       pReceivedObject->vRunPostRecv();
     }
-    catch (LowMemory xLowMemory) {
+    catch (LowMemory& xLowMemory) {
 
       // received the object but was unable to execute postRecv
 
@@ -279,7 +279,7 @@ Object* Socket::pRecvObject(void)
     vSuccess(true);
     return pReceivedObject;
   }
-  catch (LowMemory xLowMemory) {
+  catch (LowMemory& xLowMemory) {
     // fall thru
   }
 
@@ -376,86 +376,39 @@ bool Socket::bSendObject(Object* pObject, SysCall& roSysCall, eSY eSendWhy)
 {
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
 
-  // All objects being serialised should have a post receive function, even if empty.
-  // This is to force us to understand if there are any member objects that need to
-  // be handled.
-  fpPOSTFN* fpPostRecvFn = gxaSizeHeap[pObject->eGetClassNo()].m_fpPostRecvFn;
-  RASSERT(fpPostRecvFn);
-
   roSysCall.vClear();
-  
+
   eCN eClass = pObject->eGetClassNo();
   i8 nBytes = gxaSizeHeap[eClass].m_nClassSize;
 
-  bool bResult = bBytesSend(pObject,nBytes,roSysCall);
+  // All objects being serialised should have a post receive function, even if empty.
+  // This is to force us to understand if there are any member objects that need to
+  // be handled.
+  fpPOSTFN* fpPostRecvFn = gxaSizeHeap[eClass].m_fpPostRecvFn;
+  RASSERT(fpPostRecvFn);
+
+  // The custom serialise and send function for a given class
+  fpSENDFN* fpObjSendFn = gxaSizeHeap[eClass].m_fpObjSendFn;
+
+  bool bResult;
+
+  // Most objects sent do not require any special serialisation, so we
+  // can simply send their raw bytes. Other objects are more complicated
+  // than that. So if an object defines an ObjSend function then we will call
+  // this and the object is responsible for its own serialisation and sending
+  // across the socket.
+  if (fpObjSendFn) {
+    // Custom serialise and send
+    bResult = fpObjSendFn(this, pObject, roSysCall);
+
+  } else {
+    // By default, just send the bytes of the object
+    bResult = bBytesSend(pObject,nBytes,roSysCall);
+  }
 
   if (bResult) {
     m_pTotup->vAdd(eClass,nBytes);
     m_pWhyTot->vAdd(eSendWhy,nBytes);
-  }
-
-  if (pObject->bIsClassNo(CN_JOB)) {
-    Job* pJob = _pJob(pObject);
-
-    if (pJob->bSendCmdText()) {
-      ExtendedText *pCmdText = pJob->pCmdText();
-      RASSERT(pCmdText);
-
-      pCmdText->vVerify();
-
-      eClass = pCmdText->eGetClassNo();
-      nBytes = gxaSizeHeap[eClass].m_nClassSize;
-      bResult = bBytesSend(pCmdText, nBytes, roSysCall);
-      RASSERT(bResult);
-
-      //RASSERT(1 == pCmdText->nTextBlocks());
-      i8 nBlocks = pCmdText->nTextBlocks();
-
-      for (i8 i_Block = 0; i_Block < nBlocks; i_Block++) {
-        ExtendedTextBuffer *pExtTextBuffer = pCmdText->pExtTextBuffer(i_Block);
-        RASSERT(pExtTextBuffer);
-        eClass = pExtTextBuffer->eGetClassNo();
-        nBytes = gxaSizeHeap[eClass].m_nClassSize;
-        bResult = bBytesSend(pExtTextBuffer, nBytes, roSysCall);
-        RASSERT(bResult);
-      }
-    }
-
-    if (pJob->bSendCodeBlock()) {
-      ExtendedText *pCodeBlock = pJob->pCodeBlock();
-      RASSERT(pCodeBlock);
-
-      pCodeBlock->vVerify();
-
-      eClass = pCodeBlock->eGetClassNo();
-      nBytes = gxaSizeHeap[eClass].m_nClassSize;
-      bResult = bBytesSend(pCodeBlock, nBytes, roSysCall);
-      RASSERT(bResult);
-
-      //RASSERT(1 == pCodeBlock->nTextBlocks());
-
-      i8 nBlocks = pCodeBlock->nTextBlocks();
-      if (nBlocks > 1)
-        vDebugPoint();
-
-      for (i8 i_Block = 0; i_Block < nBlocks; i_Block++) {
-        ExtendedTextBuffer *pExtTextBuffer = pCodeBlock->pExtTextBuffer(i_Block);
-        RASSERT(pExtTextBuffer);
-        eClass = pExtTextBuffer->eGetClassNo();
-        nBytes = gxaSizeHeap[eClass].m_nClassSize;
-        bResult = bBytesSend(pExtTextBuffer, nBytes, roSysCall);
-        RASSERT(bResult);
-      }
-
-//      if (nBlocks) {
-//        vTrace("~~Send CodeBlock\n"_Stz);
-//        pCodeBlock->vDump();
-//        vTrace("~~~~~~~~~~~\n"_Stz);
-//        vDebugPoint();
-//      }
-
-    }
-
   }
 
   return bResult;
@@ -650,32 +603,52 @@ Marker* Socket::pMarkerRecv(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* complete the recv of next marker from this socket                          */
+/* complete the recv of next object from this socket                          */
 /*----------------------------------------------------------------------------*/
 Object* Socket::pObjectRecv(eCN eClass)
 {
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
 
   Object *pReceivedObject = nullptr;
-
-
   SysCall oSysCall;
-
   i8 nSize = gxaSizeHeap[eClass].m_nClassSize;
 
-  //vTrace("class:%s\n"_Stz, aCN[eClass]);
-  pReceivedObject = Heaps::pAllocate(eClass, m_pObject->bGetPersistent());
-  MemLib::vCopy(pReceivedObject, m_pObject, sizeof(Object), eClass);
+  // The custom receive and deserialise function for a given class
+  fpRECVFN* fpObjRecvFn = gxaSizeHeap[eClass].m_fpObjRecvFn;
 
-  void *aBody = aAdd<void *>(pReceivedObject, sizeof(Object));
-  i8 nRemainingBytes = nSize - sizeof(Object);
+  // Most objects received do not require any special deserialisation (other than
+  // executing the PostRecv function to null any unneeded pointers). So we
+  // can simply receive their raw bytes. Other objects are more complicated
+  // than that. So if an object defines an ObjRecv function then we will call
+  // this and the object is responsible for its own receiving from the socket
+  // and deserialisation.
 
-  bool bResult = bBytesRecv(aBody, nRemainingBytes, oSysCall);
-  if (!bResult) {
-    vTrace("Socket::pRecvObject (body) : bRecvBytes returned false\n"_Stz);
-    vSuccess(false);
-    return nullptr;
+  if (fpObjRecvFn) {
+    // Custom receive and deserialise
+    if (!fpObjRecvFn(this, m_pObject, oSysCall, &pReceivedObject)) {
+      vTrace("Socket::fpObjRecvFn() for class %s returned false\n"_Stz, aCN[eClass]);
+      vSuccess(false);
+      return nullptr;
+    }
+
+  } else {
+    // By default, just receive the bytes of the object
+    pReceivedObject = Heaps::pAllocate(eClass, m_pObject->bGetPersistent());
+    MemLib::vCopy(pReceivedObject, m_pObject, sizeof(Object), eClass);
+
+    void *aBody = aAdd<void *>(pReceivedObject, sizeof(Object));
+    i8 nRemainingBytes = nSize - sizeof(Object);
+
+    bool bResult = bBytesRecv(aBody, nRemainingBytes, oSysCall);
+    if (!bResult) {
+      vTrace("Socket::pRecvObject (body) : bRecvBytes returned false\n"_Stz);
+      vSuccess(false);
+      return nullptr;
+    }
   }
+
+  m_pTotup->vAdd(eClass, nSize);
+
 
     if (DataBuffer::bIsDataBuffer(eClass)) {
       DataBuffer* pDataBuffer = _pDataBuffer(pReceivedObject);
@@ -715,79 +688,6 @@ Object* Socket::pObjectRecv(eCN eClass)
         ASSERT(0);
       }
     }
-
-  m_pTotup->vAdd(eClass, nSize);
-
-  if (pReceivedObject->bIsClassNo(CN_JOB)) {
-    Job *pJob = _pJob(pReceivedObject);
-    //pJob->vCmdText((ExtendedText*) nullptr);
-
-    // - - - - - - - - - - - - - - - - - - - - -
-    RASSERT(pJob->bRecvCmdText());
-
-    Object* aCmdText = Heaps::pAllocate(CN_EXTENDEDTEXT, false);
-    nSize = gxaSizeHeap[CN_EXTENDEDTEXT].m_nClassSize;
-    bResult = bBytesRecv(aCmdText, nSize, oSysCall);
-    RASSERT(bResult);
-    ExtendedText* pCmdText = _pExtendedText(aCmdText);
-
-    //RASSERT(1 == pCmdText->nTextBlocks());
-
-    i8 nBlocks = pCmdText->nTextBlocks();
-    for (i8 i_Block = 0; i_Block < nBlocks; i_Block++) {
-      Object *aCmdTextBuffer = Heaps::pAllocate(CN_EXTENDEDTEXTBUFFER, false);
-      nSize = gxaSizeHeap[CN_EXTENDEDTEXTBUFFER].m_nClassSize;
-      bResult = bBytesRecv(aCmdTextBuffer, nSize, oSysCall);
-      RASSERT(bResult);
-      ExtendedTextBuffer *pCmdTextBuffer = _pExtendedTextBuffer(aCmdTextBuffer);
-
-      pCmdText->vExtTextBuffer(i_Block, pCmdTextBuffer);
-    }
-    pCmdText->vVerify();
-    pJob->vCmdText(pCmdText);
-
-//    if (nBlocks > 1) {
-//      vTrace("~~Recv CmdText\n"_Stz);
-//      pCmdText->vDump();
-//      vTrace("~~~~~~~~~~~\n"_Stz);
-//      vDebugPoint();
-//    }
-
-    // - - - - - - - - - - - - - - - - - - - - -
-
-    if (pJob->bRecvCodeBlock()) {
-      Object* aCodeBlock = Heaps::pAllocate(CN_EXTENDEDTEXT, false);
-      nSize = gxaSizeHeap[CN_EXTENDEDTEXT].m_nClassSize;
-      bResult = bBytesRecv(aCodeBlock, nSize, oSysCall);
-      RASSERT(bResult);
-      ExtendedText* pCodeBlock = _pExtendedText(aCodeBlock);
-
-      //RASSERT(1 == pCodeBlock->nTextBlocks());
-
-      nBlocks = pCodeBlock->nTextBlocks();
-      for (i8 i_Block = 0; i_Block < nBlocks; i_Block++) {
-        Object *aCodeBlockBuffer = Heaps::pAllocate(CN_EXTENDEDTEXTBUFFER, false);
-        nSize = gxaSizeHeap[CN_EXTENDEDTEXTBUFFER].m_nClassSize;
-        bResult = bBytesRecv(aCodeBlockBuffer, nSize, oSysCall);
-        RASSERT(bResult);
-        ExtendedTextBuffer *pCodeBlockBuffer = _pExtendedTextBuffer(aCodeBlockBuffer);
-
-        pCodeBlock->vExtTextBuffer(i_Block, pCodeBlockBuffer);
-
-      }
-
-//      if (nBlocks) {
-//        vTrace("~~Recv CodeBlock\n"_Stz);
-//        pCodeBlock->vDump();
-//        vTrace("~~~~~~~~~~~\n"_Stz);
-//        vDebugPoint();
-//      }
-
-      pCodeBlock->vVerify();
-      pJob->vCodeBlock(pCodeBlock);
-    }
-
-  }
 
   return pReceivedObject;
 }

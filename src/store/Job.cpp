@@ -12,6 +12,8 @@
 #include "Node_I.hpp"
 #include "Grid.hpp"
 #include "Op.hpp"
+#include "Socket.hpp"
+#include "SysCall.hpp"
 
 #include "Job.hpp"
 #include "File.hpp"
@@ -32,6 +34,8 @@
 #include "SP_Pointer.hpp"
 
 extern pthread_key_t giTLS_CurrentPoint;
+extern SizeHeap gxaSizeHeap[];
+
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -345,6 +349,166 @@ void Job::vPrintJobNode(SkipNode* pNode, int i_Level)
          ,(i8)tJobId.uJobNo()
          ,pNode->m_pRight[i_Level]
          );
+}
+
+/*----------------------------------------------------------------------------*/
+/* Custom receive and deserialisation from a socket                           */
+/*----------------------------------------------------------------------------*/
+bool Job::bObjRecv(Socket* pSocket, Object* pObjBase, SysCall& roSysCall, Object** ppObject)
+{
+  _static_
+  ASSERT(pSocket);
+  ASSERT(pObjBase);
+  ASSERT(ppObject);
+
+  // Allocate and receive the rest of the object
+  eCN eClass = pObjBase->eGetClassNo();
+
+  Job* pJob = _pJob(Heaps::pAllocate(eClass, pObjBase->bGetPersistent()));
+  (*ppObject) = pJob;
+  MemLib::vCopy(pJob, pObjBase, sizeof(Object), eClass);
+
+  void *aBody = aAdd<void *>(pJob, sizeof(Object));
+  i8 nSize = gxaSizeHeap[eClass].m_nClassSize;
+  i8 nRemainingBytes = nSize - sizeof(Object);
+
+  bool bResult = pSocket->bBytesRecv(aBody, nRemainingBytes, roSysCall);
+  if (!bResult) {
+    return false;
+  }
+
+  // Now we handle the rest of the job deserialisation.
+  // Job can contain an extended text and code block. These would have
+  // been sent individually.
+
+  // Note: There is low memory handling for receiving objects (above)
+  // but we need to also handle the case of a low memory condition while
+  // allocating and reading the text/codeblock buffers below.
+
+  try {
+    ASSERT(pJob->bRecvCmdText());
+
+    Object * aCmdText = Heaps::pAllocate(CN_EXTENDEDTEXT, false);
+    nSize = gxaSizeHeap[CN_EXTENDEDTEXT].m_nClassSize;
+    bResult = pSocket->bBytesRecv(aCmdText, nSize, roSysCall);
+    RASSERT(bResult);
+    ExtendedText *pCmdText = _pExtendedText(aCmdText);
+
+    i8 nBlocks = pCmdText->nTextBlocks();
+    for (i8 i_Block = 0; i_Block < nBlocks; i_Block++) {
+      Object *aCmdTextBuffer = Heaps::pAllocate(CN_EXTENDEDTEXTBUFFER, false);
+      nSize = gxaSizeHeap[CN_EXTENDEDTEXTBUFFER].m_nClassSize;
+      bResult = pSocket->bBytesRecv(aCmdTextBuffer, nSize, roSysCall);
+      RASSERT(bResult);
+      ExtendedTextBuffer *pCmdTextBuffer = _pExtendedTextBuffer(aCmdTextBuffer);
+
+      pCmdText->vExtTextBuffer(i_Block, pCmdTextBuffer);
+    }
+    pCmdText->vVerify();
+    pJob->vCmdText(pCmdText);
+
+    // - - - - - - - - - - - - - - - - - - - - -
+
+    if (pJob->bRecvCodeBlock()) {
+      Object *aCodeBlock = Heaps::pAllocate(CN_EXTENDEDTEXT, false);
+      nSize = gxaSizeHeap[CN_EXTENDEDTEXT].m_nClassSize;
+      bResult = pSocket->bBytesRecv(aCodeBlock, nSize, roSysCall);
+      RASSERT(bResult);
+      ExtendedText *pCodeBlock = _pExtendedText(aCodeBlock);
+
+      //RASSERT(1 == pCodeBlock->nTextBlocks());
+
+      nBlocks = pCodeBlock->nTextBlocks();
+      for (i8 i_Block = 0; i_Block < nBlocks; i_Block++) {
+        Object *aCodeBlockBuffer = Heaps::pAllocate(CN_EXTENDEDTEXTBUFFER, false);
+        nSize = gxaSizeHeap[CN_EXTENDEDTEXTBUFFER].m_nClassSize;
+        bResult = pSocket->bBytesRecv(aCodeBlockBuffer, nSize, roSysCall);
+        RASSERT(bResult);
+        ExtendedTextBuffer *pCodeBlockBuffer = _pExtendedTextBuffer(aCodeBlockBuffer);
+
+        pCodeBlock->vExtTextBuffer(i_Block, pCodeBlockBuffer);
+      }
+
+      pCodeBlock->vVerify();
+      pJob->vCodeBlock(pCodeBlock);
+    }
+
+  } catch (LowMemory& xLowMemory) {
+    // execute the 2PC commands directly for job received/ send reject
+    pSocket->vJobRecv_lowmem(pJob);
+
+    // Delete the job. We will probably leak the extended texts partially allocated above.
+    delete pJob;
+
+    pSocket->vSuccess(true);
+    return true;
+  }
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Custom serialisation and send from a socket                                */
+/*----------------------------------------------------------------------------*/
+bool Job::bObjSend(Socket* pSocket, Object* pObject, SysCall& roSysCall)
+{
+  _static_
+
+  Job* pJob = _pJob(pObject);
+
+  bool bResult;
+  eCN eClass;
+  i8 nBytes;
+
+  if (pJob->bSendCmdText()) {
+    ExtendedText *pCmdText = pJob->pCmdText();
+    RASSERT(pCmdText);
+
+    pCmdText->vVerify();
+
+    eClass = pCmdText->eGetClassNo();
+    nBytes = gxaSizeHeap[eClass].m_nClassSize;
+    bResult = pSocket->bBytesSend(pCmdText, nBytes, roSysCall);
+    RASSERT(bResult);
+
+    i8 nBlocks = pCmdText->nTextBlocks();
+
+    for (i8 i_Block = 0; i_Block < nBlocks; i_Block++) {
+      ExtendedTextBuffer *pExtTextBuffer = pCmdText->pExtTextBuffer(i_Block);
+      RASSERT(pExtTextBuffer);
+      eClass = pExtTextBuffer->eGetClassNo();
+      nBytes = gxaSizeHeap[eClass].m_nClassSize;
+      bResult = pSocket->bBytesSend(pExtTextBuffer, nBytes, roSysCall);
+      RASSERT(bResult);
+    }
+  }
+
+  if (pJob->bSendCodeBlock()) {
+    ExtendedText *pCodeBlock = pJob->pCodeBlock();
+    RASSERT(pCodeBlock);
+
+    pCodeBlock->vVerify();
+
+    eClass = pCodeBlock->eGetClassNo();
+    nBytes = gxaSizeHeap[eClass].m_nClassSize;
+    bResult = pSocket->bBytesSend(pCodeBlock, nBytes, roSysCall);
+    RASSERT(bResult);
+
+    i8 nBlocks = pCodeBlock->nTextBlocks();
+    if (nBlocks > 1)
+      vDebugPoint();
+
+    for (i8 i_Block = 0; i_Block < nBlocks; i_Block++) {
+      ExtendedTextBuffer *pExtTextBuffer = pCodeBlock->pExtTextBuffer(i_Block);
+      RASSERT(pExtTextBuffer);
+      eClass = pExtTextBuffer->eGetClassNo();
+      nBytes = gxaSizeHeap[eClass].m_nClassSize;
+      bResult = pSocket->bBytesSend(pExtTextBuffer, nBytes, roSysCall);
+      RASSERT(bResult);
+    }
+  }
+
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/

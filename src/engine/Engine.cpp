@@ -1116,6 +1116,22 @@ void Engine::vNoMemoryLogging(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set object receive functions                                               */
+/*----------------------------------------------------------------------------*/
+void Engine::vObjRecvFns(void)
+{
+  gxaSizeHeap[CN_JOB].m_fpObjRecvFn = (fpRECVFN *) Job::bObjRecv;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set object send functions                                                  */
+/*----------------------------------------------------------------------------*/
+void Engine::vObjSendFns(void)
+{
+  gxaSizeHeap[CN_JOB].m_fpObjSendFn = (fpSENDFN *) Job::bObjSend;
+}
+
+/*----------------------------------------------------------------------------*/
 /* attach or create the shm region                                            */
 /*----------------------------------------------------------------------------*/
 void Engine::vOpenPool(void)
@@ -1902,7 +1918,9 @@ void Engine::vStartSystem(void)
   Step::vAddSteps();
 
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
-    vTrace("  Adding PostRecv Functions\n"_Stz);
+    vTrace("  Adding ObjRecv, ObjSend & PostRecv Functions\n"_Stz);
+  vObjRecvFns();
+  vObjSendFns();
   vPostRecvFns();
 
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT))

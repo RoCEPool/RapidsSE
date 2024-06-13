@@ -4,6 +4,8 @@
 #pragma once
 
 typedef void (fpPOSTFN)(void* aObject);
+typedef bool (fpSENDFN)(Socket* pSocket, Object* pObject, SysCall& roSysCall);
+typedef bool (fpRECVFN)(Socket* pSocket, Object* pObjBase, SysCall& roSysCall, Object** ppObject);
 
 struct SizeHeap
 {
@@ -26,6 +28,10 @@ struct SizeHeap
   fpPOSTFN* m_fpPostRecvFn; // 08 post receive cpp function
 
   Word* m_pPostRecvWord;    // 09 word to execute after receiving the object
+
+  fpSENDFN* m_fpObjSendFn;  // 10 object send cpp function
+
+  fpRECVFN* m_fpObjRecvFn;  // 11 object receive cpp function
 };
 
 /*============================================================================*/
