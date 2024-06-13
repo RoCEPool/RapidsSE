@@ -52,11 +52,6 @@ pipeline Query9
 
   stage S05 on all partitions  multiple threads 4:
     indexJoin ORDERS IxO_ORDERKEY "bound $I1 L_ORDERKEY =="
-    | project "type INTEGER ( 19 ) as L_ORDERKEY L_ORDERKEY ,
-               type INTEGER ( 19 ) as S_NATIONKEY S_NATIONKEY ,
-               type DATE as O_ORDERDATE O_ORDERDATE ,
-               type DECIMAL ( 19  2 ) as AMOUNT AMOUNT"
-    | filter "type BOOLEAN L_ORDERKEY L_ORDERKEY =="
     | project "type INTEGER ( 19 ) as S_NATIONKEY S_NATIONKEY ,
                type INTEGER ( 19 ) as O_YEAR O_ORDERDATE extract_year ,
                type DECIMAL ( 19  2 ) as AMOUNT AMOUNT"
