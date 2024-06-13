@@ -370,9 +370,11 @@ bool Job::bObjRecv(Socket* pSocket, Object* pObjBase, SysCall& roSysCall,
   // Allocate and receive the rest of the object
   eCN eClass = pObjBase->eGetClassNo();
 
-  Job* pJob = _pJob(Heaps::pAllocate(eClass, pObjBase->bGetPersistent()));
-  (*ppObject) = pJob;
-  MemLib::vCopy(pJob, pObjBase, sizeof(Object), eClass);
+  Object* pReceivedObject = Heaps::pAllocate(eClass, pObjBase->bGetPersistent());
+  (*ppObject) = pReceivedObject;
+  MemLib::vCopy(pReceivedObject, pObjBase, sizeof(Object), eClass);
+
+  Job* pJob = _pJob(pReceivedObject);
 
   void *aBody = aAdd<void *>(pJob, sizeof(Object));
   i8 nSize = gxaSizeHeap[eClass].m_nClassSize;
@@ -463,8 +465,15 @@ bool Job::bObjSend(Socket* pSocket, Object* pObject, SysCall& roSysCall)
   Job* pJob = _pJob(pObject);
 
   bool bResult;
-  eCN eClass;
-  i8 nBytes;
+  eCN eClass = pObject->eGetClassNo();
+  i8 nBytes = gxaSizeHeap[eClass].m_nClassSize;;
+
+  // Send itself first
+  bResult = pSocket->bBytesSend(pObject, nBytes, roSysCall);
+
+  if (!bResult) {
+    return bResult;
+  }
 
   if (pJob->bSendCmdText()) {
     ExtendedText *pCmdText = pJob->pCmdText();
