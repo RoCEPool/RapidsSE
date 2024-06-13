@@ -8,6 +8,9 @@
 
 #include "Job.hpp"
 #include "AM.hpp"
+#include "Socket.hpp"
+
+extern SizeHeap  gxaSizeHeap[];
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -47,6 +50,51 @@ RejectJob::~RejectJob(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+
+/*----------------------------------------------------------------------------*/
+/* Custom receive and deserialisation from a socket                           */
+/*----------------------------------------------------------------------------*/
+bool Job::bObjRecv(Socket* pSocket, Object* pObjBase, SysCall& roSysCall,
+                   Object** ppObject, void* pvAuxBuf, i8 iAuxSize)
+{
+  _static_
+  ASSERT(pSocket);
+  ASSERT(pObjBase);
+  ASSERT(ppObject);
+  ASSERT(pvAuxBuf);
+  ASSERT(iAuxSize > 0);
+
+  UNUSED(pvAuxBuf);
+  UNUSED(iAuxSize);
+
+  // Allocate and receive the rest of the object
+  eCN eClass = pObjBase->eGetClassNo();
+
+  (*ppObject) = nullptr;
+  RejectJob* pRejectJob = _pRejectJob(pvAuxBuf);
+
+  // copy the object header into the m_pRejectJob
+  MemLib::vCopy(pRejectJob,pObjBase,sizeof(Object),eClass);
+
+  // recv rest of the buffer into m_pRejectJob
+  void* pRemaining = aAdd<void*>(pRejectJob,sizeof(Object));
+  i8 nRemainingBytes = gxaSizeHeap[eClass].m_nClassSize - sizeof(Object);
+
+  SysCall oSysCall;
+
+  bool bResult = pSocket->bBytesRecv(pRemaining,nRemainingBytes,oSysCall);
+  UNUSED(bResult);
+
+  vTrace("Recvd RejectJob\n"_Stz);
+
+  // handle the received reject job
+  AM::JOB::vRecvdReject(pRejectJob);
+  pSocket->vSuccess(true);
+
+  return true;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* post recv function                                                         */

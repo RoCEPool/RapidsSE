@@ -5,7 +5,8 @@
 
 typedef void (fpPOSTFN)(void* aObject);
 typedef bool (fpSENDFN)(Socket* pSocket, Object* pObject, SysCall& roSysCall);
-typedef bool (fpRECVFN)(Socket* pSocket, Object* pObjBase, SysCall& roSysCall, Object** ppObject);
+typedef bool (fpRECVFN)(Socket* pSocket, Object* pObjBase, SysCall& roSysCall,
+                        Object** ppObject, void* pvAuxBuf, i8 iAuxSize);
 
 struct SizeHeap
 {

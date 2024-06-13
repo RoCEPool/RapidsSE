@@ -128,7 +128,8 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     static JobId tOriginId(Job* pJob);
     static void vPostRecv(void* aJob);
     static void vPrintJobNode(SkipNode* pNode, int i_Level);
-    static bool bObjRecv(Socket* pSocket, Object* pObjBase, SysCall& roSysCall, Object** ppObject);
+    static bool bObjRecv(Socket* pSocket, Object* pObjBase, SysCall& roSysCall,
+                         Object** ppObject, void* pvAuxBuf, i8 iAuxSize);
     static bool bObjSend(Socket* pSocket, Object* pObject,  SysCall& roSysCall);
 
     i8   nActiveOps(void);

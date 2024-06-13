@@ -354,12 +354,18 @@ void Job::vPrintJobNode(SkipNode* pNode, int i_Level)
 /*----------------------------------------------------------------------------*/
 /* Custom receive and deserialisation from a socket                           */
 /*----------------------------------------------------------------------------*/
-bool Job::bObjRecv(Socket* pSocket, Object* pObjBase, SysCall& roSysCall, Object** ppObject)
+bool Job::bObjRecv(Socket* pSocket, Object* pObjBase, SysCall& roSysCall,
+                   Object** ppObject, void* pvAuxBuf, i8 iAuxSize)
 {
   _static_
   ASSERT(pSocket);
   ASSERT(pObjBase);
   ASSERT(ppObject);
+  ASSERT(pvAuxBuf);
+  ASSERT(iAuxSize > 0);
+
+  UNUSED(pvAuxBuf);
+  UNUSED(iAuxSize);
 
   // Allocate and receive the rest of the object
   eCN eClass = pObjBase->eGetClassNo();

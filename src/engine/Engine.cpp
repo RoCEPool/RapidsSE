@@ -1120,7 +1120,8 @@ void Engine::vNoMemoryLogging(void)
 /*----------------------------------------------------------------------------*/
 void Engine::vObjRecvFns(void)
 {
-  gxaSizeHeap[CN_JOB].m_fpObjRecvFn = (fpRECVFN *) Job::bObjRecv;
+  gxaSizeHeap[CN_JOB].m_fpObjRecvFn       = (fpRECVFN *)       Job::bObjRecv;
+  gxaSizeHeap[CN_REJECTJOB].m_fpObjRecvFn = (fpRECVFN *) RejectJob::bObjRecv;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1128,6 +1129,7 @@ void Engine::vObjRecvFns(void)
 /*----------------------------------------------------------------------------*/
 void Engine::vObjSendFns(void)
 {
+  // Note: No RejectJob needed
   gxaSizeHeap[CN_JOB].m_fpObjSendFn = (fpSENDFN *) Job::bObjSend;
 }
 

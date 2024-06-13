@@ -199,32 +199,6 @@ Object* Socket::pRecvObject(void)
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // receive reject body into m_pRejectJob
-
-  if (eClass == CN_REJECTJOB) {
-
-    // copy the object header into the m_pRejectJob
-    MemLib::vCopy(m_pRejectJob,m_pObject,sizeof(Object),eClass);
-
-    // recv rest of the buffer into m_pRejectJob
-    void* pRejectJob = aAdd<void*>(m_pRejectJob,sizeof(Object));
-    i8 nRemainingBytes = gxaSizeHeap[eClass].m_nClassSize - sizeof(Object);
-
-    SysCall oSysCall;
-
-    bool bResult = bBytesRecv(pRejectJob,nRemainingBytes,oSysCall);
-    UNUSED(bResult);
-
-    vTrace("Recvd RejectJob\n"_Stz);
-
-    // handle the received reject job
-    AM::JOB::vRecvdReject(m_pRejectJob);
-//    nPipeline++;
-    vSuccess(true);
-    return nullptr;
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // HACK : To simulate lowMemory
   //  if (eClass == CN_JOB) {
   //    nPipeline++;
@@ -623,9 +597,20 @@ Object* Socket::pObjectRecv(eCN eClass)
   // this and the object is responsible for its own receiving from the socket
   // and deserialisation.
 
+  // Custom receive functions defined for Job, RejectJob
+  // Refer to Engine::vObjRecvFns()
+
   if (fpObjRecvFn) {
     // Custom receive and deserialise
-    if (!fpObjRecvFn(this, m_pObject, oSysCall, &pReceivedObject)) {
+    void* pvAuxBuf = m_aLowBuff;
+    i8 iAuxSize = C_SIZE_POOL_BUFFER;
+
+    if (eClass == CN_REJECTJOB) {
+      pvAuxBuf = m_pRejectJob;
+      iAuxSize = sizeof(RejectJob);
+    }
+
+    if (!fpObjRecvFn(this, m_pObject, oSysCall, &pReceivedObject, pvAuxBuf, iAuxSize)) {
       vTrace("Socket::fpObjRecvFn() for class %s returned false\n"_Stz, aCN[eClass]);
       vSuccess(false);
       return nullptr;
