@@ -1,0 +1,99 @@
+/*============================================================================*/
+/* __Q5_run                                                                   */
+/*============================================================================*/
+
+/optimise_passthru
+pipeline Query5
+begin
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
+
+  stage S01 on all partitions:
+    scan rapidsse public Orders
+    | project "type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY ,
+               type INTEGER ( 19 ) as O_CUSTKEY O_CUSTKEY ,
+               type DATE ( 0 ) as O_ORDERDATE O_ORDERDATE"
+    | filter " type BOOLEAN O_ORDERDATE DATE '1994-01-01'  >=
+                            O_ORDERDATE DATE '1995-01-01'  <  and  "
+    | indexJoin Customer IxC_CUSTKEY "BOUND $I1 O_CUSTKEY =="
+    | project "type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY ,
+               type INTEGER ( 19 ) as C_NATIONKEY C_NATIONKEY"
+    | hash "type INTEGER ( 19 ) O_ORDERKEY"
+    | combined 0
+    | next hashcast
+
+  stage S02 on all partitions multiple threads 4:
+    indexJoin Lineitem IxL_ORDERKEY "bound $I1 O_ORDERKEY =="
+    | project "type INTEGER ( 19 ) as C_NATIONKEY C_NATIONKEY ,
+                   type INTEGER ( 19 ) as L_SUPPKEY L_SUPPKEY ,
+                   type DECIMAL ( 19  2 ) as L_EXTENDEDPRICE L_EXTENDEDPRICE ,
+                   type DECIMAL ( 19  2 ) as L_DISCOUNT L_DISCOUNT"
+    | hash "type INTEGER ( 19 ) L_SUPPKEY"
+    | combined 0
+    | next hashcast
+
+  stage S03 on all partitions :
+    indexJoin Supplier IxS_SUPPKEY expr "bound $I1 L_SUPPKEY =="
+    | project "type INTEGER ( 19 ) as C_NATIONKEY C_NATIONKEY ,
+               type DECIMAL ( 19  2 ) as L_EXTENDEDPRICE L_EXTENDEDPRICE ,
+               type DECIMAL ( 19  2 ) as L_DISCOUNT L_DISCOUNT ,
+               type INTEGER ( 19 ) as S_NATIONKEY S_NATIONKEY"
+    | filter " type BOOLEAN C_NATIONKEY S_NATIONKEY == "
+    | project "type DECIMAL ( 19  2 ) as L_EXTENDEDPRICE L_EXTENDEDPRICE ,
+               type DECIMAL ( 19  2 ) as L_DISCOUNT L_DISCOUNT ,
+               type INTEGER ( 19 ) as S_NATIONKEY S_NATIONKEY"
+    | indexJoin Nation IxN_NATIONKEY expr "bound $I1 S_NATIONKEY =="
+    | project "type DECIMAL ( 19  2 ) as L_EXTENDEDPRICE L_EXTENDEDPRICE ,
+               type DECIMAL ( 19  2 ) as L_DISCOUNT L_DISCOUNT ,
+               type INTEGER ( 19 ) as N_REGIONKEY N_REGIONKEY ,
+               type INTEGER ( 19 ) as S_NATIONKEY S_NATIONKEY "
+    | indexJoin Region IxR_REGIONKEY expr "bound $I1 N_REGIONKEY =="
+    | project "type DECIMAL ( 19  2 ) as L_EXTENDEDPRICE L_EXTENDEDPRICE ,
+                   type DECIMAL ( 19  2 ) as L_DISCOUNT L_DISCOUNT ,
+                   type INTEGER ( 19 ) as S_NATIONKEY S_NATIONKEY ,
+                   type VARCHAR ( 0 ) as R_NAME R_NAME"
+    | filter " type BOOLEAN R_NAME 'ASIA'  ==  "
+    | gbyAgg " GroupBy    type INTEGER ( 19 ) as S_NATIONKEY S_NATIONKEY
+             aggregates type INTEGER ( 0 ) as S_NATIONKEY $K1 ,
+                        type DECIMAL ( 19  2 ) as REVENUE )  L_EXTENDEDPRICE 1.  L_DISCOUNT -  *  sum  "
+    | combined 0
+    | next
+
+  stage S04 on all nodes :
+    gbyAgg " GroupBy    type INTEGER ( 19 ) as S_NATIONKEY S_NATIONKEY
+             aggregates type INTEGER ( 19 ) as S_NATIONKEY $K1 ,
+                        type DECIMAL ( 19  2 ) as REVENUE ) REVENUE sum  "
+    | combined 0
+    | next
+
+  stage S05 on origin :
+    gbyAgg " GroupBy    type INTEGER ( 19  ) as S_NATIONKEY S_NATIONKEY
+             aggregates type INTEGER ( 19 ) as S_NATIONKEY $K1 ,
+             type DECIMAL ( 19  2 ) as REVENUE ) REVENUE sum  "
+    | hash "type INTEGER ( 19 ) S_NATIONKEY"
+    | combined 0
+    | next hashcast
+
+stage S06 on all partitions:
+    indexJoin NATION IxN_NATIONKEY "bound $I1 S_NATIONKEY =="
+    | project "type VARCHAR ( 0 ) as NATION N_NAME ,
+               type DECIMAL ( 19  2 ) as REVENUE REVENUE"
+    | combined 0
+    | next
+
+  stage S08 on origin :
+      sort " type DECIMAL ( 19  2 ) REVENUE DESC  "
+      | combined 0
+      | next
+
+stage S09 on origin :
+  output
+  | sink
+  | first
+end ;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

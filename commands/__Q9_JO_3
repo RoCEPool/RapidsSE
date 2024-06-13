@@ -90,8 +90,12 @@ pipeline Query9
     | project "type VARCHAR ( 0 ) as NATION N_NAME ,
                type INTEGER ( 19 ) as O_YEAR O_YEAR ,
                type DECIMAL ( 19  2 ) as SUM_PROFIT SUM_PROFIT"
+    | combined 0
+    | next
+
+  stage S08 on origin :
     | sort "type VARCHAR ( 0 ) as NATION NATION ASC ,
-          type INTEGER ( 19 ) as O_YEAR O_YEAR DESC"
+            type INTEGER ( 19 ) as O_YEAR O_YEAR DESC"
     | combined 0
     | next
 
