@@ -2,33 +2,28 @@
 /* _alka                                                                      */
 /*============================================================================*/
 
-/pipeline_def
-/keepCodeFile
-/weaved
-/optimise_passthru
-pipeline Query7
-begin
+file _lineitem;
+create index IxL_SUPP_PART_KEY     on Lineitem (L_SUPPKEY, L_PARTKEY);
+load lineitem           "../TPCH/SF_0001/lineitem.tbl" ;
 
+/keepCodeFile
+/optimise_passthru
+pipeline Query9
+  begin
   stage S00 on origin :
     start
-    | pulse     once
+    | pulse once
     | next
 
   stage S01 on all partitions :
-    scan      Orders
-    | project   "   type INTEGER ( 19 ) as O_CUSTKEY O_CUSTKEY
-                  , type VARCHAR ( 0 ) as O_ORDERPRIORITY O_ORDERPRIORITY "
+    indexScan lineitem IxL_SUPP_PART_KEY "UBOUND $I1 5"
+    | project "type INTEGER ( 19 ) as L_SUPPKEY L_SUPPKEY ,
+               type INTEGER ( 19 ) as L_PARTKEY L_PARTKEY "
     | combined 0
     | next
 
-  stage S02 on origin :
-      top " type INTEGER ( 19 ) O_CUSTKEY " 2
-      | combined 0
-      | next hashcast
-
-  stage S15 on origin :
-      output
+ stage S11 on origin :
+    output
     | sink
     | first
-
-end ;
+  end ;

@@ -1,0 +1,301 @@
+/*============================================================================*/
+/* __Q9                                                                       */
+/*============================================================================*/
+
+load se__jobMetrics    "../Q9/se__jobMetrics.csv";
+load se__jobOperands   "../Q9/se__jobOperands.csv";
+load se__jobOperators  "../Q9/se__jobOperators.csv";
+load se__jobNetwork    "../Q9/se__jobNetwork.csv";
+load se__jobNetDissect "../Q9/se__jobNetDissect.csv";
+load se__sysMetrics    "../Q9/se__sysMetrics.csv";
+load se__sysLocks      "../Q9/se__sysLocks.csv";
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+
+
+/*  define table se__jobOperators
+      (
+        jobId             INTEGER NOT NULL ,
+
+        thisNodeId        INTEGER NOT NULL ,
+        thisNodeName      VARCHAR NOT NULL ,
+
+        pipelineName      VARCHAR NOT NULL ,
+        stageNo           INTEGER NOT NULL ,
+        stageName         VARCHAR NOT NULL ,
+        ptnId             INTEGER NOT NULL ,
+        opName            VARCHAR NOT NULL ,
+        responseUS        INTEGER NOT NULL ,
+        maxQs             INTEGER NOT NULL ,
+        operands          INTEGER NOT NULL ,
+        buffIn            INTEGER NOT NULL ,
+        buffOut           INTEGER NOT NULL ,
+        newRowBuffers     INTEGER NOT NULL ,
+        delRowBuffers     INTEGER NOT NULL ,
+        newCsvBuffers     INTEGER NOT NULL ,
+        delCsvBuffers     INTEGER NOT NULL ,
+        numAllocs         INTEGER NOT NULL ,
+        bytesAllocated    VARCHAR NOT NULL ,
+        numFrees          INTEGER NOT NULL ,
+        bytesFreed        VARCHAR NOT NULL
+      ) < internal > = 1 ;
+
+select stageName, max(maxQs) from se__jobOperators group by stageName;
+
+row: ('S00',2)
+row: ('S01',260)
+row: ('S02',75)
+row: ('S03',555)
+row: ('S04',1381)
+row: ('S05',30)
+row: ('S06',3)
+
+
+select stageName, max(buffIn) from se__jobOperators group by stageName;
+row: ('S00',0,0)
+row: ('S01',256,0)
+row: ('S02',64,0)
+row: ('S03',704,0)
+row: ('S04',5093,0)
+row: ('S05',64,0)
+row: ('S06',4,0)
+row: ('S07',1,0)
+row: ('S08',1,0)
+row: ('S09',1,0)
+
+
+select stageName, sum(buffIn) from se__jobOperators group by stageName;
+row: ('S00',0)
+row: ('S01',20480)
+row: ('S02',8896)
+row: ('S03',95205)
+row: ('S04',733899)
+row: ('S05',516)
+row: ('S06',9)
+row: ('S07',3)
+row: ('S08',3)
+row: ('S09',2)
+
+
+select stageName, max(responseUS) from se__jobOperators group by stageName;
+row: ('S00',322)
+row: ('S01',2511984)
+row: ('S02',2238117)
+row: ('S03',25597711)
+row: ('S04',29565015)
+row: ('S05',52869)
+row: ('S06',19954)
+row: ('S07',66780)
+row: ('S08',14379)
+row: ('S09',70)
+
+
+
+
+
+
+         se__jobOperands
+     (
+       jobId             INTEGER NOT NULL ,
+
+       thisNodeId        INTEGER NOT NULL ,
+       thisNodeName      VARCHAR NOT NULL ,
+
+       pipelineName      VARCHAR NOT NULL ,
+       stageNo           INTEGER NOT NULL ,
+       stageName         VARCHAR NOT NULL ,
+       ptnId             INTEGER NOT NULL ,
+       opName            VARCHAR NOT NULL ,
+
+       operand           INTEGER NOT NULL ,
+       operandName       VARCHAR NOT NULL ,
+
+       numSaw            INTEGER NOT NULL ,
+       firstTimeUs       INTEGER NOT NULL ,
+       lastTimeUs        INTEGER NOT NULL ,
+       firstTimeUs_rel   INTEGER NOT NULL ,
+       lastTimeUs_rel    INTEGER NOT NULL
+
+     ) < internal > = 1 ;
+
+     select stageName, opName, max(lastTimeUs - firstTimeUs)  from se__jobOperands
+       group by stageName, opName;
+
+
+select max(responseUS), avg(responseUS), min(responseUS) from se__jobOperators;
+select max(newRowBuffers) from se__jobOperators;
+
+
+
+define table se__jobNetDissect
+  (
+    jobId             INTEGER NOT NULL ,
+
+    thisNodeId        INTEGER NOT NULL ,
+    thisNodeName      VARCHAR NOT NULL ,
+
+    otherNodeId       INTEGER NOT NULL ,
+    otherNodeName     VARCHAR NOT NULL ,
+
+    socket            VARCHAR NOT NULL ,
+    kind              VARCHAR NOT NULL ,
+
+    cnt               INTEGER NOT NULL ,
+    bytes             INTEGER NOT NULL
+
+  ) < internal > = 1 ;
+
+ select * from se__jobNetDissect;
+
+row: (2286,6144,'NODE1',6144,'NODE1','sndSkt','JOB',18,780912)
+row: (2286,6144,'NODE1',6144,'NODE1','sndSkt','SY_NONE',18,780912)
+row: (2286,6144,'NODE1',6144,'NODE1','rcvSkt','JOB',18,780912)
+row: (2286,6144,'NODE1',6203,'NODE2','sndSkt','JOB',9,390456)
+row: (2286,6144,'NODE1',6203,'NODE2','sndSkt','MARKER',358,37232)
+row: (2286,6144,'NODE1',6203,'NODE2','sndSkt','PARCEL',2116,778688)
+row: (2286,6144,'NODE1',6203,'NODE2','sndSkt','PDS',1709,1768883360)
+row: (2286,6144,'NODE1',6203,'NODE2','sndSkt','STREAMDEF',49,4557392)
+row: (2286,6144,'NODE1',6203,'NODE2','sndSkt','SY_NONE',9,390456)
+row: (2286,6144,'NODE1',6203,'NODE2','sndSkt','SY_ALL_NODES',18,4248)
+row: (2286,6144,'NODE1',6203,'NODE2','sndSkt','SY_BROADCAST',3700,1508152568)
+row: (2286,6144,'NODE1',6203,'NODE2','sndSkt','SY_HASHCAST',514,266099856)
+row: (2286,6144,'NODE1',6203,'NODE2','rcvSkt','JOB',10,433840)
+row: (2286,6144,'NODE1',6203,'NODE2','rcvSkt','MARKER',468,936)
+row: (2286,6144,'NODE1',6203,'NODE2','rcvSkt','PARCEL',2239,823952)
+row: (2286,6144,'NODE1',6203,'NODE2','rcvSkt','PDS',1706,1765778240)
+row: (2286,6144,'NODE1',6203,'NODE2','rcvSkt','STREAMDEF',65,6045520)
+row: (2286,6144,'NODE1',6057,'NODE3','sndSkt','JOB',9,390456)
+row: (2286,6144,'NODE1',6057,'NODE3','sndSkt','MARKER',358,37232)
+row: (2286,6144,'NODE1',6057,'NODE3','sndSkt','PARCEL',2115,778320)
+row: (2286,6144,'NODE1',6057,'NODE3','sndSkt','PDS',1708,1767848320)
+row: (2286,6144,'NODE1',6057,'NODE3','sndSkt','STREAMDEF',49,4557392)
+row: (2286,6144,'NODE1',6057,'NODE3','sndSkt','SY_NONE',9,390456)
+row: (2286,6144,'NODE1',6057,'NODE3','sndSkt','SY_ALL_NODES',18,4248)
+row: (2286,6144,'NODE1',6057,'NODE3','sndSkt','SY_BROADCAST',3700,1508152568)
+row: (2286,6144,'NODE1',6057,'NODE3','sndSkt','SY_HASHCAST',512,265064448)
+row: (2286,6144,'NODE1',6057,'NODE3','rcvSkt','JOB',10,433840)
+row: (2286,6144,'NODE1',6057,'NODE3','rcvSkt','MARKER',469,938)
+row: (2286,6144,'NODE1',6057,'NODE3','rcvSkt','PARCEL',2239,823952)
+row: (2286,6144,'NODE1',6057,'NODE3','rcvSkt','PDS',1705,1764743200)
+row: (2286,6144,'NODE1',6057,'NODE3','rcvSkt','STREAMDEF',65,6045520)
+row: (2286,6144,'NODE1',6159,'NODE4','sndSkt','JOB',9,390456)
+row: (2286,6144,'NODE1',6159,'NODE4','sndSkt','MARKER',358,37232)
+row: (2286,6144,'NODE1',6159,'NODE4','sndSkt','PARCEL',2115,778320)
+row: (2286,6144,'NODE1',6159,'NODE4','sndSkt','PDS',1708,1767848320)
+row: (2286,6144,'NODE1',6159,'NODE4','sndSkt','STREAMDEF',49,4557392)
+row: (2286,6144,'NODE1',6159,'NODE4','sndSkt','SY_NONE',9,390456)
+row: (2286,6144,'NODE1',6159,'NODE4','sndSkt','SY_ALL_NODES',18,4248)
+row: (2286,6144,'NODE1',6159,'NODE4','sndSkt','SY_BROADCAST',3700,1508152568)
+row: (2286,6144,'NODE1',6159,'NODE4','sndSkt','SY_HASHCAST',512,265064448)
+row: (2286,6144,'NODE1',6159,'NODE4','rcvSkt','JOB',10,433840)
+row: (2286,6144,'NODE1',6159,'NODE4','rcvSkt','MARKER',469,938)
+row: (2286,6144,'NODE1',6159,'NODE4','rcvSkt','PARCEL',2240,824320)
+row: (2286,6144,'NODE1',6159,'NODE4','rcvSkt','PDS',1706,1765778240)
+row: (2286,6144,'NODE1',6159,'NODE4','rcvSkt','STREAMDEF',65,6045520)
+
+row: (749,6159,'NODE4',6144,'NODE1','sndSkt','JOB',10,433840)
+row: (749,6159,'NODE4',6144,'NODE1','sndSkt','MARKER',468,48672)
+row: (749,6159,'NODE4',6144,'NODE1','sndSkt','PARCEL',2239,823952)
+row: (749,6159,'NODE4',6144,'NODE1','sndSkt','PDS',1706,1765778240)
+row: (749,6159,'NODE4',6144,'NODE1','sndSkt','STREAMDEF',65,6045520)
+row: (749,6159,'NODE4',6144,'NODE1','sndSkt','SY_NONE',10,433840)
+row: (749,6159,'NODE4',6144,'NODE1','sndSkt','SY_ORIGIN_NODE',300,2685104)
+row: (749,6159,'NODE4',6144,'NODE1','sndSkt','SY_BROADCAST',3666,1504946832)
+row: (749,6159,'NODE4',6144,'NODE1','sndSkt','SY_HASHCAST',512,265064448)
+row: (749,6159,'NODE4',6144,'NODE1','rcvSkt','JOB',9,390456)
+row: (749,6159,'NODE4',6144,'NODE1','rcvSkt','MARKER',358,716)
+row: (749,6159,'NODE4',6144,'NODE1','rcvSkt','PARCEL',2115,778320)
+row: (749,6159,'NODE4',6144,'NODE1','rcvSkt','PDS',1708,1767848320)
+row: (749,6159,'NODE4',6144,'NODE1','rcvSkt','STREAMDEF',49,4557392)
+row: (749,6159,'NODE4',6203,'NODE2','sndSkt','MARKER',336,34944)
+row: (749,6159,'NODE4',6203,'NODE2','sndSkt','PARCEL',2089,768752)
+row: (749,6159,'NODE4',6203,'NODE2','sndSkt','PDS',1705,1764743200)
+row: (749,6159,'NODE4',6203,'NODE2','sndSkt','STREAMDEF',48,4464384)
+row: (749,6159,'NODE4',6203,'NODE2','sndSkt','SY_BROADCAST',3666,1504946832)
+row: (749,6159,'NODE4',6203,'NODE2','sndSkt','SY_HASHCAST',512,265064448)
+row: (749,6159,'NODE4',6203,'NODE2','rcvSkt','MARKER',336,672)
+row: (749,6159,'NODE4',6203,'NODE2','rcvSkt','PARCEL',2088,768384)
+row: (749,6159,'NODE4',6203,'NODE2','rcvSkt','PDS',1704,1763708160)
+row: (749,6159,'NODE4',6203,'NODE2','rcvSkt','STREAMDEF',48,4464384)
+row: (749,6159,'NODE4',6057,'NODE3','sndSkt','MARKER',336,34944)
+row: (749,6159,'NODE4',6057,'NODE3','sndSkt','PARCEL',2089,768752)
+row: (749,6159,'NODE4',6057,'NODE3','sndSkt','PDS',1705,1764743200)
+row: (749,6159,'NODE4',6057,'NODE3','sndSkt','STREAMDEF',48,4464384)
+row: (749,6159,'NODE4',6057,'NODE3','sndSkt','SY_BROADCAST',3666,1504946832)
+row: (749,6159,'NODE4',6057,'NODE3','sndSkt','SY_HASHCAST',512,265064448)
+row: (749,6159,'NODE4',6057,'NODE3','rcvSkt','MARKER',336,672)
+row: (749,6159,'NODE4',6057,'NODE3','rcvSkt','PARCEL',2088,768384)
+row: (749,6159,'NODE4',6057,'NODE3','rcvSkt','PDS',1704,1763708160)
+row: (749,6159,'NODE4',6057,'NODE3','rcvSkt','STREAMDEF',48,4464384)
+row: (749,6057,'NODE3',6144,'NODE1','sndSkt','JOB',10,433840)
+row: (749,6057,'NODE3',6144,'NODE1','sndSkt','MARKER',468,48672)
+row: (749,6057,'NODE3',6144,'NODE1','sndSkt','PARCEL',2238,823584)
+row: (749,6057,'NODE3',6144,'NODE1','sndSkt','PDS',1705,1764743200)
+row: (749,6057,'NODE3',6144,'NODE1','sndSkt','STREAMDEF',65,6045520)
+row: (749,6057,'NODE3',6144,'NODE1','sndSkt','SY_NONE',10,433840)
+row: (749,6057,'NODE3',6144,'NODE1','sndSkt','SY_ORIGIN_NODE',300,2685104)
+row: (749,6057,'NODE3',6144,'NODE1','sndSkt','SY_BROADCAST',3664,1503911424)
+row: (749,6057,'NODE3',6144,'NODE1','sndSkt','SY_HASHCAST',512,265064448)
+row: (749,6057,'NODE3',6144,'NODE1','rcvSkt','JOB',9,390456)
+row: (749,6057,'NODE3',6144,'NODE1','rcvSkt','MARKER',358,716)
+row: (749,6057,'NODE3',6144,'NODE1','rcvSkt','PARCEL',2115,778320)
+row: (749,6057,'NODE3',6144,'NODE1','rcvSkt','PDS',1708,1767848320)
+row: (749,6057,'NODE3',6144,'NODE1','rcvSkt','STREAMDEF',49,4557392)
+row: (749,6057,'NODE3',6203,'NODE2','sndSkt','MARKER',336,34944)
+row: (749,6057,'NODE3',6203,'NODE2','sndSkt','PARCEL',2088,768384)
+row: (749,6057,'NODE3',6203,'NODE2','sndSkt','PDS',1704,1763708160)
+row: (749,6057,'NODE3',6203,'NODE2','sndSkt','STREAMDEF',48,4464384)
+row: (749,6057,'NODE3',6203,'NODE2','sndSkt','SY_BROADCAST',3664,1503911424)
+row: (749,6057,'NODE3',6203,'NODE2','sndSkt','SY_HASHCAST',512,265064448)
+row: (749,6057,'NODE3',6203,'NODE2','rcvSkt','MARKER',336,672)
+row: (749,6057,'NODE3',6203,'NODE2','rcvSkt','PARCEL',2088,768384)
+row: (749,6057,'NODE3',6203,'NODE2','rcvSkt','PDS',1704,1763708160)
+row: (749,6057,'NODE3',6203,'NODE2','rcvSkt','STREAMDEF',48,4464384)
+row: (749,6057,'NODE3',6159,'NODE4','sndSkt','MARKER',336,34944)
+row: (749,6057,'NODE3',6159,'NODE4','sndSkt','PARCEL',2088,768384)
+row: (749,6057,'NODE3',6159,'NODE4','sndSkt','PDS',1704,1763708160)
+row: (749,6057,'NODE3',6159,'NODE4','sndSkt','STREAMDEF',48,4464384)
+row: (749,6057,'NODE3',6159,'NODE4','sndSkt','SY_BROADCAST',3664,1503911424)
+row: (749,6057,'NODE3',6159,'NODE4','sndSkt','SY_HASHCAST',512,265064448)
+row: (749,6057,'NODE3',6159,'NODE4','rcvSkt','MARKER',336,672)
+row: (749,6057,'NODE3',6159,'NODE4','rcvSkt','PARCEL',2089,768752)
+row: (749,6057,'NODE3',6159,'NODE4','rcvSkt','PDS',1705,1764743200)
+row: (749,6057,'NODE3',6159,'NODE4','rcvSkt','STREAMDEF',48,4464384)
+row: (749,6203,'NODE2',6144,'NODE1','sndSkt','JOB',10,433840)
+row: (749,6203,'NODE2',6144,'NODE1','sndSkt','MARKER',468,48672)
+row: (749,6203,'NODE2',6144,'NODE1','sndSkt','PARCEL',2239,823952)
+row: (749,6203,'NODE2',6144,'NODE1','sndSkt','PDS',1706,1765778240)
+row: (749,6203,'NODE2',6144,'NODE1','sndSkt','STREAMDEF',65,6045520)
+row: (749,6203,'NODE2',6144,'NODE1','sndSkt','SY_NONE',10,433840)
+row: (749,6203,'NODE2',6144,'NODE1','sndSkt','SY_ORIGIN_NODE',302,3720512)
+row: (749,6203,'NODE2',6144,'NODE1','sndSkt','SY_BROADCAST',3664,1503911424)
+row: (749,6203,'NODE2',6144,'NODE1','sndSkt','SY_HASHCAST',512,265064448)
+row: (749,6203,'NODE2',6144,'NODE1','rcvSkt','JOB',9,390456)
+row: (749,6203,'NODE2',6144,'NODE1','rcvSkt','MARKER',358,716)
+row: (749,6203,'NODE2',6144,'NODE1','rcvSkt','PARCEL',2116,778688)
+row: (749,6203,'NODE2',6144,'NODE1','rcvSkt','PDS',1709,1768883360)
+row: (749,6203,'NODE2',6144,'NODE1','rcvSkt','STREAMDEF',49,4557392)
+row: (749,6203,'NODE2',6057,'NODE3','sndSkt','MARKER',336,34944)
+row: (749,6203,'NODE2',6057,'NODE3','sndSkt','PARCEL',2088,768384)
+row: (749,6203,'NODE2',6057,'NODE3','sndSkt','PDS',1704,1763708160)
+row: (749,6203,'NODE2',6057,'NODE3','sndSkt','STREAMDEF',48,4464384)
+row: (749,6203,'NODE2',6057,'NODE3','sndSkt','SY_BROADCAST',3664,1503911424)
+row: (749,6203,'NODE2',6057,'NODE3','sndSkt','SY_HASHCAST',512,265064448)
+row: (749,6203,'NODE2',6057,'NODE3','rcvSkt','MARKER',336,672)
+row: (749,6203,'NODE2',6057,'NODE3','rcvSkt','PARCEL',2088,768384)
+row: (749,6203,'NODE2',6057,'NODE3','rcvSkt','PDS',1704,1763708160)
+row: (749,6203,'NODE2',6057,'NODE3','rcvSkt','STREAMDEF',48,4464384)
+row: (749,6203,'NODE2',6159,'NODE4','sndSkt','MARKER',336,34944)
+row: (749,6203,'NODE2',6159,'NODE4','sndSkt','PARCEL',2088,768384)
+row: (749,6203,'NODE2',6159,'NODE4','sndSkt','PDS',1704,1763708160)
+row: (749,6203,'NODE2',6159,'NODE4','sndSkt','STREAMDEF',48,4464384)
+row: (749,6203,'NODE2',6159,'NODE4','sndSkt','SY_BROADCAST',3664,1503911424)
+row: (749,6203,'NODE2',6159,'NODE4','sndSkt','SY_HASHCAST',512,265064448)
+row: (749,6203,'NODE2',6159,'NODE4','rcvSkt','MARKER',336,672)
+row: (749,6203,'NODE2',6159,'NODE4','rcvSkt','PARCEL',2089,768752)
+row: (749,6203,'NODE2',6159,'NODE4','rcvSkt','PDS',1705,1764743200)
+row: (749,6203,'NODE2',6159,'NODE4','rcvSkt','STREAMDEF',48,4464384)
+
+

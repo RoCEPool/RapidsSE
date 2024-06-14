@@ -1,0 +1,54 @@
+/*============================================================================*/
+/* __BF                                                                       */
+/*============================================================================*/
+
+// /weaved select o_orderkey, c_name from orders , customer where o_custkey = c_custkey and c_custkey < 10;
+
+/optimise_passthru
+pipeline unamed
+begin
+
+  stage S00 on origin :
+      start
+    | pulse     once
+    | next
+
+  stage S01 on all partitions :
+    IndexScan Customer IxC_CUSTKEY " UBOUND $I1 10 < "
+    | project "type INTEGER ( 19 ) as C_CUSTKEY C_CUSTKEY ,
+               type VARCHAR ( 0 ) as C_NAME C_NAME"
+    | KeyFilter "type INTEGER ( 19 ) as C_CUSTKEY C_CUSTKEY"
+      ( insert into table _S01_ with C_CUSTKEY, C_NAME)
+      ( creates streamDef with rId, C_CUSTKEY)
+      ( creates pdsRow with rId, key)
+    | dynamic
+    | next
+
+  stage S02 on all partitions :
+    PdsRow
+    | IndexJoin Orders IxO_CUSTKEY " BOUND $I1 C_CUSTKEY == "
+    | Project   " type INTEGER ( 19 ) as RID RID ,
+                  type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY "
+    | dynamic
+    | next
+
+  stage S03 on all partitions :
+    PdsRow (rid (_S01_), O_ORDERKEY)
+    //| FilterJoin _S01_ IxO_CUSTKEY " BOUND $I1 C_CUSTKEY == "
+    | ProjectRID   " type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY ,
+                     type VARCHAR ( 0 ) as C_NAME C_NAME"
+    | drop table _S01_
+    | dynamic
+    | next
+
+
+  stage S04 on origin :
+      output
+    | sink
+    | first
+
+end ;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

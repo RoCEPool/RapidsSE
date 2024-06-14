@@ -1788,7 +1788,7 @@ order by
               </hashTree>
             </hashTree>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q1 Group" enabled="true"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q1 Group" enabled="false"/>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
@@ -1974,7 +1974,7 @@ end ;</stringProp>
               </hashTree>
             </hashTree>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q2 Group" enabled="true"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q2 Group" enabled="false"/>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
@@ -2353,7 +2353,7 @@ end ;</stringProp>
               </hashTree>
             </hashTree>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q3 Group" enabled="true"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q3 Group" enabled="false"/>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
@@ -2599,7 +2599,7 @@ end ;</stringProp>
               </hashTree>
             </hashTree>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q4 Group" enabled="true"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q4 Group" enabled="false"/>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
@@ -2746,7 +2746,7 @@ end ;
               </hashTree>
             </hashTree>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q5 Group" enabled="true"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q5 Group" enabled="false"/>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
@@ -3120,7 +3120,7 @@ end ;
               </hashTree>
             </hashTree>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q6 Group" enabled="true"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q6 Group" enabled="false"/>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
@@ -3325,7 +3325,7 @@ end ;
               </hashTree>
             </hashTree>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q7 Group" enabled="true"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q7 Group" enabled="false"/>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
@@ -3655,7 +3655,7 @@ begin
               </hashTree>
             </hashTree>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q8 Group" enabled="true"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q8 Group" enabled="false"/>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
@@ -4391,6 +4391,251 @@ pipeline Query9
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q9_jo_3_4mt_gby" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">/optimise_passthru
+pipeline Query9
+  begin
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
+
+  stage S01 on all partitions :
+    scan rapidsse public part
+    | project &quot;type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY ,
+               type VARCHAR ( 55 ) as P_NAME P_NAME&quot;
+    | filter &quot;type BOOLEAN }  P_NAME &apos;%green%&apos; 5 matchMiddle&quot;
+    | project &quot;type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY&quot;
+    | indexJoin partsupp IxPS_PARTKEY &quot;bound $I1 P_PARTKEY ==&quot;
+    | project &quot;type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY ,
+               type INTEGER ( 19 ) as PS_SUPPKEY PS_SUPPKEY ,
+               type DECIMAL ( 19  2 ) as PS_SUPPLYCOST PS_SUPPLYCOST&quot;
+    | hash &quot;type INTEGER ( 19 ) PS_SUPPKEY&quot;
+    | combined 0
+    | next hashcast
+
+  stage S02 on all partitions :
+    indexJoin supplier IxS_SUPPKEY &quot;bound $I1 PS_SUPPKEY ==&quot;
+    | project &quot;type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY ,
+               type INTEGER ( 19 ) as PS_SUPPKEY PS_SUPPKEY ,
+               type DECIMAL ( 19  2 ) as PS_SUPPLYCOST PS_SUPPLYCOST ,
+               type INTEGER ( 19 ) as S_NATIONKEY S_NATIONKEY &quot;
+    | combined 0
+    | next broadcast
+
+  stage S03 on all partitions:
+    indexJoin LINEITEM IxL_PARTKEY &quot;bound $I1 P_PARTKEY ==&quot;
+    | project &quot;type INTEGER ( 19 ) as PS_SUPPKEY PS_SUPPKEY ,
+               type DECIMAL ( 19 2 ) as PS_SUPPLYCOST PS_SUPPLYCOST ,
+               type INTEGER ( 19 ) as S_NATIONKEY S_NATIONKEY ,
+               type INTEGER ( 19 ) as L_ORDERKEY L_ORDERKEY ,
+               type INTEGER ( 19 ) as L_SUPPKEY L_SUPPKEY ,
+               type DECIMAL ( 19 2 ) as L_EXTENDEDPRICE L_EXTENDEDPRICE ,
+               type DECIMAL ( 19 2 ) as L_DISCOUNT L_DISCOUNT ,
+               type DECIMAL ( 19 2 ) as L_QUANTITY L_QUANTITY&quot;
+    | filter &quot;type BOOLEAN L_SUPPKEY PS_SUPPKEY ==&quot;
+    | project &quot;type INTEGER ( 19 ) as S_NATIONKEY S_NATIONKEY ,
+               type INTEGER ( 19 ) as L_ORDERKEY L_ORDERKEY ,
+               type DECIMAL ( 19  2 ) as AMOUNT L_EXTENDEDPRICE 1.0 L_DISCOUNT -  *  PS_SUPPLYCOST L_QUANTITY *  - &quot;
+    | combined 0
+    | next broadcast
+
+  stage S04 on all partitions  multiple threads 4:
+    indexJoin ORDERS IxO_ORDERKEY &quot;bound $I1 L_ORDERKEY ==&quot;
+    | project &quot;type INTEGER ( 19 ) as S_NATIONKEY S_NATIONKEY ,
+               type INTEGER ( 19 ) as O_YEAR O_ORDERDATE extract_year ,
+               type DECIMAL ( 19  2 ) as AMOUNT AMOUNT&quot;
+    | combined 0
+    | next
+
+  stage S04a on all partitions:
+    gbyAgg &quot;groupBy type INTEGER ( 19 ) S_NATIONKEY ,
+                    type INTEGER ( 19 ) O_YEAR
+            aggregates
+                    type INTEGER ( 19 ) as S_NATIONKEY $K1 ,
+                    type INTEGER ( 19 ) as O_YEAR $K2 ,
+                    type DECIMAL ( 19  2 ) as SUM_PROFIT ) AMOUNT sum  &quot;
+    | combined 0
+    | next
+
+  stage S05 on all nodes :
+    gbyAgg &quot;groupBy type INTEGER ( 19 ) S_NATIONKEY ,
+                    type INTEGER ( 19 ) O_YEAR
+            aggregates
+                     type INTEGER ( 19 ) as S_NATIONKEY $K1 ,
+                     type INTEGER ( 19 ) as O_YEAR $K2 ,
+                     type DECIMAL ( 19  2 ) as SUM_PROFIT ) SUM_PROFIT sum  &quot;
+    | combined 0
+    | next
+
+  stage S06 on origin :
+    gbyAgg &quot;groupBy type INTEGER ( 19 ) S_NATIONKEY ,
+                    type INTEGER ( 19 ) O_YEAR
+            aggregates
+                     type INTEGER ( 19 ) as S_NATIONKEY $K1 ,
+                     type INTEGER ( 19 ) as O_YEAR $K2 ,
+                     type DECIMAL ( 19  2 ) as SUM_PROFIT ) SUM_PROFIT sum  &quot;
+    | hash &quot;type INTEGER ( 19 ) S_NATIONKEY&quot;
+    | combined 0
+    | next hashcast
+
+  stage S07 on all partitions:
+    indexJoin NATION IxN_NATIONKEY &quot;bound $I1 S_NATIONKEY ==&quot;
+    | project &quot;type VARCHAR ( 0 ) as NATION N_NAME ,
+               type INTEGER ( 19 ) as O_YEAR O_YEAR ,
+               type DECIMAL ( 19  2 ) as SUM_PROFIT SUM_PROFIT&quot;
+    | combined 0
+    | next
+
+  stage S08 on origin :
+    sort &quot;type VARCHAR ( 0 ) as NATION NATION ASC ,
+            type INTEGER ( 19 ) as O_YEAR O_YEAR DESC&quot;
+    | combined 0
+    | next
+
+  stage S11 on origin :
+    output
+    | sink
+    | first
+  end ;
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q9_jo1" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">/optimise_passthru
+pipeline Query9
+  begin
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
+
+  stage S01 on all partitions:
+    scan orders
+   | project &quot;type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY ,
+              type INTEGER ( 19 ) as O_YEAR O_ORDERDATE extract_year&quot;
+   | hash &quot;type INTEGER ( 19 ) O_ORDERKEY&quot;
+   | combined 0
+   | next hashcast
+
+ stage S02 on all partitions multiple threads 4:
+   indexJoin LINEITEM IxL_ORDERKEY &quot;bound $I1 O_ORDERKEY ==&quot;
+   | project &quot;type INTEGER ( 19 ) as O_YEAR O_YEAR ,
+              type INTEGER ( 19 ) as L_PARTKEY L_PARTKEY ,
+              type INTEGER ( 19 ) as L_SUPPKEY L_SUPPKEY ,
+              type DECIMAL ( 19 2 ) as L_EXTENDEDPRICE L_EXTENDEDPRICE ,
+              type DECIMAL ( 19 2 ) as L_DISCOUNT L_DISCOUNT ,
+              type DECIMAL ( 19 2 ) as L_QUANTITY L_QUANTITY&quot;
+   | hash &quot;type INTEGER ( 19 ) L_PARTKEY&quot;
+   | combined 0
+   | next hashcast
+
+  stage S03 on all partitions :
+    indexJoin PART IxP_PARTKEY &quot;bound $I1 L_PARTKEY ==&quot;
+    | project &quot;type INTEGER ( 19 ) as O_YEAR O_YEAR ,
+               type INTEGER ( 19 ) as L_PARTKEY L_PARTKEY ,
+               type INTEGER ( 19 ) as L_SUPPKEY L_SUPPKEY ,
+               type DECIMAL ( 19 2 ) as L_EXTENDEDPRICE L_EXTENDEDPRICE ,
+               type DECIMAL ( 19 2 ) as L_DISCOUNT L_DISCOUNT ,
+               type DECIMAL ( 19 2 ) as L_QUANTITY L_QUANTITY ,
+               type VARCHAR ( 55 ) as P_NAME P_NAME&quot;
+    | filter &quot;type BOOLEAN }  P_NAME &apos;%green%&apos; 5 matchMiddle&quot;
+    | combined 0
+    | next
+
+  stage S03 on all partitions :
+    indexJoin partsupp IxPS_PARTKEY &quot;bound $I1 L_PARTKEY ==&quot;
+    | project &quot;type INTEGER ( 19 ) as O_YEAR O_YEAR ,
+               type INTEGER ( 19 ) as L_SUPPKEY L_SUPPKEY ,
+               type DECIMAL ( 19 2 ) as L_EXTENDEDPRICE L_EXTENDEDPRICE ,
+               type DECIMAL ( 19 2 ) as L_DISCOUNT L_DISCOUNT ,
+               type DECIMAL ( 19 2 ) as L_QUANTITY L_QUANTITY ,
+               type INTEGER ( 19 ) as PS_SUPPKEY PS_SUPPKEY ,
+               type DECIMAL ( 19  2 ) as PS_SUPPLYCOST PS_SUPPLYCOST&quot;
+
+    | filter &quot;type BOOLEAN L_SUPPKEY PS_SUPPKEY ==&quot;
+    | hash &quot;type INTEGER ( 19 ) PS_SUPPKEY&quot;
+    | combined 0
+    | next hashcast
+
+  stage S04 on all partitions :
+    indexJoin supplier IxS_SUPPKEY &quot;bound $I1 PS_SUPPKEY ==&quot;
+    | project &quot;type INTEGER ( 19 ) as S_NATIONKEY S_NATIONKEY ,
+               type INTEGER ( 19 ) as O_YEAR O_YEAR ,
+               type DECIMAL ( 19  2 ) as AMOUNT L_EXTENDEDPRICE 1.0 L_DISCOUNT -  *  PS_SUPPLYCOST L_QUANTITY *  - &quot;
+    | combined 0
+    | next
+
+ stage S05 on all partitions :
+  gbyAgg &quot;groupBy type INTEGER ( 19 ) S_NATIONKEY ,
+                      type INTEGER ( 19 ) O_YEAR
+          aggregates
+                  type INTEGER ( 19 ) as S_NATIONKEY $K1 ,
+                  type INTEGER ( 19 ) as O_YEAR $K2 ,
+                  type DECIMAL ( 19  2 ) as SUM_PROFIT ) AMOUNT sum  &quot;
+  | combined 0
+  | next
+
+stage S06 on all nodes :
+  gbyAgg &quot;groupBy type INTEGER ( 19 ) S_NATIONKEY ,
+                  type INTEGER ( 19 ) O_YEAR
+          aggregates
+                   type INTEGER ( 19 ) as S_NATIONKEY $K1 ,
+                   type INTEGER ( 19 ) as O_YEAR $K2 ,
+                   type DECIMAL ( 19  2 ) as SUM_PROFIT ) SUM_PROFIT sum  &quot;
+  | combined 0
+  | next
+
+stage S07 on origin :
+  gbyAgg &quot;groupBy type INTEGER ( 19 ) S_NATIONKEY ,
+                  type INTEGER ( 19 ) O_YEAR
+          aggregates
+                   type INTEGER ( 19 ) as S_NATIONKEY $K1 ,
+                   type INTEGER ( 19 ) as O_YEAR $K2 ,
+                   type DECIMAL ( 19  2 ) as SUM_PROFIT ) SUM_PROFIT sum  &quot;
+  | hash &quot;type INTEGER ( 19 ) S_NATIONKEY&quot;
+  | combined 0
+  | next hashcast
+
+stage S08 on all partitions:
+  indexJoin NATION IxN_NATIONKEY &quot;bound $I1 S_NATIONKEY ==&quot;
+  | project &quot;type VARCHAR ( 0 ) as NATION N_NAME ,
+             type INTEGER ( 19 ) as O_YEAR O_YEAR ,
+             type DECIMAL ( 19  2 ) as SUM_PROFIT SUM_PROFIT&quot;
+  | combined 0
+  | next
+
+stage S09 on origin :
+  sort &quot;type VARCHAR ( 0 ) as NATION NATION ASC ,
+          type INTEGER ( 19 ) as O_YEAR O_YEAR DESC&quot;
+  | combined 0
+  | next
+
+stage S11 on origin :
+  output
+  | sink
+  | first
+end ;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
               <IfController guiclass="IfControllerPanel" testclass="IfController" testname="Check for error" enabled="true">
                 <stringProp name="IfController.condition">${__jexl3(!${JMeterThread.last_sample_ok},)}</stringProp>
                 <boolProp name="IfController.evaluateAll">false</boolProp>
@@ -4622,7 +4867,7 @@ pipeline Query9
             </com.rapidsdata.jmeter.samplers.JdbcRecorder>
             <hashTree/>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q10 Group" enabled="true"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q10 Group" enabled="false"/>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
@@ -4912,7 +5157,7 @@ end ;
               </hashTree>
             </hashTree>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q11 Group" enabled="true"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q11 Group" enabled="false"/>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
@@ -5209,7 +5454,7 @@ end ;</stringProp>
               </hashTree>
             </hashTree>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q12 Group" enabled="true"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q12 Group" enabled="false"/>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
@@ -5351,7 +5596,7 @@ pipeline Query12
               </hashTree>
             </hashTree>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q13 Group" enabled="true"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q13 Group" enabled="false"/>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
@@ -5484,7 +5729,7 @@ begin
               </hashTree>
             </hashTree>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q14 Group" enabled="true"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q14 Group" enabled="false"/>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
@@ -5612,7 +5857,7 @@ end ;</stringProp>
               </hashTree>
             </hashTree>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q15 Group" enabled="true"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q15 Group" enabled="false"/>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
@@ -5957,7 +6202,7 @@ order by
               </hashTree>
             </hashTree>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q17 Group" enabled="true"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q17 Group" enabled="false"/>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
@@ -6118,7 +6363,7 @@ end ;</stringProp>
               </hashTree>
             </hashTree>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q18 Group" enabled="true"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q18 Group" enabled="false"/>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
@@ -6431,7 +6676,7 @@ begin
               </hashTree>
             </hashTree>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q19 Group" enabled="true">
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q19 Group" enabled="false">
             <stringProp name="TestPlan.comments">Currently disabled as it produces an error no join index</stringProp>
           </GenericController>
           <hashTree>
@@ -6606,7 +6851,7 @@ end ;</stringProp>
               </hashTree>
             </hashTree>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q20 Group" enabled="true"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q20 Group" enabled="false"/>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
@@ -6991,7 +7236,7 @@ order by
               </hashTree>
             </hashTree>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q22 Group" enabled="true"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q22 Group" enabled="false"/>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
