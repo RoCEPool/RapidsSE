@@ -443,6 +443,26 @@ bool Job::bObjRecv(Socket* pSocket, Object* pObjBase, SysCall& roSysCall,
       pJob->vCodeBlock(pCodeBlock);
     }
 
+    // There is a TagSet that needs to be read and deserialised for the job tags
+    b32K ayBuf;
+
+    // First read in 8 bytes for the size of the tagset data
+    bResult = pSocket->bBytesRecv(ayBuf.szArea(), sizeof(i8), roSysCall);
+    RASSERT(bResult);
+    ayBuf.vTake(sizeof(i8));
+    i8 iJobTagsSize = ayBuf.iGet(0);
+    ASSERT(iJobTagsSize > 0);
+    ASSERT(iJobTagsSize < ayBuf.nArea());
+
+    // Read in the rest of the data
+    bResult = pSocket->bBytesRecv(ayBuf.szLatter(), iJobTagsSize - sizeof(i8), roSysCall);
+    RASSERT(bResult);
+    ayBuf.vTake(iJobTagsSize - sizeof(i8));
+
+    // Now deserialise the data back into a TagSet
+    pJob->m_pJobTags = TagSet::pDeserialise(ayBuf);
+    ASSERT(pJob->m_pJobTags);
+
   } catch (LowMemory& xLowMemory) {
     // execute the 2PC commands directly for job received/ send reject
     pSocket->vJobRecv_lowmem(pJob);
@@ -526,6 +546,19 @@ bool Job::bObjSend(Socket* pSocket, Object* pObject, SysCall& roSysCall)
   }
 
   // Job does contain a tagset that needs to be serialised
+  b32K ayBuf;
+  bResult = TagSet::bSerialise(pJob->m_pJobTags, ayBuf);
+  if (!bResult) {
+    return bResult;
+  }
+
+  ASSERT(ayBuf.i_Latter() > 0);
+
+  bResult = pSocket->bBytesSend(ayBuf.szArea(), ayBuf.i_Latter(), roSysCall);
+
+  if (!bResult) {
+    return bResult;
+  }
 
   return true;
 }
@@ -1875,6 +1908,8 @@ void Job::vPostRecv(void)
   m_okLock.vResetLock();
   m_okLock.vResetStats();
 
+  // m_pJobTags  // handled in Job::bObjRecv()
+
   if(bHasTag(C_TAG_PERSISTENT))
     vEnablePersistence();
   // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
@@ -1911,9 +1946,9 @@ void Job::vPostRecv(void)
   /* 11 */ m_pJobsSkipNode    = nullptr;
   /* 12 */ m_pGenericSkipNode = nullptr;
 
-  /* 14 */// m_pCmdText = nullptr;      // handled in Socket::pRecvObject(eCN)
+  /* 14 */// m_pCmdText = nullptr;      // handled in Job::bObjRecv()
 
-  /* 15 */ //RASSERT(! m_pCodeBlock);   // handled in Socket::pRecvObject(eCN)
+  /* 15 */ //RASSERT(! m_pCodeBlock);   // handled in Job::bObjRecv()
 
   m_tJobId.vNextJobId();
 

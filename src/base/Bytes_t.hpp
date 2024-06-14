@@ -32,6 +32,7 @@ namespace BASE
     Stz* szArea(void);
     Stz* szBoundary(void);
     bool bContains(Stz* szAddr);
+    i8   iGet(i8 i_Area);
     Stz* szGet(i8 i_Area);
     void vGive(i8 nBytes);
     bool bIsEmpty(void);
@@ -120,7 +121,7 @@ Bytes_t<AREA>::~Bytes_t(void) noexcept(false)
 template <i8 AREA>
 Bytes_t<AREA>::operator Bytes*(void)
 {
-  _precondition_(_MAGIC_,CN_STRING_T,_FOOTER_);
+  _precondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
 
   return (Bytes*)this;
 }
@@ -218,15 +219,28 @@ bool Bytes_t<AREA>::bContains(Stz* szAddr)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get integer at given offset in m_yaArea                                    */
+/*----------------------------------------------------------------------------*/
+template <i8 AREA>
+i8 Bytes_t<AREA>::iGet(i8 i_Area)
+{
+  _precondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
+
+  i8* piVal = reinterpret_cast<i8*>(&m_yaArea[i_Area]);
+
+  return *piVal;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get address at given offset in m_yaArea                                    */
 /*----------------------------------------------------------------------------*/
 template <i8 AREA>
 Stz* Bytes_t<AREA>::szGet(i8 i_Area)
 {
   _precondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
-  
+
   char* azStr = (char*) &m_yaArea[i_Area];
-  
+
   return (Stz*)azStr;
 }
 
