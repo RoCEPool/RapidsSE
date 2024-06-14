@@ -240,6 +240,7 @@ TagSet* TagSet::pDeserialise(Bytes* pBuf)
           i8 iSegSize = pBuf->iGet(iPos);
           iPos += sizeof(i8);
           ASSERT(iSegSize > 0);
+          UNUSED(iSegSize);
 
           // (11) Read the size of the data in this segment
           i8 iStrSize = pBuf->iGet(iPos);
