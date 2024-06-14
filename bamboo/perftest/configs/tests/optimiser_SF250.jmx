@@ -4540,8 +4540,9 @@ pipeline Query9
                type INTEGER ( 19 ) as PS_SUPPKEY PS_SUPPKEY ,
                type DECIMAL ( 19  2 ) as PS_SUPPLYCOST PS_SUPPLYCOST ,
                type INTEGER ( 19 ) as S_NATIONKEY S_NATIONKEY &quot;
+    | hash &quot;type INTEGER ( 19 ) P_PARTKEY&quot;
     | combined 0
-    | next
+    | next hashcast
 
   stage S03 on all partitions:
     indexJoin LINEITEM IxL_PARTKEY &quot;bound $I1 P_PARTKEY ==&quot;
@@ -4557,8 +4558,9 @@ pipeline Query9
     | project &quot;type INTEGER ( 19 ) as S_NATIONKEY S_NATIONKEY ,
                type INTEGER ( 19 ) as L_ORDERKEY L_ORDERKEY ,
                type DECIMAL ( 19  2 ) as AMOUNT L_EXTENDEDPRICE 1.0 L_DISCOUNT -  *  PS_SUPPLYCOST L_QUANTITY *  - &quot;
+    | hash &quot;type INTEGER ( 19 ) L_ORDERKEY&quot;
     | combined 0
-    | next
+    | next hashcast
 
   stage S04 on all partitions  multiple threads 4:
     indexJoin ORDERS IxO_ORDERKEY &quot;bound $I1 L_ORDERKEY ==&quot;
