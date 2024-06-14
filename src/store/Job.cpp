@@ -75,7 +75,7 @@ Job::Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId,
   }
 
   //m_sEntryPoint
-  //m_oJobTags
+  m_pJobTags = new TagSet();
   //m_sFolderPath
   
   m_eJobPhase  = JP_NONE;
@@ -141,7 +141,7 @@ Job::Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId,
   
   AM::JOBS::vJobsActiveInc();
   
-  m_oJobTags.vInsert(C_TAG_PATH,C_SE_PATH);
+  m_pJobTags->vInsert(C_TAG_PATH, C_SE_PATH);
 
   AM::JLIST::vInsertJob(this);
   
@@ -165,9 +165,11 @@ Job::~Job(void) noexcept(false)
     //  if (bHasTag(C_TAG_LIFE) || JK_GENERIC == m_eJobKind) {
     //
     //    SP_TagSet spTagSet;
-    //    vPrint("Job Delete: %s\n"_Stz,spTagSet.sz(&m_oJobTags));
-    //    //m_oJobTags.vPrint();
+    //    vPrint("Job Delete: %s\n"_Stz,spTagSet.sz(m_pJobTags));
+    //    //m_pJobTags->vPrint();
     //  }
+
+    delete m_pJobTags;
 
     // -- -- -- -- -- --
 
@@ -522,6 +524,8 @@ bool Job::bObjSend(Socket* pSocket, Object* pObject, SysCall& roSysCall)
       RASSERT(bResult);
     }
   }
+
+  // Job does contain a tagset that needs to be serialised
 
   return true;
 }
@@ -1029,7 +1033,7 @@ bool Job::bHasTag(Stz* szTagNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  if (m_oJobTags.bHasName(szTagNm))
+  if (m_pJobTags->bHasName(szTagNm))
     return true;
   
   return false;
@@ -1294,7 +1298,7 @@ TagSet* Job::pJobTags(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  return & m_oJobTags;
+  return m_pJobTags;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2013,7 +2017,7 @@ void Job::vPrintJobContents(void)
          
          );
   
-  m_oJobTags.vContentDump();
+  m_pJobTags->vContentDump();
 
   vTrace(";;\n\n"_Stz);
 }

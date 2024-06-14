@@ -35,7 +35,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
 
     s32    m_sJobNm;      // name of job
     s4K    m_sEntryPoint; // sen entry code
-    TagSet m_oJobTags;    // tags for the job
+    TagSet* m_pJobTags;    // tags for the job
     s256   m_sFolderPath; // folder path
   
     eJP    m_eJobPhase;   // current phase: JP_BEGINNING, _BEGUN, ...
