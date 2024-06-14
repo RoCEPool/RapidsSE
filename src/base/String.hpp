@@ -19,10 +19,12 @@ namespace BASE
   
   public:
     void* operator new(size_t);
-  
+
+  private:
     String(void);
    ~String(void) noexcept(false);
 
+  public:
     i8    nAreaBytes(void);
     void  vCopy(Stz* szArg);
     void  vCatSprint(Stz* szFormat, ...);

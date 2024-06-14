@@ -60,6 +60,8 @@ namespace BASE
    ~TagSet() noexcept(false);
   
     static void vRepair(Object* pObject);
+    static bool bSerialise(TagSet* pTagSet, Bytes* pBuf);
+    static TagSet* pDeserialise(Bytes* szTagSet);
 
     void vAppend(Stz* szName);
     void vAppend(Stz* szName, i8 iValue);

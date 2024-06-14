@@ -5,6 +5,8 @@
 
 namespace BASE
 {
+  class Bytes;
+
   template <i8 AREA>
   class Bytes_t : public Object
   {
@@ -20,7 +22,10 @@ namespace BASE
     Bytes_t(void);
     Bytes_t(const Bytes_t& oOther);
    ~Bytes_t(void) noexcept(false);
-  
+
+    // auto conversion
+    operator Bytes*(void);
+
     i8   iAppend(Stz* szStr);
     i8   nArea(void);
     Stz* szArea(void);
@@ -107,6 +112,17 @@ Bytes_t<AREA>::~Bytes_t(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* auto conversion operator : as Bytes*                                       */
+/*----------------------------------------------------------------------------*/
+template <i8 AREA>
+Bytes_t<AREA>::operator Bytes*(void)
+{
+  _precondition_(_MAGIC_,CN_STRING_T,_FOOTER_);
+
+  return (Bytes*)this;
+}
 
 /*----------------------------------------------------------------------------*/
 /* append given string                                                        */
