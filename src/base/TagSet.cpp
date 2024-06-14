@@ -3,6 +3,25 @@
 /*============================================================================*/
 
 #include "BASE.h"
+#include "Bytes.hpp"
+
+static const Stz* C_BEGIN_TAGSET    = "Begin_TagSet"_Stz;
+static const Stz* C_END_TAGSET      = "End_TagSet"_Stz;
+static const Stz* C_BEGIN_TAGARRAY  = "Begin_TagArray"_Stz;
+static const Stz* C_END_TAGARRAY    = "End_TagArray"_Stz;
+static const Stz* C_BEGIN_STRBUF    = "Begin_StrBuf"_Stz;
+static const Stz* C_END_STRBUF      = "End_StrBuf"_Stz;
+static const Stz* C_BEGIN_STRSEG    = "Begin_StrSeg"_Stz;
+static const Stz* C_END_STRSEG      = "End_StrSeg"_Stz;
+
+static const i8 C_SIZE_BEGIN_TAGSET  = C_BEGIN_TAGSET->nLength() + 1;
+static const i8 C_SIZE_END_TAGSET    = C_END_TAGSET->nLength() + 1;
+static const i8 C_SIZE_BEGIN_TAGARRAY= C_BEGIN_TAGARRAY->nLength() + 1;
+static const i8 C_SIZE_END_TAGARRAY  = C_END_TAGARRAY->nLength() + 1;
+static const i8 C_SIZE_BEGIN_STRBUF  = C_BEGIN_STRBUF->nLength() + 1;
+static const i8 C_SIZE_END_STRBUF    = C_END_STRBUF->nLength() + 1;
+static const i8 C_SIZE_BEGIN_STRSEG  = C_BEGIN_STRSEG->nLength() + 1;
+static const i8 C_SIZE_END_STRSEG    = C_END_STRSEG->nLength() + 1;
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
@@ -95,8 +114,67 @@ bool TagSet::bSerialise(TagSet* pTagSet, Bytes* pBuf)
 {
   _static_
 
-  UNUSED(pTagSet);
-  UNUSED(pBuf);
+  ASSERT(pBuf);
+  ASSERT(pBuf->bIsEmpty());
+  ASSERT(pBuf->i_Latter() == 0);
+
+  // (1) The overall size of the serialised data will be filled in at the end
+  i8* piSerialisedSize = reinterpret_cast<i8*>(pBuf->szLatter());
+  pBuf->vTake(sizeof(i8));
+
+  // (2)
+  pBuf->iAppend(C_BEGIN_TAGSET);
+
+  // (3) Write the array of tags
+  pBuf->iAppend(C_BEGIN_TAGARRAY);
+
+    // (4) First write the number of Tag entries in the array
+    pBuf->iAppend(pTagSet->m_oTagArray.nItems());
+
+    // (5) Now write each tag sequentially. Need to accommodate that the array is segmented.
+    TagArrayIter xIter = pTagSet->m_oTagArray.xIterator();
+    Tag* pTag;
+    while ((pTag = xIter.pNext()) != nullptr) {
+      pBuf->iAppend(reinterpret_cast<byte*>(pTag), sizeof(Tag));
+    }
+
+  // (6)
+  pBuf->iAppend(C_END_TAGARRAY);
+
+  // (7) Now write the associated strings
+  pBuf->iAppend(C_BEGIN_STRBUF);
+
+    // (8) First write the number of segments
+    pBuf->iAppend(1);
+
+      // (9) For each segment...
+      pBuf->iAppend(C_BEGIN_STRSEG);
+
+      // (10) Now write the size of the segment. This is important because the tag contains
+      // offsets from the beginning of the first segment and there can be plenty of
+      // unused space at the end of segments.
+      pBuf->iAppend(pTagSet->m_xyStrings.nArea());
+
+      // (11) Now write the size of the data in this segment
+      i8 iStrSize = pTagSet->m_xyStrings.i_Latter();
+      pBuf->iAppend(iStrSize);
+
+      // (12) Write the data in this segment
+      pBuf->iAppend(reinterpret_cast<byte*>(pTagSet->m_xyStrings.szArea()), iStrSize);
+
+      // (13)
+      pBuf->iAppend(C_END_STRSEG);
+
+  // (14)
+  pBuf->iAppend(C_END_STRBUF);
+
+  // (15)
+  pBuf->iAppend(C_END_TAGSET);
+
+  // Now we can write the overall serialised size
+  *piSerialisedSize = pBuf->i_Latter();
+
+  RASSERT(pBuf->iRemaining() >= 0);
 
   return true;
 }
@@ -104,13 +182,89 @@ bool TagSet::bSerialise(TagSet* pTagSet, Bytes* pBuf)
 /*----------------------------------------------------------------------------*/
 /* deserialise a tagset from a string                                         */
 /*----------------------------------------------------------------------------*/
-TagSet* TagSet::pDeserialise(Bytes* szTagSet)
+TagSet* TagSet::pDeserialise(Bytes* pBuf)
 {
   _static_
 
-  UNUSED(szTagSet);
+  ASSERT(pBuf);
+  ASSERT(pBuf->i_Latter() > 0);
 
-  return nullptr;
+  TagSet* pTagSet = new TagSet();
+  i8 iPos = 0;
+
+  // (1) Read the overall size of the serialised data
+  i8 iSerialisedSize = pBuf->iGet(iPos);
+  UNUSED(iSerialisedSize);
+  iPos += sizeof(i8);
+  ASSERT(iSerialisedSize > 0);
+
+  // (2) Read C_BEGIN_TAGSET
+  ASSERT(pBuf->szGet(iPos)->bEqual(C_BEGIN_TAGSET));
+  iPos += C_SIZE_BEGIN_TAGSET;
+
+    // (3) Read C_BEGIN_TAGARRAY
+    ASSERT(pBuf->szGet(iPos)->bEqual(C_BEGIN_TAGARRAY));
+    iPos += C_SIZE_BEGIN_TAGARRAY;
+
+      // (4) Read the number of tags
+      i8 nTags = pBuf->iGet(iPos);
+      iPos += sizeof(i8);
+      ASSERT(nTags >= 0);
+
+      // (5) Read each tag and add it to the array
+      for (i8 i=0; i<nTags; i++) {
+        Tag* pTag = reinterpret_cast<Tag*>(pBuf->szGet(iPos));
+        pTagSet->m_oTagArray.vAdd(*pTag);
+        iPos += sizeof(Tag);
+      }
+
+    // (6) Read C_END_TAGARRAY
+    ASSERT(pBuf->szGet(iPos)->bEqual(C_END_TAGARRAY));
+    iPos += C_SIZE_END_TAGARRAY;
+
+    // (7) Read C_BEGIN_STRBUF
+    ASSERT(pBuf->szGet(iPos)->bEqual(C_BEGIN_STRBUF));
+    iPos += C_SIZE_BEGIN_STRBUF;
+
+      // (8) Read the number of segments
+      i8 nStrSegments = pBuf->iGet(iPos);
+      iPos += sizeof(i8);
+      ASSERT(nStrSegments > 0);
+
+        // (9) Read C_BEGIN_STRSEG
+        ASSERT(pBuf->szGet(iPos)->bEqual(C_BEGIN_STRSEG));
+        iPos += C_SIZE_BEGIN_STRSEG;
+
+        for (i8 i=0; i<nStrSegments; i++) {
+          // (10) Read the size of this segment
+          i8 iSegSize = pBuf->iGet(iPos);
+          iPos += sizeof(i8);
+          ASSERT(iSegSize > 0);
+
+          // (11) Read the size of the data in this segment
+          i8 iStrSize = pBuf->iGet(iPos);
+          iPos += sizeof(i8);
+          ASSERT(iStrSize >= 0);
+
+          // (12) Read the data of this segment and add it to the string buffer
+          Stz* szStr = pBuf->szGet(iPos);
+          pTagSet->m_xyStrings.iAppend(reinterpret_cast<byte*>(szStr), iStrSize);
+          iPos += iStrSize;
+        }
+
+        // (13) Read C_END_STRSEG
+        ASSERT(pBuf->szGet(iPos)->bEqual(C_END_STRSEG));
+        iPos += C_SIZE_END_STRSEG;
+
+    // (14) Read C_END_STRBUF
+    ASSERT(pBuf->szGet(iPos)->bEqual(C_END_STRBUF));
+    iPos += C_SIZE_END_STRBUF;
+
+  // (15) Read C_END_TAGSET
+  ASSERT(pBuf->szGet(iPos)->bEqual(C_END_TAGSET));
+  iPos += C_SIZE_END_TAGSET;
+
+  return pTagSet;
 }
 
 

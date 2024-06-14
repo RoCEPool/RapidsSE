@@ -27,6 +27,7 @@ namespace BASE
     operator Bytes*(void);
 
     i8   iAppend(Stz* szStr);
+    i8   iAppend(byte* pySrc, i8 nLen);
     i8   nArea(void);
     Stz* szArea(void);
     Stz* szBoundary(void);
@@ -142,6 +143,26 @@ i8 Bytes_t<AREA>::iAppend(Stz* szStr)
   _postcondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
   
   return i_String;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* append some raw bytes                                                      */
+/*----------------------------------------------------------------------------*/
+template <i8 AREA>
+i8 Bytes_t<AREA>::iAppend(byte* pySrc, i8 nLen)
+{
+  _precondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
+
+  i8 i_Pos = m_i_Latter;
+  byte* ayByte = pySrc;
+
+  for (i8 i=0; i<nLen; i++)
+    m_yaArea[m_i_Latter++] = * ayByte++;
+
+  _postcondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
+
+  return i_Pos;
 }
 
 /*----------------------------------------------------------------------------*/

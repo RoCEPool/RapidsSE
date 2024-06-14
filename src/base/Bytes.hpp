@@ -24,12 +24,16 @@ namespace BASE
    ~Bytes(void) noexcept(false);
 
   public:
-    i8   iAppend(Stz* szStr);
+    i8   iAppend(const Stz* szStr);
+    i8   iAppend(i8 iVal);
+    i8   iAppend(byte* pySrc, i8 nLen);
     i8   nArea(void);
     Stz* szArea(void);
     Stz* szBoundary(void);
-    bool bContains(Stz* szAddr);
+    bool bContains(const Stz* szAddr);
+    i8   iGet(i8 i_Area);
     Stz* szGet(i8 i_Area);
+    byte* pyGet(i8 i_Area);
     void vGive(i8 nBytes);
     bool bIsEmpty(void);
     i8   i_Latter(void);

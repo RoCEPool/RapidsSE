@@ -61,7 +61,7 @@ namespace BASE
   
     static void vRepair(Object* pObject);
     static bool bSerialise(TagSet* pTagSet, Bytes* pBuf);
-    static TagSet* pDeserialise(Bytes* szTagSet);
+    static TagSet* pDeserialise(Bytes* ayTagSet);
 
     void vAppend(Stz* szName);
     void vAppend(Stz* szName, i8 iValue);

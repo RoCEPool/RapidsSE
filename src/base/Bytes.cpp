@@ -40,7 +40,7 @@ Bytes::~Bytes(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* append given string                                                        */
 /*----------------------------------------------------------------------------*/
-i8 Bytes::iAppend(Stz* szStr)
+i8 Bytes::iAppend(const Stz* szStr)
 {
   m_xHeader.vAssertHeader();
   aFooter()->vAssertFooter();
@@ -51,6 +51,47 @@ i8 Bytes::iAppend(Stz* szStr)
     m_yaArea[m_i_Latter++] = * ayByte++;
 
   m_yaArea[m_i_Latter++] = '\0';
+
+  m_xHeader.vAssertHeader();
+  aFooter()->vAssertFooter();
+
+  return i_String;
+}
+
+/*----------------------------------------------------------------------------*/
+/* append an integer                                                          */
+/*----------------------------------------------------------------------------*/
+i8 Bytes::iAppend(i8 iVal)
+{
+  m_xHeader.vAssertHeader();
+  aFooter()->vAssertFooter();
+
+  i8 iPos = m_i_Latter;
+
+  i8* piEntry = reinterpret_cast<i8*>(&m_yaArea[m_i_Latter]);
+  *piEntry = iVal;
+
+  m_i_Latter += sizeof(i8);
+
+  m_xHeader.vAssertHeader();
+  aFooter()->vAssertFooter();
+
+  return iPos;
+}
+
+/*----------------------------------------------------------------------------*/
+/* append some raw bytes                                                      */
+/*----------------------------------------------------------------------------*/
+i8 Bytes::iAppend(byte* pySrc, i8 nLen)
+{
+  m_xHeader.vAssertHeader();
+  aFooter()->vAssertFooter();
+
+  i8 i_String = m_i_Latter;
+  byte* ayByte = pySrc;
+
+  for (i8 i=0; i<nLen; i++)
+    m_yaArea[m_i_Latter++] = * ayByte++;
 
   m_xHeader.vAssertHeader();
   aFooter()->vAssertFooter();
@@ -98,7 +139,7 @@ Stz* Bytes::szBoundary(void)
 /*----------------------------------------------------------------------------*/
 /* returns true if the given address is within this object                    */
 /*----------------------------------------------------------------------------*/
-bool Bytes::bContains(Stz* szAddr)
+bool Bytes::bContains(const Stz* szAddr)
 {
   m_xHeader.vAssertHeader();
   aFooter()->vAssertFooter();
@@ -106,6 +147,19 @@ bool Bytes::bContains(Stz* szAddr)
   ASSERT(szAddr);
 
   return (szAddr >= szArea() && szAddr <= szBoundary());
+}
+
+/*----------------------------------------------------------------------------*/
+/* get integer value at given offset in m_yaArea                              */
+/*----------------------------------------------------------------------------*/
+i8 Bytes::iGet(i8 i_Area)
+{
+  m_xHeader.vAssertHeader();
+  aFooter()->vAssertFooter();
+
+  i8* piVal = reinterpret_cast<i8*>(&m_yaArea[i_Area]);
+
+  return *piVal;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -119,6 +173,17 @@ Stz* Bytes::szGet(i8 i_Area)
   char* azStr = (char*) &m_yaArea[i_Area];
 
   return (Stz*)azStr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get address at given offset in m_yaArea                                    */
+/*----------------------------------------------------------------------------*/
+byte* Bytes::pyGet(i8 i_Area)
+{
+  m_xHeader.vAssertHeader();
+  aFooter()->vAssertFooter();
+
+  return &m_yaArea[i_Area];
 }
 
 /*----------------------------------------------------------------------------*/
