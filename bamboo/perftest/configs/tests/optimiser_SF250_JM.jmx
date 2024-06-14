@@ -4283,7 +4283,7 @@ pipeline Query9
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
                 <stringProp name="resultSetHandler">Store as String</stringProp>
                 <stringProp name="resultSetMaxRows"></stringProp>
                 <stringProp name="resultVariable"></stringProp>
@@ -4411,7 +4411,7 @@ pipeline Query9
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
                 <stringProp name="resultSetHandler">Store as String</stringProp>
                 <stringProp name="resultSetMaxRows"></stringProp>
                 <stringProp name="resultVariable"></stringProp>
@@ -4424,7 +4424,7 @@ pipeline Query9
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
                 <stringProp name="resultSetHandler">Store as String</stringProp>
                 <stringProp name="resultSetMaxRows"></stringProp>
                 <stringProp name="resultVariable"></stringProp>
@@ -4437,7 +4437,7 @@ pipeline Query9
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
                 <stringProp name="resultSetHandler">Store as String</stringProp>
                 <stringProp name="resultSetMaxRows"></stringProp>
                 <stringProp name="resultVariable"></stringProp>
@@ -4450,7 +4450,26 @@ pipeline Query9
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="jobMetrics" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">export se__jobMetrics       &quot;../queryLibs/src/se__jobMetrics.csv&quot;;
+export se__jobOperands      &quot;../queryLibs/src/se__jobOperands.csv&quot;;
+export se__jobOperators     &quot;../queryLibs/src/se__jobOperators.csv&quot;;
+export se__jobNetDissect    &quot;../queryLibs/src/se__jobNetDissect.csv&quot;;
+export se__jobNetwork       &quot;../queryLibs/src/se__jobNetwork&quot;;
+export se__sysMetrics       &quot;../queryLibs/src/se__sysMetrics.csv&quot;;
+export se__sysLocks         &quot;../queryLibs/src/se__sysLocks.csv&quot;;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
                 <stringProp name="resultSetHandler">Store as String</stringProp>
                 <stringProp name="resultSetMaxRows"></stringProp>
                 <stringProp name="resultVariable"></stringProp>
@@ -4472,22 +4491,6 @@ pipeline Query9
                 <hashTree/>
               </hashTree>
             </hashTree>
-            <com.rapidsdata.jmeter.samplers.JdbcRecorder guiclass="com.rapidsdata.jmeter.samplers.gui.JdbcRecorderGui" testclass="com.rapidsdata.jmeter.samplers.JdbcRecorder" testname="jobMetrics-q9" enabled="true">
-              <stringProp name="JdbcRecorder.connPoolVarName">SEConnPool</stringProp>
-              <stringProp name="JdbcRecorder.queries">export se__jobMetrics       &quot;../queryLibs/src/se__jobMetrics.csv&quot;;
-export se__jobOperands    &quot;../queryLibs/src/se__jobOperands.csv&quot;;
-export se__jobOperators    &quot;../queryLibs/src/se__jobOperators.csv&quot;;
-export se__jobNetDissect  &quot;../queryLibs/src/se__jobNetDissect.csv&quot;;
-export se__jobNetwork      &quot;../queryLibs/src/se__jobNetwork&quot;;
-export se__sysMetrics       &quot;../queryLibs/src/se__sysMetrics.csv&quot;;
-export se__sysLocks         &quot;../queryLibs/src/se__sysLocks.csv&quot;;</stringProp>
-              <boolProp name="JdbcRecorder.incColumnNames">true</boolProp>
-              <boolProp name="JdbcRecorder.incColumnTypes">false</boolProp>
-              <boolProp name="JdbcRecorder.overrideOutput">false</boolProp>
-              <stringProp name="JdbcRecorder.fileName"></stringProp>
-              <stringProp name="JdbcRecorder.fileFormat">pretty</stringProp>
-            </com.rapidsdata.jmeter.samplers.JdbcRecorder>
-            <hashTree/>
           </hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q10 Group" enabled="false"/>
           <hashTree>

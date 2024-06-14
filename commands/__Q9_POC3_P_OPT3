@@ -116,16 +116,27 @@ pipeline Query9
 select count(*) from lineitem; ................................  59,986,052
 select count(*) from orders; ................................    15,000,000
 select count(*) from part; ....................................   2,000,000
-select count(*) from partsupp; .................................... 800,000
+select count(*) from partsupp; ...................................8,000,000
 select count(*) from supplier; .................................... 100,000
 
 1) select count(*) from part where p_name like '%green%';  .......  21,808
 2) select count(*) from part, lineitem where p_name like '%green%' and p_partkey = l_partkey; ......      653,527
 3) select count(*) from part, partsupp where p_name like '%green%' and p_partkey = ps_partkey; ......      87,232
-4) select count(*) from lineitem, partsupp where l_partkey = ps_partkey;                       .......239,944,208
-5) select count(*) from lineitem, orders where l_orderkey = o_orderkey;                       .......  59,986,052
-6) select count(*) from lineitem, supplier where l_suppkey = s_suppkey;                       .......  59,986,052
-7) select count(*) from supplier, nation where s_nationkey = n_nationkey;                     .......   2,500,000
+
+4) select count(*) from part, partsupp, lineitem where p_name like '%green%' and p_partkey = ps_partkey
+and l_partkey = p_partkey and ps_suppkey = l_suppkey;                                        ......... 3,261,613
+
+
+4) select count(*) from part, partsupp, lineitem, orders where p_name like '%green%' and p_partkey = ps_partkey
+and l_partkey = p_partkey and ps_suppkey = l_suppkey and l_orderkey = o_orderkey;           ......... 3,261,613
+
+4a) select count(*) from part, partsupp, lineitem, orders where p_name like '%green%' and p_partkey = ps_partkey
+    and l_partkey = p_partkey and l_orderkey = o_orderkey;                                   ........  13,046,452
+
+5) select count(*) from lineitem, partsupp where l_partkey = ps_partkey;                       .......239,944,208
+6) select count(*) from lineitem, orders where l_orderkey = o_orderkey;                       .......  59,986,052
+7) select count(*) from lineitem, supplier where l_suppkey = s_suppkey;                       .......  59,986,052
+8) select count(*) from supplier, nation where s_nationkey = n_nationkey;                     .......   2,500,000
 
 
 8) select count(*) from part, partsupp, lineitem where p_name like '%green%' and
