@@ -100,31 +100,6 @@ void vInflateRowCol(Dynamic_T* aDynamicT) {
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- vInflatePdsRowCol -------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-// function-vInflatePdsRowCol
-void vInflatePdsRowCol(Dynamic_T* aDynamicT) {
-
-	m8* amCellAddress;
-	i8* piColumn;
-	i8 iOffset;
-	i8 i_Col;
-	i8 __COLUMN_NO__;
-
-	// marker-start
-	// - - - - - - - - - - - -
-	i_Col = __COLUMN_NO__;
-
-	iOffset = piColumn[i_Col];
-	if (iOffset != C_DATUM_NULL) {
-		amCellAddress = (m8*)&piColumn[i_Col];
-		piColumn[i_Col] = ADDR_ADD(i8, amCellAddress, iOffset);
-	}
-
-	// marker-end
-}
-
-/*----------------------------------------------------------------------------*/
 /*-- vInflateRowReturn -------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-vInflateRowReturn
