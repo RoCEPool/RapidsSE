@@ -387,21 +387,14 @@ i8 iSortBegin(Dynamic_T* aDynamicT) {
 // function-iPotTubBegin
 i8 iPotTubBegin(Dynamic_T* aDynamicT) {
 
-  i8  CURRENT_DUP_OP;
-  i8* paW;
-  RowInfo __ROW_INFO_TO__[C_MAX_DUP_OPS];
+  i8 __POT__;
 
   // marker-start
   __L_LABEL__:
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Initialize
-  if (__ROW_INFO_TO__[CURRENT_DUP_OP].m_bInitialize) {
+  aDynamicT->m_bGeneratePot = __POT__;
 
-    struct ColumnInfo xColumnInfo[] = {
-        // marker-end
-    };
-  }
+  // marker-end
 
   return 0;
 }
