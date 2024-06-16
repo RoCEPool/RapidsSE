@@ -229,8 +229,6 @@ i8 iIndexInsertIntKey(Dynamic_T* aDynamicT) {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // insert key in the payload
 #ifdef WITH_CLANG
-    //aEntInserted = aExtern_IndexTreeInsertEnt(
-    //    aDynamicT->m_xIndexInfoPL[CURRENT_DUP_OP].m_aIndexTree, aDynamicT->m_xIndexInfoPL[CURRENT_DUP_OP].m_aEntInt, &aDynamicT->m_iErrorCode);
     aEntInserted = __EXTERN_INSERTENT__();
 #endif
 
@@ -268,8 +266,6 @@ i8 iIndexInsertVchKey(Dynamic_T* aDynamicT) {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // insert key in the payload
 #ifdef WITH_CLANG
-  //aEntInserted = aExtern_IndexTreeInsertEnt(
-  //    aDynamicT->m_xIndexInfoPL[CURRENT_DUP_OP].m_aIndexTree, aDynamicT->m_xIndexInfoPL[CURRENT_DUP_OP].m_aEntInt, &aDynamicT->m_iErrorCode);
   aEntInserted = __EXTERN_INSERTENT__();
 #endif
 

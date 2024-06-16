@@ -53,15 +53,9 @@ void vInflatePdsRowBegin(Dynamic_T* aDynamicT) {
 	// process the row
 	aDynamicT->m_bProcessRow = true;
 
-	//i_CurrentRow++;
-	//if (i_CurrentRow  >= aDynamicT->m_nRows) {
-	//	goto L_Return;
-	//}
-
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 	// get the next row (should be able to add rowsize)
 #ifdef WITH_CLANG
-	//aDynamicT->m_xRowInfoIT[CURRENT_DUP_OP].m_aRowCellArray = aDynamicT->m_fp_aExtern_PdsRowBufferCellArray(aDynamicT->m_aPdsRowBuffer, i_CurrentRow);
 	if ( ! aCurrentRow)
 		aDynamicT->m_xRowInfoIT[CURRENT_DUP_OP].m_aRowCellArray = aDynamicT->m_fp_aExtern_PdsFirstRowCellArray(aDynamicT->m_xRowInfoIT[CURRENT_DUP_OP].m_aPdsRowBuffer, &aCurrentRow);
 	else
@@ -73,8 +67,7 @@ void vInflatePdsRowBegin(Dynamic_T* aDynamicT) {
 
 	aDynamicT->m_xRowInfoIT[CURRENT_DUP_OP].m_acStrArea = aDynamicT->m_xRowInfoIT[CURRENT_DUP_OP].m_acStrAreaSav;
 
-	//piColumn = (i8*)aDynamicT->m_xRowInfoIT[CURRENT_DUP_OP].m_aRowCellArray;
-  bPdsRowBuffer = true;
+	bPdsRowBuffer = true;
 
 	// marker-end
 	L_Return:
