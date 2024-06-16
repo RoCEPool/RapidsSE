@@ -374,8 +374,6 @@ void CombinedSrc::vSynthesizeCode(Stencil* pStencil, bool bFirstStage, bool bLas
 				vAppendStencilTo(pOpSketch);
 
 				vAppendCodeFragment(pOpSketch, "iPotTubBegin"_Stz);
-				//vAppendCodePixCols(pOpSketch);
-				//vAppendCodeFragment(pOpSketch, "vPotTubRowPix"_Stz);
 
 				vAppendCodeHashCols2(pOpSketch);
 
@@ -402,8 +400,6 @@ void CombinedSrc::vSynthesizeCode(Stencil* pStencil, bool bFirstStage, bool bLas
 				vAppendStencilTo(pOpSketch);
 
 				vAppendCodeFragment(pOpSketch, "iPotTubBegin"_Stz);
-				//vAppendCodePixCols(pOpSketch);
-				//vAppendCodeFragment(pOpSketch, "vPotTubRowPix"_Stz);
 
 				vAppendCodeFragment(pOpSketch, "iPotTubContinue_pds"_Stz);
 
@@ -773,8 +769,6 @@ void CombinedSrc::vSynthesizeCode(Stencil* pStencil, bool bFirstStage, bool bLas
         vAppendStencilTo(pOpSketch);
 
         vAppendCodeFragment(pOpSketch, "iPotTubBegin"_Stz);
-        //vAppendCodePixCols(pOpSketch);
-        //vAppendCodeFragment(pOpSketch, "vPotTubRowPix"_Stz);
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // POT/TUB in EOS handler
@@ -843,8 +837,6 @@ void CombinedSrc::vSynthesizeCode(Stencil* pStencil, bool bFirstStage, bool bLas
 				vAppendStencilTo(pOpSketch);
 
 				vAppendCodeFragment(pOpSketch, "iPotTubBegin"_Stz);
-				//vAppendCodePixCols(pOpSketch);
-				//vAppendCodeFragment(pOpSketch, "vPotTubRowPix"_Stz);
 
 				// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 				// POT/TUB in EOS handler

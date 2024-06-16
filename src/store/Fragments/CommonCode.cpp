@@ -459,29 +459,6 @@ i8 vIndexDefContinue(Dynamic_T* aDynamicT) {
 
 }
 
-/*----------------------------------------------------------------------------*/
-/*-- vPotTubRowPix -----------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-// function-vPotTubRowPix
-void vPotTubRowPix(Dynamic_T* aDynamicT) {
-
-  i8 __POT__;
-  i8 CURRENT_DUP_OP;
-  RowInfo __ROW_INFO_TO__[C_MAX_DUP_OPS];
-
-  {
-    // marker-start
-
-//#ifdef WITH_CLANG
-//    //void* aRowPix = aDynamicT->m_fp_aExtern_RowPixNew(__COLUMNS_OUT__, &xColumnInfo);
-//    __EXTERN_ROWPIX__(__TUB_POT__, __COLUMNS_OUT__, &xColumnInfo);
-//#endif
-    __ROW_INFO_TO__[CURRENT_DUP_OP].m_bInitialize = false;
-    aDynamicT->m_bGeneratePot = __POT__;
-  }
-
-  // marker-end
-}
 
 /*----------------------------------------------------------------------------*/
 /*-- iPotTubContinue ---------------------------------------------------------*/
