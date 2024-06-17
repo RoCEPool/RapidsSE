@@ -20,6 +20,7 @@ Stz* aCK[CK_ENUMS]
   /* */ "CK_o_FOLD"_Stz,         // CK_o_FOLD
   /* */ "CK_o_FROM"_Stz,         // CK_o_FROM
   /* */ "CK_o_GBYAGG"_Stz,       // CK_o_GBYAGG
+  /* */ "CK_o_GLOBALHASH"_Stz,   // CK_o_GLOBALHASH,
   /* */ "CK_o_HASH"_Stz,         // CK_o_HASH
   /* */ "CK_o_HAVING"_Stz,       // CK_o_HAVING
   /* */ "CK_o_INDEXJOIN"_Stz,    // CK_o_INDEXJOIN
@@ -31,6 +32,7 @@ Stz* aCK[CK_ENUMS]
   /* */ "CK_o_ORDAGG"_Stz,       // CK_o_ORDAGG
   /* */ "CK_o_PDSROW"_Stz,       // CK_o_PDSROW
   /* */ "CK_o_PROJECT"_Stz,      // CK_o_PROJECT
+  /* */ "CK_o_RRFJOIN"_Stz,      // CK_o_RRFJOIN,
   /* */ "CK_o_SCAN"_Stz,         // CK_o_SCAN
   /* */ "CK_o_SEND"_Stz,         // CK_o_SEND
   /* */ "CK_o_SORT"_Stz,         // CK_o_SORT
@@ -157,6 +159,7 @@ Stz* aCK_short[CK_ENUMS]
   /* */ "Fold"_Stz,            // CK_o_FOLD
   /* */ "From"_Stz,            // CK_o_FROM
   /* */ "GbyAgg"_Stz,          // CK_o_GBYAGG
+  /* */ "GlobalHash"_Stz,      // CK_o_GLOBALHASH
   /* */ "Hash"_Stz,            // CK_o_HASH
   /* */ "Having"_Stz,          // CK_o_HAVING
   /* */ "IndexJoin"_Stz,       // CK_o_INDEXJOIN
@@ -168,6 +171,7 @@ Stz* aCK_short[CK_ENUMS]
   /* */ "OrdAgg"_Stz,          // CK_o_ORDAGG
   /* */ "PdsRow"_Stz,          // CK_o_PDS_ROW
   /* */ "Project"_Stz,         // CK_o_PROJECT
+  /* */ "RrfJoin"_Stz,         // CK_o_RRFJOIN
   /* */ "Scan"_Stz,            // CK_o_SCAN
   /* */ "SendSE"_Stz,          // CK_o_SEND
   /* */ "Sort"_Stz,            // CK_o_SORT
