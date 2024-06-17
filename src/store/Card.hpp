@@ -500,7 +500,7 @@ namespace STORE
     Card_Fold*          pSub_fold(bool bNotNull=false);
     Card_From*          pSub_from(bool bNotNull=false);
     Card_GbyAgg*        pSub_gbyAgg(bool bNotNull=false);
-    Card_GlobalHash*    pSub_globallHash(bool bNotNull=false);
+    Card_GlobalHash*    pSub_globalHash(bool bNotNull=false);
     Card_Hashing*       pSub_hashing(bool bNotNull=false);
     Card_HshCol*        pSub_hshCol(bool bNotNull=false);
     Card_HshColList*    pSub_hshColList(bool bNotNull=false);
