@@ -215,6 +215,7 @@ void Dissector::vOp(i8 i_OpSpec)
   else if (m_szOpNm->bSame("debug"_Stz))        pCard = pOp_debug       ();
   else if (m_szOpNm->bSame("filter"_Stz))       pCard = pOp_filter      ();
   else if (m_szOpNm->bSame("gbyAgg"_Stz))       pCard = pOp_gbyAgg      ();
+  else if (m_szOpNm->bSame("globalHash"_Stz))   pCard = pOp_globalHash  ();
   else if (m_szOpNm->bSame("hash"_Stz))         pCard = pOp_hash        ();
   else if (m_szOpNm->bSame("indexJoin"_Stz))    pCard = pOp_indexJoin   ();
   else if (m_szOpNm->bSame("indexScan"_Stz))    pCard = pOp_indexScan   ();
@@ -226,6 +227,7 @@ void Dissector::vOp(i8 i_OpSpec)
   else if (m_szOpNm->bSame("output"_Stz))       pCard = pOp_output      ();
   else if (m_szOpNm->bSame("pulse"_Stz))        pCard = pOp_pulse       ();
   else if (m_szOpNm->bSame("project"_Stz))      pCard = pOp_project     ();
+  else if (m_szOpNm->bSame("rrfJoin"_Stz))      pCard = pOp_rrfJoin     ();
   else if (m_szOpNm->bSame("scan"_Stz))         pCard = pOp_scan        ();
   else if (m_szOpNm->bSame("sendSE"_Stz))       pCard = pOp_send        ();
   else if (m_szOpNm->bSame("sink"_Stz))         pCard = pOp_sink        ();
@@ -474,6 +476,18 @@ Card* Dissector::pOp_gbyAgg(void)
   delete p_termSeq;
 
   return p_aggreg;
+}
+
+/*----------------------------------------------------------------------------*/
+/* dissect : globalHash ...                                                   */
+/*----------------------------------------------------------------------------*/
+Card* Dissector::pOp_globalHash(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_DISSECTOR, _FOOTER_);
+
+  Card_GlobalHash* p_globalHash = new Card_GlobalHash;
+
+  return p_globalHash;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -919,6 +933,18 @@ Card* Dissector::pOp_project(void)
   delete p_termSeq;
 
   return p_project;
+}
+
+/*----------------------------------------------------------------------------*/
+/* dissect : rrfJoin ...                                                      */
+/*----------------------------------------------------------------------------*/
+Card* Dissector::pOp_rrfJoin(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_DISSECTOR, _FOOTER_);
+
+  Card_RrfJoin* p_rrfJoin = new Card_RrfJoin;
+
+  return p_rrfJoin;
 }
 
 /*----------------------------------------------------------------------------*/
