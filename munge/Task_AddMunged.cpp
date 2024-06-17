@@ -4449,7 +4449,7 @@ void Task::vAddMunged(Task* )
     "/*----------------------------------------------------------------------------*/\n"
     "cmdSyntax: rrfJoin :: rrfJoin <tableNm> <keyExpr> ;\n"
     "\n"
-    ": indexJoin_cmdTags _cmdTags tagCopy: op_tags\n"
+    ": rrfJoin_cmdTags _cmdTags tagCopy: op_tags\n"
     "  tags{\n"
     "    <cmdDesc> = \"--desc for op--\"\n"
     "    //<opEntry> = \"rrfJoin_op\"\n"

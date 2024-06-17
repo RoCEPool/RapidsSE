@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: rrfJoin :: rrfJoin <tableNm> <keyExpr> ;
 
-: indexJoin_cmdTags _cmdTags tagCopy: op_tags
+: rrfJoin_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <cmdDesc> = "--desc for op--"
     //<opEntry> = "rrfJoin_op"

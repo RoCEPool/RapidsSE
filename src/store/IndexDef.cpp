@@ -271,6 +271,26 @@ void IndexDef::vDump(i8 i_Tab)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is index global                                                            */
+/*----------------------------------------------------------------------------*/
+bool IndexDef::bIsGlobal(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
+
+  return m_bIsGlobal;
+}
+
+/*----------------------------------------------------------------------------*/
+/* index is global                                                            */
+/*----------------------------------------------------------------------------*/
+void IndexDef::vIsGlobal(bool bIsGlobal)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
+
+  m_bIsGlobal = bIsGlobal;
+}
+
+/*----------------------------------------------------------------------------*/
 /* index has one or more descending columns                                   */
 /*----------------------------------------------------------------------------*/
 bool IndexDef::bHasDescending(void)
@@ -431,7 +451,7 @@ eEC IndexDef::eParse(Table* pTable, Stz* szCmd)
   ASSERT(pTkn->bSame("create"_Stz));
   
   pTkn = pTknVec->pNextToken(); dPT();
-  ASSERT(pTkn->bSame("unique"_Stz) || pTkn->bSame("index"_Stz));
+  ASSERT(pTkn->bSame("unique"_Stz) || pTkn->bSame("index"_Stz) || pTkn->bSame("global"_Stz));
   
   if (pTkn->bSame("unique"_Stz)) {
     
@@ -440,7 +460,15 @@ eEC IndexDef::eParse(Table* pTable, Stz* szCmd)
     pTkn = pTknVec->pNextToken(); dPT();
     ASSERT(pTkn->bSame("index"_Stz));
   }
-  
+
+  if (pTkn->bSame("global"_Stz)) {
+
+    m_bIsGlobal = true;
+
+    pTkn = pTknVec->pNextToken(); dPT();
+    ASSERT(pTkn->bSame("index"_Stz));
+  }
+
   // -- -- -- --
   // index name
   // -- -- -- --

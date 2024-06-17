@@ -24,6 +24,7 @@ namespace STORE
 
     bool   m_bIsPrimaryKey;  // is this the primary key?
     bool   m_bIsUnique;      // is this index unique?
+    bool   m_bIsGlobal;      // is this index global?
     bool   m_bHasDescending; // has a desc column
 
     i8     m_nColumns;       // no of columns in the index
@@ -57,6 +58,8 @@ namespace STORE
     Column* pGetColumn(i8 i_Column);
     i8     iGetColumn(i8 iColSet);
     i8     iGetStreamDefCol(i8 iColumn);
+    bool   bIsGlobal(void);
+    void   vIsGlobal(bool bGlobal);
     bool   bHasDescending(void);
     void   vHasDescending(bool bHasDescending);
 
