@@ -23,12 +23,14 @@ Rrf::Rrf(u8 uBuffer, u8 uItem, u8 uLevels)
 {
   m_uBuffer  = uBuffer;
   m_uItem    = uItem;
+  m_uGlobal  = 0;
+
   m_uLevels  = uLevels;
-  
   m_uKind    = KE_GENERAL;
   m_uPayload = 0;
   m_uFree    = 0;
   m_uDesc    = 0;
+
   m_uSpare   = 0;
 }
 
@@ -39,12 +41,14 @@ Rrf::Rrf(const Rrf& oCopy)
 {
   m_uBuffer  = oCopy.m_uBuffer;
   m_uItem    = oCopy.m_uItem;
-  m_uLevels  = oCopy.m_uLevels;
+  m_uGlobal  = 0;
 
+  m_uLevels  = oCopy.m_uLevels;
   m_uKind    = oCopy.m_uKind;
   m_uPayload = oCopy.m_uPayload;
   m_uFree    = oCopy.m_uFree;
   m_uDesc    = oCopy.m_uDesc;
+
   m_uSpare   = 0;
 }
 
@@ -198,12 +202,14 @@ void Rrf::vReset(void)
 {
   m_uBuffer  = 0;
   m_uItem    = 0;
+  m_uGlobal  = 0;
+
   m_uLevels  = 0;
-  
   m_uKind    = 0;
   m_uPayload = 0;
   m_uFree    = 0;
   m_uDesc    = 0;
+
   m_uSpare   = 0;
 }
 
@@ -214,12 +220,14 @@ void Rrf::vSet(Rrf xwRef)
 {
   m_uBuffer  = xwRef.m_uBuffer;
   m_uItem    = xwRef.m_uItem;
+  m_uGlobal  = 0;
+
   m_uLevels  = xwRef.m_uLevels;
-  
   m_uKind    = xwRef.m_uKind;
   m_uPayload = xwRef.m_uPayload;
   m_uFree    = xwRef.m_uFree;
   m_uDesc    = xwRef.m_uDesc;
+
   m_uSpare   = 0;
 }
 
@@ -230,12 +238,14 @@ void Rrf::vSetNil(void)
 {
   m_uBuffer  = 0;
   m_uItem    = 0;
+  m_uGlobal  = 0;
+
   m_uLevels  = 0;
-  
   m_uKind    = 0;
   m_uPayload = 0;
   m_uFree    = 0;
   m_uDesc    = 0;
+
   m_uSpare   = 0;
 }
 
