@@ -485,7 +485,54 @@ Card* Dissector::pOp_globalHash(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_DISSECTOR, _FOOTER_);
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // op arguments
+  vCheckArgs(3);
+
+  Stz* szTableNm = szArg_value(0);
+  Stz* szIndexNm = szArg_value(1);
+  Card_TermSeq* p_termSeq = pArg_termSeq(2);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   Card_GlobalHash* p_globalHash = new Card_GlobalHash;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // level
+
+  Card_Level* p_level = new Card_Level(AL_PARTITION);
+  p_globalHash->vAppendChild(p_level);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // table
+
+  Card_Table* p_table = pForm_table(szTableNm);
+  p_globalHash->vAppendChild(p_table);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // index
+
+  Card_IndexList* p_indexList = new Card_IndexList;
+  p_table->vAppendChild(p_indexList);
+
+  // Index* pIndex = pTable->pFindIndex(szIndexNm);
+
+  Card_Index* p_index = new Card_Index;
+  Card_IndexNm* p_indexNm = new Card_IndexNm;
+  p_index->vAppendChild(p_indexNm);
+  p_indexNm->SYM(SF_IDX_NM,szIndexNm);
+
+  p_indexList->vAppendChild(p_index);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // hash column
+
+  Card_HshColList* p_hshColList = pPop_hshColList(p_termSeq);
+  p_globalHash->vAppendChild(p_hshColList);
+
+  delete p_termSeq;
+
+  //p_globalHash->vDump(__FUNCTION__ );
 
   return p_globalHash;
 }
@@ -554,7 +601,7 @@ Card* Dissector::pOp_indexJoin(void)
   Card_Table* p_table = pForm_table(szTableNm);
   p_indexJoin->vAppendChild(p_table);
 
-   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // index
 
   Card_IndexList* p_indexList = new Card_IndexList;
