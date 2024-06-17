@@ -989,7 +989,39 @@ Card* Dissector::pOp_rrfJoin(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_DISSECTOR, _FOOTER_);
 
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // op arguments
+  vCheckArgs(2);
+
+  Stz* szTableNm = szArg_value(0);
+  Card_TermSeq* p_termSeq = pArg_termSeq(1);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   Card_RrfJoin* p_rrfJoin = new Card_RrfJoin;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // level
+
+  Card_Level* p_level = new Card_Level(AL_PARTITION);
+  p_rrfJoin->vAppendChild(p_level);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // table
+
+  Card_Table* p_table = pForm_table(szTableNm);
+  p_rrfJoin->vAppendChild(p_table);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // hash column
+
+  Card_HshColList* p_hshColList = pPop_hshColList(p_termSeq);
+  p_rrfJoin->vAppendChild(p_hshColList);
+
+  delete p_termSeq;
+
+  //p_rrfJoin->vDump(__FUNCTION__ );
 
   return p_rrfJoin;
 }
