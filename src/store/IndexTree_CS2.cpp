@@ -1504,7 +1504,7 @@ Ent* IndexTree::aFindEntry_CS2_v15(IndexTree* pIndexTree, Key* aKey)
 
     /*-----------------------------------------------------------------------*/
 
-    i8 i_PoolBuffer = aEnt->m_xRef.m_uBuffer;
+    i8 i_PoolBuffer = aEnt->m_xRef.Std.m_uBuffer;
 
     HeapBuffer* pHeapBuffer = _pHeapBuffer(FileMap::pToPoolBuffer(i_PoolBuffer));
 
@@ -1639,7 +1639,7 @@ Ent* IndexTree::aFindEntry_CS2_v16(IndexTree* pIndexTree, Key* aKey)
 
     /*-----------------------------------------------------------------------*/
 
-    i8 i_PoolBuffer = aEnt->m_xRef.m_uBuffer;
+    i8 i_PoolBuffer = aEnt->m_xRef.Std.m_uBuffer;
 
     HeapBuffer* pHeapBuffer = _pHeapBuffer(FileMap::pToPoolBuffer(i_PoolBuffer));
 
@@ -1771,7 +1771,7 @@ Ent* IndexTree::aFindEntry_CS2_v17(IndexTree* pIndexTree, Key* aKey)
     aEnt = pEntBuffer->pFindEntryPrevTo_int(aEnt,aKey);
     ASSERT(aEnt);
 
-    i8 i_BuffOffset = C_SIZE_POOL_BUFFER * (i8)aEnt->m_xRef.m_uBuffer;
+    i8 i_BuffOffset = C_SIZE_POOL_BUFFER * (i8)aEnt->m_xRef.Std.m_uBuffer;
     HeapBuffer* pHeapBuffer = aAdd<HeapBuffer*>(gpBufferPool->m_pBase, i_BuffOffset);
     pEntBuffer = aAdd<EntBuffer*>(pHeapBuffer,sizeof(HeapBuffer));
 
@@ -1937,7 +1937,7 @@ Ent* IndexTree::aFindEntry_CS2_v18(IndexTree* pIndexTree, Key* aKey)
 
     /*-----------------------------------------------------------------------*/
 
-    i8 i_BuffOffset = C_SIZE_POOL_BUFFER * (i8)aEnt->m_xRef.m_uBuffer;
+    i8 i_BuffOffset = C_SIZE_POOL_BUFFER * (i8)aEnt->m_xRef.Std.m_uBuffer;
     HeapBuffer* pHeapBuffer = aAdd<HeapBuffer*>(gpBufferPool->m_pBase, i_BuffOffset);
     pEntBuffer = aAdd<EntBuffer*>(pHeapBuffer,sizeof(HeapBuffer));
 
@@ -2090,7 +2090,7 @@ Ent* IndexTree::aFindEntry_CS2_v19(IndexTree* pIndexTree, Key* aKey_find)
 
     /*-----------------------------------------------------------------------*/
 
-    i8 i_BuffOffset = C_SIZE_POOL_BUFFER * (i8)aEnt_Hn->m_xRef.m_uBuffer;
+    i8 i_BuffOffset = C_SIZE_POOL_BUFFER * (i8)aEnt_Hn->m_xRef.Std.m_uBuffer;
     HeapBuffer* pHeapBuffer = aAdd<HeapBuffer*>(gpBufferPool->m_pBase, i_BuffOffset);
     pEntBuffer_Hn = aAdd<EntBuffer*>(pHeapBuffer, sizeof(HeapBuffer));
 
@@ -2247,7 +2247,7 @@ Ent* IndexTree::aFindEntry_CS2_v20(IndexTree* pIndexTree, Key* aKey_find)
 
     /*-----------------------------------------------------------------------*/
 
-    i8 i_BuffOffset = C_SIZE_POOL_BUFFER * (i8)aEnt_Hn->m_xRef.m_uBuffer;
+    i8 i_BuffOffset = C_SIZE_POOL_BUFFER * (i8)aEnt_Hn->m_xRef.Std.m_uBuffer;
     HeapBuffer* pHeapBuffer = aAdd<HeapBuffer*>(gpBufferPool->m_pBase, i_BuffOffset);
     pEntBuffer_Hn = aAdd<EntBuffer*>(pHeapBuffer, sizeof(HeapBuffer));
 
@@ -2386,7 +2386,7 @@ Ent* IndexTree::aFindEntry_CS2_v21(IndexTree* pIndexTree, Key* aKey_find)
       aEnt_Hn_test = pEntBuffer_Hn->aNextEntry(aEnt_Hn_test, 0);
     }
 
-    i8 i_BuffOffset = C_SIZE_POOL_BUFFER * (i8)aEnt_Hn_found->m_xRef.m_uBuffer;
+    i8 i_BuffOffset = C_SIZE_POOL_BUFFER * (i8)aEnt_Hn_found->m_xRef.Std.m_uBuffer;
     HeapBuffer* pHeapBuffer = aAdd<HeapBuffer*>(gpBufferPool->m_pBase, i_BuffOffset);
     pEntBuffer_Hn = aAdd<EntBuffer*>(pHeapBuffer, sizeof(HeapBuffer));
 
@@ -2518,7 +2518,7 @@ Ent* IndexTree::aFindEntry_CS2_v22(IndexTree* pIndexTree, Key* aKey_find)
       NEXT_ENTRY(aEnt_Hn_test,aEnt_Hn_test,0,pEntBuffer_Hn);
     }
 
-    i8 i_BuffOffset = C_SIZE_POOL_BUFFER * (i8)aEnt_Hn_found->m_xRef.m_uBuffer;
+    i8 i_BuffOffset = C_SIZE_POOL_BUFFER * (i8)aEnt_Hn_found->m_xRef.Std.m_uBuffer;
     HeapBuffer* pHeapBuffer = aAdd<HeapBuffer*>(gpBufferPool->m_pBase, i_BuffOffset);
     pEntBuffer_Hn = aAdd<EntBuffer*>(pHeapBuffer, sizeof(HeapBuffer));
 
@@ -2647,7 +2647,7 @@ Ent* IndexTree::aFindEntry_CS2_v23(IndexTree* pIndexTree, Key* aKey_find)
       NEXT_ENTRY(aEnt_Hn_test,aEnt_Hn_test,0,pEntBuffer_Hn);
     }
 
-    i8 i_BuffOffset = C_SIZE_POOL_BUFFER * (i8)aEnt_Hdown_found->m_xRef.m_uBuffer;
+    i8 i_BuffOffset = C_SIZE_POOL_BUFFER * (i8)aEnt_Hdown_found->m_xRef.Std.m_uBuffer;
     HeapBuffer* pHeapBuffer = aAdd<HeapBuffer*>(gpBufferPool->m_pBase, i_BuffOffset);
     pEntBuffer_Hn = aAdd<EntBuffer*>(pHeapBuffer, sizeof(HeapBuffer));
 
@@ -2780,7 +2780,7 @@ Ent* IndexTree::aFindEntry_CS2_v24(IndexTree* pIndexTree, Key* aKey_find)
       NEXT_ENTRY(aEnt_Hn_test,aEnt_Hn_test,0,pEntBuffer_Hn);
     }
 
-    i8 i_BuffOffset = C_SIZE_POOL_BUFFER * (i8)aEnt_Hdown_found->m_xRef.m_uBuffer;
+    i8 i_BuffOffset = C_SIZE_POOL_BUFFER * (i8)aEnt_Hdown_found->m_xRef.Std.m_uBuffer;
     HeapBuffer* pHeapBuffer = aAdd<HeapBuffer*>(gpBufferPool->m_pBase, i_BuffOffset);
     pEntBuffer_Hn = aAdd<EntBuffer*>(pHeapBuffer, sizeof(HeapBuffer));
 
@@ -2914,7 +2914,7 @@ Ent* IndexTree::aFindEntry_CS2_v25(IndexTree* pIndexTree, Key* aKey_find)
       NEXT_ENTRY(aEnt_Hn_test,aEnt_Hn_test,0,pEntBuffer_Hn);
     }
 
-    i8 i_BuffOffset = C_SIZE_POOL_BUFFER * (i8)aEnt_Hdown_found->m_xRef.m_uBuffer;
+    i8 i_BuffOffset = C_SIZE_POOL_BUFFER * (i8)aEnt_Hdown_found->m_xRef.Std.m_uBuffer;
     HeapBuffer* pHeapBuffer = aAdd<HeapBuffer*>(gpBufferPool->m_pBase, i_BuffOffset);
     pEntBuffer_Hn = aAdd<EntBuffer*>(pHeapBuffer, sizeof(HeapBuffer));
 
@@ -3038,7 +3038,7 @@ Ent* IndexTree::aFindEntry_CS2_v26(IndexTree* pIndexTree, Key* aKey_find)
       NEXT_ENTRY(aEnt_Hn_test,aEnt_Hn_test,0,pEntBuffer_Hn);
     }
 
-    i8 i_BuffOffset = C_SIZE_POOL_BUFFER * (i8)aEnt_Hdown_found->m_xRef.m_uBuffer;
+    i8 i_BuffOffset = C_SIZE_POOL_BUFFER * (i8)aEnt_Hdown_found->m_xRef.Std.m_uBuffer;
     HeapBuffer* pHeapBuffer = aAdd<HeapBuffer*>(gpBufferPool->m_pBase, i_BuffOffset);
     pEntBuffer_Hn = aAdd<EntBuffer*>(pHeapBuffer, sizeof(HeapBuffer));
 
@@ -3186,7 +3186,7 @@ Ent* IndexTree::aFindEntry_CS2_v27(IndexTree* pIndexTree,
       NEXT_ENTRY(aEnt_Hn_test,aEnt_Hn_test,0,pEntBuffer_Hn);
     }
 
-    i8 i_BuffOffset = C_SIZE_POOL_BUFFER * (i8)aEnt_Hdown_found->m_xRef.m_uBuffer;
+    i8 i_BuffOffset = C_SIZE_POOL_BUFFER * (i8)aEnt_Hdown_found->m_xRef.Std.m_uBuffer;
     HeapBuffer* pHeapBuffer = aAdd<HeapBuffer*>(gpBufferPool->m_pBase, i_BuffOffset);
     pEntBuffer_Hn = aAdd<EntBuffer*>(pHeapBuffer, sizeof(HeapBuffer));
 

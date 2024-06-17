@@ -21,17 +21,17 @@ Rrf::Rrf(void)
 /*----------------------------------------------------------------------------*/
 Rrf::Rrf(u8 uBuffer, u8 uItem, u8 uLevels)
 {
-  m_uBuffer  = uBuffer;
-  m_uItem    = uItem;
-  m_uGlobal  = 0;
+  Std.m_uBuffer  = uBuffer;
+  Std.m_uItem    = uItem;
+  Std.m_uGlobal  = 0;
 
-  m_uLevels  = uLevels;
-  m_uKind    = KE_GENERAL;
-  m_uPayload = 0;
-  m_uFree    = 0;
-  m_uDesc    = 0;
+  Std.m_uLevels  = uLevels;
+  Std.m_uKind    = KE_GENERAL;
+  Std.m_uPayload = 0;
+  Std.m_uFree    = 0;
+  Std.m_uDesc    = 0;
 
-  m_uSpare   = 0;
+  Std.m_uSpare   = 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -39,17 +39,17 @@ Rrf::Rrf(u8 uBuffer, u8 uItem, u8 uLevels)
 /*----------------------------------------------------------------------------*/
 Rrf::Rrf(const Rrf& oCopy)
 {
-  m_uBuffer  = oCopy.m_uBuffer;
-  m_uItem    = oCopy.m_uItem;
-  m_uGlobal  = 0;
+  Std.m_uBuffer  = oCopy.Std.m_uBuffer;
+  Std.m_uItem    = oCopy.Std.m_uItem;
+  Std.m_uGlobal  = 0;
 
-  m_uLevels  = oCopy.m_uLevels;
-  m_uKind    = oCopy.m_uKind;
-  m_uPayload = oCopy.m_uPayload;
-  m_uFree    = oCopy.m_uFree;
-  m_uDesc    = oCopy.m_uDesc;
+  Std.m_uLevels  = oCopy.Std.m_uLevels;
+  Std.m_uKind    = oCopy.Std.m_uKind;
+  Std.m_uPayload = oCopy.Std.m_uPayload;
+  Std.m_uFree    = oCopy.Std.m_uFree;
+  Std.m_uDesc    = oCopy.Std.m_uDesc;
 
-  m_uSpare   = 0;
+  Std.m_uSpare   = 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -85,7 +85,7 @@ i8 Rrf::iAsI8(void)
 /*----------------------------------------------------------------------------*/
 i8 Rrf::iBuffer(void)
 {
-  return (i8)m_uBuffer;
+  return (i8)Std.m_uBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -93,7 +93,7 @@ i8 Rrf::iBuffer(void)
 /*----------------------------------------------------------------------------*/
 void Rrf::vBuffer(i8 iBuffer)
 {
-  m_uBuffer = iBuffer;
+  Std.m_uBuffer = iBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -101,7 +101,7 @@ void Rrf::vBuffer(i8 iBuffer)
 /*----------------------------------------------------------------------------*/
 bool Rrf::bDesc(void)
 {
-  return (bool)m_uDesc;
+  return (bool)Std.m_uDesc;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -109,7 +109,7 @@ bool Rrf::bDesc(void)
 /*----------------------------------------------------------------------------*/
 void Rrf::vDesc(bool bDesc)
 {
-  m_uDesc = (i8)bDesc;
+  Std.m_uDesc = (i8)bDesc;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -117,7 +117,7 @@ void Rrf::vDesc(bool bDesc)
 /*----------------------------------------------------------------------------*/
 bool Rrf::bFree(void)
 {
-  return (bool)m_uFree;
+  return (bool)Std.m_uFree;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -125,7 +125,7 @@ bool Rrf::bFree(void)
 /*----------------------------------------------------------------------------*/
 void Rrf::vFree(bool bFree)
 {
-  m_uFree = bFree;
+  Std.m_uFree = bFree;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -133,7 +133,7 @@ void Rrf::vFree(bool bFree)
 /*----------------------------------------------------------------------------*/
 i8 Rrf::nFreeSize(void)
 {
-  return (i8)m_uBuffer;
+  return (i8)Std.m_uBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -141,7 +141,7 @@ i8 Rrf::nFreeSize(void)
 /*----------------------------------------------------------------------------*/
 void Rrf::vFreeSize(i8 nFreeSize)
 {
-  m_uBuffer = nFreeSize;
+  Std.m_uBuffer = nFreeSize;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -149,7 +149,7 @@ void Rrf::vFreeSize(i8 nFreeSize)
 /*----------------------------------------------------------------------------*/
 bool Rrf::bIsNil(void)
 {
-  if (0 == m_uBuffer)
+  if (0 == Std.m_uBuffer)
     return true;
   else
     return false;
@@ -160,7 +160,7 @@ bool Rrf::bIsNil(void)
 /*----------------------------------------------------------------------------*/
 i8 Rrf::iItem(void)
 {
-  return (i8)m_uItem;
+  return (i8)Std.m_uItem;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -168,7 +168,7 @@ i8 Rrf::iItem(void)
 /*----------------------------------------------------------------------------*/
 void Rrf::vItem(i8 iItem)
 {
-  m_uItem = iItem;
+  Std.m_uItem = iItem;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -176,7 +176,7 @@ void Rrf::vItem(i8 iItem)
 /*----------------------------------------------------------------------------*/
 void Rrf::vKind(eKE eKind)
 {
-  m_uKind = eKind;
+  Std.m_uKind = eKind;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -184,7 +184,7 @@ void Rrf::vKind(eKE eKind)
 /*----------------------------------------------------------------------------*/
 bool Rrf::bPayload(void)
 {
-  return (bool)m_uPayload;
+  return (bool)Std.m_uPayload;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -192,7 +192,7 @@ bool Rrf::bPayload(void)
 /*----------------------------------------------------------------------------*/
 void Rrf::vPayload(bool bPayLoad)
 {
-  m_uPayload = bPayLoad;
+  Std.m_uPayload = bPayLoad;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -200,17 +200,17 @@ void Rrf::vPayload(bool bPayLoad)
 /*----------------------------------------------------------------------------*/
 void Rrf::vReset(void)
 {
-  m_uBuffer  = 0;
-  m_uItem    = 0;
-  m_uGlobal  = 0;
+  Std.m_uBuffer  = 0;
+  Std.m_uItem    = 0;
+  Std.m_uGlobal  = 0;
 
-  m_uLevels  = 0;
-  m_uKind    = 0;
-  m_uPayload = 0;
-  m_uFree    = 0;
-  m_uDesc    = 0;
+  Std.m_uLevels  = 0;
+  Std.m_uKind    = 0;
+  Std.m_uPayload = 0;
+  Std.m_uFree    = 0;
+  Std.m_uDesc    = 0;
 
-  m_uSpare   = 0;
+  Std.m_uSpare   = 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -218,17 +218,17 @@ void Rrf::vReset(void)
 /*----------------------------------------------------------------------------*/
 void Rrf::vSet(Rrf xwRef)
 {
-  m_uBuffer  = xwRef.m_uBuffer;
-  m_uItem    = xwRef.m_uItem;
-  m_uGlobal  = 0;
+  Std.m_uBuffer  = xwRef.Std.m_uBuffer;
+  Std.m_uItem    = xwRef.Std.m_uItem;
+  Std.m_uGlobal  = 0;
 
-  m_uLevels  = xwRef.m_uLevels;
-  m_uKind    = xwRef.m_uKind;
-  m_uPayload = xwRef.m_uPayload;
-  m_uFree    = xwRef.m_uFree;
-  m_uDesc    = xwRef.m_uDesc;
+  Std.m_uLevels  = xwRef.Std.m_uLevels;
+  Std.m_uKind    = xwRef.Std.m_uKind;
+  Std.m_uPayload = xwRef.Std.m_uPayload;
+  Std.m_uFree    = xwRef.Std.m_uFree;
+  Std.m_uDesc    = xwRef.Std.m_uDesc;
 
-  m_uSpare   = 0;
+  Std.m_uSpare   = 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -236,17 +236,17 @@ void Rrf::vSet(Rrf xwRef)
 /*----------------------------------------------------------------------------*/
 void Rrf::vSetNil(void)
 {
-  m_uBuffer  = 0;
-  m_uItem    = 0;
-  m_uGlobal  = 0;
+  Std.m_uBuffer  = 0;
+  Std.m_uItem    = 0;
+  Std.m_uGlobal  = 0;
 
-  m_uLevels  = 0;
-  m_uKind    = 0;
-  m_uPayload = 0;
-  m_uFree    = 0;
-  m_uDesc    = 0;
+  Std.m_uLevels  = 0;
+  Std.m_uKind    = 0;
+  Std.m_uPayload = 0;
+  Std.m_uFree    = 0;
+  Std.m_uDesc    = 0;
 
-  m_uSpare   = 0;
+  Std.m_uSpare   = 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -254,7 +254,7 @@ void Rrf::vSetNil(void)
 /*----------------------------------------------------------------------------*/
 i8 Rrf::nSkipLevels(void)
 {
-  return (i8)m_uLevels;
+  return (i8)Std.m_uLevels;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -262,7 +262,7 @@ i8 Rrf::nSkipLevels(void)
 /*----------------------------------------------------------------------------*/
 void Rrf::vSkipLevels(i8 nSkipLevels)
 {
-  m_uLevels = nSkipLevels;
+  Std.m_uLevels = nSkipLevels;
 }
 
 /*============================================================================*/

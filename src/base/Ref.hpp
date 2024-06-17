@@ -12,22 +12,32 @@ namespace BASE
     friend class STORE::IndexTree;
 
   private:
-    union {
-      struct {
-        u8 m_uBuffer  : 32; // which buffer (2^32 * 1MB is 4PB)
-        u8 m_uItem    : 16; // item in that buffer (2^16 is max of 64K items)
-        u8 m_uGlobal  :  1; // is global?
-        u8 m_uLevels  :  3; // number of skip levels in next entry array
-        u8 m_uPayload :  1; // is there is a payload? (not used yet)
-        u8 m_uKind    :  4; // entry kind
-        u8 m_uFree    :  1; // free entry?
-        u8 m_uDesc    :  1; // has descending key?
-        u8 m_uSpare   :  5; // spare
-      };             // 64b
-      
+    union
+    {
+      struct
+      {
+        u8 m_uBuffer : 32; // which buffer (2^32 * 1MB is 4PB)
+        u8 m_uItem   : 16; // item in that buffer (2^16 is max of 64K items)
+        u8 m_uGlobal :  1; // is global?
+        u8 m_uLevels :  3; // number of skip levels in next entry array
+        u8 m_uPayload:  1; // is there is a payload? (not used yet)
+        u8 m_uKind   :  4; // entry kind
+        u8 m_uFree   :  1; // free entry?
+        u8 m_uDesc   :  1; // has descending key?
+        u8 m_uSpare  :  5; // spare
+      } Std;        // 64b
+
+      struct
+      {
+        u8 m_uBuffer : 32; // which buffer (2^32 * 1MB is 4PB)
+        u8 m_uItem   : 16; // item in that buffer (2^16 is max of 64K items)
+        u8 m_uGlobal :  1; // is global?
+        u8 m_uPtn    : 15; // number of skip levels in next entry array
+      } Glb;        // 64b
+
       i8 m_iAsI8;
     };
-  
+
   public:   
     Rrf(void);
     Rrf(u8 uBuffer, u8 uItem, u8 uLevels);
@@ -62,7 +72,7 @@ namespace BASE
 		/*----------------------------------------------------------------------------*/
 		eKE eKind(void)
 		{
-			return (eKE)m_uKind;
+			return (eKE)Std.m_uKind;
 		}
 
 		};
