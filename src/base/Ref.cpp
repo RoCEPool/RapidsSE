@@ -23,15 +23,15 @@ Rrf::Rrf(u8 uBuffer, u8 uItem, u8 uLevels)
 {
   Std.m_uBuffer  = uBuffer;
   Std.m_uItem    = uItem;
-  Std.m_uGlobal  = 0;
-
   Std.m_uLevels  = uLevels;
+
   Std.m_uKind    = KE_GENERAL;
   Std.m_uPayload = 0;
   Std.m_uFree    = 0;
   Std.m_uDesc    = 0;
 
   Std.m_uSpare   = 0;
+  Std.m_uGlobal  = 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -41,15 +41,15 @@ Rrf::Rrf(const Rrf& oCopy)
 {
   Std.m_uBuffer  = oCopy.Std.m_uBuffer;
   Std.m_uItem    = oCopy.Std.m_uItem;
-  Std.m_uGlobal  = 0;
-
   Std.m_uLevels  = oCopy.Std.m_uLevels;
+
   Std.m_uKind    = oCopy.Std.m_uKind;
   Std.m_uPayload = oCopy.Std.m_uPayload;
   Std.m_uFree    = oCopy.Std.m_uFree;
   Std.m_uDesc    = oCopy.Std.m_uDesc;
 
   Std.m_uSpare   = 0;
+  Std.m_uGlobal  = 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -202,15 +202,15 @@ void Rrf::vReset(void)
 {
   Std.m_uBuffer  = 0;
   Std.m_uItem    = 0;
-  Std.m_uGlobal  = 0;
-
   Std.m_uLevels  = 0;
+
   Std.m_uKind    = 0;
   Std.m_uPayload = 0;
   Std.m_uFree    = 0;
   Std.m_uDesc    = 0;
 
   Std.m_uSpare   = 0;
+  Std.m_uGlobal  = 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -220,15 +220,15 @@ void Rrf::vSet(Rrf xwRef)
 {
   Std.m_uBuffer  = xwRef.Std.m_uBuffer;
   Std.m_uItem    = xwRef.Std.m_uItem;
-  Std.m_uGlobal  = 0;
-
   Std.m_uLevels  = xwRef.Std.m_uLevels;
+
   Std.m_uKind    = xwRef.Std.m_uKind;
   Std.m_uPayload = xwRef.Std.m_uPayload;
   Std.m_uFree    = xwRef.Std.m_uFree;
   Std.m_uDesc    = xwRef.Std.m_uDesc;
 
   Std.m_uSpare   = 0;
+  Std.m_uGlobal  = 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -238,15 +238,15 @@ void Rrf::vSetNil(void)
 {
   Std.m_uBuffer  = 0;
   Std.m_uItem    = 0;
-  Std.m_uGlobal  = 0;
-
   Std.m_uLevels  = 0;
+
   Std.m_uKind    = 0;
   Std.m_uPayload = 0;
   Std.m_uFree    = 0;
   Std.m_uDesc    = 0;
 
   Std.m_uSpare   = 0;
+  Std.m_uGlobal  = 0;
 }
 
 /*----------------------------------------------------------------------------*/
