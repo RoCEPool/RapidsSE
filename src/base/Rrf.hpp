@@ -55,12 +55,16 @@ namespace BASE
     void  vFree(bool bFree);
     i8    nFreeSize(void);
     void  vFreeSize(i8 nFreeSize);
+    bool  bGlobal(void);
+    void  vGlobal(bool bGlobal);
     bool  bIsNil(void);
     i8    iItem(void);
     void  vItem(i8 iItem);
     void  vKind(eKE eKind);
     bool  bPayload(void);
     void  vPayload(bool bPayLoad);
+    i8    iPtn(void);
+    void  vPtn(i8 iPtn);
     void  vReset(void);
     void  vSet(Rrf xwRef);
     void  vSetNil(void);
