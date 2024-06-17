@@ -1096,6 +1096,64 @@ void IndexTree::vInsertEntries(CrwBuffer* pCrwBuffer)
 }
 
 /*----------------------------------------------------------------------------*/
+/* insert entries for pCrwBuffer into this global index at level 0            */
+/*----------------------------------------------------------------------------*/
+void IndexTree::vInsertGblEntries(CrwBuffer* pCrwBuffer, LglPtn tLglPtn)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
+
+  UNUSED(tLglPtn);
+
+  //pEntBuffer->vShow();
+
+  StreamDef* pStreamDef = pCrwBuffer->pStreamDef_dbuff();
+  i8* aiaColSet = m_pIndexDef->aiaColSet();
+
+  EntWrk xEntWrk;
+
+  i8* aiDstk;
+  HeadLine* aHeadLine;
+
+  Rrf xRowRef;
+  xRowRef.vBuffer(pCrwBuffer->iBufferNo());
+  //xRowRef.vGlobal(true);
+  //xRowRef.vPtn(tLglPtn);
+
+  if (! m_pRootEntBuffer) {
+    EntBuffer* pRootBuffer = pNewRootBuffer();
+    UNUSED(pRootBuffer);
+  }
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // iterate thru each crw in buffer
+
+  i8 nRows = pCrwBuffer->nRows();
+  for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
+
+    xEntWrk.vReset();
+
+    xRowRef.vItem(i_Row);
+    xEntWrk.vRef(xRowRef);
+
+    if (KE_INT == m_pIndexDef->eKeyKind()) {
+
+      aiDstk = ((i8*)xEntWrk.aKey()) - 1;
+      aHeadLine = pCrwBuffer->aGetHead(i_Row);
+
+      RowInflator::vInflate_Key_into_ElementArray(&aiDstk,aHeadLine,aiaColSet,
+                                                  pStreamDef,m_pIndexDef,SI_KEY);
+      xEntWrk.aEnt()->vKind(KE_INT);
+    }
+    else {
+      vExtractKey(&xEntWrk,pCrwBuffer,i_Row);
+    }
+
+    Ent* aInsertedEntry = EntBuffer::aInsertEntTree(xEntWrk.aEnt(),&m_pRootEntBuffer);
+    ASSERT(aInsertedEntry);
+    UNUSED(aInsertedEntry);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* insert entry into this index at level 0 for iTop entries                   */
 /*----------------------------------------------------------------------------*/
 Ent* IndexTree::pInsertEntTop_(Ent* aEnt, Ent** ppEntBottom, i8 iTopCount)

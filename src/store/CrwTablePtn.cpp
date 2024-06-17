@@ -305,6 +305,38 @@ CrwBuffer* CrwTablePtn::pGetBuffer(SkipListBlock* pSLBlock)
 }
 
 /*----------------------------------------------------------------------------*/
+/* insert entries into given global index for all rows in this partition      */
+/*----------------------------------------------------------------------------*/
+bool CrwTablePtn::bPopulateGblIndexTree(IndexTree* pIndexTree, LglPtn tLglPtn)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTABLEPTN,_FOOTER_);
+  SkipListBlock* pCursor = m_pPdsOfBufferIds->pFirstBlock();
+  if(!pCursor) return true;
+
+  HashMap* pHashMap = AM::pHashMap();
+
+  while(pCursor) {
+    PdsBufferIdItem* pBufferIdStruct = (PdsBufferIdItem*) pCursor->aItem();
+#ifdef WITHOUT_BUFFERIDHASHMAP
+    UNUSED(pHashMap);
+    CrwBuffer* pCrwBuffer = _pCrwBuffer(pBufferIdStruct->oBufferId.m_pvAsAddress);
+    pIndexTree->vInsertEntries(pCrwBuffer);
+#else
+    HashMapEntry* pEntry = pHashMap->pEntryAt(pBufferIdStruct->oBufferId.m_pvAsAddress);
+
+    CrwBuffer* pCrwBuffer = _pCrwBuffer(pEntry->m_pValObject);
+
+    pIndexTree->vInsertGblEntries(pCrwBuffer, tLglPtn);
+
+    pEntry->vDropLock();
+#endif
+    pCursor = m_pPdsOfBufferIds->pNextSLBlock(pCursor, 0);
+  }
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* insert entries into given index for all rows in this partition             */
 /*----------------------------------------------------------------------------*/
 bool CrwTablePtn::bPopulateIndexTree(IndexTree* pIndexTree)

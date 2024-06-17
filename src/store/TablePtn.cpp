@@ -352,6 +352,26 @@ void TablePtn::vInsertIndexEntries(CrwBuffer *pCrwBuffer)
 /*----------------------------------------------------------------------------*/
 /* insert entries into given index for all rows in this partition             */
 /*----------------------------------------------------------------------------*/
+bool TablePtn::bPopulateGblIndex(IndexTree* pIndexTree)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
+
+  bool b;
+
+  switch (m_eKind) {
+    case CN_CRWTABLEPTN:
+      b = m_pCrwTablePtn->bPopulateGblIndexTree(pIndexTree, m_tLglPtn);
+      break;
+    default:
+      NEVER_REACH;
+  }
+
+  return b;
+}
+
+/*----------------------------------------------------------------------------*/
+/* insert entries into given index for all rows in this partition             */
+/*----------------------------------------------------------------------------*/
 bool TablePtn::bPopulateIndex(i8 iIndexNo)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
