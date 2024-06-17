@@ -440,12 +440,12 @@ void Weaver::vArg_aggreg(String* psOpArgs, Card_Aggreg* p_aggreg)
 /*----------------------------------------------------------------------------*/
 /* weave :next ?                                                              */
 /*----------------------------------------------------------------------------*/
-void Weaver::vArg_cast(String* psOpArgs, Card_Cast* p_next)
+void Weaver::vArg_cast(String* psOpArgs, Card_Cast* p_cast)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
 
-  if (p_next->pSymbol()->bHasFacet(SF_STG_CAST))
-    psOpArgs->vCatSprint("%s"_Stz, p_next->szFacet(SF_STG_CAST));
+  if (p_cast->pSymbol()->bHasFacet(SF_STG_CAST))
+    psOpArgs->vCatSprint("%s"_Stz, p_cast->szFacet(SF_STG_CAST));
 }
 
 /*----------------------------------------------------------------------------*/
