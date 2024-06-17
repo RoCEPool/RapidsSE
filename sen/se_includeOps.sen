@@ -95,6 +95,7 @@ assert::stack_0
 "g" .verbose
 
   "OP_gbyAgg.sen"               include
+  "OP_globalHash.sen"           include
   "OP_grid.sen"                 include
   "OP_gridSanity.sen"           include
  
@@ -201,6 +202,7 @@ assert::stack_0
   "OP_respond.sen"              include
   "OP_rowCount.sen"             include
   "OP_rowToList.sen"            include
+  "OP_rrfJoin.sen"              include
 
 "s" .verbose
 

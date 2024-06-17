@@ -3,7 +3,7 @@
 /*============================================================================*/
 
 /optimise_passthru
-pipeline Query9
+pipeline unamed
   begin
   stage S00 on origin :
     start
@@ -19,13 +19,13 @@ pipeline Query9
 
   // L_ORDERKEY , rrf
   stage S02 on all partitions :
-    rrfJoin ORDERS "bound $I1 L_ORDERKEY =="
+    rrfJoin ORDERS "type INTEGER ( 19 ) L_ORDERKEY"
     | project "type INTEGER ( 19 ) as L_ORDERKEY L_ORDERKEY ,
                type DATE as O_ORDERDATE O_ORDERDATE"
     | combined 0
     | next
 
-  stage S11 on origin :
+  stage S03 on origin :
     output
     | sink
     | first
