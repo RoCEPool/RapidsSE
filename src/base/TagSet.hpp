@@ -6,19 +6,23 @@
 #include "eTN.h"
 #include "SegmentedArrayNL_t.hpp"
 
+namespace PRIMITIVES { class PackedStringBuf; }
+
 namespace BASE
 {
-  static const i8 C_TAG_SET = 256;
-  
   struct Tag
   {
-    i8  m_i_Name{};
-    i8  m_i_Value{};
+    Stz* m_szName{};
+    union {
+      i8      m_iValue{};
+      Stz*    m_szValue;
+      Object* m_pValue;
+    };
     eTN m_eToken;
 
     void vInit(void) {
-      m_i_Name  = C_UNKNOWN;
-      m_i_Value = C_UNKNOWN;
+      m_szName  = nullptr;
+      m_iValue = C_UNKNOWN;
       m_eToken  = TN_NONE;
     }
 
@@ -26,27 +30,34 @@ namespace BASE
       vInit();
     }
 
-    Tag(i8 iName, i8 iValue, eTN eToken) {
-      m_i_Name = iName;
-      m_i_Value = iValue;
+    Tag(Stz* szName, i8 iValue, eTN eToken) {
+      m_szName = szName;
+      m_iValue = iValue;
       m_eToken = eToken;
     }
 
-    Tag(i8 iName, Stz* szValue, eTN eToken) {
-      m_i_Name = iName;
-      m_i_Value = (i8) szValue;
+    Tag(Stz* szName, Stz* szValue, eTN eToken) {
+      m_szName = szName;
+      m_szValue = szValue;
       m_eToken = eToken;
     }
   };
 
-  typedef SegmentedArrayNL_t<CN_TAGARRAY, Tag, (C_SIZE_TINY_OBJECT - (6 * C_BYTES_PER_WORD)) / sizeof(Tag)> TagArray;
-  typedef SegmentedArrayIter<CN_TAGARRAY, Tag, (C_SIZE_TINY_OBJECT - (6 * C_BYTES_PER_WORD)) / sizeof(Tag)> TagArrayIter;
+  typedef SegmentedArrayNL_t<CN_TAGARRAY, Tag, (C_SIZE_TINY_OBJECT - ( (6+4) * C_BYTES_PER_WORD)) / sizeof(Tag)> TagArray;
+  typedef SegmentedArrayIter<CN_TAGARRAY, Tag, (C_SIZE_TINY_OBJECT - ( (6+4) * C_BYTES_PER_WORD)) / sizeof(Tag)> TagArrayIter;
+
+  // Note: The size calculation above tries to maximise the size of the segmented array by
+  // taking into account member variables in SegmentedArrayNL_t, as well as the size of
+  // TagSet itself. This allows us to fit TagSet and TagArray into the same single 1KB chunk.
+  // The SegmentedArrayNL_t class itself has members worth 6 words and the TagSet class has
+  // members worth 4 words (header, m_pStrings, footer (2)).
+
 
   class TagSet : public Object
   {
   public:
     TagArray m_oTagArray;
-    b32K m_xyStrings;
+    PackedStringBuf* m_pStrings;
   
     // must be last
     Footer m_xFooter;
