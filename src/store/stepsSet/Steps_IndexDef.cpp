@@ -197,7 +197,7 @@ void Step::vIndexDefSet(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* indexDef::syntax -- parse Create Index statement and check sytax           */
+/* indexDef::syntax -- parse Create Index statement and check syntax          */
 /*----------------------------------------------------------------------------*/
 void Step::vIndexDefSyntax(void)
 {

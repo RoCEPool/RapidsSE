@@ -163,7 +163,7 @@ createTableCmd    : CREATE /*reference = REFERENCE?*/ TABLE /*(IF NOT EXISTS)?*/
                       //| ( tableDefinition? AS? asSubquery (WITH noData=NO? DATA)? )
                       //| ( columnNameList AS? asSubquery (WITH noData=NO? DATA)? )
                     ) ;
-createIndexCmd    : CREATE UNIQUE? INDEX /*(INDEX | KEY) (IF NOT EXISTS)?*/ idxName = indexName
+createIndexCmd    : CREATE GLOBAL? UNIQUE? INDEX /*(INDEX | KEY) (IF NOT EXISTS)?*/ idxName = indexName
                     ON /*tblName = tableReference*/ tableName
                     /*( USING method = indexMethod )?*/
                     '(' expr (',' expr)* ')'
@@ -337,7 +337,7 @@ columnNameList    : '(' columnName (',' columnName)* ')' ;
 //                  | (unique = UNIQUE? mono = MONOTONIC KEY ( expr | ('(' expr (',' expr)* ')') ))
 //                  ;
 
-indexDefinition   : unique = UNIQUE? (INDEX | KEY) name = indexName?
+indexDefinition   : global = GLOBAL? | unique = UNIQUE? (INDEX | KEY) name = indexName?
                     ON? ( expr | ('(' expr (',' expr)* ')') )
                     ( USING method = indexMethod )?
                     (WITH props = propertyList)?
@@ -732,6 +732,7 @@ FORCE                 : F O R C E;
 FORMAT                : F O R M A T;
 FULL                  : F U L L;
 FROM                  : F R O M;
+GLOBAL                : G L O B A L;
 GROUP                 : G R O U P;
 HASH                  : H A S H;
 HASHKEY               : H A S H K E Y;
