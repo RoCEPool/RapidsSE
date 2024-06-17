@@ -73,6 +73,7 @@ namespace STORE
     void vArg_crossJoin   (String* psOpArgs, Card_CrossJoin* pCard_CrossJoin);
     void vArg_filter      (String* psOpArgs, Card_Filter*    pCard_Filter);
     void vArg_gbyAgg      (String* psOpArgs, Card_GbyAgg*    pCard_AggGby);
+    void vArg_globalHash  (String* psOpArgs, Card_GlobalHash*pCard_GlobalHash);
     void vArg_hash        (String* psOpArgs, Card_Hash*      pCard_Hash);
     void vArg_having      (String* psOpArgs, Card_Having*    pCard_Having);
     void vArg_indexJoin   (String* psOpArgs, Card_IndexJoin* pCard_IndexJoin);
@@ -84,6 +85,7 @@ namespace STORE
     void vArg_ordAgg      (String* psOpArgs, Card_OrdAgg*    pCard_OrdAgg);
     void vArg_pdsRow      (String* psOpArgs, Card_PdsRow*    pCard_pdsRow);
     void vArg_project     (String* psOpArgs, Card_Project*   pCard_Project);
+    void vArg_rrfJoin     (String* psOpArgs, Card_RrfJoin*   pCard_RrfJoin);
     void vArg_scan        (String* psOpArgs, Card_Scan*      pCard_Scan);
     void vArg_send        (String* psOpArgs, Card_Send*      pCard_send);
     void vArg_sort        (String* psOpArgs, Card_Sort*      pCard_Sort);

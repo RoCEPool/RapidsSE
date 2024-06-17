@@ -351,6 +351,7 @@ void Weaver::vOp(Card* pCard, bool bCommented)
     case CK_o_CROSSJOIN:    vArg_crossJoin    (sOpArgs, _pCard_CrossJoin(pCard));    break;
     case CK_o_FILTER:       vArg_filter       (sOpArgs, _pCard_Filter(pCard));       break;
     case CK_o_GBYAGG:       vArg_gbyAgg       (sOpArgs, _pCard_GbyAgg(pCard));       break;
+    case CK_o_GLOBALHASH:   vArg_globalHash   (sOpArgs, _pCard_GlobalHash(pCard));   break;
     case CK_o_HASH:         vArg_hash         (sOpArgs, _pCard_Hash(pCard));         break;
     case CK_o_HAVING:       vArg_having       (sOpArgs, _pCard_Having(pCard));       break;
     case CK_o_INDEXJOIN:    vArg_indexJoin    (sOpArgs, _pCard_IndexJoin(pCard));    break;
@@ -362,6 +363,7 @@ void Weaver::vOp(Card* pCard, bool bCommented)
     case CK_o_ORDAGG:       vArg_ordAgg       (sOpArgs, _pCard_OrdAgg(pCard));       break;
     case CK_o_PDSROW:       vArg_pdsRow       (sOpArgs, _pCard_PdsRow(pCard));       break;
     case CK_o_PROJECT:      vArg_project      (sOpArgs, _pCard_Project(pCard));      break;
+    case CK_o_RRFJOIN:      vArg_rrfJoin      (sOpArgs, _pCard_RrfJoin(pCard));      break;
     case CK_o_SCAN:         vArg_scan         (sOpArgs, _pCard_Scan(pCard));         break;
     case CK_o_SEND:         vArg_send         (sOpArgs, _pCard_Send(pCard));         break;
     case CK_o_SORT:         vArg_sort         (sOpArgs, _pCard_Sort(pCard));         break;
@@ -505,6 +507,17 @@ void Weaver::vArg_gbyAgg(String* psOpArgs, Card_GbyAgg* pCard_AggGby)
   pCard_AggGby->vRpn_gbyAgg(m_pCI, sRpnExpr, pCard_AggGby);
 
   psOpArgs->vCatSprint("\"%s \""_Stz, sRpnExpr.szStz());
+}
+
+/*----------------------------------------------------------------------------*/
+/* weave : globalHash ...                                                     */
+/*----------------------------------------------------------------------------*/
+void Weaver::vArg_globalHash(String* psOpArgs, Card_GlobalHash* pCard_GlobalHash)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
+
+  UNUSED(psOpArgs);
+  UNUSED(pCard_GlobalHash);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -739,6 +752,17 @@ void Weaver::vArg_project(String* psOpArgs, Card_Project* pCard_Project)
   pCard_Project->vRpn_project(m_pCI, sRpnExpr, pCard_Project);
   
   psOpArgs->vCatSprint("\"%s \""_Stz, sRpnExpr.szStz());
+}
+
+/*----------------------------------------------------------------------------*/
+/* weave : rrfJoin ...                                                        */
+/*----------------------------------------------------------------------------*/
+void Weaver::vArg_rrfJoin(String* psOpArgs, Card_RrfJoin* pCard_RrfJoin)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
+
+  UNUSED(psOpArgs);
+  UNUSED(pCard_RrfJoin);
 }
 
 /*----------------------------------------------------------------------------*/
