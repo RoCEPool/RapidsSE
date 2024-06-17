@@ -1,0 +1,36 @@
+/*============================================================================*/
+/* tpch_q9_globalHash.txt                                                     */
+/*============================================================================*/
+
+/optimise_passthru
+pipeline Query9
+  begin
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
+
+  stage S01 on all partitions :
+    scan LINEITEM
+    | project "type INTEGER ( 19 ) as L_ORDERKEY L_ORDERKEY"
+    | globalHash ORDERS GxO_ORDERKEY "type INTEGER ( 19 ) L_ORDERKEY"
+    | combined 0
+    | next hashcast
+
+  // L_ORDERKEY , rrf
+  stage S02 on all partitions :
+    rrfJoin ORDERS "type INTEGER ( 19 ) L_ORDERKEY"
+    | project "type INTEGER ( 19 ) as L_ORDERKEY L_ORDERKEY ,
+               type DATE as O_ORDERDATE O_ORDERDATE"
+    | combined 0
+    | next
+
+  stage S11 on origin :
+    output
+    | sink
+    | first
+  end ;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
