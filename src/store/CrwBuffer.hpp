@@ -66,7 +66,7 @@ namespace STORE
     void       vInflateRows(Tub* pTub);
     void       vPrintRows(StreamDef* pStreamDef);
     void       vToCsv(Tub* pTub);
-    void       vToRowRef(Tub* pTub, i8 iKey);
+    void       vToRowRef(StreamDef* pStreamDefOut, Tub* pTub, i8 iKey);
     //SrtBuffer* pToSrtBuffer(i8 iKeyCol);
     
     ////////////////////////////////////////////////////////////////////////////

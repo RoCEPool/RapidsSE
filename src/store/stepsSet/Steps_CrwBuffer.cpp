@@ -290,12 +290,16 @@ void Step::vCrwBufferToRowRef(void)
 {
   ENTRY();
 
+  StreamDef* pStreamDefOut = _pStreamDef(m_pDataStack->pPopPtr(__func__));
+
+  Tub* pTub = _pTub(m_pDataStack->pPopPtr(__func__));
+
   i8 iKeyColumn = m_pDataStack->iPopInt(__func__);
 
   CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_pLogicUnit->m_xpCrwBuffer);
-  Tub* pTub = _pTub(m_pDataStack->pPopPtr(__func__));
 
-  pCrwBuffer->vToRowRef(pTub, iKeyColumn);
+  pCrwBuffer->vToRowRef(pStreamDefOut, pTub, iKeyColumn);
+
   EXIT();
 }
 

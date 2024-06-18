@@ -5,6 +5,18 @@
 " OP_rowRef.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* handler for EV_M_EOS ...                                                   */
+/*----------------------------------------------------------------------------*/
+: rowRef_EosMarker \handler
+
+  Tub[].pipeOutRemainder
+  Tub[].delete
+
+  EV_M_EOS_handler
+;
+
+
+/*----------------------------------------------------------------------------*/
 /* handler for EV_D_CRWBUFFER                                                 */
 /*----------------------------------------------------------------------------*/
 : rowRef_CrwBuffer \handler
@@ -13,9 +25,13 @@
 
   PipeIn[]\clear to CrwBuffer[]
 
-  Counter0[] CrwBuffer[].toRowRef to Pds[]
+  Counter0[] Tub[] StreamDefLft[] CrwBuffer[].toRowRef
 
-  Pds[].pipeOut
+  Tub[].pipeOutCompleted
+
+  // Drop the atomic lock on this buffer in the HashMap
+  // and set the register to nullptr
+  CrwBuffer[].dropLockAndClear
 
   true
 ;
@@ -58,8 +74,13 @@
   // delete the table streamDef
   StreamDefLft[].delete
 
+  // save the streamDefOut in streamDefLft
+  StreamDefOut[].duplicate to StreamDefLft[]
+
   // pipeout the new rowRef streamDef
   StreamDefOut[].pipeOut
+
+  Tub[].new
 
   true
 ;
@@ -78,8 +99,8 @@
   op__topology
 
   //find: rowRef_Cleaning      EV_M_CLEANING     [op].handler!
-  //find: rowRef_CrwBuffer     EV_D_CRWBUFFER    [op].handler!
-  //find: rowRef_EosMarker     EV_M_EOS          [op].handler!
+  find: rowRef_CrwBuffer     EV_D_CRWBUFFER    [op].handler!
+  find: rowRef_EosMarker     EV_M_EOS          [op].handler!
   find: rowRef_StreamDef     EV_D_STREAMDEF    [op].handler!
   find: rowRef_StartMarker   EV_M_START        [op].handler!
 
