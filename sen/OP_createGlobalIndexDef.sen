@@ -1,0 +1,144 @@
+/*============================================================================*/
+/* OP_createGlobalIndexDef.sen -- Operator syntax index                                */
+/*============================================================================*/
+
+" OP_createGlobalIndexDef.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* check if <tableNm> . <indexNm> is a creatable index                        */
+/*----------------------------------------------------------------------------*/
+: globalIndex::checkCreate ( sTableNm --  true | errorCode false )
+
+  params| sTableNm |
+
+  // check index name is valid
+  <indexNm> check::nameIsValidIndex not if false exit then
+
+  // check in tables folder: ../schemas/public/tables
+  check::folderIsTables not if false exit then
+
+  // check there is a sub-folder by the name of the table
+  //   ../schemas/public/tables/t
+  sTableNm check::folderHasNamedTable not if false exit then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check if max indexes already on table
+
+  // push into t: ../schemas/public/tables/t \folder
+  sTableNm Path[].pushNamedTableFolder
+
+  // check max indexes
+  sTableNm find execute to Table[]
+  Table[] table.indexCount C_MAX_INDEXES == if
+    EC_MAX_INDEXES
+    Path[].popNamedTableFolder
+    Folder[].isTables assert
+    false exit
+  then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check name doesn't already exist
+
+  // push into indexes: ../schemas/public/tables/t/indexes
+  Path[].pushIndexesFolder
+  Folder[].isIndexes assert
+
+  // error if given name already exists
+  <indexNm> check::nameIsUnknownIndex not if
+    Path[].popIndexesFolder
+    Path[].popNamedTableFolder
+    Folder[].isTables assert
+    false exit
+  then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // pop upto tables: ../schemas/public/tables
+
+  Path[].popIndexesFolder
+  Path[].popNamedTableFolder
+  Folder[].isTables assert
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for EV_M_DATAPULSE ...                                             */
+/*----------------------------------------------------------------------------*/
+: createGlobalIndexDef_DataMarker
+
+  0 0 0 locals| sTableNm sSmt errorCode |
+
+  //[job].tagSet@ tagSet.asStr .
+  Pipein[].pipeout
+
+  // check ok to create index
+  <tableNm> globalIndex::checkCreate not if ( errorCode )
+    to errorCode
+    errorCode op__execErr
+    true
+    exit
+  then
+
+  // find key in streamDefLft
+  Table[].StreamDef@ to StreamDefLft[]
+
+  <keyCol> StreamDefLft[].findKey if
+    to Counter0[]
+    Counter0[] <keyCol> "Found key %v as column %v" str.format .
+  else
+    // create an exec error
+    EC_NO_SUCH_COLUMN op__execErr
+
+    true
+    exit
+  then
+
+  Counter0[] Table[] indexDef[].newGlobalIndex
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // should be in tables
+  Folder[].isTables assert
+
+  IndexDef[].pipeout
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute for syntaxTable req                        (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+: createGlobalIndexDef_op \operator
+
+  _lu_initialise_
+
+  // init the counter to be used for key column no
+  0 to Counter0[]
+
+  op__topology
+
+  find: createGlobalIndexDef_DataMarker EV_M_DATAPULSE [op].handler!
+
+  op__loop
+
+  _lu_finalise_
+  
+  op__retires
+  
+  HAZARD
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: createGlobalIndexDef :: createGlobalIndexDef <tableNm> <indexNm> <keyCol> ;
+
+: createGlobalIndexDef_cmdTags _cmdTags tagCopy: op_tags
+  tags{
+    <cmdDesc> = "--desc for op--"
+    <opEntry> = "createGlobalIndexDef_op"
+  }
+;
+    
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

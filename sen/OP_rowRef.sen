@@ -56,7 +56,7 @@
   //"Operand:- EV_D_STREAMDEF" .verbose
   PipeIn[]\clear to StreamDefLft[]
 
-// find key in streamDefLft
+  // find key in streamDefLft
   <keyCol> StreamDefLft[].findKey if
     to Counter0[]
     Counter0[] <keyCol> "Found key %v as column %v" str.format .

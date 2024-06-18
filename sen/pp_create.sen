@@ -61,32 +61,6 @@
   procedure::add
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // create global index
-
-  STD_PATH_TAG
-  "
-  procedure create global index
-    tags <persistentTx>
-    parameters $indexNm $etc
-  begin
-
-  stage stageA on origin :
-    start | pulse once | syntaxIndex $indexNm $etc | stageB
-
-  stage stageB on all nodes :
-    createIndex $indexNm | stageC
-
-  stage stageC on all partitions :
-    populateIndex $indexNm | stageD
-
-  stage stageD on origin :
-    output | sink | stageA
-
-  end ;
-  "
-  procedure::add
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create unique index
   
   STD_PATH_TAG

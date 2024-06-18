@@ -34,6 +34,7 @@ void Step::vAddSteps_IndexDef(void)
   vAddStep("IndexDef[].isNull"_Stz,   &Step::vIndexDefIsNull);
   vAddStep("IndexDef[].name!"_Stz,    &Step::vIndexDefNameStore);
   vAddStep("IndexDef[].new"_Stz,      &Step::vIndexDefNew);
+  vAddStep("IndexDef[].newGlobalIndex"_Stz, &Step::vIndexDefNewGlobalIndex);
   vAddStep("indexDef::parse"_Stz,     &Step::vIndexDefParse);
   vAddStep("indexDef::parseTableName"_Stz, &Step::vIndexDefParseTableName);
   vAddStep("IndexDef[].set"_Stz,      &Step::vIndexDefSet);
@@ -137,6 +138,29 @@ void Step::vIndexDefNew(void)
   
   m_pLogicUnit->m_xpIndexDef = new IndexDef;
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* IndexDef[].newGlobalIndex -- new a global index definition                 */
+/*----------------------------------------------------------------------------*/
+void Step::vIndexDefNewGlobalIndex(void)
+{
+  ENTRY();
+
+  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
+  i8 iKeyCol = m_pDataStack->iPopInt(__func__);
+
+  StreamDef* pStreamDef = pTable->pStreamDef();
+  Column* pColumn = pStreamDef->pGetColumn(iKeyCol);
+
+  IndexDef* pIndexDef = new IndexDef;
+
+  // add the key column to the IndexDef
+  pIndexDef->vAddColumn(pColumn->szClassNm(), pColumn->xColumnTypeId());
+
+  m_pLogicUnit->m_xpIndexDef = pIndexDef;
+
   EXIT();
 }
 

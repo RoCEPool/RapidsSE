@@ -721,6 +721,7 @@ void vDdlLockAssertNone(void);
   void vIndexDefIsNull(void);
   void vIndexDefNameStore(void);
   void vIndexDefNew(void);
+  void vIndexDefNewGlobalIndex(void);
   void vIndexDefParse(void);
   void vIndexDefSet(void);
   void vIndexDefSyntax(void);

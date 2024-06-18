@@ -5,8 +5,34 @@
 file _orders;
 load orders  "../TPCH/SF_0001/orders.tbl"   ;
 
-pipeline _orders_gIndex
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// create global index on orders (O_ORDERKEY)
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+pipeline createGblIdx
+begin
 
+  stage S00 on origin :
+    start
+    | pulse once
+    | createGlobalIndexDef ORDERS GxO_ORDERKEY O_ORDERKEY
+    | next
+
+  //stage S01 on all nodes :
+  //  createGlobalIndex GxO_ORDERKEY
+  //  | next
+
+  stage S02 on origin :
+    output
+    | sink
+    | first
+
+end ;
+
+/*
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// load the global index on orders (O_ORDERKEY)
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+pipeline _orders_gIndex
 begin
 
   stage S00 on origin :
@@ -29,7 +55,7 @@ stage S03 on origin :
     | first
 
 end ;
-
+*/
 
 
 /*============================================================================*/
