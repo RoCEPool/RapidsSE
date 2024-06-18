@@ -1,0 +1,37 @@
+/*============================================================================*/
+/* _orders_gIndex (global index on orders - O_ORDERKEY)                       */
+/*============================================================================*/
+
+_orders
+load orders  "../TPCH/SF_0001/orders.tbl"   ;
+
+pipeline _orders_gIndex
+
+begin
+
+  stage S00 on origin :
+      start
+    | pulse     once
+    | next
+
+  stage S01 on all partitions :
+    scan      orders
+  //| Rrf O_ORDERKEY
+    | next broadcast
+
+  //stage S02 on all nodes :
+  //  insertGlobalIndex
+  //  | next
+
+stage S03 on origin :
+      output
+    | sink
+    | first
+
+end ;
+
+
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

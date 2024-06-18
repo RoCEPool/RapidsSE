@@ -1,0 +1,46 @@
+/*============================================================================*/
+/* OP_rowRef.sen -- Operator row reference                                    */
+/*============================================================================*/
+
+" OP_rowRef.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* execute for rowRef                                 (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+ : rowRef_op \operator
+
+  _lu_initialise_
+  // "OP_rowRef" .
+
+  op__topology
+
+  //find: rowRef_Cleaning      EV_M_CLEANING     [op].handler!
+  //find: rowRef_CrwBuffer     EV_D_CRWBUFFER    [op].handler!
+  //find: rowRef_EosMarker     EV_M_EOS          [op].handler!
+  //find: rowRef_StreamDef     EV_D_STREAMDEF    [op].handler!
+  //find: rowRef_StartMarker   EV_M_START        [op].handler!
+
+  op__loop
+
+  _lu_finalise_
+
+  op__retires
+
+  HAZARD
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: rowRef :: rowRef <tableNm> <keyExpr> ;
+
+: rowRef_cmdTags _cmdTags tagCopy: op_tags
+  tags{
+    <cmdDesc> = "--desc for op--"
+    //<opEntry> = "rowRef_op"
+  }
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

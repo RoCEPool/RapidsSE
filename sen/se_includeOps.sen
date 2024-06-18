@@ -109,6 +109,7 @@ assert::stack_0
   "OP_indexScan.sen"            include
   "OP_inflateRows.sen"          include
   "OP_insert.sen"               include
+  "OP_insertGlobalIndex.sen"    include
   "OP_invoke.sen"               include
 
 "j" .verbose
@@ -202,7 +203,8 @@ assert::stack_0
   "OP_respond.sen"              include
   "OP_rowCount.sen"             include
   "OP_rowToList.sen"            include
-  "OP_rrfJoin.sen"              include
+  "OP_rowRef.sen"               include
+  "OP_rowRefJoin.sen"           include
 
 "s" .verbose
 

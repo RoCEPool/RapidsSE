@@ -1,18 +1,18 @@
 /*============================================================================*/
-/* OP_rrfJoin.sen -- Operator row reference join                              */
+/* OP_rowRefJoin.sen -- Operator row reference join                           */
 /*============================================================================*/
 
-" OP_rrfJoin.sen" .verbose
+" OP_rowRefJoin.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: rrfJoin :: rrfJoin <tableNm> <keyExpr> ;
+cmdSyntax: rowRefJoin :: rowRefJoin <tableNm> <keyExpr> ;
 
-: rrfJoin_cmdTags _cmdTags tagCopy: op_tags
+: rowRefJoin_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <cmdDesc> = "--desc for op--"
-    //<opEntry> = "rrfJoin_op"
+    //<opEntry> = "rowRefJoin_op"
   }
 ;
 
