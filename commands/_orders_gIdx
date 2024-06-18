@@ -2,7 +2,7 @@
 /* _orders_gIndex (global index on orders - O_ORDERKEY)                       */
 /*============================================================================*/
 
-_orders
+file _orders;
 load orders  "../TPCH/SF_0001/orders.tbl"   ;
 
 pipeline _orders_gIndex
@@ -16,7 +16,7 @@ begin
 
   stage S01 on all partitions :
     scan      orders
-  //| Rrf O_ORDERKEY
+    | rowRef O_ORDERKEY
     | next broadcast
 
   //stage S02 on all nodes :

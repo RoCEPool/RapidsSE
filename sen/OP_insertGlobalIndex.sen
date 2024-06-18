@@ -152,7 +152,6 @@
   true
 ;
 
-
 /*----------------------------------------------------------------------------*/
 /* execute for insert                                 (on node where spawned) */
 /*----------------------------------------------------------------------------*/
@@ -185,7 +184,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: insertGlobalIndex :: insertGlobalIndex <tableNm> ;
 
-: insert_cmdTags _cmdTags tagCopy: op_tags
+: insertGlobalIndex_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <cmdDesc> = "--desc for op--"
     <opEntry> = "insertGlobalIndex_op"

@@ -34,6 +34,7 @@ void Step::vAddSteps_StreamDefLft(void)
   vAddStep("StreamDefLft[].column@"_Stz,         &Step::vStreamDefLftColumnFetch);
   vAddStep("StreamDefLft[].delete"_Stz,          &Step::vStreamDefLftDelete);
   vAddStep("StreamDefLft[].duplicate"_Stz,       &Step::vStreamDefLftDuplicate);
+  vAddStep("StreamDefLft[].findKey"_Stz,         &Step::vStreamDefLftFindKey);
   vAddStep("StreamDefLft[].get"_Stz,             &Step::vStreamDefLftGet);
   vAddStep("StreamDefLft[].isNull"_Stz,          &Step::vStreamDefLftIsNull);
   vAddStep("StreamDefLft[].name"_Stz,            &Step::vStreamDefLftName);
@@ -120,6 +121,32 @@ void Step::vStreamDefLftDuplicate(void)
   StreamDef* pStreamDef = new StreamDef(* m_pLogicUnit->m_xpStreamDefLft);
   
   m_pDataStack->vPushPtr(pStreamDef);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* StreamDefLft[].findKey -- find given key in streamDefLft                   */
+/*----------------------------------------------------------------------------*/
+void Step::vStreamDefLftFindKey(void)
+{
+  ENTRY();
+
+  ASSERT (* m_pLogicUnit->m_xpStreamDefLft);
+
+  s256 sColumn;
+  m_pDataStack->vPopStr(sColumn, __func__);
+
+  StreamDef* pStreamDef = new StreamDef(* m_pLogicUnit->m_xpStreamDefLft);
+
+  Column* pColumn = pStreamDef->pFindColumn(sColumn);
+
+  if (pColumn) {
+    m_pDataStack->vPushInt(pColumn->iColumnNo());
+    m_pDataStack->vPushBol(true);
+  }
+  else
+    m_pDataStack->vPushBol(false);
 
   EXIT();
 }

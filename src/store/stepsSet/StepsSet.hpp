@@ -333,6 +333,7 @@ public:
   void vCrwBufferIsReport(void);
   void vCrwBufferSet(void);
   void vCrwBufferToCsv(void);
+  void vCrwBufferToRowRef(void);
   void vCrwBufferWriteToFile0(void);
 
   // csv buffer
@@ -2040,6 +2041,7 @@ void vJobIdLastJobIdFetch(void);
   void vStreamDefLftColumnCountFetch(void);
   void vStreamDefLftDelete(void);
   void vStreamDefLftDuplicate(void);
+  void vStreamDefLftFindKey(void);
   void vStreamDefLftGet(void);
   void vStreamDefLftGetAndClear(void);
   void vStreamDefLftIsNull(void);
@@ -2061,6 +2063,7 @@ void vJobIdLastJobIdFetch(void);
   void vStreamDefOutNameFetch(void);
   void vStreamDefOutNameStore(void);
   void vStreamDefOutNew(void);
+  void vStreamDefOutNewRowRef(void);
   void vStreamDefOutNewFromTable(void);
   void vStreamDefOutPrint(void);
   void vStreamDefOutSet(void);

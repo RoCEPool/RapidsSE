@@ -5,6 +5,66 @@
 " OP_rowRef.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* handler for EV_D_CRWBUFFER                                                 */
+/*----------------------------------------------------------------------------*/
+: rowRef_CrwBuffer \handler
+
+  //"rowRef_CrwBuffer" .
+
+  PipeIn[]\clear to CrwBuffer[]
+
+  Counter0[] CrwBuffer[].toRowRef to Pds[]
+
+  Pds[].pipeOut
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for EV_M_START ...                                                 */
+/*----------------------------------------------------------------------------*/
+: rowRef_StartMarker \handler
+
+  //"Operand:- EV_M_START" .verbose
+  //"Operand Insert:- EV_M_START" .
+  PipeIn[].pipeOut
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for EV_D_STREAMDEF ...                                             */
+/*----------------------------------------------------------------------------*/
+: rowRef_StreamDef \handler
+
+  //"Operand:- EV_D_STREAMDEF" .verbose
+  PipeIn[]\clear to StreamDefLft[]
+
+// find key in streamDefLft
+  <keyCol> StreamDefLft[].findKey if
+    to Counter0[]
+    Counter0[] <keyCol> "Found key %v as column %v" str.format .
+  else
+    // create an exec error
+    EC_NO_SUCH_COLUMN op__execErr
+
+    true
+    exit
+  then
+
+  // create a new rowRef streamDef
+  Counter0[] StreamDefLft[] StreamDefOut[].newRowRef
+
+  // delete the table streamDef
+  StreamDefLft[].delete
+
+  // pipeout the new rowRef streamDef
+  StreamDefOut[].pipeOut
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* execute for rowRef                                 (on node where spawned) */
 /*----------------------------------------------------------------------------*/
  : rowRef_op \operator
@@ -12,13 +72,16 @@
   _lu_initialise_
   // "OP_rowRef" .
 
+  // init the counter to be used for key column no
+  0 to Counter0[]
+
   op__topology
 
   //find: rowRef_Cleaning      EV_M_CLEANING     [op].handler!
   //find: rowRef_CrwBuffer     EV_D_CRWBUFFER    [op].handler!
   //find: rowRef_EosMarker     EV_M_EOS          [op].handler!
-  //find: rowRef_StreamDef     EV_D_STREAMDEF    [op].handler!
-  //find: rowRef_StartMarker   EV_M_START        [op].handler!
+  find: rowRef_StreamDef     EV_D_STREAMDEF    [op].handler!
+  find: rowRef_StartMarker   EV_M_START        [op].handler!
 
   op__loop
 
@@ -32,7 +95,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: rowRef :: rowRef <tableNm> <keyExpr> ;
+cmdSyntax: rowRef :: rowRef <keyCol> ;
 
 : rowRef_cmdTags _cmdTags tagCopy: op_tags
   tags{

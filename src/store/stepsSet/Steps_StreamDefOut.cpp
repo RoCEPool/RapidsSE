@@ -35,6 +35,7 @@ void Step::vAddSteps_StreamDefOut(void)
   vAddStep("StreamDefOut[].name!"_Stz,      &Step::vStreamDefOutNameStore);
   vAddStep("StreamDefOut[].new"_Stz,        &Step::vStreamDefOutNew);
   vAddStep("StreamDefOut[].newFromTable"_Stz,&Step::vStreamDefOutNewFromTable);
+  vAddStep("StreamDefOut[].newRowRef"_Stz,   &Step::vStreamDefOutNewRowRef);
   vAddStep("StreamDefOut[].print"_Stz,      &Step::vStreamDefOutPrint);
   vAddStep("StreamDefOut[].set"_Stz,        &Step::vStreamDefOutSet);
 }
@@ -140,6 +141,46 @@ void Step::vStreamDefOutNew(void)
   
   EXIT();
 }
+
+/*----------------------------------------------------------------------------*/
+/* StreamDefOut[].new -- new a rowRef stream definition out given the key     */
+/*----------------------------------------------------------------------------*/
+void Step::vStreamDefOutNewRowRef(void)
+{
+  ENTRY();
+
+
+  StreamDef* pStreamDefLft = _pStreamDef(m_pDataStack->pPopPtr(__func__));
+  i8 iKeyColumn = m_pDataStack->iPopInt(__func__);
+
+  m_pLogicUnit->m_xpStreamDefOut = new StreamDef;
+  StreamDef* pStreamDefOut = _pStreamDef(*m_pLogicUnit->m_xpStreamDefOut);
+
+  // add the key column to it
+  Column* pColumn = pStreamDefLft->pGetColumn(iKeyColumn);
+  pStreamDefOut->vAddColumn(pColumn->szColNm(),
+                            pColumn->xColumnTypeId(),
+                            pColumn->iColumnLength(),
+                            pColumn->iColumnScale(),
+                            pColumn->bIsNullable());
+
+  // add the PtnId column
+  pStreamDefOut->vAddColumn("PtnId"_Stz,
+                            TypeId::xIdOf(CT_INTEGER),
+                            19,
+                            0,
+                            false);
+
+  // add the RowRef column
+  pStreamDefOut->vAddColumn("RowRef"_Stz,
+                            TypeId::xIdOf(CT_INTEGER),
+                            19,
+                            0,
+                            false);
+
+  EXIT();
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* StreamDefOut[].newFromTable -- new a stream definition out from table      */

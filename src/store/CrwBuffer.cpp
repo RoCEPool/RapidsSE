@@ -714,6 +714,53 @@ void CrwBuffer::vToCsv(Tub* pTub)
 }
 
 /*----------------------------------------------------------------------------*/
+/* convert this crw buffer into one or more rowRef tub buffers with given key */
+/*----------------------------------------------------------------------------*/
+void CrwBuffer::vToRowRef(Tub* pTub, i8 iKey)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
+  UNUSED(pTub);
+  UNUSED(iKey);
+
+/*
+  StreamDef* pStreamDef = this->pStreamDef_dbuff();
+
+  HV_Record hvRecord(pStreamDef);
+  HV_RowSingle hvRowSingle(pStreamDef);
+
+  CsvBuffer* pCsvBuffer = _pCsvBuffer(pTub->pWorkingBuffer());
+  if (! pCsvBuffer) {
+    pCsvBuffer = new CsvBuffer;
+    pTub->vAddBuffer(pCsvBuffer);
+  }
+
+  i8 nSize = 0;
+  Stz* szRecord = nullptr;
+
+  i8 nRows = this->nRows();
+  for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
+
+    vGetRow_single(hvRowSingle, i_Row);
+
+    hvRecord->vToCsvRecord(hvRowSingle->pRowCurrent());
+    StrLib::vConcat(hvRecord->az(), hvRecord->iStrBufSize(), '\n');           //! sub-optimal
+    nSize = hvRecord->sz()->nSize();
+
+    if (pCsvBuffer->nFreeBytes() < nSize + 1) {
+      pCsvBuffer = new CsvBuffer;
+      pTub->vAddBuffer(pCsvBuffer);
+    }
+
+    szRecord = pCsvBuffer->szAllotRecord(nSize - 1);
+    StrLib::vCopy(szRecord->azChar(), nSize, hvRecord->sz()->azChar());
+  }
+
+  if (szRecord)
+    ((char*)szRecord)[nSize-1] = '\0';
+    */
+}
+
+/*----------------------------------------------------------------------------*/
 /* test for valid row buffer                                                  */
 /*----------------------------------------------------------------------------*/
 bool CrwBuffer::bValidCrwBuffer(void)

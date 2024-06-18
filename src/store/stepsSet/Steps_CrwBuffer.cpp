@@ -43,6 +43,7 @@ void Step::vAddSteps_CrwBuffer(void)
   vAddStep("CrwBuffer[].isReport"_Stz,    &Step::vCrwBufferIsReport);
   vAddStep("CrwBuffer[].set"_Stz,         &Step::vCrwBufferSet);
   vAddStep("CrwBuffer[].toCsv"_Stz,       &Step::vCrwBufferToCsv);
+  vAddStep("CrwBuffer[].toRowRef"_Stz,    &Step::vCrwBufferToRowRef);
   vAddStep("CrwBuffer[].upsertIntoTable"_Stz,&Step::vCrwBufferUpsertIntoTable);
   vAddStep("CrwBuffer[].writeToFile0"_Stz, &Step::vCrwBufferWriteToFile0);
   
@@ -279,6 +280,22 @@ void Step::vCrwBufferToCsv(void)
   
   pCrwBuffer->vToCsv(pTub);
 
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* CrwBuffer[].toRowRef -- convert CrwBuffer to RowRefwith given key          */
+/*----------------------------------------------------------------------------*/
+void Step::vCrwBufferToRowRef(void)
+{
+  ENTRY();
+
+  i8 iKeyColumn = m_pDataStack->iPopInt(__func__);
+
+  CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_pLogicUnit->m_xpCrwBuffer);
+  Tub* pTub = _pTub(m_pDataStack->pPopPtr(__func__));
+
+  pCrwBuffer->vToRowRef(pTub, iKeyColumn);
   EXIT();
 }
 

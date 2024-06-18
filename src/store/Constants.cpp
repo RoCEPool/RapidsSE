@@ -427,6 +427,7 @@ void Constants::vAddConstantsCpp(void)
 
   /* 25 */ vAddConstant("EC_NO_COLUMNS_DIC"_Stz,     EC_NO_COLUMNS_DIC);
   /* 26 */ vAddConstant("EC_NO_SUCH_CATALOG"_Stz,    EC_NO_SUCH_CATALOG);
+  /*    */ vAddConstant("EC_NO_SUCH_COLUMN"_Stz,     EC_NO_SUCH_COLUMN);
   /* 27 */ vAddConstant("EC_NO_SUCH_DIRECTORY"_Stz,  EC_NO_SUCH_DIRECTORY);
   /* 28 */ vAddConstant("EC_NO_SUCH_FOLDER"_Stz,     EC_NO_SUCH_FOLDER);
   /* 28 */ vAddConstant("EC_NO_SUCH_FUNCTION"_Stz,   EC_NO_SUCH_FUNCTION);
