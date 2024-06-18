@@ -9619,7 +9619,7 @@ void Task::vAddMunged(Task* )
     "  stage stageB on all nodes :\n"
     "    createIndex $indexNm | stageC\n"
     "\n"
-    "  stage stageC on all nodes :\n"
+    "  stage stageC on all partitions :\n"
     "    populateIndex $indexNm | stageD\n"
     "\n"
     "  stage stageD on origin :\n"

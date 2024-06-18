@@ -44,7 +44,6 @@ namespace STORE
     CrwBuffer* pGetBuffer(SkipListBlock* pSLBlock);
 
     bool bPopulateIndexTree(IndexTree* pIndexTree);
-    bool bPopulateGblIndexTree(IndexTree* pIndexTree, LglPtn tLglPtn);
 
     BufferId oRootCrwBufferId(void);
     Table* pTable(void);

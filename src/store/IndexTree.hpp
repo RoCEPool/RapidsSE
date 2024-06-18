@@ -158,7 +158,6 @@ namespace STORE
 			IndexDef *pIndexDef(void);
 
 			void vInsertEntries(CrwBuffer *pCrwBuffer);
-      void vInsertGblEntries(CrwBuffer *pCrwBuffer, LglPtn tLglPtn);
 
 			Ent *pInsertEntTop_(Ent *aEnt, Ent **ppEntBottom, i8 iTopCount);
 
