@@ -1174,57 +1174,12 @@ void Card_OP::vRpn_rrfJoin(CardIter* pCI, String* psRpnExpr, Card_RrfJoin* p_rrf
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
   UNUSED(pCI);
 
-  Card_IndexList* pCard_IndexList = p_rrfJoin->pSub_indexList();
+  Card_Term* p_term = p_rrfJoin->pSub_term();
 
-  Card_Index* pCard_Index =
-      _pCard_Index(pCard_IndexList->pFindPpyRecursive(P_ChosenIndex,CK_INDEX));
+  psRpnExpr->vCatSprint("type %s %s"_Stz,
+                        aCT[p_term->eCTVal()],
+                        p_term->szFacet(SF_EXP_COL));
 
-  Card_Bounds* pCard_bounds = pCard_Index->pSub_bounds();
-  if (! pCard_bounds)
-    return;
-
-  //Card_Bound* p_bound = (Card_Bound*)pCard_bounds->pChild(0);
-
-  Card_Bound* p_bound = nullptr;
-  for (Kid xBound(pCard_bounds); xBound.bEach(CK_BOUND); /**/) {
-
-    if (xBound.pChild()->pSymbol()->Y_bHas(P_ChosenBound)) {
-      p_bound = _pCard_Bound(xBound.pChild());
-      break;
-    }
-  }
-
-  if (p_rrfJoin->pSub_outerJoin()) {
-    if (p_rrfJoin->pSub_outerJoin()->pSymbol()->Symbol::bHasFacet("LEFT_OUTER"_Stz)) {
-      psRpnExpr->vCatSprint(" %s"_Stz, "LEFT_OUTER"_Stz);
-    }
-  }
-
-  psRpnExpr->vCatSprint(" %s"_Stz, "BOUND"_Stz);
-
-  i8 nSubs = p_bound->nChildCards();
-  for (i8 i_Sub = 0; i_Sub < nSubs; i_Sub++) {
-    Card* pSubCard = p_bound->pGet(i_Sub);
-
-    if (! pSubCard->bIsCard(CK_TERM))
-      continue;
-
-    Card_Term* p_term = _pCard_Term(pSubCard);
-
-    if (p_term->pSymbol()->bHasFacet(SF_EXP_COL) ||
-        p_term->pSymbol()->bHasFacet(SF_TBL_COL)) {
-
-      if (!p_term->pSymbol()->bValidType()) {
-        p_term->vDump(__func__);
-        pSubCard->vDump(__func__);
-        RASSERT(p_term->pSymbol()->bValidType());
-      }
-    }
-
-    psRpnExpr->vCatSprint(" %s"_Stz, p_term->pSymbol()->szFacet_rpnTerm());
-  }
-
-  psRpnExpr->vCatSprint(" %s"_Stz, p_bound->pSymbol()->szFacet0());
 }
 
 /*----------------------------------------------------------------------------*/

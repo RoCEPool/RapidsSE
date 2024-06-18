@@ -288,6 +288,12 @@ void XF_Synthesise_Craft_pipelineDef::vCraftArgDefs(void)
       m_pOpDef->vAppend(new ArgDef(0, "expr"_Stz, sExpr, __FILE__, __LINE__));
       break;
 
+    case CK_o_GLOBALHASH:
+      m_pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_GlobalHash(p_OP)->pSub_tableNm()->szFacet(SF_TBL_NM), __FILE__, __LINE__));
+      m_pOpDef->vAppend(new ArgDef(1, "indexNm"_Stz, _pCard_GlobalHash(p_OP)->pSub_tableNm()->szFacet(SF_TBL_NM), __FILE__, __LINE__));
+      m_pOpDef->vAppend(new ArgDef(2, "expr"_Stz, sExpr, __FILE__, __LINE__));
+      break;
+
     case CK_o_HASH:
       if (m_pStageDef->i_Stage() == 5 && m_pOpDef->i_Op() == 1)
         vDebugPoint();
@@ -357,6 +363,10 @@ void XF_Synthesise_Craft_pipelineDef::vCraftArgDefs(void)
       m_pOpDef->vAppend(new ArgDef(0, "expr"_Stz, sExpr, __FILE__, __LINE__));
       break;
 
+    case CK_o_RRFJOIN:
+      m_pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_RrfJoin(p_OP)->pSub_tableNm()->szFacet(SF_TBL_NM), __FILE__, __LINE__));
+      m_pOpDef->vAppend(new ArgDef(1, "expr"_Stz, sExpr, __FILE__, __LINE__));
+      break;
     case CK_o_SCAN:
       m_pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_Scan(p_OP)->pSub_tableNm()->szFacet(SF_TBL_NM), __FILE__, __LINE__));
       break;
