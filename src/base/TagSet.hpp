@@ -5,6 +5,7 @@
 
 #include "eTN.h"
 #include "SegmentedArrayNL_t.hpp"
+#include "Lock.hpp"
 
 namespace PRIMITIVES { class PackedStringBuf; }
 
@@ -43,8 +44,8 @@ namespace BASE
     }
   };
 
-  typedef SegmentedArrayNL_t<CN_TAGARRAY, Tag, (C_SIZE_TINY_OBJECT - ( (6+4) * C_BYTES_PER_WORD)) / sizeof(Tag)> TagArray;
-  typedef SegmentedArrayIter<CN_TAGARRAY, Tag, (C_SIZE_TINY_OBJECT - ( (6+4) * C_BYTES_PER_WORD)) / sizeof(Tag)> TagArrayIter;
+  typedef SegmentedArrayNL_t<CN_TAGARRAY, Tag, (C_SIZE_TINY_OBJECT - sizeof(Lock) - ( (6+4) * C_BYTES_PER_WORD)) / sizeof(Tag)> TagArray;
+  typedef SegmentedArrayIter<CN_TAGARRAY, Tag, (C_SIZE_TINY_OBJECT - sizeof(Lock) - ( (6+4) * C_BYTES_PER_WORD)) / sizeof(Tag)> TagArrayIter;
 
   // Note: The size calculation above tries to maximise the size of the segmented array by
   // taking into account member variables in SegmentedArrayNL_t, as well as the size of
@@ -56,8 +57,9 @@ namespace BASE
   class TagSet : public Object
   {
   public:
-    TagArray m_oTagArray;
-    PackedStringBuf* m_pStrings;
+    Lock              m_oLock;
+    TagArray          m_oTagArray;
+    PackedStringBuf*  m_pStrings;
   
     // must be last
     Footer m_xFooter;
@@ -91,23 +93,19 @@ namespace BASE
   
     i8   i_Find(Stz* szName);
     Tag* pFind(Stz* szName);
-  
+
     bool bHasName(Stz* szName);
-  
+
     void vInsert(Stz* szName);
     void vInsert(Stz* szName, i8 iValue);
     void vInsert(Stz* szName, Object* pValue);
     void vInsert(Stz* szName, Stz* szValue);
     bool bIsDecodable(i8 i_Tag);
-    bool bIsDecodable(Tag* pTag);
     bool bIsInteger(i8 i_Tag);
-    bool bIsInteger(Tag* pTag);
     bool bIsObject(i8 i_Tag);
-    bool bIsObject(Tag* pTag);
     bool bIsString(i8 i_Tag);
-    bool bIsString(Tag* pTag);
     i8   nItems(void);
-  
+
     Stz* szName(i8 i_Tag);
     void vNamesString(String* pString);
 
@@ -120,7 +118,6 @@ namespace BASE
                  bool bParenth=true, bool bNames=false, bool bDecode=false);
     bool bSame(TagSet* pTagSet_arg);
 
-    Tag* pTag(i8 i_Tag);
     eTN  eToken(i8 i_Tag);
     void vToString(String* psStr, bool bValueOnly=false);
 
@@ -130,15 +127,30 @@ namespace BASE
     Object* pValue(Stz* szName);
     Stz* szValue(i8 i_Tag);
     Stz* szValueDecoded(i8 i_Tag);
-    Stz* szValueDecoded(Tag* pTag);
     Stz* szValue(Stz* szName);
 
   private:
+    i8   i_FindNL(Stz* szName);
+    Tag* pFindNL(Stz* szName);
+    bool bHasNameNL(Stz* szName);
     i8   i_InsertPoint(Stz* szName);
+    void vInsertNL(Stz* szName);
+    void vInsertNL(Stz* szName, i8 iValue);
+    void vInsertNL(Stz* szName, Object* pValue);
+    void vInsertNL(Stz* szName, Stz* szValue);
+    bool bIsDecodable(Tag* pTag);
+    bool bIsInteger(Tag* pTag);
+    bool bIsObject(Tag* pTag);
+    i8   nItemsNL(void);
     Stz* szName(Tag* pTag);
+    void vReplaceNL(Stz* szName, i8 iValue);
+    void vReplaceNL(Stz* szName, Object* pObject);
+    void vReplaceNL(Stz* szName, Stz* szValue);
+    bool bIsString(Tag* pTag);
     i8   iValue(Tag* pTag);
     Object* pValue(Tag* pTag);
     Stz* szValue(Tag* pTag);
+    Stz* szValueDecoded(Tag* pTag);
 
     Footer* aFooter(void);
   };
