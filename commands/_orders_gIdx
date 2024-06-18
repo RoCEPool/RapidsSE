@@ -17,9 +17,9 @@ begin
     | createGlobalIndexDef ORDERS GxO_ORDERKEY O_ORDERKEY
     | next
 
-  //stage S01 on all nodes :
-  //  createGlobalIndex GxO_ORDERKEY
-  //  | next
+  stage S01 on all nodes :
+    createGlobalIndex ORDERS GxO_ORDERKEY
+    | next
 
   stage S02 on origin :
     output

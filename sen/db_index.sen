@@ -185,6 +185,21 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* make an index assembly for given table                                     */
+/*----------------------------------------------------------------------------*/
+: index::makeGlobalIndexAssembly params| pTable sIndexNm pIndexDef |
+
+  sIndexNm index::newIndex locals| pIndex |
+
+  pIndexDef pIndex index.indexDef!
+  pTable pIndex index.table!
+
+  pIndex pTable table.addGlobalIndex
+
+  pIndex
+;
+
+/*----------------------------------------------------------------------------*/
 /* create an index using given index definition                               */
 /*----------------------------------------------------------------------------*/
 : index::createIndex params| pTable sIndexNm pIndexDef |
@@ -192,6 +207,18 @@
   Folder[].isIndexes assert
 
   pIndexDef sIndexNm pTable index::makeIndexAssembly locals| pIndex |
+
+  pIndex
+;
+
+/*----------------------------------------------------------------------------*/
+/* create a global index using given index definition                          */
+/*----------------------------------------------------------------------------*/
+: index::createGlobalIndex params| pTable sIndexNm pIndexDef |
+
+  Folder[].isIndexes assert
+
+  pIndexDef sIndexNm pTable index::makeGlobalIndexAssembly locals| pIndex |
 
   pIndex
 ;

@@ -1,0 +1,123 @@
+/*============================================================================*/
+/* OP_createGlobalIndex.sen -- Operator create index                                */
+/*============================================================================*/
+
+" OP_createGlobalIndex.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* create index <tableNm> . <indexNm> on this particpating node               */
+/*----------------------------------------------------------------------------*/
+: createGlobalIndex::createNamedIndex ( )
+
+  0 locals| sTableNm |
+
+  IndexDef[].tableName@ to sTableNm
+
+stableNm .
+"TADA1" .
+
+  // assert initial folder is ./tables
+  //   /tenants/boray/catalogs/rapids/schemas/public/tables
+  Folder[].isTables assert
+"TADA2" .
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // change working folder to : ./t/indexes
+
+  // cf to: ./t
+  sTableNm Path[].pushNamedTableFolder
+"TADA3" .
+  // cf to: ./indexes
+  Path[].pushIndexesFolder
+"TADA4" .
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // parse cmd and create index definition
+
+  sTableNm find execute to Table[]
+"TADA5" .
+  //dbg>
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create the index
+
+  IndexDef[] <indexNm> Table[] index::createGlobalIndex locals| pIndex |
+"TADA6" .
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Update info in metadata tables if it is a unique index
+  pIndex MetaDataTable[].createIndex
+"TADA7" .
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // move back to ./tables
+
+  Path[].popIndexesFolder
+  Path[].popNamedTableFolder
+  Folder[].isTables assert
+;
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* handler for EV_D_INDEXDEF ...                                              */
+/*----------------------------------------------------------------------------*/
+: createGlobalIndex_IndexDef
+
+  0 locals| sTableNm |
+
+  // get the index def
+  Pipein[]\clear to IndexDef[]
+
+  // grab the ddl lock
+  [ddlLock].grabRead
+
+  // should be in tables
+  Folder[].isTables assert
+  IndexDef[].tableName@ to sTableNm
+
+  // create the index
+  createGlobalIndex::createNamedIndex
+  nullptr to IndexDef[]
+
+  // should be in tables
+  Folder[].isTables assert
+
+  // pipeout EOSMARKER
+  Marker[].newEosMarker
+  Marker[].pipeout
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute for createGlobalIndex req                  (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+: createGlobalIndex_op \operator
+
+  _lu_initialise_
+
+  op__topology
+
+  find: createGlobalIndex_IndexDef EV_D_INDEXDEF [op].handler!
+
+  op__loop
+
+  _lu_finalise_
+  
+  op__retires
+  
+  HAZARD
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: createGlobalIndex :: createGlobalIndex <tableNm> <indexNm> ;
+
+: createGlobalIndex_cmdTags _cmdTags tagCopy: op_tags
+  tags{
+    <cmdDesc> = "--desc for op--"
+    <opEntry> = "createGlobalIndex_op"
+  }
+;
+    
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

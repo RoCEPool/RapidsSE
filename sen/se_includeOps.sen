@@ -47,6 +47,7 @@ assert::stack_0
   "OP_consume.sen"              include
   "OP_corrBySquash.sen"         include
   "OP_createCatalog.sen"        include
+  "OP_createGlobalIndex.sen"    include
   "OP_createGlobalIndexDef.sen" include
   "OP_createIndex.sen"          include
   "OP_createSchema.sen"         include

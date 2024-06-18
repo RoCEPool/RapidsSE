@@ -46,6 +46,7 @@ void Step::vAddSteps_Table(void)
   vAddStep("Table[].set"_Stz,              &Step::vTableSet);
   
   vAddStep("table.addIndex"_Stz,           &Step::vTableAddIndex);
+  vAddStep("table.addGlobalIndex"_Stz,     &Step::vTableAddGlobalIndex);
   vAddStep("Table[].appendBuffer"_Stz,     &Step::vTableAppendBuffer);
   vAddStep("Table[].columnCount@"_Stz,     &Step::vTableColumnCountFetch);
   vAddStep("Table[].column@"_Stz,          &Step::vTableColumnFetch);
@@ -125,6 +126,21 @@ void Step::vTableAddIndex(void)
   
   pTable->vAddIndex(pIndex);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* table.addGlobalIndex -- add global index to the table                      */
+/*----------------------------------------------------------------------------*/
+void Step::vTableAddGlobalIndex(void)
+{
+  ENTRY();
+
+  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
+  Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
+
+  pTable->vAddGlobalIndex(pIndex);
+
   EXIT();
 }
 

@@ -148,13 +148,23 @@ void Step::vIndexDefNewGlobalIndex(void)
 {
   ENTRY();
 
+  s256 sIndexName;
+
   Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
+  m_pDataStack->vPopStr(sIndexName, __func__);
+
   i8 iKeyCol = m_pDataStack->iPopInt(__func__);
 
   StreamDef* pStreamDef = pTable->pStreamDef();
   Column* pColumn = pStreamDef->pGetColumn(iKeyCol);
 
   IndexDef* pIndexDef = new IndexDef;
+
+  // set the index name
+  pIndexDef->vIndexNm(sIndexName);
+
+  // set the table name
+  pIndexDef->vTableNm(pTable->szTableNm());
 
   // add the key column to the IndexDef
   pIndexDef->vAddColumn(pColumn->szClassNm(), pColumn->xColumnTypeId());

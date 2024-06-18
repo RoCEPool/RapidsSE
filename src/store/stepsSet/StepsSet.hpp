@@ -2156,6 +2156,7 @@ void vJobIdLastJobIdFetch(void);
 
   // table
   void vTableAddIndex(void);
+  void vTableAddGlobalIndex(void);
   void vTableAppendBuffer(void);
   void vTableColumnCountFetch(void);
   void vTableColumnFetch(void);

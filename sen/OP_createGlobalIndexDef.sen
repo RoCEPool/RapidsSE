@@ -93,7 +93,7 @@
     exit
   then
 
-  Counter0[] Table[] indexDef[].newGlobalIndex
+  Counter0[] <indexNm> Table[] indexDef[].newGlobalIndex
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // should be in tables
