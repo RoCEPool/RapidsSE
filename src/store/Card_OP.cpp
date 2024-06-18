@@ -404,6 +404,8 @@ void Card_OP::vRestate_emit(CardIter* pCI)
       [[clang::fallthrough]];
 
     case CK_o_GLOBALHASH:
+      vDebugPoint();
+      [[clang::fallthrough]];
 
     case CK_o_HASH:
     case CK_o_KEYEXISTS:
