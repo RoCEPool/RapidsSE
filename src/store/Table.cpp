@@ -85,6 +85,9 @@ Table::Table(Stz* szTableNm, eTT eKind)
   m_pIdxVec      = new IdxVec;
   m_pTablePtnVec = new TablePtnVec;
 
+  m_pGblIdxVec       = new IdxVec;
+  m_pGblIndexTreeVec = new IndexTreeVec;
+
   m_pParcel      = nullptr;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -126,8 +129,10 @@ Table::~Table(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   //vTrace(">>>>>>>>>>>>>>>>>>>>> ~Table gets called\n"_Stz);
   m_pIdxVec->vClear();
-  
   delete m_pIdxVec;
+
+  m_pGblIdxVec->vClear();
+  delete m_pGblIdxVec;
 
   delete m_pStreamDef;
   delete m_pPtnDef;
@@ -140,6 +145,10 @@ Table::~Table(void) noexcept(false)
 
   // delete the partition vector
   delete m_pTablePtnVec;
+
+  // delete the gblIndexTree Vector
+  m_pGblIndexTreeVec->vClear();
+  delete m_pGblIndexTreeVec;
 
   //if (m_pParcel) delete m_pParcel;
 }
@@ -206,7 +215,7 @@ Table* Table::pFindTable(DicStack* pDicStack, Stz* szTableNm)
 /*----------------------------------------------------------------------------*/
 /* get indexDef of index of given table                                       */
 /*----------------------------------------------------------------------------*/
-IndexDef* Table::pIndexDef(DicStack* pDicStack, Stz* szTableNm, i8 iIndexNo)
+IndexDef* Table::pGblIndexDef(DicStack* pDicStack, Stz* szTableNm, i8 iIndexNo)
 {
   _static_
   
@@ -214,15 +223,36 @@ IndexDef* Table::pIndexDef(DicStack* pDicStack, Stz* szTableNm, i8 iIndexNo)
   if ( !pTable )
     return nullptr;
   
-  TablePtn* pTablePtn = pTable->m_pTablePtnVec->pGet(0);
-  
-  IndexTreeVec* pIndexTreeVec = pTablePtn->pIndexTreeVec();
+  IndexTreeVec* pIndexTreeVec = pTable->m_pGblIndexTreeVec;
   if (pIndexTreeVec->nItems() < iIndexNo)
     return nullptr;
   
-  IndexTree* pIndexTree = pTablePtn->pIndexTreeVec()->pGet(iIndexNo);
+  IndexTree* pIndexTree = pIndexTreeVec->pGet(iIndexNo);
   IndexDef* pIndexDef = pIndexTree->pIndexDef();
   
+  return pIndexDef;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get indexDef of index of given table                                       */
+/*----------------------------------------------------------------------------*/
+IndexDef* Table::pIndexDef(DicStack* pDicStack, Stz* szTableNm, i8 iIndexNo)
+{
+  _static_
+
+  Table* pTable = Table::pFindTable(pDicStack,szTableNm);
+  if ( !pTable )
+    return nullptr;
+
+  TablePtn* pTablePtn = pTable->m_pTablePtnVec->pGet(0);
+
+  IndexTreeVec* pIndexTreeVec = pTablePtn->pIndexTreeVec();
+  if (pIndexTreeVec->nItems() < iIndexNo)
+    return nullptr;
+
+  IndexTree* pIndexTree = pTablePtn->pIndexTreeVec()->pGet(iIndexNo);
+  IndexDef* pIndexDef = pIndexTree->pIndexDef();
+
   return pIndexDef;
 }
 
@@ -323,6 +353,28 @@ void Table::vAddIndex(Index* pIndex)
     TablePtn* pTablePtn = this->pTablePtn(i_TablePtn);
     pTablePtn->vAddIndex(new IndexTree(pIndex, pIndex->pIndexDef(), i_TablePtn));
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* add a global index to table                                                */
+/*----------------------------------------------------------------------------*/
+void Table::vAddGlobalIndex(Index* pIndex)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  //vTrace("Table::vAddIndex\n"_Stz);
+  pIndex->pLocation()->vSet();
+
+  // set the index no in the index
+
+  i8 iIndexNo = m_pGblIdxVec->nItems();
+  pIndex->vIndexNo(iIndexNo);
+
+  // add index to table
+  m_pGblIdxVec->vAppend(pIndex);
+
+  // create an IndexTree for the index in the m_pGblIndexTreeVec
+  IndexTree* pIndexTree = new IndexTree(pIndex, pIndex->pIndexDef(), C_UNKNOWN);
+  m_pGblIndexTreeVec->vAppend(pIndexTree);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -434,6 +486,29 @@ Column* Table::pFindColumn(Stz* szColNm)
 }
 
 /*----------------------------------------------------------------------------*/
+/* find named global index                                                    */
+/*----------------------------------------------------------------------------*/
+Index* Table::pFindGblIndex(Stz* szIndexNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+
+  Index* pIndex = nullptr;
+
+  i8 nIndexes = m_pGblIdxVec->nItems();
+  for (i8 i_Index = 0; i_Index < nIndexes; i_Index++) {
+    Index* pIndex_test = m_pGblIdxVec->pGet(i_Index);
+    Stz* szIndexNm_test = pIndex_test->szIndexNm();
+
+    if (szIndexNm_test->bSame(szIndexNm)) {
+      pIndex = pIndex_test;
+      break;
+    }
+  }
+
+  return pIndex;
+}
+
+/*----------------------------------------------------------------------------*/
 /* find named index                                                           */
 /*----------------------------------------------------------------------------*/
 Index* Table::pFindIndex(Stz* szIndexNm)
@@ -455,6 +530,16 @@ Index* Table::pFindIndex(Stz* szIndexNm)
   }
 
   return pIndex;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the global index vector from the table                                 */
+/*----------------------------------------------------------------------------*/
+IdxVec* Table::pGblIdxVec(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+
+  return m_pGblIdxVec;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -621,6 +706,22 @@ bool Table::bPopulateIndex(i8 iIndexNo)
 }
 
 /*----------------------------------------------------------------------------*/
+/* remove global index from table                                             */
+/*----------------------------------------------------------------------------*/
+void Table::vRemoveGblIndex(Index* pGblIndex)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+
+  // remove index from the GblIdxVec
+  m_pGblIdxVec->vRemove(pGblIndex);
+
+  // remove the indexTree from the m_pGblIndexTreeVec
+  IndexTree* pIndexTree = m_pGblIndexTreeVec->pGet(pGblIndex->iIndexNo());
+  m_pGblIndexTreeVec->vRemove(pIndexTree);
+  delete pGblIndex;
+}
+
+/*----------------------------------------------------------------------------*/
 /* remove index from table                                                    */
 /*----------------------------------------------------------------------------*/
 void Table::vRemoveIndex(Index* pIndex)
@@ -647,6 +748,8 @@ void Table::vResetPointers(void)
   m_pPtnDef  = nullptr;
   m_pIdxVec    = nullptr;
   m_pTablePtnVec = nullptr;
+  m_pGblIdxVec   = nullptr;
+  m_pGblIndexTreeVec = nullptr;
 
   //Operand::ListItem_t::vResetPointers();
 
@@ -858,6 +961,9 @@ i8 Table::iPrepareParcel(void)
   if (m_pIdxVec->nItems() > 0)
     m_pParcel->vAddItem((Object *) m_pIdxVec);
 
+  if (m_pGblIdxVec->nItems() > 0)
+    m_pParcel->vAddItem((Object *) m_pGblIdxVec);
+
   return m_pParcel->nItems();
 }
 
@@ -878,6 +984,9 @@ void Table::vGetMetaParts(Parcel* pParcel)
 
   if (m_pIdxVec->nItems() > 0)
     pParcel->vAddItem((Object *) m_pIdxVec);
+
+  if (m_pGblIdxVec->nItems() > 0)
+    pParcel->vAddItem((Object *) m_pGblIdxVec);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -956,6 +1065,9 @@ i8  Table::iReassembleFromParcel(Parcel* pParcel)
         m_pPtnDef = (PtnDef*) pObject;
         break;
       case CN_IDXVEC: {
+        // Alka : 17/6/2024
+        RASSERT(0);
+        // what about m_pGblIdxVec !!!
         m_pIdxVec = (IdxVec *) pObject;
         break;
       }

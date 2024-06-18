@@ -32,6 +32,10 @@ namespace STORE
     
     TablePtnVec*  m_pTablePtnVec; // table partition vector
 
+
+    IdxVec*       m_pGblIdxVec;
+    IndexTreeVec* m_pGblIndexTreeVec;
+
     Parcel* m_pParcel;
 
     // must be last
@@ -48,6 +52,7 @@ namespace STORE
     static Stz*       szCurrTable(DicStack* pDicStack);
     static void       vDump(eCN eClass, Object* pObject, Stz* aTab);
     static Table*     pFindTable(DicStack* pDicStack, Stz* aTableNm);
+    static IndexDef*  pGblIndexDef(DicStack* pDicStack, Stz* aTableNm, i8 iIndexNo);
     static IndexDef*  pIndexDef(DicStack* pDicStack, Stz* aTableNm, i8 iIndexNo);
     static StreamDef* pStreamDef(DicStack* pDicStack, Stz* aTableNm);
   
@@ -58,8 +63,9 @@ namespace STORE
     PhyPtn  tTablePtnToPhyPtn(i8 i_TablePtn);
 
     void    vAddIndex(Index* pIndex);
+    void    vAddGlobalIndex(Index* pIndex);
     void    vAnalyze(i8 i_TablePtn, i8& nBuffers, i8& nRows, i8& jRowSize);
-    void vAppendBuffer_replicated(DataBuffer* pDataBuffer, i8& nRowsInserted);
+    void    vAppendBuffer_replicated(DataBuffer* pDataBuffer, i8& nRowsInserted);
 
     i8      nBuffers(void);
     void    vCompactIndex(Index* pIndex);
@@ -67,6 +73,8 @@ namespace STORE
     void    vContentDump(void);
     Column* pFindColumn(Stz* szColNm);
     Index*  pFindIndex(Stz* szIndexNm);
+    Index*  pFindGblIndex(Stz* szIndexNm);
+    IdxVec*  pGblIdxVec(void);
     IdxVec* pIdxVec(void);
     i8      nIndexBuffers(i8 i_Index);
     bool    bIsDefinitionOnly(void);
@@ -81,6 +89,7 @@ namespace STORE
     bool    bPopulateIndex(i8 iIndexNo);
     PtnDef*  pPtnDef(void);
     void    vGetGridEstimates(i8& jTableSize, i8& jRowSize, i8& nRowCount);
+    void    vRemoveGblIndex(Index* pGblIndex);
     void    vRemoveIndex(Index* pIndex);
     void    vResetPointers(void);
     EntBuffer* pRootBuffer(i8 i_TablePtn, i8 i_Index);
