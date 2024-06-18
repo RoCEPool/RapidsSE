@@ -10,7 +10,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_RrfJoin,CK_ADDRESS)
+__pCastFunction_Card(STORE,Card_RrfJoin,CK_o_RRFJOIN)
 __aNewFunction(Card_RrfJoin,CN_CARD)
 __vDeleteFunction(Card_RrfJoin,CN_CARD)
 

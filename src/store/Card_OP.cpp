@@ -56,6 +56,7 @@ bool Card_OP::bIsOp(eCK eCard)
     case CK_o_FILTER:
     case CK_o_FROM:
     case CK_o_GBYAGG:
+    case CK_o_GLOBALHASH:
     case CK_o_HASH:
     case CK_o_HAVING:
     case CK_o_INDEXSCAN:
@@ -67,6 +68,7 @@ bool Card_OP::bIsOp(eCK eCard)
     case CK_o_ORDAGG:
     case CK_o_PDSROW:
     case CK_o_PROJECT:
+    case CK_o_RRFJOIN:
     case CK_o_SCAN:
     case CK_o_SORT:
     case CK_o_TOP:
@@ -399,6 +401,9 @@ void Card_OP::vRestate_emit(CardIter* pCI)
     case CK_o_HAVING:
       vDebugPoint();
       [[clang::fallthrough]];
+
+    case CK_o_GLOBALHASH:
+    case CK_o_RRFJOIN:
 
     case CK_o_HASH:
     case CK_o_KEYEXISTS:

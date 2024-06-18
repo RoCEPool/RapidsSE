@@ -10,7 +10,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_GlobalHash,CK_ADDRESS)
+__pCastFunction_Card(STORE,Card_GlobalHash,CK_o_GLOBALHASH)
 __aNewFunction(Card_GlobalHash,CN_CARD)
 __vDeleteFunction(Card_GlobalHash,CN_CARD)
 
