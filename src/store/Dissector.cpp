@@ -205,6 +205,8 @@ void Dissector::vOp(i8 i_OpSpec)
 
   m_szOpNm = m_pOpSpec->szOpNm();
 
+  vTrace("OpNm %s\n"_Stz,m_szOpNm);
+
   m_pOpArgs = m_pOpSpec->pArgTags();
 
        if (m_szOpNm->bSame("abstractJoin"_Stz)) pCard = pOp_absJoin     ();
@@ -532,7 +534,7 @@ Card* Dissector::pOp_globalHash(void)
 
   delete p_termSeq;
 
-  //p_globalHash->vDump(__FUNCTION__ );
+  p_globalHash->vDump(__FUNCTION__ );
 
   return p_globalHash;
 }
@@ -989,7 +991,6 @@ Card* Dissector::pOp_rrfJoin(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_DISSECTOR, _FOOTER_);
 
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // op arguments
   vCheckArgs(2);
@@ -1021,7 +1022,7 @@ Card* Dissector::pOp_rrfJoin(void)
 
   delete p_termSeq;
 
-  //p_rrfJoin->vDump(__FUNCTION__ );
+  p_rrfJoin->vDump(__FUNCTION__ );
 
   return p_rrfJoin;
 }

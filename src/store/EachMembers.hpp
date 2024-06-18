@@ -51,7 +51,6 @@ namespace STORE
     Card_Aggreg *        p_aggreg;
     Card_AndConj *       p_andConj;
 
-    Card_Predicate *      p_predicate;
     Card_Bound *         p_bound;
     Card_Bounds *        p_bounds;
 
@@ -84,6 +83,7 @@ namespace STORE
     Card_From *          p_from;
 
     Card_GbyAgg *        p_gbyAgg;
+    Card_GlobalHash *    p_globalHash;
 
     Card_Hash *          p_hash;
     Card_Hashing *       p_hashing;
@@ -132,11 +132,13 @@ namespace STORE
     Card_Payload *       p_payload;
     Card_PayloadCells *  p_payloadCells;
     Card_PdsRow *        p_pdsRow;
+    Card_Predicate *     p_predicate;
     Card_Project *       p_project;
 
     Card_RelnOp *        p_relnOp;
     Card_Required *      p_required;
     Card_RlnConj *       p_rlnConj;
+    Card_RrfJoin *       p_rrfJoin;
     Card_RowCount *      p_rowCount;
     Card_RowSize *       p_rowSize;
 
