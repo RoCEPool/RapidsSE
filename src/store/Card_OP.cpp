@@ -375,8 +375,9 @@ void Card_OP::vRestate_emit(CardIter* pCI)
       [[clang::fallthrough]];
     case CK_o_INDEXJOIN:
     case CK_o_INDEXSCAN:
+    case CK_o_RRFJOIN:
     case CK_o_SCAN:
-      if ((pCI->E.p_emit = pCI->E.p_Op->pSub_emit()))
+       if ((pCI->E.p_emit = pCI->E.p_Op->pSub_emit()))
         pCI->E.p_emit->vDeleteAllChildren();
       else {
         pCI->E.p_emit = new Card_Emit;
@@ -403,7 +404,6 @@ void Card_OP::vRestate_emit(CardIter* pCI)
       [[clang::fallthrough]];
 
     case CK_o_GLOBALHASH:
-    case CK_o_RRFJOIN:
 
     case CK_o_HASH:
     case CK_o_KEYEXISTS:
