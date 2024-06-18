@@ -144,6 +144,7 @@ PackedStringBuf* PackedStringBuf::pDeserialise(Bytes* pBuf, i8& iPos)
   for (i8 i=0; i<nSegments; i++) {
     // (4) Read the class number of the segment
     eCN eSegClass = (eCN) pBuf->iGet(iPos);
+    iPos += sizeof(i8);
 
     // (5) Deserialise the segment
     switch (eSegClass) {
@@ -243,19 +244,6 @@ PackedStringBuf::~PackedStringBuf(void) noexcept(false)
 
     m_pNext = nullptr;
   }
-
-//  // Call the destructor of the derived class to ensure that the bytespace
-//  // is cleaned up. This is necessary because in many cases it is the base class
-//  // pointer that is being deleted, and this would normally result in a leak
-//  // of the bytespace object in the derived class.
-//  switch (this->eGetClassNo()) {
-//    case CN_PACKEDSTRINGBUFTINY:      _pPackedStringSegmentTiny(this)->vDestroy();   break;
-//    case CN_PACKEDSTRINGBUFSMALL:    _pPackedStringSegmentSmall(this)->vDestroy();  break;
-//    case CN_PACKEDSTRINGBUFMEDIUM:  _pPackedStringSegmentMedium(this)->vDestroy(); break;
-//    case CN_PACKEDSTRINGBUFLARGE:    _pPackedStringSegmentLarge(this)->vDestroy();  break;
-//    default:
-//      NEVER_REACH
-//  }
 }
 
 /*----------------------------------------------------------------------------*/

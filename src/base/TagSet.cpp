@@ -73,6 +73,9 @@ TagSet::TagSet(const TagSet& oOther)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
 
+  // m_oTagArray already copied above, but we need to correct
+  // all string pointers used in it to use the new packed string buffer
+
   m_pStrings = PackedStringBuf::pCreate(PackedStringBuf::TINY);
 
   TagArrayIter xIter = m_oTagArray.xIterator();
@@ -229,6 +232,9 @@ TagSet* TagSet::pDeserialise(Bytes* pBuf)
     iPos += C_SIZE_END_TAGARRAY;
 
     // (7) Deserialise the string buffer
+    // TagSet has already created a default one, but it may not be the right size.
+    // Let the deserialisation create one.
+    PackedStringBuf::vDestroy(pTagSet->m_pStrings);
     pTagSet->m_pStrings = PackedStringBuf::pDeserialise(pBuf, iPos);
 
 
@@ -426,29 +432,28 @@ void TagSet::vCopy(TagSet* pScrTagSet)
 }
 
 /*----------------------------------------------------------------------------*/
-/* copy source ename-set into this ename-set and replace an ename pair        */
+/* delete a tag matching a given name                                         */
 /*----------------------------------------------------------------------------*/
 void TagSet::vDelete(Stz* szName)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
-  
-  TagSet xTagSet;
-    
-  xTagSet.vCopy(this);
-  vReset();
 
-  for (i8 i_Tag = 0; i_Tag < xTagSet.nItems(); i_Tag++) {
-    
-    if (xTagSet.szName(i_Tag)->bSame(szName))
-      continue;
-    
-    if (TN_STRING == xTagSet.eToken(i_Tag))
-      vInsert(xTagSet.szName(i_Tag),xTagSet.szValue(i_Tag));
-    else
-    if (TN_OBJECT == xTagSet.eToken(i_Tag))
-      vInsert(xTagSet.szName(i_Tag),xTagSet.pValue(i_Tag));
-    else
-      vInsert(xTagSet.szName(i_Tag),xTagSet.iValue(i_Tag));
+  TagArrayIter xIter = m_oTagArray.xIterator();
+  Tag* pTag;
+
+  while ((pTag = xIter.pNext()) != nullptr) {
+    if (pTag->m_szName->bSame(szName)) {
+      // Remove the strings
+      m_pStrings->vRemove(pTag->m_szName);
+      if (pTag->m_eToken == TN_STRING && pTag->m_szValue != nullptr) {
+        m_pStrings->vRemove(pTag->m_szValue);
+      }
+
+      // Remove the token
+      i8 iIdx = xIter.iArrayIndex();
+      xIter.pPrevious();
+      m_oTagArray.vRemove(iIdx);
+    }
   }
 }
 
@@ -560,6 +565,8 @@ i8 TagSet::i_Find(Stz *szName)
   Tag* pTag;
 
   while ((pTag = xIter.pNext()) != nullptr) {
+    RASSERT(pTag);
+    RASSERT(pTag->m_szName);
     if (pTag->m_szName->bSame(szName))
       return xIter.iArrayIndex();
   }
@@ -578,6 +585,7 @@ Tag* TagSet::pFind(Stz *szName)
   Tag* pTag;
 
   while ((pTag = xIter.pNext()) != nullptr) {
+    RASSERT(pTag);
     if (pTag->m_szName->bSame(szName))
       return pTag;
   }
@@ -699,6 +707,8 @@ bool TagSet::bIsDecodable(Tag* pTag)
 bool TagSet::bIsInteger(i8 i_Tag)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
+  ASSERT(i_Tag >= 0);
+  ASSERT(i_Tag < m_oTagArray.nItems());
   
   eTN eToken = m_oTagArray.pGet(i_Tag)->m_eToken;
   
@@ -714,6 +724,7 @@ bool TagSet::bIsInteger(i8 i_Tag)
 bool TagSet::bIsInteger(Tag* pTag)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
+  ASSERT(pTag);
 
   eTN eToken = pTag->m_eToken;
 
@@ -729,6 +740,8 @@ bool TagSet::bIsInteger(Tag* pTag)
 bool TagSet::bIsObject(i8 i_Tag)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
+  ASSERT(i_Tag >= 0);
+  ASSERT(i_Tag < m_oTagArray.nItems());
 
   eTN eToken = m_oTagArray.pGet(i_Tag)->m_eToken;
 
@@ -744,6 +757,7 @@ bool TagSet::bIsObject(i8 i_Tag)
 bool TagSet::bIsObject(Tag* pTag)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
+  ASSERT(pTag);
 
   eTN eToken = pTag->m_eToken;
 
@@ -759,6 +773,8 @@ bool TagSet::bIsObject(Tag* pTag)
 bool TagSet::bIsString(i8 i_Tag)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
+  ASSERT(i_Tag >= 0);
+  ASSERT(i_Tag < m_oTagArray.nItems());
   
   eTN eToken = m_oTagArray.pGet(i_Tag)->m_eToken;
   
@@ -774,6 +790,7 @@ bool TagSet::bIsString(i8 i_Tag)
 bool TagSet::bIsString(Tag* pTag)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
+  ASSERT(pTag);
 
   eTN eToken = pTag->m_eToken;
 
@@ -799,6 +816,8 @@ i8 TagSet::nItems(void)
 Stz* TagSet::szName(i8 i_Tag)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
+  ASSERT(i_Tag >= 0);
+  ASSERT(i_Tag < m_oTagArray.nItems());
 
   Tag* pTag = m_oTagArray.pGet(i_Tag);
   return pTag->m_szName;
@@ -810,6 +829,7 @@ Stz* TagSet::szName(i8 i_Tag)
 Stz* TagSet::szName(Tag* pTag)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
+  ASSERT(pTag);
 
   return pTag->m_szName;
 }
@@ -842,34 +862,30 @@ void TagSet::vReplace(Stz* szName, i8 iValue)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
 
-  // TODO: This can be simplified
-
-  TagSet xOriginalTagSet;
-
   bool bWasCopied = false;
 
-  xOriginalTagSet.vCopy(this);
-  vReset();
+  TagArrayIter xIter = m_oTagArray.xIterator();
+  Tag* pTag;
 
-  for (i8 i_Tag = 0; i_Tag < xOriginalTagSet.nItems(); i_Tag++) {
+  while ((pTag = xIter.pNext()) != nullptr) {
 
-    if (xOriginalTagSet.szName(i_Tag)->bSame(szName)) {
-      vInsert(szName,iValue);
+    if (pTag->m_szName->bSame(szName)) {
+      if (pTag->m_eToken == TN_STRING && pTag->m_szValue != nullptr) {
+        m_pStrings->vRemove(pTag->m_szValue);
+      }
+      // What if the prior tag value is an object?
+
+      // Update the value on this item
+      pTag->m_iValue = iValue;
+      pTag->m_eToken = TN_INTEGER;
       bWasCopied = true;
       continue;
     }
-
-    if (TN_STRING == xOriginalTagSet.eToken(i_Tag))
-      vInsert(xOriginalTagSet.szName(i_Tag),xOriginalTagSet.szValue(i_Tag));
-    else
-    if (TN_OBJECT == xOriginalTagSet.eToken(i_Tag))
-      vInsert(xOriginalTagSet.szName(i_Tag),xOriginalTagSet.pValue(i_Tag));
-    else
-      vInsert(xOriginalTagSet.szName(i_Tag),xOriginalTagSet.iValue(i_Tag));
   }
 
-  if (! bWasCopied)
-    vInsert(szName,iValue);
+  if (! bWasCopied) {
+    vInsert(szName, iValue);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -879,34 +895,30 @@ void TagSet::vReplace(Stz* szName, Object* pValue)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
 
-  // TODO: This can be simplified
-
-  TagSet xOriginalTagSet;
-
   bool bWasCopied = false;
 
-  xOriginalTagSet.vCopy(this);
-  vReset();
+  TagArrayIter xIter = m_oTagArray.xIterator();
+  Tag* pTag;
 
-  for (i8 i_Tag = 0; i_Tag < xOriginalTagSet.nItems(); i_Tag++) {
+  while ((pTag = xIter.pNext()) != nullptr) {
 
-    if (xOriginalTagSet.szName(i_Tag)->bSame(szName)) {
-      vInsert(szName,pValue);
+    if (pTag->m_szName->bSame(szName)) {
+      if (pTag->m_eToken == TN_STRING && pTag->m_szValue != nullptr) {
+        m_pStrings->vRemove(pTag->m_szValue);
+      }
+      // What if the prior tag value is an object?
+
+      // Update the value on this item
+      pTag->m_pValue = pValue;
+      pTag->m_eToken = TN_OBJECT;
       bWasCopied = true;
       continue;
     }
-
-    if (TN_STRING == xOriginalTagSet.eToken(i_Tag))
-      vInsert(xOriginalTagSet.szName(i_Tag),xOriginalTagSet.szValue(i_Tag));
-    else
-    if (TN_OBJECT == xOriginalTagSet.eToken(i_Tag))
-      vInsert(xOriginalTagSet.szName(i_Tag),xOriginalTagSet.pValue(i_Tag));
-    else
-      vInsert(xOriginalTagSet.szName(i_Tag),xOriginalTagSet.iValue(i_Tag));
   }
 
-  if (! bWasCopied)
-    vInsert(szName,pValue);
+  if (! bWasCopied) {
+    vInsert(szName, pValue);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -916,34 +928,30 @@ void TagSet::vReplace(Stz* szName, Stz* szValue)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
 
-  // TODO: This can be simplified
-
-  TagSet xOriginalTagSet;
-
   bool bWasCopied = false;
 
-  xOriginalTagSet.vCopy(this);
-  vReset();
+  TagArrayIter xIter = m_oTagArray.xIterator();
+  Tag* pTag;
 
-  for (i8 i_Tag = 0; i_Tag < xOriginalTagSet.nItems(); i_Tag++) {
+  while ((pTag = xIter.pNext()) != nullptr) {
 
-    if (xOriginalTagSet.szName(i_Tag)->bSame(szName)) {
-      vInsert(szName,szValue);
+    if (pTag->m_szName->bSame(szName)) {
+      if (pTag->m_eToken == TN_STRING && pTag->m_szValue != nullptr) {
+        m_pStrings->vRemove(pTag->m_szValue);
+      }
+      // What if the prior tag value is an object?
+
+      // Update the value on this item
+      pTag->m_szValue = m_pStrings->pAdd(szValue);
+      pTag->m_eToken = TN_STRING;
       bWasCopied = true;
       continue;
     }
-
-    if (TN_STRING == xOriginalTagSet.eToken(i_Tag))
-      vInsert(xOriginalTagSet.szName(i_Tag),xOriginalTagSet.szValue(i_Tag));
-    else
-    if (TN_OBJECT == xOriginalTagSet.eToken(i_Tag))
-      vInsert(xOriginalTagSet.szName(i_Tag),xOriginalTagSet.pValue(i_Tag));
-    else
-      vInsert(xOriginalTagSet.szName(i_Tag),xOriginalTagSet.iValue(i_Tag));
   }
 
-  if (! bWasCopied)
-    vInsert(szName,szValue);
+  if (! bWasCopied) {
+    vInsert(szName, szValue);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
