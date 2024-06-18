@@ -755,6 +755,7 @@ void CrwBuffer::vToRowRef(StreamDef* pStreamDefOut, Tub* pTub, i8 iKeyCol)
                                     xRowRef.iAsI8(),
                                     C_VARGS_END);
     ASSERT(pRow);
+    UNUSED(pRow);
   }
 
 }
