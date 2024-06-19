@@ -104,7 +104,7 @@ void Step::vAM_AnswerDemonJobIdFetch(void)
 
   JobId tJobId = AM::DEMON::tAnswerDemonJobId();
 
-  m_pDataStack->vPushInt(tJobId.iAsI8());
+  m_oDataStack.vPushInt(tJobId.iAsI8());
 
   EXIT();
 }
@@ -116,7 +116,7 @@ void Step::vAM_AnswerDemonJobIdStore(void)
 {
   ENTRY();
 
-  JobId tJobId = m_pDataStack->iPopInt(__func__);
+  JobId tJobId = m_oDataStack.iPopInt(__func__);
   AM::DEMON::vAnswerDemonJobId(tJobId);
 
   EXIT();
@@ -131,7 +131,7 @@ void Step::vAM_AnswerWLDemonJobIdFetch(void)
 
   JobId tJobId = AM::DEMON::tAnswerWLDemonJobId();
 
-  m_pDataStack->vPushInt(tJobId.iAsI8());
+  m_oDataStack.vPushInt(tJobId.iAsI8());
 
   EXIT();
 }
@@ -143,7 +143,7 @@ void Step::vAM_AnswerWLDemonJobIdStore(void)
 {
   ENTRY();
 
-  JobId tJobId = m_pDataStack->iPopInt(__func__);
+  JobId tJobId = m_oDataStack.iPopInt(__func__);
   AM::DEMON::vAnswerWLDemonJobId(tJobId);
 
   EXIT();
@@ -158,7 +158,7 @@ void Step::vAM_CollectDemonJobIdFetch(void)
 
   JobId tJobId = AM::DEMON::tCollectDemonJobId();
 
-  m_pDataStack->vPushInt(tJobId.iAsI8());
+  m_oDataStack.vPushInt(tJobId.iAsI8());
 
   EXIT();
 }
@@ -170,7 +170,7 @@ void Step::vAM_CollectDemonJobIdStore(void)
 {
   ENTRY();
 
-  JobId tJobId = m_pDataStack->iPopInt(__func__);
+  JobId tJobId = m_oDataStack.iPopInt(__func__);
   AM::DEMON::vCollectDemonJobId(tJobId);
 
   EXIT();
@@ -185,7 +185,7 @@ void Step::vAM_ConnectorDemonJobIdFetch(void)
 
   JobId tJobId = AM::DEMON::tConnectorDemonJobId();
 
-  m_pDataStack->vPushInt(tJobId.iAsI8());
+  m_oDataStack.vPushInt(tJobId.iAsI8());
 
   EXIT();
 }
@@ -197,7 +197,7 @@ void Step::vAM_ConnectorDemonJobIdStore(void)
 {
   ENTRY();
 
-  JobId tJobId = m_pDataStack->iPopInt(__func__);
+  JobId tJobId = m_oDataStack.iPopInt(__func__);
   AM::DEMON::vConnectorDemonJobId(tJobId);
 
   EXIT();
@@ -212,7 +212,7 @@ void Step::vAM_EventDemonJobIdFetch(void)
 
   JobId tJobId = AM::DEMON::tEventDemonJobId();
 
-  m_pDataStack->vPushInt(tJobId.iAsI8());
+  m_oDataStack.vPushInt(tJobId.iAsI8());
 
   EXIT();
 }
@@ -224,7 +224,7 @@ void Step::vAM_EventDemonJobIdStore(void)
 {
   ENTRY();
 
-  JobId tJobId = m_pDataStack->iPopInt(__func__);
+  JobId tJobId = m_oDataStack.iPopInt(__func__);
   AM::DEMON::vEventDemonJobId(tJobId);
 
   EXIT();
@@ -239,7 +239,7 @@ void Step::vAM_ExitDemonJobIdFetch(void)
 
   JobId tJobId = AM::DEMON::tExitDemonJobId();
 
-  m_pDataStack->vPushInt(tJobId.iAsI8());
+  m_oDataStack.vPushInt(tJobId.iAsI8());
 
   EXIT();
 }
@@ -251,7 +251,7 @@ void Step::vAM_ExitDemonJobIdStore(void)
 {
   ENTRY();
 
-  JobId tJobId = m_pDataStack->iPopInt(__func__);
+  JobId tJobId = m_oDataStack.iPopInt(__func__);
   AM::DEMON::vExitDemonJobId(tJobId);
 
   EXIT();
@@ -266,7 +266,7 @@ void Step::vAM_MetricsDemonJobIdFetch(void)
 
   JobId tJobId = AM::DEMON::tMetricsDemonJobId();
 
-  m_pDataStack->vPushInt(tJobId.iAsI8());
+  m_oDataStack.vPushInt(tJobId.iAsI8());
 
   EXIT();
 }
@@ -278,7 +278,7 @@ void Step::vAM_MetricsDemonJobIdStore(void)
 {
   ENTRY();
 
-  JobId tJobId = m_pDataStack->iPopInt(__func__);
+  JobId tJobId = m_oDataStack.iPopInt(__func__);
   AM::DEMON::vMetricsDemonJobId(tJobId);
 
   EXIT();
@@ -292,7 +292,7 @@ void Step::vAM_MonDemonJobIdFetch(void)
 
   JobId tJobId = AM::DEMON::tMonDemonJobId();
 
-  m_pDataStack->vPushInt(tJobId.iAsI8());
+  m_oDataStack.vPushInt(tJobId.iAsI8());
 
   EXIT();
 }
@@ -304,7 +304,7 @@ void Step::vAM_MonDemonJobIdStore(void)
 {
   ENTRY();
 
-  JobId tJobId = m_pDataStack->iPopInt(__func__);
+  JobId tJobId = m_oDataStack.iPopInt(__func__);
   AM::DEMON::vMonDemonJobId(tJobId);
 
   EXIT();
@@ -319,7 +319,7 @@ void Step::vAM_NodeMonDemonJobIdFetch(void)
 
   JobId tJobId = AM::DEMON::tNodeMonDemonJobId();
 
-  m_pDataStack->vPushInt(tJobId.iAsI8());
+  m_oDataStack.vPushInt(tJobId.iAsI8());
 
   EXIT();
 }
@@ -331,7 +331,7 @@ void Step::vAM_NodeMonDemonJobIdStore(void)
 {
   ENTRY();
 
-  JobId tJobId = m_pDataStack->iPopInt(__func__);
+  JobId tJobId = m_oDataStack.iPopInt(__func__);
   AM::DEMON::vNodeMonDemonJobId(tJobId);
 
   EXIT();
@@ -345,7 +345,7 @@ void Step::vAM_PageInDemonJobIdFetch(void)
   ENTRY();
 
   JobId tJobId = AM::DEMON::tPageInDemonJobId();
-  m_pDataStack->vPushInt(tJobId.iAsI8());
+  m_oDataStack.vPushInt(tJobId.iAsI8());
   EXIT();
 }
 
@@ -356,7 +356,7 @@ void Step::vAM_PageInDemonJobIdStore(void)
 {
   ENTRY();
 
-  JobId tJobId = m_pDataStack->iPopInt(__func__);
+  JobId tJobId = m_oDataStack.iPopInt(__func__);
   AM::DEMON::vPageInDemonJobId(tJobId);
 
   EXIT();
@@ -371,7 +371,7 @@ void Step::vAM_PageOutDemonJobIdFetch(void)
 
   JobId tJobId = AM::DEMON::tPageOutDemonJobId();
 
-  m_pDataStack->vPushInt(tJobId.iAsI8());
+  m_oDataStack.vPushInt(tJobId.iAsI8());
 
   EXIT();
 }
@@ -383,7 +383,7 @@ void Step::vAM_PageOutDemonJobIdStore(void)
 {
   ENTRY();
 
-  JobId tJobId = m_pDataStack->iPopInt(__func__);
+  JobId tJobId = m_oDataStack.iPopInt(__func__);
   AM::DEMON::vPageOutDemonJobId(tJobId);
 
   EXIT();
@@ -397,7 +397,7 @@ void Step::vAM_ReaperDemonJobIdFetch(void)
 
   JobId tJobId = AM::DEMON::tReaperDemonJobId();
 
-  m_pDataStack->vPushInt(tJobId.iAsI8());
+  m_oDataStack.vPushInt(tJobId.iAsI8());
 
   EXIT();
 }
@@ -409,7 +409,7 @@ void Step::vAM_ReaperDemonJobIdStore(void)
 {
   ENTRY();
 
-  JobId tJobId = m_pDataStack->iPopInt(__func__);
+  JobId tJobId = m_oDataStack.iPopInt(__func__);
   AM::DEMON::vReaperDemonJobId(tJobId);
 
   EXIT();
@@ -423,7 +423,7 @@ void Step::vAM_RecurDemonJobIdFetch(void)
 
   JobId tJobId = AM::DEMON::tRecurDemonJobId();
 
-  m_pDataStack->vPushInt(tJobId.iAsI8());
+  m_oDataStack.vPushInt(tJobId.iAsI8());
 
   EXIT();
 }
@@ -435,7 +435,7 @@ void Step::vAM_RecurDemonJobIdStore(void)
 {
   ENTRY();
 
-  JobId tJobId = m_pDataStack->iPopInt(__func__);
+  JobId tJobId = m_oDataStack.iPopInt(__func__);
   AM::DEMON::vRecurDemonJobId(tJobId);
 
   EXIT();
@@ -449,7 +449,7 @@ void Step::vAM_StatDemonJobIdFetch(void)
 
   JobId tJobId = AM::DEMON::tStatDemonJobId();
 
-  m_pDataStack->vPushInt(tJobId.iAsI8());
+  m_oDataStack.vPushInt(tJobId.iAsI8());
 
   EXIT();
 }
@@ -461,7 +461,7 @@ void Step::vAM_StatDemonJobIdStore(void)
 {
   ENTRY();
 
-  JobId tJobId = m_pDataStack->iPopInt(__func__);
+  JobId tJobId = m_oDataStack.iPopInt(__func__);
   AM::DEMON::vStatDemonJobId(tJobId);
 
   EXIT();
@@ -475,7 +475,7 @@ void Step::vAM_WakerDemonJobIdFetch(void)
 
   JobId tJobId = AM::DEMON::tWakerDemonJobId();
 
-  m_pDataStack->vPushInt(tJobId.iAsI8());
+  m_oDataStack.vPushInt(tJobId.iAsI8());
 
   EXIT();
 }
@@ -487,7 +487,7 @@ void Step::vAM_WakerDemonJobIdStore(void)
 {
   ENTRY();
 
-  JobId tJobId = m_pDataStack->iPopInt(__func__);
+  JobId tJobId = m_oDataStack.iPopInt(__func__);
   AM::DEMON::vWakerDemonJobId(tJobId);
 
   EXIT();
@@ -501,7 +501,7 @@ void Step::vAM_SuperDemonJobIdFetch(void)
 
   JobId tJobId = AM::DEMON::tSuperDemonJobId();
 
-  m_pDataStack->vPushInt(tJobId.iAsI8());
+  m_oDataStack.vPushInt(tJobId.iAsI8());
 
   EXIT();
 }
@@ -513,7 +513,7 @@ void Step::vAM_SuperDemonJobIdStore(void)
 {
   ENTRY();
 
-  JobId tJobId = m_pDataStack->iPopInt(__func__);
+  JobId tJobId = m_oDataStack.iPopInt(__func__);
   AM::DEMON::vSuperDemonJobId(tJobId);
 
   EXIT();
@@ -547,12 +547,12 @@ void Step::vAM_HasMemoryLeaks(void)
                 pSnapshotThen->m_nObjects[eClass];
 
     if (nDelta > 0) {
-      m_pDataStack->vPushBol(true);
+      m_oDataStack.vPushBol(true);
       return;
     }
   }
 
-  m_pDataStack->vPushBol(false);
+  m_oDataStack.vPushBol(false);
   EXIT();
 }
 
@@ -563,7 +563,7 @@ void Step::vAM_IsNotFreeing(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushBol(gpBufferPool->bDontFree() || AM::pHeaps()->m_bNoFree);
+  m_oDataStack.vPushBol(gpBufferPool->bDontFree() || AM::pHeaps()->m_bNoFree);
 
   EXIT();
 }
@@ -578,7 +578,7 @@ void Step::vAM_IsTracking(void)
   ObjectSnapshot* pSnap1 = AM::MEMORY::pSnapshotAtTrackingMemory();
   ObjectSnapshot* pSnap2 = AM::MEMORY::pSnapshotAtMemoryLeaks();
 
-  m_pDataStack->vPushBol(pSnap1 && pSnap2);
+  m_oDataStack.vPushBol(pSnap1 && pSnap2);
 
   EXIT();
 }
@@ -627,7 +627,7 @@ void Step::vAM_TakeTrackingSnapshot(void)
 {
   ENTRY();
 
-  bool bForce = m_pDataStack->iPopBol(__func__ );
+  bool bForce = m_oDataStack.iPopBol(__func__ );
 
   if (AM::MEMORY::pSnapshotAtTrackingMemory() ||
       AM::MEMORY::pSnapshotAtMemoryLeaks()) {
@@ -649,9 +649,9 @@ void Step::vAM_TakeTrackingSnapshot(void)
       s2K sBuf;
       sBuf.vSprint("%s : run memoryleaks to close current analysis"_Stz, aErrorMsg[eErr]);
 
-      m_pDataStack->vPushStz(sBuf.szStz());
-      m_pDataStack->vPushInt(eErr);
-      m_pDataStack->vPushBol(false);
+      m_oDataStack.vPushStz(sBuf.szStz());
+      m_oDataStack.vPushInt(eErr);
+      m_oDataStack.vPushBol(false);
       return;
     }
   }
@@ -666,7 +666,7 @@ void Step::vAM_TakeTrackingSnapshot(void)
   i8 nJobs = AM::JOBS::nJobsActive();
   AM::JOBS::vJobsThreshold(nJobs);
 
-  m_pDataStack->vPushBol(true);
+  m_oDataStack.vPushBol(true);
   EXIT();
 }
 
@@ -679,7 +679,7 @@ void Step::vAM_Show_Boot(void)
 
   b8 bBoot = AM::SHOW::bBoot();
   
-  m_pDataStack->vPushInt(bBoot);
+  m_oDataStack.vPushInt(bBoot);
 
   EXIT();
 }
@@ -693,7 +693,7 @@ void Step::vAM_Show_Dir(void)
 
   b8 bDir = AM::SHOW::bDir();
   
-  m_pDataStack->vPushInt(bDir);
+  m_oDataStack.vPushInt(bDir);
 
   EXIT();
 }
@@ -707,7 +707,7 @@ void Step::vAM_Show_Dir_Failure(void)
 
   b8 bDir_Failure = AM::SHOW::bDir_Failure();
   
-  m_pDataStack->vPushInt(bDir_Failure);
+  m_oDataStack.vPushInt(bDir_Failure);
 
   EXIT();
 }
@@ -721,7 +721,7 @@ void Step::vAM_Show_Connection(void)
 
   b8 bConnection = AM::SHOW::bConnection();
   
-  m_pDataStack->vPushInt(bConnection);
+  m_oDataStack.vPushInt(bConnection);
 
   EXIT();
 }
@@ -735,7 +735,7 @@ void Step::vAM_Show_Exception(void)
 
   b8 bException = AM::SHOW::bException();
   
-  m_pDataStack->vPushInt(bException);
+  m_oDataStack.vPushInt(bException);
 
   EXIT();
 }
@@ -749,7 +749,7 @@ void Step::vAM_Show_File(void)
 
   b8 bFile = AM::SHOW::bFile();
   
-  m_pDataStack->vPushInt(bFile);
+  m_oDataStack.vPushInt(bFile);
 
   EXIT();
 }
@@ -763,7 +763,7 @@ void Step::vAM_Show_File_Failure(void)
 
   b8 bFile_Failure = AM::SHOW::bFile_Failure();
   
-  m_pDataStack->vPushInt(bFile_Failure);
+  m_oDataStack.vPushInt(bFile_Failure);
 
   EXIT();
 }
@@ -777,7 +777,7 @@ void Step::vAM_Show_LowMem(void)
 
   b8 bLowMem = AM::SHOW::bLowMem();
   
-  m_pDataStack->vPushInt(bLowMem);
+  m_oDataStack.vPushInt(bLowMem);
 
   EXIT();
 }
@@ -791,7 +791,7 @@ void Step::vAM_Show_LowMem_Recv(void)
 
   b8 bLowMem_Recv = AM::SHOW::bLowMem_Recv();
   
-  m_pDataStack->vPushInt(bLowMem_Recv);
+  m_oDataStack.vPushInt(bLowMem_Recv);
 
   EXIT();
 }
@@ -805,7 +805,7 @@ void Step::vAM_Show_Recurring(void)
 
   b8 bRecurring = AM::SHOW::bRecurring();
   
-  m_pDataStack->vPushInt(bRecurring);
+  m_oDataStack.vPushInt(bRecurring);
 
   EXIT();
 }
@@ -819,7 +819,7 @@ void Step::vAM_Show_Socket(void)
 
   b8 bSocket = AM::SHOW::bSocket();
   
-  m_pDataStack->vPushInt(bSocket);
+  m_oDataStack.vPushInt(bSocket);
 
   EXIT();
 }
@@ -833,7 +833,7 @@ void Step::vAM_Show_Socket_Failure(void)
 
   b8 bSocket_Failure = AM::SHOW::bSocket_Failure();
   
-  m_pDataStack->vPushInt(bSocket_Failure);
+  m_oDataStack.vPushInt(bSocket_Failure);
 
   EXIT();
 }
@@ -921,7 +921,7 @@ void Step::vAM_System_ReadyFetch(void)
 
   bool bSystemReady = AM::SYSTEM::bReady();
 
-  m_pDataStack->vPushInt(bSystemReady);
+  m_oDataStack.vPushInt(bSystemReady);
 
   EXIT();
 }

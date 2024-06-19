@@ -35,7 +35,7 @@ void Step::vTubAppend(void)
 
   Tub* pTub = * m_pLogicUnit->m_xpTub;
 
-  DataBuffer* pDataBuffer = _pDataBuffer(m_pDataStack->pPopPtr(__func__));
+  DataBuffer* pDataBuffer = _pDataBuffer(m_oDataStack.pPopPtr(__func__));
 
   pTub->vAddBuffer(pDataBuffer);
 
@@ -53,7 +53,7 @@ void Step::vTubCompleted(void)
   
   DataBuffer* pDataBuffer = pTub->pCompletedBuffer();
 
-  m_pDataStack->vPushPtr(pDataBuffer);
+  m_oDataStack.vPushPtr(pDataBuffer);
 
   EXIT();
 }
@@ -69,7 +69,7 @@ void Step::vTubDangling(void)
   
   DataBuffer* pDataBuffer = pTub->pDanglingBuffer();
 
-  m_pDataStack->vPushPtr(pDataBuffer);
+  m_oDataStack.vPushPtr(pDataBuffer);
 
   EXIT();
 }
@@ -95,7 +95,7 @@ void Step::vTubGet(void)
   
   Tub* pTub = * m_pLogicUnit->m_xpTub;
   
-  m_pDataStack->vPushPtr(pTub);
+  m_oDataStack.vPushPtr(pTub);
 
   EXIT();
 }
@@ -111,7 +111,7 @@ void Step::vTubIsEmpty(void)
   
   bool bIsEmpty = pTub->bIsEmpty();
   
-  m_pDataStack->vPushInt((i8)bIsEmpty);
+  m_oDataStack.vPushInt((i8)bIsEmpty);
 
   EXIT();
 }
@@ -123,7 +123,7 @@ void Step::vTubIsNull(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt(m_pLogicUnit->m_xpTub.bIsNull() ? 1 : 0);
+  m_oDataStack.vPushInt(m_pLogicUnit->m_xpTub.bIsNull() ? 1 : 0);
 
   EXIT();
 }

@@ -33,7 +33,7 @@ void Step::vTaskListGet(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpTaskList);
+  m_oDataStack.vPushPtr(*m_pLogicUnit->m_xpTaskList);
 
   EXIT();
 }
@@ -45,7 +45,7 @@ void Step::vTaskListSet(void)
 {
   ENTRY();
 
-  TaskList* pTaskList = _pTaskList(m_pDataStack->pPopPtr(__func__));
+  TaskList* pTaskList = _pTaskList(m_oDataStack.pPopPtr(__func__));
   ASSERT(pTaskList);
 
   ASSERT(m_pLogicUnit->m_xpTaskList.bIsNull());
@@ -81,14 +81,14 @@ void Step::vTaskListIsEmpty(void)
   ENTRY();
 
   if (m_pLogicUnit->m_xpTaskList.bIsNull()) {
-    m_pDataStack->vPushBol(true);
+    m_oDataStack.vPushBol(true);
     return;
   }
 
   TaskList* pTaskList = * m_pLogicUnit->m_xpTaskList;
 
   pTaskList->vGrabLock();
-  m_pDataStack->vPushBol(m_pLogicUnit->m_xpTaskList->pPeekTask() == nullptr);
+  m_oDataStack.vPushBol(m_pLogicUnit->m_xpTaskList->pPeekTask() == nullptr);
   pTaskList->vDropLock();
 
   EXIT();
@@ -101,7 +101,7 @@ void Step::vTaskListIsNull(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushBol(m_pLogicUnit->m_xpTaskList.bIsNull());
+  m_oDataStack.vPushBol(m_pLogicUnit->m_xpTaskList.bIsNull());
 
   EXIT();
 }
@@ -120,7 +120,7 @@ void Step::vTaskListPop(void)
   Task* pTask = pTaskList->pPopTask();
   pTaskList->vDropLock();
 
-  m_pDataStack->vPushPtr(pTask);
+  m_oDataStack.vPushPtr(pTask);
 
   EXIT();
 }

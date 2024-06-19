@@ -46,19 +46,19 @@ void Step::vLibInfoCompile(void)
   ENTRY();
 
   s4K szDynLibNm;
-  m_pDataStack->vPopStr(szDynLibNm,__func__);
+  m_oDataStack.vPopStr(szDynLibNm, __func__);
 
   ExtendedText* pCodeBlock;
-  pCodeBlock = _pExtendedText(m_pDataStack->pPopPtr(__func__));
+  pCodeBlock = _pExtendedText(m_oDataStack.pPopPtr(__func__));
 
   LibInfo* pLibInfo = * m_pLogicUnit->m_xpLibInfo;
 
   bool bClean = CompileLib::bCompile(pCodeBlock, szDynLibNm, pLibInfo);
 
   if (bClean)
-    m_pDataStack->vPushInt(true);
+    m_oDataStack.vPushInt(true);
   else
-    m_pDataStack->vPushInt(false);
+    m_oDataStack.vPushInt(false);
 
   EXIT();
 }
@@ -72,16 +72,16 @@ void Step::vLibInfoCompileFile(void)
 
 
   s4K szDynLibNm;
-  m_pDataStack->vPopStr(szDynLibNm,__func__);
+  m_oDataStack.vPopStr(szDynLibNm, __func__);
 
   LibInfo* pLibInfo = * m_pLogicUnit->m_xpLibInfo;
 
   bool bClean = CompileLib::bCompileFile(szDynLibNm, pLibInfo);
 
   if (bClean)
-    m_pDataStack->vPushInt(true);
+    m_oDataStack.vPushInt(true);
   else
-    m_pDataStack->vPushInt(false);
+    m_oDataStack.vPushInt(false);
 
   EXIT();
 }
@@ -93,7 +93,7 @@ void Step::vLibInfoDelete(void)
 {
   ENTRY();
 
-  bool bDeleteFile = m_pDataStack->iPopBol(__func__);
+  bool bDeleteFile = m_oDataStack.iPopBol(__func__);
 
   LibInfo* pLibInfo = * m_pLogicUnit->m_xpLibInfo;
   m_pLogicUnit->m_xpLibInfo = nullptr;
@@ -116,7 +116,7 @@ void Step::vLibInfoError(void)
 
   LibInfo* pLibInfo = * m_pLogicUnit->m_xpLibInfo;
   sErrDetails = pLibInfo->szErrDetails();
-  m_pDataStack->vPushStr(sErrDetails);
+  m_oDataStack.vPushStr(sErrDetails);
 
   EXIT();
 }
@@ -131,13 +131,13 @@ void Step::vLibInfoFind(void)
   LibInfo* pLibInfo = * m_pLogicUnit->m_xpLibInfo;
 
   s32 sFunNm;
-  m_pDataStack->vPopStr(sFunNm,__func__);
+  m_oDataStack.vPopStr(sFunNm, __func__);
 
   i8 (*afFun)(void*);
 
   *(void **)(&afFun) = CompileLib::pvSymbolAddr(sFunNm, pLibInfo);
 
-  m_pDataStack->vPushInt((i8)afFun);
+  m_oDataStack.vPushInt((i8)afFun);
 
   EXIT();
 }
@@ -150,7 +150,7 @@ void Step::vLibInfoGet(void)
   ENTRY();
 
   LibInfo* pLibInfo = * m_pLogicUnit->m_xpLibInfo;
-  m_pDataStack->vPushPtr(pLibInfo);
+  m_oDataStack.vPushPtr(pLibInfo);
 
   EXIT();
 }
@@ -162,7 +162,7 @@ void Step::vLibInfoIsNotNull(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt(m_pLogicUnit->m_xpLibInfo.bIsNull() ? 0 : 1);
+  m_oDataStack.vPushInt(m_pLogicUnit->m_xpLibInfo.bIsNull() ? 0 : 1);
 
   EXIT();
 }
@@ -178,9 +178,9 @@ void Step::vLibInfoLink(void)
   bool bResult = CompileLib::bDynamicLink(pLibInfo);
 
   if (bResult)
-    m_pDataStack->vPushInt(true);
+    m_oDataStack.vPushInt(true);
   else
-    m_pDataStack->vPushInt(false);
+    m_oDataStack.vPushInt(false);
 
   EXIT();
 }
@@ -206,7 +206,7 @@ void Step::vLibInfoSet(void)
   ENTRY();
 
   m_pLogicUnit->m_xpLibInfo =
-    _pLibInfo(m_pDataStack->pPopPtr(__func__));
+    _pLibInfo(m_oDataStack.pPopPtr(__func__));
 
   EXIT();
 }
@@ -222,9 +222,9 @@ void Step::vLibInfoUnlink(void)
   bool bResult = CompileLib::bDynamicUnlink(pLibInfo);
 
   if (bResult)
-    m_pDataStack->vPushInt(true);
+    m_oDataStack.vPushInt(true);
   else
-    m_pDataStack->vPushInt(false);
+    m_oDataStack.vPushInt(false);
 
   EXIT();
 }

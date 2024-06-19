@@ -42,7 +42,7 @@ void Step::vAddSteps_BfrBuffer(void)
 //
 //  BfrBuffer* pBfrBuffer = new BfrBuffer;
 //
-//  m_pDataStack->vPushPtr(pBfrBuffer);
+//  m_oDataStack.vPushPtr(pBfrBuffer);
 //
 //  EXIT();
 //}
@@ -57,9 +57,9 @@ void Step::vBfrBufferOperandDump(void)
 {
   ENTRY();
 //
-//  BfrBuffer* pBfrBuffer = _pBfrBuffer(m_pDataStack->pPopPtr(__func__));
+//  BfrBuffer* pBfrBuffer = _pBfrBuffer(m_oDataStack.pPopPtr(__func__));
 //
-//  i8 iDetail = m_pDataStack->iPopInt(__func__);
+//  i8 iDetail = m_oDataStack.iPopInt(__func__);
 //
 //  if (iDetail)
 //    pBfrBuffer->vPrintRecords();
@@ -77,7 +77,7 @@ void Step::vBfrBufferCsvAppend(void)
   ENTRY();
 
 //  s256 sCsvRow;
-//  m_pDataStack->vPopStr(sCsvRow,__func__);
+//  m_oDataStack.vPopStr(sCsvRow,__func__);
 //
 //  BfrBuffer* pBfrBuffer = _pBfrBuffer(*m_pLogicUnit->m_xpCsvBuffer);
 //  i8 nBytes = sCsvRow.nSize();
@@ -100,7 +100,7 @@ void Step::vBfrBufferCsvData(void)
 
 //  BfrBuffer* pBfrBuffer = _pBfrBuffer(*m_pLogicUnit->m_xpCsvBuffer);
 //  char* data = (char*)pBfrBuffer->ayDataArea();
-//  m_pDataStack->vPushStz((Stz*)data);
+//  m_oDataStack.vPushStz((Stz*)data);
 
   EXIT();
 }
@@ -127,7 +127,7 @@ void Step::vBfrBufferGet(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpBfrBuffer);
+  m_oDataStack.vPushPtr(*m_pLogicUnit->m_xpBfrBuffer);
 
   EXIT();
 }
@@ -139,7 +139,7 @@ void Step::vBfrBufferGetAndClear(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpBfrBuffer);
+  m_oDataStack.vPushPtr(*m_pLogicUnit->m_xpBfrBuffer);
 
   m_pLogicUnit->m_xpBfrBuffer = nullptr;
 
@@ -153,7 +153,7 @@ void Step::vBfrBufferIsNotNull(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt(m_pLogicUnit->m_xpBfrBuffer.bIsNull() ? 0 : 1);
+  m_oDataStack.vPushInt(m_pLogicUnit->m_xpBfrBuffer.bIsNull() ? 0 : 1);
 
   EXIT();
 }
@@ -165,7 +165,7 @@ void Step::vBfrBufferIsNull(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt(m_pLogicUnit->m_xpBfrBuffer.bIsNull() ? 1 : 0);
+  m_oDataStack.vPushInt(m_pLogicUnit->m_xpBfrBuffer.bIsNull() ? 1 : 0);
 
   EXIT();
 }
@@ -191,7 +191,7 @@ void Step::vBfrBufferSet(void)
 {
   ENTRY();
 
-  Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
+  Operand* pOperand = _pOperand(m_oDataStack.pPopPtr(__func__));
 
   ASSERT(! pOperand || m_pLogicUnit->m_xpBfrBuffer.bIsNull());
 

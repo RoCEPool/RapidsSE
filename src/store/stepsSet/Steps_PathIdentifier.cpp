@@ -78,10 +78,10 @@ void Step::vPathIdentifierChosenPath(void)
   
   PathIdentifier* pPathIdentifier = _pPathIdentifier(*m_pLogicUnit->m_xpPathIdentifier);
   
-  i8 i_Phrase = m_pDataStack->iPopInt(__func__);
+  i8 i_Phrase = m_oDataStack.iPopInt(__func__);
   AccessPath* pChosenPlan = pPathIdentifier->pChosenPath(i_Phrase);
   
-  m_pDataStack->vPushPtr(pChosenPlan);
+  m_oDataStack.vPushPtr(pChosenPlan);
   
   EXIT();
 }
@@ -109,10 +109,10 @@ void Step::vPathIdentifierFetchTechniqueFetch(void)
   
   PathIdentifier* pPathIdentifier = _pPathIdentifier(*m_pLogicUnit->m_xpPathIdentifier);
   
-  i8 i_Phrase = m_pDataStack->iPopInt(__func__);
+  i8 i_Phrase = m_oDataStack.iPopInt(__func__);
   eAT eFetchTechnique = pPathIdentifier->pChosenPath(i_Phrase)->eAccess();
   
-  m_pDataStack->vPushInt(eFetchTechnique);
+  m_oDataStack.vPushInt(eFetchTechnique);
   
   EXIT();
 }
@@ -140,7 +140,7 @@ void Step::vPathIdentifierGet(void)
   
   PathIdentifier* pPathIdentifier = _pPathIdentifier(*m_pLogicUnit->m_xpPathIdentifier);
   
-  m_pDataStack->vPushPtr(pPathIdentifier);
+  m_oDataStack.vPushPtr(pPathIdentifier);
   
   EXIT();
 }
@@ -154,14 +154,14 @@ void Step::vPathIdentifierHighKeyFetch(void)
   
   PathIdentifier* pPathIdentifier = _pPathIdentifier(*m_pLogicUnit->m_xpPathIdentifier);
   
-  i8 i_Phrase = m_pDataStack->iPopInt(__func__);
+  i8 i_Phrase = m_oDataStack.iPopInt(__func__);
   AccessPath* mpChosenPath = pPathIdentifier->pChosenPath(i_Phrase);
   
   PredicateVec* mpUpperPredicates = mpChosenPath->pUpperPredicates();
   Predicate* mpUpperPredicate = mpUpperPredicates->pGet(0);
   s256 sHighKey = mpUpperPredicate->pArg2()->sArgVal();
   
-  m_pDataStack->vPushStr(sHighKey);
+  m_oDataStack.vPushStr(sHighKey);
   
   EXIT();
 }
@@ -175,13 +175,13 @@ void Step::vPathIdentifierIndexNmFetch(void)
   
   PathIdentifier* pPathIdentifier = _pPathIdentifier(*m_pLogicUnit->m_xpPathIdentifier);
   
-  i8 i_Phrase = m_pDataStack->iPopInt(__func__);
+  i8 i_Phrase = m_oDataStack.iPopInt(__func__);
   AccessPath* mpChosenPath = pPathIdentifier->pChosenPath(i_Phrase);
   
   Index* pChosenIndex = mpChosenPath->pIndex();
   
   s256 sIndexNm = pChosenIndex->szIndexNm();
-  m_pDataStack->vPushStr(sIndexNm);
+  m_oDataStack.vPushStr(sIndexNm);
   
   EXIT();
 }
@@ -193,7 +193,7 @@ void Step::vPathIdentifierIsNull(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(m_pLogicUnit->m_xpPathIdentifier.bIsNull() ? 1 : 0);
+  m_oDataStack.vPushInt(m_pLogicUnit->m_xpPathIdentifier.bIsNull() ? 1 : 0);
   
   EXIT();
 }
@@ -207,14 +207,14 @@ void Step::vPathIdentifierKeyFetch(void)
   
   PathIdentifier* pPathIdentifier = _pPathIdentifier(*m_pLogicUnit->m_xpPathIdentifier);
   
-  i8 i_Phrase = m_pDataStack->iPopInt(__func__);
+  i8 i_Phrase = m_oDataStack.iPopInt(__func__);
   AccessPath* mpChosenPath = pPathIdentifier->pChosenPath(i_Phrase);
   
   PredicateVec* mpLowerPredicates = mpChosenPath->pLowerPredicates();
   Predicate* mpLowerPredicate = mpLowerPredicates->pGet(0);
   s256 sEqlKey = mpLowerPredicate->pArg2()->sArgVal();
   
-  m_pDataStack->vPushStr(sEqlKey);
+  m_oDataStack.vPushStr(sEqlKey);
   
   EXIT();
 }
@@ -228,14 +228,14 @@ void Step::vPathIdentifierLowKeyFetch(void)
   
   PathIdentifier* pPathIdentifier = _pPathIdentifier(*m_pLogicUnit->m_xpPathIdentifier);
   
-  i8 i_Phrase = m_pDataStack->iPopInt(__func__);
+  i8 i_Phrase = m_oDataStack.iPopInt(__func__);
   AccessPath* mpChosenPath = pPathIdentifier->pChosenPath(i_Phrase);
   
   PredicateVec* mpLowerPredicates = mpChosenPath->pLowerPredicates();
   Predicate* mpLowerPredicate = mpLowerPredicates->pGet(0);
   s256 sLowKey = mpLowerPredicate->pArg2()->sArgVal();
   
-  m_pDataStack->vPushStr(sLowKey);
+  m_oDataStack.vPushStr(sLowKey);
   
   EXIT();
 }
@@ -276,7 +276,7 @@ void Step::vPathIdentifierParseWhere(void)
   PathIdentifier* pPathIdentifier = _pPathIdentifier(*m_pLogicUnit->m_xpPathIdentifier);
   
   s48K sWhere;
-  m_pDataStack->vPopStr(sWhere,__func__);
+  m_oDataStack.vPopStr(sWhere, __func__);
   
   pPathIdentifier->vParseWhere(sWhere);
   pPathIdentifier->vParsePhrases();
@@ -305,7 +305,7 @@ void Step::vPathIdentifierPhrasesFetch(void)
   
   i8 nPhrases = pPathIdentifier->nPhrases();
   
-  m_pDataStack->vPushInt(nPhrases);
+  m_oDataStack.vPushInt(nPhrases);
   
   EXIT();
 }
@@ -331,7 +331,7 @@ void Step::vPathIdentifierSet(void)
 {
   ENTRY();
 
-  PathIdentifier* pPathIdentifier = _pPathIdentifier(m_pDataStack->pPopPtr(__func__));
+  PathIdentifier* pPathIdentifier = _pPathIdentifier(m_oDataStack.pPopPtr(__func__));
   ASSERT(! pPathIdentifier || m_pLogicUnit->m_xpPathIdentifier.bIsNull());
   m_pLogicUnit->m_xpPathIdentifier = _pPathIdentifier(pPathIdentifier);
   
@@ -363,7 +363,7 @@ void Step::vPathIdentifierTableFetch(void)
   
   Table* pTable = pPathIdentifier->pTable();
   
-  m_pDataStack->vPushPtr(pTable);
+  m_oDataStack.vPushPtr(pTable);
   
   EXIT();
 }
@@ -377,7 +377,7 @@ void Step::vPathIdentifierTableStore(void)
   
   PathIdentifier* pPathIdentifier = _pPathIdentifier(*m_pLogicUnit->m_xpPathIdentifier);
   
-  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
+  Table* pTable = _pTable(m_oDataStack.pPopPtr(__func__));
   
   pPathIdentifier->vTable(pTable);
   

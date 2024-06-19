@@ -41,7 +41,7 @@ void Step::vPtnMapPtnsInGrid(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(AM::PTNMAP::nPtnsInGrid());
+  m_oDataStack.vPushInt(AM::PTNMAP::nPtnsInGrid());
   
   EXIT();
 }

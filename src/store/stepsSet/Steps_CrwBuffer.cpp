@@ -56,12 +56,12 @@ void Step::vCrwBufferDuplicate(void)
 {
   ENTRY();
 
-  CrwBuffer* pCrwBuffer = _pCrwBuffer(m_pDataStack->pPopPtr(__func__));
+  CrwBuffer* pCrwBuffer = _pCrwBuffer(m_oDataStack.pPopPtr(__func__));
 
   CrwBuffer* pNewCrwBuffer = new CrwBuffer;
   pNewCrwBuffer->vCopy(pCrwBuffer);
 
-  m_pDataStack->vPushPtr(pNewCrwBuffer);
+  m_oDataStack.vPushPtr(pNewCrwBuffer);
 
   EXIT();
 }
@@ -73,7 +73,7 @@ void Step::vCrwBufferDeleteOld(void)
 {
   ENTRY();
 
-  CrwBuffer* pCrwBuffer = _pCrwBuffer(m_pDataStack->pPopPtr(__func__));
+  CrwBuffer* pCrwBuffer = _pCrwBuffer(m_oDataStack.pPopPtr(__func__));
 
   delete pCrwBuffer;
   
@@ -89,7 +89,7 @@ void Step::vCrwBufferNew(void)
 
   CrwBuffer* pCrwBuffer = new CrwBuffer;
 
-  m_pDataStack->vPushPtr(pCrwBuffer);
+  m_oDataStack.vPushPtr(pCrwBuffer);
   
   EXIT();
 }
@@ -101,9 +101,9 @@ void Step::vCrwBufferOperandDump(void)
 {
   ENTRY();
 
-  CrwBuffer* pCrwBuffer = _pCrwBuffer(m_pDataStack->pPopPtr(__func__));
+  CrwBuffer* pCrwBuffer = _pCrwBuffer(m_oDataStack.pPopPtr(__func__));
 
-  i8 iDetail = m_pDataStack->iPopInt(__func__);
+  i8 iDetail = m_oDataStack.iPopInt(__func__);
   
   pCrwBuffer->vOperandDump(iDetail);
 
@@ -144,7 +144,7 @@ void Step::vCrwBufferGet(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpCrwBuffer);
+  m_oDataStack.vPushPtr(*m_pLogicUnit->m_xpCrwBuffer);
 
   EXIT();
 }
@@ -156,7 +156,7 @@ void Step::vCrwBufferGetAndClear(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpCrwBuffer);
+  m_oDataStack.vPushPtr(*m_pLogicUnit->m_xpCrwBuffer);
 
   m_pLogicUnit->m_xpCrwBuffer = nullptr;
 
@@ -172,7 +172,7 @@ void Step::vCrwBufferGetBufferIdAsAddr(void)
 
   CrwBuffer* pCrwBuffer = *m_pLogicUnit->m_xpCrwBuffer;
 
-  m_pDataStack->vPushPtr((Object*)pCrwBuffer->oGetBufferId().m_pvAsAddress);
+  m_oDataStack.vPushPtr((Object*)pCrwBuffer->oGetBufferId().m_pvAsAddress);
 
   EXIT();
 }
@@ -184,7 +184,7 @@ void Step::vCrwBufferInflate(void)
 {
   ENTRY();
 
-  StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
+  StreamDef* pStreamDef = _pStreamDef(m_oDataStack.pPopPtr(__func__));
 
   CrwBuffer* pCrwBuffer = *m_pLogicUnit->m_xpCrwBuffer;
   pCrwBuffer->vInflateRows(pStreamDef);
@@ -221,7 +221,7 @@ void Step::vCrwBufferIsNotNull(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt(m_pLogicUnit->m_xpCrwBuffer.bIsNull() ? 0 : 1);
+  m_oDataStack.vPushInt(m_pLogicUnit->m_xpCrwBuffer.bIsNull() ? 0 : 1);
 
   EXIT();
 }
@@ -233,7 +233,7 @@ void Step::vCrwBufferIsNull(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt(m_pLogicUnit->m_xpCrwBuffer.bIsNull() ? 1 : 0);
+  m_oDataStack.vPushInt(m_pLogicUnit->m_xpCrwBuffer.bIsNull() ? 1 : 0);
 
   EXIT();
 }
@@ -246,7 +246,7 @@ void Step::vCrwBufferIsReport(void)
   ENTRY();
 
   Operand* pOperand = *m_pLogicUnit->m_xpCrwBuffer;
-  m_pDataStack->vPushInt(pOperand->eTailProcessing() == PT_REPORT ? true : false);
+  m_oDataStack.vPushInt(pOperand->eTailProcessing() == PT_REPORT ? true : false);
 
   EXIT();
 }
@@ -258,7 +258,7 @@ void Step::vCrwBufferSet(void)
 {
   ENTRY();
 
-  Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
+  Operand* pOperand = _pOperand(m_oDataStack.pPopPtr(__func__));
 
   ASSERT(! pOperand || m_pLogicUnit->m_xpCrwBuffer.bIsNull());
 
@@ -276,7 +276,7 @@ void Step::vCrwBufferToCsv(void)
 
   CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_pLogicUnit->m_xpCrwBuffer);
  
-  Tub* pTub = _pTub(m_pDataStack->pPopPtr(__func__));
+  Tub* pTub = _pTub(m_oDataStack.pPopPtr(__func__));
   
   pCrwBuffer->vToCsv(pTub);
 
@@ -290,11 +290,11 @@ void Step::vCrwBufferToRowRef(void)
 {
   ENTRY();
 
-  StreamDef* pStreamDefOut = _pStreamDef(m_pDataStack->pPopPtr(__func__));
+  StreamDef* pStreamDefOut = _pStreamDef(m_oDataStack.pPopPtr(__func__));
 
-  Tub* pTub = _pTub(m_pDataStack->pPopPtr(__func__));
+  Tub* pTub = _pTub(m_oDataStack.pPopPtr(__func__));
 
-  i8 iKeyColumn = m_pDataStack->iPopInt(__func__);
+  i8 iKeyColumn = m_oDataStack.iPopInt(__func__);
 
   CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_pLogicUnit->m_xpCrwBuffer);
 

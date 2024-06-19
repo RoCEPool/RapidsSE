@@ -62,13 +62,13 @@ void Step::vStreamOfOpFindOp(void)
   ENTRY();
    
   s256 sOpNm;
-  m_pDataStack->vPopStr(sOpNm,__func__);
+  m_oDataStack.vPopStr(sOpNm, __func__);
   
   Stream* pStream = m_pOp->pStream();
   
   Op* pOp = pStream->pFindOp(sOpNm);
   
-  m_pDataStack->vPushPtr(pOp);
+  m_oDataStack.vPushPtr(pOp);
 
   EXIT();
 }
@@ -82,7 +82,7 @@ void Step::vStreamOfOpGet(void)
    
   Stream* pStream = m_pOp->pStream();
   
-  m_pDataStack->vPushPtr(pStream);
+  m_oDataStack.vPushPtr(pStream);
 
   EXIT();
 }

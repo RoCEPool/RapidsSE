@@ -94,6 +94,7 @@ void XF_Epilog_Type_Cast::vCast(void)
       case CK_o_CROSSJOIN:
       case CK_o_FILTER:
       case CK_o_GBYAGG:
+      case CK_o_GLOBALHASH:
       case CK_o_HASH:
       case CK_o_HAVING:
       case CK_o_INFLATE:
@@ -102,6 +103,7 @@ void XF_Epilog_Type_Cast::vCast(void)
       case CK_o_LIMIT:
       case CK_o_ORDAGG:
       case CK_o_PROJECT:
+      case CK_o_RRFJOIN:
       case CK_o_TOP:
       case CK_o_WHERE:
         break;

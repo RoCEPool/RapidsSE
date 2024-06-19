@@ -80,9 +80,9 @@ void Step::vPipeSpecGet(void)
   ENTRY();
 
   if (m_pLogicUnit->m_xpVertexSpec.bIsNotNull())
-    m_pDataStack->vPushPtr(* m_pLogicUnit->m_xpVertexSpec);
+    m_oDataStack.vPushPtr(* m_pLogicUnit->m_xpVertexSpec);
   else
-    m_pDataStack->vPushPtr(nullptr);
+    m_oDataStack.vPushPtr(nullptr);
 
   EXIT();
 }
@@ -117,7 +117,7 @@ void Step::vPipeSpecOptimisable(void)
     bOptimisable = true;
   
   
-  m_pDataStack->vPushInt(bOptimisable);
+  m_oDataStack.vPushInt(bOptimisable);
 
   EXIT();
 }
@@ -130,7 +130,7 @@ void Step::vPipeSpecSet(void)
   ENTRY();
   
   m_pLogicUnit->m_xpVertexSpec =
-    _pVertexSpec(m_pDataStack->pPopPtr(__func__));
+    _pVertexSpec(m_oDataStack.pPopPtr(__func__));
   
   EXIT();
 }
@@ -154,7 +154,7 @@ void Step::vPipeSpecIsSqlCompiler(void)
     bSqlCompiler = false;
 
 
-  m_pDataStack->vPushInt(bSqlCompiler);
+  m_oDataStack.vPushInt(bSqlCompiler);
 
   EXIT();
 }

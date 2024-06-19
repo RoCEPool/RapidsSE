@@ -50,6 +50,7 @@ namespace STORE
     Card* pOp_debug       (void);
     Card* pOp_filter      (void);
     Card* pOp_gbyAgg      (void);
+    Card* pOp_globalHash  (void);
     Card* pOp_hash        (void);
     Card* pOp_indexJoin   (void);
     Card* pOp_indexScan   (void);
@@ -60,6 +61,7 @@ namespace STORE
     Card* pOp_output      (void);
     Card* pOp_pulse       (void);
     Card* pOp_project     (void);
+    Card* pOp_rrfJoin     (void);
     Card* pOp_scan        (void);
     Card* pOp_send        (void);
     Card* pOp_sink        (void);

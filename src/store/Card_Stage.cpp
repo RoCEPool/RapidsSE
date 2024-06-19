@@ -264,17 +264,17 @@ void Card_Stage::vAddNext(CardIter* pCI, Card* p_main, i8& ri_main, Stz* szNextV
 {
   _static_
 
-  Card_Cast* p_next = new Card_Cast;
+  Card_Cast* p_cast = new Card_Cast;
   if (*szNextValue->azChar()) {
     eSF eSymbol = Symbol::eEval_facet(szNextValue);
     RASSERT(SF_STG_CAST == eSymbol);
-    p_next->SYM(SF_STG_CAST, szNextValue);
+    p_cast->SYM(SF_STG_CAST, szNextValue);
   }
   if (C_UNKNOWN == ri_main) {
-    pCI->E.p_deck->vAppendChild(p_next);
+    pCI->E.p_deck->vAppendChild(p_cast);
     return;
   }
-  pCI->E.p_deck->vInsertChildBefore(p_next, p_main);
+  pCI->E.p_deck->vInsertChildBefore(p_cast, p_main);
   ri_main++;
   RASSERT(pCI->E.p_deck->pGetChild(ri_main) == p_main);
 

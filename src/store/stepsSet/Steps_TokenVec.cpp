@@ -30,7 +30,7 @@ void Step::vTokenVecDelete(void)
 {
   ENTRY();
   
-  TokenVec* pTknVec = _pTokenVec(m_pDataStack->pPopPtr(__func__));
+  TokenVec* pTknVec = _pTokenVec(m_oDataStack.pPopPtr(__func__));
 
   delete pTknVec;
     
@@ -44,7 +44,7 @@ void Step::vTokenVecDump(void)
 {
   ENTRY();
   
-  TokenVec* pTknVec = _pTokenVec(m_pDataStack->pPopPtr(__func__));
+  TokenVec* pTknVec = _pTokenVec(m_oDataStack.pPopPtr(__func__));
 
   pTknVec->vDumpVec();
     
@@ -60,7 +60,7 @@ void Step::vTokenVecNew(void)
 
   TokenVec* pTknVec = new TokenVec;
   
-  m_pDataStack->vPushPtr(pTknVec);
+  m_oDataStack.vPushPtr(pTknVec);
   
   EXIT();
 }
@@ -72,9 +72,9 @@ void Step::vTokenVecRemoveToken(void)
 {
   ENTRY();
 
-  TokenVec* pTknVec = _pTokenVec(m_pDataStack->pPopPtr(__func__));
+  TokenVec* pTknVec = _pTokenVec(m_oDataStack.pPopPtr(__func__));
 
-  i8 i_Tkn = m_pDataStack->iPopInt(__func__);
+  i8 i_Tkn = m_oDataStack.iPopInt(__func__);
 
   pTknVec->vRemoveToken(i_Tkn);
   
@@ -88,10 +88,10 @@ void Step::vTokenVecTokenise(void)
 {
   ENTRY();
 
-  TokenVec* pTknVec = _pTokenVec(m_pDataStack->pPopPtr(__func__));
+  TokenVec* pTknVec = _pTokenVec(m_oDataStack.pPopPtr(__func__));
   
   s48K sString;
-  m_pDataStack->vPopStr(sString,__func__);
+  m_oDataStack.vPopStr(sString, __func__);
   
   AM::TOKENISE::vTokeniseSen(pTknVec,sString);
 
@@ -105,12 +105,12 @@ void Step::vTokenVecToString(void)
 {
   ENTRY();
 
-  TokenVec* pTknVec = _pTokenVec(m_pDataStack->pPopPtr(__func__));
+  TokenVec* pTknVec = _pTokenVec(m_oDataStack.pPopPtr(__func__));
   
   s48K sString;
   pTknVec->vToTknString(sString);
   
-  m_pDataStack->vPushStr(sString);
+  m_oDataStack.vPushStr(sString);
   
 
   EXIT();

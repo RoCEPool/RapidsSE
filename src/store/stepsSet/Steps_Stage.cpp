@@ -37,7 +37,7 @@ void Step::vStageGet(void)
 {
   ENTRY();
     
-  m_pDataStack->vPushPtr(* m_pLogicUnit->m_xpStage);
+  m_oDataStack.vPushPtr(* m_pLogicUnit->m_xpStage);
 
   EXIT();
 }
@@ -49,7 +49,7 @@ void Step::vStageSet(void)
 {
   ENTRY();
 
-  Stage* pStage = _pStage(m_pDataStack->pPopPtr(__func__));
+  Stage* pStage = _pStage(m_oDataStack.pPopPtr(__func__));
 
   m_pLogicUnit->m_xpStage = pStage;
 

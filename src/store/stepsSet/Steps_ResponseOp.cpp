@@ -32,7 +32,7 @@ void Step::vResponseOpGet(void)
   
   Op* p_ResponseOp = pJob->p_ResponseOp();
 
-  m_pDataStack->vPushPtr(p_ResponseOp);
+  m_oDataStack.vPushPtr(p_ResponseOp);
   
   EXIT();
 }
@@ -44,7 +44,7 @@ void Step::vResponseOpPipeout(void)
 {
   ENTRY();
 
-  Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
+  Operand* pOperand = _pOperand(m_oDataStack.pPopPtr(__func__));
 
   Job* pJob = this->pJob();
   

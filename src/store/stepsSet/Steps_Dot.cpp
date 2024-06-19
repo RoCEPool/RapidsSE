@@ -39,7 +39,7 @@ void Step::vDot(void)
 //  MY::pTask()->vSeeFrameStack();
   
   SenCell xVariable;
-  m_pDataStack->vPopSenCell(xVariable,__func__);
+  m_oDataStack.vPopSenCell(xVariable, __func__);
   
   if (xVariable.bIsIntVal()) {
     i8 iVal = xVariable.iGetColVal();
@@ -61,7 +61,7 @@ void Step::vDotBoot(void)
   ENTRY();
   
   SenCell xVariable;
-  m_pDataStack->vPopSenCell(xVariable,__func__);
+  m_oDataStack.vPopSenCell(xVariable, __func__);
   
   if (AM::SHOW::bBoot()) {
 
@@ -82,7 +82,7 @@ void Step::vDotBoot(void)
 //  ENTRY();
 //
 //  CellSingle xVariable;
-//  m_pDataStack->vPopItem(xVariable,__func__);
+//  m_oDataStack.vPopItem(xVariable,__func__);
 //
 //  s32 sSide;
 //
@@ -114,7 +114,7 @@ void Step::vDotPut(void)
   ENTRY();
   
   SenCell xVariable;
-  m_pDataStack->vPopSenCell(xVariable,__func__);
+  m_oDataStack.vPopSenCell(xVariable, __func__);
   
   if (xVariable.bIsIntVal())
     vTrace("%lld"_Stz,xVariable.iGetColVal());
@@ -132,7 +132,7 @@ void Step::vDotTrace(void)
   ENTRY();
 
   SenCell xVariable;
-  m_pDataStack->vPopSenCell(xVariable,__func__);
+  m_oDataStack.vPopSenCell(xVariable, __func__);
 
   if (xVariable.bIsIntVal())
     vTrace("%lld\n"_Stz,xVariable.iGetColVal());
@@ -150,11 +150,11 @@ void Step::vDotTraceComponent(void)
 {
   ENTRY();
 
-  i8 iVal = m_pDataStack->iPopInt(__func__);
+  i8 iVal = m_oDataStack.iPopInt(__func__);
   if (iVal <= TC_NONE || iVal >= TC_ENUMS) {
     s256 sErrMsg;
     sErrMsg.vSprint("Invalid trace component: %lld\n"_Stz, iVal);
-    m_pDataStack->vPushStr(sErrMsg);
+    m_oDataStack.vPushStr(sErrMsg);
     vDot();
     return;
   }
@@ -167,7 +167,7 @@ void Step::vDotTraceComponent(void)
   } else {
     // Still need to pop the argument off the stack even though we're not printing
     SenCell xVariable;
-    m_pDataStack->vPopSenCell(xVariable, __func__);
+    m_oDataStack.vPopSenCell(xVariable, __func__);
   }
 
   EXIT();
@@ -180,7 +180,7 @@ void Step::vDotTraceWlp(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt(TC_WLP);
+  m_oDataStack.vPushInt(TC_WLP);
   vDotTraceComponent();
   
   EXIT();
@@ -206,7 +206,7 @@ void Step::vDotVerbose(void)
   ENTRY();
   
   SenCell xVariable;
-  m_pDataStack->vPopSenCell(xVariable,__func__);
+  m_oDataStack.vPopSenCell(xVariable, __func__);
   
   if (AM::TRACE::bVerbose(C_VB_BOOT,C_VB_SEN)) {
     vTrace("[%p %s] %s\n"_Stz,

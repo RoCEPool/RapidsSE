@@ -59,7 +59,7 @@ void Step::vMetaGetGet(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpMetaGet);
+  m_oDataStack.vPushPtr(*m_pLogicUnit->m_xpMetaGet);
 
   EXIT();
 }
@@ -71,7 +71,7 @@ void Step::vMetaGetGetAndClear(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpMetaGet);
+  m_oDataStack.vPushPtr(*m_pLogicUnit->m_xpMetaGet);
 
   m_pLogicUnit->m_xpMetaGet = nullptr;
 
@@ -85,7 +85,7 @@ void Step::vMetaGetIsNotNull(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt(m_pLogicUnit->m_xpMetaGet.bIsNull() ? 0 : 1);
+  m_oDataStack.vPushInt(m_pLogicUnit->m_xpMetaGet.bIsNull() ? 0 : 1);
 
   EXIT();
 }
@@ -97,7 +97,7 @@ void Step::vMetaGetIsNull(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt(m_pLogicUnit->m_xpMetaGet.bIsNull() ? 1 : 0);
+  m_oDataStack.vPushInt(m_pLogicUnit->m_xpMetaGet.bIsNull() ? 1 : 0);
 
   EXIT();
 }
@@ -110,11 +110,11 @@ void Step::vMetaGetNew(void)
   ENTRY();
   
   s256 sTableNm;
-  m_pDataStack->vPopStr(sTableNm, __func__);
+  m_oDataStack.vPopStr(sTableNm, __func__);
 
   MetaGet *pMetaGet = new MetaGet(sTableNm);
 
-  m_pDataStack->vPushPtr(pMetaGet);
+  m_oDataStack.vPushPtr(pMetaGet);
 
   EXIT();
 }
@@ -126,7 +126,7 @@ void Step::vMetaGetGetParts(void)
 {
   ENTRY();
 
-  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
+  Table* pTable = _pTable(m_oDataStack.pPopPtr(__func__));
 
   //vTrace("vMetaSendGetParts pTable: %p %s\n"_Stz,
   //       pTable,
@@ -137,7 +137,7 @@ void Step::vMetaGetGetParts(void)
   
   pTable->vGetMetaParts(pParcel);
 
-  m_pDataStack->vPushPtr(pParcel);
+  m_oDataStack.vPushPtr(pParcel);
   
   EXIT();
 }
@@ -156,7 +156,7 @@ void Step::vMetaGetPutParts(void)
 
   // get arguments
   Table* pTable = nullptr;
-  Parcel* pParcel = (Parcel*)m_pDataStack->pPopPtr(__func__);
+  Parcel* pParcel = (Parcel*)m_oDataStack.pPopPtr(__func__);
 
   i8 nObjParts = pParcel->nItems();
 
@@ -176,7 +176,7 @@ void Step::vMetaGetPutParts(void)
   // Here we have a table came from another node
   if (pTable) pTable->vDumpLocation();
 
-  m_pDataStack->vPushPtr(pTable);
+  m_oDataStack.vPushPtr(pTable);
 
   EXIT();
 }
@@ -188,7 +188,7 @@ void Step::vMetaGetSet(void)
 {
   ENTRY();
 
-  MetaGet* pMeta = _pMetaGet(m_pDataStack->pPopPtr(__func__));
+  MetaGet* pMeta = _pMetaGet(m_oDataStack.pPopPtr(__func__));
 
   ASSERT(! pMeta || m_pLogicUnit->m_xpMetaGet.bIsNull());
 
@@ -209,7 +209,7 @@ void Step::vMetaGetTableNameFetch(void)
 
   s256 sTableNm = pMetaGet->sTableName();
 
-  m_pDataStack->vPushStz(sTableNm);
+  m_oDataStack.vPushStz(sTableNm);
 
   EXIT();
 }

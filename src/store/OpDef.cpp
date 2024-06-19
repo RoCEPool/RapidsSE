@@ -432,6 +432,10 @@ void OpDef::vValidate(void)
     RASSERT(m_pColMap_gbyAgg);
   }
   else
+  if (m_sOpNm.bSame("GLOBALHASH"_Stz)) {
+    RASSERT(3 == nArgs());
+  }
+  else
   if (m_sOpNm.bSame("HASH"_Stz)) {
     RASSERT(1 == nArgs());
     RASSERT(pArgDef("expr"_Stz));
@@ -530,6 +534,10 @@ void OpDef::vValidate(void)
 
     RASSERT(m_pStreamDef_arriving);
     RASSERT(m_pStreamDef_emitted);
+  }
+  else
+  if (m_sOpNm.bSame("RRFJOIN"_Stz)) {
+    RASSERT(2 == nArgs());
   }
   else
   if (m_sOpNm.bSame("SCAN"_Stz)) {

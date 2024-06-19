@@ -57,7 +57,7 @@ void Step::vTablePtnAppendBuffer(void)
 {
   ENTRY();
   
-  DataBuffer* pDataBuffer = _pDataBuffer(m_pDataStack->pPopPtr(__func__));
+  DataBuffer* pDataBuffer = _pDataBuffer(m_oDataStack.pPopPtr(__func__));
   ASSERT(! pDataBuffer->pNextItem());
   ASSERT(! pDataBuffer->pPrevItem());
 
@@ -69,7 +69,7 @@ void Step::vTablePtnAppendBuffer(void)
   i8 nRowsInserted = 0;
   pTablePtn->vAppendBuffer(pDataBuffer, nRowsInserted);
 
-  m_pDataStack->vPushInt(nRowsInserted);
+  m_oDataStack.vPushInt(nRowsInserted);
   
   EXIT();
 }
@@ -95,7 +95,7 @@ void Step::vTablePtnAttemptGrabRead(void)
     MY::vPdsCrwTablePtn(pRootPds);
   }
   
-  m_pDataStack->vPushInt(bSuccess);
+  m_oDataStack.vPushInt(bSuccess);
   
   EXIT();
 }
@@ -119,7 +119,7 @@ void Step::vTablePtnAttemptGrabWrite(void)
     MY::vPdsCrwTablePtn(pRootPds);
   }
   
-  m_pDataStack->vPushInt(bSuccess);
+  m_oDataStack.vPushInt(bSuccess);
   
   EXIT();
 }
@@ -198,11 +198,11 @@ void Step::vTablePtnExtractBufferId(void)
   TablePtn* pTablePtn = _pTablePtn(*m_pLogicUnit->m_xpTablePtn);
 
   // Pop the SkipList Item address
-  void* pItemAddr = (void*)m_pDataStack->pPopPtr(__func__);
+  void* pItemAddr = (void*)m_oDataStack.pPopPtr(__func__);
 
   BufferId oBufferId = pTablePtn->oExtractBufferId(pItemAddr);
 
-  m_pDataStack->vPushPtr((Object*)oBufferId.m_pvAsAddress);
+  m_oDataStack.vPushPtr((Object*)oBufferId.m_pvAsAddress);
 
   EXIT();
 }
@@ -214,7 +214,7 @@ void Step::vTablePtnGet(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpTablePtn);
+  m_oDataStack.vPushPtr(*m_pLogicUnit->m_xpTablePtn);
   
   EXIT();
 }
@@ -226,7 +226,7 @@ void Step::vTablePtnPopulateIndex(void)
 {
   ENTRY();
   
-  Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
+  Index* pIndex = _pIndex(m_oDataStack.pPopPtr(__func__));
   ASSERT(CN_INDEX == pIndex->eGetClassNo());
   
   i8 iIndexNo = pIndex->iIndexNo();
@@ -235,7 +235,7 @@ void Step::vTablePtnPopulateIndex(void)
   
   bool bPopulated = pTablePtn->bPopulateIndex(iIndexNo);
   
-  m_pDataStack->vPushInt(bPopulated ? 1 : 0);
+  m_oDataStack.vPushInt(bPopulated ? 1 : 0);
   
   EXIT();
 }
@@ -251,7 +251,7 @@ void Step::vTablePtnRoot(void)
   NEVER_REACH;
 //  TablePtn* pTablePtn = _pTablePtn(*m_pLogicUnit->m_xpTablePtn);
   
-  //m_pDataStack->vPushPtr(pTablePtn->pRootCrwBuffer());
+  //m_oDataStack.vPushPtr(pTablePtn->pRootCrwBuffer());
   
   EXIT();
 }
@@ -270,7 +270,7 @@ void Step::vTablePtnRootPdsCursor(void)
 //  Pds* pPds = _pPds(AM::pHashMap()->pValueAt(pTablePtn->oRootBufferId().m_pvAsAddress));
   PdsCursor* pCursor = new PdsCursor(pPds);
 
-  m_pDataStack->vPushPtr((Object*)pCursor);
+  m_oDataStack.vPushPtr((Object*)pCursor);
 
   EXIT();
 }
@@ -282,7 +282,7 @@ void Step::vTablePtnSet(void)
 {
   ENTRY();
   
-  m_pLogicUnit->m_xpTablePtn = _pTablePtn(m_pDataStack->pPopPtr(__func__));
+  m_pLogicUnit->m_xpTablePtn = _pTablePtn(m_oDataStack.pPopPtr(__func__));
   
   EXIT();
 }
@@ -308,7 +308,7 @@ void Step::vTablePtnTruncateIndex(void)
   ENTRY();
   
   // get the index to be truncated
-  Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
+  Index* pIndex = _pIndex(m_oDataStack.pPopPtr(__func__));
   
   TablePtn* pTablePtn = *m_pLogicUnit->m_xpTablePtn;
   pTablePtn->vTruncateIndex(pIndex);

@@ -56,6 +56,7 @@ bool Card_OP::bIsOp(eCK eCard)
     case CK_o_FILTER:
     case CK_o_FROM:
     case CK_o_GBYAGG:
+    case CK_o_GLOBALHASH:
     case CK_o_HASH:
     case CK_o_HAVING:
     case CK_o_INDEXSCAN:
@@ -67,6 +68,7 @@ bool Card_OP::bIsOp(eCK eCard)
     case CK_o_ORDAGG:
     case CK_o_PDSROW:
     case CK_o_PROJECT:
+    case CK_o_RRFJOIN:
     case CK_o_SCAN:
     case CK_o_SORT:
     case CK_o_TOP:
@@ -373,8 +375,9 @@ void Card_OP::vRestate_emit(CardIter* pCI)
       [[clang::fallthrough]];
     case CK_o_INDEXJOIN:
     case CK_o_INDEXSCAN:
+    case CK_o_RRFJOIN:
     case CK_o_SCAN:
-      if ((pCI->E.p_emit = pCI->E.p_Op->pSub_emit()))
+       if ((pCI->E.p_emit = pCI->E.p_Op->pSub_emit()))
         pCI->E.p_emit->vDeleteAllChildren();
       else {
         pCI->E.p_emit = new Card_Emit;
@@ -397,6 +400,10 @@ void Card_OP::vRestate_emit(CardIter* pCI)
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     case CK_o_HAVING:
+      vDebugPoint();
+      [[clang::fallthrough]];
+
+    case CK_o_GLOBALHASH:
       vDebugPoint();
       [[clang::fallthrough]];
 
@@ -659,6 +666,21 @@ void Card_OP::vRpn_gbyAgg(CardIter* pCI, String* psRpnExpr, Card_GbyAgg* p_gbyAg
 
 //  vTrace("%s\n"_Stz,szRpnExpr);
 //  vDebugPoint();
+}
+
+/*----------------------------------------------------------------------------*/
+/* produce <expr> for globaHash op                                            */
+/*----------------------------------------------------------------------------*/
+void Card_OP::vRpn_globalHash(CardIter* pCI, String* psRpnExpr, Card_GlobalHash* p_globalHash)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  UNUSED(pCI);
+
+  Card_Term* p_term = p_globalHash->pSub_term();
+
+  psRpnExpr->vCatSprint("type %s %s"_Stz,
+                        aCT[p_term->eCTVal()],
+                        p_term->szFacet(SF_EXP_COL));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1143,6 +1165,22 @@ void Card_OP::vRpn_project(CardIter* pCI, String* psRpnExpr, Card_Project* p_pro
 
     vRpn_expr(pCI, psRpnExpr, pCard_Expr);
   }
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* produce <expr> for rrfJoin op                                              */
+/*----------------------------------------------------------------------------*/
+void Card_OP::vRpn_rrfJoin(CardIter* pCI, String* psRpnExpr, Card_RrfJoin* p_rrfJoin)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  UNUSED(pCI);
+
+  Card_Term* p_term = p_rrfJoin->pSub_term();
+
+  psRpnExpr->vCatSprint("type %s %s"_Stz,
+                        aCT[p_term->eCTVal()],
+                        p_term->szFacet(SF_EXP_COL));
 
 }
 

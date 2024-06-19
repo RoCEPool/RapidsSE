@@ -166,7 +166,7 @@ void Step::vSupervisorHaltFetch(void)
   
   bool bHalt = AM::bSupervisorHalt();
   
-  m_pDataStack->vPushInt(bHalt);
+  m_oDataStack.vPushInt(bHalt);
   
   EXIT();
 }
@@ -178,7 +178,7 @@ void Step::vSupervisorHaltStore(void)
 {
   ENTRY();
   
-  bool bHalt = (bool)m_pDataStack->iPopInt(__func__);
+  bool bHalt = (bool)m_oDataStack.iPopInt(__func__);
   
   AM::vSupervisorHalt(bHalt);
   

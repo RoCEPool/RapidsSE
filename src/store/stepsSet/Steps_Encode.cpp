@@ -43,7 +43,7 @@ void Step::vEncodeCurrentCall(void)
   
   Word* pCurrentWord =  m_pSenCompiler->pCurrentWord();
   
-  Word* pCalledWord = _pWord(m_pDataStack->pPopPtr(__func__));
+  Word* pCalledWord = _pWord(m_oDataStack.pPopPtr(__func__));
 
   fpSTEPFN* afpCalledEntryStep = pCalledWord->afpEntryStep();
   
@@ -62,7 +62,7 @@ void Step::vEncodeCurrentPush(void)
   Word* pCurrentWord =  m_pSenCompiler->pCurrentWord();
   
   SenCell xVal;
-  m_pDataStack->vPopSenCell(xVal,__func__);
+  m_oDataStack.vPopSenCell(xVal, __func__);
 
   pCurrentWord->vEncodePush(xVal);
   
@@ -76,9 +76,9 @@ void Step::vEncodeCall(void)
 {
   ENTRY();
   
-  Word* pTargetWord = _pWord(m_pDataStack->pPopPtr(__func__));
+  Word* pTargetWord = _pWord(m_oDataStack.pPopPtr(__func__));
   
-  Word* pCalledWord = _pWord(m_pDataStack->pPopPtr(__func__));
+  Word* pCalledWord = _pWord(m_oDataStack.pPopPtr(__func__));
 
   fpSTEPFN* afpCalledEntryStep = pCalledWord->afpEntryStep();
   
@@ -94,10 +94,10 @@ void Step::vEncodePush(void)
 {
   ENTRY();
   
-  Word* pTargetWord = _pWord(m_pDataStack->pPopPtr(__func__));
+  Word* pTargetWord = _pWord(m_oDataStack.pPopPtr(__func__));
 
   SenCell xVal;
-  m_pDataStack->vPopSenCell(xVal,__func__);
+  m_oDataStack.vPopSenCell(xVal, __func__);
 
   pTargetWord->vEncodePush(xVal);
   
@@ -117,7 +117,7 @@ void Step::vEncodeAgain(void)
   Word* pCurrentWord =  m_pSenCompiler->pCurrentWord();
   
   // cstack: pop known backward address
-  CodeCell* aKnownDestination = m_pDataStack->aPopFip(__func__);
+  CodeCell* aKnownDestination = m_oDataStack.aPopFip(__func__);
   
   // append : jump to known backward address
   pCurrentWord->vEncodeJump("jump"_Stz,aKnownDestination);
@@ -139,7 +139,7 @@ void Step::vEncodeAhead(void)
   CodeCell* aUnknownOrigin = (CodeCell*)pCurrentWord->aEncodeArg((CodeCell*)nullptr);
   
   // cstack: push unknown forward address
-  m_pDataStack->vPushFip(aUnknownOrigin);
+  m_oDataStack.vPushFip(aUnknownOrigin);
   
   EXIT();
 }
@@ -154,13 +154,13 @@ void Step::vEncodeContinue(void)
   Word* pCurrentWord =  m_pSenCompiler->pCurrentWord();
   
   // cstack: pop known backward address
-  CodeCell* aKnownBackward = m_pDataStack->aPopFip(__func__);
+  CodeCell* aKnownBackward = m_oDataStack.aPopFip(__func__);
   
   // append : jump on true to known backward address
   pCurrentWord->vEncodeJump("jumpTrue"_Stz,aKnownBackward);
   
   // cstack: push known backward address
-  m_pDataStack->vPushFip(aKnownBackward);
+  m_oDataStack.vPushFip(aKnownBackward);
   
   EXIT();
 }
@@ -175,19 +175,19 @@ void Step::vEncodeContinue_if(void)
   Word* pCurrentWord =  m_pSenCompiler->pCurrentWord();
   
   // cstack: pop known if address
-  CodeCell* aIfDestination = m_pDataStack->aPopFip(__func__);
+  CodeCell* aIfDestination = m_oDataStack.aPopFip(__func__);
   
   // cstack: pop known backward address
-  CodeCell* aKnownDestination = m_pDataStack->aPopFip(__func__);
+  CodeCell* aKnownDestination = m_oDataStack.aPopFip(__func__);
   
   // append : jump to known backward address
   pCurrentWord->vEncodeJump("jump"_Stz,aKnownDestination);
   
   // cstack: push known forward address
-  m_pDataStack->vPushFip(aKnownDestination);
+  m_oDataStack.vPushFip(aKnownDestination);
   
   // cstack: push known forward address
-  m_pDataStack->vPushFip(aIfDestination);
+  m_oDataStack.vPushFip(aIfDestination);
   
   EXIT();
 }
@@ -204,7 +204,7 @@ void Step::vEncodeHere(void)
   CodeCell* aLastCell = pCurrentWord->aLastCell();
   
   // cstack: push address of last cell
-  m_pDataStack->vPushFip(aLastCell);
+  m_oDataStack.vPushFip(aLastCell);
   
   EXIT();
 }
@@ -223,7 +223,7 @@ void Step::vEncodeIf(void)
   CodeCell* aUnknownOrigin = (CodeCell*)pCurrentWord->aEncodeArg((CodeCell*)nullptr);
   
   // cstack: push unknown forward address
-  m_pDataStack->vPushFip(aUnknownOrigin);
+  m_oDataStack.vPushFip(aUnknownOrigin);
   
   EXIT();
 }
@@ -242,12 +242,12 @@ void Step::vEncodeLoop(void)
   pCurrentWord->vEncodeCall("1+"_Stz);
   pCurrentWord->vEncodeCall(">r"_Stz);
   
-  i8 iIsDo = m_pDataStack->iPopBol(__func__);
+  i8 iIsDo = m_oDataStack.iPopBol(__func__);
   
   CodeCell* aDoLimitTest = nullptr;
   if (! iIsDo) {
     // cstack: pop destination address of backward jump
-    aDoLimitTest = m_pDataStack->aPopFip(__func__);
+    aDoLimitTest = m_oDataStack.aPopFip(__func__);
     aDoLimitTest->m_aJumpTo = pCurrentWord->aLastCell();
   }
   
@@ -257,7 +257,7 @@ void Step::vEncodeLoop(void)
   if (iIsDo) {
     // jump on true to doHere:
     // cstack: pop destination address of backward jump
-    CodeCell* aDoHere = m_pDataStack->aPopFip(__func__);
+    CodeCell* aDoHere = m_oDataStack.aPopFip(__func__);
     pCurrentWord->vEncodeJump("jumpTrue"_Stz,aDoHere);
   }
   else {
@@ -284,12 +284,12 @@ void Step::vEncodeLoopPlus(void)
   pCurrentWord->vEncodeCall("+"_Stz);
   pCurrentWord->vEncodeCall(">r"_Stz);
   
-  i8 iIsDo = m_pDataStack->iPopBol(__func__);
+  i8 iIsDo = m_oDataStack.iPopBol(__func__);
   
   CodeCell* aDoLimitTest = nullptr;
   if (! iIsDo) {
     // cstack: pop destination address of backward jump
-    aDoLimitTest = m_pDataStack->aPopFip(__func__);
+    aDoLimitTest = m_oDataStack.aPopFip(__func__);
     aDoLimitTest->m_aJumpTo = pCurrentWord->aLastCell();
   }
   
@@ -299,7 +299,7 @@ void Step::vEncodeLoopPlus(void)
   if (iIsDo) {
     // jump on true to doHere:
     // cstack: pop destination address of backward jump
-    CodeCell* aDoHere = m_pDataStack->aPopFip(__func__);
+    CodeCell* aDoHere = m_oDataStack.aPopFip(__func__);
     pCurrentWord->vEncodeJump("jumpTrue"_Stz,aDoHere);
   }
   else {
@@ -322,7 +322,7 @@ void Step::vEncodeNext(void)
   Word* pCurrentWord =  m_pSenCompiler->pCurrentWord();
   
   // cstack: pop destination address of backward jump
-  CodeCell* aDoLimitTest = m_pDataStack->aPopFip(__func__);
+  CodeCell* aDoLimitTest = m_oDataStack.aPopFip(__func__);
   aDoLimitTest->m_aJumpTo = pCurrentWord->aLastCell();
   
   pCurrentWord->vEncodeCall("r@"_Stz); // copy index limit to dstack
@@ -345,10 +345,10 @@ void Step::vEncodeNextPlus(void)
   Word* pCurrentWord =  m_pSenCompiler->pCurrentWord();
   
   // cstack: pop destination address of backward jump
-  CodeCell* aDoLimitTest = m_pDataStack->aPopFip(__func__);
+  CodeCell* aDoLimitTest = m_oDataStack.aPopFip(__func__);
   aDoLimitTest->m_aJumpTo = pCurrentWord->aLastCell();
   
-  i8 iPlus = m_pDataStack->iPopInt(__func__);
+  i8 iPlus = m_oDataStack.iPopInt(__func__);
   
   pCurrentWord->vEncodeCall("r@"_Stz); // copy index limit to dstack
   
@@ -370,7 +370,7 @@ void Step::vEncodeThen(void)
   Word* pCurrentWord =  m_pSenCompiler->pCurrentWord();
   
   // cstack: pop unknown forward address
-  CodeCell* aUnknownOrigin = m_pDataStack->aPopFip(__func__);
+  CodeCell* aUnknownOrigin = m_oDataStack.aPopFip(__func__);
   
   // resolve forward branch to this point in routine
   aUnknownOrigin->m_aJumpTo = pCurrentWord->aLastCell();
@@ -388,7 +388,7 @@ void Step::vEncodeUntil(void)
   Word* pCurrentWord =  m_pSenCompiler->pCurrentWord();
   
   // cstack: pop known backward address
-  CodeCell* aKnownDestination = m_pDataStack->aPopFip(__func__);
+  CodeCell* aKnownDestination = m_oDataStack.aPopFip(__func__);
   
   // append : jump on false to known backward address
   pCurrentWord->vEncodeJump("jumpFalse"_Stz,aKnownDestination);

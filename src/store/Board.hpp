@@ -52,6 +52,7 @@
 #include "Card_From.hpp"         //
 
 #include "Card_GbyAgg.hpp"
+#include "Card_GlobalHash.hpp"
 
 #include "Card_Hash.hpp"
 #include "Card_Hashing.hpp"
@@ -107,6 +108,7 @@
 #include "Card_RelnOp.hpp"
 #include "Card_RowCount.hpp"
 #include "Card_RowSize.hpp"
+#include "Card_RrfJoin.hpp"
 #include "Card_TermSeq.hpp"
 
 #include "Card_Scan.hpp"

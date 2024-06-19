@@ -31,7 +31,7 @@ void Step::vPayloadObjDelete(void)
 {
   ENTRY();
 
-  WLP::PayloadObj* pPayloadObj = WLP::_pPayloadObj(m_pDataStack->pPopPtr(__func__));
+  WLP::PayloadObj* pPayloadObj = WLP::_pPayloadObj(m_oDataStack.pPopPtr(__func__));
   ASSERT(CN_PAYLOADOBJ == pPayloadObj->eGetClassNo());
 
   delete pPayloadObj;
@@ -46,11 +46,11 @@ void Step::vPayloadObjSize(void)
 {
   ENTRY();
 
-  WLP::PayloadObj* pPayloadObj = WLP::_pPayloadObj(m_pDataStack->pPopPtr(__func__));
+  WLP::PayloadObj* pPayloadObj = WLP::_pPayloadObj(m_oDataStack.pPopPtr(__func__));
   ASSERT(CN_PAYLOADOBJ == pPayloadObj->eGetClassNo());
 
   i8 iSize = pPayloadObj->iPayloadSize();
-  m_pDataStack->vPushInt(iSize);
+  m_oDataStack.vPushInt(iSize);
 
   EXIT();
 }
@@ -62,12 +62,12 @@ void Step::vPayloadObjMsgType(void)
 {
   ENTRY();
 
-  WLP::PayloadObj* pPayloadObj = WLP::_pPayloadObj(m_pDataStack->pPopPtr(__func__));
+  WLP::PayloadObj* pPayloadObj = WLP::_pPayloadObj(m_oDataStack.pPopPtr(__func__));
   ASSERT(CN_PAYLOADOBJ == pPayloadObj->eGetClassNo());
 
   s256 sBuf;
   pPayloadObj->vMsgType(sBuf);
-  m_pDataStack->vPushStr(sBuf);
+  m_oDataStack.vPushStr(sBuf);
 
   EXIT();
 }
@@ -79,11 +79,11 @@ void Step::vPayloadObjCreationTime(void)
 {
   ENTRY();
 
-  WLP::PayloadObj* pPayloadObj = WLP::_pPayloadObj(m_pDataStack->pPopPtr(__func__));
+  WLP::PayloadObj* pPayloadObj = WLP::_pPayloadObj(m_oDataStack.pPopPtr(__func__));
   ASSERT(CN_PAYLOADOBJ == pPayloadObj->eGetClassNo());
 
   u8 uCreationTime = pPayloadObj->uCreationTime();
-  m_pDataStack->vPushInt((i8) uCreationTime);
+  m_oDataStack.vPushInt((i8) uCreationTime);
 
   EXIT();
 }
@@ -95,11 +95,11 @@ void Step::vPayloadObjDoNotProcess(void)
 {
   ENTRY();
 
-  WLP::PayloadObj* pPayloadObj = WLP::_pPayloadObj(m_pDataStack->pPopPtr(__func__));
+  WLP::PayloadObj* pPayloadObj = WLP::_pPayloadObj(m_oDataStack.pPopPtr(__func__));
   ASSERT(CN_PAYLOADOBJ == pPayloadObj->eGetClassNo());
 
   bool bDoNotProcess = pPayloadObj->bDoNotProcess();
-  m_pDataStack->vPushBol(bDoNotProcess);
+  m_oDataStack.vPushBol(bDoNotProcess);
 
   EXIT();
 }

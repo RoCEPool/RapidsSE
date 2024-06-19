@@ -38,11 +38,11 @@ void Step::vUnloadToDisk(void)
     vTrace("%s"_Stz, eErrMsg.szStz());
 
     s256 sDir;
-    m_pDataStack->vPopStr(sDir, __func__);
+    m_oDataStack.vPopStr(sDir, __func__);
 
-    m_pDataStack->vPushStr(eErrMsg);
-    m_pDataStack->vPushInt(EC_INVALID_COMMAND);
-    m_pDataStack->vPushBol(false);
+    m_oDataStack.vPushStr(eErrMsg);
+    m_oDataStack.vPushInt(EC_INVALID_COMMAND);
+    m_oDataStack.vPushBol(false);
     return;
   }
 
@@ -56,7 +56,7 @@ void Step::vUnloadToDisk(void)
   ASSERT( ! sRootDir->bIsEmpty());
 
   s256 sDir;
-  m_pDataStack->vPopStr(sDir, __func__);
+  m_oDataStack.vPopStr(sDir, __func__);
 
   sDirPath.vCatSprint("%s%s/"_Stz,
                       sRootDir,
@@ -76,9 +76,9 @@ void Step::vUnloadToDisk(void)
                        sDirPath.szStz());
     vTrace("%s"_Stz, eErrMsg.szStz());
 
-    m_pDataStack->vPushStr(eErrMsg);
-    m_pDataStack->vPushInt(EC_DISK_SPACE_CHECK_FAILED);
-    m_pDataStack->vPushBol(false);
+    m_oDataStack.vPushStr(eErrMsg);
+    m_oDataStack.vPushInt(EC_DISK_SPACE_CHECK_FAILED);
+    m_oDataStack.vPushBol(false);
     return;
   }
 
@@ -96,9 +96,9 @@ void Step::vUnloadToDisk(void)
                        (d8)iMinSpace/(C_1GB));
     vTrace("%s"_Stz, eErrMsg.szStz());
 
-    m_pDataStack->vPushStr(eErrMsg);
-    m_pDataStack->vPushInt(EC_LOW_DISK_SPACE);
-    m_pDataStack->vPushBol(false);
+    m_oDataStack.vPushStr(eErrMsg);
+    m_oDataStack.vPushInt(EC_LOW_DISK_SPACE);
+    m_oDataStack.vPushBol(false);
     return;
   }
 
@@ -114,7 +114,7 @@ void Step::vUnloadToDisk(void)
 
   vTrace("Successfully unloaded to %s\n"_Stz, sFilePath.szStz());
 
-  m_pDataStack->vPushBol(true);
+  m_oDataStack.vPushBol(true);
 
   EXIT();
 }
@@ -127,7 +127,7 @@ void Step::vUnloadToFile(void)
   ENTRY();
 
   s256 sDirNm;
-  m_pDataStack->vPopStr(sDirNm, __func__);
+  m_oDataStack.vPopStr(sDirNm, __func__);
 
   s256 sDirPath = "../tmp/"_Stz;
 

@@ -3335,6 +3335,24 @@ Card_GbyAgg* Card::pSub_gbyAgg(bool bNotNull)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_GlobalHash.hpp"
+Card_GlobalHash* Card::pSub_globalHash(bool bNotNull)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_GlobalHash* p_globalHash =
+      _pCard_GlobalHash(pFindSubCard(CK_o_GLOBALHASH));
+
+  if (bNotNull && !p_globalHash) {
+    NEVER_REACH
+  }
+
+  return p_globalHash;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_Hashing.hpp"
 Card_Hashing* Card::pSub_hashing(bool bNotNull)
 {
@@ -3924,6 +3942,24 @@ Card_RowSize* Card::pSub_rowSize(bool bNotNull)
   }
 
   return p_rowSize;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_RrfJoin.hpp"
+Card_RrfJoin* Card::pSub_rrfJoin(bool bNotNull)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_RrfJoin* p_rrfJoin =
+      _pCard_RrfJoin(pFindSubCard(CK_o_RRFJOIN));
+
+  if (bNotNull && !p_rrfJoin) {
+    NEVER_REACH
+  }
+
+  return p_rrfJoin;
 }
 
 /*----------------------------------------------------------------------------*/

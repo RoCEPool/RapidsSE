@@ -12,21 +12,32 @@ namespace BASE
     friend class STORE::IndexTree;
 
   private:
-    union {
-      struct {
-        u8 m_uBuffer  : 32; // which buffer (2^32 * 1MB is 4PB)
-        u8 m_uItem    : 16; // item in that buffer (2^16 is max of 64K items)
-        u8 m_uLevels  :  3; // number of skip levels in next entry array
-        u8 m_uPayload :  1; // is there is a payload? (not used yet)
-        u8 m_uKind    :  4; // entry kind
-        u8 m_uFree    :  1; // free entry?
-        u8 m_uDesc    :  1; // has descending key?
-        u8 m_uSpare   :  6; // spare
-      };             // 64b
-      
+    union
+    {
+      struct
+      {
+        u8 m_uBuffer : 32; // which buffer (2^32 * 1MB is 4PB)
+        u8 m_uItem   : 16; // item in that buffer (2^16 is max of 64K items)
+        u8 m_uLevels :  3; // number of skip levels in next entry array
+        u8 m_uPayload:  1; // is there is a payload? (not used yet)
+        u8 m_uKind   :  4; // entry kind
+        u8 m_uFree   :  1; // free entry?
+        u8 m_uDesc   :  1; // has descending key?
+        u8 m_uSpare  :  5; // spare
+        u8 m_uGlobal :  1; // is global?
+      } Std;        // 64b
+
+      struct
+      {
+        u8 m_uBuffer : 32; // which buffer (2^32 * 1MB is 4PB)
+        u8 m_uItem   : 16; // item in that buffer (2^16 is max of 64K items)
+        u8 m_uPtn    : 15; // number of skip levels in next entry array
+        u8 m_uGlobal :  1; // is global?
+      } Glb;        // 64b
+
       i8 m_iAsI8;
     };
-  
+
   public:   
     Rrf(void);
     Rrf(u8 uBuffer, u8 uItem, u8 uLevels);
@@ -44,12 +55,16 @@ namespace BASE
     void  vFree(bool bFree);
     i8    nFreeSize(void);
     void  vFreeSize(i8 nFreeSize);
+    bool  bGlobal(void);
+    void  vGlobal(bool bGlobal);
     bool  bIsNil(void);
     i8    iItem(void);
     void  vItem(i8 iItem);
     void  vKind(eKE eKind);
     bool  bPayload(void);
     void  vPayload(bool bPayLoad);
+    i8    iPtn(void);
+    void  vPtn(i8 iPtn);
     void  vReset(void);
     void  vSet(Rrf xwRef);
     void  vSetNil(void);
@@ -61,7 +76,7 @@ namespace BASE
 		/*----------------------------------------------------------------------------*/
 		eKE eKind(void)
 		{
-			return (eKE)m_uKind;
+			return (eKE)Std.m_uKind;
 		}
 
 		};

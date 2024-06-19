@@ -61,6 +61,7 @@ namespace STORE
   class Card_From;
 
   class Card_GbyAgg;
+  class Card_GlobalHash;
 
   class Card_Hash;
   class Card_Hashing;
@@ -117,6 +118,7 @@ namespace STORE
 
   class Card_RelnOp;
   class Card_Required;
+  class Card_RrfJoin;
   class Card_RowCount;
   class Card_RowSize;
 
@@ -480,7 +482,6 @@ namespace STORE
     Card_Caller*        pSub_caller(bool bNotNull=false);
     Card_CallOp*        pSub_callOp(bool bNotNull=false);
     Card_Clause*        pSub_clause(bool bNotNull=false);
-    Card_RlnConj*       pSub_rlnConj(bool bNotNull=false);
     Card_Constraint*    pSub_constraint(bool bNotNull=false);
     Card_CorrCols*      pSub_corrCols(bool bNotNull=false);
     Card_Correlation*   pSub_correlation(bool bNotNull=false);
@@ -499,6 +500,7 @@ namespace STORE
     Card_Fold*          pSub_fold(bool bNotNull=false);
     Card_From*          pSub_from(bool bNotNull=false);
     Card_GbyAgg*        pSub_gbyAgg(bool bNotNull=false);
+    Card_GlobalHash*    pSub_globalHash(bool bNotNull=false);
     Card_Hashing*       pSub_hashing(bool bNotNull=false);
     Card_HshCol*        pSub_hshCol(bool bNotNull=false);
     Card_HshColList*    pSub_hshColList(bool bNotNull=false);
@@ -532,8 +534,10 @@ namespace STORE
     Card_Predicate*     pSub_predicate(bool bNotNull=false);
     Card_RelnOp*        pSub_relnOp(bool bNotNull=false);
     Card_Required*      pSub_required(bool bNotNull=false);
+    Card_RlnConj*       pSub_rlnConj(bool bNotNull=false);
     Card_RowCount*      pSub_rowCount(bool bNotNull=false);
     Card_RowSize*       pSub_rowSize(bool bNotNull=false);
+    Card_RrfJoin*       pSub_rrfJoin(bool bNotNull=false);
     Card_Scan*          pSub_scan(bool bNotNull=false);
     Card_Section*       pSub_section(bool bNotNull=false);
     Card_Spare*         pSub_spare(bool bNotNull=false);

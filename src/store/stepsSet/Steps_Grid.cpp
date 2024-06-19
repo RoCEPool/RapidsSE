@@ -63,9 +63,9 @@ void Step::vGridDumpInfo(void)
 
   s16KB pDumpBuffer = AM::pGrid()->szDumpInfo();
 
-  m_pDataStack->vPushStr(pDumpBuffer);
+  m_oDataStack.vPushStr(pDumpBuffer);
 
-  //m_pDataStack->vPushStz(pDumpBuffer);
+  //m_oDataStack.vPushStz(pDumpBuffer);
 
   EXIT();
 }
@@ -78,11 +78,11 @@ void Step::vGridFindNodeByName(void)
   ENTRY();
   
   s256 sNodeNm;
-  m_pDataStack->vPopStr(sNodeNm,__func__);
+  m_oDataStack.vPopStr(sNodeNm, __func__);
   
   Node* pNode = AM::pGrid()->pFindNodeNm(sNodeNm);
   
-  m_pDataStack->vPushPtr(pNode);
+  m_oDataStack.vPushPtr(pNode);
 
   
   EXIT();
@@ -95,11 +95,11 @@ void Step::vGridFindNodeByNo(void)
 {
   ENTRY();
   
-  i8 iNode = m_pDataStack->iPopInt(__func__);
+  i8 iNode = m_oDataStack.iPopInt(__func__);
   
   Node* pNode = AM::pGrid()->pFindNodeById(iNode);
   
-  m_pDataStack->vPushPtr(pNode);
+  m_oDataStack.vPushPtr(pNode);
   
   EXIT();
 }
@@ -116,7 +116,7 @@ void Step::vGridGetGrid(void)
 
   Grid* pGrid = AM::pGrid();
 
-  m_pDataStack->vPushPtr(pGrid);
+  m_oDataStack.vPushPtr(pGrid);
 
   EXIT();
 }
@@ -128,7 +128,7 @@ void Step::vGridGetGridParts(void)
 {
   ENTRY();
 
-  Grid* pGrid = _pGrid(m_pDataStack->pPopPtr(__func__));
+  Grid* pGrid = _pGrid(m_oDataStack.pPopPtr(__func__));
 
   vTrace("C++ gets called: vGridGetGridParts for pGrid:%s %lld\n"_Stz,
          pGrid->szGridNm()->azChar(),
@@ -141,7 +141,7 @@ void Step::vGridGetGridParts(void)
     vTrace("C++ prepared pParcel:%p for sending, it is originally created by Grid\n"_Stz, pGrid);
   }
 
-  m_pDataStack->vPushPtr(pParcel);
+  m_oDataStack.vPushPtr(pParcel);
 
   EXIT();
 }
@@ -155,7 +155,7 @@ void Step::vGridKnownNodes(void)
   
   i8 nNodes = AM::pGrid()->nKnownNodes();
 
-  m_pDataStack->vPushInt(nNodes);
+  m_oDataStack.vPushInt(nNodes);
   
   EXIT();
 }
@@ -167,7 +167,7 @@ void Step::vGridPtnsPerNode(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(AM::PTNMAP::nPtnsPerNode());
+  m_oDataStack.vPushInt(AM::PTNMAP::nPtnsPerNode());
   
   EXIT();
 }
@@ -179,10 +179,10 @@ void Step::vGridPutGridParts(void)
 {
   ENTRY();
 
-  //Grid* pGrid = _pGrid(m_pDataStack->pPopPtr(__func__));
+  //Grid* pGrid = _pGrid(m_oDataStack.pPopPtr(__func__));
 
   Grid* pGridRemote  = nullptr;
-  Parcel* pParcel = (Parcel*)m_pDataStack->pPopPtr(__func__);
+  Parcel* pParcel = (Parcel*)m_oDataStack.pPopPtr(__func__);
 
   i8 nItems = pParcel->nItems();
 
@@ -218,7 +218,7 @@ void Step::vGridPutGridParts(void)
   if (bMatched) vTrace(">>>>>>>>>>>Matched Grid\n"_Stz);
   else vTrace(">>>>>>>>>>>NOT Matched Grid\n"_Stz);
 
-  bMatched ? m_pDataStack->vPushInt(1) : m_pDataStack->vPushInt(0);
+  bMatched ? m_oDataStack.vPushInt(1) : m_oDataStack.vPushInt(0);
 
   EXIT();
 }
@@ -306,11 +306,11 @@ void Step::vGridTablePtnToPtnNo(void)
 {
   ENTRY();
   
-  i8 i_Ptn = m_pDataStack->iPopInt(__func__);
+  i8 i_Ptn = m_oDataStack.iPopInt(__func__);
 
   LglPtn tLglPtn;
   tLglPtn = AM::pLglPtnMap()->tToPtnNoOfThisNode(i_Ptn);
-  m_pDataStack->vPushInt(tLglPtn.iAsI8());
+  m_oDataStack.vPushInt(tLglPtn.iAsI8());
 
   EXIT();
 }
@@ -324,7 +324,7 @@ void Step::vGridThisNodeIdFetch(void)
     
   i8 iNodeId = AM::pGrid()->iThisNodeId();
   
-  m_pDataStack->vPushInt(iNodeId);
+  m_oDataStack.vPushInt(iNodeId);
   
   EXIT();
 }
@@ -339,7 +339,7 @@ void Step::vGridThisNodeNameFetch(void)
   s256 sName;
   sName = AM::pGrid()->pThisNode()->szNodeNm();
   
-  m_pDataStack->vPushStr(sName);
+  m_oDataStack.vPushStr(sName);
   
   EXIT();
 }
@@ -352,13 +352,13 @@ void Step::vGridToNode(void)
   ENTRY();
 
   LglPtn tLglPtn;
-  tLglPtn = m_pDataStack->iPopInt(__func__);
+  tLglPtn = m_oDataStack.iPopInt(__func__);
 
   // for the moment its always node 0                      //! DISCUSS WITH ALKA
-  //m_pDataStack->vPush((i8)0);
+  //m_oDataStack.vPush((i8)0);
 
   i8 iNodeId = AM::pLglPtnMap()->iNodeId(tLglPtn);
-  m_pDataStack->vPushInt(iNodeId);
+  m_oDataStack.vPushInt(iNodeId);
   
   EXIT();
 }
@@ -384,7 +384,7 @@ void Step::vGridGet(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpGrid);
+  m_oDataStack.vPushPtr(*m_pLogicUnit->m_xpGrid);
 
   EXIT();
 }
@@ -396,7 +396,7 @@ void Step::vGridGetAndClear(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpGrid);
+  m_oDataStack.vPushPtr(*m_pLogicUnit->m_xpGrid);
 
   m_pLogicUnit->m_xpGrid = nullptr;
 
@@ -410,7 +410,7 @@ void Step::vGridIsNotNull(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt(m_pLogicUnit->m_xpGrid.bIsNull() ? 0 : 1);
+  m_oDataStack.vPushInt(m_pLogicUnit->m_xpGrid.bIsNull() ? 0 : 1);
 
   EXIT();
 }
@@ -422,7 +422,7 @@ void Step::vGridIsNull(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt(m_pLogicUnit->m_xpGrid.bIsNull() ? 1 : 0);
+  m_oDataStack.vPushInt(m_pLogicUnit->m_xpGrid.bIsNull() ? 1 : 0);
 
   EXIT();
 }
@@ -434,7 +434,7 @@ void Step::vGridSet(void)
 {
   ENTRY();
 
-  Grid* pGrid = _pGrid(m_pDataStack->pPopPtr(__func__));
+  Grid* pGrid = _pGrid(m_oDataStack.pPopPtr(__func__));
 
   ASSERT(! pGrid || m_pLogicUnit->m_xpGrid.bIsNull());
 

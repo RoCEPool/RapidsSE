@@ -72,7 +72,7 @@ void Step::vTx0Perspective(void)
   
   t8 tPerspective = pTx->tPerspective();
 
-  m_pDataStack->vPushInt(tPerspective);
+  m_oDataStack.vPushInt(tPerspective);
 
   EXIT();
 }

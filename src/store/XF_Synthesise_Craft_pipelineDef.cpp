@@ -238,6 +238,7 @@ void XF_Synthesise_Craft_pipelineDef::vCraftArgDefs(void)
     case CK_o_CROSSJOIN:    p_OP->vRpn_crossJoin   (m_pCI, sExpr, _pCard_CrossJoin(p_OP));    break;
     case CK_o_FILTER:       p_OP->vRpn_filter      (m_pCI, sExpr, _pCard_Filter(p_OP));       break;
     case CK_o_GBYAGG:       p_OP->vRpn_gbyAgg      (m_pCI, sExpr, _pCard_GbyAgg(p_OP));       break;
+    case CK_o_GLOBALHASH:   p_OP->vRpn_globalHash  (m_pCI, sExpr, _pCard_GlobalHash(p_OP));       break;
     case CK_o_HASH:         p_OP->vRpn_hash        (m_pCI, sExpr, _pCard_Hash(p_OP));         break;
     case CK_o_HAVING:       p_OP->vRpn_having      (m_pCI, sExpr, _pCard_Having(p_OP));       break;
     case CK_o_INDEXJOIN:    p_OP->vRpn_indexJoin   (m_pCI, sExpr, _pCard_IndexJoin(p_OP));    break;
@@ -249,6 +250,7 @@ void XF_Synthesise_Craft_pipelineDef::vCraftArgDefs(void)
     case CK_o_ORDAGG:       p_OP->vRpn_ordAgg      (m_pCI, sExpr, _pCard_OrdAgg(p_OP));       break;
     case CK_o_PDSROW:       p_OP->vRpn_pdsRow      (m_pCI, sExpr, _pCard_PdsRow(p_OP));       break;
     case CK_o_PROJECT:      p_OP->vRpn_project     (m_pCI, sExpr, _pCard_Project(p_OP));      break;
+    case CK_o_RRFJOIN:      p_OP->vRpn_rrfJoin     (m_pCI, sExpr, _pCard_RrfJoin(p_OP));       break;
     case CK_o_SCAN:         p_OP->vRpn_scan        (m_pCI, sExpr, _pCard_Scan(p_OP));         break;
     case CK_o_SORT:         p_OP->vRpn_sort        (m_pCI, sExpr, _pCard_Sort(p_OP));         break;
     case CK_o_TOP:          p_OP->vRpn_top         (m_pCI, sExpr, _pCard_Top(p_OP));          break;
@@ -284,6 +286,12 @@ void XF_Synthesise_Craft_pipelineDef::vCraftArgDefs(void)
 
     case CK_o_GBYAGG:
       m_pOpDef->vAppend(new ArgDef(0, "expr"_Stz, sExpr, __FILE__, __LINE__));
+      break;
+
+    case CK_o_GLOBALHASH:
+      m_pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_GlobalHash(p_OP)->pSub_tableNm()->szFacet(SF_TBL_NM), __FILE__, __LINE__));
+      m_pOpDef->vAppend(new ArgDef(1, "indexNm"_Stz, _pCard_GlobalHash(p_OP)->pSub_tableNm()->szFacet(SF_TBL_NM), __FILE__, __LINE__));
+      m_pOpDef->vAppend(new ArgDef(2, "expr"_Stz, sExpr, __FILE__, __LINE__));
       break;
 
     case CK_o_HASH:
@@ -355,6 +363,10 @@ void XF_Synthesise_Craft_pipelineDef::vCraftArgDefs(void)
       m_pOpDef->vAppend(new ArgDef(0, "expr"_Stz, sExpr, __FILE__, __LINE__));
       break;
 
+    case CK_o_RRFJOIN:
+      m_pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_RrfJoin(p_OP)->pSub_tableNm()->szFacet(SF_TBL_NM), __FILE__, __LINE__));
+      m_pOpDef->vAppend(new ArgDef(1, "expr"_Stz, sExpr, __FILE__, __LINE__));
+      break;
     case CK_o_SCAN:
       m_pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_Scan(p_OP)->pSub_tableNm()->szFacet(SF_TBL_NM), __FILE__, __LINE__));
       break;

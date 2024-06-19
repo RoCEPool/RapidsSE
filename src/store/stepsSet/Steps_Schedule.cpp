@@ -40,11 +40,11 @@ void Step::vScheduleExecutingLength(void)
 {
   ENTRY();
   
-  i8 i_TablePtn = m_pDataStack->iPopInt(__func__);
+  i8 i_TablePtn = m_oDataStack.iPopInt(__func__);
   UNUSED(i_TablePtn);
   
   Schedule* pSchedule = AM::pSchedule();
-  m_pDataStack->vPushInt(pSchedule->nTasksExecuting());
+  m_oDataStack.vPushInt(pSchedule->nTasksExecuting());
   
   EXIT();
 }
@@ -56,11 +56,11 @@ void Step::vScheduleReadyLength(void)
 {
   ENTRY();
   
-  i8 i_TablePtn = m_pDataStack->iPopInt(__func__);
+  i8 i_TablePtn = m_oDataStack.iPopInt(__func__);
   UNUSED(i_TablePtn);
 
   Schedule* pSchedule = AM::pSchedule();
-  m_pDataStack->vPushInt(pSchedule->nTasksReady());
+  m_oDataStack.vPushInt(pSchedule->nTasksReady());
   
   EXIT();
 }
@@ -73,7 +73,7 @@ void Step::vScheduleSleepingLength(void)
   ENTRY();
   
   Schedule* pSchedule = AM::pSchedule();
-  m_pDataStack->vPushInt(pSchedule->nTasksSleeping());
+  m_oDataStack.vPushInt(pSchedule->nTasksSleeping());
   
   EXIT();
 }
@@ -86,7 +86,7 @@ void Step::vScheduleWaitingLength(void)
   ENTRY();
   
   Schedule* pSchedule = AM::pSchedule();
-  m_pDataStack->vPushInt(pSchedule->nTasksWaiting());
+  m_oDataStack.vPushInt(pSchedule->nTasksWaiting());
   
   EXIT();
 }

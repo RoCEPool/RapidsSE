@@ -34,7 +34,7 @@ void Step::vAttachMapAddSysMetrics(void)
 {
   ENTRY();
 
-  SysMetrics* pSysMetrics = _pSysMetrics(m_pDataStack->pPopPtr(__func__));
+  SysMetrics* pSysMetrics = _pSysMetrics(m_oDataStack.pPopPtr(__func__));
   
   AM::ATTACHMAP::vSysMetricsAdd(pSysMetrics);
 
@@ -47,12 +47,12 @@ void Step::vAttachMapErrorTextFetch(void)
 {
   ENTRY();
 
-  i8 iEnum = m_pDataStack->iPopInt(__func__);
+  i8 iEnum = m_oDataStack.iPopInt(__func__);
 
   s256 sTextMsg;
   sTextMsg = aErrorMsg[iEnum];
 
-  m_pDataStack->vPushStr(sTextMsg);
+  m_oDataStack.vPushStr(sTextMsg);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -62,7 +62,7 @@ void Step::vAttachMapRegionSizeFetch(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(AM::iRegionSize());
+  m_oDataStack.vPushInt(AM::iRegionSize());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -78,7 +78,7 @@ void Step::vAttachMapIsLowMemory(void)
   //  PoolHelper::vPoolAnalyze();
 
   
-  m_pDataStack->vPushInt(bIsLow);
+  m_oDataStack.vPushInt(bIsLow);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -90,7 +90,7 @@ void Step::vAttachMapOperandsFetch(void)
   
   i8 nOperands = AM::nOperandsGet();
   
-  m_pDataStack->vPushInt(nOperands);
+  m_oDataStack.vPushInt(nOperands);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -100,7 +100,7 @@ void Step::vAttachMapTenantsFetch(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(AM::pTenants());
+  m_oDataStack.vPushPtr(AM::pTenants());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -110,7 +110,7 @@ void Step::vAttachMapTenantsStore(void)
 {
   ENTRY();
   
-  Word *pWord_tenants = _pWord(m_pDataStack->pPopPtr(__func__));
+  Word *pWord_tenants = _pWord(m_oDataStack.pPopPtr(__func__));
 
   AM::vTenants(pWord_tenants);
 }

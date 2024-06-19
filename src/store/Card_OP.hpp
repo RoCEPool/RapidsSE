@@ -47,6 +47,7 @@ namespace STORE
     void vRpn_crossJoin   (CardIter* pCI, String* psRpnExpr, Card_CrossJoin* p_crossJoin);
     void vRpn_filter      (CardIter* pCI, String* psRpnExpr, Card_Filter*    p_filter);
     void vRpn_gbyAgg      (CardIter* pCI, String* psRpnExpr, Card_GbyAgg*    p_gbyAgg);
+    void vRpn_globalHash  (CardIter* pCI, String* psRpnExpr, Card_GlobalHash* p_globalHash);
     void vRpn_hash        (CardIter* pCI, String* psRpnExpr, Card_Hash*      p_hash);
     void vRpn_having      (CardIter* pCI, String* psRpnExpr, Card_Having*    p_having);
     void vRpn_indexJoin   (CardIter* pCI, String* psRpnExpr, Card_IndexJoin* p_indexJoin);
@@ -61,6 +62,7 @@ namespace STORE
     void vRpn_ordAgg      (CardIter* pCI, String* psRpnExpr, Card_OrdAgg*    p_ordAgg);
     void vRpn_pdsRow      (CardIter* pCI, String* psRpnExpr, Card_PdsRow*    p_pdsRow);
     void vRpn_project     (CardIter* pCI, String* psRpnExpr, Card_Project*   p_project);
+    void vRpn_rrfJoin     (CardIter* pCI, String* psRpnExpr, Card_RrfJoin*   p_rrfJoin);
     void vRpn_scan        (CardIter* pCI, String* psRpnExpr, Card_Scan*      p_scan);
     void vRpn_sort        (CardIter* pCI, String* psRpnExpr, Card_Sort*      p_sort);
     void vRpn_top         (CardIter* pCI, String* psRpnExpr, Card_Top*       p_top);

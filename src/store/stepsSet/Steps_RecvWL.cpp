@@ -41,7 +41,7 @@ void Step::vRecvWLGet(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpRecvWL);
+  m_oDataStack.vPushPtr(*m_pLogicUnit->m_xpRecvWL);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -51,7 +51,7 @@ void Step::vRecvWLIsNotNull(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt(m_pLogicUnit->m_xpRecvWL.bIsNull() ? 0 : 1);
+  m_oDataStack.vPushInt(m_pLogicUnit->m_xpRecvWL.bIsNull() ? 0 : 1);
 
   EXIT();
 }
@@ -63,7 +63,7 @@ void Step::vRecvWLIsNull(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt(m_pLogicUnit->m_xpRecvWL.bIsNull() ? 1 : 0);
+  m_oDataStack.vPushInt(m_pLogicUnit->m_xpRecvWL.bIsNull() ? 1 : 0);
 
   EXIT();
 }
@@ -75,7 +75,7 @@ void Step::vRecvWLSet(void)
 {
   ENTRY();
 
-  m_pLogicUnit->m_xpRecvWL = (RecvWL*)m_pDataStack->pPopPtr(__func__);
+  m_pLogicUnit->m_xpRecvWL = (RecvWL*)m_oDataStack.pPopPtr(__func__);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -98,12 +98,12 @@ void Step::vRecvWLSerialiseError(void)
 {
   ENTRY();
 
-  eEC eErrorCode = (eEC) m_pDataStack->iPopInt(__func__);
+  eEC eErrorCode = (eEC) m_oDataStack.iPopInt(__func__);
   RASSERT(eErrorCode > EC_NONE);
   RASSERT(eErrorCode < EC_ENUMS);
 
   s256 sErrorStr;
-  m_pDataStack->vPopStr(sErrorStr, __func__);
+  m_oDataStack.vPopStr(sErrorStr, __func__);
 
   Stz* szFmt = "Error: %s: %s"_Stz;
   s16KB sBuf;
@@ -131,7 +131,7 @@ void Step::vRecvWLSerialiseError(void)
     // We should never get here. Push a null object in its place.
     vTrace("Error: Couldn't serialise a RecvWL error to an ErrorResponse msg because "
            "the buffer is too full.\n"_Stz);
-    m_pDataStack->vPushPtr(nullptr);
+    m_oDataStack.vPushPtr(nullptr);
     return;
   }
 
@@ -142,7 +142,7 @@ void Step::vRecvWLSerialiseError(void)
   pPayload->vSetPayloadSize(iMsgSize);
   pTransport->vRemoveBuffer();
 
-  m_pDataStack->vPushPtr(pPayload);
+  m_oDataStack.vPushPtr(pPayload);
 }
 
 /*============================================================================*/

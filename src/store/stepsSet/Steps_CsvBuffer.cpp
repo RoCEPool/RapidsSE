@@ -46,7 +46,7 @@ void Step::vCsvBufferNewOld(void)
   
   CsvBuffer* pCsvBuffer = new CsvBuffer;
     
-  m_pDataStack->vPushPtr(pCsvBuffer);
+  m_oDataStack.vPushPtr(pCsvBuffer);
 
   EXIT();
 }
@@ -61,9 +61,9 @@ void Step::vCsvBufferOperandDump(void)
 {
   ENTRY();
   
-  CsvBuffer* pCsvBuffer = _pCsvBuffer(m_pDataStack->pPopPtr(__func__));
+  CsvBuffer* pCsvBuffer = _pCsvBuffer(m_oDataStack.pPopPtr(__func__));
 
-  i8 iDetail = m_pDataStack->iPopInt(__func__);
+  i8 iDetail = m_oDataStack.iPopInt(__func__);
 
   if (iDetail)
     pCsvBuffer->vPrintRecords();
@@ -81,7 +81,7 @@ void Step::vCsvBufferCsvAppend(void)
   ENTRY();
 
   s256 sCsvRow;
-  m_pDataStack->vPopStr(sCsvRow,__func__);
+  m_oDataStack.vPopStr(sCsvRow, __func__);
 
   CsvBuffer* pCsvBuffer = _pCsvBuffer(*m_pLogicUnit->m_xpCsvBuffer);
   i8 nBytes = sCsvRow.nSize();
@@ -104,7 +104,7 @@ void Step::vCsvBufferCsvData(void)
 
   CsvBuffer* pCsvBuffer = _pCsvBuffer(*m_pLogicUnit->m_xpCsvBuffer);
   char* data = (char*)pCsvBuffer->ayDataArea();
-  m_pDataStack->vPushStz((Stz*)data);
+  m_oDataStack.vPushStz((Stz*)data);
 
   EXIT();
 }
@@ -117,7 +117,7 @@ void Step::vCsvBufferPrint(void)
 {
   ENTRY();
   
-  CsvBuffer* pCsvBuffer = _pCsvBuffer(m_pDataStack->pPopPtr(__func__));
+  CsvBuffer* pCsvBuffer = _pCsvBuffer(m_oDataStack.pPopPtr(__func__));
 
   pCsvBuffer->vPrintRecords();
   
@@ -145,7 +145,7 @@ void Step::vCsvBufferGet(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpCsvBuffer);
+  m_oDataStack.vPushPtr(*m_pLogicUnit->m_xpCsvBuffer);
 
   EXIT();
 }
@@ -157,7 +157,7 @@ void Step::vCsvBufferGetAndClear(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpCsvBuffer);
+  m_oDataStack.vPushPtr(*m_pLogicUnit->m_xpCsvBuffer);
 
   m_pLogicUnit->m_xpCsvBuffer = nullptr;
 
@@ -171,7 +171,7 @@ void Step::vCsvBufferIsNotNull(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt(m_pLogicUnit->m_xpCsvBuffer.bIsNull() ? 0 : 1);
+  m_oDataStack.vPushInt(m_pLogicUnit->m_xpCsvBuffer.bIsNull() ? 0 : 1);
 
   EXIT();
 }
@@ -183,7 +183,7 @@ void Step::vCsvBufferIsNull(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt(m_pLogicUnit->m_xpCsvBuffer.bIsNull() ? 1 : 0);
+  m_oDataStack.vPushInt(m_pLogicUnit->m_xpCsvBuffer.bIsNull() ? 1 : 0);
 
   EXIT();
 }
@@ -196,7 +196,7 @@ void Step::vCsvBufferIsReport(void)
   ENTRY();
 
   Operand* pOperand = *m_pLogicUnit->m_xpCsvBuffer;
-  m_pDataStack->vPushInt(pOperand->eTailProcessing() == PT_REPORT ? true : false);
+  m_oDataStack.vPushInt(pOperand->eTailProcessing() == PT_REPORT ? true : false);
 
   EXIT();
 }
@@ -235,7 +235,7 @@ void Step::vCsvBufferSet(void)
 {
   ENTRY();
 
-  Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
+  Operand* pOperand = _pOperand(m_oDataStack.pPopPtr(__func__));
 
   ASSERT(! pOperand || m_pLogicUnit->m_xpCsvBuffer.bIsNull());
 

@@ -54,7 +54,7 @@ void Step::vAdaptorWLNew(void)
 {
   ENTRY();
 
-  Socket* pSocket = _pSocket(m_pDataStack->pPopPtr(__func__));
+  Socket* pSocket = _pSocket(m_oDataStack.pPopPtr(__func__));
   ASSERT(pSocket);
   ASSERT(pSocket->eGetClassNo() == CN_SOCKET);
 
@@ -103,7 +103,7 @@ void Step::vAdaptorWLClientAddr(void)
   AdaptorWL* pAdaptorWL = _pAdaptorWL(* m_pLogicUnit->m_xpAdaptorWL);
   Stz* szClientAddr = pAdaptorWL->szClientAddr();
   ASSERT(szClientAddr);
-  m_pDataStack->vPushStz(szClientAddr);
+  m_oDataStack.vPushStz(szClientAddr);
 
   EXIT();
 }
@@ -133,7 +133,7 @@ void Step::vAdaptorWLCrwBuffer(void)
   ENTRY();
 
   AdaptorWL* pAdaptorWL = _pAdaptorWL(* m_pLogicUnit->m_xpAdaptorWL);
-  CrwBuffer* pCrwBuffer = _pCrwBuffer(m_pDataStack->pPopPtr(__func__));
+  CrwBuffer* pCrwBuffer = _pCrwBuffer(m_oDataStack.pPopPtr(__func__));
   ASSERT(pCrwBuffer);
   ASSERT(pCrwBuffer->eGetClassNo() == CN_CRWBUFFER);
 
@@ -151,7 +151,7 @@ void Step::vAdaptorWLDecodePayload(void)
 
   AdaptorWL* pAdaptorWL = _pAdaptorWL(* m_pLogicUnit->m_xpAdaptorWL);
 
-  WLP::PayloadObj* pPayloadObj = WLP::_pPayloadObj(m_pDataStack->pPopPtr(__func__));
+  WLP::PayloadObj* pPayloadObj = WLP::_pPayloadObj(m_oDataStack.pPopPtr(__func__));
   ASSERT(CN_PAYLOADOBJ == pPayloadObj->eGetClassNo());
 
   pAdaptorWL->vDecodePayload(pPayloadObj);
@@ -233,7 +233,7 @@ void Step::vAdaptorWLPayloadCreateTime(void)
   AdaptorWL* pAdaptorWL = _pAdaptorWL(* m_pLogicUnit->m_xpAdaptorWL);
   u8 uPayloadCreateTime = pAdaptorWL->uPayloadCreationTime();
 
-  m_pDataStack->vPushInt((i8) uPayloadCreateTime);
+  m_oDataStack.vPushInt((i8) uPayloadCreateTime);
   EXIT();
 }
 
@@ -245,7 +245,7 @@ void Step::vAdaptorWLHasPayloadToSendFetch(void)
   ENTRY();
 
   AdaptorWL* pAdaptorWL = _pAdaptorWL(* m_pLogicUnit->m_xpAdaptorWL);
-  m_pDataStack->vPushBol(pAdaptorWL->bHasPayloadToSend() ? 1 : 0);
+  m_oDataStack.vPushBol(pAdaptorWL->bHasPayloadToSend() ? 1 : 0);
 
   EXIT();
 }
@@ -264,7 +264,7 @@ void Step::vAdaptorWLNextPayloadToSendFetch(void)
   ASSERT(pPayload);
   ASSERT(CN_PAYLOADOBJ == pPayload->eGetClassNo());
 
-  m_pDataStack->vPushPtr(pPayload);
+  m_oDataStack.vPushPtr(pPayload);
 
   EXIT();
 }
@@ -278,7 +278,7 @@ void Step::vAdaptorWLProtocolErrorTest(void)
 
   AdaptorWL* pAdaptorWL = _pAdaptorWL(* m_pLogicUnit->m_xpAdaptorWL);
 
-  m_pDataStack->vPushInt(pAdaptorWL->eProtocolError() == EC_NONE ? 0 : 1);
+  m_oDataStack.vPushInt(pAdaptorWL->eProtocolError() == EC_NONE ? 0 : 1);
 
   EXIT();
 }
@@ -324,7 +324,7 @@ void Step::vAdaptorWLQueryStrPush(void)
 
   AdaptorWL* pAdaptorWL = _pAdaptorWL(* m_pLogicUnit->m_xpAdaptorWL);
 
-  m_pDataStack->vPushStz(pAdaptorWL->szQuery());
+  m_oDataStack.vPushStz(pAdaptorWL->szQuery());
 
   EXIT();
 }
@@ -338,7 +338,7 @@ void Step::vAdaptorWLResultMetadata(void)
 
   AdaptorWL* pAdaptorWL = _pAdaptorWL(* m_pLogicUnit->m_xpAdaptorWL);
 
-  StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__ ));
+  StreamDef* pStreamDef = _pStreamDef(m_oDataStack.pPopPtr(__func__ ));
   ASSERT(pStreamDef);
   ASSERT(CN_STREAMDEF == pStreamDef->eGetClassNo());
 
@@ -356,7 +356,7 @@ void Step::vAdaptorWLProtocolErrorFetch(void)
 
   AdaptorWL* pAdaptorWL = _pAdaptorWL(* m_pLogicUnit->m_xpAdaptorWL);
 
-  m_pDataStack->vPushInt(pAdaptorWL->eProtocolError());
+  m_oDataStack.vPushInt(pAdaptorWL->eProtocolError());
 
   EXIT();
 }
@@ -370,7 +370,7 @@ void Step::vAdaptorWLHasQuery(void)
 
   AdaptorWL* pAdaptorWL = _pAdaptorWL(* m_pLogicUnit->m_xpAdaptorWL);
 
-  m_pDataStack->vPushInt(pAdaptorWL->bHasQuery() ? 1 : 0);
+  m_oDataStack.vPushInt(pAdaptorWL->bHasQuery() ? 1 : 0);
 
   EXIT();
 }
@@ -384,7 +384,7 @@ void Step::vAdaptorWLIsAbortEarly(void)
 
   AdaptorWL* pAdaptorWL = _pAdaptorWL(* m_pLogicUnit->m_xpAdaptorWL);
 
-  m_pDataStack->vPushInt(pAdaptorWL->bAbortEarly() ? 1 : 0);
+  m_oDataStack.vPushInt(pAdaptorWL->bAbortEarly() ? 1 : 0);
 
   EXIT();
 }
@@ -398,7 +398,7 @@ void Step::vAdaptorWLIsChildJobActive(void)
 
   AdaptorWL* pAdaptorWL = _pAdaptorWL(* m_pLogicUnit->m_xpAdaptorWL);
 
-  m_pDataStack->vPushInt(pAdaptorWL->bIsChildJobActive() ? 1 : 0);
+  m_oDataStack.vPushInt(pAdaptorWL->bIsChildJobActive() ? 1 : 0);
 
   EXIT();
 }
@@ -411,7 +411,7 @@ void Step::vAdaptorWLPdsRowBuffer(void)
   ENTRY();
 
   AdaptorWL* pAdaptorWL = _pAdaptorWL(* m_pLogicUnit->m_xpAdaptorWL);
-  Pds* pPdsRowBuffer = _pPds(m_pDataStack->pPopPtr(__func__));
+  Pds* pPdsRowBuffer = _pPds(m_oDataStack.pPopPtr(__func__));
   ASSERT(pPdsRowBuffer);
   ASSERT(pPdsRowBuffer->eGetClassNo() == CN_PDS);
 
@@ -427,7 +427,7 @@ void Step::vAdaptorWLStatementToSubmit(void)
 {
   ENTRY();
 
-  Task* pNextTask = _pTask(m_pDataStack->pPopPtr(__func__));
+  Task* pNextTask = _pTask(m_oDataStack.pPopPtr(__func__));
 
   AdaptorWL* pAdaptorWL = _pAdaptorWL(* m_pLogicUnit->m_xpAdaptorWL);
 
@@ -447,10 +447,10 @@ void Step::vAdaptorWLStatementParsingError(void)
   AdaptorWL* pAdaptorWL = _pAdaptorWL(* m_pLogicUnit->m_xpAdaptorWL);
 
   s2K sErrMsg;
-  m_pDataStack->vPopStr(sErrMsg, __func__);
+  m_oDataStack.vPopStr(sErrMsg, __func__);
   ASSERT(sErrMsg.nLength() > 0);
 
-  eEC eErrCode = (eEC) m_pDataStack->iPopInt(__func__);
+  eEC eErrCode = (eEC) m_oDataStack.iPopInt(__func__);
   ASSERT(eErrCode != EC_NONE);
 
   pAdaptorWL->vStatementParsingFailed(eErrCode, sErrMsg.szStz());
@@ -468,7 +468,7 @@ void Step::vAdaptorWLStatementSubmittedError(void)
 
   AdaptorWL* pAdaptorWL = _pAdaptorWL(* m_pLogicUnit->m_xpAdaptorWL);
 
-  eEC eErrCode = (eEC) m_pDataStack->iPopInt(__func__);
+  eEC eErrCode = (eEC) m_oDataStack.iPopInt(__func__);
 
   pAdaptorWL->vStatementSubmissionFailed(eErrCode);
 

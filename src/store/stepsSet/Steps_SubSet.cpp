@@ -35,9 +35,9 @@ void Step::vSubsetGet(void)
   ENTRY();
   
   if (m_pLogicUnit->m_xpSubset.bIsNull())
-    m_pDataStack->vPushPtr(nullptr);
+    m_oDataStack.vPushPtr(nullptr);
   else
-    m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpSubset);
+    m_oDataStack.vPushPtr(*m_pLogicUnit->m_xpSubset);
   
   EXIT();
 }
@@ -54,7 +54,7 @@ void Step::vSubsetNext(void)
   if (*m_pLogicUnit->m_xpSubset)
     pNextOperand = m_pLogicUnit->m_xpSubset->pNextItem();
   
-  m_pDataStack->vPushPtr(pNextOperand);
+  m_oDataStack.vPushPtr(pNextOperand);
   
   EXIT();
 }
@@ -66,7 +66,7 @@ void Step::vSubsetSet(void)
 {
   ENTRY();
   
-  Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
+  Operand* pOperand = _pOperand(m_oDataStack.pPopPtr(__func__));
   
   if (pOperand && CN_CRWBUFFER == pOperand->eGetClassNo()) {
     CrwBuffer* pCrwBuffer = _pCrwBuffer(pOperand);

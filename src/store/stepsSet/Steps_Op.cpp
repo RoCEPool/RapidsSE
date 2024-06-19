@@ -98,9 +98,9 @@ void Step::vOpEnqueOperand(void)
 {
   ENTRY();
   
-  Op* pOp = _pOp(m_pDataStack->pPopPtr(__func__));
+  Op* pOp = _pOp(m_oDataStack.pPopPtr(__func__));
 
-  Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
+  Operand* pOperand = _pOperand(m_oDataStack.pPopPtr(__func__));
 
 	if (AM::TRACE::bVerbose(C_VB_OP))
 		pOp->vOpTrace(this, nullptr,(Stz*)__func__,false,
@@ -118,7 +118,7 @@ void Step::vOpEventCountInc(void)
 {
   ENTRY();
 
-  eEV eEvent = (eEV) m_pDataStack->iPopInt(__func__);
+  eEV eEvent = (eEV) m_oDataStack.iPopInt(__func__);
 
 	if ( ! bIsSecondary() )
     m_pOp->vEventCountInc(eEvent);
@@ -135,7 +135,7 @@ void Step::vOpFindOp(void)
 
   RASSERT(0);
 //  s32 sOpName;
-//  m_pDataStack->vPopStr(sOpName,__func__);
+//  m_oDataStack.vPopStr(sOpName,__func__);
 //
 //  Op* pDownstreamOp = nullptr;
 //
@@ -148,7 +148,7 @@ void Step::vOpFindOp(void)
 //    }
 //  }
 //
-//  m_pDataStack->vPushPtr(pDownstreamOp);
+//  m_oDataStack.vPushPtr(pDownstreamOp);
 
   EXIT();
 }
@@ -160,7 +160,7 @@ void Step::vOpGet(void)
 {
   ENTRY();
     
-  m_pDataStack->vPushPtr(m_pOp);
+  m_oDataStack.vPushPtr(m_pOp);
 
   EXIT();
 }
@@ -203,11 +203,11 @@ void Step::vOpHandlerFetch(void)
 {
   ENTRY();
 
-  i8 i_OperandKind = m_pDataStack->iPopInt(__func__);
+  i8 i_OperandKind = m_oDataStack.iPopInt(__func__);
 
   Word* pHandler = m_pOp->pEventHandler(i_OperandKind);
     
-  m_pDataStack->vPushPtr(pHandler);
+  m_oDataStack.vPushPtr(pHandler);
 
   EXIT();
 }
@@ -219,9 +219,9 @@ void Step::vOpHandlerStore(void)
 {
   ENTRY();
 
-  i8 i_OpKind = m_pDataStack->iPopInt(__func__);
+  i8 i_OpKind = m_oDataStack.iPopInt(__func__);
   
-  Word* pHandler = _pWord(m_pDataStack->pPopPtr(__func__));
+  Word* pHandler = _pWord(m_oDataStack.pPopPtr(__func__));
 
   m_pOp->vEventHandler(i_OpKind,pHandler);
     
@@ -235,7 +235,7 @@ void Step::vOpHandlerAllStore(void)
 {
   ENTRY();
 
-  Word* pHandler = _pWord(m_pDataStack->pPopPtr(__func__));
+  Word* pHandler = _pWord(m_oDataStack.pPopPtr(__func__));
 
   for (i8 i_OpKind = 0; i_OpKind < EV_ENUMS; i_OpKind++)
     m_pOp->vEventHandler(i_OpKind,pHandler);
@@ -252,9 +252,9 @@ void Step::vOpIsEventValid(void)
   
   bool bValid = true;
   
-  i8 i_OperandKind = m_pDataStack->iPopInt(__func__);
+  i8 i_OperandKind = m_oDataStack.iPopInt(__func__);
 
-	i8 i_BufferType = m_pDataStack->iPopInt(__func__);
+	i8 i_BufferType = m_oDataStack.iPopInt(__func__);
 
   //vTrace("vOpIsEventValid:   %s\n"_Stz, m_pOp->szOpNm());
   // skip consumeOp operand validation
@@ -268,7 +268,7 @@ void Step::vOpIsEventValid(void)
     RASSERT(0);
   }
 
-	m_pDataStack->vPushInt(bValid);
+	m_oDataStack.vPushInt(bValid);
   EXIT();
 }
 
@@ -280,9 +280,9 @@ void Step::vOpIsRecv(void)
   ENTRY();
 
   if ( m_pOp->szOpNm()->bSame("recvSE"_Stz))
-    m_pDataStack->vPushInt(true);
+    m_oDataStack.vPushInt(true);
   else
-    m_pDataStack->vPushInt(false);
+    m_oDataStack.vPushInt(false);
 
   EXIT();
 }
@@ -295,9 +295,9 @@ void Step::vOpIsSend(void)
   ENTRY();
 
   if ( m_pOp->szOpNm()->bSame("sendSE"_Stz))
-    m_pDataStack->vPushInt(true);
+    m_oDataStack.vPushInt(true);
   else
-    m_pDataStack->vPushInt(false);
+    m_oDataStack.vPushInt(false);
 
   EXIT();
 }
@@ -312,11 +312,11 @@ void Step::vOpJobFetch(void)
   Pipeline* pPipeline = m_pOp->pPipeline();
   
   if (! pPipeline) {
-    m_pDataStack->vPushPtr(nullptr);
+    m_oDataStack.vPushPtr(nullptr);
   }
   else {
     Job* pPipelineJob = pPipeline->pPipelineJob();
-    m_pDataStack->vPushPtr(pPipelineJob);
+    m_oDataStack.vPushPtr(pPipelineJob);
   }
   
   EXIT();
@@ -329,11 +329,11 @@ void Step::vOpNameFetch(void)
 {
   ENTRY();
   
-  Op* pOp = _pOp(m_pDataStack->pPopPtr(__func__));
+  Op* pOp = _pOp(m_oDataStack.pPopPtr(__func__));
 
   Stz* szOpNm = pOp->szOpNm();
 
-  m_pDataStack->vPushStz(szOpNm);
+  m_oDataStack.vPushStz(szOpNm);
 
   EXIT();
 }
@@ -347,7 +347,7 @@ void Step::vOpOpNameFetch(void)
     
   s256 sOpName = m_pOp->szOpNm();
   
-  m_pDataStack->vPushStr(sOpName);
+  m_oDataStack.vPushStr(sOpName);
   
   EXIT();
 }
@@ -359,7 +359,7 @@ void Step::vOpPartitionFetch(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(m_pOp->tLglPtn().iAsI8());
+  m_oDataStack.vPushInt(m_pOp->tLglPtn().iAsI8());
 
   EXIT();
 }
@@ -371,7 +371,7 @@ void Step::vOpPipeBackIn(void)
 {
   ENTRY();
 
-  Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
+  Operand* pOperand = _pOperand(m_oDataStack.pPopPtr(__func__));
 
   m_pOp->vPipeToThis(pOperand,this);
 
@@ -385,7 +385,7 @@ void Step::vOpPipeOut(void)
 {
   ENTRY();
   
-  Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
+  Operand* pOperand = _pOperand(m_oDataStack.pPopPtr(__func__));
 
   if(! BufferId::bIsBufferId(pOperand)) {
     if(DataBuffer::bIsDataBuffer(pOperand->eGetClassNo())) {
@@ -412,7 +412,7 @@ void Step::vOpPipeOutPtnTasks(void)
 {
 	ENTRY();
 
-	Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
+	Operand* pOperand = _pOperand(m_oDataStack.pPopPtr(__func__));
 
 	//vTrace("[op].pipeoutPtnTasks %p\n"_Stz, pOperand);
 
@@ -443,7 +443,7 @@ void Step::vOpPtnIdFetch(void)
 
   LglPtn tPtn = m_pOp->tLglPtn();
 
-  m_pDataStack->vPushInt(tPtn.iAsI8());
+  m_oDataStack.vPushInt(tPtn.iAsI8());
 
   EXIT();
 }
@@ -457,7 +457,7 @@ void Step::vOpQueueLength(void)
     
   i8 nLength = m_pOp->nQueuedOperands();
 
-  m_pDataStack->vPushInt(nLength);
+  m_oDataStack.vPushInt(nLength);
 
   EXIT();
 }
@@ -471,7 +471,7 @@ void Step::vOpStageNameFetch(void)
   
   s256 sStageName = m_pOp->szStageName();
   
-  m_pDataStack->vPushStr(sStageName);
+  m_oDataStack.vPushStr(sStageName);
   
   EXIT();
 }
@@ -486,7 +486,7 @@ void Step::vOpStageNmFetch(void)
   s256 sStageNm;
 
   sStageNm = m_pOp->pStream()->pStage()->szStageNm();
-  m_pDataStack->vPushStr(sStageNm);
+  m_oDataStack.vPushStr(sStageNm);
 
   EXIT();
 }
@@ -498,7 +498,7 @@ void Step::vOpTagSetFetch(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(m_pOp->pOpTags());
+  m_oDataStack.vPushPtr(m_pOp->pOpTags());
   
   EXIT();
 }

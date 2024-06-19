@@ -24,9 +24,9 @@ void Step::vPtrIsNull(void)
 {
   ENTRY();
 
-  Object* pObj = m_pDataStack->pPopPtr(__func__);
+  Object* pObj = m_oDataStack.pPopPtr(__func__);
 
-  m_pDataStack->vPushBol(pObj == nullptr);
+  m_oDataStack.vPushBol(pObj == nullptr);
 
   EXIT();
 }

@@ -52,10 +52,10 @@ void Step::vIndexDefAddColumn(void)
 
   eEC eError = EC_NONE;
 
-  StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
+  StreamDef* pStreamDef = _pStreamDef(m_oDataStack.pPopPtr(__func__));
 
   s256 sColumnNm;
-  m_pDataStack->vPopStr(sColumnNm,__func__);
+  m_oDataStack.vPopStr(sColumnNm, __func__);
 
   Column* pColumn = pStreamDef->pFindColumn(sColumnNm);
 
@@ -69,7 +69,7 @@ void Step::vIndexDefAddColumn(void)
     pIndexDef->vAddColumn(sColumnNm,xTypeId);
   }
 
-  m_pDataStack->vPushInt(eError);
+  m_oDataStack.vPushInt(eError);
 
   EXIT();
 }
@@ -97,7 +97,7 @@ void Step::vIndexDefGet(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpIndexDef);
+  m_oDataStack.vPushPtr(*m_pLogicUnit->m_xpIndexDef);
   
   EXIT();
 }
@@ -109,7 +109,7 @@ void Step::vIndexDefIsNull(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(m_pLogicUnit->m_xpIndexDef.bIsNull() ? 1 : 0);
+  m_oDataStack.vPushInt(m_pLogicUnit->m_xpIndexDef.bIsNull() ? 1 : 0);
   
   EXIT();
 }
@@ -122,7 +122,7 @@ void Step::vIndexDefNameStore(void)
   ENTRY();
   
   s256 sName;
-  m_pDataStack->vPopStr(sName,__func__);
+  m_oDataStack.vPopStr(sName, __func__);
   
   m_pLogicUnit->m_xpIndexDef->vIndexNm(sName);
   
@@ -150,10 +150,10 @@ void Step::vIndexDefNewGlobalIndex(void)
 
   s256 sIndexName;
 
-  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
-  m_pDataStack->vPopStr(sIndexName, __func__);
+  Table* pTable = _pTable(m_oDataStack.pPopPtr(__func__));
+  m_oDataStack.vPopStr(sIndexName, __func__);
 
-  i8 iKeyCol = m_pDataStack->iPopInt(__func__);
+  i8 iKeyCol = m_oDataStack.iPopInt(__func__);
 
   StreamDef* pStreamDef = pTable->pStreamDef();
   Column* pColumn = pStreamDef->pGetColumn(iKeyCol);
@@ -184,10 +184,10 @@ void Step::vIndexDefParse(void)
 {
   ENTRY();
   
-  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
+  Table* pTable = _pTable(m_oDataStack.pPopPtr(__func__));
   
   s4K sCmd;
-  m_pDataStack->vPopStr(sCmd,__func__);
+  m_oDataStack.vPopStr(sCmd, __func__);
   
   //  vTrace("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"_Stz);
   //  vTrace("Stmt: %s\n"_Stz,sCmd.szStz());
@@ -200,10 +200,10 @@ void Step::vIndexDefParse(void)
   if (eResult != EC_NONE) {
 
     // push the error on the stack
-    m_pDataStack->vPushInt(eResult);
+    m_oDataStack.vPushInt(eResult);
 
     // push false
-    m_pDataStack->vPushInt(false);
+    m_oDataStack.vPushInt(false);
 
     // delete IndexDef
     delete pIndexDef;
@@ -212,10 +212,10 @@ void Step::vIndexDefParse(void)
   }
   else {
     /// push the indexDef
-    m_pDataStack->vPushPtr(pIndexDef);
+    m_oDataStack.vPushPtr(pIndexDef);
 
     // push false
-    m_pDataStack->vPushInt(true);
+    m_oDataStack.vPushInt(true);
   }
   
   EXIT();
@@ -228,7 +228,7 @@ void Step::vIndexDefSet(void)
 {
   ENTRY();
   
-  m_pLogicUnit->m_xpIndexDef = _pIndexDef(m_pDataStack->pPopPtr(__func__));
+  m_pLogicUnit->m_xpIndexDef = _pIndexDef(m_oDataStack.pPopPtr(__func__));
   
   EXIT();
 }
@@ -241,11 +241,11 @@ void Step::vIndexDefSyntax(void)
   ENTRY();
   
   s4K sCmd;
-  m_pDataStack->vPopStr(sCmd,__func__);
+  m_oDataStack.vPopStr(sCmd, __func__);
   
   eEC eResult = IndexDef::eSyntax(sCmd);
   
-  m_pDataStack->vPushInt(eResult);
+  m_oDataStack.vPushInt(eResult);
   
   EXIT();
 }
@@ -258,7 +258,7 @@ void Step::vIndexDefParseTableName(void)
   ENTRY();
 
   s4K sCmd;
-  m_pDataStack->vPopStr(sCmd,__func__);
+  m_oDataStack.vPopStr(sCmd, __func__);
   
   //  vTrace("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"_Stz);
   //  vTrace("Stmt: %s\n"_Stz,sCmd.szStz());
@@ -271,18 +271,18 @@ void Step::vIndexDefParseTableName(void)
   if (eResult != EC_NONE) {
     
     // push the error on the stack
-    m_pDataStack->vPushInt(eResult);
+    m_oDataStack.vPushInt(eResult);
 
     // push false
-    m_pDataStack->vPushInt(false);
+    m_oDataStack.vPushInt(false);
   }
   else {
 
     // push the table name
-    m_pDataStack->vPushStr(sTableNm);
+    m_oDataStack.vPushStr(sTableNm);
 
     // push true
-    m_pDataStack->vPushInt(true);
+    m_oDataStack.vPushInt(true);
   }
   
   EXIT();
@@ -299,7 +299,7 @@ void Step::vIndexDefTableNameFetch(void)
   
   s256 sTableNm = pIndexDef->szTableNm();
   
-  m_pDataStack->vPushStr(sTableNm);
+  m_oDataStack.vPushStr(sTableNm);
   
   EXIT();
 }
@@ -314,7 +314,7 @@ void Step::vIndexDefTableNameStore(void)
   IndexDef* pIndexDef = *m_pLogicUnit->m_xpIndexDef;
   
   s4K sTableName;
-  m_pDataStack->vPopStr(sTableName,__func__);
+  m_oDataStack.vPopStr(sTableName, __func__);
   
   pIndexDef->vTableNm(sTableName);
   

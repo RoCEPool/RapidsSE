@@ -28,7 +28,7 @@ void Step::vSysMetricsNew(void)
   
   SysMetrics* pSysMetrics = new SysMetrics;
   
-  m_pDataStack->vPushPtr(pSysMetrics);
+  m_oDataStack.vPushPtr(pSysMetrics);
 
   EXIT();
 }

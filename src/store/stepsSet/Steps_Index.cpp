@@ -81,12 +81,12 @@ void Step::vIndexColumnFetch(void)
   Index* pIndex = _pIndex(*m_pLogicUnit->m_xpIndex);
   ASSERT(CN_INDEX == pIndex->eGetClassNo());
   
-  i8 iColumnNo = m_pDataStack->iPopInt(__func__);
+  i8 iColumnNo = m_oDataStack.iPopInt(__func__);
   
   ASSERT(iColumnNo < pIndex->nColumns());
   Column* pColumn = pIndex->pGetColumn(iColumnNo);
   
-  m_pDataStack->vPushPtr(pColumn);
+  m_oDataStack.vPushPtr(pColumn);
   
   EXIT();
 }
@@ -101,7 +101,7 @@ void Step::vIndexColumnCountFetch(void)
   Index* pIndex = *m_pLogicUnit->m_xpIndex;
   ASSERT(CN_INDEX == pIndex->eGetClassNo());
   
-  m_pDataStack->vPushInt(pIndex->nColumns());
+  m_oDataStack.vPushInt(pIndex->nColumns());
   
   EXIT();
 }
@@ -151,7 +151,7 @@ void Step::vIndexDelete(void)
 {
   ENTRY();
   
-  Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
+  Index* pIndex = _pIndex(m_oDataStack.pPopPtr(__func__));
 
   delete pIndex;
   
@@ -176,7 +176,7 @@ void Step::vIndexDeleteNext(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the table partition
-  TablePtn* pTablePtn = _pTablePtn(m_pDataStack->pPopPtr(__func__));
+  TablePtn* pTablePtn = _pTablePtn(m_oDataStack.pPopPtr(__func__));
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the lower and upper entries
@@ -316,9 +316,9 @@ void Step::vIndexIndexDefFetch(void)
 {
   ENTRY();
   
-  Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
+  Index* pIndex = _pIndex(m_oDataStack.pPopPtr(__func__));
   
-  m_pDataStack->vPushPtr(pIndex->pIndexDef());
+  m_oDataStack.vPushPtr(pIndex->pIndexDef());
   
   EXIT();
 }
@@ -330,9 +330,9 @@ void Step::vIndexIndexDefStore(void)
 {
   ENTRY();
   
-  Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
+  Index* pIndex = _pIndex(m_oDataStack.pPopPtr(__func__));
   
-  IndexDef* pIndexDef = _pIndexDef(m_pDataStack->pPopPtr(__func__));
+  IndexDef* pIndexDef = _pIndexDef(m_oDataStack.pPopPtr(__func__));
   
   pIndex->vIndexDef(pIndexDef);
   
@@ -376,7 +376,7 @@ void Step::vIndexIndexTree(void)
 
   // -- -- -- -- -- -- -- -- -- -- -- --
   
-  m_pDataStack->vPushPtr(pIndexTree);
+  m_oDataStack.vPushPtr(pIndexTree);
 
   EXIT();
 }
@@ -388,7 +388,7 @@ void Step::vIndexIsNull(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt(m_pLogicUnit->m_xpIndex.bIsNull() ? 1 : 0);
+  m_oDataStack.vPushInt(m_pLogicUnit->m_xpIndex.bIsNull() ? 1 : 0);
 
   EXIT();
 }
@@ -400,12 +400,12 @@ void Step::vIndexIsPrimaryKeyFetch(void)
 {
   ENTRY();
   
-  Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
+  Index* pIndex = _pIndex(m_oDataStack.pPopPtr(__func__));
   ASSERT(CN_INDEX == pIndex->eGetClassNo());
   
   bool bIsPrimaryKey = pIndex->bIsPrimaryKey();
   
-  m_pDataStack->vPushInt(bIsPrimaryKey);
+  m_oDataStack.vPushInt(bIsPrimaryKey);
   
   EXIT();
 }
@@ -417,10 +417,10 @@ void Step::vIndexIsPrimaryKeyStore(void)
 {
   ENTRY();
   
-  Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
+  Index* pIndex = _pIndex(m_oDataStack.pPopPtr(__func__));
   ASSERT(CN_INDEX == pIndex->eGetClassNo());
   
-  i8 iIsPrimaryKey = m_pDataStack->iPopInt(__func__);
+  i8 iIsPrimaryKey = m_oDataStack.iPopInt(__func__);
   
   pIndex->vIsPrimaryKey(iIsPrimaryKey ? true : false);
   
@@ -434,12 +434,12 @@ void Step::vIndexIsUniqueFetch(void)
 {
   ENTRY();
   
-  Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
+  Index* pIndex = _pIndex(m_oDataStack.pPopPtr(__func__));
   ASSERT(CN_INDEX == pIndex->eGetClassNo());
   
   bool bIsUnique = pIndex->bIsUnique();
   
-  m_pDataStack->vPushInt(bIsUnique);
+  m_oDataStack.vPushInt(bIsUnique);
   
   EXIT();
 }
@@ -451,7 +451,7 @@ void Step::vIndexIsValidUniqueIndex(void)
 {
   ENTRY();
   
-  Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
+  Index* pIndex = _pIndex(m_oDataStack.pPopPtr(__func__));
   ASSERT(CN_INDEX == pIndex->eGetClassNo());
   
   // get the table partition stream def
@@ -484,7 +484,7 @@ void Step::vIndexIsValidUniqueIndex(void)
     }
   }
   
-  m_pDataStack->vPushInt(bValid ? 1 : 0);
+  m_oDataStack.vPushInt(bValid ? 1 : 0);
   
   EXIT();
 }
@@ -503,7 +503,7 @@ void Step::vIndexNameFetch(void)
   
   s256 sIndexName = pIndex->szIndexNm();
   
-  m_pDataStack->vPushStr(sIndexName);
+  m_oDataStack.vPushStr(sIndexName);
   
   EXIT();
 }
@@ -516,11 +516,11 @@ void Step::vIndexNew(void)
   ENTRY();
   
   s256 sIndexNm;
-  m_pDataStack->vPopStr(sIndexNm,__func__);
+  m_oDataStack.vPopStr(sIndexNm, __func__);
 
   Index* pIndex = new Index(sIndexNm);
   
-  m_pDataStack->vPushPtr(pIndex);
+  m_oDataStack.vPushPtr(pIndex);
   
   EXIT();
 }
@@ -537,7 +537,7 @@ void Step::vIndexSize(void)
   
   i8 iBuffers = pIndex->pTable()->nIndexBuffers(pIndex->iIndexNo());
   i8 iSpace = iBuffers * C_SIZE_POOL_BUFFER;
-  m_pDataStack->vPushInt(iSpace);
+  m_oDataStack.vPushInt(iSpace);
   
   EXIT();
 }
@@ -549,13 +549,13 @@ void Step::vIndexTableFetch(void)
 {
   ENTRY();
   
-  Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
+  Index* pIndex = _pIndex(m_oDataStack.pPopPtr(__func__));
   ASSERT(CN_INDEX == pIndex->eGetClassNo());
   
   Table* pTable = pIndex->pTable();
   ASSERT(CN_TABLE == pTable->eGetClassNo());
   
-  m_pDataStack->vPushPtr(pTable);
+  m_oDataStack.vPushPtr(pTable);
   
   EXIT();
 }
@@ -567,10 +567,10 @@ void Step::vIndexTableStore(void)
 {
   ENTRY();
   
-  Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
+  Index* pIndex = _pIndex(m_oDataStack.pPopPtr(__func__));
   ASSERT(CN_INDEX == pIndex->eGetClassNo());
   
-  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
+  Table* pTable = _pTable(m_oDataStack.pPopPtr(__func__));
   ASSERT(CN_TABLE == pTable->eGetClassNo());
   
   pIndex->vTable(pTable);
@@ -589,7 +589,7 @@ void Step::vIndexVerify(void)
   ASSERT(CN_INDEX == pIndex->eGetClassNo());
   
   bool bVerified = pIndex->pTable()->bVerifyIndex(pIndex);
-  m_pDataStack->vPushInt(bVerified);
+  m_oDataStack.vPushInt(bVerified);
   
   EXIT();
 }
@@ -619,7 +619,7 @@ void Step::vIndexVerifyPtn(void)
   else
     bVerified = true;
   
-  m_pDataStack->vPushInt(bVerified);
+  m_oDataStack.vPushInt(bVerified);
   
   EXIT();
 }
@@ -654,7 +654,7 @@ void Step::vIndexGet(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpIndex);
+  m_oDataStack.vPushPtr(*m_pLogicUnit->m_xpIndex);
   
   EXIT();
 }
@@ -666,7 +666,7 @@ void Step::vIndexSet(void)
 {
   ENTRY();
   
-  m_pLogicUnit->m_xpIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
+  m_pLogicUnit->m_xpIndex = _pIndex(m_oDataStack.pPopPtr(__func__));
   
   EXIT();
 }

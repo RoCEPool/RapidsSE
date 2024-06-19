@@ -78,7 +78,7 @@ void Step::vStepsWrite(void)
 #else
 
   s256 sPath;
-  m_pDataStack->vPopStr(sPath,__func__);
+  m_oDataStack.vPopStr(sPath,__func__);
   
   if (AM::pSteps())
     AM::pSteps()->vWrite(sPath);

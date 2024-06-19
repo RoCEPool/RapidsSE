@@ -67,7 +67,7 @@ void Step::vLogicUnitCallAgainFetch(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(m_pLogicUnit->m_xRluCommon.m_bCallAgain);
+  m_oDataStack.vPushInt(m_pLogicUnit->m_xRluCommon.m_bCallAgain);
   
   EXIT();
 }
@@ -79,7 +79,7 @@ void Step::vLogicUnitCallAgainStore(void)
 {
   ENTRY();
 
-  i8 iCallAgain = m_pDataStack->iPopIntBol(__func__);
+  i8 iCallAgain = m_oDataStack.iPopIntBol(__func__);
   
   m_pLogicUnit->m_xRluCommon.m_bCallAgain = iCallAgain;
   
@@ -93,7 +93,7 @@ void Step::vLogicUnitCalledAgainFetch(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(m_pLogicUnit->m_xRluCommon.m_bCalledAgain);
+  m_oDataStack.vPushInt(m_pLogicUnit->m_xRluCommon.m_bCalledAgain);
   
   EXIT();
 }
@@ -105,7 +105,7 @@ void Step::vLogicUnitCalledAgainStore(void)
 {
   ENTRY();
 
-  i8 iCallAgain = m_pDataStack->iPopIntBol(__func__);
+  i8 iCallAgain = m_oDataStack.iPopIntBol(__func__);
   
   m_pLogicUnit->m_xRluCommon.m_bCalledAgain = iCallAgain;
   
@@ -133,7 +133,7 @@ void Step::vLogicUnitCompilerToExit(void)
 
   bool bCompilerToExit = m_pLogicUnit->m_bCompilerToExit;
 
-  m_pDataStack->vPushInt(bCompilerToExit);
+  m_oDataStack.vPushInt(bCompilerToExit);
 
   EXIT();
 }
@@ -145,13 +145,13 @@ void Step::vLogicUnitDiaryAction(void)
 {
   ENTRY();
  
-  i8 i_EnumGroup = m_pDataStack->iPopInt(__func__);
-  i8 i_Enum      = m_pDataStack->iPopInt(__func__);
-  i8 iItem       = m_pDataStack->iPopInt(__func__);
+  i8 i_EnumGroup = m_oDataStack.iPopInt(__func__);
+  i8 i_Enum      = m_oDataStack.iPopInt(__func__);
+  i8 iItem       = m_oDataStack.iPopInt(__func__);
 
-  i8 i_Action       = m_pDataStack->iPopInt(__func__);
-  i8 i_ActEnumGroup = m_pDataStack->iPopInt(__func__);
-  i8 i_ActEnum      = m_pDataStack->iPopInt(__func__);
+  i8 i_Action       = m_oDataStack.iPopInt(__func__);
+  i8 i_ActEnumGroup = m_oDataStack.iPopInt(__func__);
+  i8 i_ActEnum      = m_oDataStack.iPopInt(__func__);
 
   if ( ! AM::bRLUDiary() ) {
     EXIT();
@@ -176,7 +176,7 @@ void Step::vLogicUnitDiaryFetch(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(m_pLogicUnit->m_pRluDiary);
+  m_oDataStack.vPushPtr(m_pLogicUnit->m_pRluDiary);
 
   EXIT();
 }
@@ -189,7 +189,7 @@ void Step::vLogicUnitDiaryJobNote(void)
   ENTRY();
   
   s256 sJobNote;
-  m_pDataStack->vPopStr(sJobNote, __func__);
+  m_oDataStack.vPopStr(sJobNote, __func__);
 
   if ( ! AM::bRLUDiary() ) {
     EXIT();
@@ -209,7 +209,7 @@ void Step::vLogicUnitDiaryName(void)
   ENTRY();
   
   s32 sName;
-  m_pDataStack->vPopStr(sName, __func__);
+  m_oDataStack.vPopStr(sName, __func__);
 
   if ( ! AM::bRLUDiary() ) {
     EXIT();
@@ -228,9 +228,9 @@ void Step::vLogicUnitDiaryNote(void)
 {
   ENTRY();
   
-  i8 i_EnumGroup = m_pDataStack->iPopInt(__func__);
-  i8 i_Enum      = m_pDataStack->iPopInt(__func__);
-  i8 iItem       = m_pDataStack->iPopInt(__func__);
+  i8 i_EnumGroup = m_oDataStack.iPopInt(__func__);
+  i8 i_Enum      = m_oDataStack.iPopInt(__func__);
+  i8 iItem       = m_oDataStack.iPopInt(__func__);
   
   if ( ! AM::bRLUDiary() ) {
     EXIT();
@@ -257,7 +257,7 @@ void Step::vLogicUnitDiaryDir(void)
   ENTRY();
   
   s256 sDir;
-  m_pDataStack->vPopStr(sDir, __func__);
+  m_oDataStack.vPopStr(sDir, __func__);
 
   if ( ! AM::bRLUDiary() ) {
     EXIT();
@@ -277,7 +277,7 @@ void Step::vLogicUnitDiaryTitle(void)
   ENTRY();
   
   s256 sTitle;
-  m_pDataStack->vPopStr(sTitle, __func__);
+  m_oDataStack.vPopStr(sTitle, __func__);
 
   if ( ! AM::bRLUDiary() ) {
     EXIT();
@@ -296,7 +296,7 @@ void Step::vLogicUnitHandlerFetch(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpHandler);
+  m_oDataStack.vPushPtr(*m_pLogicUnit->m_xpHandler);
 
   EXIT();
 }
@@ -308,7 +308,7 @@ void Step::vLogicUnitHandlerStore(void)
 {
   ENTRY();
 
-  Word* pHandler = _pWord(m_pDataStack->pPopPtr(__func__));
+  Word* pHandler = _pWord(m_oDataStack.pPopPtr(__func__));
   
   m_pLogicUnit->m_xpHandler = pHandler;
   
@@ -338,7 +338,7 @@ void Step::vLogicUnitIsLftCrwBufferFetch(void)
 
   bool bIsLftCrwBuffer = m_pLogicUnit->m_bIsLftCrwBuffer;
 
-  m_pDataStack->vPushInt(bIsLftCrwBuffer);
+  m_oDataStack.vPushInt(bIsLftCrwBuffer);
 
   EXIT();
 }
@@ -350,7 +350,7 @@ void Step::vLogicUnitIsLftCrwBufferStore(void)
 {
   ENTRY();
 
-  i8 iIsLeftCrwBuffer = m_pDataStack->iPopIntBol(__func__);
+  i8 iIsLeftCrwBuffer = m_oDataStack.iPopIntBol(__func__);
 
   m_pLogicUnit->m_bIsLftCrwBuffer = iIsLeftCrwBuffer;
 
@@ -366,7 +366,7 @@ void Step::vLogicUnitIntStackFetch(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpIntStack);
+  m_oDataStack.vPushPtr(*m_pLogicUnit->m_xpIntStack);
 
   EXIT();
 }
@@ -378,7 +378,7 @@ void Step::vLogicUnitIntStackStore(void)
 {
   ENTRY();
 
-  IntStack* pIntStack = _pIntStack(m_pDataStack->pPopPtr(__func__));
+  IntStack* pIntStack = _pIntStack(m_oDataStack.pPopPtr(__func__));
 
   m_pLogicUnit->m_xpIntStack = pIntStack;
   EXIT();
@@ -391,7 +391,7 @@ void Step::vLogicUnitJobMetricsFetch(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpJobMetrics);
+  m_oDataStack.vPushPtr(*m_pLogicUnit->m_xpJobMetrics);
 
   EXIT();
 }
@@ -403,7 +403,7 @@ void Step::vLogicUnitJobMetricsStore(void)
 {
   ENTRY();
 
-  JobMetrics* pJobMetrics = _pJobMetrics(m_pDataStack->pPopPtr(__func__));
+  JobMetrics* pJobMetrics = _pJobMetrics(m_oDataStack.pPopPtr(__func__));
 
   m_pLogicUnit->m_xpJobMetrics = pJobMetrics;
   EXIT();
@@ -416,7 +416,7 @@ void Step::vLogicUnitRcvdChildExitFetch(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt(m_pLogicUnit->m_bRcvdChildExit);
+  m_oDataStack.vPushInt(m_pLogicUnit->m_bRcvdChildExit);
 
   EXIT();
 }
@@ -428,7 +428,7 @@ void Step::vLogicUnitRcvdChildExitStore(void)
 {
   ENTRY();
 
- i8 iRcvdChildExit = m_pDataStack->iPopIntBol(__func__);
+ i8 iRcvdChildExit = m_oDataStack.iPopIntBol(__func__);
 
   m_pLogicUnit->m_bRcvdChildExit = iRcvdChildExit;
 
@@ -442,7 +442,7 @@ void Step::vLogicUnitRcvdEndFetch(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt(m_pLogicUnit->m_bRcvdEnd);
+  m_oDataStack.vPushInt(m_pLogicUnit->m_bRcvdEnd);
 
   EXIT();
 }
@@ -454,7 +454,7 @@ void Step::vLogicUnitRcvdEndStore(void)
 {
   ENTRY();
 
-  i8 iRcvdEnd = m_pDataStack->iPopIntBol(__func__);
+  i8 iRcvdEnd = m_oDataStack.iPopIntBol(__func__);
 
   m_pLogicUnit->m_bRcvdEnd = iRcvdEnd;
 

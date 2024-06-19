@@ -52,7 +52,7 @@ void Step::vOperandOoOGet(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpOperandOoO);
+  m_oDataStack.vPushPtr(*m_pLogicUnit->m_xpOperandOoO);
   
   EXIT();
 }
@@ -64,7 +64,7 @@ void Step::vOperandOoOGetAndClear(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpOperandOoO);
+  m_oDataStack.vPushPtr(*m_pLogicUnit->m_xpOperandOoO);
   
   m_pLogicUnit->m_xpOperandOoO = nullptr;
   
@@ -78,7 +78,7 @@ void Step::vOperandOoOIsNull(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(m_pLogicUnit->m_xpOperandOoO.bIsNull() ? 1 : 0);
+  m_oDataStack.vPushInt(m_pLogicUnit->m_xpOperandOoO.bIsNull() ? 1 : 0);
   
   EXIT();
 }
@@ -98,9 +98,9 @@ void Step::vOperandOoONext(void)
   m_pLogicUnit->m_xpOperandOoO = pOp->pPopOoO(this);
   
   if (m_pLogicUnit->m_xpOperandOoO.bIsNull())
-    m_pDataStack->vPushInt(false);
+    m_oDataStack.vPushInt(false);
   else
-    m_pDataStack->vPushInt(true);
+    m_oDataStack.vPushInt(true);
   EXIT();
 }
 
@@ -130,7 +130,7 @@ void Step::vOperandOoOSet(void)
 {
   ENTRY();
   
-  Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
+  Operand* pOperand = _pOperand(m_oDataStack.pPopPtr(__func__));
   ASSERT(! pOperand || m_pLogicUnit->m_xpOperandOoO.bIsNull());
   m_pLogicUnit->m_xpOperandOoO = _pOperand(pOperand);
   

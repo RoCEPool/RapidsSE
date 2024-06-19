@@ -70,6 +70,11 @@ void XF_Utility::vValidate_board(void)
 
   m_pCI->vTransform(__FILE__, __func__, XF_PROLOG_VALIDATE_BOARD);
 
+  Index* pIndex;
+  IndexDef* pIndexDef;
+  UNUSED(pIndex);
+  UNUSED(pIndexDef);
+
   Card* p_OP = nullptr;
   //Card_Scan* p_scan = nullptr;
 
@@ -79,6 +84,18 @@ void XF_Utility::vValidate_board(void)
     switch (m_pCI->E.e_Op) {
 
       //case CK_o_SCAN: p_scan = m_pCI->G.p_scan; break;
+
+      case CK_o_GLOBALHASH:
+        m_pCI->E.p_table = m_pCI->E.p_globalHash->pSub_table(C_NOT_NULL);
+        m_pCI->E.p_index = m_pCI->E.p_globalHash->pSub_index(C_NOT_NULL);
+//        pIndex = m_pCI->E.p_index->pGetIndex(m_pCI->E.p_table->pSub_tableNm());
+//        pIndexDef = pIndex->pIndexDef();
+// alka global
+//        if (! pIndexDef->bIsGlobal()) {
+//          Error xError(EC_???,(Stz*)__FILE__,__LINE__);
+//          throw xError;
+//        }
+        break;
 
       case CK_o_SEND:
         if (! p_OP) {

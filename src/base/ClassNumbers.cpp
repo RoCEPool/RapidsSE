@@ -449,8 +449,12 @@ Stz* BASE::aCN[CN_ENUMS+1]
     /* */ "TUB"_Stz,                  // CN_TUB
     /* */ "TX"_Stz,                   // CN_TX
     /* */ "TXSET"_Stz,                // CN_TXSET
-    /* */ "CN_TYPEMAP1D"_Stz,         // CN_TYPEMAP1D
-    /* */ "CN_TYPEMAP2D"_Stz,         // CN_TYPEMAP2D
+    /* */ "TYPEMAP1D"_Stz,            // CN_TYPEMAP1D
+    /* */ "TYPEMAP2D"_Stz,            // CN_TYPEMAP2D
+    /* */ "TYPESTACKLARGE"_Stz,       // CN_TYPESTACKLARGE
+    /* */ "TYPESTACKMEDIUM"_Stz,      // CN_TYPESTACKMEDIUM
+    /* */ "TYPESTACKSMALL"_Stz,       // CN_TYPESTACKSMALL
+    /* */ "TYPESTACKTINY"_Stz,        // CN_TYPESTACKTINY
 
     /* */ "_U__"_Stz,                 // CN__U__
     /* */ "UNITINT"_Stz,              // CN_UNITINT

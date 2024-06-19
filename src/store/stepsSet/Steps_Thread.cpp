@@ -43,9 +43,9 @@ void Step::vThreadBind(void)
   ENTRY();
   
   
-  i8 iCpu = m_pDataStack->iPopInt(__func__);
+  i8 iCpu = m_oDataStack.iPopInt(__func__);
   
-  Thread* pThread = _pThread(m_pDataStack->pPopPtr(__func__));
+  Thread* pThread = _pThread(m_oDataStack.pPopPtr(__func__));
   
   pThread->vBind(iCpu);
   
@@ -59,9 +59,9 @@ void Step::vThreadCpu(void)
 {
   ENTRY();
   
-  Thread* pThread = _pThread(m_pDataStack->pPopPtr(__func__));
+  Thread* pThread = _pThread(m_oDataStack.pPopPtr(__func__));
   
-  m_pDataStack->vPushInt(pThread->iCpu());
+  m_oDataStack.vPushInt(pThread->iCpu());
   
   EXIT();
 }
@@ -75,7 +75,7 @@ void Step::vThreadDedicatedFetch(void)
   
   Thread* pThread = Thread::pThisTLSThread();
 
-  m_pDataStack->vPushInt(pThread->eDedicated());
+  m_oDataStack.vPushInt(pThread->eDedicated());
 
   EXIT();
 }
@@ -89,7 +89,7 @@ void Step::vThreadDedicatedStore(void)
   
   Thread* pThread = Thread::pThisTLSThread();
 
-  i8 iDedicated = m_pDataStack->iPopAsInt(__func__);
+  i8 iDedicated = m_oDataStack.iPopAsInt(__func__);
 
   pThread->vDedicated((eCN)iDedicated);
   
@@ -117,7 +117,7 @@ void Step::vThreadDump(void)
 {
   ENTRY();
   
-  Thread* pThread = _pThread(m_pDataStack->pPopPtr(__func__));
+  Thread* pThread = _pThread(m_oDataStack.pPopPtr(__func__));
   
   pThread->vContentDump();
   
@@ -145,7 +145,7 @@ void Step::vThreadFaultCurrentStore(void)
 {
   ENTRY();
 
-  i8 iFaultCurrent = m_pDataStack->iPopInt(__func__);
+  i8 iFaultCurrent = m_oDataStack.iPopInt(__func__);
   UNUSED(iFaultCurrent);
 #ifdef WITH_OOM_FAULTINJECTION
   PsxThd::vTlsSet(giTLS_CurrentPoint,(void*)iFaultCurrent);
@@ -161,7 +161,7 @@ void Step::vThreadFaultInjectionStore(void)
 {
   ENTRY();
 
-  i8 iFaultInjection = m_pDataStack->iPopBol(__func__);
+  i8 iFaultInjection = m_oDataStack.iPopBol(__func__);
   UNUSED(iFaultInjection);
 #ifdef WITH_OOM_FAULTINJECTION
   PsxThd::vTlsSet(gbTLS_FaultInjection,(void*)iFaultInjection);
@@ -177,7 +177,7 @@ void Step::vThreadFaultPointStore(void)
 {
   ENTRY();
 
-  i8 iFaultPoint = m_pDataStack->iPopInt(__func__);
+  i8 iFaultPoint = m_oDataStack.iPopInt(__func__);
   UNUSED(iFaultPoint);
 #ifdef WITH_OOM_FAULTINJECTION
   PsxThd::vTlsSet(giTLS_FaultPoint,(void*)iFaultPoint);
@@ -193,9 +193,9 @@ void Step::vThreadId(void)
 {
   ENTRY();
   
-  Thread* pThread = _pThread(m_pDataStack->pPopPtr(__func__));
+  Thread* pThread = _pThread(m_oDataStack.pPopPtr(__func__));
   
-  m_pDataStack->vPushInt(pThread->pPsxThd()->m_iOsThdId);
+  m_oDataStack.vPushInt(pThread->pPsxThd()->m_iOsThdId);
   
   EXIT();
 }
@@ -207,7 +207,7 @@ void Step::vThreadSleepMsec(void)
 {
   ENTRY();
   
-  i8 nMilliseconds = m_pDataStack->iPopInt(__func__);
+  i8 nMilliseconds = m_oDataStack.iPopInt(__func__);
   
   Thread* pThread = Thread::pThisTLSThread();
   
@@ -227,7 +227,7 @@ void Step::vThreadSleepNsec(void)
 {
   ENTRY();
   
-  i8 nNanoseconds = m_pDataStack->iPopInt(__func__);
+  i8 nNanoseconds = m_oDataStack.iPopInt(__func__);
   
   Thread* pThread = Thread::pThisTLSThread();
   
@@ -247,7 +247,7 @@ void Step::vThreadSleepSsec(void)
 {
   ENTRY();
   
-  i8 nSeconds = m_pDataStack->iPopInt(__func__);
+  i8 nSeconds = m_oDataStack.iPopInt(__func__);
   
   Thread* pThread = Thread::pThisTLSThread();
   
@@ -267,7 +267,7 @@ void Step::vThreadSleepUsec(void)
 {
   ENTRY();
   
-  i8 nMicroseconds = m_pDataStack->iPopInt(__func__);
+  i8 nMicroseconds = m_oDataStack.iPopInt(__func__);
   
   Thread* pThread = Thread::pThisTLSThread();
   

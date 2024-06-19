@@ -32,7 +32,7 @@ void Step::vListAddPds(void)
 {
   ENTRY();
 
-  Pds* pPds = _pPds( m_pDataStack->pPopPtr(__func__) );
+  Pds* pPds = _pPds(m_oDataStack.pPopPtr(__func__) );
 
   RowSingleList* pRowSingleList = * m_pLogicUnit->m_xpList;
 
@@ -81,7 +81,7 @@ void Step::vListGet(void)
   
   //vTrace("vListGet\n"_Stz);
   
-  m_pDataStack->vPushPtr(* m_pLogicUnit->m_xpList);
+  m_oDataStack.vPushPtr(* m_pLogicUnit->m_xpList);
 
   EXIT();
 }
