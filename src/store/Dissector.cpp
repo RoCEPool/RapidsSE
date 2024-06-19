@@ -205,7 +205,7 @@ void Dissector::vOp(i8 i_OpSpec)
 
   m_szOpNm = m_pOpSpec->szOpNm();
 
-  vTrace("OpNm %s\n"_Stz,m_szOpNm);
+  //vTrace("OpNm %s\n"_Stz,m_szOpNm);
 
   m_pOpArgs = m_pOpSpec->pArgTags();
 
