@@ -72,6 +72,8 @@ void XF_Utility::vValidate_board(void)
 
   Index* pIndex;
   IndexDef* pIndexDef;
+  UNUSED(pIndex);
+  UNUSED(pIndexDef);
 
   Card* p_OP = nullptr;
   //Card_Scan* p_scan = nullptr;
@@ -86,9 +88,8 @@ void XF_Utility::vValidate_board(void)
       case CK_o_GLOBALHASH:
         m_pCI->E.p_table = m_pCI->E.p_globalHash->pSub_table(C_NOT_NULL);
         m_pCI->E.p_index = m_pCI->E.p_globalHash->pSub_index(C_NOT_NULL);
-        pIndex = m_pCI->E.p_index->pGetIndex(m_pCI->E.p_table->pSub_tableNm());
-        pIndexDef = pIndex->pIndexDef();
-        UNUSED(pIndexDef);
+//        pIndex = m_pCI->E.p_index->pGetIndex(m_pCI->E.p_table->pSub_tableNm());
+//        pIndexDef = pIndex->pIndexDef();
 // alka global
 //        if (! pIndexDef->bIsGlobal()) {
 //          Error xError(EC_???,(Stz*)__FILE__,__LINE__);
