@@ -665,15 +665,8 @@ void Pds::vDecidedDelete(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
 
-//  i8 nAcksWereRemaining;
-//
-//  if (m_oDecider.bDecAndDecide(nAcksWereRemaining)) {
-//
-//    m_bDeletable = true;
-
     delete this;
-    // dont touch this pointer
-//  }
+    // can't touch this
 }
 
 /*----------------------------------------------------------------------------*/
