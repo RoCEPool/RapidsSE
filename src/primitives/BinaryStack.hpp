@@ -25,11 +25,14 @@ namespace PRIMITIVES
   template <eSS SEGMENT_SIZE, i8 AREA> class BinaryStackSegment;
   class BinaryStack;
 
+  // Typedef for the function that translates stack sizes to class numbers
+  typedef eCN (*fpStackSizeToClass)(eSS);
+
   // Typedefs of the 4 actual types of buffer segments
-  typedef BinaryStackSegment<eSS::TINY,   C_SIZE_TINY_OBJECT   - (14 * C_BYTES_PER_WORD) - sizeof(Bytes_t<1>)> BinaryStackTiny;
-  typedef BinaryStackSegment<eSS::SMALL,  C_SIZE_SMALL_OBJECT  - (14 * C_BYTES_PER_WORD) - sizeof(Bytes_t<1>)> BinaryStackSmall;
-  typedef BinaryStackSegment<eSS::MEDIUM, C_SIZE_MEDIUM_OBJECT - (14 * C_BYTES_PER_WORD) - sizeof(Bytes_t<1>)> BinaryStackMedium;
-  typedef BinaryStackSegment<eSS::LARGE,  C_SIZE_LARGE_OBJECT  - (14 * C_BYTES_PER_WORD) - sizeof(Bytes_t<1>)> BinaryStackLarge;
+  typedef BinaryStackSegment<eSS::TINY,   C_SIZE_TINY_OBJECT   - (11 * C_BYTES_PER_WORD) - sizeof(Bytes_t<1>)> BinaryStackTiny;
+  typedef BinaryStackSegment<eSS::SMALL,  C_SIZE_SMALL_OBJECT  - (11 * C_BYTES_PER_WORD) - sizeof(Bytes_t<1>)> BinaryStackSmall;
+  typedef BinaryStackSegment<eSS::MEDIUM, C_SIZE_MEDIUM_OBJECT - (11 * C_BYTES_PER_WORD) - sizeof(Bytes_t<1>)> BinaryStackMedium;
+  typedef BinaryStackSegment<eSS::LARGE,  C_SIZE_LARGE_OBJECT  - (11 * C_BYTES_PER_WORD) - sizeof(Bytes_t<1>)> BinaryStackLarge;
 
   // Note: The 14 * C_BYTES_PER_WORD is for the other elements in the BinaryStack and BinaryStackSegment classes:
   //   - Object header    (1 word)
@@ -37,14 +40,12 @@ namespace PRIMITIVES
   //   - m_pNext          (1 word)
   //   - m_eSegmentSize   (1 word)
   //   - m_nItems         (1 word)
-  //   - m_fStackSizeToClass (4 words)
+  //   - m_fpStackSizeToClass (1 word)
   //   - union u          (1 word)
   //   - m_nSegEntries    (1 word)
   //   - m_aySegmentHead  (1 word)
   //   - m_xFooter        (2 words)
 
-  // Typedef for the function that translates stack sizes to class numbers
-  typedef std::function<eCN(eSS eSize)>    fStackSizeToClass;
 
 
 /*----------------------------------------------------------------------------*/
@@ -60,7 +61,7 @@ namespace PRIMITIVES
     BinaryStack*  m_pNext;
     eSS           m_eSegmentSize;
     i8            m_nItems;
-    fStackSizeToClass m_fStackSizeToClass; // maps StackSize to the class number to be used
+    fpStackSizeToClass m_fpStackSizeToClass; // maps StackSize to the class number to be used
 
     union { // For debugging purposes only
       BinaryStackTiny*   m_pTiny;
@@ -73,12 +74,12 @@ namespace PRIMITIVES
   protected:
     // Constructors and destructor are protected, so they aren't instantiated directly.
     // Instead call pCreate() and vDestroy().
-    explicit BinaryStack(eCN eClassNo, eSS eSize, fStackSizeToClass fSizeToCls);
-    explicit BinaryStack(eCN eClassNo, eSS eSize, fStackSizeToClass fSizeToCls, BinaryStack* pHead);
+    explicit BinaryStack(eCN eClassNo, eSS eSize, fpStackSizeToClass fpSizeToCls);
+    explicit BinaryStack(eCN eClassNo, eSS eSize, fpStackSizeToClass fpSizeToCls, BinaryStack* pHead);
     ~BinaryStack() noexcept(false);
 
   public:
-    static BinaryStack* pCreate(eSS eSize, fStackSizeToClass fSizeToCls);
+    static BinaryStack* pCreate(eSS eSize, fpStackSizeToClass fpSizeToCls);
     static void vDestroy(BinaryStack* pSegment);
 
     byte*   pyAdvance(i8 nBytes);
@@ -119,8 +120,8 @@ namespace PRIMITIVES
     void* operator new(size_t, eCN eClassNo);
     void  operator delete(void*);
 
-    BinaryStackSegment(eCN eClassNo, fStackSizeToClass fSizeToCls);
-    explicit BinaryStackSegment(eCN eClassNo, fStackSizeToClass fSizeToCls, BinaryStack* pHead);
+    BinaryStackSegment(eCN eClassNo, fpStackSizeToClass fpSizeToCls);
+    explicit BinaryStackSegment(eCN eClassNo, fpStackSizeToClass fpSizeToCls, BinaryStack* pHead);
     ~BinaryStackSegment(void) noexcept(false);
 
     static i8 nArea(void);
