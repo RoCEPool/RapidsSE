@@ -11,7 +11,9 @@
 
   //"Operand:- EV_M_CLEANING" .verbose
 
-  StreamDefLft[].delete
+  StreamDefLft[].isNull not if
+    StreamDefLft[].delete
+  then
 
   EV_M_CLEANING_handler
 ;

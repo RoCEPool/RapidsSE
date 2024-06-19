@@ -5,6 +5,8 @@
 file _orders;
 load orders  "../TPCH/SF_0001/orders.tbl"   ;
 
+//create index IxO_ORDERKEY on orders(O_ORDERKEY);
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // create global index on orders (O_ORDERKEY)
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -43,7 +45,10 @@ begin
   stage S01 on all partitions :
     scan      orders
     | rowRef O_ORDERKEY
-    | next broadcast
+    | next
+
+  stage S02 on origin :
+    next
 
   stage S02 on all nodes :
     insertGlobalIndex ORDERS GxO_ORDERKEY
