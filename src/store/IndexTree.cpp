@@ -1108,7 +1108,7 @@ void IndexTree::vInsertGlobalEntries(Pds *pPdsRowBuffer, StreamDef* pStreamDef)
   Rrf xEntRowRef;
   Rrf xRowRef;
 
-  //xEntRowRef.vGlobal(true);
+  xEntRowRef.vGlobal(true);
 
   if (! m_pRootEntBuffer) {
     EntBuffer* pRootBuffer = pNewRootBuffer();
@@ -1134,7 +1134,7 @@ void IndexTree::vInsertGlobalEntries(Pds *pPdsRowBuffer, StreamDef* pStreamDef)
     // get the ptnId from the row
     pColumn = pStreamDef->pGetColumn(1);
     RASSERT(pColumn->eColumnType() == CT_INTEGER);
-    //i8 iPtnId = aRowCur->iColVal_int(1);
+    i8 iPtnId = aRowCur->iColVal_int(1);
 
     // get the rrf from the row
     pColumn = pStreamDef->pGetColumn(2);
@@ -1142,9 +1142,9 @@ void IndexTree::vInsertGlobalEntries(Pds *pPdsRowBuffer, StreamDef* pStreamDef)
     xRowRef.m_iAsI8 = aRowCur->iColVal_int(2);
 
     // set the PtnId and rrf in the index ent
-    //xEntWrk.vBuffer(xRowRef.m_uBuffer);
-    //xEntWrk.vItem(xRowRef.m_uItem);
-    //xEntWrk.vPtn(iPtnId);
+    xEntWrk.vBuffer(xRowRef.Std.m_uBuffer);
+    xEntWrk.vItem(xRowRef.Std.m_uItem);
+    xEntWrk.vPtn(iPtnId);
 
     Ent* aInsertedEntry = EntBuffer::aInsertEntTree(xEntWrk.aEnt(),&m_pRootEntBuffer);
     ASSERT(aInsertedEntry);

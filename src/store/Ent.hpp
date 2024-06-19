@@ -89,6 +89,9 @@ namespace STORE
     i8    nPaySize(void);
     void  vPaySize(i8 nPaySize);
 
+    i8    iPtn(void);
+    void  vPtn(i8 iBuffer);
+
     Rrf&  rxRef(void);
     void  vRef(Rrf xRef);
     Rrf   wRef(void);

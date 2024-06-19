@@ -71,7 +71,10 @@ namespace STORE
     i8    iHashKey(void);
 
     Key*  aKey(void);
-  
+
+    i8    iPtn(void);
+    void  vPtn(i8 iBuffer);
+
     IndexDef* pIndexDef(void);
     void  vIndexDef(IndexDef* pIndexDef);
     void  vIncElmSeqSize(i8 nElementSize);
