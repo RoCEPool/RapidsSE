@@ -8,6 +8,9 @@
 #include "Pds.hpp"
 #include "MiniHeap_t.hpp"
 #include "eCX.h"
+#include "CmdLineArgs.hpp"
+
+extern CmdLineArgs gxCmdLineArgs;
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -939,7 +942,19 @@ SkipListBlock* Pds::pFind(void* pKey)
 
     SkipListBlock* pCursor = pNextSLBlock(pPrev, i_Level);
     while(pCursor != nullptr) {
-      i8 iCompareRes = m_fpCompare(pCursor->aItem(), pKey);
+
+      i8 iCompareRes;
+      if (!gxCmdLineArgs.m_xSysArgs.m_bStart) {
+        // The PDS came from the SE node but is being processed by the prompt
+        // or another process. The PDS's compare function is a pointer to a
+        // static function within the SE node process, not the current process.
+        // This will cause it to crash while deleting the PDS.
+        iCompareRes = PdsUtils::iIntCompare(pCursor->aItem(), pKey);
+
+      } else {
+        iCompareRes = m_fpCompare(pCursor->aItem(), pKey);
+      }
+
 
       if(iCompareRes == 0) {
         return pCursor;
