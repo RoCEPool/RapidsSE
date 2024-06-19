@@ -31,8 +31,9 @@ namespace BASE
       {
         u8 m_uBuffer : 32; // which buffer (2^32 * 1MB is 4PB)
         u8 m_uItem   : 16; // item in that buffer (2^16 is max of 64K items)
+        u8 m_uLevels :  3; // number of skip levels in next entry array
         u8 m_uKind   :  4; // entry kind
-        u8 m_uPtn    : 11; // number of skip levels in next entry array
+        u8 m_uPtn    :  8;  // number of skip levels in next entry array
         u8 m_uGlobal :  1; // is global?
       } Glb;        // 64b
 
@@ -77,7 +78,7 @@ namespace BASE
 		/*----------------------------------------------------------------------------*/
 		eKE eKind(void)
 		{
-			return (eKE)Std.m_uKind;
+			return Std.m_uGlobal ? (eKE)Glb.m_uKind : (eKE)Std.m_uKind;
 		}
 
 		};

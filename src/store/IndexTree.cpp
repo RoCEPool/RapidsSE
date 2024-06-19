@@ -1108,7 +1108,7 @@ void IndexTree::vInsertGlobalEntries(Pds *pPdsRowBuffer, StreamDef* pStreamDef)
   Rrf xEntRowRef;
   Rrf xRowRef;
 
-  xEntRowRef.vGlobal(true);
+  //xEntRowRef.vGlobal(true);
 
   if (! m_pRootEntBuffer) {
     EntBuffer* pRootBuffer = pNewRootBuffer();
@@ -1124,12 +1124,8 @@ void IndexTree::vInsertGlobalEntries(Pds *pPdsRowBuffer, StreamDef* pStreamDef)
 
     xEntWrk.vReset();
 
-    // get the key from the row
+    // get the key column from the row
     Column* pColumn = pStreamDef->pGetColumn(0);
-    RASSERT(pColumn->eColumnType() == CT_INTEGER);
-    RASSERT(KE_INT == m_pIndexDef->eKeyKind());
-    xEntWrk.aEnt()->vKind(KE_INT);
-    xEntWrk.vAppendInt(aRowCur->iColVal_int(0));
 
     // get the ptnId from the row
     pColumn = pStreamDef->pGetColumn(1);
@@ -1145,6 +1141,12 @@ void IndexTree::vInsertGlobalEntries(Pds *pPdsRowBuffer, StreamDef* pStreamDef)
     xEntWrk.vBuffer(xRowRef.Std.m_uBuffer);
     xEntWrk.vItem(xRowRef.Std.m_uItem);
     xEntWrk.vPtn(iPtnId);
+
+    // ensure Glb is set before setting key kind
+    RASSERT(pColumn->eColumnType() == CT_INTEGER);
+    RASSERT(KE_INT == m_pIndexDef->eKeyKind());
+    xEntWrk.aEnt()->vKind(KE_INT);
+    xEntWrk.vAppendInt(aRowCur->iColVal_int(0));
 
     Ent* aInsertedEntry = EntBuffer::aInsertEntTree(xEntWrk.aEnt(),&m_pRootEntBuffer);
     ASSERT(aInsertedEntry);

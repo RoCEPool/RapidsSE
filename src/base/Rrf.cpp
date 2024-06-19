@@ -39,17 +39,27 @@ Rrf::Rrf(u8 uBuffer, u8 uItem, u8 uLevels)
 /*----------------------------------------------------------------------------*/
 Rrf::Rrf(const Rrf& oCopy)
 {
-  Std.m_uBuffer  = oCopy.Std.m_uBuffer;
-  Std.m_uItem    = oCopy.Std.m_uItem;
-  Std.m_uLevels  = oCopy.Std.m_uLevels;
+  if (oCopy.Std.m_uGlobal) {
+    Glb.m_uBuffer = oCopy.Glb.m_uBuffer;
+    Glb.m_uItem   = oCopy.Glb.m_uItem;
+    Glb.m_uLevels = oCopy.Glb.m_uLevels;
+    Glb.m_uKind   = oCopy.Glb.m_uKind;
+    Glb.m_uPtn    = oCopy.Glb.m_uPtn;
+    Glb.m_uGlobal = oCopy.Glb.m_uGlobal;
+  }
+  else {
+    Std.m_uBuffer = oCopy.Std.m_uBuffer;
+    Std.m_uItem   = oCopy.Std.m_uItem;
+    Std.m_uLevels = oCopy.Std.m_uLevels;
 
-  Std.m_uKind    = oCopy.Std.m_uKind;
-  Std.m_uPayload = oCopy.Std.m_uPayload;
-  Std.m_uFree    = oCopy.Std.m_uFree;
-  Std.m_uDesc    = oCopy.Std.m_uDesc;
+    Std.m_uKind    = oCopy.Std.m_uKind;
+    Std.m_uPayload = oCopy.Std.m_uPayload;
+    Std.m_uFree    = oCopy.Std.m_uFree;
+    Std.m_uDesc    = oCopy.Std.m_uDesc;
 
-  Std.m_uSpare   = 0;
-  Std.m_uGlobal  = 0;
+    Std.m_uSpare  = oCopy.Std.m_uSpare;
+    Std.m_uGlobal = oCopy.Std.m_uGlobal;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -192,7 +202,14 @@ void Rrf::vItem(i8 iItem)
 /*----------------------------------------------------------------------------*/
 void Rrf::vKind(eKE eKind)
 {
-  Std.m_uKind = eKind;
+  if (Std.m_uGlobal) {
+    RASSERT(eKind == KE_INT);
+    Glb.m_uKind = eKind;
+  }
+  else {
+    Std.m_uKind = eKind;
+  }
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -252,17 +269,27 @@ void Rrf::vReset(void)
 /*----------------------------------------------------------------------------*/
 void Rrf::vSet(Rrf xwRef)
 {
-  Std.m_uBuffer  = xwRef.Std.m_uBuffer;
-  Std.m_uItem    = xwRef.Std.m_uItem;
-  Std.m_uLevels  = xwRef.Std.m_uLevels;
+  if (xwRef.Std.m_uGlobal) {
+    Glb.m_uBuffer = xwRef.Glb.m_uBuffer;
+    Glb.m_uItem   = xwRef.Glb.m_uItem;
+    Glb.m_uLevels = xwRef.Glb.m_uLevels;
+    Glb.m_uKind   = xwRef.Glb.m_uKind;
+    Glb.m_uPtn    = xwRef.Glb.m_uPtn;
+    Glb.m_uGlobal = xwRef.Glb.m_uGlobal;
+  }
+  else {
+    Std.m_uBuffer = xwRef.Std.m_uBuffer;
+    Std.m_uItem   = xwRef.Std.m_uItem;
+    Std.m_uLevels = xwRef.Std.m_uLevels;
 
-  Std.m_uKind    = xwRef.Std.m_uKind;
-  Std.m_uPayload = xwRef.Std.m_uPayload;
-  Std.m_uFree    = xwRef.Std.m_uFree;
-  Std.m_uDesc    = xwRef.Std.m_uDesc;
+    Std.m_uKind    = xwRef.Std.m_uKind;
+    Std.m_uPayload = xwRef.Std.m_uPayload;
+    Std.m_uFree    = xwRef.Std.m_uFree;
+    Std.m_uDesc    = xwRef.Std.m_uDesc;
 
-  Std.m_uSpare   = 0;
-  Std.m_uGlobal  = 0;
+    Std.m_uSpare  = xwRef.Std.m_uSpare;
+    Std.m_uGlobal = xwRef.Std.m_uGlobal;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
