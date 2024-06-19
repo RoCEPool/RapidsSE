@@ -56,6 +56,8 @@ namespace BASE
 
   class TagSet : public Object
   {
+    friend AttachMap; // An ugly hack for a bootstrapping memory allocation chicken and egg problem
+
   public:
     Lock              m_oLock;
     TagArray          m_oTagArray;

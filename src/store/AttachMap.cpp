@@ -120,7 +120,22 @@ AttachMap::AttachMap(bool bNoFree)
   m_mdSchema        = nullptr;
   m_mdSessions      = nullptr;
   m_mdTables        = nullptr;
-  
+
+  // Ugly fix for a memory allocation chicken and egg problem.
+  // The m_xSysArgs is allocated automatically when AttachMap is created. This occurs
+  // before the heaps have been created. However m_xySysArgs.m_oArgTags and m_oSysTags
+  // are TagSets that contain a pointer that must be initialised. Since TagSet is also
+  // used during the boot up process before the heaps are even thought of, there is a
+  // hack in place to allocate these from process memory and not shared memory.
+  // So the default construction of m_xSysArgs here also does the same because this
+  // default construction occurs before the heaps are created. We will overwrite the
+  // pointer within these TagSets with ones that are created from the shared memory heap.
+  // Ultimately, this is necessary so that these tags are visible across processes that
+  // access the shared memory.
+  free(_pPackedStringSegmentTiny(m_xSysArgs.m_oArgTags.m_pStrings));
+  free(_pPackedStringSegmentTiny(m_xSysArgs.m_oSysTags.m_pStrings));
+  m_xSysArgs.m_oArgTags.m_pStrings = PackedStringBuf::pCreate(PackedStringBuf::TINY);
+  m_xSysArgs.m_oSysTags.m_pStrings = PackedStringBuf::pCreate(PackedStringBuf::TINY);
 
   _checkInitialised_(CN_ATTACHMAP);
   
