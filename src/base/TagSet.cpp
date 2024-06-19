@@ -1510,6 +1510,30 @@ Stz* TagSet::szValue(Tag* pTag)
   return pTag->m_szValue;
 }
 
+/*----------------------------------------------------------------------------*/
+/* Validate the tag set                                                       */
+/*----------------------------------------------------------------------------*/
+void TagSet::vValidate()
+{
+  TagArrayIter xIter = m_oTagArray.xIterator();
+  Tag* pTag;
+
+  while ((pTag = xIter.pNext()) != nullptr) {
+    RASSERT(pTag->m_szName);
+    RASSERT(m_pStrings->bContainsAddr(pTag->m_szName));
+
+    if (pTag->m_eToken == TN_STRING) {
+      RASSERT(pTag->m_szValue);
+      RASSERT(m_pStrings->bContainsAddr(pTag->m_szValue));
+
+    } else if (pTag->m_eToken == TN_OBJECT) {
+      RASSERT(pTag->m_pValue);
+      Object* pObject = pTag->m_pValue;
+      pObject->vAssertHeader();
+    }
+  }
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/

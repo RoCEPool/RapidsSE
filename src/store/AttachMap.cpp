@@ -442,9 +442,18 @@ void AttachMap::vRecordArguments(CmdLineArgs* pCmdLineArgs)
   }
 
   m_xSysArgs.m_oArgTags.vInsert(C_TAGSET_NAME,"dbgTagSet"_Stz);
-  
   m_xSysArgs.m_oArgTags.vCopy(&pCmdLineArgs->m_xSysArgs.m_oArgTags);
-  
+
+  // Ugly hack. The very first tagsets in the first SysArgs created
+  // were allocated in process memory, not shared memory, because
+  // shared memory hadn't been setup at that point.
+  free(pCmdLineArgs->m_xSysArgs.m_oArgTags.m_pStrings);
+  pCmdLineArgs->m_xSysArgs.m_oArgTags.m_pStrings = nullptr;
+  free(pCmdLineArgs->m_xSysArgs.m_oSysTags.m_pStrings);
+  pCmdLineArgs->m_xSysArgs.m_oSysTags.m_pStrings = nullptr;
+
+  m_xSysArgs.m_oArgTags.vValidate();
+  m_xSysArgs.m_oSysTags.vValidate();
   
   // ray -- not sure the following should be here
   

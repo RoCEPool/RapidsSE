@@ -131,6 +131,8 @@ namespace BASE
     Stz* szValueDecoded(i8 i_Tag);
     Stz* szValue(Stz* szName);
 
+    void vValidate();
+
   private:
     i8   i_FindNL(Stz* szName);
     Tag* pFindNL(Stz* szName);
