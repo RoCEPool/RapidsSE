@@ -1409,7 +1409,46 @@ void EntBuffer::vShowEntry(Ent* aEnt)
   Key* aKey  = aEnt->aKey();
   i8 iOffset = iToOffset(aEnt);
   tET tEntry = tToTicket(aEnt);
-  
+
+  if (aEnt->rxRef().bGlobal()) {
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    vTrace("tET %04llx %07lld %p %3lluB %s "_Stz,
+           (i8)tEntry,
+           iOffset,
+           aEnt,
+           aEnt->nSizeBytes(),
+           aKE[aEnt->eKind()]
+    );
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    vTrace("Rrf %lld.%05lld Ptn %lld"_Stz,
+           aEnt->rxRef().iBuffer(),
+           aEnt->rxRef().iItem(),
+           aEnt->rxRef().iPtn()
+    );
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    if (KE_INT == aEnt->eKind()) {
+      Ent_int* aEnt_int = (Ent_int*)aEnt;
+      vTrace(" IntElm0 %lld"_Stz,aEnt_int->m_iIntElm0);
+    }
+    else
+      aKey->vShow(pIndexDef());
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    vTrace(" EntNo %05lld levels %lld"_Stz,aEnt->iEntryNo(),aEnt->nSkipLevels());
+    for (i8 i_Level = 0; i_Level < aEnt->nSkipLevels(); i_Level++)
+      vTrace(" %04llx"_Stz,(i8)aEnt->tNextEntry(i_Level));
+
+    vTrace("\n"_Stz);
+
+    return;
+  }
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   vTrace("tET %04llx %07lld %p %3lluB %s "_Stz,
@@ -1419,7 +1458,7 @@ void EntBuffer::vShowEntry(Ent* aEnt)
          aEnt->nSizeBytes(),
          aKE[aEnt->eKind()]
          );
-  
+
   if (aEnt->bPayload())
     vTrace("Pay "_Stz);
   else
@@ -1523,7 +1562,7 @@ void EntBuffer::vShow(bool bEntries, Ent* aMarkEntry)
          "--------------------------------------------------\n"_Stz);
   
   //if (! bEntries)
-    return;
+  //  return;
   
   vTrace("\n"_Stz);
   vTrace("Arguments (by headEntry vector[0]):\n"_Stz);
