@@ -48,7 +48,7 @@ Stz* aSSValue[eSS::NENUMS]
 /*----------------------------------------------------------------------------*/
 BinaryStack::BinaryStack(eCN eClassNo,
                          eSS eSegmentSize,
-                         fStackSizeToClass fSizeToCls)
+                         fpStackSizeToClass fpSizeToCls)
  : Object(eClassNo)
 
 {
@@ -56,13 +56,7 @@ BinaryStack::BinaryStack(eCN eClassNo,
   this->m_pNext = nullptr;
   this->m_eSegmentSize = eSegmentSize;
   this->m_nItems = 0;
-
-#ifdef WITH_CHECK_INITIALISED
-  // The m_fStackSizeToClass leaves a word uninitialised
-  MemLib::vZero(&(this->m_fStackSizeToClass), sizeof(m_fStackSizeToClass), eClassNo);
-#endif
-
-  this->m_fStackSizeToClass = fSizeToCls;
+  this->m_fpStackSizeToClass = fpSizeToCls;
   this->u.m_pBase = this;
 
   //_checkInitialised_(eClassNo);  // Can't call this on an abstract base class
@@ -73,7 +67,7 @@ BinaryStack::BinaryStack(eCN eClassNo,
 /*----------------------------------------------------------------------------*/
 BinaryStack::BinaryStack(eCN eClassNo,
                          eSS eSegmentSize,
-                         fStackSizeToClass fSizeToCls,
+                         fpStackSizeToClass fpSizeToCls,
                          BinaryStack* pHead)
   : Object(eClassNo)
 {
@@ -81,13 +75,7 @@ BinaryStack::BinaryStack(eCN eClassNo,
   this->m_pNext = nullptr;
   this->m_eSegmentSize = eSegmentSize;
   this->m_nItems = 0;
-
-#ifdef WITH_CHECK_INITIALISED
-  // The m_fStackSizeToClass leaves a word uninitialised
-  MemLib::vZero(&(this->m_fStackSizeToClass), sizeof(m_fStackSizeToClass), eClassNo);
-#endif
-
-  this->m_fStackSizeToClass = fSizeToCls;
+  this->m_fpStackSizeToClass = fpSizeToCls;
   this->u.m_pBase = this;
 
   //_checkInitialised_(eClassNo);  // Can't call this on an abstract base class
@@ -155,17 +143,17 @@ byte* BinaryStack::pyAdvance(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* Create a BinaryStack                                                       */
 /*----------------------------------------------------------------------------*/
-BinaryStack* BinaryStack::pCreate(eSS eSize, fStackSizeToClass fSizeToCls)
+BinaryStack* BinaryStack::pCreate(eSS eSize, fpStackSizeToClass fpSizeToCls)
 {
-  eCN eClassNo = fSizeToCls(eSize);
+  eCN eClassNo = (*fpSizeToCls)(eSize);
   ASSERT(eClassNo > CN_NONE);
   ASSERT(eClassNo < CN_ENUMS);
 
   switch (eSize) {
-    case TINY:    return new(eClassNo)   BinaryStackTiny(eClassNo, fSizeToCls);
-    case SMALL:   return new(eClassNo)  BinaryStackSmall(eClassNo, fSizeToCls);
-    case MEDIUM:  return new(eClassNo) BinaryStackMedium(eClassNo, fSizeToCls);
-    case LARGE:   return new(eClassNo)  BinaryStackLarge(eClassNo, fSizeToCls);
+    case TINY:    return new(eClassNo)   BinaryStackTiny(eClassNo, fpSizeToCls);
+    case SMALL:   return new(eClassNo)  BinaryStackSmall(eClassNo, fpSizeToCls);
+    case MEDIUM:  return new(eClassNo) BinaryStackMedium(eClassNo, fpSizeToCls);
+    case LARGE:   return new(eClassNo)  BinaryStackLarge(eClassNo, fpSizeToCls);
     default:
       NEVER_REACH
   }
@@ -433,20 +421,20 @@ BinaryStack* BinaryStack::pAddSegmentFor(i8 nBytes)
   eCN eClassNo;
 
   if (nBytes <= BinaryStackTiny::nArea()) {
-    eClassNo = m_fStackSizeToClass(TINY);
-    pNewSegment = new(eClassNo) BinaryStackTiny(eClassNo, m_fStackSizeToClass, this->m_pHead);
+    eClassNo = (*m_fpStackSizeToClass)(TINY);
+    pNewSegment = new(eClassNo) BinaryStackTiny(eClassNo, m_fpStackSizeToClass, this->m_pHead);
 
   } else if (nBytes <= BinaryStackSmall::nArea()) {
-    eClassNo = m_fStackSizeToClass(SMALL);
-    pNewSegment = new(eClassNo) BinaryStackSmall(eClassNo, m_fStackSizeToClass, this->m_pHead);
+    eClassNo = (*m_fpStackSizeToClass)(SMALL);
+    pNewSegment = new(eClassNo) BinaryStackSmall(eClassNo, m_fpStackSizeToClass, this->m_pHead);
 
   } else if (nBytes <= BinaryStackMedium::nArea()) {
-    eClassNo = m_fStackSizeToClass(MEDIUM);
-    pNewSegment = new(eClassNo) BinaryStackMedium(eClassNo, m_fStackSizeToClass, this->m_pHead);
+    eClassNo = (*m_fpStackSizeToClass)(MEDIUM);
+    pNewSegment = new(eClassNo) BinaryStackMedium(eClassNo, m_fpStackSizeToClass, this->m_pHead);
 
   } else if (nBytes <= BinaryStackLarge::nArea()) {
-    eClassNo = m_fStackSizeToClass(LARGE);
-    pNewSegment = new(eClassNo) BinaryStackLarge(eClassNo, m_fStackSizeToClass, this->m_pHead);
+    eClassNo = (*m_fpStackSizeToClass)(LARGE);
+    pNewSegment = new(eClassNo) BinaryStackLarge(eClassNo, m_fpStackSizeToClass, this->m_pHead);
 
   } else {
     NEVER_REACH
@@ -573,8 +561,8 @@ void BinaryStackSegment<SEGMENT_SIZE, AREA>::operator delete(void* aAddr)
 /*----------------------------------------------------------------------------*/
 template <eSS SEGMENT_SIZE, i8 AREA>
 BinaryStackSegment<SEGMENT_SIZE, AREA>::BinaryStackSegment(eCN eClassNo,
-                                                           fStackSizeToClass fSizeToCls)
-  : BinaryStack(eClassNo, SEGMENT_SIZE, fSizeToCls)
+                                                           fpStackSizeToClass fpSizeToCls)
+  : BinaryStack(eClassNo, SEGMENT_SIZE, fpSizeToCls)
 {
   m_nSegEntries = 0;
   //m_xBytes
@@ -589,9 +577,9 @@ BinaryStackSegment<SEGMENT_SIZE, AREA>::BinaryStackSegment(eCN eClassNo,
 /*----------------------------------------------------------------------------*/
 template <eSS SEGMENT_SIZE, i8 AREA>
 BinaryStackSegment<SEGMENT_SIZE, AREA>::BinaryStackSegment(eCN eClassNo,
-                                                          fStackSizeToClass fSizeToCls,
+                                                          fpStackSizeToClass fpSizeToCls,
                                                           BinaryStack* pHead)
-  : BinaryStack(eClassNo, SEGMENT_SIZE, fSizeToCls, pHead)
+  : BinaryStack(eClassNo, SEGMENT_SIZE, fpSizeToCls, pHead)
 {
   m_nSegEntries = 0;
   //m_xBytes
