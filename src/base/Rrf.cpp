@@ -19,20 +19,32 @@ Rrf::Rrf(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Rrf::Rrf(u8 uBuffer, u8 uItem, u8 uLevels)
+Rrf::Rrf(u8 uBuffer, u8 uItem, u8 uLevels, u8 uKind, u8 uPtn, u8 uGlobal)
 {
-  Std.m_uBuffer  = uBuffer;
-  Std.m_uItem    = uItem;
-  Std.m_uLevels  = uLevels;
+  if (uGlobal) {
+    Glb.m_uBuffer = uBuffer;
+    Glb.m_uItem   = uItem;
+    Glb.m_uLevels = uLevels;
+    Glb.m_uKind   = uKind;
+    Glb.m_uPtn    = uPtn;
+    Glb.m_uGlobal = uGlobal;
+  }
+  else {
+    Std.m_uBuffer  = uBuffer;
+    Std.m_uItem    = uItem;
+    Std.m_uLevels  = uLevels;
 
-  Std.m_uKind    = KE_GENERAL;
-  Std.m_uPayload = 0;
-  Std.m_uFree    = 0;
-  Std.m_uDesc    = 0;
+    Std.m_uKind    = uKind;
+    Std.m_uPayload = 0;
+    Std.m_uFree    = 0;
+    Std.m_uDesc    = 0;
 
-  Std.m_uSpare   = 0;
-  Std.m_uGlobal  = 0;
+    Std.m_uSpare   = 0;
+    Std.m_uGlobal  = 0;
+  }
+
 }
+
 
 /*----------------------------------------------------------------------------*/
 /* copy constructor                                                           */
@@ -293,13 +305,45 @@ void Rrf::vSet(Rrf xwRef)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set ref                                                                    */
+/*----------------------------------------------------------------------------*/
+void Rrf::vSet(u8 uBufferNo, u8 uItem, u8 uLevels, u8 eEntKind)
+{
+  Std.m_uBuffer = uBufferNo;
+  Std.m_uItem   = uItem;
+  Std.m_uLevels = uLevels;
+
+  Std.m_uKind    = eEntKind;
+  Std.m_uPayload = 0;
+  Std.m_uFree    = 0;
+  Std.m_uDesc    = 0;
+
+  Std.m_uSpare   = 0;
+  Std.m_uGlobal  = 0;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* set global ref                                                             */
+/*----------------------------------------------------------------------------*/
+void Rrf::vSet(u8 uBufferNo,u8 uItem,u8 uLevels,u8 eEntKind, u8 uPtn)
+{
+  Glb.m_uBuffer = uBufferNo;
+  Glb.m_uItem   = uItem;
+  Glb.m_uLevels = uLevels;
+  Glb.m_uKind   = eEntKind;
+  Glb.m_uPtn    = uPtn;
+  Glb.m_uGlobal = 1;
+}
+
+/*----------------------------------------------------------------------------*/
 /* set nil ref                                                                */
 /*----------------------------------------------------------------------------*/
 void Rrf::vSetNil(void)
 {
-  Std.m_uBuffer  = 0;
-  Std.m_uItem    = 0;
-  Std.m_uLevels  = 0;
+  Std.m_uBuffer = 0;
+  Std.m_uItem   = 0;
+  Std.m_uLevels = 0;
 
   Std.m_uKind    = 0;
   Std.m_uPayload = 0;

@@ -92,6 +92,9 @@ namespace STORE
     i8    iPtn(void);
     void  vPtn(i8 iBuffer);
 
+    bool  bGlobal(void);
+    void  vGlobal(bool bGlobal);
+
     Rrf&  rxRef(void);
     void  vRef(Rrf xRef);
     Rrf   wRef(void);

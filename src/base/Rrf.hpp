@@ -42,7 +42,7 @@ namespace BASE
 
   public:   
     Rrf(void);
-    Rrf(u8 uBuffer, u8 uItem, u8 uLevels);
+    Rrf(u8 uBuffer, u8 uItem, u8 uLevels, u8 uKind, u8 uPtn, u8 uGlobal);
     Rrf(const Rrf& oCopy);
    ~Rrf(void) noexcept(false);
     
@@ -69,6 +69,8 @@ namespace BASE
     void  vPtn(i8 iPtn);
     void  vReset(void);
     void  vSet(Rrf xwRef);
+    void  vSet(u8 uBufferNo, u8 uItem, u8 uLevels, u8 eEntKind);
+    void  vSet(u8 uBufferNo,u8 uItem,u8 uLevels,u8 eEntKind, u8 uPtn);
     void  vSetNil(void);
     i8    nSkipLevels(void);
     void  vSkipLevels(i8 nSkipLevels);

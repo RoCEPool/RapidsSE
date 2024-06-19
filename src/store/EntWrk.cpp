@@ -850,17 +850,23 @@ void EntWrk::vSetEnt(i8 iBufferNo, i8 i_Item, Ent* pEntry)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set id, transaction and offsets
-  
+
+  Rrf xRef;
+
+  eKE eEntKind = pEntry->eKind();
+
   i8 nLevels = pEntry->nSkipLevels();
   vOffsets(nLevels);
-  
-  Rrf xRef(iBufferNo,i_Item,nLevels);
-  
-  eKE eEntKind = pEntry->eKind();
-  xRef.vKind(eEntKind);
-  
+
+  if (pEntry->wRef().bGlobal())
+    xRef.vSet(iBufferNo,i_Item,nLevels,pEntry->eKind(),pEntry->iPtn());
+  else
+    xRef.vSet(iBufferNo,i_Item,nLevels,pEntry->eKind());
+
+
+  //xRef.vKind(eEntKind);
+
   vRef(xRef);
-  
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

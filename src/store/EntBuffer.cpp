@@ -1375,13 +1375,20 @@ void EntBuffer::vRestore(void)
   
   // get the buffer no
   i8 i_PoolBuffer = iBufferNo();
-    
+
+  Rrf xRef;
+
   // now restore the row id's to point to this buffer no
   for (Ent* aEnt = aLeadEntry();
        aEnt != nullptr;
        aEnt = aNextEntry(aEnt, 0)) {
-    
-    Rrf xRef(i_PoolBuffer, aEnt->rxRef().iItem(), aEnt->nSkipLevels());
+
+    if (aEnt->wRef().bGlobal())
+      xRef.vSet(i_PoolBuffer,aEnt->rxRef().iItem(),aEnt->nSkipLevels(),aEnt->eKind(),aEnt->iPtn());
+    else
+      xRef.vSet(i_PoolBuffer,aEnt->rxRef().iItem(),aEnt->nSkipLevels(),aEnt->eKind());
+
+    //Rrf xRef(i_PoolBuffer, aEnt->rxRef().iItem(), aEnt->nSkipLevels());
     aEnt->vRef(xRef);
   }
   
