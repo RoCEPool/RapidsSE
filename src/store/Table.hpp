@@ -75,6 +75,7 @@ namespace STORE
     Index*  pFindIndex(Stz* szIndexNm);
     Index*  pFindGblIndex(Stz* szIndexNm);
     IdxVec*  pGblIdxVec(void);
+    IndexTree*  pGblIndexTree(i8 iIndexNo);
     IdxVec* pIdxVec(void);
     i8      nIndexBuffers(i8 i_Index);
     bool    bIsDefinitionOnly(void);
@@ -87,6 +88,7 @@ namespace STORE
     void    vListContents(i8 i_Depth);
     void    vMetaDataKind(Stz* szTableNm);
     bool    bPopulateIndex(i8 iIndexNo);
+    void    vPopulateGlobalIndex(Pds* pPdsRowBuffer, StreamDef* pStreamDefLft, Index* pIndex);
     PtnDef*  pPtnDef(void);
     void    vGetGridEstimates(i8& jTableSize, i8& jRowSize, i8& nRowCount);
     void    vRemoveGblIndex(Index* pGblIndex);

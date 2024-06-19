@@ -159,6 +159,8 @@ namespace STORE
 
 			void vInsertEntries(CrwBuffer *pCrwBuffer);
 
+      void vInsertGlobalEntries(Pds *pPdsRowBuffer, StreamDef* pStreamDef);
+
 			Ent *pInsertEntTop_(Ent *aEnt, Ent **ppEntBottom, i8 iTopCount);
 
 			bool bInsertEntry(Ent *aEnt);

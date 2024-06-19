@@ -96,6 +96,7 @@ IndexDef::IndexDef(void)
 
   m_bIsPrimaryKey = false;
   m_bIsUnique     = false;
+  m_bIsGlobal     = false;
   m_bHasDescending = false;
   
   m_nColumns      = 0;

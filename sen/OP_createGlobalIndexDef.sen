@@ -85,7 +85,9 @@
   <keyCol> StreamDefLft[].findKey if
     to Counter0[]
     Counter0[] <keyCol> "Found key %v as column %v" str.format .
+    nullptr to StreamDefLft[]
   else
+    nullptr to StreamDefLft[]
     // create an exec error
     EC_NO_SUCH_COLUMN op__execErr
 

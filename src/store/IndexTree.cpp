@@ -1096,6 +1096,67 @@ void IndexTree::vInsertEntries(CrwBuffer* pCrwBuffer)
 }
 
 /*----------------------------------------------------------------------------*/
+/* insert entries for pCrwBuffer into this index at level 0                   */
+/*----------------------------------------------------------------------------*/
+void IndexTree::vInsertGlobalEntries(Pds *pPdsRowBuffer, StreamDef* pStreamDef)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
+
+  //pEntBuffer->vShow();
+
+  EntWrk xEntWrk;
+  Rrf xEntRowRef;
+  Rrf xRowRef;
+
+  //xEntRowRef.vGlobal(true);
+
+  if (! m_pRootEntBuffer) {
+    EntBuffer* pRootBuffer = pNewRootBuffer();
+    UNUSED(pRootBuffer);
+  }
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // iterate thru each crw in buffer
+
+  PdsCursor* pCursor = new PdsCursor(pPdsRowBuffer);
+
+  while( ! pCursor->bIsCurrNull()) {
+    Row* aRowCur = pCursor->pCurrRow();
+
+    xEntWrk.vReset();
+
+    // get the key from the row
+    Column* pColumn = pStreamDef->pGetColumn(0);
+    RASSERT(pColumn->eColumnType() == CT_INTEGER);
+    RASSERT(KE_INT == m_pIndexDef->eKeyKind());
+    xEntWrk.aEnt()->vKind(KE_INT);
+    xEntWrk.vAppendInt(aRowCur->iColVal_int(0));
+
+    // get the ptnId from the row
+    pColumn = pStreamDef->pGetColumn(1);
+    RASSERT(pColumn->eColumnType() == CT_INTEGER);
+    //i8 iPtnId = aRowCur->iColVal_int(1);
+
+    // get the rrf from the row
+    pColumn = pStreamDef->pGetColumn(2);
+    RASSERT(pColumn->eColumnType() == CT_INTEGER);
+    xRowRef.m_iAsI8 = aRowCur->iColVal_int(2);
+
+    // set the PtnId and rrf in the index ent
+    xEntWrk.vBuffer(xRowRef.m_uBuffer);
+    xEntWrk.vItem(xRowRef.m_uItem);
+    //xEntWrk.vPtn(iPtnId);
+
+    Ent* aInsertedEntry = EntBuffer::aInsertEntTree(xEntWrk.aEnt(),&m_pRootEntBuffer);
+    ASSERT(aInsertedEntry);
+    UNUSED(aInsertedEntry);
+    pCursor->vNext();
+  }
+
+  pCursor->m_pPds = nullptr;
+  delete pCursor;
+}
+
+/*----------------------------------------------------------------------------*/
 /* insert entry into this index at level 0 for iTop entries                   */
 /*----------------------------------------------------------------------------*/
 Ent* IndexTree::pInsertEntTop_(Ent* aEnt, Ent** ppEntBottom, i8 iTopCount)

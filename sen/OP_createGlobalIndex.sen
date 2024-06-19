@@ -13,38 +13,35 @@
 
   IndexDef[].tableName@ to sTableNm
 
-stableNm .
-"TADA1" .
-
   // assert initial folder is ./tables
   //   /tenants/boray/catalogs/rapids/schemas/public/tables
   Folder[].isTables assert
-"TADA2" .
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // change working folder to : ./t/indexes
 
   // cf to: ./t
   sTableNm Path[].pushNamedTableFolder
-"TADA3" .
+
   // cf to: ./indexes
   Path[].pushIndexesFolder
-"TADA4" .
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // parse cmd and create index definition
 
   sTableNm find execute to Table[]
-"TADA5" .
+
   //dbg>
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create the index
 
   IndexDef[] <indexNm> Table[] index::createGlobalIndex locals| pIndex |
-"TADA6" .
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Update info in metadata tables if it is a unique index
   pIndex MetaDataTable[].createIndex
-"TADA7" .
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // move back to ./tables
 

@@ -64,6 +64,7 @@ void Step::vAddSteps_Table(void)
   vAddStep("Table[].isUserCreated"_Stz,    &Step::vTableIsUserCreated);
   vAddStep("Table[].listPartition"_Stz,    &Step::vTableListPartition);
   vAddStep("Table[].name@"_Stz,            &Step::vTableNameFetch);
+  vAddStep("Table[].populateGlobalIndex"_Stz, &Step::vTablePopulateGlobalIndex);
   vAddStep("Table[].ptnDef@"_Stz,          &Step::vTablePtnDefFetch);
   vAddStep("Table[].size"_Stz,             &Step::vTableSize);
   vAddStep("Table[].streamDef@"_Stz,       &Step::vTableStreamDefFetch);
@@ -658,6 +659,24 @@ void Step::vTableNameFetch(void)
   
   EXIT();
 }
+
+/*----------------------------------------------------------------------------*/
+/* Table[].PopulateGlobalInde -- populate the global index                    */
+/*----------------------------------------------------------------------------*/
+void Step::vTablePopulateGlobalIndex(void)
+{
+  ENTRY();
+
+  Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
+  StreamDef* pStreamDefLft = _pStreamDef(m_pDataStack->pPopPtr(__func__));
+  Pds* pPdsRowBuffer = _pPds(m_pDataStack->pPopPtr(__func__));
+  Table* pTable = _pTable(*m_pLogicUnit->m_xpTable);
+
+  pTable->vPopulateGlobalIndex(pPdsRowBuffer, pStreamDefLft, pIndex);
+
+  EXIT();
+}
+
 extern SizeHeap  gxaSizeHeap[];
 
 /*----------------------------------------------------------------------------*/

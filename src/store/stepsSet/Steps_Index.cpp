@@ -290,13 +290,20 @@ void Step::vIndexDump(void)
   
   i8 iIndexNo = pIndex->iIndexNo();
   Table* pTable = pIndex->pTable();
-  
-  for (i8 i_TablePtn = 0; i_TablePtn < AM::PTNMAP::nPtnsPerNode(); i_TablePtn++) {
-    TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
-    IndexTree* pIndexTree = pTablePtn->pIndexTree(iIndexNo);
-    vTrace("Partition %lld\n"_Stz, i_TablePtn);
-    
+  IndexDef* pIndexDef = pIndex->pIndexDef();
+
+  if (pIndexDef->bIsGlobal()) {
+    IndexTree* pIndexTree = pTable->pGblIndexTree(pIndex->iIndexNo());
     pIndexTree->vDump(false);
+  }
+  else {
+    for (i8 i_TablePtn = 0; i_TablePtn < AM::PTNMAP::nPtnsPerNode(); i_TablePtn++) {
+      TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
+      IndexTree* pIndexTree = pTablePtn->pIndexTree(iIndexNo);
+      vTrace("Partition %lld\n"_Stz, i_TablePtn);
+
+      pIndexTree->vDump(false);
+    }
   }
   
   EXIT();

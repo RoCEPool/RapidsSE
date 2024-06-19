@@ -137,7 +137,7 @@ void Step::vStreamDefLftFindKey(void)
   s256 sColumn;
   m_pDataStack->vPopStr(sColumn, __func__);
 
-  StreamDef* pStreamDef = new StreamDef(* m_pLogicUnit->m_xpStreamDefLft);
+  StreamDef* pStreamDef = _pStreamDef(* m_pLogicUnit->m_xpStreamDefLft);
 
   Column* pColumn = pStreamDef->pFindColumn(sColumn);
 

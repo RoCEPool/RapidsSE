@@ -2,7 +2,7 @@
 /* OP_insertGlobalIndex.sen -- Operator insert into global index              */
 /*============================================================================*/
 
-" OP_insert.sen" .verbose
+" OP_insertGlobalIndex.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* handler for EV_M_CLEANING ...                                              */
@@ -11,106 +11,28 @@
 
   //"Operand:- EV_M_CLEANING" .verbose
 
-  // get the profile from the task
-  //[task] task.profile@ to Operand[]
-  //nullptr [task] task.profile!
-  //Operand[].pipeOut
-
-  Path[].popNamedTableFolder
+  StreamDefLft[].delete
 
   EV_M_CLEANING_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for EV_D_CRWBUFFER                                                 */
+/* handler for EV_D_PDSROWBUFFER                                              */
 /*----------------------------------------------------------------------------*/
-: insertGlobalIndex_CrwBuffer \handler
+: insertGlobalIndex_PdsRowBuffer \handler
 
-  //"insert_DataBuffer" .
-
-  0 locals| rowsInserted |
+  //"insertGlobalIndex_PdsRowBuffer" .
 
   // insert the buffer into the table ptn
-  TablePtn[].grabWrite_msecLoop
-  PipeIn[] TablePtn[].appendBuffer to rowsInserted
-  TablePtn[].dropWrite
+  //Table[].grabWrite_msecLoop
+  PipeIn[] StreamDefLft[] Index[] Table[].populateGlobalIndex
+  //Table[].dropWrite
 
-  // Accumulate the inserted row counts
-  rowsInserted rowCounts[].addInserted
-
-  // null the Pipein
-  nullptr to PipeIn[]
-
-  // increment no of buffers inserted
-  Counter0[] 1 + to Counter0[]
-
-  // send out an infoSet of ProgressUnits every 100 buffers
-  Counter0[] 100 % 0 == if
-
-    // create a Pds operand
-    BT_PROGRESSUNITS TableDef[] Pds[].new
-
-    // insert progressUnits to the Pds
-    //Counter0[] TableDef[] Pds[].addProgressUnits assert
-    Counter0[] 1 TableDef[] Pds[].addRowVargs assert
-
-    // pipeout the Pds
-    Pds[].pipeOut
-
-    // reset the counter
-    0 to Counter0[]
-
-  then
+  // delete PipeIn[]
+  PipeIn[].delete
 
   true
 ;
-
-
-/*----------------------------------------------------------------------------*/
-/* handler for EV_M_EOS ...                                                   */
-/*----------------------------------------------------------------------------*/
-: insertGlobalIndex_EosMarker \handler
-
-  //"Operand:- EV_M_EOS" .verbose
-
-  // send out final progress units
-
-  // create a Pds operand
-  BT_PROGRESSUNITS TableDef[] Pds[].new
-
-  // insert progressUnits to the Pds
-  //Counter0[] TableDef[] Pds[].addProgressUnits assert
-  Counter0[] 1 TableDef[] Pds[].addRowVargs assert
-
-  // pipeout the Pds
-  Pds[].pipeOut
-
-  // send out an AFFECTEDROWS infoset with the number of rows actually inserted
-  Table[].isReplicated not
-  [grid].thisNodeId@ [job].originNodeId@ ==
-  or if
-
-    // Don't emit an infoset if the values are all zeros
-    rowCounts[].areAllZeros not if
-
-      C_TDEF_AFFECTEDROWS op__tableDef assert
-
-      // create a Pds operand
-      BT_AFFECTEDROWS TableDef[] Pds[].new
-
-      // insert row counts to the Pds
-      rowCounts[].getCounters@@ rowCounts[].numCounters TableDef[] Pds[].addRowVargs assert
-
-      // pipeout the Pds
-      Pds[].pipeOut
-
-    then
-  then
-
-  PipeIn[].pipeOut
-
-  true
-  ;
 
 /*----------------------------------------------------------------------------*/
 /* handler for EV_M_START ...                                                 */
@@ -121,22 +43,11 @@
   //"Operand Insert:- EV_M_START" .
   PipeIn[].pipeOut
 
-  // create the TableDef for C_TDEF_PROGRESSUNITS
-  C_TDEF_PROGRESSUNITS op__tableDef assert
-
-  // get Table[] to be inserted into
-  <tableNm> op__table if
-
-    // change handler for replicated cases
-    Table[].isReplicated if
-      find: insert_Replicated  EV_D_CRWBUFFER  [op].handler!
-    else
-      Table[].tablePtn@ to TablePtn[]
-    then
-    
+  // get Table[]  and Index[]
+  <tableNm> <indexNm> op__table_index not if
+    true
+    exit
   then
-
-  rowCounts[].new
 
   true
 ;
@@ -146,9 +57,9 @@
 /*----------------------------------------------------------------------------*/
 : insertGlobalIndex_StreamDef \handler
 
-  //"Operand:- EV_D_STREAMDEF" .verbose
-  PipeIn[].delete
-  
+  "Operand:- EV_D_STREAMDEF" .
+  PipeIn[]\clear to StreamDefLft[]
+
   true
 ;
 
@@ -165,8 +76,7 @@
   op__topology
 
   find: insertGlobalIndex_Cleaning      EV_M_CLEANING     [op].handler!
-  find: insertGlobalIndex_CrwBuffer     EV_D_CRWBUFFER    [op].handler!
-  find: insertGlobalIndex_EosMarker     EV_M_EOS          [op].handler!
+  find: insertGlobalIndex_PdsRowBuffer  EV_D_PDSROWBUFFER [op].handler!
   find: insertGlobalIndex_StreamDef     EV_D_STREAMDEF    [op].handler!
   find: insertGlobalIndex_StartMarker   EV_M_START        [op].handler!
 
@@ -182,7 +92,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: insertGlobalIndex :: insertGlobalIndex <tableNm> ;
+cmdSyntax: insertGlobalIndex :: insertGlobalIndex <tableNm> <indexNm> ;
 
 : insertGlobalIndex_cmdTags _cmdTags tagCopy: op_tags
   tags{

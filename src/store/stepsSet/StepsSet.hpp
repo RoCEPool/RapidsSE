@@ -2176,6 +2176,7 @@ void vJobIdLastJobIdFetch(void);
   void vTableIsUserCreated(void);
   void vTableListPartition(void);
   void vTableNameFetch(void);
+  void vTablePopulateGlobalIndex(void);
   void vTableNew(void);
   void vTablePtnDefFetch(void);
   void vTableSet(void);

@@ -543,6 +543,16 @@ IdxVec* Table::pGblIdxVec(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get the global index vector from the table                                 */
+/*----------------------------------------------------------------------------*/
+IndexTree* Table::pGblIndexTree(i8 iIndexNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+
+  return m_pGblIndexTreeVec->pGet(iIndexNo);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the index vector from the table                                        */
 /*----------------------------------------------------------------------------*/
 IdxVec* Table::pIdxVec(void)
@@ -704,6 +714,18 @@ bool Table::bPopulateIndex(i8 iIndexNo)
   
   return true;
 }
+
+/*----------------------------------------------------------------------------*/
+/* populate the index                                                         */
+/*----------------------------------------------------------------------------*/
+void Table::vPopulateGlobalIndex(Pds* pPdsRowBuffer, StreamDef* pStreamDefLft, Index* pIndex)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+
+  IndexTree* pIndexTree = m_pGblIndexTreeVec->pGet(pIndex->iIndexNo());
+  pIndexTree->vInsertGlobalEntries(pPdsRowBuffer, pStreamDefLft);
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* remove global index from table                                             */

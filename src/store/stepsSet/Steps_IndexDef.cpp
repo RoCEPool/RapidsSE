@@ -166,6 +166,9 @@ void Step::vIndexDefNewGlobalIndex(void)
   // set the table name
   pIndexDef->vTableNm(pTable->szTableNm());
 
+  // set the index as a global index
+  pIndexDef->vIsGlobal(true);
+
   // add the key column to the IndexDef
   pIndexDef->vAddColumn(pColumn->szClassNm(), pColumn->xColumnTypeId());
 

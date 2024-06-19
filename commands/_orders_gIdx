@@ -28,7 +28,7 @@ begin
 
 end ;
 
-/*
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // load the global index on orders (O_ORDERKEY)
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -45,9 +45,9 @@ begin
     | rowRef O_ORDERKEY
     | next broadcast
 
-  //stage S02 on all nodes :
-  //  insertGlobalIndex
-  //  | next
+  stage S02 on all nodes :
+    insertGlobalIndex ORDERS GxO_ORDERKEY
+    | next
 
 stage S03 on origin :
       output
@@ -55,8 +55,8 @@ stage S03 on origin :
     | first
 
 end ;
-*/
 
+// dumpIdx Orders GxO_ORDERKEY;
 
 /*============================================================================*/
 /* end                                                                        */
