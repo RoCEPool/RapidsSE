@@ -97,9 +97,9 @@ void Step::vDdlLockHasLock(void)
   ENTRY();
     
   if (LH_HAVE_NO_LOCK == m_pLogicUnit->m_eDdlLocked)
-    m_pDataStack->vPushInt(true);
+    m_oDataStack.vPushInt(true);
   else
-    m_pDataStack->vPushInt(false);
+    m_oDataStack.vPushInt(false);
 
   EXIT();
 }
@@ -112,9 +112,9 @@ void Step::vDdlLockHasRead(void)
   ENTRY();
     
   if (LH_HAVE_READ_LOCK == m_pLogicUnit->m_eDdlLocked)
-    m_pDataStack->vPushInt(true);
+    m_oDataStack.vPushInt(true);
   else
-    m_pDataStack->vPushInt(false);
+    m_oDataStack.vPushInt(false);
 
   EXIT();
 }
@@ -127,9 +127,9 @@ void Step::vDdlLockHasWrite(void)
   ENTRY();
     
   if (LH_HAVE_WRITE_LOCK == m_pLogicUnit->m_eDdlLocked)
-    m_pDataStack->vPushInt(true);
+    m_oDataStack.vPushInt(true);
   else
-    m_pDataStack->vPushInt(false);
+    m_oDataStack.vPushInt(false);
 
   EXIT();
 }

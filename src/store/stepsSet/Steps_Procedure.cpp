@@ -27,10 +27,10 @@ void Step::vAddSteps_Procedure(void)
 //  ENTRY();
 //
 //  s48K sCmd;
-//  m_pDataStack->vPopStr(sCmd,__func__);
+//  m_oDataStack.vPopStr(sCmd,__func__);
 //
 //  s48K sCmdTagStr;
-//  m_pDataStack->vPopStr(sCmdTagStr,__func__);
+//  m_oDataStack.vPopStr(sCmdTagStr,__func__);
 //
 //  TokenVec* pTokenVec = TokenVec::pTokeniseSen(sCmd);
 //
@@ -46,10 +46,10 @@ void Step::vProcedureAdd(void)
   ENTRY();
   
   s48K sProc;
-  m_pDataStack->vPopStr(sProc,__func__);
+  m_oDataStack.vPopStr(sProc, __func__);
   
   s48K sWithTagStr;
-  m_pDataStack->vPopStr(sWithTagStr,__func__);
+  m_oDataStack.vPopStr(sWithTagStr, __func__);
   
   if (AM::TRACE::bVerbose(C_VB_BOOT)) {
     vTrace("AddProcedure: %s\n"_Stz,sProc.szStz());

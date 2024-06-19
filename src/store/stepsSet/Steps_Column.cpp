@@ -29,13 +29,13 @@ void Step::vColumnIsNullableFetch(void)
 {
   ENTRY();
   
-  Column* pColumn = _pColumn(m_pDataStack->pPopPtr(__func__));
+  Column* pColumn = _pColumn(m_oDataStack.pPopPtr(__func__));
   ASSERT(CN_COLUMN == pColumn->eGetClassNo());
   
   s32 sColumnIsNullable;
   sColumnIsNullable = pColumn->bIsNullable() ? "true"_Stz : "false"_Stz;
   
-  m_pDataStack->vPushStr(sColumnIsNullable);
+  m_oDataStack.vPushStr(sColumnIsNullable);
   
   EXIT();
 }
@@ -47,13 +47,13 @@ void Step::vColumnIsPartitionKeyFetch(void)
 {
   ENTRY();
   
-  Column* pColumn = _pColumn(m_pDataStack->pPopPtr(__func__));
+  Column* pColumn = _pColumn(m_oDataStack.pPopPtr(__func__));
   ASSERT(CN_COLUMN == pColumn->eGetClassNo());
   
   s32 sIsPartitionKey;
   sIsPartitionKey = pColumn->bIsPtnKey() ? "true"_Stz : "false"_Stz;
   
-  m_pDataStack->vPushStr(sIsPartitionKey);
+  m_oDataStack.vPushStr(sIsPartitionKey);
   
   EXIT();
 }
@@ -65,10 +65,10 @@ void Step::vColumnLengthFetch(void)
 {
   ENTRY();
   
-  Column* pColumn = _pColumn(m_pDataStack->pPopPtr(__func__));
+  Column* pColumn = _pColumn(m_oDataStack.pPopPtr(__func__));
   ASSERT(CN_COLUMN == pColumn->eGetClassNo());
   
-  m_pDataStack->vPushInt(pColumn->iColumnLength());
+  m_oDataStack.vPushInt(pColumn->iColumnLength());
   
   EXIT();
 }
@@ -80,12 +80,12 @@ void Step::vColumnNameFetch(void)
 {
   ENTRY();
   
-  Column* pColumn = _pColumn(m_pDataStack->pPopPtr(__func__));
+  Column* pColumn = _pColumn(m_oDataStack.pPopPtr(__func__));
   ASSERT(CN_COLUMN == pColumn->eGetClassNo());
   
   s256 sColNm(pColumn->szColNm());
   
-  m_pDataStack->vPushStr(sColNm);
+  m_oDataStack.vPushStr(sColNm);
   
   EXIT();
 }
@@ -97,10 +97,10 @@ void Step::vColumnScaleFetch(void)
 {
   ENTRY();
   
-  Column* pColumn = _pColumn(m_pDataStack->pPopPtr(__func__));
+  Column* pColumn = _pColumn(m_oDataStack.pPopPtr(__func__));
   ASSERT(CN_COLUMN == pColumn->eGetClassNo());
   
-  m_pDataStack->vPushInt(pColumn->iColumnScale());
+  m_oDataStack.vPushInt(pColumn->iColumnScale());
   
   EXIT();
 }
@@ -112,10 +112,10 @@ void Step::vColumnTypeIdFetch(void)
 {
   ENTRY();
   
-  Column* pColumn = _pColumn(m_pDataStack->pPopPtr(__func__));
+  Column* pColumn = _pColumn(m_oDataStack.pPopPtr(__func__));
   ASSERT(CN_COLUMN == pColumn->eGetClassNo());
   
-  m_pDataStack->vPushInt(pColumn->xColumnTypeId().iIdVal());
+  m_oDataStack.vPushInt(pColumn->xColumnTypeId().iIdVal());
   
   EXIT();
 }

@@ -55,7 +55,7 @@ void Step::vPipelineCreate(void)
 
   // get pipeline spec
   
-  VertexSpec* pPipeSpec = _pVertexSpec(m_pDataStack->pPopPtr(__func__));
+  VertexSpec* pPipeSpec = _pVertexSpec(m_oDataStack.pPopPtr(__func__));
   
   // create subpipeline
   
@@ -99,9 +99,9 @@ void Step::vPipelineGet(void)
   ENTRY();
    
   if (m_pLogicUnit->m_xpPipeline.bIsNull())
-    m_pDataStack->vPushPtr(nullptr);
+    m_oDataStack.vPushPtr(nullptr);
   else
-    m_pDataStack->vPushPtr(* m_pLogicUnit->m_xpPipeline);
+    m_oDataStack.vPushPtr(* m_pLogicUnit->m_xpPipeline);
   
   EXIT();
 }
@@ -115,7 +115,7 @@ void Step::vPipelineRootDeckFetch(void)
     
   Deck* pDeck = m_pLogicUnit->m_xpPipeline->pVertexRoot()->pDeck();
     
-  m_pDataStack->vPushPtr(pDeck);
+  m_oDataStack.vPushPtr(pDeck);
 
   EXIT();
 }
@@ -128,7 +128,7 @@ void Step::vPipelineSet(void)
   ENTRY();
   
   m_pLogicUnit->m_xpPipeline =
-    _pPipeline(m_pDataStack->pPopPtr(__func__));
+    _pPipeline(m_oDataStack.pPopPtr(__func__));
 
   EXIT();
 }

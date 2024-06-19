@@ -46,7 +46,7 @@ void Step::vProfileNameStore(void)
   ENTRY();
   
   s256 sName;
-  m_pDataStack->vPopStr(sName, __func__);
+  m_oDataStack.vPopStr(sName, __func__);
   
   Profile* pProfile = m_pProfile;
   pProfile->vOpName(sName);
@@ -61,7 +61,7 @@ void Step::vProfileStart(void)
 {
   ENTRY();
   
-  DataBuffer* pDataBuffer = _pDataBuffer(m_pDataStack->pPopPtr(__func__));
+  DataBuffer* pDataBuffer = _pDataBuffer(m_oDataStack.pPopPtr(__func__));
                                          
   Profile* pProfile = m_pProfile;
   RU_Cpu* pRU_Cpu = pProfile->pRU_Cpu();

@@ -37,7 +37,7 @@ void Step::vStreamGet(void)
 {
   ENTRY();
     
-  m_pDataStack->vPushPtr(* m_pLogicUnit->m_xpStream);
+  m_oDataStack.vPushPtr(* m_pLogicUnit->m_xpStream);
 
   EXIT();
 }
@@ -49,7 +49,7 @@ void Step::vStreamSet(void)
 {
   ENTRY();
 
-  Stream* pStream = _pStream(m_pDataStack->pPopPtr(__func__));
+  Stream* pStream = _pStream(m_oDataStack.pPopPtr(__func__));
 
   m_pLogicUnit->m_xpStream = pStream;
 

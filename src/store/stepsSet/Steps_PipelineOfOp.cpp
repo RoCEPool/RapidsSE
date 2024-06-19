@@ -63,9 +63,9 @@ void Step::vPipelineOfOpAddAccum(void)
   
   Pipeline* pPipeline = m_pOp->pPipeline();
   
-  i8 i_Accum = m_pDataStack->iPopInt(__func__);
+  i8 i_Accum = m_oDataStack.iPopInt(__func__);
   
-  i8 iValue  = m_pDataStack->iPopInt(__func__);
+  i8 iValue  = m_oDataStack.iPopInt(__func__);
   
   pPipeline->vAddAccum(i_Accum,iValue);
   
@@ -81,7 +81,7 @@ void Step::vPipelineOfOpCancelledFetch(void)
   
   Pipeline* pPipeline = m_pOp->pPipeline();
   
-  m_pDataStack->vPushInt(pPipeline->bCancelled());
+  m_oDataStack.vPushInt(pPipeline->bCancelled());
   
   EXIT();
 }
@@ -95,7 +95,7 @@ void Step::vPipelineOfOpCancelledStore(void)
 
   Pipeline* pPipeline = m_pOp->pPipeline();
   
-  pPipeline->vCancelled(m_pDataStack->iPopBol(__func__));
+  pPipeline->vCancelled(m_oDataStack.iPopBol(__func__));
   
   EXIT();
 }
@@ -125,7 +125,7 @@ void Step::vPipelineOfOpEarlyExitFetch(void)
   Pipeline* pPipeline = m_pOp->pPipeline();
 
   // return if pipeline has been errored
-  m_pDataStack->vPushInt(pPipeline->bEarlyExit());
+  m_oDataStack.vPushInt(pPipeline->bEarlyExit());
 
   EXIT();
 }
@@ -139,7 +139,7 @@ void Step::vPipelineOfOpEarlyExitStore(void)
 
   Pipeline* pPipeline = m_pOp->pPipeline();
 
-  pPipeline->vEarlyExit(m_pDataStack->iPopIntBol(__func__));
+  pPipeline->vEarlyExit(m_oDataStack.iPopIntBol(__func__));
 
   EXIT();
 }
@@ -154,7 +154,7 @@ void Step::vPipelineOfOpErroredFetch(void)
   Pipeline* pPipeline = m_pOp->pPipeline();
   
   // return if pipeline has been errored
-  m_pDataStack->vPushInt(pPipeline->bErrored());
+  m_oDataStack.vPushInt(pPipeline->bErrored());
   
   EXIT();
 }
@@ -168,7 +168,7 @@ void Step::vPipelineOfOpErroredStore(void)
   
   Pipeline* pPipeline = m_pOp->pPipeline();
   
-  pPipeline->vErrored(m_pDataStack->iPopBol(__func__));
+  pPipeline->vErrored(m_oDataStack.iPopBol(__func__));
   
   EXIT();
 }
@@ -182,10 +182,10 @@ void Step::vPipelineOfOpGet(void)
   
   if (m_pOp) {
     Pipeline* pPipeline = m_pOp->pPipeline();
-    m_pDataStack->vPushPtr(pPipeline);
+    m_oDataStack.vPushPtr(pPipeline);
   }
   else {
-    m_pDataStack->vPushPtr(nullptr);
+    m_oDataStack.vPushPtr(nullptr);
   }
   
   EXIT();
@@ -200,11 +200,11 @@ void Step::vPipelineOfOpGetAccum(void)
   
   Pipeline* pPipeline = m_pOp->pPipeline();
   
-  i8 i_Accum = m_pDataStack->iPopInt(__func__);
+  i8 i_Accum = m_oDataStack.iPopInt(__func__);
   
   i8 iValue = pPipeline->iGetAccum(i_Accum);
   
-  m_pDataStack->vPushInt(iValue);
+  m_oDataStack.vPushInt(iValue);
   
   EXIT();
 }
@@ -232,7 +232,7 @@ void Step::vPipelineOfOpInternalErrorFetch(void)
 
   Pipeline* pPipeline = m_pOp->pPipeline();
 
-  m_pDataStack->vPushInt(pPipeline->bInternalError());
+  m_oDataStack.vPushInt(pPipeline->bInternalError());
 
   EXIT();
 }
@@ -246,7 +246,7 @@ void Step::vPipelineOfOpInternalErrorStore(void)
 
   Pipeline* pPipeline = m_pOp->pPipeline();
 
-  pPipeline->vInternalError(m_pDataStack->iPopBol(__func__));
+  pPipeline->vInternalError(m_oDataStack.iPopBol(__func__));
 
   EXIT();
 }
@@ -263,7 +263,7 @@ void Step::vPipelineOfOpLowMemoryFetch(void)
 
   Pipeline* pPipeline = m_pOp->pPipeline();
 
-  m_pDataStack->vPushInt(pPipeline->bLowMemory());
+  m_oDataStack.vPushInt(pPipeline->bLowMemory());
 
   EXIT();
 }
@@ -277,7 +277,7 @@ void Step::vPipelineOfOpLowMemoryStore(void)
 
   Pipeline* pPipeline = m_pOp->pPipeline();
 
-  pPipeline->vLowMemory(m_pDataStack->iPopBol(__func__));
+  pPipeline->vLowMemory(m_oDataStack.iPopBol(__func__));
 
   EXIT();
 }
@@ -292,7 +292,7 @@ void Step::vPipelineOfOpPulsedFetch(void)
   Pipeline* pPipeline = m_pOp->pPipeline();
   
   // return if pipeline has been pulsed
-  m_pDataStack->vPushInt(pPipeline->bPulsed());
+  m_oDataStack.vPushInt(pPipeline->bPulsed());
 
   EXIT();
 }
@@ -306,7 +306,7 @@ void Step::vPipelineOfOpPulsedStore(void)
   
   Pipeline* pPipeline = m_pOp->pPipeline();
   
-  pPipeline->vPulsed(m_pDataStack->iPopBol(__func__));
+  pPipeline->vPulsed(m_oDataStack.iPopBol(__func__));
   
   EXIT();
 }

@@ -48,7 +48,7 @@ void Step::vRowOnceGet(void)
   
   RowOnce* pRowOnce = _pRowOnce(*m_pLogicUnit->m_xpRowOnce);
   
-  m_pDataStack->vPushPtr(pRowOnce);
+  m_oDataStack.vPushPtr(pRowOnce);
   
   EXIT();
 }
@@ -60,7 +60,7 @@ void Step::vRowOnceIsNull(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(m_pLogicUnit->m_xpRowOnce.bIsNull() ? 1 : 0);
+  m_oDataStack.vPushInt(m_pLogicUnit->m_xpRowOnce.bIsNull() ? 1 : 0);
   
   EXIT();
 }
@@ -84,7 +84,7 @@ void Step::vRowOnceSet(void)
 {
   ENTRY();
 
-  RowOnce* pRowOnce = _pRowOnce(m_pDataStack->pPopPtr(__func__));
+  RowOnce* pRowOnce = _pRowOnce(m_oDataStack.pPopPtr(__func__));
 
   m_pLogicUnit->m_xpRowOnce = pRowOnce;
 

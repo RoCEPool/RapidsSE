@@ -33,7 +33,7 @@ void Step::vSystemActiveJobs(void)
     
   i8 nActiveJobs = AM::SYSTEM::nActiveJobs();
   
-  m_pDataStack->vPushInt(nActiveJobs);
+  m_oDataStack.vPushInt(nActiveJobs);
 
   EXIT();
 }
@@ -59,7 +59,7 @@ void Step::vSystemOpenFetch(void)
   
   b8 bSystemOpen = AM::SYSTEM::bSystemOpen();
   
-  m_pDataStack->vPushInt(bSystemOpen);
+  m_oDataStack.vPushInt(bSystemOpen);
 
   EXIT();
 }
@@ -71,7 +71,7 @@ void Step::vSystemOpenStore(void)
 {
   ENTRY();
 
-  b8 bSystemOpen = m_pDataStack->iPopInt(__func__);
+  b8 bSystemOpen = m_oDataStack.iPopInt(__func__);
 
   AM::SYSTEM::vSystemOpen(bSystemOpen);
 
@@ -124,7 +124,7 @@ void Step::vSystemStartedFetch(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(AM::SYSTEM::bStarted());
+  m_oDataStack.vPushInt(AM::SYSTEM::bStarted());
   
   EXIT();
 }
@@ -136,7 +136,7 @@ void Step::vSystemStartedStore(void)
 {
   ENTRY();
   
-  i8 iStarted = m_pDataStack->iPopBol(__func__);
+  i8 iStarted = m_oDataStack.iPopBol(__func__);
   
   AM::SYSTEM::vStarted(iStarted == 1 ? true : false);
   

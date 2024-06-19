@@ -42,7 +42,7 @@ void Step::vDataBufferGetBufferIdAsAddr(void)
 
   DataBuffer* pDataBuffer = *m_pLogicUnit->m_xpDataBuffer;
 
-  m_pDataStack->vPushPtr((Object*)pDataBuffer->oGetBufferId().m_pvAsAddress);
+  m_oDataStack.vPushPtr((Object*)pDataBuffer->oGetBufferId().m_pvAsAddress);
 
   EXIT();
 }
@@ -68,7 +68,7 @@ void Step::vDataBufferGet(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpDataBuffer);
+  m_oDataStack.vPushPtr(*m_pLogicUnit->m_xpDataBuffer);
 
   EXIT();
 }
@@ -80,7 +80,7 @@ void Step::vDataBufferGetAndClear(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpDataBuffer);
+  m_oDataStack.vPushPtr(*m_pLogicUnit->m_xpDataBuffer);
 
   m_pLogicUnit->m_xpDataBuffer = nullptr;
 
@@ -94,7 +94,7 @@ void Step::vDataBufferIsNotNull(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt(m_pLogicUnit->m_xpDataBuffer.bIsNull() ? 0 : 1);
+  m_oDataStack.vPushInt(m_pLogicUnit->m_xpDataBuffer.bIsNull() ? 0 : 1);
 
   EXIT();
 }
@@ -106,7 +106,7 @@ void Step::vDataBufferIsNull(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt(m_pLogicUnit->m_xpDataBuffer.bIsNull() ? 1 : 0);
+  m_oDataStack.vPushInt(m_pLogicUnit->m_xpDataBuffer.bIsNull() ? 1 : 0);
 
   EXIT();
 }
@@ -118,7 +118,7 @@ void Step::vDataBufferSet(void)
 {
   ENTRY();
 
-  Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
+  Operand* pOperand = _pOperand(m_oDataStack.pPopPtr(__func__));
 
   ASSERT(! pOperand || m_pLogicUnit->m_xpDataBuffer.bIsNull());
 

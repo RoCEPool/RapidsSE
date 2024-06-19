@@ -32,11 +32,11 @@ void Step::vToBcd(void)
   
   s32 sBcd;
   
-  m_pDataStack->vPopStr(sBcd,__func__);
+  m_oDataStack.vPopStr(sBcd, __func__);
 
   i8 i = sBcd.iToBcd();
   
-  m_pDataStack->vPushBcd(i);
+  m_oDataStack.vPushBcd(i);
   
   EXIT();
 }
@@ -50,11 +50,11 @@ void Step::vToBol(void)
   
   s32 sBcd;
   
-  m_pDataStack->vPopStr(sBcd,__func__);
+  m_oDataStack.vPopStr(sBcd, __func__);
 
   i8 i = sBcd.iToBol();
   
-  m_pDataStack->vPushBol(i);
+  m_oDataStack.vPushBol(i);
   
   EXIT();
 }
@@ -67,7 +67,7 @@ void Step::vToDigitName(void)
   ENTRY();
   
   // get the arguments
-  i8 iDigit = m_pDataStack->iPopInt(__func__);
+  i8 iDigit = m_oDataStack.iPopInt(__func__);
   
   s32 sName;
   
@@ -85,7 +85,7 @@ void Step::vToDigitName(void)
     default:sName = "invalid"_Stz; break;
   }
   
-  m_pDataStack->vPushStr(sName);
+  m_oDataStack.vPushStr(sName);
   
   EXIT();
 }
@@ -99,11 +99,11 @@ void Step::vToFlt(void)
   
   s32 sFlt;
   
-  m_pDataStack->vPopStr(sFlt,__func__);
+  m_oDataStack.vPopStr(sFlt, __func__);
 
   d8 d = sFlt.dToFlt();
   
-  m_pDataStack->vPushFlt(d);
+  m_oDataStack.vPushFlt(d);
   
   EXIT();
 }
@@ -117,11 +117,11 @@ void Step::vToInt(void)
   
   s32 sInt;
   
-  m_pDataStack->vPopStr(sInt,__func__);
+  m_oDataStack.vPopStr(sInt, __func__);
 
   i8 i = sInt.iToI8();
   
-  m_pDataStack->vPushInt(i);
+  m_oDataStack.vPushInt(i);
   
   EXIT();
 }
@@ -133,11 +133,11 @@ void Step::vToPtr(void)
 {
   ENTRY();
   
-  i8 iPtr = m_pDataStack->iPopInt(__func__);
+  i8 iPtr = m_oDataStack.iPopInt(__func__);
   
   Object* pPtr = (Object*)iPtr;
   
-  m_pDataStack->vPushPtr(pPtr);
+  m_oDataStack.vPushPtr(pPtr);
   
   EXIT();
 }
@@ -150,13 +150,13 @@ void Step::vToStr(void)
   ENTRY();
   
   SenCell xVar;
-  m_pDataStack->vPopSenCell(xVar,__func__);
+  m_oDataStack.vPopSenCell(xVar, __func__);
   
   s48K sString;
   
   xVar.vToString(sString);
   
-  m_pDataStack->vPushStr(sString);
+  m_oDataStack.vPushStr(sString);
   
   EXIT();
 }

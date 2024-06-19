@@ -111,7 +111,7 @@ void Step::vSqlCompilerAggregateSplit(void) {
    */
 
 
-  PlanOperand* pPlanOperand = _pPlanOperand(m_pDataStack->pPopPtr(__func__));
+  PlanOperand* pPlanOperand = _pPlanOperand(m_oDataStack.pPopPtr(__func__));
   Parser::RootNode* pPlanRoot = Parser::_pRootNode(pPlanOperand->pPlanNode());
   UNUSED(pPlanRoot);
   ASSERT(ShadowRoot::bIsExactType(pPlanRoot));
@@ -137,7 +137,7 @@ void Step::vSqlCompilerAggregateSplit(void) {
     UNUSED(pRow);
     delete pPlanRoot;
     delete pPlanOperand;
-    m_pDataStack->vPushPtr(nullptr);
+    m_oDataStack.vPushPtr(nullptr);
     goto L_Exit;
   }
 
@@ -145,7 +145,7 @@ void Step::vSqlCompilerAggregateSplit(void) {
   // TODO: eventually we want the received plan graph to be immutable,
   //       so we would send a different version. But for now we will just
   //       manipulate and send the same plan graph
-  m_pDataStack->vPushPtr(pPlanOperand);
+  m_oDataStack.vPushPtr(pPlanOperand);
 
   L_Exit:
   EXIT();
@@ -187,7 +187,7 @@ void Step::vSqlCompilerCorrBySquash(void) {
    */
 
 
-  PlanOperand* pPlanOperand = _pPlanOperand(m_pDataStack->pPopPtr(__func__));
+  PlanOperand* pPlanOperand = _pPlanOperand(m_oDataStack.pPopPtr(__func__));
   Parser::RootNode* pPlanRoot = Parser::_pRootNode(pPlanOperand->pPlanNode());
   UNUSED(pPlanRoot);
   ASSERT(ShadowRoot::bIsExactType(pPlanRoot));
@@ -213,7 +213,7 @@ void Step::vSqlCompilerCorrBySquash(void) {
     UNUSED(pRow);
     delete pPlanRoot;
     delete pPlanOperand;
-    m_pDataStack->vPushPtr(nullptr);
+    m_oDataStack.vPushPtr(nullptr);
     goto L_Exit;
   }
 
@@ -221,7 +221,7 @@ void Step::vSqlCompilerCorrBySquash(void) {
   // TODO: eventually we want the received plan graph to be immutable,
   //       so we would send a different version. But for now we will just
   //       manipulate and send the same plan graph
-  m_pDataStack->vPushPtr(pPlanOperand);
+  m_oDataStack.vPushPtr(pPlanOperand);
 
   L_Exit:
   EXIT();
@@ -240,7 +240,7 @@ void Step::vSqlCompilerDeletePlan(void) {
    */
 
   // Get the plan operand
-  PlanOperand *pPlanOperand = _pPlanOperand(m_pDataStack->pPopPtr(__func__));
+  PlanOperand *pPlanOperand = _pPlanOperand(m_oDataStack.pPopPtr(__func__));
   Parser::RootNode* pRootNode = Parser::_pRootNode(pPlanOperand->pPlanNode());
   ASSERT(ShadowRoot::bIsExactType(pRootNode));
   delete pRootNode;
@@ -274,15 +274,15 @@ void Step::vSqlCompilerDoExplain(void) {
    */
 
   // get the streamSet table
-  Table* pTableDef = _pTable(m_pDataStack->pPopPtr(__func__));
+  Table* pTableDef = _pTable(m_oDataStack.pPopPtr(__func__));
 
   // Get the compiler stage
   s256 sCompilerStage;
-  m_pDataStack->vPopStr(sCompilerStage, __func__);
+  m_oDataStack.vPopStr(sCompilerStage, __func__);
   ASSERT(sCompilerStage.nLength() > 0);
 
   // Get the plan operand
-  PlanOperand *pPlanOperand = _pPlanOperand(m_pDataStack->pPopPtr(__func__));
+  PlanOperand *pPlanOperand = _pPlanOperand(m_oDataStack.pPopPtr(__func__));
   Parser::RootNode* pRootNode = Parser::_pRootNode(pPlanOperand->pPlanNode());
   UNUSED(pRootNode);
   ASSERT(ShadowRoot::bIsExactType(pRootNode));
@@ -372,20 +372,20 @@ void Step::vSqlCompilerDoExplainTliterate(void) {
    */
 
   // get the streamSet table
-  Table* pTableDef = _pTable(m_pDataStack->pPopPtr(__func__));
+  Table* pTableDef = _pTable(m_oDataStack.pPopPtr(__func__));
 
   // Get the compiler stage
   s256 sCompilerStage;
-  m_pDataStack->vPopStr(sCompilerStage, __func__);
+  m_oDataStack.vPopStr(sCompilerStage, __func__);
   ASSERT(sCompilerStage.nLength() > 0);
 
   // Get the pipeline command
   s48K sPipelineCmd;
-  m_pDataStack->vPopStr(sPipelineCmd, __func__);
+  m_oDataStack.vPopStr(sPipelineCmd, __func__);
   ASSERT(sPipelineCmd.nLength() > 0);
 
   // Get the plan operand
-  PlanOperand *pPlanOperand = _pPlanOperand(m_pDataStack->pPopPtr(__func__));
+  PlanOperand *pPlanOperand = _pPlanOperand(m_oDataStack.pPopPtr(__func__));
   Parser::RootNode* pRootNode = Parser::_pRootNode(pPlanOperand->pPlanNode());
   UNUSED(pRootNode);
   ASSERT(ShadowRoot::bIsExactType(pRootNode));
@@ -452,7 +452,7 @@ void Step::vSqlCompilerExplainFormat(void) {
    */
 
   // Get the plan operand
-  PlanOperand *pPlanOperand = _pPlanOperand(m_pDataStack->pPopPtr(__func__));
+  PlanOperand *pPlanOperand = _pPlanOperand(m_oDataStack.pPopPtr(__func__));
   Parser::RootNode* pRootNode = Parser::_pRootNode(pPlanOperand->pPlanNode());
   UNUSED(pRootNode);
   ASSERT(ShadowRoot::bIsExactType(pRootNode));
@@ -480,7 +480,7 @@ void Step::vSqlCompilerExplainFormat(void) {
   Stz* szTableDef = ExplainOp::szTableDef(pExplainOp);
   ASSERT(szTableDef);
 
-  m_pDataStack->vPushStz(szTableDef);
+  m_oDataStack.vPushStz(szTableDef);
 
   EXIT();
 }
@@ -543,7 +543,7 @@ void Step::vSqlCompilerExprPushdown(void)
    * The plan may be modified in this stage.
    */
 
-  PlanOperand* pPlanOperand = _pPlanOperand(m_pDataStack->pPopPtr(__func__));
+  PlanOperand* pPlanOperand = _pPlanOperand(m_oDataStack.pPopPtr(__func__));
   Parser::RootNode* pPlanRoot = Parser::_pRootNode(pPlanOperand->pPlanNode());
   UNUSED(pPlanRoot);
   ASSERT(ShadowRoot::bIsExactType(pPlanRoot));
@@ -568,7 +568,7 @@ void Step::vSqlCompilerExprPushdown(void)
     UNUSED(pRow);
     delete pPlanRoot;
     delete pPlanOperand;
-    m_pDataStack->vPushPtr(nullptr);
+    m_oDataStack.vPushPtr(nullptr);
     goto L_Exit;
   }
 
@@ -576,7 +576,7 @@ void Step::vSqlCompilerExprPushdown(void)
   // TODO: eventually we want the received plan graph to be immutable,
   //       so we would send a different version. But for now we will just
   //       manipulate and send the same plan graph
-  m_pDataStack->vPushPtr(pPlanOperand);
+  m_oDataStack.vPushPtr(pPlanOperand);
 
   L_Exit:
   EXIT();
@@ -596,7 +596,7 @@ void Step::vSqlCompilerJoinOptimisation(void)
    * The plan may be modified in this stage.
    */
 
-  PlanOperand* pPlanOperand = _pPlanOperand(m_pDataStack->pPopPtr(__func__));
+  PlanOperand* pPlanOperand = _pPlanOperand(m_oDataStack.pPopPtr(__func__));
   Parser::RootNode* pPlanRoot = Parser::_pRootNode(pPlanOperand->pPlanNode());
   UNUSED(pPlanRoot);
   ASSERT(ShadowRoot::bIsExactType(pPlanRoot));
@@ -621,7 +621,7 @@ void Step::vSqlCompilerJoinOptimisation(void)
     UNUSED(pRow);
     delete pPlanRoot;
     delete pPlanOperand;
-    m_pDataStack->vPushPtr(nullptr);
+    m_oDataStack.vPushPtr(nullptr);
     goto L_Exit;
   }
 
@@ -629,7 +629,7 @@ void Step::vSqlCompilerJoinOptimisation(void)
   // TODO: eventually we want the received plan graph to be immutable,
   //       so we would send a different version. But for now we will just
   //       manipulate and send the same plan graph
-  m_pDataStack->vPushPtr(pPlanOperand);
+  m_oDataStack.vPushPtr(pPlanOperand);
 
   L_Exit:
   EXIT();
@@ -662,7 +662,7 @@ void Step::vSqlCompilerExprValidate(void)
    * The plan is not modified in this stage.
    */
 
-  PlanOperand* pPlanOperand = _pPlanOperand(m_pDataStack->pPopPtr(__func__));
+  PlanOperand* pPlanOperand = _pPlanOperand(m_oDataStack.pPopPtr(__func__));
   Parser::RootNode* pPlanRoot = Parser::_pRootNode(pPlanOperand->pPlanNode());
   UNUSED(pPlanRoot);
   ASSERT(ShadowRoot::bIsExactType(pPlanRoot));
@@ -687,7 +687,7 @@ void Step::vSqlCompilerExprValidate(void)
     UNUSED(pRow);
     delete pPlanRoot;
     delete pPlanOperand;
-    m_pDataStack->vPushPtr(nullptr);
+    m_oDataStack.vPushPtr(nullptr);
     goto L_Exit;
   }
 
@@ -695,7 +695,7 @@ void Step::vSqlCompilerExprValidate(void)
   // TODO: eventually we want the received plan graph to be immutable,
   //       so we would send a different version. But for now we will just
   //       manipulate and send the same plan graph
-  m_pDataStack->vPushPtr(pPlanOperand);
+  m_oDataStack.vPushPtr(pPlanOperand);
 
   L_Exit:
   EXIT();
@@ -711,11 +711,11 @@ void Step::vSqlCompilerHasExplain(void) {
 
   // Get the compiler stage
   s256 sCompilerStage;
-  m_pDataStack->vPopStr(sCompilerStage, __func__);
+  m_oDataStack.vPopStr(sCompilerStage, __func__);
   ASSERT(sCompilerStage.nLength() > 0);
 
   // Get the plan operand
-  PlanOperand *pPlanOperand = _pPlanOperand(m_pDataStack->pPopPtr(__func__));
+  PlanOperand *pPlanOperand = _pPlanOperand(m_oDataStack.pPopPtr(__func__));
 
   Parser::RootNode* pRootNode = Parser::_pRootNode(pPlanOperand->pPlanNode());
   UNUSED(pRootNode);
@@ -749,7 +749,7 @@ void Step::vSqlCompilerHasExplain(void) {
     }
   }
 
-  m_pDataStack->vPushInt(bExplain);
+  m_oDataStack.vPushInt(bExplain);
 
   EXIT();
 }
@@ -776,7 +776,7 @@ void Step::vSqlCompilerNameValidate(void)
    * Therefore the plan is modified in this stage.
    */
 
-  PlanOperand* pPlanOperand = _pPlanOperand(m_pDataStack->pPopPtr(__func__));
+  PlanOperand* pPlanOperand = _pPlanOperand(m_oDataStack.pPopPtr(__func__));
   Parser::RootNode* pPlanRoot = Parser::_pRootNode(pPlanOperand->pPlanNode());
   UNUSED(pPlanRoot);
   ASSERT(ShadowRoot::bIsExactType(pPlanRoot));
@@ -807,7 +807,7 @@ void Step::vSqlCompilerNameValidate(void)
     UNUSED(pRow);
     delete pPlanRoot;
     delete pPlanOperand;
-    m_pDataStack->vPushPtr(nullptr);
+    m_oDataStack.vPushPtr(nullptr);
     goto L_Exit;
   }
 
@@ -817,7 +817,7 @@ void Step::vSqlCompilerNameValidate(void)
   // TODO: eventually we want the received plan graph to be immutable,
   //       so we would send a different version. But for now we will just
   //       manipulate and send the same plan graph
-  m_pDataStack->vPushPtr(pPlanOperand);
+  m_oDataStack.vPushPtr(pPlanOperand);
 
 L_Exit:
   EXIT();
@@ -882,7 +882,7 @@ void Step::vSqlCompilerParser(void)
 
   // Get the original SQL statement entered
   s4K sSqlStatement;
-  m_pDataStack->vPopStr(sSqlStatement,__func__);
+  m_oDataStack.vPopStr(sSqlStatement, __func__);
   
   //vTrace("vSqlCompilerParser got : %s\n"_Stz,sSqlStatement.szStz());
 
@@ -912,7 +912,7 @@ void Step::vSqlCompilerParser(void)
     ASSERT(pRow);
     UNUSED(pRow);
     
-    m_pDataStack->vPushPtr(nullptr);
+    m_oDataStack.vPushPtr(nullptr);
     goto L_Exit;
 
   } catch (Parser::SemanticException& e) {
@@ -930,14 +930,14 @@ void Step::vSqlCompilerParser(void)
                                 C_VARGS_END);
     ASSERT(pRow);
     UNUSED(pRow);
-    m_pDataStack->vPushPtr(nullptr);
+    m_oDataStack.vPushPtr(nullptr);
     goto L_Exit;
   }
 
   ASSERT(pPlanRoot);
 
   pPlanOperand = new PlanOperand(pPlanRoot);
-  m_pDataStack->vPushPtr(pPlanOperand);
+  m_oDataStack.vPushPtr(pPlanOperand);
 
   //vTrace("  antlr(%s) -> RootNode %p\n"_Stz,
   //       sSqlStatement.szStz(),pPlanNode_root);
@@ -986,7 +986,7 @@ void Step::vSqlCompilerPartitionPlan(void)
    * The plan is heavily modified in this stage.
    */
 
-  PlanOperand* pPlanOperand = _pPlanOperand(m_pDataStack->pPopPtr(__func__));
+  PlanOperand* pPlanOperand = _pPlanOperand(m_oDataStack.pPopPtr(__func__));
   Parser::RootNode* pRootNode = Parser::_pRootNode(pPlanOperand->pPlanNode());
   ASSERT(ShadowRoot::bIsExactType(pRootNode));
 
@@ -1011,7 +1011,7 @@ void Step::vSqlCompilerPartitionPlan(void)
     UNUSED(pRow);
     delete pRootNode;
     delete pPlanOperand;
-    m_pDataStack->vPushPtr(nullptr);
+    m_oDataStack.vPushPtr(nullptr);
     goto L_Exit;
   }
 
@@ -1023,7 +1023,7 @@ void Step::vSqlCompilerPartitionPlan(void)
   // TODO: eventually we want the received plan graph to be immutable,
   //       so we would send a different version. But for now we will just
   //       manipulate and send the same plan graph
-  m_pDataStack->vPushPtr(pPlanOperand);
+  m_oDataStack.vPushPtr(pPlanOperand);
 
   L_Exit:
   EXIT();
@@ -1052,7 +1052,7 @@ void Step::vSqlCompilerPostProject(void)
    * one ProjectOp or AggregateOp (which is derived from ProjectOp anyway).
    */
 
-  PlanOperand* pPlanOperand = _pPlanOperand(m_pDataStack->pPopPtr(__func__));
+  PlanOperand* pPlanOperand = _pPlanOperand(m_oDataStack.pPopPtr(__func__));
   Parser::RootNode* pRootNode = Parser::_pRootNode(pPlanOperand->pPlanNode());
   UNUSED(pRootNode);
   ASSERT(ShadowRoot::bIsExactType(pRootNode));
@@ -1078,7 +1078,7 @@ void Step::vSqlCompilerPostProject(void)
     UNUSED(pRow);
     delete pRootNode;
     delete pPlanOperand;
-    m_pDataStack->vPushPtr(nullptr);
+    m_oDataStack.vPushPtr(nullptr);
     goto L_Exit;
   }
 
@@ -1086,7 +1086,7 @@ void Step::vSqlCompilerPostProject(void)
   // TODO: eventually we want the received plan graph to be immutable,
   //       so we would send a different version. But for now we will just
   //       manipulate and send the same plan graph
-  m_pDataStack->vPushPtr(pPlanOperand);
+  m_oDataStack.vPushPtr(pPlanOperand);
 
   L_Exit:
   EXIT();
@@ -1111,7 +1111,7 @@ void Step::vSqlCompilerProjValidation(void)
    * The plan is not modified in this stage.
    */
 
-  PlanOperand* pPlanOperand = _pPlanOperand(m_pDataStack->pPopPtr(__func__));
+  PlanOperand* pPlanOperand = _pPlanOperand(m_oDataStack.pPopPtr(__func__));
   Parser::RootNode* pPlanRoot = Parser::_pRootNode(pPlanOperand->pPlanNode());
   UNUSED(pPlanRoot);
   ASSERT(ShadowRoot::bIsExactType(pPlanRoot));
@@ -1136,7 +1136,7 @@ void Step::vSqlCompilerProjValidation(void)
     UNUSED(pRow);
     delete pPlanRoot;
     delete pPlanOperand;
-    m_pDataStack->vPushPtr(nullptr);
+    m_oDataStack.vPushPtr(nullptr);
     goto L_Exit;
   }
 
@@ -1144,7 +1144,7 @@ void Step::vSqlCompilerProjValidation(void)
   // TODO: eventually we want the received plan graph to be immutable,
   //       so we would send a different version. But for now we will just
   //       manipulate and send the same plan graph
-  m_pDataStack->vPushPtr(pPlanOperand);
+  m_oDataStack.vPushPtr(pPlanOperand);
 
   L_Exit:
   EXIT();
@@ -1165,7 +1165,7 @@ void Step::vSqlCompilerSetOpValidate(void)
    * by StatementMarkers.
    */
 
-  PlanOperand* pPlanOperand = _pPlanOperand(m_pDataStack->pPopPtr(__func__));
+  PlanOperand* pPlanOperand = _pPlanOperand(m_oDataStack.pPopPtr(__func__));
   Parser::RootNode* pPlanRoot = Parser::_pRootNode(pPlanOperand->pPlanNode());
   UNUSED(pPlanRoot);
   ASSERT(ShadowRoot::bIsExactType(pPlanRoot));
@@ -1194,14 +1194,14 @@ void Step::vSqlCompilerSetOpValidate(void)
     UNUSED(pRow);
     delete pPlanRoot;
     delete pPlanOperand;
-    m_pDataStack->vPushPtr(nullptr);
+    m_oDataStack.vPushPtr(nullptr);
     goto L_Exit;
   }
 
   // TODO: eventually we want the received plan graph to be immutable,
   //       so we would send a different version. But for now we will just
   //       manipulate and send the same plan graph
-  m_pDataStack->vPushPtr(pPlanOperand);
+  m_oDataStack.vPushPtr(pPlanOperand);
 
   L_Exit:
   EXIT();
@@ -1220,7 +1220,7 @@ void Step::vSqlCompilerStageMarkers(void)
    * the transliterator when to create a new stage in the pipeline statement.
    */
 
-  PlanOperand* pPlanOperand = _pPlanOperand(m_pDataStack->pPopPtr(__func__));
+  PlanOperand* pPlanOperand = _pPlanOperand(m_oDataStack.pPopPtr(__func__));
   Parser::RootNode* pPlanRoot = Parser::_pRootNode(pPlanOperand->pPlanNode());
   UNUSED(pPlanRoot);
   ASSERT(ShadowRoot::bIsExactType(pPlanRoot));
@@ -1244,14 +1244,14 @@ void Step::vSqlCompilerStageMarkers(void)
     UNUSED(pRow);
     delete pPlanRoot;
     delete pPlanOperand;
-    m_pDataStack->vPushPtr(nullptr);
+    m_oDataStack.vPushPtr(nullptr);
     goto L_Exit;
   }
 
   // TODO: eventually we want the received plan graph to be immutable,
   //       so we would send a different version. But for now we will just
   //       manipulate and send the same plan graph
-  m_pDataStack->vPushPtr(pPlanOperand);
+  m_oDataStack.vPushPtr(pPlanOperand);
 
   L_Exit:
   EXIT();
@@ -1269,12 +1269,12 @@ void Step::vSqlCompilerTransliterate(void)
 
   //vTrace("\nStep::vSqlCompilerTransliterate\n"_Stz);
 
-  PlanOperand* pPlanOperand = _pPlanOperand(m_pDataStack->pPopPtr(__func__));
+  PlanOperand* pPlanOperand = _pPlanOperand(m_oDataStack.pPopPtr(__func__));
   Parser::RootNode* pPlanRoot = Parser::_pRootNode(pPlanOperand->pPlanNode());
   ASSERT(ShadowRoot::bIsExactType(pPlanRoot));
 
   // get the pipeline name
-  m_pDataStack->vPopStr(sPipelineName, __func__);
+  m_oDataStack.vPopStr(sPipelineName, __func__);
 
   // Walk the graph and produce a pipeline statement.
   //bool bTransliterate = Dynamo::bPlanToPipeline(sPipelineStmt,pPlanRoot);
@@ -1289,7 +1289,7 @@ void Step::vSqlCompilerTransliterate(void)
   delete pBackend;
 
   // return the pipeline
-  m_pDataStack->vPushStr(sPipelineStmt);
+  m_oDataStack.vPushStr(sPipelineStmt);
 
   EXIT();
 }

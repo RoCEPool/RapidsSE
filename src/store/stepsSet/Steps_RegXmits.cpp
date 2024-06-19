@@ -59,7 +59,7 @@ void Step::vRegSendsGet(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpSends);
+  m_oDataStack.vPushPtr(*m_pLogicUnit->m_xpSends);
   
   EXIT();
 }
@@ -75,7 +75,7 @@ void Step::vRegSendsHandleCancelling(void)
  
   pSends->vIncCancelling();
   
-  m_pDataStack->vPushInt(pSends->bCancellingDone());
+  m_oDataStack.vPushInt(pSends->bCancellingDone());
   
   EXIT();
 }
@@ -91,7 +91,7 @@ void Step::vRegSendsHandleCleaning(void)
 
   pSends->vIncCleaning();
 
-  m_pDataStack->vPushInt(pSends->bCleaningDone());
+  m_oDataStack.vPushInt(pSends->bCleaningDone());
 
   EXIT();
 }
@@ -105,7 +105,7 @@ void Step::vRegSendsHandleDataPulse(void)
 
   Sends* pSends = _pSends(*m_pLogicUnit->m_xpSends);
 
-  m_pDataStack->vPushInt(pSends->bDataPulseDone());
+  m_oDataStack.vPushInt(pSends->bDataPulseDone());
   pSends->vIncDataPulse();
 
   EXIT();
@@ -122,7 +122,7 @@ void Step::vRegSendsHandleDestroy(void)
   
   pSends->vIncDestroy();
   
-  m_pDataStack->vPushInt(pSends->bDestroyDone());
+  m_oDataStack.vPushInt(pSends->bDestroyDone());
   
   EXIT();
 }
@@ -138,7 +138,7 @@ void Step::vRegSendsHandleEnding(void)
 
   pSends->vIncEnding();
 
-  m_pDataStack->vPushInt(pSends->bEndingDone());
+  m_oDataStack.vPushInt(pSends->bEndingDone());
 
   EXIT();
 }
@@ -154,7 +154,7 @@ void Step::vRegSendsHandleEos(void)
   
   pSends->vIncEos();
   
-  m_pDataStack->vPushInt(pSends->bEosDone());
+  m_oDataStack.vPushInt(pSends->bEosDone());
   
   EXIT();
 }
@@ -170,7 +170,7 @@ void Step::vRegSendsHandleErroring(void)
   
   pSends->vIncErroring();
   
-  m_pDataStack->vPushInt(pSends->bErroringDone());
+  m_oDataStack.vPushInt(pSends->bErroringDone());
   
   EXIT();
 }
@@ -186,7 +186,7 @@ void Step::vRegSendsHandleExiting(void)
   
   pSends->vIncExiting();
   
-  m_pDataStack->vPushInt(pSends->bExitingDone());
+  m_oDataStack.vPushInt(pSends->bExitingDone());
   
   EXIT();
 }
@@ -202,7 +202,7 @@ void Step::vRegSendsHandleEnd(void)
   
   pSends->vIncEnd();
   
-  m_pDataStack->vPushInt(pSends->bEndDone());
+  m_oDataStack.vPushInt(pSends->bEndDone());
   
   EXIT();
 }
@@ -219,7 +219,7 @@ void Step::vRegSendsHandleLeaving(void)
   bool bLeavingDone = pSends->bLeavingDone();
   pSends->vIncLeaving();
 
-  m_pDataStack->vPushInt(bLeavingDone);
+  m_oDataStack.vPushInt(bLeavingDone);
 
   EXIT();
 }
@@ -236,7 +236,7 @@ void Step::vRegSendsHandleStart(void)
   bool bStartDone = pSends->bStartDone();
   pSends->vIncStart();
   
-  m_pDataStack->vPushInt(bStartDone);
+  m_oDataStack.vPushInt(bStartDone);
   
   EXIT();
 }
@@ -254,7 +254,7 @@ void Step::vRegSendsHandleStreamDef(void)
   
   pSends->vIncStreamDef();
   
-  m_pDataStack->vPushInt(bStreamDefDone);
+  m_oDataStack.vPushInt(bStreamDefDone);
   
   EXIT();
 }
@@ -272,7 +272,7 @@ void Step::vRegSendsHandleTriggered(void)
 
   pSends->vIncTriggered();
 
-  m_pDataStack->vPushInt(bTriggeredDone);
+  m_oDataStack.vPushInt(bTriggeredDone);
 
   EXIT();
 }
@@ -284,7 +284,7 @@ void Step::vRegSendsIsNull(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(m_pLogicUnit->m_xpSends.bIsNull() ? 1 : 0);
+  m_oDataStack.vPushInt(m_pLogicUnit->m_xpSends.bIsNull() ? 1 : 0);
   
   EXIT();
 }
@@ -298,7 +298,7 @@ void Step::vRegSendsNew(void)
   
   ASSERT (m_pLogicUnit->m_xpSends.bIsNull());
   
-  i8 iSends = m_pDataStack->iPopInt(__func__);
+  i8 iSends = m_oDataStack.iPopInt(__func__);
   
   m_pLogicUnit->m_xpSends = new Sends(iSends);
   

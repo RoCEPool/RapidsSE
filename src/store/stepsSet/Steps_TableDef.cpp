@@ -39,11 +39,11 @@ void Step::vTableDefColumnFetch(void)
   
   Table* pTable = _pTable(*m_pLogicUnit->m_xpTableDef);
   
-  i8 iColumnNo = m_pDataStack->iPopInt(__func__);
+  i8 iColumnNo = m_oDataStack.iPopInt(__func__);
   
   StreamDef* pStreamDef = pTable->pStreamDef();
   
-  m_pDataStack->vPushPtr(pStreamDef->pGetColumn(iColumnNo));
+  m_oDataStack.vPushPtr(pStreamDef->pGetColumn(iColumnNo));
   
   EXIT();
 }
@@ -75,7 +75,7 @@ void Step::vTableDefGet(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpTableDef);
+  m_oDataStack.vPushPtr(*m_pLogicUnit->m_xpTableDef);
   
   EXIT();
 }
@@ -87,7 +87,7 @@ void Step::vTableDefSet(void)
 {
   ENTRY();
   
-  m_pLogicUnit->m_xpTableDef = _pTable(m_pDataStack->pPopPtr(__func__));
+  m_pLogicUnit->m_xpTableDef = _pTable(m_oDataStack.pPopPtr(__func__));
   
   EXIT();
 }
@@ -102,12 +102,12 @@ void Step::vTableDefTablePtnGet(void)
 	Table* pTable = _pTable(*m_pLogicUnit->m_xpTableDef);
 
 	LglPtn tLglPtn;
-	tLglPtn = m_pDataStack->iPopInt(__func__);
+	tLglPtn = m_oDataStack.iPopInt(__func__);
 	i8 i_TablePtn = pTable->iPtnNoToTablePtn(tLglPtn);
 
 	TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
 
-	m_pDataStack->vPushPtr(pTablePtn);
+	m_oDataStack.vPushPtr(pTablePtn);
 
 	EXIT();
 }

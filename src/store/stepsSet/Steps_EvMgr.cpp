@@ -30,7 +30,7 @@ void Step::vEvMgrCurEventNmFetch(void)
 
   eEV eCurEvent = m_pOp->pEvMgr()->m_eCurEvent;
     
-  m_pDataStack->vPushStz(aEV[eCurEvent]);
+  m_oDataStack.vPushStz(aEV[eCurEvent]);
 
   EXIT();
 }
@@ -42,11 +42,11 @@ void Step::vEvMgrEventCountFetch(void)
 {
   ENTRY();
 
-  eEV eEvent = (eEV)m_pDataStack->iPopInt(__func__);
+  eEV eEvent = (eEV)m_oDataStack.iPopInt(__func__);
   
   i8 nCount = m_pOp->nEventCount(eEvent);
 
-  m_pDataStack->vPushInt(nCount);
+  m_oDataStack.vPushInt(nCount);
 
   EXIT();
 }
@@ -58,11 +58,11 @@ void Step::vEvMgrDecodeEventNm(void)
 {
   ENTRY();
   
-  i8 iZK = m_pDataStack->iPopInt(__func__);
+  i8 iZK = m_oDataStack.iPopInt(__func__);
 
   Stz* szEventNm = aEV[iZK];
   
-  m_pDataStack->vPushStz(szEventNm);
+  m_oDataStack.vPushStz(szEventNm);
   
   EXIT();
 }
@@ -74,14 +74,14 @@ void Step::vEvMgrDecodeHandlerNm(void)
 {
   ENTRY();
   
-  i8 iZK = m_pDataStack->iPopInt(__func__);
+  i8 iZK = m_oDataStack.iPopInt(__func__);
   Stz* szEventNm = aEV[iZK];
 
   s32 sHandlerNm;
   
   sHandlerNm.vSprint("%s_handler"_Stz,szEventNm);
   
-  m_pDataStack->vPushStr(sHandlerNm);
+  m_oDataStack.vPushStr(sHandlerNm);
   
   EXIT();
 }

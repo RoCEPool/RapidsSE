@@ -112,7 +112,7 @@ void Step::vFile0DetectLineEnding(void)
 	// free the read block
 	MemLib::vFreeBlock(aBlock, C_CHUNK_BLOCK);
 
-	m_pDataStack->vPushStz(szLineEnding);
+	m_oDataStack.vPushStz(szLineEnding);
 
 	EXIT();
 }
@@ -124,7 +124,7 @@ void Step::vFile0Get(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpFile0);
+  m_oDataStack.vPushPtr(*m_pLogicUnit->m_xpFile0);
   
   EXIT();
 }
@@ -142,7 +142,7 @@ void Step::vFile0GetEofLocation(void)
   pFile->vSeekEnd();
   i8 iEofLoc = pFile->iTell();
   
-  m_pDataStack->vPushInt(iEofLoc);
+  m_oDataStack.vPushInt(iEofLoc);
   
   EXIT();
 }
@@ -154,7 +154,7 @@ void Step::vFile0IsNull(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(m_pLogicUnit->m_xpFile0.bIsNull() ? 1 : 0);
+  m_oDataStack.vPushInt(m_pLogicUnit->m_xpFile0.bIsNull() ? 1 : 0);
   
   EXIT();
 }
@@ -167,13 +167,13 @@ void Step::vFile0IsOpen(void)
   ENTRY();
   
   if (m_pLogicUnit->m_xpFile0.bIsNull()) {
-    m_pDataStack->vPushInt(0);
+    m_oDataStack.vPushInt(0);
   }
   else {
     if (m_pLogicUnit->m_xpFile0->bIsOpen())
-      m_pDataStack->vPushInt(1);
+      m_oDataStack.vPushInt(1);
     else
-      m_pDataStack->vPushInt(0);
+      m_oDataStack.vPushInt(0);
   }
   
   EXIT();
@@ -186,7 +186,7 @@ void Step::vFile0Set(void)
 {
   ENTRY();
   
-  File* pFile = _pFile(m_pDataStack->pPopPtr(__func__));
+  File* pFile = _pFile(m_oDataStack.pPopPtr(__func__));
 
   m_pLogicUnit->m_xpFile0 = pFile;
   
@@ -202,7 +202,7 @@ void Step::vFile0Size(void)
   
   File* pFile = _pFile(*m_pLogicUnit->m_xpFile0);
   
-  m_pDataStack->vPushInt(File::nSize(pFile->sFilePath()));
+  m_oDataStack.vPushInt(File::nSize(pFile->sFilePath()));
                          
   EXIT();
 }
@@ -214,7 +214,7 @@ void Step::vFileClose(void)
 {
   ENTRY();
   
-  File* pFile = _pFile(m_pDataStack->pPopPtr(__func__));
+  File* pFile = _pFile(m_oDataStack.pPopPtr(__func__));
   
   pFile->vClose();
   
@@ -228,7 +228,7 @@ void Step::vFileDelete(void)
 {
   ENTRY();
   
-  File* pFile = _pFile(m_pDataStack->pPopPtr(__func__));
+  File* pFile = _pFile(m_oDataStack.pPopPtr(__func__));
 
   delete pFile;
   
@@ -243,16 +243,16 @@ void Step::vFileModTime(void)
   ENTRY();
   
   s256 sPath;
-  m_pDataStack->vPopStr(sPath,__func__);
+  m_oDataStack.vPopStr(sPath, __func__);
 
   time_t tTime;
   
   bool bResult = File::bModTime(sPath,tTime);
   
   if (bResult)
-    m_pDataStack->vPushInt(tTime);
+    m_oDataStack.vPushInt(tTime);
   else
-    m_pDataStack->vPushInt(0);
+    m_oDataStack.vPushInt(0);
 
   EXIT();
 }
@@ -266,7 +266,7 @@ void Step::vFileNew(void)
   
   File* pFile = new File(this);
   
-  m_pDataStack->vPushPtr(pFile);
+  m_oDataStack.vPushPtr(pFile);
   
   EXIT();
 }
@@ -278,17 +278,17 @@ void Step::vFileOpen(void)
 {
   ENTRY();
   
-  File* pFile = _pFile(m_pDataStack->pPopPtr(__func__));
+  File* pFile = _pFile(m_oDataStack.pPopPtr(__func__));
   
   s32 sMode;
-  m_pDataStack->vPopStr(sMode,__func__);
+  m_oDataStack.vPopStr(sMode, __func__);
 
   s256 sPath;
-  m_pDataStack->vPopStr(sPath,__func__);
+  m_oDataStack.vPopStr(sPath, __func__);
   
   bool bOpened = pFile->bOpenMode(sPath,sMode);
   
-  m_pDataStack->vPushInt(bOpened);
+  m_oDataStack.vPushInt(bOpened);
   
   EXIT();
 }
@@ -300,11 +300,11 @@ void Step::vFilePathGet(void)
 {
   ENTRY();
   
-  File* pFile = _pFile(m_pDataStack->pPopPtr(__func__));
+  File* pFile = _pFile(m_oDataStack.pPopPtr(__func__));
 
   s256 sPath = pFile->sFilePath();
   
-  m_pDataStack->vPushStr(sPath);
+  m_oDataStack.vPushStr(sPath);
   
   EXIT();
 }
@@ -317,7 +317,7 @@ void Step::vFilePrint(void)
   ENTRY();
   
   s256 sPath;
-  m_pDataStack->vPopStr(sPath,__func__);
+  m_oDataStack.vPopStr(sPath, __func__);
 
   File* pFile = new File(this);
 
@@ -344,9 +344,9 @@ void Step::vFileReadChunk(void)
 {
   ENTRY();
   
-  File* pFile = _pFile(m_pDataStack->pPopPtr(__func__));
+  File* pFile = _pFile(m_oDataStack.pPopPtr(__func__));
 
-  CsvBuffer* pCsvBuffer = _pCsvBuffer(m_pDataStack->pPopPtr(__func__));
+  CsvBuffer* pCsvBuffer = _pCsvBuffer(m_oDataStack.pPopPtr(__func__));
 
   pCsvBuffer->vReset();
   
@@ -364,7 +364,7 @@ void Step::vFileReadChunk(void)
   }
   pCsvBuffer->ayDataArea()[nReadBytes] = 0;
   
-  m_pDataStack->vPushInt(nReadBytes);
+  m_oDataStack.vPushInt(nReadBytes);
 
   EXIT();
 }
@@ -376,9 +376,9 @@ void Step::vFileReadCrwBlock(void)
 {
   ENTRY();
   
-  File* pFile = _pFile(m_pDataStack->pPopPtr(__func__));
+  File* pFile = _pFile(m_oDataStack.pPopPtr(__func__));
 
-  CrwBuffer* pCrwBuffer = _pCrwBuffer(m_pDataStack->pPopPtr(__func__));
+  CrwBuffer* pCrwBuffer = _pCrwBuffer(m_oDataStack.pPopPtr(__func__));
 
   byte* aCrwProper = aAdd<byte*>(pCrwBuffer,sizeof(DataBuffer));
   i8 nSizeCrwProper = sizeof(CrwBuffer) - sizeof(DataBuffer);
@@ -387,7 +387,7 @@ void Step::vFileReadCrwBlock(void)
 
   RASSERT(CN_CRWBUFFER == pCrwBuffer->eGetClassNo());
   
-  m_pDataStack->vPushInt(nReadBytes);
+  m_oDataStack.vPushInt(nReadBytes);
   
   EXIT();
 }
@@ -399,7 +399,7 @@ void Step::vFileReadLine(void)
 {
   ENTRY();
   
-  File* pFile = _pFile(m_pDataStack->pPopPtr(__func__));
+  File* pFile = _pFile(m_oDataStack.pPopPtr(__func__));
   ASSERT(pFile);
   
   s48K sLine;
@@ -407,11 +407,11 @@ void Step::vFileReadLine(void)
   bool bResult = pFile->bReadLine(sLine);
   
   if (bResult) {
-    m_pDataStack->vPushStr(sLine);
-    m_pDataStack->vPushInt(true);
+    m_oDataStack.vPushStr(sLine);
+    m_oDataStack.vPushInt(true);
   }
   else {
-    m_pDataStack->vPushInt(false);
+    m_oDataStack.vPushInt(false);
   }
 
   EXIT();
@@ -424,7 +424,7 @@ void Step::vFileReadText(void)
 {
   ENTRY();
   
-  File* pFile = _pFile(m_pDataStack->pPopPtr(__func__));
+  File* pFile = _pFile(m_oDataStack.pPopPtr(__func__));
   ASSERT(pFile);
 
   s48K sText;
@@ -434,11 +434,11 @@ void Step::vFileReadText(void)
   sText.azChar()[nBytesRead] = '\0';
 
   if (nBytesRead) {
-    m_pDataStack->vPushStr(sText);
-    m_pDataStack->vPushInt(true);
+    m_oDataStack.vPushStr(sText);
+    m_oDataStack.vPushInt(true);
   }
   else {
-    m_pDataStack->vPushInt(false);
+    m_oDataStack.vPushInt(false);
   }
 
   EXIT();
@@ -451,10 +451,10 @@ void Step::vFileSeek(void)
 {
   ENTRY();
   
-  File* pFile = _pFile(m_pDataStack->pPopPtr(__func__));
+  File* pFile = _pFile(m_oDataStack.pPopPtr(__func__));
   ASSERT(pFile);
 
-  i8 iOffset = m_pDataStack->iPopInt(__func__);
+  i8 iOffset = m_oDataStack.iPopInt(__func__);
   
   pFile->vSeek(iOffset);
 
@@ -470,7 +470,7 @@ void Step::vFileSeekRndCsv(void)
   
   s48K sBuffer;
   
-  File* pFile = _pFile(m_pDataStack->pPopPtr(__func__));
+  File* pFile = _pFile(m_oDataStack.pPopPtr(__func__));
   ASSERT(pFile);
 
   i8 nFileSize = pFile->iSize();
@@ -505,12 +505,12 @@ void Step::vFileSize(void)
 {
   ENTRY();
   
-  File* pFile = _pFile(m_pDataStack->pPopPtr(__func__));
+  File* pFile = _pFile(m_oDataStack.pPopPtr(__func__));
   ASSERT(pFile);
 
   i8 nSize = pFile->iSize();
   
-  m_pDataStack->vPushInt(nSize);
+  m_oDataStack.vPushInt(nSize);
                          
   EXIT();
 }
@@ -523,11 +523,11 @@ void Step::vFileSizeNm(void)
   ENTRY();
   
   s256 sPath;
-  m_pDataStack->vPopStr(sPath,__func__);
+  m_oDataStack.vPopStr(sPath, __func__);
 
   i8 nSize = File::nSize(sPath);
   
-  m_pDataStack->vPushInt(nSize);
+  m_oDataStack.vPushInt(nSize);
                          
   EXIT();
 }
@@ -539,12 +539,12 @@ void Step::vFileTell(void)
 {
   ENTRY();
   
-  File* pFile = _pFile(m_pDataStack->pPopPtr(__func__));
+  File* pFile = _pFile(m_oDataStack.pPopPtr(__func__));
   ASSERT(pFile);
 
   i8 iOffset = pFile->iTell();
   
-  m_pDataStack->vPushInt(iOffset);
+  m_oDataStack.vPushInt(iOffset);
 
   EXIT();
 }
@@ -556,12 +556,12 @@ void Step::vFileWriteLine(void)
 {
   ENTRY();
   
-  File* pFile = _pFile(m_pDataStack->pPopPtr(__func__));
+  File* pFile = _pFile(m_oDataStack.pPopPtr(__func__));
   ASSERT(pFile);
   
   s48K sLine;
   
-  m_pDataStack->vPopStr(sLine,__func__);
+  m_oDataStack.vPopStr(sLine, __func__);
   
   Stz* wStr = sLine;
   

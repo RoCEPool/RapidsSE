@@ -58,7 +58,7 @@ void Step::vOperandToParcel(void)
   Op* pOp = *m_pOp;
   OpSpec* pOpSpec = pOp->pOpSpec();
 
-  Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
+  Operand* pOperand = _pOperand(m_oDataStack.pPopPtr(__func__));
 
   Parcel* pParcel =  new Parcel;
 
@@ -67,7 +67,7 @@ void Step::vOperandToParcel(void)
   pParcel->vLabel(pOp->pOuterJobOfOp()->tDistId().iAsI8(),
                   pOpSpec->eParcelForward());
   
-  m_pDataStack->vPushPtr(pParcel);
+  m_oDataStack.vPushPtr(pParcel);
   
   EXIT();
 }

@@ -26,9 +26,9 @@ void Step::vOpSysIsLinux(void)
   ENTRY();
   
 #ifdef WITH_LINUX
-  m_pDataStack->vPushInt(true);
+  m_oDataStack.vPushInt(true);
 #else
-  m_pDataStack->vPushInt(false);
+  m_oDataStack.vPushInt(false);
 #endif
 
   EXIT();
@@ -42,9 +42,9 @@ void Step::vOpSysIsMacOs(void)
   ENTRY();
 
 #ifdef WITH_APPLE
-  m_pDataStack->vPushInt(true);
+  m_oDataStack.vPushInt(true);
 #else
-  m_pDataStack->vPushInt(false);
+  m_oDataStack.vPushInt(false);
 #endif
 
   EXIT();

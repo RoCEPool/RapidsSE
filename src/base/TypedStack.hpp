@@ -4,6 +4,7 @@
 #pragma once
 
 #include "eKK.h"
+#include "BinaryStack.hpp"
 
 namespace BASE
 {
@@ -21,22 +22,14 @@ namespace BASE
       byte* m_ayStackPtr;
       TypeValueArea* m_aTypeValueArea;
     };
-  
-    i8   m_nItems; // number of items currently on stack
-
-    void vAdvance (i8 nBytes) { m_ayStackPtr -= nBytes; m_nItems++;   }
-    void vRewind  (i8 nBytes) { m_ayStackPtr += nBytes; m_nItems--;   }
-    void vRewind  (void)      { vRewind(m_aTypeValueArea->nStackUsage()); }
   };
+
 
   class TypedStack: public Object
   {
   private:
-    eKK     m_eKind;  // kind of stack
-    StkTop  m_rTop;   // current top of stack
-
-    Footer  m_xHazard;
-    Wsp_t<C_WSP_STACK> m_xWsp;
+    eKK          m_eKind;  // kind of stack
+    BinaryStack* m_pStack;
     
     // must be last
     Footer m_xFooter;
@@ -49,10 +42,9 @@ namespace BASE
    ~TypedStack(void) noexcept(false);
     
     static TypedStack* _pStack(void* aAddr);
-  
-    void vDiscardTop(void);
-  
+
     void vDump(DicStack* pDicStack, Stz* szTitle);
+    void vDiscardTop(void);
 
     TypeValueArea* aPeekItem(i8 i_Item);
     void vPeekTypeValueArea(i8 i_Item, TypeValueArea* aTypedCell);
@@ -90,13 +82,15 @@ namespace BASE
     void vStackContents(s48K& sStackContents);
 
     bool bTopIsZero(void);
-    TypeValueArea* aTopVal(void);
-  
+
     void vValSprint(s48K& sFormat, s48K& sString);
 
     i8   nValues(void);
+    TypeValueArea* pStackHead();
   
   private:
+    static eCN eSizeToCls(eSS eSize);
+
     TypeValueArea* aAllotBcdVal(void);
     TypeValueArea* aAllotBolVal(void);
     TypeValueArea* aAllotFipVal(void);
@@ -111,12 +105,8 @@ namespace BASE
     bool bGuard(eCN eClass0);
     bool bGuard(eCN eClass0, eCN eClass1);
     bool bGuard(eCN eClass0, eCN eClass1, eCN eClass2);
-  
-    byte* ayStackBase(void);
-    byte* ayStackLimit(void);
-    
+
     Footer* aFooter(void);
-    Footer* aHazard(void);
   };
 }
 

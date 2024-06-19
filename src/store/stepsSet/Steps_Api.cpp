@@ -65,10 +65,10 @@ void Step::vApiParseCommand(void)
   s2K sErrStr;
 
   s48K sCmd;
-  m_pDataStack->vPopStr(sCmd,__func__);
+  m_oDataStack.vPopStr(sCmd, __func__);
 
   s48K sCmdTagStr;
-  m_pDataStack->vPopStr(sCmdTagStr,__func__);
+  m_oDataStack.vPopStr(sCmdTagStr, __func__);
 
   TaskList* pTaskList = Api::pParseCommand(sCmd.szStz(),
                                            sCmdTagStr.szStz(),
@@ -77,13 +77,13 @@ void Step::vApiParseCommand(void)
                                            sErrStr);
 
   if (EC_NONE == eErrCode) {
-    m_pDataStack->vPushPtr(pTaskList);
-    m_pDataStack->vPushInt(true);
+    m_oDataStack.vPushPtr(pTaskList);
+    m_oDataStack.vPushInt(true);
   }
   else {
-    m_pDataStack->vPushInt(eErrCode);
-    m_pDataStack->vPushStz(sErrStr.szStz());
-    m_pDataStack->vPushInt(false);
+    m_oDataStack.vPushInt(eErrCode);
+    m_oDataStack.vPushStz(sErrStr.szStz());
+    m_oDataStack.vPushInt(false);
   }
 
   EXIT();
@@ -96,14 +96,14 @@ void Step::vApiScheduleTask(void)
 {
   ENTRY();
 
-  Task* pChildTask = _pTask(m_pDataStack->pPopPtr(__func__));
+  Task* pChildTask = _pTask(m_oDataStack.pPopPtr(__func__));
   ASSERT(pChildTask);
   ASSERT(pChildTask->eGetClassNo() == CN_TASK);
 
   // TODO: This should be a suspending call rather than a blocking call
   //       that is is currently. Do not call this from a non-dedicated thread.
   eEC eChildErr = Api::eScheduleTask(pChildTask);
-  m_pDataStack->vPushInt((i8) eChildErr);
+  m_oDataStack.vPushInt((i8) eChildErr);
 
   EXIT();
 }
@@ -115,14 +115,14 @@ void Step::vApiForkChild(void)
 {
   ENTRY();
 
-  ExtendedText* pCodeBlock = _pExtendedText(m_pDataStack->pPopPtr(__func__));
+  ExtendedText* pCodeBlock = _pExtendedText(m_oDataStack.pPopPtr(__func__));
   RASSERT(! pCodeBlock);
 
   s48K sCmd;
-  m_pDataStack->vPopStr(sCmd,__func__);
+  m_oDataStack.vPopStr(sCmd, __func__);
 
   s48K sCmdTagStr;
-  m_pDataStack->vPopStr(sCmdTagStr,__func__);
+  m_oDataStack.vPopStr(sCmdTagStr, __func__);
 
   if (AM::TRACE::bVerbose(C_VB_API)) {
     vTrace("ForkChild (TRANSLITERATE): %s\n"_Stz,sCmd.szStz());
@@ -192,10 +192,10 @@ void Step::vApiForkChild(void)
   delete pTagTknVec;
 
   if (EC_NONE == eError)
-    m_pDataStack->vPushInt(true);
+    m_oDataStack.vPushInt(true);
   else {
-    m_pDataStack->vPushInt(eError);
-    m_pDataStack->vPushInt(false);
+    m_oDataStack.vPushInt(eError);
+    m_oDataStack.vPushInt(false);
   }
 
   EXIT();
@@ -208,14 +208,14 @@ void Step::vApiForkChildNestedSql(void)
 {
   ENTRY();
 
-  ExtendedText* pCodeBlock = _pExtendedText(m_pDataStack->pPopPtr(__func__));
+  ExtendedText* pCodeBlock = _pExtendedText(m_oDataStack.pPopPtr(__func__));
   RASSERT(! pCodeBlock);
 
   s48K sCmd;
-  m_pDataStack->vPopStr(sCmd,__func__);
+  m_oDataStack.vPopStr(sCmd, __func__);
 
   s48K sCmdTagStr;
-  m_pDataStack->vPopStr(sCmdTagStr,__func__);
+  m_oDataStack.vPopStr(sCmdTagStr, __func__);
 
   if (AM::TRACE::bVerbose(C_VB_API)) {
     vTrace("ForkChild (TRANSLITERATE): %s\n"_Stz,sCmd.szStz());
@@ -290,10 +290,10 @@ void Step::vApiForkChildNestedSql(void)
   delete pTagTknVec;
 
   if (EC_NONE == eError)
-    m_pDataStack->vPushInt(true);
+    m_oDataStack.vPushInt(true);
   else {
-    m_pDataStack->vPushInt(eError);
-    m_pDataStack->vPushInt(false);
+    m_oDataStack.vPushInt(eError);
+    m_oDataStack.vPushInt(false);
   }
 
   EXIT();
@@ -307,10 +307,10 @@ void Step::vApiForkDemon(void)
   ENTRY();
 
   s48K sCmd;
-  m_pDataStack->vPopStr(sCmd,__func__);
+  m_oDataStack.vPopStr(sCmd, __func__);
 
   s48K sCmdTagStr;
-  m_pDataStack->vPopStr(sCmdTagStr,__func__);
+  m_oDataStack.vPopStr(sCmdTagStr, __func__);
 
   if (AM::TRACE::bVerbose(C_VB_API)) {
     vTrace("ForkChild: %s\n"_Stz,sCmd.szStz());
@@ -367,12 +367,12 @@ void Step::vApiForkDemon(void)
   delete pTagTknVec;
 
   if (EC_NONE == eError) {
-    m_pDataStack->vPushInt(tChildJobId.iAsI8());
-    m_pDataStack->vPushInt(true);
+    m_oDataStack.vPushInt(tChildJobId.iAsI8());
+    m_oDataStack.vPushInt(true);
   }
   else {
-    m_pDataStack->vPushInt(eError);
-    m_pDataStack->vPushInt(false);
+    m_oDataStack.vPushInt(eError);
+    m_oDataStack.vPushInt(false);
   }
 
   EXIT();
@@ -386,10 +386,10 @@ void Step::vApiForkChild2PC(void)
   ENTRY();
 
   s48K sCmd;
-  m_pDataStack->vPopStr(sCmd,__func__);
+  m_oDataStack.vPopStr(sCmd, __func__);
 
   s48K sCmdTagStr;
-  m_pDataStack->vPopStr(sCmdTagStr,__func__);
+  m_oDataStack.vPopStr(sCmdTagStr, __func__);
 
   if (AM::TRACE::bVerbose(C_VB_API)) {
     vTrace("ForkChild2PC: %s\n"_Stz,sCmd.szStz());
@@ -438,7 +438,7 @@ void Step::vApiForkChild2PC(void)
   delete pCmdTknVec;
   delete pTagTknVec;
 
-  m_pDataStack->vPushInt(true);
+  m_oDataStack.vPushInt(true);
 
   EXIT();
 }
@@ -450,7 +450,7 @@ void Step::vApiDeleteJob(void)
 {
   ENTRY();
 
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
+  Job* pJob = _pJob(m_oDataStack.pPopPtr(__func__));
 
   delete pJob;
 
@@ -466,7 +466,7 @@ void Step::vApiReapableJobFetch(void)
 
   Job* pJob = gpAttachMap->pJobs()->pReapableJob();
 
-  m_pDataStack->vPushPtr(pJob);
+  m_oDataStack.vPushPtr(pJob);
 
   EXIT();
 }
@@ -478,9 +478,9 @@ void Step::vApiReapableIsOriginator(void)
 {
   ENTRY();
 
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
+  Job* pJob = _pJob(m_oDataStack.pPopPtr(__func__));
 
-  m_pDataStack->vPushInt(pJob->bOriginatorJob());
+  m_oDataStack.vPushInt(pJob->bOriginatorJob());
 
   EXIT();
 }
@@ -492,9 +492,9 @@ void Step::vApiReapableJobMetricsEnabled(void)
 {
   ENTRY();
 
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
+  Job* pJob = _pJob(m_oDataStack.pPopPtr(__func__));
 
-  m_pDataStack->vPushInt(pJob->bJobMetrics());
+  m_oDataStack.vPushInt(pJob->bJobMetrics());
 
   EXIT();
 }
@@ -505,9 +505,9 @@ void Step::vApiReapableJobTagsFetch(void)
 {
   ENTRY();
 
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
+  Job* pJob = _pJob(m_oDataStack.pPopPtr(__func__));
 
-  m_pDataStack->vPushPtr(pJob->pJobTags());
+  m_oDataStack.vPushPtr(pJob->pJobTags());
 
   EXIT();
 }
@@ -519,7 +519,7 @@ void Step::vApiSpawnJob(void)
 {
   ENTRY();
   
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
+  Job* pJob = _pJob(m_oDataStack.pPopPtr(__func__));
 
   Task* pTask = pJob->pTask();
   /*

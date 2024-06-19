@@ -25,9 +25,9 @@ void Step::vWithSubPipeline(void)
   ENTRY();
 
 #ifdef WITH_SUBPIPELINE
-    m_pDataStack->vPushInt(true);
+    m_oDataStack.vPushInt(true);
 #else
-    m_pDataStack->vPushInt(false);
+    m_oDataStack.vPushInt(false);
 #endif
   
   EXIT();

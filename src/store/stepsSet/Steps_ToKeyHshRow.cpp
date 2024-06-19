@@ -46,11 +46,11 @@ void Step::vToKeyHshRowCompleted(void)
   
   ToKeyHshRow* pToKeyHshRow = * m_pLogicUnit->m_xpToKeyHshRow;
 
-  i8 i_Ptn = m_pDataStack->iPopInt(__func__);
+  i8 i_Ptn = m_oDataStack.iPopInt(__func__);
 
   Pds* pPdsRowBuffer = pToKeyHshRow->pCompleted(i_Ptn);
   
-  m_pDataStack->vPushPtr(pPdsRowBuffer);
+  m_oDataStack.vPushPtr(pPdsRowBuffer);
 
   EXIT();
 }
@@ -64,9 +64,9 @@ void Step::vToKeyHshRowCountersFetch(void)
   
   ToKeyHshRow* pToKeyHshRow = *m_pLogicUnit->m_xpToKeyHshRow;
 
-  m_pDataStack->vPushInt(pToKeyHshRow->iRowsSkipped());
-  m_pDataStack->vPushInt(pToKeyHshRow->iRowsInvalid());
-  m_pDataStack->vPushInt(pToKeyHshRow->iRowsProcessed());
+  m_oDataStack.vPushInt(pToKeyHshRow->iRowsSkipped());
+  m_oDataStack.vPushInt(pToKeyHshRow->iRowsInvalid());
+  m_oDataStack.vPushInt(pToKeyHshRow->iRowsProcessed());
 
   EXIT();
 }
@@ -84,7 +84,7 @@ void Step::vToKeyHshRowCountersZero(void)
                 pToKeyHshRow->iRowsInvalid() +
                 pToKeyHshRow->iRowsProcessed();
 
-  m_pDataStack->vPushBol(iCounter == 0);
+  m_oDataStack.vPushBol(iCounter == 0);
 
   EXIT();
 }
@@ -96,7 +96,7 @@ void Step::vToKeyHshRowCsvToRow(void)
 {
   ENTRY();
 
-  CsvBuffer* pCsvBuffer = _pCsvBuffer(m_pDataStack->pPopPtr(__func__));
+  CsvBuffer* pCsvBuffer = _pCsvBuffer(m_oDataStack.pPopPtr(__func__));
 
   ToKeyHshRow* pToKeyHshRow = *m_pLogicUnit->m_xpToKeyHshRow;
 
@@ -115,15 +115,15 @@ void Step::vToKeyHshRowDangling(void)
   ENTRY();
   
   if (m_pLogicUnit->m_xpToKeyHshRow.bIsNull()) {
-    i8 i_Ptn = m_pDataStack->iPopInt(__func__);
+    i8 i_Ptn = m_oDataStack.iPopInt(__func__);
     UNUSED(i_Ptn);
-    m_pDataStack->vPushPtr(nullptr);
+    m_oDataStack.vPushPtr(nullptr);
   }
   else {
     ToKeyHshRow* pToKeyHshRow = *m_pLogicUnit->m_xpToKeyHshRow;
-    i8 i_Ptn = m_pDataStack->iPopInt(__func__);
+    i8 i_Ptn = m_oDataStack.iPopInt(__func__);
     Pds* pPdsRowBuffer = pToKeyHshRow->pDangling(i_Ptn);
-    m_pDataStack->vPushPtr(pPdsRowBuffer);
+    m_oDataStack.vPushPtr(pPdsRowBuffer);
   }
   
   EXIT();
@@ -153,7 +153,7 @@ void Step::vToKeyHshRowFetch(void)
   
   ToKeyHshRow* pToKeyHshRow = * m_pLogicUnit->m_xpToKeyHshRow;
 
-  m_pDataStack->vPushPtr(pToKeyHshRow);
+  m_oDataStack.vPushPtr(pToKeyHshRow);
 
   EXIT();
 }
@@ -179,10 +179,10 @@ void Step::vToKeyHshRowNew(void)
     StreamDef* pStreamDef = m_pLogicUnit->m_xpTable->pStreamDef();
     ToKeyHshRow* pToKeyHshRow = new ToKeyHshRow(pStreamDef,pFmt);
     m_pLogicUnit->m_xpToKeyHshRow = pToKeyHshRow;
-    m_pDataStack->vPushInt(EC_NONE);
+    m_oDataStack.vPushInt(EC_NONE);
 
   } else {
-    m_pDataStack->vPushInt(eErrCode);
+    m_oDataStack.vPushInt(eErrCode);
   }
 
   delete pFmt;

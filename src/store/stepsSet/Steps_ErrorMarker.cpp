@@ -54,7 +54,7 @@ void Step::vErrorMarkerGet(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpErrorMarker);
+  m_oDataStack.vPushPtr(*m_pLogicUnit->m_xpErrorMarker);
 
   EXIT();
 }
@@ -66,7 +66,7 @@ void Step::vErrorMarkerGetAndClear(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpErrorMarker);
+  m_oDataStack.vPushPtr(*m_pLogicUnit->m_xpErrorMarker);
 
   m_pLogicUnit->m_xpErrorMarker = nullptr;
 
@@ -80,7 +80,7 @@ void Step::vErrorMarkerIsNotNull(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt(m_pLogicUnit->m_xpErrorMarker.bIsNull() ? 0 : 1);
+  m_oDataStack.vPushInt(m_pLogicUnit->m_xpErrorMarker.bIsNull() ? 0 : 1);
 
   EXIT();
 }
@@ -92,7 +92,7 @@ void Step::vErrorMarkerIsNull(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt(m_pLogicUnit->m_xpErrorMarker.bIsNull() ? 1 : 0);
+  m_oDataStack.vPushInt(m_pLogicUnit->m_xpErrorMarker.bIsNull() ? 1 : 0);
 
   EXIT();
 }
@@ -170,7 +170,7 @@ void Step::vErrorMarkerSet(void)
 {
   ENTRY();
 
-  Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
+  Operand* pOperand = _pOperand(m_oDataStack.pPopPtr(__func__));
 
   ASSERT(! pOperand || m_pLogicUnit->m_xpErrorMarker.bIsNull());
 

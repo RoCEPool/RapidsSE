@@ -82,7 +82,7 @@ void Step::vTableDelete(void)
 {
   ENTRY();
   
-  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
+  Table* pTable = _pTable(m_oDataStack.pPopPtr(__func__));
   //vTrace(">>>>>>>>>>>>Step::vTableDelete\n"_Stz);
   delete pTable;
     
@@ -96,7 +96,7 @@ void Step::vTableGet(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpTable);
+  m_oDataStack.vPushPtr(*m_pLogicUnit->m_xpTable);
   
   EXIT();
 }
@@ -108,7 +108,7 @@ void Step::vTableSet(void)
 {
   ENTRY();
   
-  m_pLogicUnit->m_xpTable = _pTable(m_pDataStack->pPopPtr(__func__));
+  m_pLogicUnit->m_xpTable = _pTable(m_oDataStack.pPopPtr(__func__));
   
   EXIT();
 }
@@ -120,8 +120,8 @@ void Step::vTableAddIndex(void)
 {
   ENTRY();
   
-  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
-  Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
+  Table* pTable = _pTable(m_oDataStack.pPopPtr(__func__));
+  Index* pIndex = _pIndex(m_oDataStack.pPopPtr(__func__));
   
   pTable->vAddIndex(pIndex);
   
@@ -137,14 +137,14 @@ void Step::vTableAppendBuffer(void)
     
   Table* pTable = _pTable(*m_pLogicUnit->m_xpTable);
 
-  DataBuffer* pDataBuffer = _pDataBuffer(m_pDataStack->pPopPtr(__func__));
+  DataBuffer* pDataBuffer = _pDataBuffer(m_oDataStack.pPopPtr(__func__));
   ASSERT(! pDataBuffer->pNextItem());
   ASSERT(! pDataBuffer->pPrevItem());
 
   i8 nRowsInserted = 0;
   pTable->vAppendBuffer_replicated(pDataBuffer, nRowsInserted);
 
-  m_pDataStack->vPushInt(nRowsInserted);
+  m_oDataStack.vPushInt(nRowsInserted);
 
   EXIT();
 }
@@ -156,7 +156,7 @@ void Step::vTableCreatePtnDef(void)
 {
   ENTRY();
 
-  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
+  Table* pTable = _pTable(m_oDataStack.pPopPtr(__func__));
   ASSERT(CN_TABLE == pTable->eGetClassNo());
   
   pTable->vCreatePtnDef();
@@ -173,11 +173,11 @@ void Step::vTableColumnFetch(void)
   
   Table* pTable = _pTable(*m_pLogicUnit->m_xpTable);
   
-  i8 iColumnNo = m_pDataStack->iPopInt(__func__);
+  i8 iColumnNo = m_oDataStack.iPopInt(__func__);
   
   StreamDef* pStreamDef = pTable->pStreamDef();
   
-  m_pDataStack->vPushPtr(pStreamDef->pGetColumn(iColumnNo));
+  m_oDataStack.vPushPtr(pStreamDef->pGetColumn(iColumnNo));
   
   EXIT();
 }
@@ -192,7 +192,7 @@ void Step::vTableColumnCountFetch(void)
   StreamDef* pStreamDef = m_pLogicUnit->m_xpTable->pStreamDef();
   i8 nColumns = pStreamDef->nColumns();
   
-  m_pDataStack->vPushInt(nColumns);
+  m_oDataStack.vPushInt(nColumns);
   
   EXIT();
 }
@@ -204,9 +204,9 @@ void Step::vTableDeleteIndex(void)
 {
   ENTRY();
   
-  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
+  Table* pTable = _pTable(m_oDataStack.pPopPtr(__func__));
   
-  Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
+  Index* pIndex = _pIndex(m_oDataStack.pPopPtr(__func__));
 
   pTable->vRemoveIndex(pIndex);
   
@@ -313,7 +313,7 @@ void Step::vTableDumpMeta(void)
   }
 
   sDumpBuffer.vConcat("\n======================================================\n\n"_Stz);
-  m_pDataStack->vPushStr(sDumpBuffer);
+  m_oDataStack.vPushStr(sDumpBuffer);
 
   EXIT();
 }
@@ -329,7 +329,7 @@ void Step::vTableStreamDefFetch(void)
   
   StreamDef* pStreamDef = pTable->pStreamDef();
   
-  m_pDataStack->vPushPtr(pStreamDef);
+  m_oDataStack.vPushPtr(pStreamDef);
   
   EXIT();
 }
@@ -362,7 +362,7 @@ void Step::vTableTablePtnFetch(void)
   i8 i_TablePtn = pTable->iPtnNoToTablePtn(tLglPtn);
   TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
 
-  m_pDataStack->vPushPtr(pTablePtn);
+  m_oDataStack.vPushPtr(pTablePtn);
   
   EXIT();
 }
@@ -377,12 +377,12 @@ void Step::vTableTablePtnGet(void)
   Table* pTable = _pTable(*m_pLogicUnit->m_xpTable);
 
   LglPtn tLglPtn;
-  tLglPtn = m_pDataStack->iPopInt(__func__);
+  tLglPtn = m_oDataStack.iPopInt(__func__);
   i8 i_TablePtn = pTable->iPtnNoToTablePtn(tLglPtn);
 
   TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
   
-  m_pDataStack->vPushPtr(pTablePtn);
+  m_oDataStack.vPushPtr(pTablePtn);
   
   EXIT();
 }
@@ -398,7 +398,7 @@ void Step::vTableTablePtnZero(void)
 
   TablePtn* pTablePtn = pTable->pTablePtn(0);
   
-  m_pDataStack->vPushPtr(pTablePtn);
+  m_oDataStack.vPushPtr(pTablePtn);
   
   EXIT();
 }
@@ -411,11 +411,11 @@ void Step::vTableToLglPtn(void)
   ENTRY();
 
   Table* pTable = _pTable(*m_pLogicUnit->m_xpTable);
-  i8 i_TablePtn = m_pDataStack->iPopInt(__func__);
+  i8 i_TablePtn = m_oDataStack.iPopInt(__func__);
 
   LglPtn tLglPtn = pTable->tTablePtnToLglPtn(i_TablePtn);
 
-  m_pDataStack->vPushInt(tLglPtn.iAsI8());
+  m_oDataStack.vPushInt(tLglPtn.iAsI8());
 
   EXIT();
 }
@@ -427,9 +427,9 @@ void Step::vTableIndexCount(void)
 {
   ENTRY();
   
-  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
+  Table* pTable = _pTable(m_oDataStack.pPopPtr(__func__));
   
-  m_pDataStack->vPushInt(pTable->pIdxVec()->nItems());
+  m_oDataStack.vPushInt(pTable->pIdxVec()->nItems());
   
   EXIT();
 }
@@ -444,7 +444,7 @@ void Step::vTableFindColumn(void)
   Table* pTable = _pTable(*m_pLogicUnit->m_xpTable);
   
   s256 sColumnName;
-  m_pDataStack->vPopStr(sColumnName,__func__);
+  m_oDataStack.vPopStr(sColumnName, __func__);
   
   StreamDef* pStreamDef = pTable->pStreamDef();
   Column* pColumn = nullptr;
@@ -463,7 +463,7 @@ void Step::vTableFindColumn(void)
   }
   RASSERT(bFound);
   
-  m_pDataStack->vPushPtr(pColumn);
+  m_oDataStack.vPushPtr(pColumn);
   
   EXIT();
 }
@@ -475,10 +475,10 @@ void Step::vTableIsColumn(void)
 {
   ENTRY();
   
-  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
+  Table* pTable = _pTable(m_oDataStack.pPopPtr(__func__));
 
 	s256 sColumnName;
-  m_pDataStack->vPopStr(sColumnName,__func__);
+  m_oDataStack.vPopStr(sColumnName, __func__);
   
   StreamDef* pStreamDef = pTable->pStreamDef();
   Column* pColumn;
@@ -496,7 +496,7 @@ void Step::vTableIsColumn(void)
     }
   }
   
-  m_pDataStack->vPushInt(bFound);
+  m_oDataStack.vPushInt(bFound);
   
   EXIT();
 }
@@ -510,7 +510,7 @@ void Step::vTableIsInternallyDefined(void)
   
   Table* pTable = _pTable(*m_pLogicUnit->m_xpTable);
 
-  m_pDataStack->vPushInt(pTable->bIsInternallyDefined());
+  m_oDataStack.vPushInt(pTable->bIsInternallyDefined());
   
   EXIT();
 }
@@ -524,7 +524,7 @@ void Step::vTableIsMetaData(void)
 
   Table* pTable = _pTable(*m_pLogicUnit->m_xpTable);
 
-  m_pDataStack->vPushInt(pTable->bIsMetaDataTable());
+  m_oDataStack.vPushInt(pTable->bIsMetaDataTable());
 
   EXIT();
 }
@@ -540,7 +540,7 @@ void Step::vTableIsReplicated(void)
 
   bool bReplicated = pTable->bIsReplicated();
   
-  m_pDataStack->vPushInt(bReplicated);
+  m_oDataStack.vPushInt(bReplicated);
   
   EXIT();
 }
@@ -556,7 +556,7 @@ void Step::vTableIsUserCreated(void)
 
   bool bIsUserCreated = pTable->bIsUserCreated();
 
-  m_pDataStack->vPushInt(bIsUserCreated);
+  m_oDataStack.vPushInt(bIsUserCreated);
   
   EXIT();
 }
@@ -571,12 +571,12 @@ void Step::vTableListPartition(void)
   s256 sOutput;
 
   // get the streamSet table
-  Table* pTableDef = _pTable(m_pDataStack->pPopPtr(__func__));
+  Table* pTableDef = _pTable(m_oDataStack.pPopPtr(__func__));
 
   Pds* pPds = _pPds(*m_pLogicUnit->m_xpPds);
 
   LglPtn tLglPtn;
-  tLglPtn = m_pDataStack->iPopAsInt(__func__);
+  tLglPtn = m_oDataStack.iPopAsInt(__func__);
 
   Table* pTable = _pTable(*m_pLogicUnit->m_xpTable);
 
@@ -594,14 +594,14 @@ void Step::vTableListPartition(void)
 
     if (! pRow) {
       // call again
-      m_pDataStack->vPushInt(tLglPtn.iAsI8());
+      m_oDataStack.vPushInt(tLglPtn.iAsI8());
       break;
     }
 
     i8 iPtnId = tLglPtn.iAsI8();
     if (++iPtnId >= AM::PTNMAP::nPtnsInGrid()) {
       // done
-      m_pDataStack->vPushInt(false);
+      m_oDataStack.vPushInt(false);
       break;
     }
   }
@@ -616,13 +616,13 @@ void Step::vTableGetName(void)
 {
   ENTRY();
 
-  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
+  Table* pTable = _pTable(m_oDataStack.pPopPtr(__func__));
 
   Stz* szTableNm = pTable->szTableNm();
 
   //vTrace("Table name = %s \n"_Stz, szTableNm->azChar());
 
-  m_pDataStack->vPushStz(szTableNm);
+  m_oDataStack.vPushStz(szTableNm);
 
   EXIT();
 }
@@ -638,7 +638,7 @@ void Step::vTableNameFetch(void)
   
   Stz* szTableNm = pTable->szTableNm();
   
-  m_pDataStack->vPushStz(szTableNm);
+  m_oDataStack.vPushStz(szTableNm);
   
   EXIT();
 }
@@ -651,7 +651,7 @@ void Step::vTableNew(void) {
   ENTRY();
 
 	s256 sTableNm;
-  m_pDataStack->vPopStr(sTableNm, __func__);
+  m_oDataStack.vPopStr(sTableNm, __func__);
 
   Job *pJob = MY::pJob();
   TagSet *pJobTags = pJob->pJobTags();
@@ -699,11 +699,11 @@ void Step::vTableNew(void) {
     }
 
     // Testing the concept, passing the minimum-reassemble table works
-    m_pDataStack->vPushPtr(pNewTable);
+    m_oDataStack.vPushPtr(pNewTable);
   } else
   // END SAME NODE TESTING  //////////////////  END SAME NODE TESTING  /////////////////////////
 #endif
-  m_pDataStack->vPushPtr(pTable);
+  m_oDataStack.vPushPtr(pTable);
   
   EXIT();
 }
@@ -717,7 +717,7 @@ void Step::vTableUniqueName(void) {
 	s256 sTableNm;
   sTableNm.vCatSprint("__Grid%s_%lld"_Stz, AM::pGrid()->szGridNm(), TickingDevice::iGetTick());
 
-  m_pDataStack->vPushStr(sTableNm);
+  m_oDataStack.vPushStr(sTableNm);
 
   EXIT();
 }
@@ -734,7 +734,7 @@ void Step::vTablePtnDefFetch(void)
   
   PtnDef* pPtnDef = pTable->pPtnDef();
   
-  m_pDataStack->vPushPtr(pPtnDef);
+  m_oDataStack.vPushPtr(pPtnDef);
   
   EXIT();
 }
@@ -750,7 +750,7 @@ void Step::vTableSize(void)
   
   i8 nBuffers = pTable->nBuffers();
   i8 iSize = nBuffers * C_SIZE_POOL_BUFFER;
-  m_pDataStack->vPushInt(iSize);
+  m_oDataStack.vPushInt(iSize);
   
   EXIT();
 }
@@ -762,8 +762,8 @@ void Step::vTableStreamDefStore(void)
 {
   ENTRY();
   
-  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
-  StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
+  Table* pTable = _pTable(m_oDataStack.pPopPtr(__func__));
+  StreamDef* pStreamDef = _pStreamDef(m_oDataStack.pPopPtr(__func__));
   
   pTable->vStreamDef(pStreamDef);
   
@@ -781,7 +781,7 @@ void Step::vTableVerify(void)
   
   bool bVerified = pTable->bVerifyTable();
   
-  m_pDataStack->vPushInt(bVerified);
+  m_oDataStack.vPushInt(bVerified);
   
   EXIT();
 }

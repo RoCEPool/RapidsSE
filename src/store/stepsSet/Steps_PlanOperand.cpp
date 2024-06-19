@@ -66,7 +66,7 @@ void Step::vPlanOperandGet(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpPlanOperand);
+  m_oDataStack.vPushPtr(*m_pLogicUnit->m_xpPlanOperand);
   
   EXIT();
 }
@@ -78,7 +78,7 @@ void Step::vPlanOperandGetAndClear(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpPlanOperand);
+  m_oDataStack.vPushPtr(*m_pLogicUnit->m_xpPlanOperand);
   
   m_pLogicUnit->m_xpPlanOperand = nullptr;
 
@@ -92,7 +92,7 @@ void Step::vPlanOperandIsNotNull(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(m_pLogicUnit->m_xpPlanOperand.bIsNull() ? 0 : 1);
+  m_oDataStack.vPushInt(m_pLogicUnit->m_xpPlanOperand.bIsNull() ? 0 : 1);
   
   EXIT();
 }
@@ -104,7 +104,7 @@ void Step::vPlanOperandIsNull(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(m_pLogicUnit->m_xpPlanOperand.bIsNull() ? 1 : 0);
+  m_oDataStack.vPushInt(m_pLogicUnit->m_xpPlanOperand.bIsNull() ? 1 : 0);
   
   EXIT();
 }
@@ -116,7 +116,7 @@ void Step::vPlanOperandSet(void)
 {
   ENTRY();
   
-  PlanOperand* pPlanOperand = _pPlanOperand(m_pDataStack->pPopPtr(__func__));
+  PlanOperand* pPlanOperand = _pPlanOperand(m_oDataStack.pPopPtr(__func__));
   
   ASSERT(! pPlanOperand || m_pLogicUnit->m_xpPlanOperand.bIsNull());
   

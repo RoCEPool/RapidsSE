@@ -147,7 +147,7 @@ void Step::vPipeinGet(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpPipein);
+  m_oDataStack.vPushPtr(*m_pLogicUnit->m_xpPipein);
   
   EXIT();
 }
@@ -159,7 +159,7 @@ void Step::vPipeinGetAndClear(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpPipein);
+  m_oDataStack.vPushPtr(*m_pLogicUnit->m_xpPipein);
   
   m_pLogicUnit->m_xpPipein = nullptr;
 
@@ -174,7 +174,7 @@ void Step::vPipeinFetchBufferType(void)
 	ENTRY();
 
 	eBT ePipeInBufferType = m_pLogicUnit->m_ePipeInBufferType;
-	m_pDataStack->vPushInt(ePipeInBufferType);
+	m_oDataStack.vPushInt(ePipeInBufferType);
 
 	EXIT();
 }
@@ -188,7 +188,7 @@ void Step::vPipeinIsBuffer(void)
 
   Operand* pOperand = *m_pLogicUnit->m_xpPipein;
 
-  m_pDataStack->vPushInt(pOperand->bIsBuffer() ? 1 : 0);
+  m_oDataStack.vPushInt(pOperand->bIsBuffer() ? 1 : 0);
 
   EXIT();
 }
@@ -202,7 +202,7 @@ void Step::vPipeinIsMarker(void)
 
   Operand* pOperand = _pOperand(*m_pLogicUnit->m_xpPipein);;
 
-  m_pDataStack->vPushInt(pOperand->bIsMarker() ? 1 : 0);
+  m_oDataStack.vPushInt(pOperand->bIsMarker() ? 1 : 0);
 
   EXIT();
 }
@@ -214,7 +214,7 @@ void Step::vPipeinIsNull(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(m_pLogicUnit->m_xpPipein.bIsNull() ? 1 : 0);
+  m_oDataStack.vPushInt(m_pLogicUnit->m_xpPipein.bIsNull() ? 1 : 0);
   
   EXIT();
 }
@@ -228,7 +228,7 @@ void Step::vPipeinIsPds(void)
 
   Operand* pOperand = _pOperand(*m_pLogicUnit->m_xpPipein);;
 
-  m_pDataStack->vPushInt(pOperand->eGetClassNo() == CN_PDS ? 1 : 0);
+  m_oDataStack.vPushInt(pOperand->eGetClassNo() == CN_PDS ? 1 : 0);
 
   EXIT();
 }
@@ -241,7 +241,7 @@ void Step::vPipeinKind(void)
   ENTRY();
 
   eEV ePipeInOperand = m_pLogicUnit->m_ePipeInOperand;
-  m_pDataStack->vPushInt(ePipeInOperand);
+  m_oDataStack.vPushInt(ePipeInOperand);
 
   EXIT();
 }
@@ -261,11 +261,11 @@ void Step::vPipeinName(void)
   if (pOperand->bIsMarker()) {
     Marker* pMarker = _pMarker(pOperand);
     azName = aOM[pMarker->eOpMarker()];
-    m_pDataStack->vPushStr(azName);
+    m_oDataStack.vPushStr(azName);
   }
   else {
     azName = aCN[pOperand->eGetClassNo()];
-    m_pDataStack->vPushStr(azName);
+    m_oDataStack.vPushStr(azName);
   }
 
 
@@ -305,7 +305,7 @@ void Step::vPipeinPeek(void)
   // revised job/op model
     Op* pOp = *m_pOp;
 
-  m_pDataStack->vPushInt(pOp->bPeekLeft(this) ? true : false);
+  m_oDataStack.vPushInt(pOp->bPeekLeft(this) ? true : false);
   
   EXIT();
 }
@@ -336,7 +336,7 @@ void Step::vPipeinSet(void)
 {
   ENTRY();
   
-  Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
+  Operand* pOperand = _pOperand(m_oDataStack.pPopPtr(__func__));
   ASSERT(! pOperand || m_pLogicUnit->m_xpPipein.bIsNull());
   
   ASSERT(! pOperand || ! pOperand->pNextItem());
