@@ -770,10 +770,12 @@ void PackedStringSegment<CLASSNO, AREA>::operator delete(void* aAddr)
 
   ASSERT(pPackedStringBuf->m_pNext == nullptr);
 
-  if (gpAttachMap && AM::pHeaps()) {
+  if (gpAttachMap && AM::pHeaps() && AM::bInBufferPool(pPackedStringBuf)) {
+    Heaps::vFree(pPackedStringBuf);
+  } else {
     // For the case of running the status command on the command line
     // but SE is not actually running (so no heaps exist).
-    Heaps::vFree(pPackedStringBuf);
+    free(pPackedStringBuf);
   }
 }
 
