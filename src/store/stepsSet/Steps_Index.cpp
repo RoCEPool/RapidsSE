@@ -534,10 +534,21 @@ void Step::vIndexSize(void)
   
   Index* pIndex = _pIndex(*m_pLogicUnit->m_xpIndex);
   ASSERT(CN_INDEX == pIndex->eGetClassNo());
-  
-  i8 iBuffers = pIndex->pTable()->nIndexBuffers(pIndex->iIndexNo());
-  i8 iSpace = iBuffers * C_SIZE_POOL_BUFFER;
-  m_oDataStack.vPushInt(iSpace);
+
+  IndexDef* pIndexDef = pIndex->pIndexDef();
+  Table* pTable = pIndex->pTable();
+
+  if (pIndexDef->bIsGlobal()) {
+    i8 iBuffers = pTable->nGblIndexBuffers(pIndex->iIndexNo());
+    i8 iSpace = iBuffers * C_SIZE_POOL_BUFFER;
+    m_oDataStack.vPushInt(iSpace);
+  }
+  else {
+    i8 iBuffers = pTable->nIndexBuffers(pIndex->iIndexNo());
+    i8 iSpace = iBuffers * C_SIZE_POOL_BUFFER;
+    m_oDataStack.vPushInt(iSpace);
+  }
+
   
   EXIT();
 }

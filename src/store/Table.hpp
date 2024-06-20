@@ -77,6 +77,7 @@ namespace STORE
     IdxVec*  pGblIdxVec(void);
     IndexTree*  pGblIndexTree(i8 iIndexNo);
     IdxVec* pIdxVec(void);
+    i8      nGblIndexBuffers(i8 i_Index);
     i8      nIndexBuffers(i8 i_Index);
     bool    bIsDefinitionOnly(void);
     bool    bIsInternallyDefined(void);

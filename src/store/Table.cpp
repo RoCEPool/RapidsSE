@@ -563,6 +563,22 @@ IdxVec* Table::pIdxVec(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get number of index buffers of a global index in this table                */
+/*----------------------------------------------------------------------------*/
+i8 Table::nGblIndexBuffers(i8 iIndexNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+
+  i8 iBuffers = 0;
+
+  IndexTree* pIndexTree = m_pGblIndexTreeVec->pGet(iIndexNo);
+  iBuffers = pIndexTree->nBufferCount();
+
+
+  return iBuffers;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get number of index buffers in this table                                  */
 /*----------------------------------------------------------------------------*/
 i8 Table::nIndexBuffers(i8 iIndexNo)
@@ -570,7 +586,7 @@ i8 Table::nIndexBuffers(i8 iIndexNo)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
   i8 iBuffers = 0;
-  
+
   for (i8 i_TablePtn = 0; i_TablePtn < AM::PTNMAP::nPtnsPerNode(); i_TablePtn++) {
     IndexTree* pIndexTree = pTablePtn(i_TablePtn)->pIndexTree(iIndexNo);
     
