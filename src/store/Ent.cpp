@@ -502,6 +502,9 @@ i8 Ent::nSizeBytes(void)
   
   i8 nRoundedBytes = MemLib::nRoundUp(nProperBytes,C_ENT_QUANTA);
 
+  if (nRoundedBytes > C_MAX_ENTRY) {
+    vTrace("nRoundedBytes = %lld\n"_Stz, nRoundedBytes);
+  }
   RASSERT(nRoundedBytes <= C_MAX_ENTRY);
 
   return nRoundedBytes;

@@ -542,7 +542,10 @@ EntBuffer* EntBuffer::pInsertableBuffer(Ent* aEnt, EntBuffer** ppRootBuffer)
     
     // WWTQ
     // RASSERT(m_nItems > 10000);
-    vCompact();
+
+    if ( ! m_pIndexTree->pIndexDef()->bIsGlobal())
+      vCompact();
+
     // RASSERT(m_nItems > 10000);
     
     if (bHasSpace(nEntSizeBytes))

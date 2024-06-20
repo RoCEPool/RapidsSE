@@ -26,6 +26,7 @@ Rrf::Rrf(u8 uBuffer, u8 uItem, u8 uLevels, u8 uKind, u8 uPtn, u8 uGlobal)
     Glb.m_uItem   = uItem;
     Glb.m_uLevels = uLevels;
     Glb.m_uKind   = uKind;
+    Glb.m_uFree    = 0;
     Glb.m_uPtn    = uPtn;
     Glb.m_uGlobal = uGlobal;
   }
@@ -56,6 +57,7 @@ Rrf::Rrf(const Rrf& oCopy)
     Glb.m_uItem   = oCopy.Glb.m_uItem;
     Glb.m_uLevels = oCopy.Glb.m_uLevels;
     Glb.m_uKind   = oCopy.Glb.m_uKind;
+    Glb.m_uFree   = oCopy.Glb.m_uFree;
     Glb.m_uPtn    = oCopy.Glb.m_uPtn;
     Glb.m_uGlobal = oCopy.Glb.m_uGlobal;
   }
@@ -123,6 +125,7 @@ void Rrf::vBuffer(i8 iBuffer)
 /*----------------------------------------------------------------------------*/
 bool Rrf::bDesc(void)
 {
+  RASSERT( ! Std.m_uGlobal );
   return (bool)Std.m_uDesc;
 }
 
@@ -131,6 +134,7 @@ bool Rrf::bDesc(void)
 /*----------------------------------------------------------------------------*/
 void Rrf::vDesc(bool bDesc)
 {
+  RASSERT( ! Std.m_uGlobal );
   Std.m_uDesc = (i8)bDesc;
 }
 
@@ -139,7 +143,12 @@ void Rrf::vDesc(bool bDesc)
 /*----------------------------------------------------------------------------*/
 bool Rrf::bFree(void)
 {
-  return (bool)Std.m_uFree;
+  if (Std.m_uGlobal) {
+    return (bool)Glb.m_uFree;
+  }
+  else {
+    return (bool)Std.m_uFree;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -147,7 +156,12 @@ bool Rrf::bFree(void)
 /*----------------------------------------------------------------------------*/
 void Rrf::vFree(bool bFree)
 {
-  Std.m_uFree = bFree;
+  if (Std.m_uGlobal) {
+    Glb.m_uFree = bFree;
+  }
+  else {
+    Std.m_uFree = bFree;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -229,7 +243,12 @@ void Rrf::vKind(eKE eKind)
 /*----------------------------------------------------------------------------*/
 bool Rrf::bPayload(void)
 {
-  return (bool)Std.m_uPayload;
+  if (Std.m_uGlobal) {
+    return false;
+  }
+  else {
+    return (bool)Std.m_uPayload;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -237,6 +256,7 @@ bool Rrf::bPayload(void)
 /*----------------------------------------------------------------------------*/
 void Rrf::vPayload(bool bPayLoad)
 {
+  RASSERT( ! Std.m_uGlobal );
   Std.m_uPayload = bPayLoad;
 }
 
@@ -286,6 +306,7 @@ void Rrf::vSet(Rrf xwRef)
     Glb.m_uItem   = xwRef.Glb.m_uItem;
     Glb.m_uLevels = xwRef.Glb.m_uLevels;
     Glb.m_uKind   = xwRef.Glb.m_uKind;
+    Glb.m_uFree   = xwRef.Glb.m_uFree;
     Glb.m_uPtn    = xwRef.Glb.m_uPtn;
     Glb.m_uGlobal = xwRef.Glb.m_uGlobal;
   }
@@ -332,6 +353,7 @@ void Rrf::vSet(u8 uBufferNo,u8 uItem,u8 uLevels,u8 eEntKind, u8 uPtn)
   Glb.m_uItem   = uItem;
   Glb.m_uLevels = uLevels;
   Glb.m_uKind   = eEntKind;
+  Glb.m_uFree   = 0;
   Glb.m_uPtn    = uPtn;
   Glb.m_uGlobal = 1;
 }

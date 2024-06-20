@@ -1569,7 +1569,7 @@ void EntBuffer::vShow(bool bEntries, Ent* aMarkEntry)
          "--------------------------------------------------\n"_Stz);
   
   //if (! bEntries)
-  //  return;
+    return;
   
   vTrace("\n"_Stz);
   vTrace("Arguments (by headEntry vector[0]):\n"_Stz);
