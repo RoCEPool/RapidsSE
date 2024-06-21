@@ -566,7 +566,7 @@ BinaryStackSegment<SEGMENT_SIZE, AREA>::BinaryStackSegment(eCN eClassNo,
 {
   m_nSegEntries = 0;
   //m_xBytes
-  m_pySegmentHead = (byte*) m_xBytes.szBoundary();
+  m_pySegmentHead = aAdd<byte*>(m_xBytes.szBoundary(), 1);
 
   _checkInitialisedSize_(sizeof(BinaryStackSegment<SEGMENT_SIZE, AREA>));
 }
@@ -583,7 +583,7 @@ BinaryStackSegment<SEGMENT_SIZE, AREA>::BinaryStackSegment(eCN eClassNo,
 {
   m_nSegEntries = 0;
   //m_xBytes
-  m_pySegmentHead = (byte*) m_xBytes.szBoundary();
+  m_pySegmentHead = aAdd<byte*>(m_xBytes.szBoundary(), 1);
 
   _checkInitialisedSize_(sizeof(BinaryStackSegment<SEGMENT_SIZE, AREA>));
 }
@@ -629,7 +629,7 @@ byte* BinaryStackSegment<SEGMENT_SIZE, AREA>::pySegAdvance(i8 nBytes)
 
   ASSERT(nBytes > 0);
   ASSERT(bSegCanFit(nBytes));
-  ASSERT(m_pySegmentHead <= (byte*) m_xBytes.szBoundary());
+  ASSERT(m_pySegmentHead <= aAdd<byte*>(m_xBytes.szBoundary(), 1));
 
   m_pySegmentHead -= nBytes;
   ++m_nSegEntries;
@@ -657,6 +657,8 @@ template <eSS SEGMENT_SIZE, i8 AREA>
 bool BinaryStackSegment<SEGMENT_SIZE, AREA>::bSegCanFit(i8 nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+
+  ASSERT(nBytes > 0);
 
   // Byte buffer is used from back to front
   byte* pyAddr = m_pySegmentHead - nBytes;
@@ -686,8 +688,8 @@ bool BinaryStackSegment<SEGMENT_SIZE, AREA>::bSegIsEmpty(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 
-  ASSERT(  (m_nSegEntries == 0 && m_pySegmentHead == (byte*) m_xBytes.szBoundary())
-        || (m_nSegEntries  > 0 && m_pySegmentHead  < (byte*) m_xBytes.szBoundary()) );
+  ASSERT(  (m_nSegEntries == 0 && m_pySegmentHead == aAdd<byte*>(m_xBytes.szBoundary(), 1))
+        || (m_nSegEntries  > 0 && m_pySegmentHead  < aAdd<byte*>(m_xBytes.szBoundary(), 1)) );
 
   return m_nSegEntries == 0;
 }
@@ -702,7 +704,7 @@ void BinaryStackSegment<SEGMENT_SIZE, AREA>::vSegReset(void)
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 
   m_nSegEntries = 0;
-  m_pySegmentHead = (byte*) m_xBytes.szBoundary();
+  m_pySegmentHead = aAdd<byte*>(m_xBytes.szBoundary(), 1);
   m_xBytes.vReset();
 }
 
@@ -717,12 +719,12 @@ void BinaryStackSegment<SEGMENT_SIZE, AREA>::vSegRewind(i8 nBytes)
 
   ASSERT(nBytes > 0);
   ASSERT(m_nSegEntries > 0);
-  ASSERT(m_pySegmentHead < (byte*) m_xBytes.szBoundary());
+  ASSERT(m_pySegmentHead < aAdd<byte*>(m_xBytes.szBoundary(), 1));
 
   m_pySegmentHead += nBytes;
   --m_nSegEntries;
 
-  ASSERT(m_pySegmentHead <= (byte*) m_xBytes.szBoundary());
+  ASSERT(m_pySegmentHead <= aAdd<byte*>(m_xBytes.szBoundary(), 1));
   ASSERT(m_nSegEntries >= 0);
 }
 
