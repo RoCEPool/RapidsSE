@@ -376,13 +376,12 @@ function copyLogs() {
         "-o" "StrictHostKeyChecking=no"
         "${src}"
         "${dest}"
-        "2>&1"
       )
 
       # Run it
       echo "Copying logs: ${src} --> ${dest}"
       local response
-      if ! response="$("${scpCmd[@]}")"; then
+      if ! response="$("${scpCmd[@]}" 2>&1)"; then
         >&2 echo "Error copying logs from node ${nodeName} with the command: ${scpCmd[*]}"
         >&2 echo "Error response on node ${nodeName} as follows: ${response}"
         continue
@@ -415,11 +414,10 @@ function copyLogs() {
           "-o" "StrictHostKeyChecking=no"
           "${src}"
           "${dest}"
-          "2>&1"
         )
         echo "Copying logs: ${src} --> ${dest}"
 
-        if ! response="$("${scpCmd[@]}")"; then
+        if ! response="$("${scpCmd[@]}" 2>&1)"; then
           >&2 echo "Error copying clusterStatus.log from node ${nodeName} with the command: ${scpCmd[*]}"
           >&2 echo "Error response on node ${nodeName} as follows: ${response}"
         fi
@@ -446,11 +444,10 @@ function copyLogs() {
           "-r"
           "${src}"
           "${dest}"
-          "2>&1"
         )
 
         echo "Copying logs (recursively): ${src} --> ${dest}"
-        if ! response="$("${scpCmd[@]}")"; then
+        if ! response="$("${scpCmd[@]}" 2>&1)"; then
           >&2 echo "Error copying queryLib sources from node ${nodeName} with the command: ${scpCmd[*]}"
           >&2 echo "Error response on node ${nodeName} as follows: ${response}"
         fi
