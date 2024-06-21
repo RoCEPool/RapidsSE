@@ -24,7 +24,7 @@
   begin
 
     pageout::activity
-    2 thread::sleepSsec
+    2 [task].sleepSsec
 
   again
 ;

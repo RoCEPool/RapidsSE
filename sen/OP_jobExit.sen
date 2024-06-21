@@ -136,7 +136,7 @@
 
     // sleep for a second
     // [args].demonSleep thread::sleepSsec
-    1 thread::sleepSsec
+    1 [task].sleepSsec
 
   again
 ;
