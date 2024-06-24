@@ -190,9 +190,8 @@ eEC Api::eScheduleTask(ENGINE::Task* pTask)
   RASSERT(pTask->pJob()->pParentJob());
   Job* pParentJob = pTask->pJob()->pParentJob();
 
-
-//  pParentJob->vMutexLock();
-//  RASSERT(MS_LOCKED == pParentJob->eMutexSide());
+  pParentJob->vMutexLock();
+  RASSERT(MS_LOCKED == pParentJob->eMutexSide());
 
   RASSERT(pChildJob->pTask());
 
@@ -203,8 +202,22 @@ eEC Api::eScheduleTask(ENGINE::Task* pTask)
 
   Scheduler::vTaskApi_Add(pChildJob->pTask());
 
-//  pParentJob->vMutexWait();
-//  pParentJob->vMutexUnlock();
+  // Raw pipeline jobs can produce errors when they are parsed and executed.
+  // The parent job needs to block and wait until the child updates it with
+  // any possible error codes and then signals it. Failure to wait for this
+  // signal means that the parent will wait forever.
+  //
+  // Pipelines will call:
+  //   [job].updateParent
+  //   [job].signalParent
+  // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  // This is a blocking call.
+  // This means that if there are enough of these calls then all general purpose
+  // threads will be hard blocked and the child jobs won't be able to run.
+  // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  pParentJob->vMutexWait();
+  pParentJob->vMutexUnlock();
+
 
   // check for error from child job
   eEC eChildError = pParentJob->eChildError();

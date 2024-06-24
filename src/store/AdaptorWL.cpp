@@ -405,7 +405,7 @@ void AdaptorWL::vStatementParsingFailed(eEC eErrCode, Stz* szErrMsg)
 /*----------------------------------------------------------------------------*/
 void AdaptorWL::vStatementSubmissionFailed(eEC eErrCode)
 {
-  if (!bCheckState( {API_STATEMENT_TO_SUBMIT} )) {
+  if (!bCheckState( {API_STATEMENT_TO_SUBMIT, API_STATEMENT_SUBMITTED} )) {
     return;
   }
 
@@ -588,8 +588,7 @@ void AdaptorWL::vAffectedRowCountPds(Pds* pPdsRowBuffer)
 void AdaptorWL::vChildJobExited()
 {
   ASSERT(m_pStmtCtx);
-  if (!bCheckState( { API_STATEMENT_TO_SUBMIT,
-                      API_STATEMENT_SUBMITTED,
+  if (!bCheckState( { API_STATEMENT_SUBMITTED,
                       API_METADATA_RECEIVED,
                       API_DATA_RECEIVED,
                       API_STATEMENT_COMPLETED } )) {
