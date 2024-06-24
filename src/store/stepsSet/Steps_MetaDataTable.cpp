@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Steps_Table.cpp - table step group                                         */
+/* Steps_MetaDataTable.cpp - metadata table step group                        */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -632,7 +632,7 @@ void Step::vMetaDataTableFind(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* MetaDataTable[].find -- row                                                */
+/* MetaDataTable[].findRow -- row                                             */
 /*----------------------------------------------------------------------------*/
 void Step::vMetaDataTableFindRow(void)
 {
@@ -649,11 +649,8 @@ void Step::vMetaDataTableFindRow(void)
   i8 iCol_1 = m_pDataStack->iPopAsInt(__func__ );
 
   Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__ ));
-  UNUSED(pTable);
 
-  Table* pIndexTable = MetaDataTables::pTableFind("tableIndexes"_Stz);
-
-  bool bResult = MetaDataTables::bFindRowTable(pIndexTable, iCol_1, szTableNm, iCol_2, szIndexNm);
+  bool bResult = MetaDataTables::bFindRowTable(pTable, iCol_1, szTableNm, iCol_2, szIndexNm);
 
   m_pDataStack->vPushBol(bResult);
 

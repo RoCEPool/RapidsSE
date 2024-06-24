@@ -126,6 +126,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_MetaGet();
   Step::vAddSteps_MetaTable();
   Step::vAddSteps_MetaDataTable();
+  Step::vAddSteps_MdTable();
   Step::vAddSteps_Memory();
   Step::vAddSteps_Monitor();
 

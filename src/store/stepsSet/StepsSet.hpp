@@ -1199,6 +1199,18 @@ void vJobIdLastJobIdFetch(void);
   void vMetaDataTableInit(void);
   void vMetaDataTableSetAM(void);
 
+  //MdTable
+  void vMdTableCatalog(void);
+  void vMdTableCluster(void);
+  void vMdTableColumns(void);
+  void vMdTableIndexColumns(void);
+  void vMdTableIndexes(void);
+  void vMdTableNodes(void);
+  void vMdTableQueries(void);
+  void vMdTableSchema(void);
+  void vMdTableSessions(void);
+  void vMdTableTables(void);
+
   // ErrorMarker[]
   void vErrorMarkerDelete(void);
   void vErrorMarkerGet(void);

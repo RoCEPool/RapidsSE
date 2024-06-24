@@ -11,6 +11,8 @@
 
   params| sTableNm |
 
+  0 locals| pMetaDataTableIndexes |
+
   // check index name is valid
   <indexNm> check::nameIsValidIndex not if false exit then
 
@@ -36,7 +38,7 @@
   // search for <indexNm, TableNm> row in Index metadata table
   // if exists, return error
 
-  Table[] 2 sTableNm 3 <indexNm> MetaDataTable[].findRow if
+  MdTable[].indexes 2 sTableNm 3 <indexNm> MetaDataTable[].findRow if
     EC_INDEX_EXISTS
     false exit
   then
