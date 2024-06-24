@@ -120,6 +120,12 @@ namespace STORE
 
     } Smooth;
 
+    struct
+    {
+      bool m_bUnproject_rowRef;
+    } RowRef;
+
+
     i8    m_nAncestors;
     Card* m_paAncestry[C_CARD_ANCESTRY];
     i8    m_iaAncestry[C_CARD_ANCESTRY];

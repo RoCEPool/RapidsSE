@@ -312,6 +312,17 @@ void XF::vTransform_passThru(void)
     //XF_Prolog_X_colNm_By_stmCol::vXF_colNm_By_stmCol(m_pCI);
     XF_Prolog_X_colNm_To_expCol::vXF_colNm_To_expCol(m_pCI);
 
+
+    m_pCI->vTransform(__FILE__, __func__, XF_PASSTHRU_ADD_UNPROJECT_ROWREF);
+    m_pCI->vBeginEach();
+    while (m_pCI->bEachOp(CK_o_RRFJOIN)) {
+      m_pCI->E.p_emit = m_pCI->E.p_Op->pSub_emit();
+      Card_Project *p_project_unproject_rowRef = Card_Project::pUnproject_rowRef(m_pCI);
+      m_pCI->E.p_deck->vInsertAfter(p_project_unproject_rowRef, m_pCI->E.p_rrfJoin);
+    }
+    m_pCI->vEndTransform(__LINE__);
+
+
     m_pCI->vTransform(__FILE__, __func__, XF_PASSTHRU_ADJUST_SORT);
     m_pCI->vBeginEach();
     while (m_pCI->bEachOp(CK_o_SORT, CK_p_KEY, CK_p_EMIT)) {

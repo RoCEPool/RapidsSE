@@ -19,8 +19,9 @@ namespace STORE
    ~Card_Project(void) noexcept(false);
 
     static void vUnproject_foldExpr(CardIter* pCI);
+    static Card_Project* pUnproject_rowRef(CardIter* pCI);
 
-   Card_Emit* pCraft_emit_early(CardIter* pCI);
+    Card_Emit* pCraft_emit_early(CardIter* pCI);
 
     void vDerive_streamKey(CardIter* pCI);
 
