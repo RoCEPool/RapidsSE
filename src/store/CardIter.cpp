@@ -648,6 +648,9 @@ void CardIter::vClearRegisters(void)
   Smooth.Sort.m_bCorrect_After_Inject = false;
 
   Smooth.Unproject.m_bUnproject_foldExpr = false;
+
+  RowRef.m_bUnproject_rowRef = false;
+
 }
 
 /*----------------------------------------------------------------------------*/
