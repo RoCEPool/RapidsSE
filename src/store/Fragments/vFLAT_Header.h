@@ -125,12 +125,15 @@ i8 iStartHandler(struct Dynamic_T* aDynamicT) {
 
 	aDynamicT->m_fp_aExtern_IndexTreeAllotPayStr = &aExtern_IndexTreeAllotPayStr;
 	aDynamicT->m_fp_vExtern_IndexFind            = &vExtern_IndexFind;
+  aDynamicT->m_fp_vExtern_IndexFindGlobal      = &vExtern_IndexFindGlobal;
 	aDynamicT->m_fp_vExtern_IndexNew             = &vExtern_IndexNew;
 
 	aDynamicT->m_fp_aExtern_IndexTreeBegin            = &aExtern_IndexTreeBegin;
 	aDynamicT->m_fp_aExtern_IndexTreeFindEntryAsc     = &aExtern_IndexTreeFindEntryAsc;
 	aDynamicT->m_fp_aExtern_IndexTreeFindEntryAscDsc  = &aExtern_IndexTreeFindEntryAscDsc;
-	aDynamicT->m_fp_aExtern_IndexTreeFindInsertGenAsc = &aExtern_IndexTreeFindInsertGenAsc;
+	aDynamicT->m_fp_vExtern_IndexFindGlobal           = &vExtern_IndexFindGlobal;
+  aDynamicT->m_fp_aExtern_IndexTreeFindInsertGenAsc = &aExtern_IndexTreeFindInsertGenAsc;
+  aDynamicT->m_fp_iExtern_IndexTreeGlobalPtnRrf     = &iExtern_IndexTreeGlobalPtnRrf;
 	aDynamicT->m_fp_aExtern_IndexTreeInsertEnt        = &aExtern_IndexTreeInsertEnt;
   aDynamicT->m_fp_aExtern_IndexTreeInsertEntTop     = &aExtern_IndexTreeInsertEntTop;
   aDynamicT->m_fp_vExtern_IndexTreeTop              = &vExtern_IndexTreeTop;
@@ -146,8 +149,10 @@ i8 iStartHandler(struct Dynamic_T* aDynamicT) {
   aDynamicT->m_fp_vExtern_IndexTreePositionLT_int = &vExtern_IndexTreePositionLT_int;
 
 	aDynamicT->m_fp_vExtern_PotAllotRowPds       = &vExtern_PotAllotRowPds;
+  aDynamicT->m_fp_vExtern_PotAllotRowPdsPtn    = &vExtern_PotAllotRowPdsPtn;
 	aDynamicT->m_fp_aExtern_PdsFirstRowCellArray = &aExtern_PdsFirstRowCellArray;
 	aDynamicT->m_fp_aExtern_PdsNextRowCellArray  = &aExtern_PdsNextRowCellArray;
+  aDynamicT->m_fp_vExtern_PotAllotRowPds       = &vExtern_PotAllotRowPds;
 
 	aDynamicT->m_fp_vExtern_PotRowStrSize = &vExtern_PotRowStrSize;
 

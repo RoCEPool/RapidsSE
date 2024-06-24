@@ -69,6 +69,48 @@ extern "C" void vExtern_PotAllotRowPds(void* aDynamicT, byte* aMixIn, i8 iMixInL
 }
 
 /*----------------------------------------------------------------------------*/
+/* allot a new row                                                            */
+/*----------------------------------------------------------------------------*/
+extern "C" void vExtern_PotAllotRowPdsPtn(void* aDynamicT, i8 iPtnId, char** aazStrArea, i8* pnMaxStrAreaLen) {
+
+  Dynamic_T* pDynamic = (Dynamic_T*)aDynamicT;
+  Pot* pPot = (Pot*)pDynamic->m_pPot;
+
+  // get the lgtptn
+  LglPtn tLglPtn = iPtnId;
+
+  try {
+    Row* aDstRow;
+
+    // get pds row buffer for given partition (new a first buffer if ncessary)
+    Pds* pPdsRowBuffer = _pPds(pPot->pBuffer(tLglPtn));
+    if (! pPdsRowBuffer || pPdsRowBuffer->nFreeBytes() < C_2KB) {
+      pPdsRowBuffer = new Pds((StreamDef*)pDynamic->m_aStreamDefOut);
+      pPot->vAddBuffer(tLglPtn,pPdsRowBuffer);
+    }
+
+    // new a row in pds row buffer (new another pds row buffer if necessary)
+    aDstRow = pPdsRowBuffer->pAllotRow();
+    if (! aDstRow) {
+      pPdsRowBuffer = new Pds((StreamDef*)pDynamic->m_aStreamDefOut);
+      pPot->vAddBuffer(tLglPtn,pPdsRowBuffer);
+      aDstRow = pPdsRowBuffer->pAllotRow();
+      RASSERT(aDstRow);
+    }
+    *aazStrArea = (char*)pPdsRowBuffer->azDepositString_begin();
+    *pnMaxStrAreaLen = pPdsRowBuffer->nFreeBytes();
+
+    pPdsRowBuffer->vLglPtn(tLglPtn);
+
+    pDynamic->m_xRowInfoPO[0].m_aRowCellArray = aDstRow->aCellArray();
+    pDynamic->m_xRowInfoPO[0].m_aPdsRowBuffer = pPdsRowBuffer;
+  }
+  catch (LowMemory xLowMemory) {
+    pDynamic->m_iErrorCode = EC_LOW_MEMORY;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* allocate row string                                                        */
 /*----------------------------------------------------------------------------*/
 extern "C" void vExtern_PotRowStrSize(void* aDynamicT, i8 nRowStrSize) {

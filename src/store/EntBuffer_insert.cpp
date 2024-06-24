@@ -249,8 +249,8 @@ void EntBuffer::vCompact(void)
 #ifdef __ENT_HEADER
     new(aOpenedFreeEntry) FreeItem(nReclaimedBytes);
 #else
-    ((Ent_int*)aOpenedFreeEntry)->Rrf.m_uFree = 1;
-    ((Ent_int*)aOpenedFreeEntry)->Rrf.m_uBuffer = nReclaimedBytes;
+    ((Ent_int*)aOpenedFreeEntry)->Rrf.Std.m_uFree = 1;
+    ((Ent_int*)aOpenedFreeEntry)->Rrf.Std.m_uBuffer = nReclaimedBytes;
 #endif
     
     

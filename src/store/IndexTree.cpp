@@ -253,6 +253,54 @@ extern "C" void vExtern_IndexTreeTop(void* aDynamic, i8 iTopCol, i8 iTopCount) {
   }
 }
 
+extern "C" i8 iExtern_IndexTreeGlobalPtnRrf(void* aIndexInfo, i8* piRowRef) {
+
+  IndexInfo* pIndexInfo = (IndexInfo*)aIndexInfo;
+  IndexTree* pIndexTree = _pIndexTree(pIndexInfo->m_aIndexTree);
+
+  Key *aKey = (Key *) pIndexInfo->m_aEntKey;
+
+  EntBuffer *pEntBuffer = nullptr;
+  Ent *aEnt = nullptr;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //	pEntBuffer = pIndexTree->pPositionH0Buffer_int(aKey);
+  //	if (!pEntBuffer) {
+  //		pIndexInfo->m_aEntInt = nullptr;
+  //		return;
+  //	}
+
+  EntBuffer* pRootBuffer = pIndexTree->pRootBuffer();
+  if ( !  pRootBuffer) {
+    pIndexInfo->m_aEntInt = nullptr;
+    return C_UNKNOWN;
+  }
+
+  if (pRootBuffer->iBufferHeight() == 0)
+    pEntBuffer = pRootBuffer;
+  else
+    pEntBuffer = pRootBuffer->pFindLeafBuffer_intO(aKey);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  aEnt = pEntBuffer->aFindEntryBefore_MoveGE_int(aKey, &pEntBuffer);
+  if (!aEnt) {
+    pIndexInfo->m_aEntInt = nullptr;
+    return C_UNKNOWN;
+  }
+
+  //aEnt = EntBuffer::pMoveToGreaterEqualEntry_int(aEnt, aKey, &pEntBuffer);
+
+  pIndexInfo->m_aEntBuffer = pEntBuffer;
+  pIndexInfo->m_aEntInt = (Ent_int*)aEnt;
+
+  Rrf xRrf;
+  xRrf.vBuffer(aEnt->iBuffer());
+  xRrf.vItem(aEnt->iItem());
+  *piRowRef = xRrf.iAsI8();
+
+  return (i8)aEnt->iPtn();
+}
+
 extern "C" void* aExtern_IndexTreeNew(void* aIndexDef, i8* aiKeyKind) {
 	IndexTree *pIndexTree = new IndexTree(nullptr, (IndexDef *) aIndexDef, C_UNKNOWN);
 	*aiKeyKind = (i8) ((IndexDef *) aIndexDef)->eKeyKind();
@@ -314,6 +362,21 @@ extern "C" void vExtern_IndexFind(void* aIndexInfo, char* aTableName, char* aInd
 
 	i8 iIndexNo = pIndex->iIndexNo();
 	pIndexInfo->m_aIndexTree = pTablePtn->pIndexTree(iIndexNo);
+}
+
+
+extern "C" void vExtern_IndexFindGlobal(void* aIndexInfo, char* aTableName, char* aIndexName) {
+
+  LglPtn tLglPtn;
+  IndexInfo* pIndexInfo = (IndexInfo*)aIndexInfo;
+
+  Table* pTable = AM::pTableFind((Stz*)aTableName);
+  Index* pIndex = pTable->pFindGblIndex((Stz*)aIndexName);
+
+  pIndexInfo->m_aIndexDef = pIndex->pIndexDef();
+
+  i8 iIndexNo = pIndex->iIndexNo();
+  pIndexInfo->m_aIndexTree = pTable->pGblIndexTree(iIndexNo);
 }
 
 /*----------------------------------------------------------------------------*/

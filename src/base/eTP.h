@@ -3,15 +3,13 @@
 /*============================================================================*/
 #pragma once
 
-enum eTP // transform/question parameter
+enum eTP // tub / pot type
 {
   /*  0 */ TP_NONE=0,
   
-  /*    */ TP_DATE,
-  /*    */ TP_INT,
-  /*    */ TP_LABEL,
-  /*    */ TP_STRING,
-  /*    */ TP_SUBSCR,
+  /*    */ TP_GBL,
+  /*    */ TP_POT,
+  /*    */ TP_TUB,
 
   /*    */ TP_ENUMS
 };

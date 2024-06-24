@@ -10,6 +10,7 @@ enum eSK // sketch kind
   /*   */ SK_ANTIJOIN,    // anti-join
   /*   */ SK_EOS,         // eos
   /*   */ SK_FILTER,      // filter
+  /*   */ SK_GBL,         // global pot
   /*   */ SK_GBYAGG,      // aggregate with group by
   /*   */ SK_INDEXJOIN,   // index join
   /*   */ SK_INDEXSCAN,   // index scan
@@ -18,6 +19,7 @@ enum eSK // sketch kind
   /*   */ SK_LIMIT,       // limit
   /*   */ SK_ORDAGG,      // ordered aggregate with group by
   /*   */ SK_POT,         // pot
+  /*   */ SK_PRJGBL,      // project directly into GBL POT
 	/*   */ SK_PRJPOT,      // project directly into POT
 	/*   */ SK_PRJTUB,      // project directly into TUB
   /*   */ SK_PROJECT,     // projection

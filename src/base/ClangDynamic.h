@@ -118,12 +118,14 @@ struct Dynamic_T
 
 	// EntryBuffer
 	void  (*m_fp_vExtern_EntWrkAppendElementStz)(void*,char*);
+
 	void* (*m_fp_aExtern_EntBufferNextEntry)(void**,void*);
 	void  (*m_fp_vExtern_EntPayloadCreate)(void*,i8);
 	void  (*m_fp_vExtern_EntWrkReset)(void*);
 
 	// Index
 	void* (*m_fp_vExtern_IndexFind)(void*,char*,char*);
+  void* (*m_fp_vExtern_IndexFindGlobal)(void*,char*,char*);
 	void* (*m_fp_vExtern_IndexNew)(void*,i8,void*,bool);
 
 	// IndexTree
@@ -132,6 +134,7 @@ struct Dynamic_T
 	void* (*m_fp_aExtern_IndexTreeFindEntryAsc)(void*,void*);
 	void* (*m_fp_aExtern_IndexTreeFindEntryAscDsc)(void*,void*);
 	void* (*m_fp_aExtern_IndexTreeFindInsertGenAsc)(void*,i8,bool*);
+  i8    (*m_fp_iExtern_IndexTreeGlobalPtnRrf)(void*,i8*);
 	void* (*m_fp_aExtern_IndexTreeInsertEnt)(void*,void*,i8*);
 	void* (*m_fp_aExtern_IndexTreeInsertEntTop)(void*,void*,void**,i8,i8*);
   void  (*m_fp_vExtern_IndexTreeTop)(void*,i8,i8);
@@ -150,6 +153,7 @@ struct Dynamic_T
 	void* (*m_fp_aExtern_PdsFirstRowCellArray)(void*,void**);
 	void* (*m_fp_aExtern_PdsNextRowCellArray)(void*,void**);
 	void  (*m_fp_vExtern_PotAllotRowPds)(void*,byte*,i8,char**,i8*);
+  void  (*m_fp_vExtern_PotAllotRowPdsPtn)(void*,i8,char**,i8*);
 	void  (*m_fp_vExtern_PotRowStrSize)(void*,i8);
 
 	// StreamDef

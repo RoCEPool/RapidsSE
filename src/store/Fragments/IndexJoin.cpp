@@ -200,8 +200,8 @@ void vIndexJoinDereference(Dynamic_T* aDynamicT) {
   aHeadLineSav = aHeadLine;
 
   // dereference the entry
-  iIndexBuffer = __INDEX_INFO__[CURRENT_DUP_OP].m_aEntInt->Rrf.m_uBuffer;
-  iIndexItem   = __INDEX_INFO__[CURRENT_DUP_OP].m_aEntInt->Rrf.m_uItem;
+  iIndexBuffer = __INDEX_INFO__[CURRENT_DUP_OP].m_aEntInt->Rrf.Std.m_uBuffer;
+  iIndexItem   = __INDEX_INFO__[CURRENT_DUP_OP].m_aEntInt->Rrf.Std.m_uItem;
   aIndexCrw    = ( (char*)C_ADR_REGION + iIndexBuffer * C_1MB + C_CRW_FIRSTHEAD + iIndexItem * C_CRW_HEADBYTES );
 
   // inflate the derefenced entry

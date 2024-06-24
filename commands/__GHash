@@ -2,8 +2,9 @@
 /* __GHASH                                                                    */
 /*============================================================================*/
 
-create global index GxO_ORDERKEY on orders (O_ORDERKEY);
 
+/pipeline_def
+/weaved
 /optimise_passthru
 pipeline unamed
   begin

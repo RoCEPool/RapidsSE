@@ -21,6 +21,7 @@
   i8 bFound         __attribute__ ((unused));
   i8 *piColumn      __attribute__ ((unused));
   i8 iIndex         __attribute__ ((unused));
+  i8 iPtnId         __attribute__ ((unused));
   i8 nSrcSize       __attribute__ ((unused));
   i8 nDstSize       __attribute__ ((unused));
   i8 iOffset        __attribute__ ((unused));
@@ -43,6 +44,7 @@
   i8 iInCount        __attribute__ ((unused));
   i8 *paW            __attribute__ ((unused));
   i8 iScaleDiff      __attribute__ ((unused));
+  i8 iRowRef         __attribute__ ((unused));
   i8 nMaxStrAreaLen  __attribute__ ((unused));
 
 	byte* aMixVal  __attribute__ ((unused));

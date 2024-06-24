@@ -12,6 +12,7 @@ extern void  vExtern_EntWrkReset(void* pEntWrk) __attribute__((weak_import));
 
 // Index
 extern void* vExtern_IndexFind(void* aIndexInfo,char*,char*) __attribute__((weak_import));
+extern void* vExtern_IndexFindGlobal(void* aIndexInfo,char*,char*) __attribute__((weak_import));
 extern void* vExtern_IndexNew(void* aDynamicT, i8 nNumCols, void* pColumnInfo, bool bPayload) __attribute__((weak_import));
 
 // IndexTree
@@ -24,6 +25,7 @@ extern void vExtern_IndexTreeTop(void* aDynamic, i8 iTopCol, i8 iTopCount) __att
 extern void* aExtern_IndexTreeFindEntryAsc(void* aIndexTree, void* aKey) __attribute__((weak_import));
 extern void* aExtern_IndexTreeFindEntryAscDsc(void* aIndexTree, void* aKey) __attribute__((weak_import));
 extern void* aExtern_IndexTreeFindInsertGenAsc(void* aDynamicT, i8 nPayloadBytes, bool* pbInsertedEntry) __attribute__((weak_import));
+extern i8    iExtern_IndexTreeGlobalPtnRrf(void* aDynamicT, i8* piRowRef) __attribute__((weak_import));
 extern void* aExtern_IndexTreeInsertEnt(void* aIndexDef, void* aEnt, i8* piErrorCode) __attribute__((weak_import));
 
 extern void  vExtern_IndexTreePositionGE_gen(void* aIndexInfo) __attribute__((weak_import));
@@ -37,6 +39,7 @@ extern void  vExtern_IndexTreePositionLE_int(void* aIndexInfo) __attribute__((we
 extern void  vExtern_IndexTreePositionLT_int(void* aIndexInfo) __attribute__((weak_import));
 
 extern void  vExtern_PotAllotRowPds(void* aDynamic, byte* aMixIn, i8 iMixInLen, char** aazStrArea, i8* pnMaxStrAreaLen) __attribute__((weak_import));
+extern void  vExtern_PotAllotRowPdsPtn(void* aDynamic, i8 iPtnId, char** aazStrArea, i8* pnMaxStrAreaLen) __attribute__((weak_import));
 extern void* aExtern_PdsFirstRowCellArray(void* aPdsRowBuffer, void** aCurrentRow) __attribute__((weak_import));
 extern void* aExtern_PdsNextRowCellArray(void* aPdsRowBuffer, void** aCurrentRow) __attribute__((weak_import));
 

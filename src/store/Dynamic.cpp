@@ -280,13 +280,16 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
 	m_xDynamicT.m_fp_vExtern_EntPayloadCreate = nullptr;
 	m_xDynamicT.m_fp_vExtern_EntWrkReset = nullptr;
 
-	m_xDynamicT.m_fp_aExtern_IndexTreeAllotPayStr = nullptr;
 	m_xDynamicT.m_fp_vExtern_IndexFind = nullptr;
+  m_xDynamicT.m_fp_vExtern_IndexFindGlobal = nullptr;
 	m_xDynamicT.m_fp_vExtern_IndexNew = nullptr;
+
+  m_xDynamicT.m_fp_aExtern_IndexTreeAllotPayStr = nullptr;
 	m_xDynamicT.m_fp_aExtern_IndexTreeBegin = nullptr;
 	m_xDynamicT.m_fp_aExtern_IndexTreeFindEntryAsc = nullptr;
 	m_xDynamicT.m_fp_aExtern_IndexTreeFindEntryAscDsc = nullptr;
 	m_xDynamicT.m_fp_aExtern_IndexTreeFindInsertGenAsc = nullptr;
+  m_xDynamicT.m_fp_iExtern_IndexTreeGlobalPtnRrf = nullptr;
 	m_xDynamicT.m_fp_aExtern_IndexTreeInsertEnt    = nullptr;
 	m_xDynamicT.m_fp_aExtern_IndexTreeInsertEntTop = nullptr;
   m_xDynamicT.m_fp_vExtern_IndexTreeTop = nullptr;
@@ -304,6 +307,7 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
 	m_xDynamicT.m_fp_aExtern_PdsFirstRowCellArray  = nullptr;
 	m_xDynamicT.m_fp_aExtern_PdsNextRowCellArray   = nullptr;
 	m_xDynamicT.m_fp_vExtern_PotAllotRowPds   = nullptr;
+  m_xDynamicT.m_fp_vExtern_PotAllotRowPdsPtn = nullptr;
 	m_xDynamicT.m_fp_vExtern_PotRowStrSize    = nullptr;
 
 	m_xDynamicT.m_fp_aExtern_StreamDefNew = nullptr;

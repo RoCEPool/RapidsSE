@@ -8,11 +8,9 @@ Stz* aTP[TP_ENUMS]
 {
   /*  0 */ "TP_NONE"_Stz,
   
-  /*  0 */ "TP_DATE"_Stz,
-  /*  0 */ "TP_INT"_Stz,
-  /*  0 */ "TP_LABEL"_Stz,
-  /*  0 */ "TP_STRING"_Stz,
-  /*  0 */ "TP_SUBSCR"_Stz,
+  /*  0 */ "TP_GBL"_Stz,
+  /*  0 */ "TP_POT"_Stz,
+  /*  0 */ "TP_TUB"_Stz,
 
 //  /*    */ "TP_ENUMS"_Stz
 };

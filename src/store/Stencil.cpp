@@ -21,6 +21,8 @@
 #include "CodeSynthUtils.hpp"
 #include "PipelineDef.hpp"
 
+#include "eTP.h"
+
 //#define _PROJECT_INTO_TUB
 
 /*----------------------------------------------------------------------------*/
@@ -173,9 +175,10 @@ eEC Stencil::eSynthesise(StageDef *pStageDef)
 	_precondition_(_ADDRESS_,_MAGIC_,CN_STENCIL,_FOOTER_);
 
 	bool bInflateGenerated = false;
-	bool bGeneratePotTub = true;
-	bool bGeneratePot = false;
+	//bool bGeneratePotTub = true;
 	bool bPayload = false;
+
+  eTP  eTubPot = TP_TUB;
 
 	s256 sLimitExpr = ""_Stz;
 
@@ -196,11 +199,20 @@ eEC Stencil::eSynthesise(StageDef *pStageDef)
 		if (pOpDef->szOpNm()->bSame("hash"_Stz)) {
 
 			// generate pot
-			bGeneratePot = true;
+			eTubPot = TP_POT;
 
 			// get hash opDef
 			pHashOpDef = pOpDef;
 		}
+
+    if (pOpDef->szOpNm()->bSame("GlobalHash"_Stz)) {
+
+      // generate pot
+      eTubPot = TP_GBL;
+
+      // get hash opDef
+      pHashOpDef = pOpDef;
+    }
 
 		if (pOpDef->szOpNm()->bSame("limit"_Stz)) {
 
@@ -328,10 +340,10 @@ eEC Stencil::eSynthesise(StageDef *pStageDef)
 			vAppend(pOpSketch);
 
 			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-			pOpSketch = pSketchPotTub(pAggOpSketch, bGeneratePot, pHashOpDef, sLimitExpr);
+			pOpSketch = pSketchPotTub(pAggOpSketch, eTubPot, pHashOpDef, sLimitExpr);
 			vAppend(pOpSketch);
 
-			bGeneratePotTub = false;
+      eTubPot = TP_NONE;
       m_iPrevOpNo = pOpSketch->m_iOperatorNo;
       m_iPrevDupOpNo = pOpSketch->m_iDupOpNo;
 			continue;
@@ -369,10 +381,10 @@ eEC Stencil::eSynthesise(StageDef *pStageDef)
 			vAppend(pOpSketch);
 
 			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-			pOpSketch = pSketchPotTub(pGbyAggOpSketch, bGeneratePot, pHashOpDef, sLimitExpr);
+			pOpSketch = pSketchPotTub(pGbyAggOpSketch, eTubPot, pHashOpDef, sLimitExpr);
 			vAppend(pOpSketch);
 
-			bGeneratePotTub = false;
+      eTubPot = TP_NONE;
 			bPayload = true;
       m_iPrevOpNo = pOpSketch->m_iOperatorNo;
       m_iPrevDupOpNo = pOpSketch->m_iDupOpNo;
@@ -448,9 +460,9 @@ eEC Stencil::eSynthesise(StageDef *pStageDef)
 #ifdef _PROJECT_INTO_TUB
 			// last op in the stage ?
 			if ( (i_Op == pStageDef->nItems() - 1) ||
-			     (bGeneratePot && i_Op == pStageDef->nItems() - 2)
+			     (eTubPot == TP_POT && i_Op == pStageDef->nItems() - 2)
 				 ) {
-				pOpSketch = pSketchPrjPotTub(pStageDef, pOpDef, bGeneratePot, pHashOpDef, sLimitExpr);
+				pOpSketch = pSketchPrjPotTub(pStageDef, pOpDef, eTubPot, pHashOpDef, sLimitExpr);
 				vAppend(pOpSketch);
 
 				// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -459,7 +471,7 @@ eEC Stencil::eSynthesise(StageDef *pStageDef)
 				OpSketch* pEosOpSketch = pSketchEos(pStageDef, pOpSketch);
 				vAppend(pEosOpSketch);
 
-				bGeneratePotTub = false;
+				eTubPot = TP_NONE;
 				continue;
 			}
 #endif
@@ -523,12 +535,12 @@ eEC Stencil::eSynthesise(StageDef *pStageDef)
 			vAppend(pOpSketch);
 
 			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-			pOpSketch = pSketchPotTub(pSortOpSketch, bGeneratePot, pHashOpDef, sLimitExpr);
+			pOpSketch = pSketchPotTub(pSortOpSketch, eTubPot, pHashOpDef, sLimitExpr);
 			vAppend(pOpSketch);
       m_iPrevOpNo = pOpSketch->m_iOperatorNo;
       m_iPrevDupOpNo = pOpSketch->m_iDupOpNo;
 
-			bGeneratePotTub = false;
+      eTubPot = TP_NONE;
 			bPayload = true;
 			continue;
 		}
@@ -554,10 +566,10 @@ eEC Stencil::eSynthesise(StageDef *pStageDef)
       m_iPrevDupOpNo = pOpSketch->m_iDupOpNo;
 
 			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-			pOpSketch = pSketchPotTub(pTopOpSketch, bGeneratePot, pHashOpDef, sLimitExpr);
+			pOpSketch = pSketchPotTub(pTopOpSketch, eTubPot, pHashOpDef, sLimitExpr);
 			vAppend(pOpSketch);
 
-			bGeneratePotTub = false;
+			eTubPot = TP_NONE;
 			bPayload = true;
       m_iPrevOpNo = pOpSketch->m_iOperatorNo;
       m_iPrevDupOpNo = pOpSketch->m_iDupOpNo;
@@ -570,11 +582,11 @@ eEC Stencil::eSynthesise(StageDef *pStageDef)
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 	// generate the code for the POT/TUB if not already generated
-	if ( bGeneratePotTub ) {
+	if ( eTubPot != TP_NONE ) {
 
 		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 		// sketch pot/tub
-		pOpSketch = pSketchPotTub(pLastOpSketch, bGeneratePot, pHashOpDef, sLimitExpr);
+		pOpSketch = pSketchPotTub(pLastOpSketch, eTubPot, pHashOpDef, sLimitExpr);
 		vAppend(pOpSketch);
 
 		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1329,7 +1341,7 @@ OpSketch* Stencil::pSketchProject(StageDef* pStageDef, OpDef* pOpDef)
 /*----------------------------------------------------------------------------*/
 /* sketch project expressions directly into TUB                               */
 /*----------------------------------------------------------------------------*/
-OpSketch* Stencil::pSketchPrjPotTub(StageDef* pStageDef, OpDef* pOpDef, bool bGeneratePot, OpDef* pHashOpDef, Stz* sLimitExpr)
+OpSketch* Stencil::pSketchPrjPotTub(StageDef* pStageDef, OpDef* pOpDef, eTP eTubPot, OpDef* pHashOpDef, Stz* sLimitExpr)
 {
 	_precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
 
@@ -1349,7 +1361,7 @@ OpSketch* Stencil::pSketchPrjPotTub(StageDef* pStageDef, OpDef* pOpDef, bool bGe
   i8 iOpSketchCount;
 
   // create a new opSketch
-	if (bGeneratePot) {
+	if (eTubPot == TP_POT) {
 
     // get the sketchCount of same Op
     iOpSketchCount = m_iOpSketchCount[SK_PRJPOT]++;
@@ -1359,7 +1371,16 @@ OpSketch* Stencil::pSketchPrjPotTub(StageDef* pStageDef, OpDef* pOpDef, bool bGe
     pOpSketch->vSetOpNos(i_Op, iOpSketchCount, m_iPrevOpNo, m_iPrevDupOpNo);
 		pOpSketch->vLimitExpr(sLimitExpr);
 	}
-	else {
+//	else if (eTubPot == TP_GBL) {
+//
+//    // get the sketchCount of same Op
+//    iOpSketchCount = m_iOpSketchCount[SK_PRJGBL]++;
+//    RASSERT(iOpSketchCount < C_MAX_DUP_OPS);
+//
+//    pOpSketch = new OpSketch(pStageDef, sProjectExpr, m_eHandlerKind, SK_PRJGBL, m_ePreviousStencil, SR_TO,  II_NONE);
+//    pOpSketch->vLimitExpr(sLimitExpr);
+//  }
+  else {
 
     // get the sketchCount of same Op
     iOpSketchCount = m_iOpSketchCount[SK_PRJTUB]++;
@@ -1377,7 +1398,7 @@ OpSketch* Stencil::pSketchPrjPotTub(StageDef* pStageDef, OpDef* pOpDef, bool bGe
 	// generate the expressißon stacks
 	pOpSketch->vGenerateExprStacks(sProjectExpr);
 
-	if (bGeneratePot) {
+	if (eTubPot == TP_POT) {
 
 		// copy the colHsh
 		RASSERT(pHashOpDef);
@@ -1390,7 +1411,7 @@ OpSketch* Stencil::pSketchPrjPotTub(StageDef* pStageDef, OpDef* pOpDef, bool bGe
 	// set the labels in the opSketch
 	pOpSketch->vSetLabels(sLabel, sLabelNext, m_sLabelLoop);
 
-	// generate the expressißon stacks
+	// generate the expression stacks
 	//pOpSketch->vGenerateExprStacks(sProjectExpr);
 
 	return pOpSketch;
@@ -1612,7 +1633,7 @@ OpSketch* Stencil::pSketchTop(StageDef* pStageDef, OpDef* pOpDef)
 /*----------------------------------------------------------------------------*/
 /* sketch tub                                                                 */
 /*----------------------------------------------------------------------------*/
-OpSketch* Stencil::pSketchPotTub(OpSketch* pLastOp, bool bGeneratePot, OpDef* pHashOpDef, Stz* sLimitExpr) {
+OpSketch* Stencil::pSketchPotTub(OpSketch* pLastOp, eTP eTubPot, OpDef* pHashOpDef, Stz* sLimitExpr) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
 
@@ -1628,7 +1649,7 @@ OpSketch* Stencil::pSketchPotTub(OpSketch* pLastOp, bool bGeneratePot, OpDef* pH
   i8 i_Op = pLastOp->m_iOperatorNo + 1;
 
   // create a new opSketch
-  if (bGeneratePot) {
+  if (eTubPot == TP_POT) {
 
     // get the sketchCount of same Op
     iOpSketchCount = m_iOpSketchCount[SK_POT]++;
@@ -1637,7 +1658,25 @@ OpSketch* Stencil::pSketchPotTub(OpSketch* pLastOp, bool bGeneratePot, OpDef* pH
     pOpSketch = new OpSketch(nullptr, ""_Stz, m_eHandlerKind, SK_POT, m_ePreviousStencil, SR_PO,  II_PL);
     pOpSketch->vLimitExpr(sLimitExpr);
   }
+  else if (eTubPot == TP_GBL) {
+
+    // get the streamDefOut
+    pStreamDefOut = pHashOpDef->m_pStreamDef_emitted;
+    RASSERT(pStreamDefOut);
+
+    // HACK : add ROWREF to it
+    pStreamDefOut->vAddColumn("C1_ROWREF"_Stz, TypeId::xIdOf(CT_INTEGER), 19, 0, false);
+
+    // get the sketchCount of same Op
+    iOpSketchCount = m_iOpSketchCount[SK_GBL]++;
+    RASSERT(iOpSketchCount < C_MAX_DUP_OPS);
+
+    pOpSketch = new OpSketch(nullptr, ""_Stz, m_eHandlerKind, SK_GBL, m_ePreviousStencil, SR_TO,  II_PL);
+    pOpSketch->vLimitExpr(sLimitExpr);
+  }
   else {
+
+    RASSERT(eTubPot == TP_TUB);
 
     // get the sketchCount of same Op
     iOpSketchCount = m_iOpSketchCount[SK_TUB]++;
@@ -1652,7 +1691,7 @@ OpSketch* Stencil::pSketchPotTub(OpSketch* pLastOp, bool bGeneratePot, OpDef* pH
   // set the streamDef's
   pOpSketch->vStreamDefs(pStreamDefOut, nullptr, pStreamDefOut);
 
-  if (bGeneratePot) {
+  if (eTubPot == TP_POT) {
     // generate the expression stack
     //pOpSketch->vGenerateExprStacks("type INTEGER $2"_Stz);
 

@@ -4,6 +4,7 @@
 #pragma once
 
 #include "eSK.h"
+#include "eTP.h"
 #include "CombinedSrc.hpp"
 #include "OpSketch.hpp"
 #include "Dynamic.hpp"
@@ -61,8 +62,8 @@ static const i8 C_MAX_OPS_PER_STAGE = 32;
     OpSketch* pSketchPdsRow    (StageDef* pStageDef, OpDef* pOpDef);
     OpSketch* pSketchLimit     (StageDef* pStageDef, OpDef* pOpDefp, OpSketch* pLastOpSketch);
     OpSketch* pSketchOrdAgg    (StageDef* pStageDef, OpDef* pOpDef);
-    OpSketch* pSketchPotTub    (OpSketch* pLastOp, bool bGeneratePot, OpDef* pHashOpDef, Stz* sLimitExpr);
-		OpSketch* pSketchPrjPotTub(StageDef* pStageDef, OpDef* pOpDef, bool bGeneratePot, OpDef* pHashOpDef, Stz* sLimitExpr);
+    OpSketch* pSketchPotTub    (OpSketch* pLastOp, eTP eTubPot, OpDef* pHashOpDef, Stz* sLimitExpr);
+		OpSketch* pSketchPrjPotTub(StageDef* pStageDef, OpDef* pOpDef, eTP eTubPot, OpDef* pHashOpDef, Stz* sLimitExpr);
 		OpSketch* pSketchProject   (StageDef* pStageDef, OpDef* pOpDef);
     OpSketch* pSketchSemiJoin  (StageDef* pStageDef, OpDef* pOpDef, OpSketch* pLastOpSketch);
     OpSketch* pSketchSort      (StageDef* pStageDef, OpDef* pOpDef);

@@ -759,76 +759,7 @@ void CombinedSrc::vSynthesizeCode(Stencil* pStencil, bool bFirstStage, bool bLas
 
       case SK_TUB:
       case SK_POT:
-
-#ifdef WITH_ROWBUFFER
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // operator stub
-        vAppendCodeFragment(pOpSketch, "vOperatorStub"_Stz);
-				vAppendStencilFrom(pOpSketch);
-        vAppendStencilTo(pOpSketch);
-
-        vAppendCodeFragment(pOpSketch, "iPotTubBegin"_Stz);
-
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // POT/TUB in EOS handler
-        if (pOpSketch->m_eHandlerKind == HK_EOS) {
-          if (pOpSketch->m_eStencilFrom == SR_PL) {
-
-            if (pOpSketch->m_pIndexDef->eKeyKind() == KE_INT)
-              vAppendCodeFragment(pOpSketch, "vEosPLIntKeyTraversal"_Stz);
-            else
-              vAppendCodeFragment(pOpSketch, "vEosPLGenKeyTraversal"_Stz);
-
-						// generate code for the hash value
-						if (pOpSketch->eSketchKind() == SK_POT)
-							vAppendCodePLToHashCols(pOpSketch);
-
-            if ( ! pOpSketch->m_sLimitExpr.bSame(""_Stz)) {
-              vAppendCodeFragment(pOpSketch, "vEosPotTubLimit"_Stz);
-            }
-
-            vAppendCodeFragment(pOpSketch, "iEosPLPotTub"_Stz);
-            vAppendCodeToTubCols(pOpSketch);
-            vAppendCodeFragment(pOpSketch, "vEosPLPotTubEnd"_Stz);
-          }
-          else {
-            vAppendCodeFragment(pOpSketch, "iEosPotTubBegin"_Stz);
-            vGenerateExprCode(pOpSketch->m_pInitStack, "    "_Stz);
-            vAppendCodeFragment(pOpSketch, "iEosPotTubBody"_Stz);
-						vAppendCodeTubCols(pOpSketch, "vPotTubVchCol"_Stz);
-          }
-
-        }
-        else {
-          // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-          // POT/TUB in CRW/ROW/INDEX handler
-
-					// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-					// does the tub have an ordAgg constraint to apply ?
-					if (pOpSketch->m_pConstraintStack->nValues()) {
-						// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-						// open the ordAgg code fragments file
-						bOpened = pOperatorFile->bOpenRead("../src/store/Fragments/OrdAgg.cpp"_Stz);
-						RASSERT ( bOpened );
-
-						pOpSketch->m_sLabelOrdAgg = sLabel_ordAgg;
-						vAppendCodeFragment(pOpSketch, "iOrdAggConstraint"_Stz, pOperatorFile);
-
-						// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-						// close the ordAgg code fragments file
-						pOperatorFile->vClose();
-					}
-
-          // generate code for the hash value
-          if (pOpSketch->eSketchKind() == SK_POT)
-						vAppendCodeHashCols(pOpSketch);
-
-          vAppendCodeFragment(pOpSketch, "iPotTubContinue"_Stz);
-          vAppendCodeTubCols(pOpSketch, "vPotTubVchCol"_Stz);
-        }
-        break;
-
-#endif
+      case SK_GBL:
 
 				// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 				// operator stub
@@ -874,6 +805,8 @@ void CombinedSrc::vSynthesizeCode(Stencil* pStencil, bool bFirstStage, bool bLas
 					// generate code for the hash value
 					if (pOpSketch->eSketchKind() == SK_POT)
 						vAppendCodeHashCols(pOpSketch);
+          else if (pOpSketch->eSketchKind() == SK_POT)
+            vAppendCodeGblHashCols(pOpSketch);
 
 					vAppendCodeFragment(pOpSketch, "iPotTubContinue_pds"_Stz);
 					vAppendCodeTubCols(pOpSketch, "vPotTubVchCol"_Stz);
@@ -1666,6 +1599,19 @@ void CombinedSrc::vAppendCodePLToHashCols(OpSketch* pOpSketch)
 
 	}
 
+}
+
+/*----------------------------------------------------------------------------*/
+/* append code fragment forglobal  hash columns                               */
+/*----------------------------------------------------------------------------*/
+void CombinedSrc::vAppendCodeGblHashCols(OpSketch* pOpSketch)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_COMBINEDSRC, _FOOTER_);
+
+  vAppendCodeFragment(pOpSketch, "vHashBegin"_Stz);
+
+  m_pCommonCode->vSeekStart();
+  //vAppendCodeFragment(pOpSketch, "vAssignHash"_Stz, pColumn);
 }
 
 /*----------------------------------------------------------------------------*/

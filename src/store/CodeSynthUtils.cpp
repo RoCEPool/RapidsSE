@@ -625,7 +625,9 @@ void CodeSynthUtils::vReplaceTubPot(String* sLine, OpSketch* pOpSketch) {
       RASSERT(bResult);
     }
     else {
-      RASSERT(pOpSketch->m_eSketchKind == SK_POT || pOpSketch->m_eSketchKind == SK_PRJPOT);
+      RASSERT(pOpSketch->m_eSketchKind == SK_GBL ||
+              pOpSketch->m_eSketchKind == SK_POT ||
+              pOpSketch->m_eSketchKind == SK_PRJPOT);
 			bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(), "__EXTERN_ALLOTROW__()",
 																 "aDynamicT->m_fp_vExtern_PotAllotRowPds((void*)aDynamicT,aMixVal,iMixLen,&azStringDyn,&nMaxStrAreaLen)");
 
@@ -667,7 +669,9 @@ void CodeSynthUtils::vReplaceTubPot(String* sLine, OpSketch* pOpSketch) {
       RASSERT(bResult);
     }
     else {
-      RASSERT(pOpSketch->m_eSketchKind == SK_POT || pOpSketch->m_eSketchKind == SK_PRJPOT);
+      RASSERT(pOpSketch->m_eSketchKind == SK_GBL ||
+              pOpSketch->m_eSketchKind == SK_POT ||
+              pOpSketch->m_eSketchKind == SK_PRJPOT);
       bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(), "__POT__", "true");
       RASSERT(bResult);
     }
