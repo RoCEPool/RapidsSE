@@ -65,6 +65,7 @@ static const i8 C_MAX_OPS_PER_STAGE = 32;
     OpSketch* pSketchPotTub    (OpSketch* pLastOp, eTP eTubPot, OpDef* pHashOpDef, Stz* sLimitExpr);
 		OpSketch* pSketchPrjPotTub(StageDef* pStageDef, OpDef* pOpDef, eTP eTubPot, OpDef* pHashOpDef, Stz* sLimitExpr);
 		OpSketch* pSketchProject   (StageDef* pStageDef, OpDef* pOpDef);
+    OpSketch* pSketchRrfJoin   (StageDef* pStageDef, OpDef* pOpDef);
     OpSketch* pSketchSemiJoin  (StageDef* pStageDef, OpDef* pOpDef, OpSketch* pLastOpSketch);
     OpSketch* pSketchSort      (StageDef* pStageDef, OpDef* pOpDef);
     OpSketch* pSketchStreamDef (OpSketch* pLastOp);

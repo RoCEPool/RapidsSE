@@ -2,8 +2,12 @@
 /* __GHASH                                                                    */
 /*============================================================================*/
 
+//select o_orderkey, o_orderdate from orders, lineitem where l_orderkey = o_orderkey;
 
+/keepCodeFile
 /pipeline_def
+/useCodeFile = "x1"
+/hasCodeFile
 /weaved
 /optimise_passthru
 pipeline unamed
@@ -16,6 +20,7 @@ pipeline unamed
   stage S01 on all partitions :
     scan LINEITEM
     | project "type INTEGER ( 19 ) as L_ORDERKEY L_ORDERKEY"
+    //| filter "type boolean l_ORDERKEY 3 <"
     | globalHash ORDERS GxO_ORDERKEY "type INTEGER ( 19 ) L_ORDERKEY"
     | combined 0
     | next hashcast
@@ -23,6 +28,54 @@ pipeline unamed
   // L_ORDERKEY , rrf
   stage S02 on all partitions :
     rrfJoin ORDERS "type INTEGER ( 19 ) L_ORDERKEY"
+    //indexJoin ORDERS IxO_ORDERKEY " BOUND $I1 L_ORDERKEY == "
+    | project "type INTEGER ( 19 ) as L_ORDERKEY L_ORDERKEY ,
+               type DATE as O_ORDERDATE O_ORDERDATE"
+    | combined 0
+    | next
+
+  stage S03 on all partitions :
+    sort " type INTEGER ( 19 ) L_ORDERKEY  "
+    | combined 0
+    | next
+
+  stage S04 on all nodes :
+    sort " type INTEGER ( 19 ) L_ORDERKEY  "
+    | combined 0
+    | next
+
+  stage S05 on origin :
+    sort " type INTEGER ( 19 ) L_ORDERKEY  "
+    | combined 0
+    | next
+
+  stage S06 on origin :
+    output
+    | sink
+    | first
+  end ;
+
+/*
+/pipeline_def
+/weaved
+/optimise_passthru
+/keepCodeFile
+pipeline unamed
+  begin
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
+
+  stage S01 on all partitions :
+    indexScan ORDERS IxO_ORDERKEY "LBOUND $I1 0 >="
+    | project "type INTEGER ( 19 ) as L_ORDERKEY L_ORDERKEY"
+    | combined 0
+    | next
+
+  // L_ORDERKEY , rrf
+  stage S02 on all partitions :
+    indexJoin ORDERS IxO_ORDERKEY " BOUND $I1 L_ORDERKEY == "
     | project "type INTEGER ( 19 ) as L_ORDERKEY L_ORDERKEY ,
                type DATE as O_ORDERDATE O_ORDERDATE"
     | combined 0
@@ -33,6 +86,34 @@ pipeline unamed
     | sink
     | first
   end ;
+
+
+  L_ORDERKEY O_ORDERDATE
+    ---------- -----------
+          1438 1997-10-12
+          1439 1994-12-11
+          1441 1998-07-06
+          1442 1997-02-14
+          1443 1998-06-26
+          1446 1993-09-27
+          1453 1997-10-15
+          1454 1998-03-30
+          1457 1995-02-21
+          1459 1998-07-23
+          1462 1993-03-25
+          1463 1996-11-17
+          1472 1996-09-28
+          1475 1992-12-29
+          1476 1995-05-09
+          1477 1992-07-08
+          1478 1994-08-13
+          1479 1997-01-01
+          1480 1994-11-20
+          1486 1994-05-20
+          1499 1996-08-03
+
+  5,996 row(s) returned (0.98 sec)
+*/
 
 /*============================================================================*/
 /* end                                                                        */

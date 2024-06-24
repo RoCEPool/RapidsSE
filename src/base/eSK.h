@@ -23,6 +23,7 @@ enum eSK // sketch kind
 	/*   */ SK_PRJPOT,      // project directly into POT
 	/*   */ SK_PRJTUB,      // project directly into TUB
   /*   */ SK_PROJECT,     // projection
+  /*   */ SK_RRFJOIN,     // rowRef join
   /*   */ SK_SEMIJOIN,    // semi-join
   /*   */ SK_SORT,        // sort
   /*   */ SK_STREAMDEF,   // streamDef

@@ -25,6 +25,7 @@ Stz* aSK[SK_ENUMS]
 	/*   */ "PRJPOT"_Stz,
 	/*   */ "PRJTUB"_Stz,
   /*   */ "PROJECT"_Stz,
+  /*   */ "RRFJOIN"_Stz,
   /*   */ "SEMIJOIN"_Stz,
   /*   */ "SORT"_Stz,
   /*   */ "STREAMDEF"_Stz,

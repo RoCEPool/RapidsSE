@@ -516,7 +516,23 @@ eEC Stencil::eSynthesise(StageDef *pStageDef)
 			continue;
 		}
 
-		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // generate code for rrfJoin OP
+    if (pOpDef->szOpNm()->bSame("rrfJoin"_Stz)) {
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      pOpSketch = pSketchRrfJoin(pStageDef, pOpDef);
+      vAppend(pOpSketch);
+
+      //m_sLabelLoop = "L_AdvanceNextRowJ"_Stz;
+      StrLib::vSprint(m_sLabelLoop, sizeof(m_sLabelLoop), nullptr, "L_AdvanceNextRowJ_%lld"_Stz, pOpSketch->m_iOperatorNo);
+
+      m_ePreviousStencil = SR_TJ;
+      m_iPrevOpNo = pOpSketch->m_iOperatorNo;
+      m_iPrevDupOpNo = pOpSketch->m_iDupOpNo;
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 		// generate the code for the sort OP
 		if (pOpDef->szOpNm()->bSame("sort"_Stz)) {
 
@@ -973,6 +989,106 @@ OpSketch* Stencil::pSketchFilter(StageDef* pStageDef, OpDef* pOpDef, OpSketch* p
 
   // generate the expression stacks
   pOpSketch->vGenerateExprStacks(sFilterExpr);
+
+  return pOpSketch;
+}
+
+/*----------------------------------------------------------------------------*/
+/* sketch code for rrfJoin                                                    */
+/*----------------------------------------------------------------------------*/
+OpSketch* Stencil::pSketchRrfJoin(StageDef* pStageDef, OpDef* pOpDef)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
+
+  OpSketch *pOpSketch;
+
+  s256 sLabel;
+  s256 sLabelNext;
+  s256 sLabelOuterLoop;
+
+  i8 i_Op = pOpDef->i_Op();
+
+  // get join expr from OpDef
+  Stz* sJoinExpr = pOpDef->pArgDef_expr()->szArgVal();
+
+  // get the streamDefs
+  StreamDef *pStreamDefLft = pOpDef->m_pStreamDef_arriving;
+  StreamDef *pStreamDefOut = pOpDef->m_pStreamDef_emitted;
+
+  // HACK: need tablePtr from opDef
+  // get the table
+  Stz* szTableNm = pOpDef->pArgDef("tableNm"_Stz)->szArgVal();
+  Table* pTable = AM::pTableFind(szTableNm);
+
+  // get the colInj
+//  ColInj* pColInj = pOpDef->m_pColInj;
+//
+//  // get the colPpg
+//  ColPpg* pColPpg = pOpDef->m_pColPpg;
+//
+//  // get the index
+//  Index* pIndex = pOpDef->m_pIndex_indexJoin;
+
+//  RASSERT(pStreamDefOut->nColumns() ==
+//          (pColInj ? pColInj->m_nCols : 0)
+//          +
+//          (pColPpg ? pColPpg->m_nPropagated : 0)
+//  );
+
+  // get the sketchCount of same Op
+  i8 iOpSketchCount = m_iOpSketchCount[SK_RRFJOIN]++;
+  RASSERT(iOpSketchCount < C_MAX_DUP_OPS);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate the code for the join
+  pOpSketch = new OpSketch(pStageDef, sJoinExpr, m_eHandlerKind, SK_RRFJOIN, m_ePreviousStencil, SR_TJ, II_JJ);
+  pOpSketch->vSetOpNos(i_Op, iOpSketchCount, m_iPrevOpNo, m_iPrevDupOpNo);
+
+  sLabel.vSprint("L_%s_%d"_Stz, pOpDef->szOpNm(), i_Op);
+  vGetNextLabel(sLabelNext, pStageDef, i_Op, "L_AddRowToTubPot"_Stz);
+
+  // set the streamDefRht
+ // Table* pTable = pIndex->pTable();
+  StreamDef* pStreamDefRht = pTable->pStreamDef();
+
+  // set the streamDef's
+  pOpSketch->vStreamDefs(pStreamDefLft, pStreamDefRht, pStreamDefOut);
+
+  // set the labels in the opSketch
+  sLabelOuterLoop = m_sLabelLoop;
+
+  s32 sLabelTemp;
+  StrLib::vSprint(sLabelTemp, sizeof(sLabelTemp), nullptr, "L_AdvanceNextRowJ_%lld"_Stz, pOpSketch->m_iOperatorNo);
+
+  pOpSketch->vSetLabels(sLabel, sLabelNext, sLabelTemp, sLabelOuterLoop);
+
+  // copy the colPpg
+//  if (pColPpg)
+//    pOpSketch->vCopyColPpg(pColPpg);
+//
+//  // copy the colInj
+//  if (pColInj)
+//    pOpSketch->vCopyColInj(pColInj);
+
+  // set the indexDef
+//  pOpSketch->vTable(pTable);
+//  pOpSketch->vIndex(pIndex);
+//  pOpSketch->vIndexDef(pIndex->pIndexDef());
+//  pOpSketch->vIndexPositionLower(IP_GE);
+
+  // generate the expression stacks
+  //pOpSketch->vGenerateExprStacks(sJoinExpr);
+
+  // get join constraint from OP
+//  if (pOpDef->pArgDef_constraint()) {
+//    Stz* sConstraintExpr = pOpDef->pArgDef_constraint()->szArgVal();
+//    pOpSketch->vGenerateExprStacks(sConstraintExpr, true /* constraint */);
+//  }
+
+  // is it a cross join ?
+//  if ( ! pOpSketch->m_pExprStack->nValues() ) {
+//    pOpSketch->m_bCrossJoin = true;
+//  }
 
   return pOpSketch;
 }

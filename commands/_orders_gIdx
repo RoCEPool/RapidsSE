@@ -4,10 +4,10 @@
 
 file _lineitem;
 file _orders;
-load orders  "../TPCH/SF_0001/orders.tbl"   ;
-load lineitem  "../TPCH/SF_0001/lineitem.tbl"   ;
+load orders  "../TPCH/SF1/orders.tbl"   ;
+load lineitem  "../TPCH/SF1/lineitem.tbl"   ;
 
-//create index IxO_ORDERKEY on orders(O_ORDERKEY);
+create index IxO_ORDERKEY on orders(O_ORDERKEY);
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // create global index on orders (O_ORDERKEY)

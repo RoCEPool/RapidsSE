@@ -283,7 +283,7 @@ extern "C" i8 iExtern_IndexTreeGlobalPtnRrf(void* aIndexInfo, i8* piRowRef) {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   aEnt = pEntBuffer->aFindEntryBefore_MoveGE_int(aKey, &pEntBuffer);
-  if (!aEnt) {
+  if (!aEnt || *(i8*)(aEnt->aKey()) != *(i8*)aKey) {
     pIndexInfo->m_aEntInt = nullptr;
     return C_UNKNOWN;
   }
