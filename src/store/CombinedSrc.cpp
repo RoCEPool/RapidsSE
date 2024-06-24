@@ -803,13 +803,29 @@ void CombinedSrc::vSynthesizeCode(Stencil* pStencil, bool bFirstStage, bool bLas
 					// POT/TUB in CRW/ROW/INDEX handler
 
 					// generate code for the hash value
-					if (pOpSketch->eSketchKind() == SK_POT)
-						vAppendCodeHashCols(pOpSketch);
-          else if (pOpSketch->eSketchKind() == SK_POT)
-            vAppendCodeGblHashCols(pOpSketch);
+					if (pOpSketch->eSketchKind() == SK_POT) {
+            vAppendCodeHashCols(pOpSketch);
+            vAppendCodeFragment(pOpSketch, "iPotTubContinue_pds"_Stz);
+            vAppendCodeTubCols(pOpSketch, "vPotTubVchCol"_Stz);
+          }
+          else if (pOpSketch->eSketchKind() == SK_TUB) {
+            vAppendCodeFragment(pOpSketch, "iPotTubContinue_pds"_Stz);
+            vAppendCodeTubCols(pOpSketch, "vPotTubVchCol"_Stz);
+          }
+          else {
+            RASSERT(pOpSketch->eSketchKind() == SK_GBL);
 
-					vAppendCodeFragment(pOpSketch, "iPotTubContinue_pds"_Stz);
-					vAppendCodeTubCols(pOpSketch, "vPotTubVchCol"_Stz);
+            vAppendCodeFragment(pOpSketch, "vGlobalHashBegin"_Stz);
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+            // generate expressions for populating the key
+            vAppendCodeFragment(pOpSketch, "vExprStack"_Stz);
+
+            // get ptnId and rowref
+            vAppendCodeFragment(pOpSketch, "vGblPtnRrf"_Stz);
+            vAppendCodeFragment(pOpSketch, "iPotTubContinue_pds"_Stz);
+            vAppendCodeGblCols(pOpSketch, "vPotTubVchCol"_Stz);
+          }
 				}
 				break;
 
@@ -1488,6 +1504,40 @@ void CombinedSrc::vAppendCodeTubCols(OpSketch* pOpSketch, Stz* szFunction)
     }
   }
 
+}
+
+/*----------------------------------------------------------------------------*/
+/* append code fragment for copying columns                                   */
+/*----------------------------------------------------------------------------*/
+void CombinedSrc::vAppendCodeGblCols(OpSketch* pOpSketch, Stz* szFunction)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_COMBINEDSRC, _FOOTER_);
+
+  for (i8 i_Col = 0; i_Col < pOpSketch->m_pStreamDefLft->nColumns() - 1; i_Col++) {
+
+    m_pCommonCode->vSeekStart();
+
+    Column *pColumn = pOpSketch->m_pStreamDefLft->pGetColumn(i_Col);
+
+    switch (pColumn->eColumnType()) {
+
+      case CT_VARCHAR:
+
+        if (pOpSketch->m_eStencilTo == SR_TO)
+          vAppendCodeFragment(pOpSketch, "vPotTubVchCol"_Stz, pColumn);
+        else
+          vAppendCodeFragment(pOpSketch, szFunction, pColumn);
+        break;
+
+      default:
+        vAppendCodeFragment(pOpSketch, "vCopyCol"_Stz, pColumn);
+        break;
+    }
+  }
+
+  // copy the rowRef into the last column
+  Column *pColumn = pOpSketch->m_pStreamDefLft->pGetColumn(pOpSketch->m_pStreamDefLft->nColumns()-1);
+  vAppendCodeFragment(pOpSketch, "vCopyRowRef"_Stz, pColumn);
 }
 
 /*----------------------------------------------------------------------------*/

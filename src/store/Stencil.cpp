@@ -605,6 +605,10 @@ eEC Stencil::eSynthesise(StageDef *pStageDef)
 		pOpSketch = pSketchPotTub(pLastOpSketch, eTubPot, pHashOpDef, sLimitExpr);
 		vAppend(pOpSketch);
 
+    // HACK to get streamDefOut from GBLHASH
+    if (eTubPot == TP_GBL)
+      pLastOpSketch = pOpSketch;
+
 		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 		// sketch EOS handler function
 		m_eHandlerKind = HK_EOS;
@@ -1773,22 +1777,54 @@ OpSketch* Stencil::pSketchPotTub(OpSketch* pLastOp, eTP eTubPot, OpDef* pHashOpD
 
     pOpSketch = new OpSketch(nullptr, ""_Stz, m_eHandlerKind, SK_POT, m_ePreviousStencil, SR_PO,  II_PL);
     pOpSketch->vLimitExpr(sLimitExpr);
+
+    // set the streamDef's
+    pOpSketch->vStreamDefs(pStreamDefOut, nullptr, pStreamDefOut);
+
+    pOpSketch->vSetOpNos(i_Op, iOpSketchCount, m_iPrevOpNo, m_iPrevDupOpNo);
+
   }
   else if (eTubPot == TP_GBL) {
+
+    // will TUB/POT have a streamDefLft (then ccan move out)
+    // get the streamDefLft
+    StreamDef *pStreamDefLft = pHashOpDef->m_pStreamDef_emitted;
+    RASSERT(pStreamDefLft);
+
+    // get key expr from OpDef
+    Stz* sKeyExpr = pHashOpDef->pArgDef_expr()->szArgVal();
 
     // get the streamDefOut
     pStreamDefOut = pHashOpDef->m_pStreamDef_emitted;
     RASSERT(pStreamDefOut);
 
-    // HACK : add ROWREF to it
-    pStreamDefOut->vAddColumn("C1_ROWREF"_Stz, TypeId::xIdOf(CT_INTEGER), 19, 0, false);
-
     // get the sketchCount of same Op
     iOpSketchCount = m_iOpSketchCount[SK_GBL]++;
     RASSERT(iOpSketchCount < C_MAX_DUP_OPS);
 
-    pOpSketch = new OpSketch(nullptr, ""_Stz, m_eHandlerKind, SK_GBL, m_ePreviousStencil, SR_TO,  II_PL);
+    // get the tableName
+    Stz* szTableNm = pHashOpDef->pArgDef("TableNm"_Stz)->szArgVal();
+
+    pOpSketch = new OpSketch(nullptr, ""_Stz, m_eHandlerKind, SK_GBL, m_ePreviousStencil, SR_PO,  II_PL);
     pOpSketch->vLimitExpr(sLimitExpr);
+
+    // set the table
+    pOpSketch->m_pTable = AM::pTableFind(szTableNm);
+
+    // set the index in the opSketch
+    pOpSketch->m_pIndex = pOpSketch->m_pTable->pFindGblIndex("GxO_ORDERKEY"_Stz);
+
+    // set the indexDef in the opSketch
+    pOpSketch->m_pIndexDef = pOpSketch->m_pIndex->pIndexDef();
+
+    // set the streamDef's
+    pOpSketch->vStreamDefs(pStreamDefLft, nullptr, pStreamDefOut);
+
+    pOpSketch->vSetOpNos(i_Op, iOpSketchCount, m_iPrevOpNo, m_iPrevDupOpNo);
+
+    // generate the expression stack
+    pOpSketch->vGenerateExprStacks(sKeyExpr);
+
   }
   else {
 
@@ -1800,12 +1836,14 @@ OpSketch* Stencil::pSketchPotTub(OpSketch* pLastOp, eTP eTubPot, OpDef* pHashOpD
 
     pOpSketch = new OpSketch(nullptr, ""_Stz, m_eHandlerKind, SK_TUB, m_ePreviousStencil, SR_TO,  II_PL);
     pOpSketch->vLimitExpr(sLimitExpr);
+
+    // set the streamDef's
+    pOpSketch->vStreamDefs(pStreamDefOut, nullptr, pStreamDefOut);
+
+    pOpSketch->vSetOpNos(i_Op, iOpSketchCount, m_iPrevOpNo, m_iPrevDupOpNo);
   }
 
-  pOpSketch->vSetOpNos(i_Op, iOpSketchCount, m_iPrevOpNo, m_iPrevDupOpNo);
 
-  // set the streamDef's
-  pOpSketch->vStreamDefs(pStreamDefOut, nullptr, pStreamDefOut);
 
   if (eTubPot == TP_POT) {
     // generate the expression stack

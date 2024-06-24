@@ -2334,6 +2334,12 @@ void OpSketch::vPushAssignCol(TypedStack* pExprStack, ePE ePreExp, i8 i_Col, i8 
       }
       break;
 
+    case SK_GBL:
+      RASSERT(m_pIndexDef->eKeyKind());
+      sPush.vSprint("_ASSIGN(*(i8*)aDynamicT->m_xIndexInfoT[%lld].m_aEntKey)\n"_Stz, m_iDupOpNo);
+      pExprStack->vPushStz(sPush);
+      break;
+
     case SK_INDEXSCAN:
       if (m_pIndexDef->eKeyKind()) {
         sPush.vSprint("_ASSIGN(*(i8*)aDynamicT->m_xIndexInfoT[%lld].m_aEntKey)\n"_Stz, m_iDupOpNo);
@@ -2648,6 +2654,7 @@ TypedStack* OpSketch::pWorkingStack( ePE ePreExp, bool bConstraint)
       return m_pInitStack;
 
     case SK_FILTER:
+    case SK_GBL:
     case SK_INDEXSCAN:
     case SK_PROJECT:
     case SK_SORT:

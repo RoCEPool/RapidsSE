@@ -2,12 +2,8 @@
 /* __GHASH                                                                    */
 /*============================================================================*/
 
-//select o_orderkey, o_orderdate from orders, lineitem where l_orderkey = o_orderkey;
-
 /keepCodeFile
 /pipeline_def
-/useCodeFile = "x1"
-/hasCodeFile
 /weaved
 /optimise_passthru
 pipeline unamed
@@ -24,7 +20,7 @@ pipeline unamed
     | globalHash ORDERS GxO_ORDERKEY "type INTEGER ( 19 ) L_ORDERKEY"
     | combined 0
     | next hashcast
-
+/*
   // L_ORDERKEY , rrf
   stage S02 on all partitions :
     rrfJoin ORDERS "type INTEGER ( 19 ) L_ORDERKEY"
@@ -48,7 +44,7 @@ pipeline unamed
     sort " type INTEGER ( 19 ) L_ORDERKEY  "
     | combined 0
     | next
-
+*/
   stage S06 on origin :
     output
     | sink

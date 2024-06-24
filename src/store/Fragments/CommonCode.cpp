@@ -542,6 +542,39 @@ i8 iPotTubContinue_pds(Dynamic_T* aDynamicT) {
 }
 
 /*----------------------------------------------------------------------------*/
+/*-- vGblPtnRrf --------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-vGblPtnRrf
+i8 vGblPtnRrf(Dynamic_T* aDynamicT) {
+
+  char* szStrArea;
+  ColumnInfo xColumnInfo;
+
+  i8 __COLUMNS_OUT__;
+  i8 CURRENT_DUP_OP;
+  RowInfo __ROW_INFO_TO__[C_MAX_DUP_OPS];
+
+  __L_LABEL_LOOP__:
+
+  // marker-start
+
+  // Get the Ptn and rowRef for given key
+#ifdef WITH_CLANG
+  // get the ptnId to hash to
+  iPtnId =  aDynamicT->m_fp_iExtern_IndexTreeGlobalPtnRrf(&aDynamicT->m_xIndexInfoT[0], &iRowRef);
+#endif
+
+  // check for error
+  if (aDynamicT->m_iErrorCode != (i8)EC_NONE) {
+    return 0;
+  }
+
+  // marker-end
+
+  return 0;
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- iEosPotTubBegin ---------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-iEosPotTubBegin
@@ -840,6 +873,31 @@ i8 vEosPLGenKeyTraversal(Dynamic_T* aDynamicT) {
   }
 
   return 0; // ray-alka
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- vGlobalHashBegin ---------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-vGlobalHashBegin
+void vGlobalHashBegin(Dynamic_T* aDynamicT) {
+
+  i8 CURRENT_DUP_OP;
+
+  // marker-start
+  if ( aDynamicT->m_xIndexInfoT[CURRENT_DUP_OP].m_bInitialize ) {
+
+#ifdef WITH_CLANG
+    aDynamicT->m_fp_vExtern_IndexFindGlobal(&aDynamicT->m_xIndexInfoT[CURRENT_DUP_OP],"__TABLENAME__","__INDEXNAME__");
+#endif
+    aDynamicT->m_xIndexInfoT[CURRENT_DUP_OP].m_bInitialize = false;
+  }
+
+
+  // marker-end
+
+  L_Return:
+  return;
 
 }
 
@@ -1146,6 +1204,31 @@ void vCopyCol(Dynamic_T* aDynamicT) {
   // column __COLUMN_NO__
 
   p__STRUCT_TO___CURRENT_OP->__COLUMN_TO__.m_iAsI8 = p__STRUCT_FROM___PREV_OP->__COLUMN_FROM__.m_iAsI8;
+
+  // marker-end
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- vCopyRowRef -------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-vCopyRowRef
+void vCopyRowRef(Dynamic_T* aDynamicT) {
+
+  struct __STRUCT_FROM___PREV_OP* p__STRUCT_FROM___PREV_OP;
+
+  struct __STRUCT_TO___CURRENT_OP {
+      union Int_T __COLUMN_TO__;
+  };
+
+  struct __STRUCT_TO___CURRENT_OP* p__STRUCT_TO___CURRENT_OP;
+
+  i8 iRowRef;
+
+  // marker-start
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // column __COLUMN_NO__
+
+  p__STRUCT_TO___CURRENT_OP->__COLUMN_TO__.m_iAsI8 = iRowRef;
 
   // marker-end
 }
