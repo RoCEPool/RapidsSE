@@ -18,7 +18,7 @@ INCLUDE 'create_part.test';
 INCLUDE 'create_partsupp.test';
 INCLUDE 'create_region.test';
 INCLUDE 'create_supplier.test';
-
+ 
 INCLUDE 'tpch_q9_globalHash.test';
 
 //LOG 'operator.test';

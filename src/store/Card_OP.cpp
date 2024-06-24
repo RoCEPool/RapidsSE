@@ -425,6 +425,12 @@ void Card_OP::vRestate_emit(CardIter* pCI)
 
       pCI->Arriving.m_pEmitted_prior->vInduct(pCI);
 
+      if (CK_o_GLOBALHASH == eCard_OP) {
+        Card_Expr* p_expr_rrf = pCI->E.p_globalHash->pNew_expr_rrf();
+        pCI->E.p_emit->vAppendChild(p_expr_rrf);
+        pCI->E.p_emit->vRenumberAll_expr();
+      }
+
       break;
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --

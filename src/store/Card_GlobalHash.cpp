@@ -43,6 +43,29 @@ Card_GlobalHash::~Card_GlobalHash(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+Card_Expr* Card_GlobalHash::pNew_expr_rrf(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_Expr* p_expr_rrf = new Card_Expr;
+  p_expr_rrf->pSymbol()->vApplyFacet(SF_NMD_COL, "ROWREF"_Stz);
+  p_expr_rrf->pSymbol()->vApplyFacet(SF_EXP_COL, (i8)99);
+  Cast xCast_new;
+  xCast_new.m_xTypeId = TypeId::xIdOf(CT_INTEGER);
+  xCast_new.m_nTypeLength = 19;
+  xCast_new.m_nTypeScale  = 0;
+  p_expr_rrf->pSymbol()->vApplyCast(xCast_new);
+
+  Card_Term* p_term_rrf = (new Card_Term) ->SYM(SF_INT_LIT,C_UNKNOWN);
+
+  p_expr_rrf->vAppendChild(p_term_rrf);
+
+  return p_expr_rrf;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Card_GlobalHash::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
