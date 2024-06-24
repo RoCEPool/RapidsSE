@@ -14,49 +14,32 @@
   // check index name is valid
   <indexNm> check::nameIsValidIndex not if false exit then
 
-  // check in tables folder: ../schemas/public/tables
-  check::folderIsTables not if false exit then
-
-  // check there is a sub-folder by the name of the table
-  //   ../schemas/public/tables/t
-  sTableNm check::folderHasNamedTable not if false exit then
+  // check if table exists
+  sTableNm MetaDataTable[].find to Table[]
+  Table[] not if
+    EC_NO_SUCH_TABLE
+    false exit
+  then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if max indexes already on table
 
-  // push into t: ../schemas/public/tables/t \folder
-  sTableNm Path[].pushNamedTableFolder
-
   // check max indexes
-  sTableNm find execute to Table[]
   Table[] table.indexCount C_MAX_INDEXES == if
     EC_MAX_INDEXES
-    Path[].popNamedTableFolder
-    Folder[].isTables assert
     false exit
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // check name doesn't already exist
+  // check index doesn't already exist
 
-  // push into indexes: ../schemas/public/tables/t/indexes
-  Path[].pushIndexesFolder
-  Folder[].isIndexes assert
+  // search for <indexNm, TableNm> row in Index metadata table
+  // if exists, return error
 
-  // error if given name already exists
-  <indexNm> check::nameIsUnknownIndex not if
-    Path[].popIndexesFolder
-    Path[].popNamedTableFolder
-    Folder[].isTables assert
+  Table[] 2 sTableNm 3 <indexNm> MetaDataTable[].findRow if
+    EC_INDEX_EXISTS
     false exit
   then
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // pop upto tables: ../schemas/public/tables
-
-  Path[].popIndexesFolder
-  Path[].popNamedTableFolder
-  Folder[].isTables assert
 
   true
 ;
@@ -108,13 +91,8 @@
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // should be in tables
-  Folder[].isTables assert
 
   IndexDef[].pipeout
-
-  // should be in tables
-  Folder[].isTables assert
 
   true
 ;

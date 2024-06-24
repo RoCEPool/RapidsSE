@@ -41,6 +41,7 @@ void Step::vAddSteps_MetaDataTable(void)
   vAddStep("MetaDataTable[].createTable"_Stz,  &Step::vMetaDataTableCreateTable);
   vAddStep("MetaDataTable[].dropTable"_Stz,  &Step::vMetaDataTableDropTable);
   vAddStep("MetaDataTable[].find"_Stz,  &Step::vMetaDataTableFind);
+  vAddStep("MetaDataTable[].findRow"_Stz,  &Step::vMetaDataTableFindRow);
 
   vAddStep("MetaDataTable[].createIndex"_Stz,  &Step::vMetaDataTableCreateIndex);
   vAddStep("MetaDataTable[].dropIndex"_Stz,  &Step::vMetaDataTableDropIndex);
@@ -607,7 +608,7 @@ void Step::vMetaDataTableDropTable(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* MetaDataTable[].find --                                                    */
+/* MetaDataTable[].find -- find table                                         */
 /*----------------------------------------------------------------------------*/
 void Step::vMetaDataTableFind(void)
 {
@@ -626,6 +627,35 @@ void Step::vMetaDataTableFind(void)
   Table* pNewTable = MetaDataTables::pTableFind(szTableNm);
 
   m_pDataStack->vPushPtr(pNewTable);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* MetaDataTable[].find -- row                                                */
+/*----------------------------------------------------------------------------*/
+void Step::vMetaDataTableFindRow(void)
+{
+  ENTRY();
+
+  s256 szIndexNm;
+  m_pDataStack->vPopStr(szIndexNm,__func__);
+
+  i8 iCol_2 = m_pDataStack->iPopAsInt(__func__ );
+
+  s256 szTableNm;
+  m_pDataStack->vPopStr(szTableNm,__func__);
+
+  i8 iCol_1 = m_pDataStack->iPopAsInt(__func__ );
+
+  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__ ));
+  UNUSED(pTable);
+
+  Table* pIndexTable = MetaDataTables::pTableFind("tableIndexes"_Stz);
+
+  bool bResult = MetaDataTables::bFindRowTable(pIndexTable, iCol_1, szTableNm, iCol_2, szIndexNm);
+
+  m_pDataStack->vPushBol(bResult);
 
   EXIT();
 }

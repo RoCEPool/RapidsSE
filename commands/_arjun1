@@ -6,7 +6,7 @@ create table createT1 (
 
 create index keyIdx on createT1 (key);
 
-select * from tableIndexes where TableName = 'createT1';
+select * from tableIndexes where TableName = 'TABLE9';
 
 select * from indexColumns where TableName = 'createT1' and IndexName = 'keyIdx';
 
@@ -25,4 +25,34 @@ create table nation (
 );
 
 select * from columns where TableName = 'nation';
+
+
+
+
+create table TABLE9 (
+  pcol9 integer not null,
+  scol9 integer,
+  tcol9 integer,
+  colb9 varchar(20),
+  cold9 float,
+  cole9 decimal(15,2),
+  colf9 integer,
+  colg9 integer,
+  ucol integer,
+  ucolvc varchar(5))
+partition by (pcol9);
+
+create index tbl9idx1 on table9(pcol9);
+
+load TABLE9 "../DATA/Index/tbl9data.csv" ;
+
+create index tbl9idx2 on table9(scol9);
+
+load TABLE9 "../DATA/Index/tbl9data.csv" ;
+
+
+create index tbl9idx2 on table9(scol9);
+
+
+create index tblidx6 on table9(cole9);
 

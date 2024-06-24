@@ -191,6 +191,63 @@ void MetaDataTables::vDeleteAllRowsFromTable(Table *pTable, i8 iCol, Stz *szColV
 }
 
 /*----------------------------------------------------------------------------*/
+/* Find row that matches (col1 string), (col2 string)                         */
+/*----------------------------------------------------------------------------*/
+bool MetaDataTables::bFindRowTable(Table* pTable, i8 iCol1, Stz* szCol1Val, i8 iCol2, Stz* szCol2Val)
+{
+  _static_
+
+  HashMap* pHashMap = AM::pHashMap();
+
+  TablePtn* pTablePtn = pTable->pTablePtn(0);
+
+  BufferId oRootBufferId = pTablePtn->oRootBufferId();
+  Pds* pRootPds = pTablePtn->pRootPds();
+
+  PdsCursor* pCursor = new PdsCursor(pRootPds);
+
+  // Iterate this table ptn root pds buffer that contains bufferId's of PdsRowBuffers
+
+  while(! pCursor->bIsCurrNull()) {
+    SkipListBlock* pSLBlock = pCursor->m_pCurrentBlock;
+
+    BufferId oBufferId = pTablePtn->oExtractBufferId((Object*)pSLBlock->aItem());
+    Pds* pPdsRowBuffer = _pPds(pHashMap->pValueAt(oBufferId.m_pvAsAddress, true));
+
+    PdsCursor* pRowCursor = new PdsCursor(pPdsRowBuffer);
+
+    // Iterate this PdsRowBuffer, searching for the rows which match this col value
+    while(! pRowCursor->bIsCurrNull()) {
+      Row* pRow = pRowCursor->pCurrRow();
+
+      Stz* szRowCol1 = pRow->szColVal_ofs(iCol1);
+
+      if(szRowCol1->bSame(szCol1Val)) {
+        Stz* szRowCol2 = pRow->szColVal_ofs(iCol2);
+        if(szRowCol2->bSame(szCol2Val)) {
+          delete pRowCursor;
+          delete pCursor;
+          pHashMap->vDropKeyLock(pPdsRowBuffer->oGetBufferId().m_pvAsAddress);
+          pHashMap->vDropKeyLock(oRootBufferId.m_pvAsAddress);
+
+          return true;
+        }
+      }
+      pRowCursor->vNext();
+    }
+
+    delete pRowCursor;
+    pHashMap->vDropKeyLock(pPdsRowBuffer->oGetBufferId().m_pvAsAddress);
+    pCursor->vNext();
+  }
+  delete pCursor;
+  pHashMap->vDropKeyLock(oRootBufferId.m_pvAsAddress);
+
+  return false;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* Delete row that matches (col1 string), (col2 string)                       */
 /*----------------------------------------------------------------------------*/
 bool MetaDataTables::bDeleteRowFromTable(Table* pTable, i8 iCol1, Stz* szCol1Val, i8 iCol2, Stz* szCol2Val)
@@ -252,6 +309,7 @@ bool MetaDataTables::bDeleteRowFromTable(Table* pTable, i8 iCol1, Stz* szCol1Val
 
     delete pRowCursor;
     pHashMap->vDropKeyLock(pPdsRowBuffer->oGetBufferId().m_pvAsAddress);
+    pCursor->vNext();
   }
   delete pCursor;
   pHashMap->vDropKeyLock(oRootBufferId.m_pvAsAddress);

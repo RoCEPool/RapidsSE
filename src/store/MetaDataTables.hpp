@@ -27,6 +27,7 @@ namespace STORE
     static bool bDeleteFromTableOfTables(Stz* szTableNm);
     static void vDeleteAllRowsFromTable(Table* pTable, i8 iCol, Stz* szColVal);
     static bool bDeleteRowFromTable(Table* pTable, i8 iCol1, Stz* szCol1Val, i8 iCol2, Stz* szCol2Val);
+    static bool bFindRowTable(Table* pTable, i8 iCol1, Stz* szCol1Val, i8 iCol2, Stz* szCol2Val);
     static Table* pTableFind(Stz* szTableNm);
     static eTT eStzToTT(Stz* szTableType);
 
