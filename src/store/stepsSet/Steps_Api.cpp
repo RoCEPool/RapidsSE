@@ -100,8 +100,6 @@ void Step::vApiScheduleTask(void)
   ASSERT(pChildTask);
   ASSERT(pChildTask->eGetClassNo() == CN_TASK);
 
-  // TODO: This should be a suspending call rather than a blocking call
-  //       that is is currently. Do not call this from a non-dedicated thread.
   eEC eChildErr = Api::eScheduleTask(pChildTask);
   m_oDataStack.vPushInt((i8) eChildErr);
 

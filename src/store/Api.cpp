@@ -191,8 +191,8 @@ eEC Api::eScheduleTask(ENGINE::Task* pTask)
   Job* pParentJob = pTask->pJob()->pParentJob();
 
 
-  pParentJob->vMutexLock();
-  RASSERT(MS_LOCKED == pParentJob->eMutexSide());
+//  pParentJob->vMutexLock();
+//  RASSERT(MS_LOCKED == pParentJob->eMutexSide());
 
   RASSERT(pChildJob->pTask());
 
@@ -203,8 +203,8 @@ eEC Api::eScheduleTask(ENGINE::Task* pTask)
 
   Scheduler::vTaskApi_Add(pChildJob->pTask());
 
-  pParentJob->vMutexWait();
-  pParentJob->vMutexUnlock();
+//  pParentJob->vMutexWait();
+//  pParentJob->vMutexUnlock();
 
   // check for error from child job
   eEC eChildError = pParentJob->eChildError();
