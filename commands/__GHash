@@ -6,7 +6,7 @@
 /pipeline_def
 /weaved
 /optimise_passthru
-pipeline unamed
+pipeline XYZ
   begin
   stage S00 on origin :
     start
@@ -20,7 +20,7 @@ pipeline unamed
     | globalHash ORDERS GxO_ORDERKEY "type INTEGER ( 19 ) L_ORDERKEY"
     | combined 0
     | next hashcast
-/*
+
   // L_ORDERKEY , rrf
   stage S02 on all partitions :
     rrfJoin ORDERS "type INTEGER ( 19 ) L_ORDERKEY"
@@ -29,7 +29,7 @@ pipeline unamed
                type DATE as O_ORDERDATE O_ORDERDATE"
     | combined 0
     | next
-
+/*
   stage S03 on all partitions :
     sort " type INTEGER ( 19 ) L_ORDERKEY  "
     | combined 0
@@ -109,6 +109,37 @@ pipeline unamed
           1499 1996-08-03
 
   5,996 row(s) returned (0.98 sec)
+
+
+   OpDef: [0] PdsRow SQ0.6]  store/XF_Synthesise_Craft_pipelineDef.cpp:204
+           : StreamDef_arriving
+              Col [ 0] : $ 1        C0_L_ORDERKEY ( INTEGER  INTEGER length=19 scale= 0)  NULLABLE  ASCENDING
+              Col [ 1] : $ 2            C1_ROWREF ( INTEGER  INTEGER length=19 scale= 0)   NOT-NULLABLE  ASCENDING
+           : StreamDef_emitted
+              Col [ 0] : $ 1        C0_L_ORDERKEY ( INTEGER  INTEGER length=19 scale= 0)  NULLABLE  ASCENDING
+              Col [ 1] : $ 2            C1_ROWREF ( INTEGER  INTEGER length=19 scale= 0)   NOT-NULLABLE  ASCENDING
+      OpDef: [1] IndexJoin SQ0.7]  store/XF_Synthesise_Craft_pipelineDef.cpp:204
+           : StreamDef_arriving
+              Col [ 0] : $ 1        C0_L_ORDERKEY ( INTEGER  INTEGER length=19 scale= 0)  NULLABLE  ASCENDING
+              Col [ 1] : $ 2            C1_ROWREF ( INTEGER  INTEGER length=19 scale= 0)   NOT-NULLABLE  ASCENDING
+           : StreamDef_emitted
+              Col [ 0] : $ 1        C0_L_ORDERKEY ( INTEGER  INTEGER length=19 scale= 0)  NULLABLE  ASCENDING
+              Col [ 1] : $ 2       C1_O_ORDERDATE (    DATE     DATE length= 0 scale= 0)  NULLABLE  ASCENDING
+           : Index_indexJoin
+              IndexDef IxO_ORDERKEY NoDescending
+                Column 00 O_ORDERKEY type INTEGER typeId INTEGER length 19 scale 0 datum INTEGER not null partitionKey
+           : ColPpg ]emit #6
+                 store/XF_Synthesise_Craft_pipelineDef.cpp:657
+               nArriving 2
+               m_axCol[0] : m_i_CellIn [0] -> m_i_StructCell [0] $1 ($1 $1)
+           : ColInj ]emit #6
+                 store/XF_Synthesise_Craft_pipelineDef.cpp:541
+               nCrwCols 9
+               m_axCol[0] : m_i_CrwCol [4] -> m_i_StructCell [1] C1_O_ORDERDATE ($$c.5 O_ORDERDATE)
+        ArgDef: [0] tableNm ORDERS store/XF_Synthesise_Craft_pipelineDef.cpp:310
+        ArgDef: [1] indexNm ORDERS store/XF_Synthesise_Craft_pipelineDef.cpp:311
+        ArgDef: [2] expr  BOUND $I1 $1 == store/XF_Synthesise_Craft_pipelineDef.cpp:312
+
 */
 
 /*============================================================================*/

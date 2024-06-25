@@ -1053,7 +1053,7 @@ OpSketch* Stencil::pSketchRrfJoin(StageDef* pStageDef, OpDef* pOpDef)
 
 
   // cannot handle a cross join ?
-  RASSERT( pOpSketch->m_pExprStack->nValues() )
+  //RASSERT( pOpSketch->m_pExprStack->nValues() )
 
   return pOpSketch;
 }

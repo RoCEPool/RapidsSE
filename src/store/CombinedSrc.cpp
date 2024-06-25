@@ -689,6 +689,40 @@ void CombinedSrc::vSynthesizeCode(Stencil* pStencil, bool bFirstStage, bool bLas
 
         break;
 
+      case SK_RRFJOIN:
+
+        bHasIndexInflate = true;
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // open the rrfJoin code fragments file
+
+        bOpened = pOperatorFile->bOpenRead("../src/store/Fragments/RrfJoin.cpp"_Stz);
+        RASSERT ( bOpened );
+
+        bOpened = pInflateFile->bOpenRead("../src/store/Fragments/InflateCrw.cpp"_Stz);
+        RASSERT ( bOpened );
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // operator begin
+        vOperatorBegin(pOpSketch);
+
+        RASSERT( ! pOpSketch->m_bCrossJoin );
+        RASSERT( ! pOpSketch->m_bLeftOuter );
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // inflate the right tables injected columns
+        vAppendCodeInflateCols(pOpSketch, "L_RetT_ColIJ"_Stz, pInflateFile);
+
+        RASSERT( ! pOpSketch->m_pConstraintStack->nValues() );
+        vAppendCodeFragment(pOpSketch, "vRrfJoinReturn"_Stz, pOperatorFile);
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // close the indexJoin code fragments file
+        pInflateFile->vClose();
+        pOperatorFile->vClose();
+
+        break;
+
       case SK_SORT:
       case SK_TOP:
 #ifdef TOP_FULLBUFFER
