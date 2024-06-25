@@ -18,10 +18,49 @@
 /*-- Code Fragments ----------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+/*----------------------------------------------------------------------------*/
+/*-- vRrfJoinBegin ----------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-vRrfJoinBegin
+void vRrfJoinBegin(Dynamic_T* aDynamicT) {
 
+
+  // marker-start
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  struct RowRef {
+      union {
+          struct {
+              u8 m_uBuffer: 32; // which buffer (2^32 * 1MB is 4PB)
+              u8 m_uItem: 16; // item in that buffer (2^16 is max of 64K items)
+              u8 m_uLevels: 3; // number of skip levels in next entry array
+              u8 m_uPayload: 1; // is there is a payload? (not used yet)
+              u8 m_uKind: 4; // entry kind
+              u8 m_uFree: 1; // free entry?
+              u8 m_uDesc: 1; // has descending key?
+              u8 m_uSpare: 5; // spare
+              u8 m_uGlobal: 1; // is global?
+          } Std;        // 64b
+
+          struct {
+              u8 m_uBuffer: 32; // which buffer (2^32 * 1MB is 4PB)
+              u8 m_uItem: 16; // item in that buffer (2^16 is max of 64K items)
+              u8 m_uLevels: 3; // number of skip levels in next entry array
+              u8 m_uKind: 4; // entry kind
+              u8 m_uFree: 1; // free entry?
+              u8 m_uPtn: 7;  // number of skip levels in next entry array
+              u8 m_uGlobal: 1; // is global?
+          } Glb;        // 64b
+
+          i8 m_iAsI8;
+      } Rrf;
+  };
+  struct RowRef xRrf;
+
+// marker-end
+}
 
 /*----------------------------------------------------------------------------*/
-/*-- vRrfJoinIntKey --------------------------------------------------------*/
+/*-- vRrfJoinIntKey ----------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-vRrfJoinIntKey
 void vRrfJoinIntKey(Dynamic_T* aDynamicT) {
@@ -170,7 +209,7 @@ void vRrfJoinCrossPosition(Dynamic_T* aDynamicT) {
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- vRrfJoinDereference ---------------------------------------------------*/
+/*-- vRrfJoinDereference -----------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-vRrfJoinDereference
 void vRrfJoinDereference(Dynamic_T* aDynamicT) {
@@ -185,12 +224,43 @@ void vRrfJoinDereference(Dynamic_T* aDynamicT) {
 
   IndexInfo __INDEX_INFO__[C_MAX_DUP_OPS];
   RowInfo   __ROW_INFO_TO__[C_MAX_DUP_OPS];
+  RowInfo   __ROW_INFO_FROM__[C_MAX_DUP_OPS];
   i8 __COLUMNS_TO_INFLATE_;
   i8 __COLUMNS_INFLATED__;
 
   static const void* C_ADR_REGION = (void*)0x204800000000;
   static const i8 C_CRW_HEADBYTES = 32;
   static const i8 C_CRW_FIRSTHEAD = 640;
+
+  struct RowRef {
+      union {
+          struct {
+              u8 m_uBuffer: 32; // which buffer (2^32 * 1MB is 4PB)
+              u8 m_uItem: 16; // item in that buffer (2^16 is max of 64K items)
+              u8 m_uLevels: 3; // number of skip levels in next entry array
+              u8 m_uPayload: 1; // is there is a payload? (not used yet)
+              u8 m_uKind: 4; // entry kind
+              u8 m_uFree: 1; // free entry?
+              u8 m_uDesc: 1; // has descending key?
+              u8 m_uSpare: 5; // spare
+              u8 m_uGlobal: 1; // is global?
+          } Std;        // 64b
+
+          struct {
+              u8 m_uBuffer: 32; // which buffer (2^32 * 1MB is 4PB)
+              u8 m_uItem: 16; // item in that buffer (2^16 is max of 64K items)
+              u8 m_uLevels: 3; // number of skip levels in next entry array
+              u8 m_uKind: 4; // entry kind
+              u8 m_uFree: 1; // free entry?
+              u8 m_uPtn: 7;  // number of skip levels in next entry array
+              u8 m_uGlobal: 1; // is global?
+          } Glb;        // 64b
+
+          i8 m_iAsI8;
+      } Rrf;
+  };
+
+  struct RowRef xRrf;
 
   L_InflateAColumn:
 
@@ -202,8 +272,9 @@ void vRrfJoinDereference(Dynamic_T* aDynamicT) {
   aHeadLineSav = aHeadLine;
 
   // dereference the entry
-  iIndexBuffer = __INDEX_INFO__[CURRENT_DUP_OP].m_aEntInt->Rrf.Std.m_uBuffer;
-  iIndexItem   = __INDEX_INFO__[CURRENT_DUP_OP].m_aEntInt->Rrf.Std.m_uItem;
+  //xRrf.Rrf.m_iAsI8 = __ROW_INFO_FROM__->C1_ROWREF.m_iAsI8;
+  iIndexBuffer = xRrf.Rrf.Glb.m_uBuffer;
+  iIndexItem   = xRrf.Rrf.Glb.m_uItem;
   aIndexCrw    = ( (char*)C_ADR_REGION + iIndexBuffer * C_1MB + C_CRW_FIRSTHEAD + iIndexItem * C_CRW_HEADBYTES );
 
   // inflate the derefenced entry
