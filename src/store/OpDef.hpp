@@ -33,6 +33,7 @@ namespace STORE
     Index*     m_pIndex_indexScan;
     Index*     m_pIndex_indexJoin;
     Index*     m_pIndex_indexSemi;
+    Index*     m_pIndex_indexGlobal;
 
     IndexDef*  m_pIndexDef_gbyAgg;
     ColMap*    m_pColMap_gbyAgg;

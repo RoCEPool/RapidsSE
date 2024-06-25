@@ -514,8 +514,8 @@ Card* Dissector::pOp_globalHash(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // index
 
-  Card_IndexList* p_indexList = new Card_IndexList;
-  p_table->vAppendChild(p_indexList);
+//  Card_IndexList* p_indexList = new Card_IndexList;
+//  p_table->vAppendChild(p_indexList);
 
   // Index* pIndex = pTable->pFindIndex(szIndexNm);
 
@@ -524,7 +524,7 @@ Card* Dissector::pOp_globalHash(void)
   p_index->vAppendChild(p_indexNm);
   p_indexNm->SYM(SF_IDX_NM,szIndexNm);
 
-  p_indexList->vAppendChild(p_index);
+  p_globalHash->vAppendChild(p_index);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // hash column
