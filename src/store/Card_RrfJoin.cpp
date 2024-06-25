@@ -19,7 +19,7 @@ __vDeleteFunction(Card_RrfJoin,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_RrfJoin::Card_RrfJoin(void)
-: Card_symbol(CK_o_RRFJOIN, C_UNKNOWN)
+: Card_OP(CK_o_RRFJOIN, C_UNKNOWN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

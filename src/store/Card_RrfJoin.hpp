@@ -3,11 +3,11 @@
 /*============================================================================*/
 #pragma once
 
-#include "Card_symbol.hpp"
+#include "Card_OP.hpp"
 
 namespace STORE
 {
-  class Card_RrfJoin : public Card_symbol<Card_RrfJoin>
+  class Card_RrfJoin : public Card_OP
   {
   public:
     void* operator new(size_t);
