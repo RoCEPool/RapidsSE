@@ -525,8 +525,18 @@ void XF_Synthesise_Craft_pipelineDef::vCraftColInj(void)
 
   Card* p_OP_curr = m_pCI->E.p_Op;
 
-  if (! p_OP_curr->bEither(CK_o_CROSSJOIN, CK_o_INDEXJOIN, CK_o_INDEXSCAN, CK_o_INFLATE,
-                          CK_o_KEYEXISTS, CK_o_KEYNOTEXISTS, CK_o_SCAN, CK_NONE))
+  if (p_OP_curr->bIsCard(CK_o_RRFJOIN))
+    vDebugPoint();
+
+  if (! p_OP_curr->bEither(CK_o_CROSSJOIN,
+                           CK_o_INDEXJOIN,
+                           CK_o_INDEXSCAN,
+                           CK_o_INFLATE,
+                           CK_o_KEYEXISTS,
+                           CK_o_KEYNOTEXISTS,
+// alka uncomment          CK_o_RRFJOIN,
+                           CK_o_SCAN,
+                           CK_NONE))
     return;
 
   eCK eCard_OP = p_OP_curr->eCard();
@@ -543,11 +553,14 @@ void XF_Synthesise_Craft_pipelineDef::vCraftColInj(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  if (CK_o_SCAN == eCard_OP ||
-      CK_o_INFLATE == eCard_OP ||
-      CK_o_INDEXJOIN == eCard_OP ||
+  if (
       CK_o_CROSSJOIN == eCard_OP ||
-      CK_o_INDEXSCAN == eCard_OP) {
+      CK_o_INFLATE == eCard_OP   ||
+      CK_o_INDEXJOIN == eCard_OP ||
+      CK_o_INDEXSCAN == eCard_OP ||
+      CK_o_RRFJOIN == eCard_OP   ||
+      CK_o_SCAN == eCard_OP
+      ) {
     vCraftColInj(pColInj, p_OP_curr);
   }
 
