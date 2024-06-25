@@ -18,7 +18,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Populate PdsErr[] if tag "<sendErrorsToResponseOp>" is set
-  [ResponseOp].isNotNull "<sendErrorsToResponseOp>" sysargs::tagSet@ tagSet.hasName and to bSndErrRespOp
+  [job].parentResponseOpIsNotNull "<sendErrorsToResponseOp>" [job].tagSet@ tagSet.hasName and to bSndErrRespOp
   bSndErrRespOp if
     PdsErr[].isNull assert
 
@@ -91,7 +91,7 @@
     bSndErrRespOp if
       ErrorCode[] attachmap::errorText@
         ErrorCode[] TableDefErr[] PdsErr[].addExecError assert
-      PdsErr[]\clear [ResponseOp].pipeout
+      PdsErr[]\clear [job].pipeToParentResponseOp
     then
 
     [job].updateParent assert

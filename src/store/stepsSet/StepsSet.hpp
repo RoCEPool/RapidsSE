@@ -862,11 +862,14 @@ void vJobIdLastJobIdFetch(void);
 
   void vJobParentIdFetch(void);
   void vJobParentOriginNodeIdFetch(void);
+  void vJobParentResponseOpFetch(void);
+  void vJobParentResponseOpIsNotNull(void);
   void vJobIdPipeToOp0(void);
   void vJobPreExecuteDist(void);
   void vJobPreExecuteLocal(void);
   void vJobPhaseFetch(void);
   void vJobPhaseStore(void);
+  void vJobPipeToParentResponseOp(void);
   void vJobPrintObjectTracker(void);
   void vJobProgress(void);
   void vJobProgressReset(void);

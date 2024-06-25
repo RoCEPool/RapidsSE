@@ -15,7 +15,7 @@
 /*----------------------------------------------------------------------------*/
 : pipeline:origin:chunk2
 
-/* org_ org */  [ResponseOp].isNotNull "<sendErrorsToResponseOp>" sysargs::tagSet@ tagSet.hasName and
+/* org_ org */  [job].parentResponseOpIsNotNull "<sendErrorsToResponseOp>" [job].tagSet@ tagSet.hasName and
 /* org_ org */    locals| bSndErrRespOp |
 /* org_ org */
 /* org_ org */  // - - - - - - - - - - - - - - - - - -
@@ -257,7 +257,7 @@
 /*----------------------------------------------------------------------------*/
 : pipeline:origin
   //"pipeline:origin" .
-
+2 [task].trace!
 /* org_ org */  false locals| bSndErrRespOp |
 /* org_ org */
 /* org_ org */  // - - - - - - - - - - - - - - - - - -
@@ -299,8 +299,9 @@
 /* org_ org */
 /* org_ org */  // - - - - - - - - - - - - - - - - - -
 /* org_ org */  // Populate PdsErr[] if tag "<sendErrorsToResponseOp>" is set
-/* org_ org */  [ResponseOp].isNotNull "<sendErrorsToResponseOp>" sysargs::tagSet@ tagSet.hasName and to bSndErrRespOp
+/* org_ org */  [job].parentResponseOpIsNotNull "<sendErrorsToResponseOp>" [job].tagSet@ tagSet.hasName and to bSndErrRespOp
 /* org_ org */  bSndErrRespOp if
+                  "Creating PdsErr[]" .
 /* org_ org */    PdsErr[].isNull assert
 /* org_ org */
 /* org_ org */    // create the tableDef for C_TDEF_EXECERRORS
@@ -335,7 +336,7 @@
 /* org_ org */      bSndErrRespOp if
 /* org_ org */        [job].error@ attachmap::errorText@
 /* org_ org */          [job].error@ TableDefErr[] PdsErr[].addExecError assert
-/* org_ org */        PdsErr[]\clear [ResponseOp].pipeout
+/* org_ org */        PdsErr[]\clear [job].pipeToParentResponseOp
 /* org_ org */      then
 /* org_ org */
 /* org_ org */      [job].updateParent assert
@@ -368,7 +369,7 @@
 /* org_ org */      bSndErrRespOp if
 /* org_ org */        [job].error@ attachmap::errorText@
 /* org_ org */          [job].error@ TableDefErr[] PdsErr[].addExecError assert
-/* org_ org */        PdsErr[]\clear [ResponseOp].pipeout
+/* org_ org */        PdsErr[]\clear [job].pipeToParentResponseOp
 /* org_ org */      then
 /* org_ org */
 /* org_ org */    [job].updateParent assert
@@ -426,7 +427,7 @@
 /* org_ org */    bSndErrRespOp if
 /* org_ org */      [job].error@ attachmap::errorText@
 /* org_ org */        [job].error@ TableDefErr[] PdsErr[].addExecError assert
-/* org_ org */      PdsErr[]\clear [ResponseOp].pipeout
+/* org_ org */      PdsErr[]\clear [job].pipeToParentResponseOp
 /* org_ org */    then
 /* org_ org */
 /* org_ org */    [job].updateParent assert
@@ -485,9 +486,10 @@ then
 /* org_ org */      [job].addExited
 /* org_ org */
 /* org_ org */      bSndErrRespOp if
+                      "Sending error to response op" .
 /* org_ org */        [job].error@ attachmap::errorText@
 /* org_ org */          [job].error@ TableDefErr[] PdsErr[].addExecError assert
-/* org_ org */        PdsErr[]\clear [ResponseOp].pipeout
+/* org_ org */        PdsErr[]\clear [job].pipeToParentResponseOp
 /* org_ org */      then
 /* org_ org */
 /* org_ org */      [job].updateParent assert

@@ -80,8 +80,11 @@ void Step::vAddSteps_Job(void)
   
   vAddStep("[job].parentId@"_Stz,        &Step::vJobParentIdFetch);
   vAddStep("[job].parentOriginNodeId@"_Stz, &Step::vJobParentOriginNodeIdFetch);
+  vAddStep("[job].parentResponseOp@"_Stz,&Step::vJobParentResponseOpFetch);
+  vAddStep("[job].parentResponseOpIsNotNull"_Stz, &Step::vJobParentResponseOpIsNotNull);
   vAddStep("[job].phase@"_Stz,           &Step::vJobPhaseFetch);
   vAddStep("[job].phase!"_Stz,           &Step::vJobPhaseStore);
+  vAddStep("[job].pipeToParentResponseOp"_Stz, &Step::vJobPipeToParentResponseOp);
   vAddStep("[job].preExecuteDist"_Stz,   &Step::vJobPreExecuteDist);
   vAddStep("[job].preExecuteLocal"_Stz,   &Step::vJobPreExecuteLocal);
   vAddStep("[job].printObjectTracker"_Stz,&Step::vJobPrintObjectTracker);
@@ -889,6 +892,49 @@ void Step::vJobParentOriginNodeIdFetch(void)
 
 
 /*----------------------------------------------------------------------------*/
+/* [job].parentResponseOp@ -- fetch response op of parent job                 */
+/*----------------------------------------------------------------------------*/
+void Step::vJobParentResponseOpFetch(void)
+{
+  ENTRY();
+
+  Job* pJob = pOuterJobOfTask();
+  Job* pParentJob = pJob->pParentJob();
+  Op*  pResponseOp = nullptr;
+
+  // parentJob
+  if (pParentJob) {
+    pResponseOp = pParentJob->p_ResponseOp();
+  }
+
+  m_oDataStack.vPushPtr(pResponseOp);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* [job].parentResponseOpIsNotNull -- push boolean                            */
+/*----------------------------------------------------------------------------*/
+void Step::vJobParentResponseOpIsNotNull(void)
+{
+  ENTRY();
+
+  Job* pJob = pOuterJobOfTask();
+  Job* pParentJob = pJob->pParentJob();
+  Op*  pResponseOp = nullptr;
+
+  // parentJob
+  if (pParentJob) {
+    pResponseOp = pParentJob->p_ResponseOp();
+  }
+
+  m_oDataStack.vPushBol(pResponseOp != nullptr);
+
+  EXIT();
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* [job].phase@ -- fetch the job phase                                        */
 /*----------------------------------------------------------------------------*/
 void Step::vJobPhaseFetch(void)
@@ -948,6 +994,27 @@ void Step::vJobPhaseStore(void)
   
   pJob->vJobPhase((eJP)iJobPhase);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* [job].pipeToParentResponseOp -- pipe operand to the response op of parent  */
+/*----------------------------------------------------------------------------*/
+void Step::vJobPipeToParentResponseOp(void)
+{
+  ENTRY();
+
+  Operand* pOperand = _pOperand(m_oDataStack.pPopPtr(__func__));
+
+  Job* pJob = pOuterJobOfTask();
+  Job* pParentJob = pJob->pParentJob();
+  RASSERT(pParentJob);
+
+  Op*  pResponseOp = pParentJob->p_ResponseOp();
+  RASSERT(pResponseOp);
+
+  pResponseOp->vPipeToThis(pOperand, this);
+
   EXIT();
 }
 

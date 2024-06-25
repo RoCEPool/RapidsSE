@@ -349,10 +349,10 @@
    [task].grabLock
    [job].addExited
 
-   [ResponseOp].isNotNull "<sendErrorsToResponseOp>" sysargs::tagSet@ tagSet.hasName PdsErr[].isNotNull and and if
+   [job].parentResponseOpIsNotNull "<sendErrorsToResponseOp>" [job].tagSet@ tagSet.hasName PdsErr[].isNotNull and and if
      [job].error@ attachmap::errorText@
        [job].error@ TableDefErr[] PdsErr[].addExecError assert
-     PdsErr[]\clear [ResponseOp].pipeout
+     PdsErr[]\clear [job].pipeToParentResponseOp
    then
 
    [job].updateParent assert
@@ -386,10 +386,10 @@
        [task].grabLock
        [job].addExited
 
-       [ResponseOp].isNotNull "<sendErrorsToResponseOp>" sysargs::tagSet@ tagSet.hasName PdsErr[].isNotNull and and if
+       [job].parentResponseOpIsNotNull "<sendErrorsToResponseOp>" [job].tagSet@ tagSet.hasName PdsErr[].isNotNull and and if
          [job].error@ attachmap::errorText@
            [job].error@ TableDefErr[] PdsErr[].addExecError assert
-         PdsErr[]\clear [ResponseOp].pipeout
+         PdsErr[]\clear [job].pipeToParentResponseOp
        then
 
        [job].updateParent assert
@@ -407,10 +407,10 @@
         [task].grabLock
         [job].addExited
 
-        [ResponseOp].isNotNull "<sendErrorsToResponseOp>" sysargs::tagSet@ tagSet.hasName PdsErr[].isNotNull and and if
+        [job].parentResponseOpIsNotNull "<sendErrorsToResponseOp>" [job].tagSet@ tagSet.hasName PdsErr[].isNotNull and and if
           [job].error@ attachmap::errorText@
             [job].error@ TableDefErr[] PdsErr[].addExecError assert
-          PdsErr[]\clear [ResponseOp].pipeout
+          PdsErr[]\clear [job].pipeToParentResponseOp
         then
 
         [job].updateParent assert
@@ -479,10 +479,10 @@
        [task].grabLock
        [job].addExited
 
-       [ResponseOp].isNotNull "<sendErrorsToResponseOp>" sysargs::tagSet@ tagSet.hasName PdsErr[].isNotNull and and if
+       [job].parentResponseOpIsNotNull "<sendErrorsToResponseOp>" [job].tagSet@ tagSet.hasName PdsErr[].isNotNull and and if
          [job].error@ attachmap::errorText@
            [job].error@ TableDefErr[] PdsErr[].addExecError assert
-         PdsErr[]\clear [ResponseOp].pipeout
+         PdsErr[]\clear [job].pipeToParentResponseOp
        then
 
        [job].updateParent assert
@@ -500,10 +500,10 @@
         [task].grabLock
         [job].addExited
 
-        [ResponseOp].isNotNull "<sendErrorsToResponseOp>" sysargs::tagSet@ tagSet.hasName PdsErr[].isNotNull and and if
+        [job].parentResponseOpIsNotNull "<sendErrorsToResponseOp>" [job].tagSet@ tagSet.hasName PdsErr[].isNotNull and and if
           [job].error@ attachmap::errorText@
             [job].error@ TableDefErr[] PdsErr[].addExecError assert
-          PdsErr[]\clear [ResponseOp].pipeout
+          PdsErr[]\clear [job].pipeToParentResponseOp
         then
 
         [job].updateParent assert
@@ -772,10 +772,10 @@
         "org_ org" "WAIT/NO_WAIT signalling parent"       [job].trace
       then
 
-      [ResponseOp].isNotNull "<sendErrorsToResponseOp>" sysargs::tagSet@ tagSet.hasName PdsErr[].isNotNull and and if
+      [job].parentResponseOpIsNotNull "<sendErrorsToResponseOp>" [job].tagSet@ tagSet.hasName PdsErr[].isNotNull and and if
         [job].error@ attachmap::errorText@
           [job].error@ TableDefErr[] PdsErr[].addExecError assert
-        PdsErr[]\clear [ResponseOp].pipeout
+        PdsErr[]\clear [job].pipeToParentResponseOp
       then
 
       [job].updateParent discard
