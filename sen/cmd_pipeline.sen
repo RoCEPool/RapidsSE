@@ -15,6 +15,8 @@
 /*----------------------------------------------------------------------------*/
 : pipeline:origin:chunk2
 
+/* org_ org */  [ResponseOp].isNotNull "<sendErrorsToResponseOp>" sysargs::tagSet@ tagSet.hasName and
+/* org_ org */    locals| bSndErrRespOp |
 /* org_ org */
 /* org_ org */  // - - - - - - - - - - - - - - - - - -
 /* org_ org */  // test if distributed job may execute
@@ -256,6 +258,8 @@
 : pipeline:origin
   //"pipeline:origin" .
 
+/* org_ org */  false locals| bSndErrRespOp |
+/* org_ org */
 /* org_ org */  // - - - - - - - - - - - - - - - - - -
 /* org_ org */  // start as ordinary job on this node
 /* org_ org */  // - - - - - - - - - - - - - - - - - -
@@ -293,6 +297,21 @@
 /* org_ org */
 /* org_ org */  [job].tscBeginning
 /* org_ org */
+/* org_ org */  // - - - - - - - - - - - - - - - - - -
+/* org_ org */  // Populate PdsErr[] if tag "<sendErrorsToResponseOp>" is set
+/* org_ org */  [ResponseOp].isNotNull "<sendErrorsToResponseOp>" sysargs::tagSet@ tagSet.hasName and to bSndErrRespOp
+/* org_ org */  bSndErrRespOp if
+/* org_ org */    PdsErr[].isNull assert
+/* org_ org */
+/* org_ org */    // create the tableDef for C_TDEF_EXECERRORS
+/* org_ org */    C_TDEF_EXECERRORS "op__tableDef_err" find execute assert
+/* org_ org */
+/* org_ org */    // create a PdsErr operand for commandErrors
+/* org_ org */    // TODO: What if this fails with a low memory error?
+/* org_ org */    BT_EXECERRORS TableDefErr[] PdsErr[].new
+/* org_ org */  then
+/* org_ org */  // - - - - - - - - - - - - - - - - - -
+/* org_ org */
 /* org_ org */  "<preCheck>" [job].tagSet@ tagSet.hasName if
 /* org_ org */    // + tag exists
 /* org_ org */
@@ -311,6 +330,12 @@
 /* org_ org */      [args].distJob if
 /* org_ org */        "pipeline" "origin"
 /* org_ org */        "org_ org" "<preCheck> signalling parent"       [job].trace
+/* org_ org */      then
+/* org_ org */
+/* org_ org */      bSndErrRespOp if
+/* org_ org */        [job].error@ attachmap::errorText@
+/* org_ org */          [job].error@ TableDefErr[] PdsErr[].addExecError assert
+/* org_ org */        PdsErr[]\clear [ResponseOp].pipeout
 /* org_ org */      then
 /* org_ org */
 /* org_ org */      [job].updateParent assert
@@ -338,6 +363,12 @@
 /* org_ org */      [args].distJob if
 /* org_ org */        "pipeline" "origin"
 /* org_ org */        "org_ org" "preExecuteTest signalling parent"       [job].trace
+/* org_ org */      then
+/* org_ org */
+/* org_ org */      bSndErrRespOp if
+/* org_ org */        [job].error@ attachmap::errorText@
+/* org_ org */          [job].error@ TableDefErr[] PdsErr[].addExecError assert
+/* org_ org */        PdsErr[]\clear [ResponseOp].pipeout
 /* org_ org */      then
 /* org_ org */
 /* org_ org */    [job].updateParent assert
@@ -391,6 +422,13 @@
 /* org_ org */    Path[].discardAll
 /* org_ org */    [task].grabLock
 /* org_ org */    [job].addExited
+/* org_ org */
+/* org_ org */    bSndErrRespOp if
+/* org_ org */      [job].error@ attachmap::errorText@
+/* org_ org */        [job].error@ TableDefErr[] PdsErr[].addExecError assert
+/* org_ org */      PdsErr[]\clear [ResponseOp].pipeout
+/* org_ org */    then
+/* org_ org */
 /* org_ org */    [job].updateParent assert
 /* org_ org */
 /* org_ ovr */    [job].signalParent assert
@@ -445,6 +483,13 @@ then
 /* org_ org */      Path[].discardAll
 /* org_ org */      [task].grabLock
 /* org_ org */      [job].addExited
+/* org_ org */
+/* org_ org */      bSndErrRespOp if
+/* org_ org */        [job].error@ attachmap::errorText@
+/* org_ org */          [job].error@ TableDefErr[] PdsErr[].addExecError assert
+/* org_ org */        PdsErr[]\clear [ResponseOp].pipeout
+/* org_ org */      then
+/* org_ org */
 /* org_ org */      [job].updateParent assert
 /* org_ org */
 /* org_ org */      [job].signalParent assert

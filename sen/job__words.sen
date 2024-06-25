@@ -348,6 +348,13 @@
    Path[].discardAll
    [task].grabLock
    [job].addExited
+
+   [ResponseOp].isNotNull "<sendErrorsToResponseOp>" sysargs::tagSet@ tagSet.hasName PdsErr[].isNotNull and and if
+     [job].error@ attachmap::errorText@
+       [job].error@ TableDefErr[] PdsErr[].addExecError assert
+     PdsErr[]\clear [ResponseOp].pipeout
+   then
+
    [job].updateParent assert
    [job].signalParent assert
    [task].retire
@@ -378,6 +385,13 @@
        Path[].discardAll
        [task].grabLock
        [job].addExited
+
+       [ResponseOp].isNotNull "<sendErrorsToResponseOp>" sysargs::tagSet@ tagSet.hasName PdsErr[].isNotNull and and if
+         [job].error@ attachmap::errorText@
+           [job].error@ TableDefErr[] PdsErr[].addExecError assert
+         PdsErr[]\clear [ResponseOp].pipeout
+       then
+
        [job].updateParent assert
        //"Notifying parent" .
        [job].signalParent assert
@@ -392,6 +406,13 @@
         Path[].discardAll
         [task].grabLock
         [job].addExited
+
+        [ResponseOp].isNotNull "<sendErrorsToResponseOp>" sysargs::tagSet@ tagSet.hasName PdsErr[].isNotNull and and if
+          [job].error@ attachmap::errorText@
+            [job].error@ TableDefErr[] PdsErr[].addExecError assert
+          PdsErr[]\clear [ResponseOp].pipeout
+        then
+
         [job].updateParent assert
         //"Notifying parent" .
         [job].signalParent assert
@@ -457,6 +478,13 @@
        Path[].discardAll
        [task].grabLock
        [job].addExited
+
+       [ResponseOp].isNotNull "<sendErrorsToResponseOp>" sysargs::tagSet@ tagSet.hasName PdsErr[].isNotNull and and if
+         [job].error@ attachmap::errorText@
+           [job].error@ TableDefErr[] PdsErr[].addExecError assert
+         PdsErr[]\clear [ResponseOp].pipeout
+       then
+
        [job].updateParent assert
        //"Notifying parent" .
        [job].signalParent assert
@@ -471,6 +499,13 @@
         Path[].discardAll
         [task].grabLock
         [job].addExited
+
+        [ResponseOp].isNotNull "<sendErrorsToResponseOp>" sysargs::tagSet@ tagSet.hasName PdsErr[].isNotNull and and if
+          [job].error@ attachmap::errorText@
+            [job].error@ TableDefErr[] PdsErr[].addExecError assert
+          PdsErr[]\clear [ResponseOp].pipeout
+        then
+
         [job].updateParent assert
         //"Notifying parent" .
         [job].signalParent assert
@@ -735,6 +770,12 @@
       [args].distJob if
         "pipeline" "origin"
         "org_ org" "WAIT/NO_WAIT signalling parent"       [job].trace
+      then
+
+      [ResponseOp].isNotNull "<sendErrorsToResponseOp>" sysargs::tagSet@ tagSet.hasName PdsErr[].isNotNull and and if
+        [job].error@ attachmap::errorText@
+          [job].error@ TableDefErr[] PdsErr[].addExecError assert
+        PdsErr[]\clear [ResponseOp].pipeout
       then
 
       [job].updateParent discard

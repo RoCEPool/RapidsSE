@@ -59,6 +59,7 @@ extern Stz* C_TAG_REQNO;
 extern Stz* C_TAG_REQOF;
 extern Stz* C_TAG_RESOURCELOG;
 extern Stz* C_TAG_SECTION;
+extern Stz* C_TAG_SENDERRORRESPONSEOP;
 extern Stz* C_TAG_SHM;
 extern Stz* C_TAG_SIGNALPARENT;
 extern Stz* C_TAG_STMT;

@@ -1752,6 +1752,8 @@ void vJobIdLastJobIdFetch(void);
 
   // respondToOp
   void vResponseOpGet(void);
+  void vResponseOpIsNotNull(void);
+  void vResponseOpIsNull(void);
   void vResponseOpPipeout(void);
 
   // rowCounts
