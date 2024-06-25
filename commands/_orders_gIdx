@@ -2,12 +2,12 @@
 /* _orders_gIndex (global index on orders - O_ORDERKEY)                       */
 /*============================================================================*/
 
-file _lineitem;
-file _orders;
-load orders  "../TPCH/SF_0001/orders.tbl"   ;
-load lineitem  "../TPCH/SF_0001/lineitem.tbl"   ;
+//file _lineitem;
+//file _orders;
+//load orders  "../TPCH/SF_0001/orders.tbl"   ;
+//load lineitem  "../TPCH/SF_0001/lineitem.tbl"   ;
 
-create index IxO_ORDERKEY on orders(O_ORDERKEY);
+//create index IxO_ORDERKEY on orders(O_ORDERKEY);
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // create global index on orders (O_ORDERKEY)

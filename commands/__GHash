@@ -29,7 +29,7 @@ pipeline XYZ
                type DATE as O_ORDERDATE O_ORDERDATE"
     | combined 0
     | next
-/*
+
   stage S03 on all partitions :
     sort " type INTEGER ( 19 ) L_ORDERKEY  "
     | combined 0
@@ -44,7 +44,7 @@ pipeline XYZ
     sort " type INTEGER ( 19 ) L_ORDERKEY  "
     | combined 0
     | next
-*/
+
   stage S06 on origin :
     output
     | sink

@@ -649,7 +649,8 @@ void Stencil::vGetNextLabel(String* psLabelNext, StageDef* pStageDef, i8 i_Op, S
 
     OpDef *pOpNext = pStageDef->pGet(iNextOp);
 
-    if (pOpNext->szOpNm()->bSame("hash"_Stz))
+    if (pOpNext->szOpNm()->bSame("hash"_Stz) ||
+        pOpNext->szOpNm()->bSame("globalHash"_Stz))
       psLabelNext->vCopy(sDefault);
     else {
       // form next label using next op
