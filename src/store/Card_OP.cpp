@@ -172,7 +172,12 @@ void Card_OP::vFuse_project_Viable(CardIter *pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  RASSERT(pCI->E.p_Op->bEither(CK_o_SCAN, CK_o_INDEXSCAN, CK_o_INDEXJOIN, CK_o_CROSSJOIN, CK_NONE));
+  RASSERT(pCI->E.p_Op->bEither(CK_o_CROSSJOIN,
+                               CK_o_INDEXSCAN,
+                               CK_o_INDEXJOIN,
+                               CK_o_RRFJOIN,
+                               CK_o_SCAN,
+                               CK_NONE));
   pCI->Next.m_pEmitted = pCI->Next.m_pProject->pSub_emit();
 
   if ((pCI->E.p_emit = pCI->E.p_Op->pSub_emit()))

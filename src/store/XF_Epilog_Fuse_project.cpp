@@ -69,7 +69,12 @@ void XF_Epilog_Fuse_project::vFuse_project(void)
   while (m_pCI->bEachOp()) {
 
     // test for injecting op
-    if (! m_pCI->E.p_Op->bEither(CK_o_SCAN, CK_o_INDEXSCAN, CK_o_INDEXJOIN, CK_o_CROSSJOIN, CK_NONE))
+    if (! m_pCI->E.p_Op->bEither(CK_o_CROSSJOIN,
+                                 CK_o_INDEXSCAN,
+                                 CK_o_INDEXJOIN,
+                                 CK_o_RRFJOIN,
+                                 CK_o_SCAN,
+                                 CK_NONE))
       goto L_UPDATE_PRIOR_EMITTED;
 
     m_pCI->Next.m_pProject = _pCard_Project(m_pCI->pPeekNextIf(CK_o_PROJECT));
