@@ -44,6 +44,7 @@ OpDef::OpDef(i8 i_Op, Card* pCard, const char* azFile, i8 iLine)
   m_pIndex_indexScan    = nullptr;
   m_pIndex_indexJoin    = nullptr;
   m_pIndex_indexSemi    = nullptr;
+  m_pIndex_indexGlobal  = nullptr;
 
   m_pIndexDef_gbyAgg    = nullptr;
   m_pColMap_gbyAgg      = nullptr;
