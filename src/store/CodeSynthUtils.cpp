@@ -1357,7 +1357,8 @@ void CodeSynthUtils::vReplaceColumnsInflated(String* sLine, OpSketch* pOpSketch)
   if (StrLib::bContains(sLine->azStr(), "__COLUMNS_INFLATED__")) {
 
     s256 sColumnsInflated;
-    if (pOpSketch->m_eSketchKind == SK_INDEXJOIN) {
+    if (pOpSketch->m_eSketchKind == SK_INDEXJOIN ||
+        pOpSketch->m_eSketchKind == SK_RRFJOIN) {
       RASSERT( pOpSketch->m_pStreamDefLft );
       sColumnsInflated.vSprint("%lld"_Stz,pOpSketch->m_pStreamDefLft->nColumns());
     }
@@ -1387,7 +1388,8 @@ void CodeSynthUtils::vReplaceColumnsToInflate(String* sLine, OpSketch* pOpSketch
     s256 sColumnsToInflate;
     if ( pOpSketch->m_eSketchKind == SK_INDEXJOIN ||
          pOpSketch->m_eSketchKind == SK_SEMIJOIN  ||
-         pOpSketch->m_eSketchKind == SK_ANTIJOIN ) {
+         pOpSketch->m_eSketchKind == SK_ANTIJOIN  ||
+         pOpSketch->m_eSketchKind == SK_RRFJOIN) {
       RASSERT(pOpSketch->m_pStreamDefRht);
       sColumnsToInflate.vSprint("%lld"_Stz, pOpSketch->m_pStreamDefRht->nColumns());
     }

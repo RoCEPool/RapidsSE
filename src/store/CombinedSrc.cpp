@@ -709,9 +709,15 @@ void CombinedSrc::vSynthesizeCode(Stencil* pStencil, bool bFirstStage, bool bLas
         RASSERT( ! pOpSketch->m_bCrossJoin );
         RASSERT( ! pOpSketch->m_bLeftOuter );
 
+        vAppendCodeFragment(pOpSketch, "vRrfJoinBegin"_Stz, pOperatorFile);
+
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // inflate the right tables injected columns
-        vAppendCodeInflateCols(pOpSketch, "L_RetT_ColIJ"_Stz, pInflateFile);
+        //vAppendCodeInflateCols(pOpSketch, "L_RetT_ColIJ"_Stz, pInflateFile);
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // dereference the join
+        vAppendCodeFragment(pOpSketch, "vRrfJoinDereference"_Stz, pOperatorFile);
 
         RASSERT( ! pOpSketch->m_pConstraintStack->nValues() );
         vAppendCodeFragment(pOpSketch, "vRrfJoinReturn"_Stz, pOperatorFile);
