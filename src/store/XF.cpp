@@ -325,6 +325,7 @@ void XF::vTransform_passThru(void)
       m_pCI->E.p_deck->vInsertAfter(p_project_unproject_rowRef, m_pCI->E.p_rrfJoin);
     }
     m_pCI->vEndTransform(__LINE__);
+    XF_Prolog_Analyse_emit::vAnalyse(m_pCI);
 
 
     m_pCI->vTransform(__FILE__, __func__, XF_PASSTHRU_ADJUST_SORT);
@@ -402,6 +403,9 @@ void XF::vTransform_passThru(void)
   //
 
   XF_Utility::vRemove_LeftMost(m_pCI);
+
+  if (m_pCI->bIsQuery("Query9_GH"_Stz))
+    vDebugPoint();
 
   XF_Synthesise_Craft_pipelineDef::vCraft(m_pCI);
 
