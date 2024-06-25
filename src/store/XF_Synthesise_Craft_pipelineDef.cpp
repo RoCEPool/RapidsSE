@@ -534,7 +534,7 @@ void XF_Synthesise_Craft_pipelineDef::vCraftColInj(void)
                            CK_o_INFLATE,
                            CK_o_KEYEXISTS,
                            CK_o_KEYNOTEXISTS,
-// alka uncomment          CK_o_RRFJOIN,
+                           CK_o_RRFJOIN,
                            CK_o_SCAN,
                            CK_NONE))
     return;
