@@ -191,7 +191,7 @@ void XF_Synthesise_Craft_pipelineDef::vCraftOpDef(void)
 
   RASSERT(m_pStageDef);
 
-  if (m_pCI->E.p_Op->bIsCard(CK_o_PDSROW))
+  if (m_pCI->E.p_Op->bIsCard(CK_o_RRFJOIN))
     vDebugPoint();
 
   if (m_pCI->E.p_Op->bEither(CK_o_CAST, CK_o_SEND, CK_NONE))
@@ -657,7 +657,10 @@ void XF_Synthesise_Craft_pipelineDef::vCraftColPpg(void)
       vDebugPoint();
   }
 
-  if (! m_pCI->E.p_Op->bEither(CK_o_CROSSJOIN, CK_o_INDEXJOIN, CK_NONE))
+  if (! m_pCI->E.p_Op->bEither(CK_o_CROSSJOIN,
+                               CK_o_INDEXJOIN,
+                               CK_o_RRFJOIN,
+                               CK_NONE))
     return;
 
   if (! m_pCI->Arriving.m_pEmitted_prior)
