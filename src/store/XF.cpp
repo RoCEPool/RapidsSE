@@ -316,9 +316,11 @@ void XF::vTransform_passThru(void)
     m_pCI->vTransform(__FILE__, __func__, XF_PASSTHRU_ADD_UNPROJECT_ROWREF);
     m_pCI->vBeginEach();
     while (m_pCI->bEachOp(CK_o_RRFJOIN)) {
+      m_pCI->E.p_table = m_pCI->E.p_Op->pSub_table();
+      m_pCI->E.p_emit = m_pCI->E.p_Op->pSub_emit();
+      m_pCI->E.p_rrfJoin->vAnalyse_injectable(m_pCI);
       if (m_pCI->pPeekNextIf(CK_o_PROJECT))
         continue;
-      m_pCI->E.p_emit = m_pCI->E.p_Op->pSub_emit();
       Card_Project *p_project_unproject_rowRef = Card_Project::pUnproject_rowRef(m_pCI);
       m_pCI->E.p_deck->vInsertAfter(p_project_unproject_rowRef, m_pCI->E.p_rrfJoin);
     }

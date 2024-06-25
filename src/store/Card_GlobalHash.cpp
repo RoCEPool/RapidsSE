@@ -19,7 +19,7 @@ __vDeleteFunction(Card_GlobalHash,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_GlobalHash::Card_GlobalHash(void)
-: Card_symbol(CK_o_GLOBALHASH, C_UNKNOWN)
+: Card_OP(CK_o_GLOBALHASH, C_UNKNOWN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

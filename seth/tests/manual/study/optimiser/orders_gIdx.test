@@ -1,0 +1,60 @@
+/*============================================================================*/
+/* _orders_gIndex (global index on orders - O_ORDERKEY)                       */
+/*============================================================================*/
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// create global index on orders (O_ORDERKEY)
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+pipeline createGblIdx
+begin
+
+  stage S00 on origin :
+    start
+    | pulse once
+    | createGlobalIndexDef ORDERS GxO_ORDERKEY O_ORDERKEY
+    | next
+
+  stage S01 on all nodes :
+    createGlobalIndex ORDERS GxO_ORDERKEY
+    | next
+
+  stage S02 on origin :
+    output
+    | sink
+    | first
+
+end ;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// load the global index on orders (O_ORDERKEY)
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+pipeline _orders_gIndex
+begin
+
+  stage S00 on origin :
+      start
+    | pulse     once
+    | next
+
+  stage S01 on all partitions :
+    scan      orders
+    | rowRef O_ORDERKEY
+    | next
+
+  stage S02 on origin :
+    next
+
+  stage S02 on all nodes :
+    insertGlobalIndex ORDERS GxO_ORDERKEY
+    | next
+
+stage S03 on origin :
+      output
+    | sink
+    | first
+
+end ;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
