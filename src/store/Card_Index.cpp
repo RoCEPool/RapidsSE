@@ -264,8 +264,8 @@ Index* Card_Index::pGetIndex_global(Card_TableNm* p_tableNm)
   if (! pTable)
     return nullptr;
 
-  //Index* pIndex = pTable->pFindGblIndex(pSub_indexNm()->szFacet(SF_IDX_NM));
-  Index* pIndex = pTable->pFindIndex(pSub_indexNm()->szFacet(SF_IDX_NM));
+  Index* pIndex = pTable->pFindGblIndex(pSub_indexNm()->szFacet(SF_IDX_NM));
+  //Index* pIndex = pTable->pFindIndex(pSub_indexNm()->szFacet(SF_IDX_NM));
   if (! pIndex) {
     s256 sErrorMsg;
     sErrorMsg.vSprint("index: %s"_Stz, pSub_indexNm()->szFacet(SF_IDX_NM));

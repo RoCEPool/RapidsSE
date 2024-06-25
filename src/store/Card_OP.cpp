@@ -1364,9 +1364,9 @@ Index* Card_OP::pGetIndex_globalIndex(void)
   if (! p_table)
     return nullptr;
 
-  Card_IndexList* p_indexList = pSub_indexList();
-  if (! p_indexList)
-    return nullptr;
+  //Card_IndexList* p_indexList = pSub_indexList();
+  //if (! p_indexList)
+  //  return nullptr;
 
   Card_Index* p_index = pSub_index();
   if (! p_index)

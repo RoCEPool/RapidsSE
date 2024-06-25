@@ -1024,21 +1024,6 @@ OpSketch* Stencil::pSketchRrfJoin(StageDef* pStageDef, OpDef* pOpDef)
   Stz* szTableNm = pOpDef->pArgDef("tableNm"_Stz)->szArgVal();
   Table* pTable = AM::pTableFind(szTableNm);
 
-  // get the colInj
-//  ColInj* pColInj = pOpDef->m_pColInj;
-//
-//  // get the colPpg
-//  ColPpg* pColPpg = pOpDef->m_pColPpg;
-//
-//  // get the index
-//  Index* pIndex = pOpDef->m_pIndex_indexJoin;
-
-//  RASSERT(pStreamDefOut->nColumns() ==
-//          (pColInj ? pColInj->m_nCols : 0)
-//          +
-//          (pColPpg ? pColPpg->m_nPropagated : 0)
-//  );
-
   // get the sketchCount of same Op
   i8 iOpSketchCount = m_iOpSketchCount[SK_RRFJOIN]++;
   RASSERT(iOpSketchCount < C_MAX_DUP_OPS);
@@ -1066,33 +1051,9 @@ OpSketch* Stencil::pSketchRrfJoin(StageDef* pStageDef, OpDef* pOpDef)
 
   pOpSketch->vSetLabels(sLabel, sLabelNext, sLabelTemp, sLabelOuterLoop);
 
-  // copy the colPpg
-//  if (pColPpg)
-//    pOpSketch->vCopyColPpg(pColPpg);
-//
-//  // copy the colInj
-//  if (pColInj)
-//    pOpSketch->vCopyColInj(pColInj);
 
-  // set the indexDef
-//  pOpSketch->vTable(pTable);
-//  pOpSketch->vIndex(pIndex);
-//  pOpSketch->vIndexDef(pIndex->pIndexDef());
-//  pOpSketch->vIndexPositionLower(IP_GE);
-
-  // generate the expression stacks
-  //pOpSketch->vGenerateExprStacks(sJoinExpr);
-
-  // get join constraint from OP
-//  if (pOpDef->pArgDef_constraint()) {
-//    Stz* sConstraintExpr = pOpDef->pArgDef_constraint()->szArgVal();
-//    pOpSketch->vGenerateExprStacks(sConstraintExpr, true /* constraint */);
-//  }
-
-  // is it a cross join ?
-//  if ( ! pOpSketch->m_pExprStack->nValues() ) {
-//    pOpSketch->m_bCrossJoin = true;
-//  }
+  // cannot handle a cross join ?
+  RASSERT( pOpSketch->m_pExprStack->nValues() )
 
   return pOpSketch;
 }
@@ -1802,17 +1763,14 @@ OpSketch* Stencil::pSketchPotTub(OpSketch* pLastOp, eTP eTubPot, OpDef* pHashOpD
     iOpSketchCount = m_iOpSketchCount[SK_GBL]++;
     RASSERT(iOpSketchCount < C_MAX_DUP_OPS);
 
-    // get the tableName
-    Stz* szTableNm = pHashOpDef->pArgDef("TableNm"_Stz)->szArgVal();
-
     pOpSketch = new OpSketch(nullptr, ""_Stz, m_eHandlerKind, SK_GBL, m_ePreviousStencil, SR_PO,  II_PL);
     pOpSketch->vLimitExpr(sLimitExpr);
 
-    // set the table
-    pOpSketch->m_pTable = AM::pTableFind(szTableNm);
-
     // set the index in the opSketch
-    pOpSketch->m_pIndex = pOpSketch->m_pTable->pFindGblIndex("GxO_ORDERKEY"_Stz);
+    pOpSketch->m_pIndex = pHashOpDef->m_pIndex_indexGlobal;
+
+    // set the table
+    pOpSketch->m_pTable = pOpSketch->m_pIndex->pTable();
 
     // set the indexDef in the opSketch
     pOpSketch->m_pIndexDef = pOpSketch->m_pIndex->pIndexDef();

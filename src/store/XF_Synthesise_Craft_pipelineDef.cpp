@@ -411,6 +411,9 @@ void XF_Synthesise_Craft_pipelineDef::vCraftIndexes(void)
   if (CK_o_CROSSJOIN == eCard)
     m_pOpDef->m_pIndex_indexJoin   = p_OP->pGetIndex_chosenIndex();
   else
+  if (CK_o_GLOBALHASH == eCard)
+    m_pOpDef->m_pIndex_indexGlobal   = p_OP->pGetIndex_globalIndex();
+  else
   if (CK_o_INDEXJOIN == eCard)
     m_pOpDef->m_pIndex_indexJoin   = p_OP->pGetIndex_chosenIndex();
   else
