@@ -711,7 +711,7 @@ void CombinedSrc::vSynthesizeCode(Stencil* pStencil, bool bFirstStage, bool bLas
 
         vAppendCodeFragment(pOpSketch, "vRrfJoinBegin"_Stz, pOperatorFile);
 
-        //vAppendCodePpgCols(pOpSketch, "vCopyVchCol"_Stz);
+        vAppendCodePpgCols(pOpSketch, "vCopyVchCol"_Stz);
 
         vAppendCodeRrfCol(pOpSketch, "vCopyRrfCol"_Stz, pOperatorFile);
 
@@ -721,7 +721,7 @@ void CombinedSrc::vSynthesizeCode(Stencil* pStencil, bool bFirstStage, bool bLas
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // inflate the right tables injected columns
-        //vAppendCodeInflateCols(pOpSketch, "L_RetT_ColIJ"_Stz, pInflateFile);
+        vAppendCodeInflateCols(pOpSketch, "L_RetT_ColIJ"_Stz, pInflateFile);
 
         RASSERT( ! pOpSketch->m_pConstraintStack->nValues() );
         vAppendCodeFragment(pOpSketch, "vRrfJoinReturn"_Stz, pOperatorFile);

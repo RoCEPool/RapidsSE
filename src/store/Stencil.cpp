@@ -1019,6 +1019,12 @@ OpSketch* Stencil::pSketchRrfJoin(StageDef* pStageDef, OpDef* pOpDef)
   StreamDef *pStreamDefLft = pOpDef->m_pStreamDef_arriving;
   StreamDef *pStreamDefOut = pOpDef->m_pStreamDef_emitted;
 
+  // get the colInj
+  ColInj* pColInj = pOpDef->m_pColInj;
+
+  // get the colPpg
+  ColPpg* pColPpg = pOpDef->m_pColPpg;
+
   // HACK: need tablePtr from opDef
   // get the table
   Stz* szTableNm = pOpDef->pArgDef("tableNm"_Stz)->szArgVal();
@@ -1051,6 +1057,13 @@ OpSketch* Stencil::pSketchRrfJoin(StageDef* pStageDef, OpDef* pOpDef)
 
   pOpSketch->vSetLabels(sLabel, sLabelNext, sLabelTemp, sLabelOuterLoop);
 
+  // copy the colPpg
+  if (pColPpg)
+    pOpSketch->vCopyColPpg(pColPpg);
+
+  // copy the colInj
+  if (pColInj)
+    pOpSketch->vCopyColInj(pColInj);
 
   // cannot handle a cross join ?
   //RASSERT( pOpSketch->m_pExprStack->nValues() )
