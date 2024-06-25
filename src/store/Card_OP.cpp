@@ -1354,6 +1354,30 @@ Index* Card_OP::pGetIndex_chosenIndex(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* craft index for indexJoin                                                  */
+/*----------------------------------------------------------------------------*/
+Index* Card_OP::pGetIndex_globalIndex(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_Table* p_table = pSub_table();
+  if (! p_table)
+    return nullptr;
+
+  Card_IndexList* p_indexList = pSub_indexList();
+  if (! p_indexList)
+    return nullptr;
+
+  Card_Index* p_index = pSub_index();
+  if (! p_index)
+    return nullptr;
+
+  Index* pIndex = p_index->pGetIndex_global(p_table->pSub_tableNm());
+
+  return pIndex;
+}
+
+/*----------------------------------------------------------------------------*/
 /* craft indexDef for key                                                     */
 /*----------------------------------------------------------------------------*/
 IndexDef* Card_OP::pCraftIndexDef_key(CardIter* pCI)
