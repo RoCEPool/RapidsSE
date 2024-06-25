@@ -711,13 +711,17 @@ void CombinedSrc::vSynthesizeCode(Stencil* pStencil, bool bFirstStage, bool bLas
 
         vAppendCodeFragment(pOpSketch, "vRrfJoinBegin"_Stz, pOperatorFile);
 
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // inflate the right tables injected columns
-        //vAppendCodeInflateCols(pOpSketch, "L_RetT_ColIJ"_Stz, pInflateFile);
+        //vAppendCodePpgCols(pOpSketch, "vCopyVchCol"_Stz);
+
+        vAppendCodeRrfCol(pOpSketch, "vCopyRrfCol"_Stz, pOperatorFile);
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // dereference the join
         vAppendCodeFragment(pOpSketch, "vRrfJoinDereference"_Stz, pOperatorFile);
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // inflate the right tables injected columns
+        //vAppendCodeInflateCols(pOpSketch, "L_RetT_ColIJ"_Stz, pInflateFile);
 
         RASSERT( ! pOpSketch->m_pConstraintStack->nValues() );
         vAppendCodeFragment(pOpSketch, "vRrfJoinReturn"_Stz, pOperatorFile);
@@ -1513,6 +1517,19 @@ void CombinedSrc::vAppendCodePpgCols(OpSketch* pOpSketch, Stz* szFunction)
 				break;
 		}
 	}
+}
+
+/*----------------------------------------------------------------------------*/
+/* append code fragment for copying rowref column                             */
+/*----------------------------------------------------------------------------*/
+void CombinedSrc::vAppendCodeRrfCol(OpSketch* pOpSketch, Stz* szFunction, File* pCodeFile) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_COMBINEDSRC, _FOOTER_);
+
+  i8 nColumns = pOpSketch->m_pStreamDefLft->nColumns();
+
+  Column *pColumn = pOpSketch->m_pStreamDefLft->pGetColumn(nColumns - 1);
+  vAppendCodeFragment(pOpSketch, szFunction, pColumn, pCodeFile);
 }
 
 /*----------------------------------------------------------------------------*/

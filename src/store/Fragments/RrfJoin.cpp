@@ -272,7 +272,6 @@ void vRrfJoinDereference(Dynamic_T* aDynamicT) {
   aHeadLineSav = aHeadLine;
 
   // dereference the entry
-  //xRrf.Rrf.m_iAsI8 = __ROW_INFO_FROM__->C1_ROWREF.m_iAsI8;
   iIndexBuffer = xRrf.Rrf.Glb.m_uBuffer;
   iIndexItem   = xRrf.Rrf.Glb.m_uItem;
   aIndexCrw    = ( (char*)C_ADR_REGION + iIndexBuffer * C_1MB + C_CRW_FIRSTHEAD + iIndexItem * C_CRW_HEADBYTES );
@@ -514,6 +513,57 @@ i8 iRrfJoinConstraint(Dynamic_T* aDynamicT) {
   __L_LABEL_OUTER_LOOP__:
 
   return 0;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- vCopyRrfCol -------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-vCopyRrfCol
+void vCopyRrfCol(Dynamic_T* aDynamicT) {
+
+  struct RowRef {
+      union {
+          struct {
+              u8 m_uBuffer: 32; // which buffer (2^32 * 1MB is 4PB)
+              u8 m_uItem: 16; // item in that buffer (2^16 is max of 64K items)
+              u8 m_uLevels: 3; // number of skip levels in next entry array
+              u8 m_uPayload: 1; // is there is a payload? (not used yet)
+              u8 m_uKind: 4; // entry kind
+              u8 m_uFree: 1; // free entry?
+              u8 m_uDesc: 1; // has descending key?
+              u8 m_uSpare: 5; // spare
+              u8 m_uGlobal: 1; // is global?
+          } Std;        // 64b
+
+          struct {
+              u8 m_uBuffer: 32; // which buffer (2^32 * 1MB is 4PB)
+              u8 m_uItem: 16; // item in that buffer (2^16 is max of 64K items)
+              u8 m_uLevels: 3; // number of skip levels in next entry array
+              u8 m_uKind: 4; // entry kind
+              u8 m_uFree: 1; // free entry?
+              u8 m_uPtn: 7;  // number of skip levels in next entry array
+              u8 m_uGlobal: 1; // is global?
+          } Glb;        // 64b
+
+          i8 m_iAsI8;
+      } Rrf;
+  };
+
+  struct RowRef xRrf;
+
+  struct __STRUCT_FROM___PREV_OP {
+      union Vch_T __COLUMN_FROM__;
+  };
+
+  struct __STRUCT_FROM___PREV_OP* p__STRUCT_FROM___PREV_OP;
+
+  // marker-start
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // column __COLUMN_NO__
+
+  xRrf.Rrf.m_iAsI8 = p__STRUCT_FROM___PREV_OP->__COLUMN_FROM__.m_iAsI8;
+
+  // marker-end
 }
 
 /*============================================================================*/
