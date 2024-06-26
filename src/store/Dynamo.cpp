@@ -65,6 +65,7 @@ Dynamo::~Dynamo(void) noexcept(false)
     delete pVertexSpec;
   }
 
+  m_p_JobTags = nullptr; // not owned
   delete m_pScanner;
 
   delete m_pParamsSpec;

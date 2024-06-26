@@ -34,6 +34,7 @@
 void Step::vAddSteps_PipeSpec(void)
 {
   vAddStep("PipeSpec[]"_Stz,              &Step::vPipeSpecGet);
+  vAddStep("PipeSpec[]\\clear"_Stz,       &Step::vPipeSpecGetAndClear);
   vAddStep("PipeSpec[].delete"_Stz,       &Step::vPipeSpecDelete);
   vAddStep("PipeSpec[].dump"_Stz,         &Step::vPipeSpecDump);
   vAddStep("PipeSpec[].get"_Stz,          &Step::vPipeSpecGet);
@@ -83,6 +84,23 @@ void Step::vPipeSpecGet(void)
     m_oDataStack.vPushPtr(* m_pLogicUnit->m_xpVertexSpec);
   else
     m_oDataStack.vPushPtr(nullptr);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* PipeSpec[].get\clear -- get pipeline spec and clear                        */
+/*----------------------------------------------------------------------------*/
+void Step::vPipeSpecGetAndClear(void)
+{
+  ENTRY();
+
+  if (m_pLogicUnit->m_xpVertexSpec.bIsNotNull()) {
+    m_oDataStack.vPushPtr(*m_pLogicUnit->m_xpVertexSpec);
+    m_pLogicUnit->m_xpVertexSpec = nullptr;
+  } else {
+    m_oDataStack.vPushPtr(nullptr);
+  }
 
   EXIT();
 }

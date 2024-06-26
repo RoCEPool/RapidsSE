@@ -192,6 +192,7 @@ eEC Api::eScheduleTask(ENGINE::Task* pTask)
 
   RASSERT(pTask->pJob()->pParentJob());
   Job* pParentJob = pTask->pJob()->pParentJob();
+  pParentJob->vChildError(EC_NONE);
 
 //  pParentJob->vMutexLock();
 //  RASSERT(MS_LOCKED == pParentJob->eMutexSide());
@@ -222,12 +223,14 @@ eEC Api::eScheduleTask(ENGINE::Task* pTask)
 //  pParentJob->vMutexUnlock();
 
 
-  // check for error from child job
-  eEC eChildError = pParentJob->eChildError();
-
-  if (eChildError != EC_NONE) {
-    return eChildError;
-  }
+//  This is no longer necessary because the parent task is not blocking on
+//  the child task to return an initial status.
+//  // check for error from child job
+//  eEC eChildError = pParentJob->eChildError();
+//
+//  if (eChildError != EC_NONE) {
+//    return eChildError;
+//  }
 
   return EC_NONE;
 }

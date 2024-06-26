@@ -47,9 +47,9 @@
 /*----------------------------------------------------------------------------*/
 : adaptorWL_AffectedRows
 
-//  trace.withWlp if
-//    AdaptorWL[].clientAddr@ "Client %v: adaptorWL_AffectedRows - BT_AFFECTEDROWS" str.format .traceWlp
-//  then
+  trace.withWlp if
+    AdaptorWL[].clientAddr@ "Client %v: adaptorWL_AffectedRows - BT_AFFECTEDROWS" str.format .traceWlp
+  then
 
   // get the pdsRowBuffer
   PipeIn[]\clear to Pds[]
@@ -70,9 +70,9 @@
 /*----------------------------------------------------------------------------*/
 : adaptorWL_ExecErrors
 
-//  trace.withWlp if
-//    AdaptorWL[].clientAddr@ "Client %v: adaptorWL_ExecErrors - BT_EXECERRORS" str.format .traceWlp
-//  then
+  trace.withWlp if
+    AdaptorWL[].clientAddr@ "Client %v: adaptorWL_ExecErrors - BT_EXECERRORS" str.format .traceWlp
+  then
 
   PipeIn[] to PdsErr[]
   nullptr to PipeIn[]
@@ -94,9 +94,9 @@
 /*----------------------------------------------------------------------------*/
 : adaptorWL_CompileErrors
 
-//  trace.withWlp if
-//    AdaptorWL[].clientAddr@ "Client %v: adaptorWL_CompileErrors - COMPILEERRORS" str.format .traceWlp
-//  then
+  trace.withWlp if
+    AdaptorWL[].clientAddr@ "Client %v: adaptorWL_CompileErrors - COMPILEERRORS" str.format .traceWlp
+  then
 
   PipeIn[] to PdsErr[]
   nullptr to PipeIn[]
@@ -116,9 +116,9 @@
 /*----------------------------------------------------------------------------*/
 : adaptorWL_Warning
 
-//  trace.withWlp if
-//    AdaptorWL[].clientAddr@ "Client %v: adaptorWL_Warning - BT_WARNINGS" str.format .traceWlp
-//  then
+  trace.withWlp if
+    AdaptorWL[].clientAddr@ "Client %v: adaptorWL_Warning - BT_WARNINGS" str.format .traceWlp
+  then
 
   PipeIn[]\clear to PdsWarn[]
 
@@ -136,9 +136,9 @@
 /*----------------------------------------------------------------------------*/
 : adaptorWL_parseQuery params| sSmt |
 
-//  trace.withWlp if
-//    AdaptorWL[].clientAddr@ "Client %v: adaptorWL_parseQuery" str.format .traceWlp
-//  then
+  trace.withWlp if
+    AdaptorWL[].clientAddr@ "Client %v: adaptorWL_parseQuery" str.format .traceWlp
+  then
 
   TaskList[].isNull assert
 
@@ -162,9 +162,9 @@
 /*----------------------------------------------------------------------------*/
 : adaptorWL_scheduleNextTask
 
-//  trace.withWlp if
-//    AdaptorWL[].clientAddr@ "Client %v: adaptorWL_scheduleNextTask" str.format .traceWlp
-//  then
+  trace.withWlp if
+    AdaptorWL[].clientAddr@ "Client %v: adaptorWL_scheduleNextTask" str.format .traceWlp
+  then
 
   0 locals| pNextTask |
 
@@ -209,9 +209,9 @@
 /*----------------------------------------------------------------------------*/
 : adaptorWL_StartMarker \handler
 
-//  trace.withWlp if
-//    AdaptorWL[].clientAddr@ "Client %v: adaptorWL_StartMarker - EV_M_START" str.format .traceWlp
-//  then
+  trace.withWlp if
+    AdaptorWL[].clientAddr@ "Client %v: adaptorWL_StartMarker - EV_M_START" str.format .traceWlp
+  then
 
   PipeIn[]\clear [op].pipeout
 
@@ -231,9 +231,9 @@
 /*----------------------------------------------------------------------------*/
 : adaptorWL_Payload \handler
 
-//  trace.withWlp if
-//    AdaptorWL[].clientAddr@ "Client %v: adaptorWL_Payload - EV_D_PAYLOAD" str.format .traceWlp
-//  then
+  trace.withWlp if
+    AdaptorWL[].clientAddr@ "Client %v: adaptorWL_Payload - EV_D_PAYLOAD" str.format .traceWlp
+  then
 
   PipeIn[]\clear locals| pPayloadObj |
   0 locals| iLastTime |
@@ -340,9 +340,9 @@
 /*----------------------------------------------------------------------------*/
 : adaptorWL_StreamDef \handler
 
-//  trace.withWlp if
-//    AdaptorWL[].clientAddr@ "Client %v: adaptorWL_StreamDef - EV_D_STREAMDEF" str.format .traceWlp
-//  then
+  trace.withWlp if
+    AdaptorWL[].clientAddr@ "Client %v: adaptorWL_StreamDef - EV_D_STREAMDEF" str.format .traceWlp
+  then
 
   // Pass stream def to Adaptor. Adaptor saves it for use with row data.
   PipeIn[]\clear AdaptorWL[].resultMetadata
@@ -361,9 +361,9 @@
 /*----------------------------------------------------------------------------*/
 : adaptorWL_CrwBuffer \handler
 
-//  trace.withWlp if
-//    AdaptorWL[].clientAddr@ "Client %v: adaptorWL_CrwBuffer - EV_D_CRWBUFFER" str.format .traceWlp
-//  then
+  trace.withWlp if
+    AdaptorWL[].clientAddr@ "Client %v: adaptorWL_CrwBuffer - EV_D_CRWBUFFER" str.format .traceWlp
+  then
 
   PipeIn[] AdaptorWL[].crwBuffer
   Pipein[].delete
@@ -380,9 +380,9 @@
 /*----------------------------------------------------------------------------*/
 : adaptorWL_PdsRowBuffer \handler
 
-//  trace.withWlp if
-//    AdaptorWL[].clientAddr@ "Client %v: adaptorWL_PdsRowBuffer - EV_D_PDSROWBUFFER" str.format .traceWlp
-//  then
+  trace.withWlp if
+    AdaptorWL[].clientAddr@ "Client %v: adaptorWL_PdsRowBuffer - EV_D_PDSROWBUFFER" str.format .traceWlp
+  then
 
   // handle AFFECTEDROWS
   PipeIn[].bufferType@ BT_AFFECTEDROWS == if
@@ -427,9 +427,9 @@
 /*----------------------------------------------------------------------------*/
 : adaptorWL_ChildExit \handler
 
-//  trace.withWlp if
-//    AdaptorWL[].clientAddr@ "Client %v: adaptorWL_ChildExit - EV_X_CHILDEXIT" str.format .traceWlp
-//  then
+  trace.withWlp if
+    AdaptorWL[].clientAddr@ "Client %v: adaptorWL_ChildExit - EV_X_CHILDEXIT" str.format .traceWlp
+  then
 
   0 locals| iCurrTime    |
   0 locals| iElapsedTime |
@@ -489,9 +489,9 @@
 /*----------------------------------------------------------------------------*/
 : adaptorWL_Error \handler
 
-//  trace.withWlp if
-//    AdaptorWL[].clientAddr@ "Client %v: adaptorWL_Error - EV_M_ERROR" str.format .traceWlp
-//  then
+  trace.withWlp if
+    AdaptorWL[].clientAddr@ "Client %v: adaptorWL_Error - EV_M_ERROR" str.format .traceWlp
+  then
 
   // We cannot simply pass this downstream if a statement has already been
   // submitted through the API. Instead we will need to save the error and
@@ -522,9 +522,9 @@
 /*----------------------------------------------------------------------------*/
 : adaptorWL_Cleaning \handler
 
-//  trace.withWlp if
-//    AdaptorWL[].clientAddr@ "Client %v: adaptorWL_Cleaning - EV_M_CLEANING" str.format .traceWlp
-//  then
+  trace.withWlp if
+    AdaptorWL[].clientAddr@ "Client %v: adaptorWL_Cleaning - EV_M_CLEANING" str.format .traceWlp
+  then
 
   EV_M_CLEANING_handler
 ;

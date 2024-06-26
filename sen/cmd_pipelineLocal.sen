@@ -49,9 +49,9 @@
     Path[].discardAll
 
     [task].grabLock
-    [job].addExited
     [job].updateParent assert
     [job].signalParent assert
+    [job].addExited
       [task].retire // does not queue onto exit demon
 
     HAZARD
@@ -86,17 +86,21 @@
     Path[].discardAll
 
     [task].grabLock
-    [job].addExited
 
     bSndErrRespOp if
       ErrorCode[] attachmap::errorText@
         ErrorCode[] TableDefErr[] PdsErr[].addExecError assert
       PdsErr[]\clear [job].pipeToParentResponseOp
+      Marker[].newChildExitMarker
+      Marker[] [job].pipeToParentResponseOp
     then
 
     [job].updateParent assert
     [job].signalParent assert
-      [task].retire // does not queue onto exit demon
+    LogicUnit[].cleanup
+
+    [job].addExited
+    [task].retire // does not queue onto exit demon
 
     HAZARD
 
@@ -113,7 +117,7 @@
 /* local */  // - - - - - - - - - - - - - -
 /* local */  [job].newMarkerChain
 
-  PipeSpec[] Pipeline[].create
+  PipeSpec[]\clear Pipeline[].create
   Pipeline[].spawnOpTasks
 
   // run <pre_execute>
@@ -181,15 +185,16 @@
   Path[].discardAll
 
   [task].grabLock
+
+  "<signalParent>" [job].tagSet@ tagSet.hasName if
+    //"pipelineLocal::local SIGNALLING PARENT" .
+    [job].updateParent assert
+    [job].signalParent assert
+  then
+
+  LogicUnit[].cleanup
   [job].addExited
-
-    "<signalParent>" [job].tagSet@ tagSet.hasName if
-      //"pipelineLocal::local SIGNALLING PARENT" .
-      [job].updateParent assert
-      [job].signalParent assert
-    then
-
-    [task].retire // does not queue onto exit demon
+  [task].retire // does not queue onto exit demon
 ;
 
 /*----------------------------------------------------------------------------*/

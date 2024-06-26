@@ -170,6 +170,7 @@ Job::~Job(void) noexcept(false)
     //  }
 
     delete m_pJobTags;
+    m_pJobTags = nullptr;
 
     // -- -- -- -- -- --
 
@@ -462,6 +463,9 @@ bool Job::bObjRecv(Socket* pSocket, Object* pObjBase, SysCall& roSysCall,
     // Now deserialise the data back into a TagSet
     pJob->m_pJobTags = TagSet::pDeserialise(ayBuf);
     ASSERT(pJob->m_pJobTags);
+#ifdef WITH_ASSERT_MACRO
+    pJob->m_pJobTags->vAssertHeader();
+#endif
 
   } catch (LowMemory& xLowMemory) {
     // execute the 2PC commands directly for job received/ send reject
