@@ -290,8 +290,8 @@ extern "C" i8 iExtern_IndexTreeGlobalPtnRrf(void* aIndexInfo, i8* piRowRef) {
 
   //aEnt = EntBuffer::pMoveToGreaterEqualEntry_int(aEnt, aKey, &pEntBuffer);
 
-  pIndexInfo->m_aEntBuffer = pEntBuffer;
-  pIndexInfo->m_aEntInt = (Ent_int*)aEnt;
+  //pIndexInfo->m_aEntBuffer = pEntBuffer;
+  //pIndexInfo->m_aEntInt = (Ent_int*)aEnt;
 
   Rrf xRrf;
   xRrf.vBuffer(aEnt->iBuffer());
