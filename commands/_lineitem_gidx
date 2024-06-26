@@ -1,0 +1,65 @@
+/*============================================================================*/
+/* _lineitem_gIndex (global index on lineitem - L_PARTKEY)                       */
+/*============================================================================*/
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// create global index on lineitem (L_PARTKEY)
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+pipeline createGblIdx
+begin
+
+  stage S00 on origin :
+    start
+    | pulse once
+    | createGlobalIndexDef LINEITEM GxL_PARTKEY L_PARTKEY
+    | next
+
+  stage S01 on all nodes :
+    createGlobalIndex LINEITEM GxL_PARTKEY
+    | next
+
+  stage S02 on origin :
+    output
+    | sink
+    | first
+
+end ;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// load the global index on LINEITEM (L_PARTKEY)
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+pipeline _orders_gIndex
+begin
+
+  stage S00 on origin :
+      start
+    | pulse     once
+    | next
+
+  stage S01 on all partitions :
+    scan      lineitem
+    | rowRef L_PARTKEY
+    | next
+
+  stage S02 on origin :
+    next
+
+  stage S02 on all nodes :
+    insertGlobalIndex LINEITEM GxL_PARTKEY
+    | next
+
+stage S03 on origin :
+      output
+    | sink
+    | first
+
+end ;
+
+// dumpIdx LINEITEM GxL_PARTKEY;
+
+// szIdx LINEITEM GxL_PARTKEY;
+// szIdx LINEITEM IxL_PARTKEY;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
