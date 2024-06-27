@@ -2,6 +2,8 @@
 /* __Q9_POC3_P_OPT2                                                           */
 /*============================================================================*/
 
+/keepCodeFile
+/pipeline_def
 /optimise_passthru
 pipeline Query9
   begin
@@ -24,7 +26,7 @@ pipeline Query9
     | combined 0
     | next hashcast
 
-  stage S04 on all partitions :
+  stage S02 on all partitions :
     indexJoin supplier IxS_SUPPKEY "bound $I1 PS_SUPPKEY =="
     | project "type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY ,
                type INTEGER ( 19 ) as PS_SUPPKEY PS_SUPPKEY ,
@@ -35,8 +37,7 @@ pipeline Query9
 
   stage S03 on all partitions  multiple threads 4:
     indexJoin LINEITEM IxL_PARTKEY "bound $I1 P_PARTKEY =="
-    | project "type INTEGER ( 19 ) as PS_SUPPKEY PS_SUPPKEY ,
-               type DECIMAL ( 19 2 ) as PS_SUPPLYCOST PS_SUPPLYCOST ,
+    | project "type DECIMAL ( 19 2 ) as PS_SUPPLYCOST PS_SUPPLYCOST ,
                type INTEGER ( 19 ) as S_NATIONKEY S_NATIONKEY ,
                type INTEGER ( 19 ) as L_ORDERKEY L_ORDERKEY ,
                type INTEGER ( 19 ) as L_SUPPKEY L_SUPPKEY ,
