@@ -1,0 +1,114 @@
+/*============================================================================*/
+/* __Q9_POC3_P_OPT2                                                           */
+/*============================================================================*/
+
+/optimise_passthru
+pipeline Query9
+  begin
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
+
+  stage S01 on all partitions :
+    scan rapidsse public part
+    | project "type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY ,
+               type VARCHAR ( 55 ) as P_NAME P_NAME"
+    | filter "type BOOLEAN }  P_NAME '%green%' 5 matchMiddle"
+    | project "type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY"
+    | indexJoin partsupp IxPS_PARTKEY "bound $I1 P_PARTKEY =="
+    | project "type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY ,
+               type INTEGER ( 19 ) as PS_SUPPKEY PS_SUPPKEY ,
+               type DECIMAL ( 19  2 ) as PS_SUPPLYCOST PS_SUPPLYCOST"
+    | hash "type INTEGER ( 19 ) PS_SUPPKEY"
+    | combined 0
+    | next hashcast
+
+  stage S04 on all partitions :
+    indexJoin supplier IxS_SUPPKEY "bound $I1 PS_SUPPKEY =="
+    | project "type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY ,
+               type INTEGER ( 19 ) as PS_SUPPKEY PS_SUPPKEY ,
+               type DECIMAL ( 19  2 ) as PS_SUPPLYCOST PS_SUPPLYCOST ,
+               type INTEGER ( 19 ) as S_NATIONKEY S_NATIONKEY "
+    | combined 0
+    | next broadcast
+
+  stage S03 on all partitions:
+    indexJoin LINEITEM IxL_PARTKEY "bound $I1 P_PARTKEY =="
+    | project "type INTEGER ( 19 ) as PS_SUPPKEY PS_SUPPKEY ,
+               type DECIMAL ( 19 2 ) as PS_SUPPLYCOST PS_SUPPLYCOST ,
+               type INTEGER ( 19 ) as S_NATIONKEY S_NATIONKEY ,
+               type INTEGER ( 19 ) as L_ORDERKEY L_ORDERKEY ,
+               type INTEGER ( 19 ) as L_SUPPKEY L_SUPPKEY ,
+               type DECIMAL ( 19 2 ) as L_EXTENDEDPRICE L_EXTENDEDPRICE ,
+               type DECIMAL ( 19 2 ) as L_DISCOUNT L_DISCOUNT ,
+               type DECIMAL ( 19 2 ) as L_QUANTITY L_QUANTITY"
+    | filter "type BOOLEAN L_SUPPKEY PS_SUPPKEY =="
+    | project "type INTEGER ( 19 ) as S_NATIONKEY S_NATIONKEY ,
+               type INTEGER ( 19 ) as L_ORDERKEY L_ORDERKEY ,
+               type DECIMAL ( 19  2 ) as AMOUNT L_EXTENDEDPRICE 1.0 L_DISCOUNT -  *  PS_SUPPLYCOST L_QUANTITY *  - "
+    | combined 0
+    | next
+
+    stage S03 on all partitions multiple threads 4:
+      globalHash ORDERS GxO_ORDERKEY "type INTEGER ( 19 ) L_ORDERKEY"
+    | combined 0
+    | next hashcast
+
+  stage S05 on all partitions:
+    rrfJoin ORDERS "type INTEGER ( 19 ) L_ORDERKEY"
+    | project "type INTEGER ( 19 ) as S_NATIONKEY S_NATIONKEY ,
+               type INTEGER ( 19 ) as O_YEAR O_ORDERDATE extract_year ,
+               type DECIMAL ( 19  2 ) as AMOUNT AMOUNT"
+   | combined 0
+   | next
+
+   stage S06 on all partitions:
+    indexJoin NATION IxN_NATIONKEY "bound $I1 S_NATIONKEY =="
+    | project "type VARCHAR ( 0 ) as NATION N_NAME ,
+               type INTEGER ( 19 ) as O_YEAR O_YEAR ,
+               type DECIMAL ( 19  2 ) as AMOUNT AMOUNT"
+    | gbyAgg "groupBy type VARCHAR ( 0 ) NATION ,
+                    type INTEGER ( 19 ) O_YEAR
+            aggregates
+                    type VARCHAR ( 0 ) as NATION $K1 ,
+                    type INTEGER ( 19 ) as O_YEAR $K2 ,
+                    type DECIMAL ( 19  2 ) as SUM_PROFIT ) AMOUNT sum  "
+    | combined 0
+    | next
+
+  stage S07 on all nodes :
+    gbyAgg "groupBy type VARCHAR ( 0 ) NATION ,
+                    type INTEGER ( 19 ) O_YEAR
+            aggregates
+                     type VARCHAR ( 0 ) as NATION $K1 ,
+                     type INTEGER ( 19 ) as O_YEAR $K2 ,
+                     type DECIMAL ( 19  2 ) as SUM_PROFIT ) SUM_PROFIT sum  "
+    | combined 0
+    | next
+
+  stage S08 on origin :
+    gbyAgg "groupBy type VARCHAR ( 0 ) NATION ,
+                    type INTEGER ( 19 ) O_YEAR
+            aggregates
+                     type VARCHAR ( 0 ) as NATION $K1 ,
+                     type INTEGER ( 19 ) as O_YEAR $K2 ,
+                     type DECIMAL ( 19  2 ) as SUM_PROFIT ) SUM_PROFIT sum  "
+    | combined 0
+    | next
+
+  stage S09 on origin :
+    sort "type VARCHAR ( 0 ) as NATION NATION ASC ,
+          type INTEGER ( 19 ) as O_YEAR O_YEAR DESC"
+    | combined 0
+    | next
+
+  stage S10 on origin :
+    output
+    | sink
+    | first
+  end ;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
