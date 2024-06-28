@@ -72,6 +72,7 @@ namespace PRIMITIVES
     Stz*    pAdd(Stz* szItem, i8 iSize);
     Stz*    szAt(i8 iOffset);
     bool    bContainsAddr(Stz* szAddr);
+    eSIZE   eFirstBufSize();
     Footer* aFooter(void);
     i8      nItems(void);
     i8      iOffsetOf(Stz* szAddr);

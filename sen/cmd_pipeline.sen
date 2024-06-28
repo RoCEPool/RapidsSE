@@ -258,7 +258,6 @@
 /*----------------------------------------------------------------------------*/
 : pipeline:origin
   //"pipeline:origin" .
-2 [task].trace!
 /* org_ org */  false locals| bSndErrRespOp |
 /* org_ org */
 /* org_ org */  // - - - - - - - - - - - - - - - - - -
@@ -302,7 +301,7 @@
 /* org_ org */  // Populate PdsErr[] if tag "<sendErrorsToResponseOp>" is set
 /* org_ org */  [job].parentResponseOpIsNotNull "<sendErrorsToResponseOp>" [job].tagSet@ tagSet.hasName and to bSndErrRespOp
 /* org_ org */  bSndErrRespOp if
-                  "Creating PdsErr[]" .
+/* org_ org */    "Creating PdsErr[]" .verbose
 /* org_ org */    PdsErr[].isNull assert
 /* org_ org */
 /* org_ org */    // create the tableDef for C_TDEF_EXECERRORS
@@ -494,7 +493,7 @@ then
 /* org_ org */      [task].grabLock
 /* org_ org */
 /* org_ org */      bSndErrRespOp if
-                      "Sending error to response op" .
+/* org_ org */        "Sending error to response op" .verbose
 /* org_ org */        [job].error@ attachmap::errorText@
 /* org_ org */          [job].error@ TableDefErr[] PdsErr[].addExecError assert
 /* org_ org */        PdsErr[]\clear [job].pipeToParentResponseOp

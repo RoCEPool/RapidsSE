@@ -384,6 +384,23 @@ bool PackedStringBuf::bContainsAddr(Stz* szAddr)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Returns the size enum of this first buffer                                 */
+/*----------------------------------------------------------------------------*/
+PackedStringBuf::eSIZE PackedStringBuf::eFirstBufSize()
+{
+  ASSERT(this == m_pHead);
+
+  switch (this->eGetClassNo()) {
+    case CN_PACKEDSTRINGBUFTINY:    return TINY;
+    case CN_PACKEDSTRINGBUFSMALL:   return SMALL;
+    case CN_PACKEDSTRINGBUFMEDIUM:  return MEDIUM;
+    case CN_PACKEDSTRINGBUFLARGE:   return LARGE;
+    default:
+      NEVER_REACH
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
 Footer* PackedStringBuf::aFooter(void)

@@ -6,6 +6,7 @@
 #include "eTN.h"
 #include "SegmentedArrayNL_t.hpp"
 #include "Lock.hpp"
+#include "PackedStringBuf.hpp"
 
 namespace PRIMITIVES { class PackedStringBuf; }
 
@@ -71,6 +72,7 @@ namespace BASE
     void operator delete(void*);
   
     TagSet(void);
+    TagSet(PackedStringBuf::eSIZE eFirstStrBufSize);
     TagSet(const TagSet& oOther);
    ~TagSet() noexcept(false);
   

@@ -199,7 +199,8 @@
     EC_NO_SUCH_TABLE to errorCode
 
     // create an exec error rowBuffer
-    errorCode op__execErr
+    sTableNm errorCode attachmap::errorText@ str.format
+      errorCode op__execErrMsg
 
     false
     exit
@@ -312,7 +313,8 @@
     EC_NO_SUCH_TABLE to errorCode
 
     // create an exec error rowBuffer
-    errorCode op__execErr
+    sTableNm errorCode attachmap::errorText@ str.format
+      errorCode op__execErrMsg
 
     false
     exit

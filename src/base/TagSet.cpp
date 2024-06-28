@@ -65,6 +65,20 @@ TagSet::TagSet(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+TagSet::TagSet(PackedStringBuf::eSIZE eFirstStrBufSize)
+: Object(CN_TAGSET)
+, m_pStrings(PackedStringBuf::pCreate(eFirstStrBufSize))
+{
+  _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
+
+  _checkInitialised_(CN_TAGSET);
+
+  _postcondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
 /* Copy constructor                                                           */
 /*----------------------------------------------------------------------------*/
 TagSet::TagSet(const TagSet& oOther)
@@ -76,7 +90,7 @@ TagSet::TagSet(const TagSet& oOther)
   // m_oTagArray already copied above, but we need to correct
   // all string pointers used in it to use the new packed string buffer
 
-  m_pStrings = PackedStringBuf::pCreate(PackedStringBuf::TINY);
+  m_pStrings = PackedStringBuf::pCreate(oOther.m_pStrings->eFirstBufSize());
 
   TagArrayIter xIter = m_oTagArray.xIterator();
   Tag* pTag;

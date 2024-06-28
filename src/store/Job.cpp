@@ -75,7 +75,7 @@ Job::Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId,
   }
 
   //m_sEntryPoint
-  m_pJobTags = new TagSet();
+  m_pJobTags = new TagSet(PackedStringBuf::SMALL);
   //m_sFolderPath
   
   m_eJobPhase  = JP_NONE;
