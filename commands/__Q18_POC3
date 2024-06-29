@@ -2,7 +2,6 @@
 /* __Q18_run                                                                  */
 /*============================================================================*/
 
-/keepCodeFile
 /optimise_passthru
 pipeline Query18
 begin
@@ -13,23 +12,28 @@ begin
 
    stage S01 on all partitions :
       indexscan lineitem IxL_ORDERKEY "lbound $I1 0 >="
-     | ordAgg " ordgroupBy  type INTEGER ( 19 ) as L_ORDERKEY L_ORDERKEY aggregates  type INTEGER ( 19 ) as L_ORDERKEY $K1 , type DECIMAL ( 19  2 ) as SUM_QTY )  L_QUANTITY sum  "
+     //| ordAgg " ordgroupBy  type INTEGER ( 19 ) as L_ORDERKEY L_ORDERKEY aggregates  type INTEGER ( 19 ) as L_ORDERKEY $K1 , type DECIMAL ( 19  2 ) as SUM_QTY )  L_QUANTITY sum  "
+     | gbyAgg " groupBy  type INTEGER ( 19 ) as L_ORDERKEY L_ORDERKEY aggregates  type INTEGER ( 19 ) as L_ORDERKEY $K1 , type DECIMAL ( 19  2 ) as SUM_QTY )  L_QUANTITY sum  "
      | combined 0
      | next
 
-  stage S02 on origin :
+    stage S01a on all partitions :
      filter  " type BOOLEAN  SUM_QTY 300.00  >  "
      | combined 0
      | next broadcast
 
-   stage S03 on all partitions multiple threads 4:
+   stage S02 on all partitions  multiple threads 4:
      indexJoin orders IxO_ORDERKEY "bound $I1 $1 =="
      | project "type INTEGER ( 19 ) as O_CUSTKEY O_CUSTKEY ,
                 type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY ,
                 type DATE as O_ORDERDATE O_ORDERDATE ,
                 type DECIMAL ( 19  2 ) as O_TOTALPRICE O_TOTALPRICE ,
                 type DECIMAL ( 19  2 ) as SUM_QTY SUM_QTY "
-     | indexJoin customer IxC_CUSTKEY "bound $I1 $1 =="
+     | combined 0
+     | next
+
+   stage S03 on all partitions :
+     indexJoin customer IxC_CUSTKEY "bound $I1 $1 =="
      | project "type VARCHAR ( 0 ) as C_NAME C_NAME ,
                 type INTEGER ( 19 ) as C_CUSTKEY C_CUSTKEY ,
                 type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY ,
@@ -39,7 +43,7 @@ begin
      | combined 0
      | next
 
-   stage S05 on all partitions :
+   stage S04 on all partitions :
      gbyAgg " GroupBy type VARCHAR ( 0 ) as C_NAME C_NAME ,
                       type INTEGER ( 19 ) as C_CUSTKEY C_CUSTKEY ,
                       type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY ,
@@ -55,7 +59,23 @@ begin
      | combined 0
      | next
 
-   stage S06 on all nodes :
+   stage S05 on all nodes :
+     gbyAgg " GroupBy  type VARCHAR ( 0 ) as C_NAME C_NAME ,
+                       type INTEGER ( 19 ) as C_CUSTKEY C_CUSTKEY ,
+                       type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY ,
+                       type DATE as O_ORDERDATE O_ORDERDATE ,
+                       type DECIMAL ( 19  2 ) as O_TOTALPRICE O_TOTALPRICE
+                       aggregates
+                       type VARCHAR ( 0 ) as C_NAME $K1 ,
+                       type INTEGER ( 19 ) as C_CUSTKEY $K2 ,
+                       type INTEGER ( 19 ) as O_ORDERKEY $K3 ,
+                       type DATE as O_ORDERDATE $K4 ,
+                       type DECIMAL ( 19  2 ) as O_TOTALPRICE $K5 ,
+                       type DECIMAL ( 19  2 ) as SUM_QTY ) SUM_QTY sum  "
+     | combined 0
+     | next
+
+   stage S06 on origin :
      gbyAgg " GroupBy  type VARCHAR ( 0 ) as C_NAME C_NAME ,
                        type INTEGER ( 19 ) as C_CUSTKEY C_CUSTKEY ,
                        type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY ,
@@ -72,33 +92,16 @@ begin
      | next
 
    stage S07 on origin :
-     gbyAgg " GroupBy  type VARCHAR ( 0 ) as C_NAME C_NAME ,
-                       type INTEGER ( 19 ) as C_CUSTKEY C_CUSTKEY ,
-                       type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY ,
-                       type DATE as O_ORDERDATE O_ORDERDATE ,
-                       type DECIMAL ( 19  2 ) as O_TOTALPRICE O_TOTALPRICE
-                       aggregates
-                       type VARCHAR ( 0 ) as C_NAME $K1 ,
-                       type INTEGER ( 19 ) as C_CUSTKEY $K2 ,
-                       type INTEGER ( 19 ) as O_ORDERKEY $K3 ,
-                       type DATE as O_ORDERDATE $K4 ,
-                       type DECIMAL ( 19  2 ) as O_TOTALPRICE $K5 ,
-                       type DECIMAL ( 19  2 ) as SUM_QTY ) SUM_QTY sum  "
-     | combined 0
-     | next
-
-   stage S08 on origin :
-     sort " type DECIMAL ( 19  2 ) as O_TOTALPRICE O_TOTALPRICE DESC  , type DATE as O_ORDERDATE O_ORDERDATE ASC  "
+     sort " type DECIMAL ( 19  2 ) as O_TOTALPRICE O_TOTALPRICE ASC  , type DATE as O_ORDERDATE O_ORDERDATE ASC  "
      | limit 100
      | combined 0
      | next
 
-   stage S10 on origin :
+   stage S08 on origin :
      output
      | sink
      | first
  end ;
-
 
 /*============================================================================*/
 /* end                                                                        */

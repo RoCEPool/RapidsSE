@@ -12,8 +12,9 @@ begin
      | next
 
    stage S01 on all partitions :
-      indexscan lineitem IxL_ORDERKEY "lbound $I1 0 >="
-     | ordAgg " ordgroupBy  type INTEGER ( 19 ) as L_ORDERKEY L_ORDERKEY aggregates  type INTEGER ( 19 ) as L_ORDERKEY $K1 , type DECIMAL ( 19  2 ) as SUM_QTY )  L_QUANTITY sum  "
+      //indexscan lineitem IxL_ORDERKEY "lbound $I1 0 >="
+      scan lineitem
+     | gbyAgg " groupBy  type INTEGER ( 19 ) as L_ORDERKEY L_ORDERKEY aggregates  type INTEGER ( 19 ) as L_ORDERKEY $K1 , type DECIMAL ( 19  2 ) as SUM_QTY )  L_QUANTITY sum  "
      | combined 0
      | next
 

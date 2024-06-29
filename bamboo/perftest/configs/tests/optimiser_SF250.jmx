@@ -1978,7 +1978,7 @@ order by
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q1_2n_p_opt1_4mt" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q1_2n_p_opt1" enabled="true">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
 pipeline Query1
@@ -2101,7 +2101,7 @@ end ;</stringProp>
               </hashTree>
             </hashTree>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q2 Group" enabled="false"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q2 Group" enabled="true"/>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
@@ -2187,7 +2187,7 @@ limit 100;</stringProp>
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q2_poc3_opt1_mt" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q2_poc3_opt1" enabled="true">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
 pipeline Query2
@@ -2231,11 +2231,9 @@ begin
     | filter &quot; type BOOLEAN  R_NAME &apos;EUROPE&apos;  == &quot;
     | project &quot;type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY ,
                        type INTEGER ( 19 ) as PS_SUPPKEY PS_SUPPKEY ,
-                       type DECIMAL ( 19  2 ) as PS_SUPPLYCOST PS_SUPPLYCOST ,
-                       type INTEGER ( 19 ) as N_REGIONKEY N_REGIONKEY &quot;
-    | hash &quot;type INTEGER ( 19 ) P_PARTKEY&quot;
+                       type DECIMAL ( 19  2 ) as PS_SUPPLYCOST PS_SUPPLYCOST&quot;
     | combined 0
-    | next hashcast
+    | next
 
   stage S03 on all partitions :
     gbyAgg &quot; GroupBy    type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY
@@ -2269,13 +2267,7 @@ begin
     | indexJoin part IxP_PARTKEY &quot;BOUND $I1 P_PARTKEY ==&quot;
     | project &quot; type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY ,
                     type INTEGER ( 19 ) as PS_SUPPKEY PS_SUPPKEY ,
-                    type VARCHAR ( 0 ) as P_MFGR P_MFGR ,
-                    type VARCHAR ( 0 ) as P_TYPE P_TYPE ,
-                    type INTEGER ( 19 ) as P_SIZE P_SIZE&quot;
-    | filter &quot; type BOOLEAN  }  P_TYPE &apos;%BRASS&apos;  6 matchTrailing P_SIZE 15 == and&quot;
-    | project &quot; type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY ,
-                type INTEGER ( 19 ) as PS_SUPPKEY PS_SUPPKEY ,
-                type VARCHAR ( 0 ) as P_MFGR P_MFGR&quot;
+                    type VARCHAR ( 0 ) as P_MFGR P_MFGR&quot;
     | hash &quot;type INTEGER ( 19 ) PS_SUPPKEY&quot;
     | combined 0
     | next hashcast
@@ -2294,36 +2286,17 @@ begin
     | project &quot; type DECIMAL ( 19  2 ) as S_ACCTBAL S_ACCTBAL ,
                 type VARCHAR ( 0 ) as S_NAME S_NAME ,
                 type VARCHAR ( 0 ) as N_NAME N_NAME ,
-                type INTEGER ( 19 ) as N_REGIONKEY N_REGIONKEY ,
                  type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY ,
                  type VARCHAR ( 0 ) as P_MFGR P_MFGR ,
                  type VARCHAR ( 0 ) as S_ADDRESS S_ADDRESS ,
                  type VARCHAR ( 0 ) as S_PHONE S_PHONE ,
                  type VARCHAR ( 0 ) as S_COMMENT S_COMMENT &quot;
-    | indexJoin region IxR_REGIONKEY &quot;BOUND $I1 N_REGIONKEY ==&quot;
-    | project &quot; type DECIMAL ( 19  2 ) as S_ACCTBAL S_ACCTBAL ,
-                    type VARCHAR ( 0 ) as S_NAME S_NAME ,
-                    type VARCHAR ( 0 ) as N_NAME N_NAME ,
-                    type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY ,
-                    type VARCHAR ( 0 ) as P_MFGR P_MFGR ,
-                    type VARCHAR ( 0 ) as S_ADDRESS S_ADDRESS ,
-                    type VARCHAR ( 0 ) as S_PHONE S_PHONE ,
-                    type VARCHAR ( 0 ) as S_COMMENT S_COMMENT ,
-                    type VARCHAR ( 0 ) as R_NAME R_NAME&quot;
-    | filter &quot; type BOOLEAN  R_NAME &apos;EUROPE&apos;  == &quot;
-    | project &quot; type DECIMAL ( 19  2 ) as S_ACCTBAL S_ACCTBAL ,
-                        type VARCHAR ( 0 ) as S_NAME S_NAME ,
-                        type VARCHAR ( 0 ) as N_NAME N_NAME ,
-                        type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY ,
-                        type VARCHAR ( 0 ) as P_MFGR P_MFGR ,
-                        type VARCHAR ( 0 ) as S_ADDRESS S_ADDRESS ,
-                        type VARCHAR ( 0 ) as S_PHONE S_PHONE ,
-                        type VARCHAR ( 0 ) as S_COMMENT S_COMMENT&quot;
     | sort &quot;type DECIMAL ( 19  2 ) S_ACCTBAL DESC ,
             type VARCHAR ( 0 ) N_NAME ASC ,
             type VARCHAR ( 0 ) S_NAME ASC ,
             type INTEGER ( 19 ) P_PARTKEY ASC&quot;
     | limit 100
+
     | combined 0
     | next
 
@@ -2349,8 +2322,7 @@ begin
     output
     | sink
     | first
-end ;
-</stringProp>
+end ;</stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="queryTimeout"></stringProp>
@@ -2361,95 +2333,149 @@ end ;
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q2_poc3_opt1_iscan" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q2_poc3_opt2" enabled="true">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
-pipeline Query5
+pipeline Query2
 begin
   stage S00 on origin :
     start
     | pulse once
     | next
 
-  stage S01 on all partitions:
-    indexscan Orders IxO_ORDERDATE &quot; LBOUND DATE &apos;1994-01-01&apos;  &gt;=
-                                     UBOUND DATE &apos;1995-01-01&apos;  &lt; &quot;
-    | project &quot;type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY ,
-             type INTEGER ( 19 ) as O_CUSTKEY O_CUSTKEY &quot;
-    | indexJoin Customer IxC_CUSTKEY &quot;BOUND $I1 O_CUSTKEY ==&quot;
-    | project &quot;type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY ,
-               type INTEGER ( 19 ) as C_NATIONKEY C_NATIONKEY&quot;
-    | hash &quot;type INTEGER ( 19 ) O_ORDERKEY&quot;
+  stage S01 on all partitions :
+    scan part
+    | project &quot; type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY ,
+                type VARCHAR ( 0 ) as P_TYPE P_TYPE ,
+                type INTEGER ( 19 ) as P_SIZE P_SIZE&quot;
+    | filter &quot; type BOOLEAN  }  P_TYPE &apos;%BRASS&apos;  6 matchTrailing P_SIZE 15 == and&quot;
+    | indexJoin partsupp IxPS_PARTKEY &quot;BOUND $I1 P_PARTKEY ==&quot;
+    | project &quot; type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY ,
+                type INTEGER ( 19 ) as PS_SUPPKEY PS_SUPPKEY ,
+                type DECIMAL ( 19  2 ) as PS_SUPPLYCOST PS_SUPPLYCOST&quot;
+    | hash &quot;type INTEGER ( 19 ) PS_SUPPKEY&quot;
     | combined 0
     | next hashcast
 
-  stage S02 on all partitions multiple threads 4:
-    indexJoin Lineitem IxL_ORDERKEY &quot;bound $I1 O_ORDERKEY ==&quot;
-    | project &quot;type INTEGER ( 19 ) as C_NATIONKEY C_NATIONKEY ,
-                   type INTEGER ( 19 ) as L_SUPPKEY L_SUPPKEY ,
-                   type DECIMAL ( 19  2 ) as L_EXTENDEDPRICE L_EXTENDEDPRICE ,
-                   type DECIMAL ( 19  2 ) as L_DISCOUNT L_DISCOUNT&quot;
-    | hash &quot;type INTEGER ( 19 ) L_SUPPKEY&quot;
+  stage S02 on all partitions:
+    indexJoin supplier IxS_SUPPKEY &quot;BOUND $I1 PS_SUPPKEY ==&quot;
+    | project &quot;type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY ,
+               type INTEGER ( 19 ) as PS_SUPPKEY PS_SUPPKEY ,
+               type DECIMAL ( 19  2 ) as PS_SUPPLYCOST PS_SUPPLYCOST ,
+               type INTEGER ( 19 ) as S_NATIONKEY S_NATIONKEY &quot;
+    | indexJoin nation IxN_NATIONKEY &quot;BOUND $I1 S_NATIONKEY ==&quot;
+    | project &quot;type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY ,
+               type INTEGER ( 19 ) as PS_SUPPKEY PS_SUPPKEY ,
+               type DECIMAL ( 19  2 ) as PS_SUPPLYCOST PS_SUPPLYCOST ,
+               type INTEGER ( 19 ) as N_REGIONKEY N_REGIONKEY &quot;
+    | indexJoin region IxR_REGIONKEY &quot;BOUND $I1 N_REGIONKEY ==&quot;
+    | project &quot;type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY ,
+                           type INTEGER ( 19 ) as PS_SUPPKEY PS_SUPPKEY ,
+                           type DECIMAL ( 19  2 ) as PS_SUPPLYCOST PS_SUPPLYCOST ,
+                           type INTEGER ( 19 ) as N_REGIONKEY N_REGIONKEY ,
+                           type VARCHAR ( 0 ) as R_NAME R_NAME &quot;
+    | filter &quot; type BOOLEAN  R_NAME &apos;EUROPE&apos;  == &quot;
+    | project &quot;type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY ,
+                       type INTEGER ( 19 ) as PS_SUPPKEY PS_SUPPKEY ,
+                       type DECIMAL ( 19  2 ) as PS_SUPPLYCOST PS_SUPPLYCOST&quot;
     | combined 0
-    | next hashcast
+    | next
 
   stage S03 on all partitions :
-    indexJoin Supplier IxS_SUPPKEY expr &quot;bound $I1 L_SUPPKEY ==&quot;
-    | project &quot;type INTEGER ( 19 ) as C_NATIONKEY C_NATIONKEY ,
-               type DECIMAL ( 19  2 ) as L_EXTENDEDPRICE L_EXTENDEDPRICE ,
-               type DECIMAL ( 19  2 ) as L_DISCOUNT L_DISCOUNT ,
-               type INTEGER ( 19 ) as S_NATIONKEY S_NATIONKEY&quot;
-    | filter &quot; type BOOLEAN C_NATIONKEY S_NATIONKEY == &quot;
-    | project &quot;type DECIMAL ( 19  2 ) as L_EXTENDEDPRICE L_EXTENDEDPRICE ,
-               type DECIMAL ( 19  2 ) as L_DISCOUNT L_DISCOUNT ,
-               type INTEGER ( 19 ) as S_NATIONKEY S_NATIONKEY&quot;
-    | hash &quot;type INTEGER ( 19 ) S_NATIONKEY&quot;
+    gbyAgg &quot; GroupBy    type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY
+               aggregates type INTEGER ( 19 ) as P_PARTKEY $K1 ,
+                          type DECIMAL ( 19  2 ) as PS_SUPPLYCOST_MIN ) PS_SUPPLYCOST min &quot;
+    | combined 0
+    | next
+
+  stage S04 on all nodes :
+     gbyAgg &quot; GroupBy     type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY
+               aggregates type INTEGER ( 19 ) as P_PARTKEY $K1 ,
+                          type DECIMAL ( 19  2 ) as PS_SUPPLYCOST_MIN ) PS_SUPPLYCOST_MIN min &quot;
+    | combined 0
+    | next
+
+  stage S05 on origin :
+     gbyAgg &quot; GroupBy    type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY
+               aggregates type INTEGER ( 19 ) as P_PARTKEY $K1 ,
+                          type DECIMAL ( 19  2 ) as PS_SUPPLYCOST_MIN ) PS_SUPPLYCOST_MIN min &quot;
+    | hash &quot;type INTEGER ( 19 ) P_PARTKEY&quot;
     | combined 0
     | next hashcast
 
-  stage S04 on all partitions :
-    indexJoin Nation IxN_NATIONKEY expr &quot;bound $I1 S_NATIONKEY ==&quot;
-    | project &quot;type DECIMAL ( 19  2 ) as L_EXTENDEDPRICE L_EXTENDEDPRICE ,
-               type DECIMAL ( 19  2 ) as L_DISCOUNT L_DISCOUNT ,
+  stage S06 on all partitions  multiple threads 4:
+    indexJoin partsupp IxPS_PARTKEY &quot;BOUND $I1 P_PARTKEY ==&quot;
+    | project &quot;type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY ,
+               type DECIMAL ( 19  2 ) as PS_SUPPLYCOST_MIN PS_SUPPLYCOST_MIN ,
+               type DECIMAL ( 19  2 ) as PS_SUPPLYCOST PS_SUPPLYCOST ,
+               type INTEGER ( 19 ) as PS_SUPPKEY PS_SUPPKEY&quot;
+    | filter &quot;type BOOLEAN PS_SUPPLYCOST_MIN PS_SUPPLYCOST ==&quot;
+    | indexJoin part IxP_PARTKEY &quot;BOUND $I1 P_PARTKEY ==&quot;
+    | project &quot; type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY ,
+                    type INTEGER ( 19 ) as PS_SUPPKEY PS_SUPPKEY ,
+                    type VARCHAR ( 0 ) as P_MFGR P_MFGR&quot;
+    | hash &quot;type INTEGER ( 19 ) PS_SUPPKEY&quot;
+    | combined 0
+    | next hashcast
+
+  stage S07 on all partitions:
+    indexJoin supplier IxS_SUPPKEY &quot;BOUND $I1 PS_SUPPKEY ==&quot;
+    | project &quot; type DECIMAL ( 19  2 ) as S_ACCTBAL S_ACCTBAL ,
+                type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY ,
+                type INTEGER ( 19 ) as PS_SUPPKEY PS_SUPPKEY ,
+                type VARCHAR ( 0 ) as P_MFGR P_MFGR&quot;
+    | sort &quot;type DECIMAL ( 19  2 ) S_ACCTBAL DESC&quot;
+    | limit 100
+    | combined 0
+    | next
+
+  stage S08 on all partitions:
+    indexJoin supplier IxS_SUPPKEY &quot;BOUND $I1 PS_SUPPKEY ==&quot;
+    | project &quot; type INTEGER ( 19 ) as S_NATIONKEY S_NATIONKEY ,
+                  type DECIMAL ( 19  2 ) as S_ACCTBAL S_ACCTBAL ,
+                  type VARCHAR ( 0 ) as S_NAME S_NAME ,
+                  type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY ,
+                  type VARCHAR ( 0 ) as P_MFGR P_MFGR ,
+                  type VARCHAR ( 0 ) as S_ADDRESS S_ADDRESS ,
+                  type VARCHAR ( 0 ) as S_PHONE S_PHONE ,
+                  type VARCHAR ( 0 ) as S_COMMENT S_COMMENT &quot;
+
+    | indexJoin nation IxN_NATIONKEY &quot;BOUND $I1 S_NATIONKEY ==&quot;
+    | project &quot;type DECIMAL ( 19  2 ) as S_ACCTBAL S_ACCTBAL ,
+               type VARCHAR ( 0 ) as S_NAME S_NAME ,
                type VARCHAR ( 0 ) as N_NAME N_NAME ,
-               type INTEGER ( 19 ) as N_REGIONKEY N_REGIONKEY&quot;
-    | hash &quot;type INTEGER ( 19 ) N_REGIONKEY&quot;
-    | combined 0
-    | next hashcast
-
-  stage S05 on all partitions :
-    indexJoin Region IxR_REGIONKEY expr &quot;bound $I1 N_REGIONKEY ==&quot;
-    | project &quot;type DECIMAL ( 19  2 ) as L_EXTENDEDPRICE L_EXTENDEDPRICE ,
-                   type DECIMAL ( 19  2 ) as L_DISCOUNT L_DISCOUNT ,
-                   type VARCHAR ( 0 ) as N_NAME N_NAME ,
-                   type VARCHAR ( 0 ) as R_NAME R_NAME&quot;
-    | filter &quot; type BOOLEAN R_NAME &apos;ASIA&apos;  ==  &quot;
-    | gbyAgg &quot; GroupBy    type VARCHAR ( 0 ) as N_NAME N_NAME
-             aggregates type VARCHAR ( 0 ) as N_NAME $K1 ,
-                        type DECIMAL ( 19  2 ) as REVENUE )  L_EXTENDEDPRICE 1.  L_DISCOUNT -  *  sum  &quot;
+               type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY ,
+               type VARCHAR ( 0 ) as P_MFGR P_MFGR ,
+               type VARCHAR ( 0 ) as S_ADDRESS S_ADDRESS ,
+               type VARCHAR ( 0 ) as S_PHONE S_PHONE ,
+               type VARCHAR ( 0 ) as S_COMMENT S_COMMENT &quot;
+    | sort &quot;type DECIMAL ( 19  2 ) S_ACCTBAL DESC ,
+          type VARCHAR ( 0 ) N_NAME ASC ,
+          type VARCHAR ( 0 ) S_NAME ASC ,
+          type INTEGER ( 19 ) P_PARTKEY ASC&quot;
+    | limit 100
     | combined 0
     | next
 
-  stage S06 on all nodes :
-    gbyAgg &quot; GroupBy    type VARCHAR ( 0 ) as N_NAME N_NAME
-             aggregates type VARCHAR ( 0 ) as N_NAME $K1 ,
-                        type DECIMAL ( 19  2 ) as REVENUE ) REVENUE sum  &quot;
-    | combined 0
-    | next
-
-  stage S07 on origin :
-    gbyAgg &quot; GroupBy    type VARCHAR ( 0 ) as N_NAME N_NAME
-             aggregates type VARCHAR ( 0 ) as N_NAME $K1 ,
-             type DECIMAL ( 19  2 ) as REVENUE ) REVENUE sum  &quot;
-    | combined 0
-    | next
-
-  stage S08 on origin :
-    sort &quot; type DECIMAL ( 19  2 ) REVENUE DESC  &quot;
+  stage S09 on all nodes :
+    sort &quot;type DECIMAL ( 19  2 ) S_ACCTBAL DESC ,
+          type VARCHAR ( 0 ) N_NAME ASC ,
+          type VARCHAR ( 0 ) S_NAME ASC ,
+          type INTEGER ( 19 ) P_PARTKEY ASC&quot;
+    | limit 100
     | combined 0
     | next
 
   stage S09 on origin :
+    sort &quot;type DECIMAL ( 19  2 ) S_ACCTBAL DESC ,
+          type VARCHAR ( 0 ) N_NAME ASC ,
+          type VARCHAR ( 0 ) S_NAME ASC ,
+          type INTEGER ( 19 ) P_PARTKEY ASC&quot;
+    | limit 100
+    | combined 0
+    | next
+
+  stage S10 on origin :
     output
     | sink
     | first

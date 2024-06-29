@@ -44,11 +44,9 @@ begin
     | filter " type BOOLEAN  R_NAME 'EUROPE'  == "
     | project "type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY ,
                        type INTEGER ( 19 ) as PS_SUPPKEY PS_SUPPKEY ,
-                       type DECIMAL ( 19  2 ) as PS_SUPPLYCOST PS_SUPPLYCOST ,
-                       type INTEGER ( 19 ) as N_REGIONKEY N_REGIONKEY "
-    | hash "type INTEGER ( 19 ) P_PARTKEY"
+                       type DECIMAL ( 19  2 ) as PS_SUPPLYCOST PS_SUPPLYCOST"
     | combined 0
-    | next hashcast
+    | next
 
   stage S03 on all partitions :
     gbyAgg " GroupBy    type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY
@@ -82,13 +80,7 @@ begin
     | indexJoin part IxP_PARTKEY "BOUND $I1 P_PARTKEY =="
     | project " type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY ,
                     type INTEGER ( 19 ) as PS_SUPPKEY PS_SUPPKEY ,
-                    type VARCHAR ( 0 ) as P_MFGR P_MFGR ,
-                    type VARCHAR ( 0 ) as P_TYPE P_TYPE ,
-                    type INTEGER ( 19 ) as P_SIZE P_SIZE"
-    | filter " type BOOLEAN  }  P_TYPE '%BRASS'  6 matchTrailing P_SIZE 15 == and"
-    | project " type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY ,
-                type INTEGER ( 19 ) as PS_SUPPKEY PS_SUPPKEY ,
-                type VARCHAR ( 0 ) as P_MFGR P_MFGR"
+                    type VARCHAR ( 0 ) as P_MFGR P_MFGR"
     | hash "type INTEGER ( 19 ) PS_SUPPKEY"
     | combined 0
     | next hashcast
@@ -107,36 +99,17 @@ begin
     | project " type DECIMAL ( 19  2 ) as S_ACCTBAL S_ACCTBAL ,
                 type VARCHAR ( 0 ) as S_NAME S_NAME ,
                 type VARCHAR ( 0 ) as N_NAME N_NAME ,
-                type INTEGER ( 19 ) as N_REGIONKEY N_REGIONKEY ,
                  type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY ,
                  type VARCHAR ( 0 ) as P_MFGR P_MFGR ,
                  type VARCHAR ( 0 ) as S_ADDRESS S_ADDRESS ,
                  type VARCHAR ( 0 ) as S_PHONE S_PHONE ,
                  type VARCHAR ( 0 ) as S_COMMENT S_COMMENT "
-    | indexJoin region IxR_REGIONKEY "BOUND $I1 N_REGIONKEY =="
-    | project " type DECIMAL ( 19  2 ) as S_ACCTBAL S_ACCTBAL ,
-                    type VARCHAR ( 0 ) as S_NAME S_NAME ,
-                    type VARCHAR ( 0 ) as N_NAME N_NAME ,
-                    type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY ,
-                    type VARCHAR ( 0 ) as P_MFGR P_MFGR ,
-                    type VARCHAR ( 0 ) as S_ADDRESS S_ADDRESS ,
-                    type VARCHAR ( 0 ) as S_PHONE S_PHONE ,
-                    type VARCHAR ( 0 ) as S_COMMENT S_COMMENT ,
-                    type VARCHAR ( 0 ) as R_NAME R_NAME"
-    | filter " type BOOLEAN  R_NAME 'EUROPE'  == "
-    | project " type DECIMAL ( 19  2 ) as S_ACCTBAL S_ACCTBAL ,
-                        type VARCHAR ( 0 ) as S_NAME S_NAME ,
-                        type VARCHAR ( 0 ) as N_NAME N_NAME ,
-                        type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY ,
-                        type VARCHAR ( 0 ) as P_MFGR P_MFGR ,
-                        type VARCHAR ( 0 ) as S_ADDRESS S_ADDRESS ,
-                        type VARCHAR ( 0 ) as S_PHONE S_PHONE ,
-                        type VARCHAR ( 0 ) as S_COMMENT S_COMMENT"
     | sort "type DECIMAL ( 19  2 ) S_ACCTBAL DESC ,
             type VARCHAR ( 0 ) N_NAME ASC ,
             type VARCHAR ( 0 ) S_NAME ASC ,
             type INTEGER ( 19 ) P_PARTKEY ASC"
     | limit 100
+
     | combined 0
     | next
 
