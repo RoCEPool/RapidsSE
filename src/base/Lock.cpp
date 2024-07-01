@@ -442,13 +442,13 @@ void Lock::vGrabRead(void)
   
   Timer oTimer;
   oTimer.vStart();
-//  i8 iCount = 0;
+  i8 iCount = 0;
   
   while (! Lock::iLockGrabRead(&m_uLockWord) ) {
 
-//    if (++iCount % 1000 == 0 && iCount <= 10000) {
-//      vTrace("Thread %lld; Task %p; lock count %lld"_Stz, AM::THREAD::iThisThreadNo(), AM::pThisTLSTask(), iCount);
-//    }
+    if (++iCount % 1000 == 0 && iCount <= 10000) {
+      vTrace("Thread %lld; Task %p; lock count %lld"_Stz, AM::THREAD::iThisThreadNo(), AM::pThisTLSTask(), iCount);
+    }
 
     if (! m_pObjectLocked)
       continue;
