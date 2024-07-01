@@ -1,18 +1,12 @@
 /*============================================================================*/
-/* __Q1_MT                                                                    */
+/* __Q1_2N_P_OPT1                                                             */
 /*============================================================================*/
 
 // optimizer generates L_TAX instead of L_QUANTITY
 
-file _lineitem;
-/time load lineitem           "../TPCH/SF_0001/lineitem.tbl" ;
-//settrace verbose true;
-
-
-trackMemory;
-
-/pipeline_def
+/keepCodeFile
 /weaved
+/pipeline_def
 /optimise_passthru
 pipeline Query1
 begin
@@ -22,8 +16,8 @@ begin
     | pulse     once
     | next
 
-  stage S01 on all partitions multiple threads 2:
-    scan      Lineitem
+  stage S01 on all partitions:
+    indexscan Lineitem IxL_SHIPDATE "UBOUND DATE '1998-09-01' <= "
   | project   "   type VARCHAR ( 0 ) as L_RETURNFLAG L_RETURNFLAG
                 , type VARCHAR ( 0 ) as L_LINESTATUS L_LINESTATUS
                 , type DECIMAL as L_QUANTITY L_QUANTITY
@@ -31,8 +25,7 @@ begin
                 , type DECIMAL as L_DISCOUNT L_DISCOUNT
                 , type DECIMAL as L_TAX L_TAX
                 , type DATE $11"
-  | filter    " type BOOLEAN $7 DATE '1998-09-01' <="
-  | gbyAgg    " groupBy
+  |  gbyAgg    " groupBy
                   type VARCHAR ( 0 ) as L_RETURNFLAG L_RETURNFLAG
                 , type VARCHAR ( 0 ) as L_LINESTATUS L_LINESTATUS
                 aggregates
@@ -47,7 +40,7 @@ begin
                 , type DECIMAL as C8_COL8 ) $5 sum
                 , type INTEGER as C9_COL9 ) $5 count
                 , type INTEGER as C10_COL10 ) countAll "
-    | dynamic
+    |  dynamic
     | next
 
   stage S02 on all nodes :
@@ -109,8 +102,7 @@ stage S07 on origin :
 
 end ;
 
-sleep 5;
-MemoryLeaks;
+
 
 /*============================================================================*/
 /* end                                                                        */

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* __Q3                                                                       */
+/* __Q3_COL_OA                                                                */
 /*============================================================================*/
 
 
@@ -26,12 +26,12 @@ begin
     | combined 0
     | next hashcast
 
-  stage S03 on all partitions :
+  stage S02 on all partitions :
     sort "type INTEGER ( 19 ) O_ORDERKEY ASC"
     | combined 0
     | next
 
-  stage S04 on all partitions multiple threads 4:
+  stage S03 on all partitions multiple threads 4:
     indexjoin Lineitem IxL_ORDERKEY "BOUND $I1 O_ORDERKEY =="
     | project "type INTEGER ( 19 ) as L_ORDERKEY L_ORDERKEY ,
                type DECIMAL ( 19 2 ) as L_EXTENDEDPRICE L_EXTENDEDPRICE ,
@@ -48,25 +48,25 @@ begin
     | combined 0
     | next
 
-  stage S05 on all partitions :
+  stage S04 on all partitions :
     sort " type DECIMAL ( 19  2 ) REVENUE DESC , type DATE O_ORDERDATE ASC  "
     | limit 10
     | combined 0
     | next
 
-  stage S06 on all nodes :
+  stage S05 on all nodes :
+    sort " type DECIMAL ( 19  2 ) REVENUE DESC , type DATE O_ORDERDATE ASC  "
+    | limit 10
+    | combined 0
+    | next
+
+  stage S06 on origin :
     sort " type DECIMAL ( 19  2 ) REVENUE DESC , type DATE O_ORDERDATE ASC  "
     | limit 10
     | combined 0
     | next
 
   stage S07 on origin :
-    sort " type DECIMAL ( 19  2 ) REVENUE DESC , type DATE O_ORDERDATE ASC  "
-    | limit 10
-    | combined 0
-    | next
-
-  stage S08 on origin :
     output
     | sink
     | first

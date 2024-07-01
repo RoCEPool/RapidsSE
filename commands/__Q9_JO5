@@ -12,7 +12,7 @@ pipeline Query9
     | next
 
   stage S01 on all partitions :
-    scan rapidsse public part
+    indexscan PART IxP_PARTKEY "LBOUND $I1 0 >= "
     | project "type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY ,
                type VARCHAR ( 55 ) as P_NAME P_NAME"
     | filter "type BOOLEAN }  P_NAME '%green%' 5 matchMiddle"

@@ -1,0 +1,98 @@
+/*============================================================================*/
+/* __Q3_LOC                                                                   */
+/*============================================================================*/
+
+/optimise_passthru
+pipeline Query3
+begin
+
+  stage S00 on origin :
+      start
+    | pulse     once
+    | next
+
+  stage S01 on all partitions:
+    indexscan LINEITEM IxL_SHIPDATE "LBOUND DATE '1995-03-15' > "
+    | project   " type INTEGER ( 19 ) as L_ORDERKEY L_ORDERKEY
+                , type DECIMAL ( 15 2 ) as L_EXTENDEDPRICE L_EXTENDEDPRICE
+                , type DECIMAL ( 15 2 ) as L_DISCOUNT L_DISCOUNT"
+    | globalHash ORDERS GxO_ORDERKEY "type INTEGER ( 19 ) L_ORDERKEY"
+    | combined 0
+    | next hashcast
+
+  stage S02 on all partitions multiple threads 4 :
+    rrfJoin ORDERS "type INTEGER ( 19 ) L_ORDERKEY"
+    | project   " type INTEGER ( 19 ) as L_ORDERKEY L_ORDERKEY
+                    , type DECIMAL ( 15 2 ) as L_EXTENDEDPRICE L_EXTENDEDPRICE
+                    , type DECIMAL ( 15 2 ) as L_DISCOUNT L_DISCOUNT
+                    , type DATE as O_ORDERDATE O_ORDERDATE
+                    , type INTEGER ( 19 ) as O_SHIPPRIORITY O_SHIPPRIORITY
+                    , type INTEGER ( 19 ) as O_CUSTKEY O_CUSTKEY "
+    | filter    " type BOOLEAN O_ORDERDATE DATE '1995-03-15' < "
+    | hash      "type INTEGER O_CUSTKEY"
+    | dynamic
+    | next      hashcast
+
+  stage S03 on all partitions :
+    indexJoin Customer IxC_CUSTKEY " BOUND $I1 O_CUSTKEY == "
+    | filter    " type BOOLEAN C_MKTSEGMENT 'BUILDING' == "
+    | project   " type INTEGER ( 19 ) as L_ORDERKEY L_ORDERKEY
+                , type DECIMAL ( 15 2 ) as L_EXTENDEDPRICE L_EXTENDEDPRICE
+                , type DECIMAL ( 15 2 ) as L_DISCOUNT L_DISCOUNT
+                , type DATE as O_ORDERDATE O_ORDERDATE
+                , type INTEGER ( 19 ) as O_SHIPPRIORITY O_SHIPPRIORITY "
+    | gbyAgg    " groupBy
+                  type INTEGER ( 19 ) as L_ORDERKEY L_ORDERKEY
+                , type DATE as O_ORDERDATE O_ORDERDATE
+                , type INTEGER ( 19 ) as O_SHIPPRIORITY O_SHIPPRIORITY
+                aggregates
+                  type INTEGER ( 19 ) as L_ORDERKEY $K1
+                , type DECIMAL ( 19 2 ) as REVENUE ) L_EXTENDEDPRICE 1.00 L_DISCOUNT - * sum
+                , type DATE as O_ORDERDATE $K2
+                , type INTEGER ( 19 ) as O_SHIPPRIORITY $K3 "
+    | dynamic
+    | next
+
+  stage S04 on all nodes :
+    gbyAgg    " groupBy
+                  type INTEGER ( 19 ) as L_ORDERKEY L_ORDERKEY
+                , type DATE as O_ORDERDATE O_ORDERDATE
+                , type INTEGER ( 19 ) as O_SHIPPRIORITY O_SHIPPRIORITY
+                aggregates
+                  type INTEGER ( 19 ) as L_ORDERKEY $K1
+                , type DECIMAL ( 19 2 ) as REVENUE ) REVENUE sum
+                , type DATE as O_ORDERDATE $K2
+                , type INTEGER ( 19 ) as O_SHIPPRIORITY $K3 "
+    | dynamic
+    | next
+
+  stage S05 on origin :
+    gbyAgg    " groupBy
+                  type INTEGER ( 19 ) as L_ORDERKEY L_ORDERKEY
+                , type DATE as O_ORDERDATE O_ORDERDATE
+                , type INTEGER ( 19 ) as O_SHIPPRIORITY O_SHIPPRIORITY
+                aggregates
+                  type INTEGER ( 19 ) as L_ORDERKEY $K1
+                , type DECIMAL ( 19 2 ) as REVENUE ) REVENUE sum
+                , type DATE as O_ORDERDATE $K2
+                , type INTEGER ( 19 ) as O_SHIPPRIORITY $K3 "
+    | dynamic
+    | next
+
+  stage S06 on origin :
+    sort      " type DECIMAL ( 19 2 ) REVENUE DESC , type DATE O_ORDERDATE ASC "
+    | limit      10
+    | dynamic
+    | next
+
+  stage S07 on origin :
+      output
+    | sink
+    | first
+
+end ;
+
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
