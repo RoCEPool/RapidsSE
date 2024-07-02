@@ -11,7 +11,7 @@ begin
     | pulse once
     | next
 
-  stage S01 on all partitions :
+  stage S01 on all partitions:
     scan Customer
     | project "type INTEGER ( 19 ) as C_CUSTKEY C_CUSTKEY ,
                type VARCHAR as C_MKTSEGMENT C_MKTSEGMENT "
@@ -31,7 +31,7 @@ begin
     | combined 0
     | next
 
-  stage S03 on all partitions multiple threads 4:
+  stage S03 on all partitions multiple threads 4 :
     indexjoin Lineitem IxL_ORDERKEY "BOUND $I1 O_ORDERKEY =="
     | project "type INTEGER ( 19 ) as L_ORDERKEY L_ORDERKEY ,
                type DECIMAL ( 19 2 ) as L_EXTENDEDPRICE L_EXTENDEDPRICE ,

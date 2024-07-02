@@ -17,15 +17,14 @@ begin
                 , type VARCHAR ( 15 ) as O_ORDERPRIORITY O_ORDERPRIORITY
                 , type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY "
     | filter    " type BOOLEAN O_ORDERDATE DATE '1993-07-01' >= O_ORDERDATE DATE '1993-10-01'< and "
-    | project   " type VARCHAR ( 15 ) as O_ORDERPRIORITY $2
-                , type INTEGER ( 19 ) as O_ORDERKEY $3 "
+    | project   " type VARCHAR ( 15 ) as O_ORDERPRIORITY O_ORDERPRIORITY
+                , type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY "
     | hash      "type INTEGER O_ORDERKEY"
     | dynamic
     | next      hashcast
 
   stage S02 on all partitions multiple threads 4:
-    keyExists lineitem IxL_ORDERKEY " BOUND $I1 $2 == " " type BOOLEAN L_COMMITDATE L_RECEIPTDATE < "
-    | project   " type VARCHAR ( 15 ) as O_ORDERPRIORITY O_ORDERPRIORITY "
+    keyExists lineitem IxL_ORDERKEY " BOUND $I1 O_ORDERKEY == " " type BOOLEAN L_COMMITDATE L_RECEIPTDATE < "
     | gbyAgg    " groupBy
                   type VARCHAR as O_ORDERPRIORITY O_ORDERPRIORITY
                 aggregates

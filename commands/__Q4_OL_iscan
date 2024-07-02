@@ -1,0 +1,61 @@
+/*============================================================================*/
+/* __Q4_2N_P_OPT1                                                             */
+/*============================================================================*/
+
+/pipeline_def
+/optimise_passthru
+pipeline Query4
+begin
+
+  stage S00 on origin : 
+      start
+    | pulse     once
+    | next
+
+  stage S01 on all partitions:
+    indexScan ORDERS IxO_ORDERDATE "LBOUND $I1 DATE '1993-07-01' >= UBOUND DATE '1993-10-01' <"
+    | project   " type VARCHAR ( 15 ) as O_ORDERPRIORITY O_ORDERPRIORITY
+                , type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY "
+    | hash      "type INTEGER O_ORDERKEY"
+    | dynamic
+    | next      hashcast
+
+  stage S02 on all partitions multiple threads 4:
+    keyExists lineitem IxL_ORDERKEY " BOUND $I1 O_ORDERKEY == " " type BOOLEAN L_COMMITDATE L_RECEIPTDATE < "
+    | gbyAgg    " groupBy
+                  type VARCHAR as O_ORDERPRIORITY O_ORDERPRIORITY
+                aggregates
+                  type VARCHAR as O_ORDERPRIORITY $K1
+                , type INTEGER ( 19 ) as ORDER_COUNT ) countAll "
+    | dynamic
+    | next      
+
+  stage S03 on all nodes :
+    gbyAgg    " groupBy
+                  type VARCHAR as O_ORDERPRIORITY O_ORDERPRIORITY
+                aggregates
+                  type VARCHAR as O_ORDERPRIORITY $K1
+                , type INTEGER ( 19 ) as ORDER_COUNT ) ORDER_COUNT sum "
+    | dynamic
+    | next      
+
+  stage S04 on origin :
+    gbyAgg    " groupBy
+                  type VARCHAR $1
+                aggregates
+                  type VARCHAR as C0_COL0 $K1
+                , type INTEGER ( 19 ) as ORDER_COUNT ) ORDER_COUNT sum "
+    | dynamic
+    | next      
+
+  stage S05 on origin :
+      output
+    | sink
+    | first
+
+end ;
+
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
