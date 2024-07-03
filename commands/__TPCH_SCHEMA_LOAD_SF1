@@ -97,7 +97,7 @@ create        index IxL_RECEIPTDATE on Lineitem (L_RECEIPTDATE);
 
 // Nation (replicated)
 create        index IxN_NATIONKEY   on Nation   (N_NATIONKEY);
-//create      index IxN_REGIONKEY   on Nation   (N_REGIONKEY);
+create      index IxN_REGIONKEY   on Nation   (N_REGIONKEY);
 
 // Orders (partitioned on c_custkey)
 create        index IxO_CUSTKEY     on Orders   (O_CUSTKEY);
