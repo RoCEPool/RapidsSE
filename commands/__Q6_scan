@@ -13,24 +13,24 @@ begin
 
   stage S01 on all partitions  multiple threads 4:
       scan      lineitem
-      | project   "type DECIMAL ( 15 2 ) as L_QUANTITY $5
-                 , type DECIMAL ( 15 2 ) as L_EXTENDEDPRICE $6
-                 , type DECIMAL ( 15 2 ) as L_DISCOUNT $7
-                 , type DATE as L_SHIPDATE $11"
+      | project   "type DECIMAL ( 15 2 ) as L_QUANTITY L_QUANTITY
+                 , type DECIMAL ( 15 2 ) as L_EXTENDEDPRICE L_EXTENDEDPRICE
+                 , type DECIMAL ( 15 2 ) as L_DISCOUNT L_DISCOUNT
+                 , type DATE as L_SHIPDATE L_SHIPDATE"
       | filter    " type BOOLEAN } L_SHIPDATE DATE '1994-01-01' >= L_SHIPDATE DATE '1995-01-01' < and 0.05 0.07 L_DISCOUNT between and L_QUANTITY 24.00 < and "
       | project   " type DECIMAL ( 15 2 ) as L_EXTENDEDPRICE L_EXTENDEDPRICE
                   , type DECIMAL ( 15 2 ) as L_DISCOUNT L_DISCOUNT "
-      | aggreg    "   type DECIMAL ( 19 2 ) as C0_COL0 ) $1 $2 * sum "
+      | aggreg    "   type DECIMAL ( 19 2 ) as REVENUE ) L_EXTENDEDPRICE L_DISCOUNT * sum "
       | dynamic
       | next
 
   stage S02 on all nodes :
-    aggreg    "   type DECIMAL ( 19 2 ) as C0_COL0 ) $1 sum "
+    aggreg    "   type DECIMAL ( 19 2 ) as REVENUE ) REVENUE sum "
     | dynamic
     | next      
 
   stage S03 on origin :
-    aggreg    "   type DECIMAL ( 19 2 ) as C0_revenue ) $1 sum "
+    aggreg    "   type DECIMAL ( 19 2 ) as REVENUE ) REVENUE sum "
     | dynamic
     | next      
 
