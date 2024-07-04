@@ -5,6 +5,8 @@
 
 namespace BASE
 {
+  class Bytes;
+
   template <i8 AREA>
   class Bytes_t : public Object
   {
@@ -18,13 +20,19 @@ namespace BASE
     
   public:    
     Bytes_t(void);
+    Bytes_t(const Bytes_t& oOther);
    ~Bytes_t(void) noexcept(false);
-  
+
+    // auto conversion
+    operator Bytes*(void);
+
     i8   iAppend(Stz* szStr);
+    i8   iAppend(byte* pySrc, i8 nLen);
     i8   nArea(void);
     Stz* szArea(void);
     Stz* szBoundary(void);
     bool bContains(Stz* szAddr);
+    i8   iGet(i8 i_Area);
     Stz* szGet(i8 i_Area);
     void vGive(i8 nBytes);
     bool bIsEmpty(void);
@@ -75,6 +83,24 @@ Bytes_t<AREA>::Bytes_t(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Copy constructor                                                           */
+/*----------------------------------------------------------------------------*/
+template <i8 AREA>
+Bytes_t<AREA>::Bytes_t(const Bytes_t& oOther)
+: Object(CN_BYTES_T)
+{
+  _precondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
+
+  m_i_Latter = oOther.m_i_Latter;
+  m_nArea = AREA;
+  MemLib::vCopy(m_yaArea, oOther.m_yaArea, AREA, CN_BYTES_T);
+
+  _checkInitialisedSize_(AREA);
+
+  _postcondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 template <i8 AREA>
@@ -88,6 +114,17 @@ Bytes_t<AREA>::~Bytes_t(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* auto conversion operator : as Bytes*                                       */
+/*----------------------------------------------------------------------------*/
+template <i8 AREA>
+Bytes_t<AREA>::operator Bytes*(void)
+{
+  _precondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
+
+  return (Bytes*)this;
+}
 
 /*----------------------------------------------------------------------------*/
 /* append given string                                                        */
@@ -107,6 +144,26 @@ i8 Bytes_t<AREA>::iAppend(Stz* szStr)
   _postcondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
   
   return i_String;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* append some raw bytes                                                      */
+/*----------------------------------------------------------------------------*/
+template <i8 AREA>
+i8 Bytes_t<AREA>::iAppend(byte* pySrc, i8 nLen)
+{
+  _precondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
+
+  i8 i_Pos = m_i_Latter;
+  byte* ayByte = pySrc;
+
+  for (i8 i=0; i<nLen; i++)
+    m_yaArea[m_i_Latter++] = * ayByte++;
+
+  _postcondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
+
+  return i_Pos;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -162,15 +219,28 @@ bool Bytes_t<AREA>::bContains(Stz* szAddr)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get integer at given offset in m_yaArea                                    */
+/*----------------------------------------------------------------------------*/
+template <i8 AREA>
+i8 Bytes_t<AREA>::iGet(i8 i_Area)
+{
+  _precondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
+
+  i8* piVal = reinterpret_cast<i8*>(&m_yaArea[i_Area]);
+
+  return *piVal;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get address at given offset in m_yaArea                                    */
 /*----------------------------------------------------------------------------*/
 template <i8 AREA>
 Stz* Bytes_t<AREA>::szGet(i8 i_Area)
 {
   _precondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
-  
+
   char* azStr = (char*) &m_yaArea[i_Area];
-  
+
   return (Stz*)azStr;
 }
 

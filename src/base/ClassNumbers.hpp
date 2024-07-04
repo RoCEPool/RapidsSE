@@ -392,6 +392,7 @@ enum eCN : u2 // Class Number
   /* */ CN_TABLEDEF,
   /* */ CN_TABLEPTN,
   /* */ CN_TABLEPTNVEC,
+  /* */ CN_TAGARRAY,
   /* */ CN_TAGSET,
   /* */ CN_TASK,
   /* */ CN_TASKLIST,

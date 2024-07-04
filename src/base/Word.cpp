@@ -460,7 +460,7 @@ bool Word::bHasCell(CodeCell* aCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
 
-  if (aCell >= aFirstCell() && aCell <= aLastCell())
+  if (m_pCodeBlock && aCell >= aFirstCell() && aCell <= aLastCell())
     return true;
   
   return false;

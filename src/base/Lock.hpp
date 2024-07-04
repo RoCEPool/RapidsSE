@@ -74,6 +74,51 @@ namespace BASE
   };
   
   Lock* _pLock(void* aAddr);
+
+
+
+  /*============================================================================*/
+  /* Helper class to provide read locking with RAII                             */
+  /*============================================================================*/
+  class ReadLocker {
+
+  private:
+    Lock* m_pLock;
+
+  public:
+    ReadLocker(Lock* pLock)
+    {
+      m_pLock = pLock;
+      m_pLock->vGrabRead();
+    }
+
+    ~ReadLocker()
+    {
+      m_pLock->vDropRead();
+    }
+  };
+
+
+  /*============================================================================*/
+  /* Helper class to provide write locking with RAII                            */
+  /*============================================================================*/
+  class WriteLocker {
+
+  private:
+    Lock* m_pLock;
+
+  public:
+    WriteLocker(Lock* pLock)
+    {
+      m_pLock = pLock;
+      m_pLock->vGrabWrite();
+    }
+
+    ~WriteLocker()
+    {
+      m_pLock->vDropWrite();
+    }
+  };
   
 }
 

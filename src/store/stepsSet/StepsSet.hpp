@@ -862,11 +862,14 @@ void vJobIdLastJobIdFetch(void);
 
   void vJobParentIdFetch(void);
   void vJobParentOriginNodeIdFetch(void);
+  void vJobParentResponseOpFetch(void);
+  void vJobParentResponseOpIsNotNull(void);
   void vJobIdPipeToOp0(void);
   void vJobPreExecuteDist(void);
   void vJobPreExecuteLocal(void);
   void vJobPhaseFetch(void);
   void vJobPhaseStore(void);
+  void vJobPipeToParentResponseOp(void);
   void vJobPrintObjectTracker(void);
   void vJobProgress(void);
   void vJobProgressReset(void);
@@ -1143,6 +1146,7 @@ void vJobIdLastJobIdFetch(void);
   void vMarkerIsNull(void);
   void vMarkerNewCancelling(void);
   void vMarkerNewCancelledMarker(void);
+  void vMarkerNewChildExitMarker(void);
   void vMarkerNewCsvBuffer(void);
   void vMarkerNewCleaningMarker(void);
   void vMarkerNewCleanedupMarker(void);
@@ -1441,6 +1445,7 @@ void vJobIdLastJobIdFetch(void);
   void vPipeSpecDelete(void);
   void vPipeSpecDump(void);
   void vPipeSpecGet(void);
+  void vPipeSpecGetAndClear(void);
   void vPipeSpecOptimisable(void);
   void vPipeSpecSet(void);
   void vPipeSpecIsSqlCompiler(void);
@@ -1752,6 +1757,8 @@ void vJobIdLastJobIdFetch(void);
 
   // respondToOp
   void vResponseOpGet(void);
+  void vResponseOpIsNotNull(void);
+  void vResponseOpIsNull(void);
   void vResponseOpPipeout(void);
 
   // rowCounts

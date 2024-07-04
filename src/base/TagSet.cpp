@@ -3,6 +3,20 @@
 /*============================================================================*/
 
 #include "BASE.h"
+#include "Bytes.hpp"
+#include "PackedStringBuf.hpp"
+
+static const Stz* C_BEGIN_TAGSET    = "Begin_TagSet"_Stz;
+static const Stz* C_END_TAGSET      = "End_TagSet"_Stz;
+static const Stz* C_BEGIN_TAGARRAY  = "Begin_TagArray"_Stz;
+static const Stz* C_END_TAGARRAY    = "End_TagArray"_Stz;
+
+
+static const i8 C_SIZE_BEGIN_TAGSET  = C_BEGIN_TAGSET->nLength() + 1;
+static const i8 C_SIZE_END_TAGSET    = C_END_TAGSET->nLength() + 1;
+static const i8 C_SIZE_BEGIN_TAGARRAY= C_BEGIN_TAGARRAY->nLength() + 1;
+static const i8 C_SIZE_END_TAGARRAY  = C_END_TAGARRAY->nLength() + 1;
+
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
@@ -41,19 +55,61 @@ void TagSet::operator delete(void* aAddr)
 /*----------------------------------------------------------------------------*/
 TagSet::TagSet(void)
 : Object(CN_TAGSET)
+, m_pStrings(PackedStringBuf::pCreate(PackedStringBuf::TINY))
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
- 
-  m_nItems = 0;
-  
-  for (i8 i_Tag = 0; i_Tag < C_TAG_SET; i_Tag++) {
-    m_xaTag[i_Tag].m_i_Name  = C_UNKNOWN;
-    m_xaTag[i_Tag].m_i_Value = C_UNKNOWN;
-    m_xaTag[i_Tag].m_eToken  = TN_NONE;
-  }
   
   _checkInitialised_(CN_TAGSET);
   
+  _postcondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+TagSet::TagSet(PackedStringBuf::eSIZE eFirstStrBufSize)
+: Object(CN_TAGSET)
+, m_pStrings(PackedStringBuf::pCreate(eFirstStrBufSize))
+{
+  _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
+
+  _checkInitialised_(CN_TAGSET);
+
+  _postcondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Copy constructor                                                           */
+/*----------------------------------------------------------------------------*/
+TagSet::TagSet(const TagSet& oOther)
+: Object(CN_TAGSET)
+, m_oTagArray(oOther.m_oTagArray)
+{
+  _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
+
+  // m_oTagArray already copied above, but we need to correct
+  // all string pointers used in it to use the new packed string buffer
+
+  m_pStrings = PackedStringBuf::pCreate(oOther.m_pStrings->eFirstBufSize());
+
+  TagArrayIter xIter = m_oTagArray.xIterator();
+  Tag* pTag;
+
+  while ((pTag = xIter.pNext()) != nullptr) {
+    // Copy the name into the new packed string buffer and set the new pointer
+    // back into the tag.
+    ASSERT(pTag->m_szName);
+    pTag->m_szName = m_pStrings->pAdd(pTag->m_szName);
+
+    // Copy the value, if necessary
+    if (pTag->m_eToken == TN_STRING) {
+      ASSERT(pTag->m_szValue);
+      pTag->m_szValue = m_pStrings->pAdd(pTag->m_szValue);
+    }
+  }
+
+  _checkInitialised_(CN_TAGSET);
+
   _postcondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
 }
 
@@ -63,6 +119,10 @@ TagSet::TagSet(void)
 TagSet::~TagSet(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
+
+  RASSERT(!m_oLock.bIsLocked());
+
+  PackedStringBuf::vDestroy(m_pStrings);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -82,6 +142,149 @@ void TagSet::vRepair(Object* pObject)
 }
 
 /*----------------------------------------------------------------------------*/
+/* serialise a tagset to a byte buffer                                        */
+/*----------------------------------------------------------------------------*/
+bool TagSet::bSerialise(TagSet* pTagSet, Bytes* pBuf)
+{
+  _static_
+
+  ASSERT(pBuf);
+  ASSERT(pBuf->bIsEmpty());
+  ASSERT(pBuf->i_Latter() == 0);
+
+  ReadLocker oReadLocker(&pTagSet->m_oLock);
+
+  // (1) The overall size of the serialised data will be filled in at the end
+  i8* piSerialisedSize = reinterpret_cast<i8*>(pBuf->szLatter());
+  pBuf->vTake(sizeof(i8));
+
+  // (2)
+  pBuf->iAppend(C_BEGIN_TAGSET);
+
+  // (3) Write the array of tags
+  pBuf->iAppend(C_BEGIN_TAGARRAY);
+
+    // (4) First write the number of Tag entries in the array
+    pBuf->iAppend(pTagSet->m_oTagArray.nItems());
+
+    // (5) Now write each tag sequentially.
+
+    TagArrayIter xIter = pTagSet->m_oTagArray.xIterator();
+    Tag* pTag;
+    while ((pTag = xIter.pNext()) != nullptr) {
+
+      // Important note:
+      //   The tag contains pointers to names and string values, but these are
+      //   obviously not portable. So we will transform them to offsets in
+      //   the string buffer.
+      Tag xTagCopy = *pTag;
+      i8 iOffset = pTagSet->m_pStrings->iOffsetOf(pTag->m_szName);
+      xTagCopy.m_szName = (Stz*) iOffset;
+
+      if (pTag->m_eToken == TN_STRING && pTag->m_szValue != nullptr) {
+        iOffset = pTagSet->m_pStrings->iOffsetOf(pTag->m_szValue);
+        xTagCopy.m_szValue = (Stz*) iOffset;
+      }
+
+      // Copy the updated tag
+      pBuf->iAppend(reinterpret_cast<byte*>(&xTagCopy), sizeof(Tag));
+    }
+
+  // (6) Add a human-readable footer indicating the end of the array of tags
+  pBuf->iAppend(C_END_TAGARRAY);
+
+  // (7) Now serialise the associated strings
+  PackedStringBuf::bSerialise(pTagSet->m_pStrings, pBuf);
+
+  // (8)
+  pBuf->iAppend(C_END_TAGSET);
+
+  // Now we can write the overall serialised size
+  *piSerialisedSize = pBuf->i_Latter();
+
+  RASSERT(pBuf->iRemaining() >= 0);
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* deserialise a tagset from a byte buffer                                    */
+/*----------------------------------------------------------------------------*/
+TagSet* TagSet::pDeserialise(Bytes* pBuf)
+{
+  _static_
+
+  ASSERT(pBuf);
+  ASSERT(pBuf->i_Latter() > 0);
+
+  TagSet* pTagSet = new TagSet();
+  i8 iPos = 0;
+
+  // (1) Read the overall size of the serialised data
+  i8 iSerialisedSize = pBuf->iGet(iPos);
+  UNUSED(iSerialisedSize);
+  iPos += sizeof(i8);
+  ASSERT(iSerialisedSize > 0);
+
+  // (2) Read C_BEGIN_TAGSET
+  ASSERT(pBuf->szGet(iPos)->bEqual(C_BEGIN_TAGSET));
+  iPos += C_SIZE_BEGIN_TAGSET;
+
+    // (3) Read C_BEGIN_TAGARRAY
+    ASSERT(pBuf->szGet(iPos)->bEqual(C_BEGIN_TAGARRAY));
+    iPos += C_SIZE_BEGIN_TAGARRAY;
+
+      // (4) Read the number of tags
+      i8 nTags = pBuf->iGet(iPos);
+      iPos += sizeof(i8);
+      ASSERT(nTags >= 0);
+
+      // (5) Read each tag and add it to the array
+      for (i8 i=0; i<nTags; i++) {
+        Tag* pTag = reinterpret_cast<Tag*>(pBuf->szGet(iPos));
+        pTagSet->m_oTagArray.vAdd(*pTag);
+        iPos += sizeof(Tag);
+      }
+
+    // (6) Read C_END_TAGARRAY
+    ASSERT(pBuf->szGet(iPos)->bEqual(C_END_TAGARRAY));
+    iPos += C_SIZE_END_TAGARRAY;
+
+    // (7) Deserialise the string buffer
+    // TagSet has already created a default one, but it may not be the right size.
+    // Let the deserialisation create one.
+    PackedStringBuf::vDestroy(pTagSet->m_pStrings);
+    pTagSet->m_pStrings = PackedStringBuf::pDeserialise(pBuf, iPos);
+
+
+  // (8) Read C_END_TAGSET
+  ASSERT(pBuf->szGet(iPos)->bEqual(C_END_TAGSET));
+  iPos += C_SIZE_END_TAGSET;
+
+
+  // Finally, we need to correct the tag names and string values.
+  // When they were serialised the string pointers were converted to offsets
+  // from the beginning. We now need to reverse this process and convert the
+  // offsets back to string pointers.
+
+  TagArrayIter xIter = pTagSet->m_oTagArray.xIterator();
+  Tag* pTag;
+
+  while ((pTag = xIter.pNext()) != nullptr) {
+    Stz* szName = pTagSet->m_pStrings->szAt((i8) pTag->m_szName);
+    pTag->m_szName = szName;
+
+    if (pTag->m_eToken == TN_STRING && pTag->m_szValue != nullptr) {
+      Stz* szValue = pTagSet->m_pStrings->szAt((i8) pTag->m_szValue);
+      pTag->m_szValue = szValue;
+    }
+  }
+
+  return pTagSet;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -92,20 +295,13 @@ void TagSet::vAppend(Stz* szName)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
 
-  i8 i_Tag = m_nItems;
-
-  m_xaTag[i_Tag].m_i_Name  = m_xyStrings.iAppend(szName);
-  m_xaTag[i_Tag].m_i_Value = C_UNKNOWN;
-  m_xaTag[i_Tag].m_eToken  = TN_STRING;
-
-  m_nItems++;
-
-//  if (szName->bSame("<param0>"_Stz))
-//    vDumpSet(true);
-      
-  if (! bHasName(szName)) {
-    RASSERT(0);
+  {
+    WriteLocker oWriteLocker(&m_oLock);
+    Tag xTag{m_pStrings->pAdd(szName), (Stz *) nullptr, TN_STRING};
+    m_oTagArray.vAdd(xTag);
   }
+
+  ASSERT(bHasName(szName));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -115,20 +311,13 @@ void TagSet::vAppend(Stz* szName, i8 iValue)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
 
-  i8 i_Tag = m_nItems;
-
-  m_xaTag[i_Tag].m_i_Name  = m_xyStrings.iAppend(szName);
-  m_xaTag[i_Tag].m_i_Value = iValue;
-  m_xaTag[i_Tag].m_eToken  = TN_INTEGER;
-
-  m_nItems++;
-
-//  if (szName->bSame("<param0>"_Stz))
-//    vDumpSet(true);
-      
-  if (! bHasName(szName)) {
-    RASSERT(0);
+  {
+    WriteLocker oWriteLocker(&m_oLock);
+    Tag xTag{m_pStrings->pAdd(szName), iValue, TN_INTEGER};
+    m_oTagArray.vAdd(xTag);
   }
+
+  ASSERT(bHasName(szName));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -138,20 +327,13 @@ void TagSet::vAppend(Stz* szName, Object* pObject)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
 
-  i8 i_Tag = m_nItems;
-
-  m_xaTag[i_Tag].m_i_Name  = m_xyStrings.iAppend(szName);
-  m_xaTag[i_Tag].m_i_Value = (i8)pObject;
-  m_xaTag[i_Tag].m_eToken  = TN_OBJECT;
-
-  m_nItems++;
-
-//  if (szName->bSame("<param0>"_Stz))
-//    vDumpSet(true);
-      
-  if (! bHasName(szName)) {
-    RASSERT(0);
+  {
+    WriteLocker oWriteLocker(&m_oLock);
+    Tag xTag{m_pStrings->pAdd(szName), (i8) pObject, TN_OBJECT};
+    m_oTagArray.vAdd(xTag);
   }
+
+  ASSERT(bHasName(szName));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -161,20 +343,13 @@ void TagSet::vAppend(Stz* szName, Stz* szValue)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
 
-  i8 i_Tag = m_nItems;
-
-  m_xaTag[i_Tag].m_i_Name  = m_xyStrings.iAppend(szName);
-  m_xaTag[i_Tag].m_i_Value = m_xyStrings.iAppend(szValue);
-  m_xaTag[i_Tag].m_eToken  = TN_STRING;
-
-  m_nItems++;
-
-//  if (szName->bSame("<param0>"_Stz))
-//    vDumpSet(true);
-      
-  if (! bHasName(szName)) {
-    RASSERT(0);
+  {
+    WriteLocker oWriteLocker(&m_oLock);
+    Tag xTag{m_pStrings->pAdd(szName), m_pStrings->pAdd(szValue), TN_STRING};
+    m_oTagArray.vAdd(xTag);
   }
+
+  ASSERT(bHasName(szName));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -183,20 +358,26 @@ void TagSet::vAppend(Stz* szName, Stz* szValue)
 void TagSet::vConcat(String* pCmd)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
-  
-  for (i8 i_Tag = 0; i_Tag < m_nItems; i_Tag++) {
-    
+
+  ReadLocker oReadLocker(&m_oLock);
+
+  TagArrayIter xIter = m_oTagArray.xIterator();
+  Tag* pTag;
+
+  while ((pTag = xIter.pNext()) != nullptr) {
+
     pCmd->vConcat(" "_Stz);
     
-    if (TN_INTEGER == m_xaTag[i_Tag].m_eToken) {
+    if (TN_INTEGER == pTag->m_eToken) {
 
       pCmd->vCatSprint("%lld "_Stz,
-             m_xaTag[i_Tag].m_i_Value
+                       pTag->m_iValue
              );
       continue;
     }
+    ASSERT(TN_STRING == pTag->m_eToken);
     pCmd->vConcat("\""_Stz);
-    pCmd->vConcat(m_xyStrings.szGet(m_xaTag[i_Tag].m_i_Value));
+    pCmd->vConcat(pTag->m_szValue);
     pCmd->vConcat("\""_Stz);
   }
 }
@@ -207,18 +388,26 @@ void TagSet::vConcat(String* pCmd)
 void TagSet::vConcat(String* pCmd, i8 i_Tag)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
+
+  ReadLocker oReadLocker(&m_oLock);
+
+  ASSERT(i_Tag >= 0);
+  ASSERT(i_Tag < m_oTagArray.nItems());
+
+  Tag* pTag = m_oTagArray.pGet(i_Tag);
   
   pCmd->vConcat(" "_Stz);
   
-  if (TN_INTEGER == m_xaTag[i_Tag].m_eToken) {
+  if (TN_INTEGER == pTag->m_eToken) {
     
     pCmd->vCatSprint("%lld "_Stz,
-                      m_xaTag[i_Tag].m_i_Value
+                     pTag->m_iValue
                       );
   }
   else {
+    ASSERT(TN_STRING == pTag->m_eToken);
     pCmd->vConcat("\""_Stz);
-    pCmd->vConcat(m_xyStrings.szGet(m_xaTag[i_Tag].m_i_Value));
+    pCmd->vConcat(pTag->m_szValue);
     pCmd->vConcat("\""_Stz);
   }
 }
@@ -230,7 +419,7 @@ void TagSet::vContentDump(void)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
 
-  if (m_nItems) {
+  if (m_oTagArray.nItems()) {
     vTrace("\n"_Stz);
     vTrace("Tag Set\n"_Stz);
     vTrace("-------\n"_Stz);
@@ -245,62 +434,66 @@ void TagSet::vContentDump(void)
 void TagSet::vCopy(TagSet* pScrTagSet)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
-  
-  for (i8 i_Tag = 0; i_Tag < pScrTagSet->nItems(); i_Tag++) {
+
+  WriteLocker oWriteLockerThis(&m_oLock);
+  ReadLocker  oReadLockerArg(&pScrTagSet->m_oLock);
+
+  for (i8 i_Tag = 0; i_Tag < pScrTagSet->nItemsNL(); i_Tag++) {
     
     Stz* szName = pScrTagSet->szName(i_Tag);
     
-    if (bHasName(szName)) {
+    if (bHasNameNL(szName)) {
       if (TN_STRING == pScrTagSet->eToken(i_Tag)) {
-        vReplace(szName,pScrTagSet->szValue(i_Tag));
+        vReplaceNL(szName,pScrTagSet->szValue(i_Tag));
       }
       else
       if (TN_OBJECT == pScrTagSet->eToken(i_Tag)) {
-        vReplace(szName,pScrTagSet->pValue(i_Tag));
+        vReplaceNL(szName,pScrTagSet->pValue(i_Tag));
       }
       else {
-        vReplace(szName,pScrTagSet->iValue(i_Tag));
+        vReplaceNL(szName,pScrTagSet->iValue(i_Tag));
       }
     }
     else {
       if (TN_STRING == pScrTagSet->eToken(i_Tag)) {
-        vInsert(szName,pScrTagSet->szValue(i_Tag));
+        vInsertNL(szName,pScrTagSet->szValue(i_Tag));
       }
       else
       if (TN_OBJECT == pScrTagSet->eToken(i_Tag)) {
-        vInsert(szName,pScrTagSet->pValue(i_Tag));
+        vInsertNL(szName,pScrTagSet->pValue(i_Tag));
       }
       else {
-        vInsert(szName,pScrTagSet->iValue(i_Tag));
+        vInsertNL(szName,pScrTagSet->iValue(i_Tag));
       }
     }
   }
 }
 
 /*----------------------------------------------------------------------------*/
-/* copy source ename-set into this ename-set and replace an ename pair        */
+/* delete a tag matching a given name                                         */
 /*----------------------------------------------------------------------------*/
 void TagSet::vDelete(Stz* szName)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
-  
-  TagSet xTagSet;
-    
-  xTagSet.vCopy(this);
-  vReset();
-  
-  for (i8 i_Tag = 0; i_Tag < xTagSet.nItems(); i_Tag++) {
-    
-    if (xTagSet.szName(i_Tag)->bSame(szName))
-      continue;
-    
-    if (TN_STRING == xTagSet.eToken(i_Tag))
-      vInsert(xTagSet.szName(i_Tag),xTagSet.szValue(i_Tag));
-    else
-    if (TN_OBJECT == xTagSet.eToken(i_Tag))
-      vInsert(xTagSet.szName(i_Tag),xTagSet.pValue(i_Tag));
-    else
-      vInsert(xTagSet.szName(i_Tag),xTagSet.iValue(i_Tag));
+
+  WriteLocker oWriteLocker(&m_oLock);
+
+  TagArrayIter xIter = m_oTagArray.xIterator();
+  Tag* pTag;
+
+  while ((pTag = xIter.pNext()) != nullptr) {
+    if (pTag->m_szName->bSame(szName)) {
+      // Remove the strings
+      m_pStrings->vRemove(pTag->m_szName);
+      if (pTag->m_eToken == TN_STRING && pTag->m_szValue != nullptr) {
+        m_pStrings->vRemove(pTag->m_szValue);
+      }
+
+      // Remove the token
+      i8 iIdx = xIter.iArrayIndex();
+      xIter.pPrevious();
+      m_oTagArray.vRemove(iIdx);
+    }
   }
 }
 
@@ -315,35 +508,41 @@ void TagSet::vDumpSet(bool bCarriageReturns)
   if (bCarriageReturns)
     vTrace("\n"_Stz);
 
-  for (i8 i_Tag = 0; i_Tag < m_nItems; i_Tag++) {
-    
-    if ((! bCarriageReturns) && i_Tag)
+  ReadLocker oReadLocker(&m_oLock);
+
+  TagArrayIter xIter = m_oTagArray.xIterator();
+  Tag* pTag;
+
+  while ((pTag = xIter.pNext()) != nullptr) {
+
+    if ((! bCarriageReturns) && xIter.iArrayIndex())
       vTrace(", "_Stz);
     
-    if (bCarriageReturns && i_Tag)
+    if (bCarriageReturns && xIter.iArrayIndex())
       vTrace("\n"_Stz);
     
     if (bCarriageReturns)
       vTrace("  [%02lld] %7s : "_Stz
-             ,i_Tag
-             ,aTN[m_xaTag[i_Tag].m_eToken]);
+             ,xIter.iArrayIndex()
+             ,aTN[pTag->m_eToken]);
 
-    if (TN_INTEGER == m_xaTag[i_Tag].m_eToken) {
+    if (TN_INTEGER == pTag->m_eToken) {
       vTrace(bCarriageReturns
                ? "%16s = %lld"_Stz
                : "%s=%lld"_Stz
              
-             ,m_xyStrings.szGet(m_xaTag[i_Tag].m_i_Name)
-             ,m_xaTag[i_Tag].m_i_Value
+             ,pTag->m_szName
+             ,pTag->m_iValue
               );
     }
     else {
+      ASSERT(TN_STRING == pTag->m_eToken);
       vTrace(bCarriageReturns
                ? "%16s = %s"_Stz
                : "%s=%s"_Stz
 
-             ,m_xyStrings.szGet(m_xaTag[i_Tag].m_i_Name)
-             ,m_xyStrings.szGet(m_xaTag[i_Tag].m_i_Value)
+             ,pTag->m_szName
+             ,pTag->m_szValue
               );
     }
   }
@@ -352,12 +551,12 @@ void TagSet::vDumpSet(bool bCarriageReturns)
   if (bCarriageReturns)
     vTrace("\n"_Stz);
   
-  vTrace("BYTES=%lld/%lld"_Stz,m_xyStrings.i_Latter(),m_xyStrings.nSize());
+  vTrace("BYTES=%lld"_Stz,m_pStrings->iTotalArea());
 
   if (bCarriageReturns)
     vTrace("\n"_Stz);
 
-  vTrace("}\n"_Stz,m_xyStrings.i_Latter(),m_xyStrings.nSize());
+  vTrace("}\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -366,19 +565,24 @@ void TagSet::vDumpSet(bool bCarriageReturns)
 void TagSet::vDumpSetDetailed(void)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
-  
-  for (i8 i_Tag = 0; i_Tag < m_nItems; i_Tag++) {
-    vTrace("  [%lld] %s _%lld, %s _%lld (%s)\n"_Stz,
-           
-           i_Tag,
-           
-           m_xyStrings.szGet(m_xaTag[i_Tag].m_i_Name),
-           m_xaTag[i_Tag].m_i_Name,
-           
-           m_xyStrings.szGet(m_xaTag[i_Tag].m_i_Value),
-           m_xaTag[i_Tag].m_i_Value,
-           
-           aTN[m_xaTag[i_Tag].m_eToken],
+
+  ReadLocker oReadLocker(&m_oLock);
+
+  TagArrayIter xIter = m_oTagArray.xIterator();
+  Tag* pTag;
+  i8 i = -1;
+
+  while ((pTag = xIter.pNext()) != nullptr) {
+    vTrace("  [%lld] %s _%lld, %s (%s)\n"_Stz,
+
+           ++i,
+
+           pTag->m_szName,
+           xIter.iArrayIndex(),
+
+           pTag->m_szValue,
+
+           aTN[pTag->m_eToken],
            
            C_VARGS_END
            );
@@ -386,18 +590,76 @@ void TagSet::vDumpSetDetailed(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* find name                                                                  */
+/* duplicate the TagSet                                                       */
+/*----------------------------------------------------------------------------*/
+TagSet* TagSet::pDuplicate(void)
+{
+  ReadLocker oReadLocker(&m_oLock);
+
+  TagSet* pNewTagSet = new TagSet(*this);
+  return pNewTagSet;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find tag by name                                                           */
 /*----------------------------------------------------------------------------*/
 i8 TagSet::i_Find(Stz *szName)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
-  
-  for (i8 i_Tag = 0; i_Tag < m_nItems; i_Tag++) {
-    if (m_xyStrings.szGet(m_xaTag[i_Tag].m_i_Name)->bSame(szName))
-      return i_Tag;
+
+  ReadLocker oReadLocker(&m_oLock);
+  return i_FindNL(szName);
+}
+
+/*----------------------------------------------------------------------------*/
+/* find tag by name                                                           */
+/*----------------------------------------------------------------------------*/
+i8 TagSet::i_FindNL(Stz *szName)
+{
+  _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
+
+  ASSERT(m_oLock.bIsLocked());
+
+  TagArrayIter xIter = m_oTagArray.xIterator();
+  Tag* pTag;
+
+  while ((pTag = xIter.pNext()) != nullptr) {
+    if (pTag->m_szName->bSame(szName))
+      return xIter.iArrayIndex();
   }
-  
+
   return C_UNKNOWN;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find tag by name                                                           */
+/*----------------------------------------------------------------------------*/
+Tag* TagSet::pFind(Stz *szName)
+{
+  _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
+
+  ReadLocker oReadLocker(&m_oLock);
+  return pFindNL(szName);
+}
+
+/*----------------------------------------------------------------------------*/
+/* find tag by name                                                           */
+/*----------------------------------------------------------------------------*/
+Tag* TagSet::pFindNL(Stz *szName)
+{
+  _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
+
+  ASSERT(m_oLock.bIsLocked());
+
+  TagArrayIter xIter = m_oTagArray.xIterator();
+  Tag* pTag;
+
+  while ((pTag = xIter.pNext()) != nullptr) {
+    if (pTag->m_szName->bSame(szName))
+      return pTag;
+  }
+
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -406,9 +668,22 @@ i8 TagSet::i_Find(Stz *szName)
 bool TagSet::bHasName(Stz *szName)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
-  
-  i8 i_Tag = i_Find(szName);
-  
+
+  ReadLocker oReadLocker(&m_oLock);
+  return bHasNameNL(szName);
+}
+
+/*----------------------------------------------------------------------------*/
+/* test if ename-set has a pair with given name                               */
+/*----------------------------------------------------------------------------*/
+bool TagSet::bHasNameNL(Stz *szName)
+{
+  _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
+
+  ASSERT(m_oLock.bIsLocked());
+
+  i8 i_Tag = i_FindNL(szName);
+
   if (C_UNKNOWN == i_Tag)
     return false;
   else
@@ -416,161 +691,122 @@ bool TagSet::bHasName(Stz *szName)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add name only                                                              */
-/*----------------------------------------------------------------------------*/
-//void TagSet::vInsert(Stz* szName)
-//{
-//  _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
-//
-//  i8 i_Tag = m_nEnames;
-//
-//  m_xaTag[i_Tag].m_i_Name  = m_xyStrings.iAppend(szName);
-//  m_xaTag[i_Tag].m_i_Value = C_UNKNOWN;
-//  m_xaTag[i_Tag].m_eToken  = TN_STRING;
-//
-//  m_nEnames++;
-//
-//  //vDumpSet();
-//  if (! bHasName(szName)) {
-//    RASSERT(0);
-//  }
-//}
+/* Insert the tag in alphabetical order according to the tag name             */
 /*----------------------------------------------------------------------------*/
 void TagSet::vInsert(Stz* szName)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
 
-  i8 i_Tag = i_InsertPoint(szName);
-  vShiftDown(i_Tag);
+  WriteLocker oWriteLocker(&m_oLock);
+  vInsertNL(szName);
 
-  m_xaTag[i_Tag].m_i_Name  = m_xyStrings.iAppend(szName);
-  m_xaTag[i_Tag].m_i_Value = C_UNKNOWN;
-  m_xaTag[i_Tag].m_eToken  = TN_STRING;
-
-  m_nItems++;
-
-//  if (szName->bSame("<param0>"_Stz))
-//    vDumpSet(true);
-      
-  ASSERT(bHasName(szName));
+  ASSERT(bHasNameNL(szName));
 }
 
 /*----------------------------------------------------------------------------*/
-/* add                                                                        */
+/* Insert the tag in alphabetical order according to the tag name             */
 /*----------------------------------------------------------------------------*/
-//void TagSet::vInsert(Stz* szName, i8 iValue)
-//{
-//  _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
-//
-//  i8 i_Tag = m_nEnames;
-//
-//  m_xaTag[i_Tag].m_i_Name  = m_xyStrings.iAppend(szName);
-//  m_xaTag[i_Tag].m_i_Value = iValue;
-//  m_xaTag[i_Tag].m_eToken  = TN_INTEGER;
-//
-//  m_nEnames++;
-//
-//  //vDumpSet();
-//  if (! bHasName(szName)) {
-//    RASSERT(0);
-//  }
-//}
+void TagSet::vInsertNL(Stz* szName)
+{
+  _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
+
+  ASSERT(m_oLock.bIsWriteLocked());
+
+  i8 i_Tag = i_InsertPoint(szName);
+
+  Tag xTag{m_pStrings->pAdd(szName), (Stz *) nullptr, TN_STRING};
+  m_oTagArray.vInsert(xTag, i_Tag);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Insert the tag in alphabetical order according to the tag name             */
 /*----------------------------------------------------------------------------*/
 void TagSet::vInsert(Stz* szName, i8 iValue)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
 
+  WriteLocker oWriteLocker(&m_oLock);
+  vInsertNL(szName, iValue);
+
+  ASSERT(bHasNameNL(szName));
+}
+/*----------------------------------------------------------------------------*/
+/* Insert the tag in alphabetical order according to the tag name             */
+/*----------------------------------------------------------------------------*/
+void TagSet::vInsertNL(Stz* szName, i8 iValue)
+{
+  _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
+  ASSERT(m_oLock.bIsWriteLocked());
+
   i8 i_Tag = i_InsertPoint(szName);
-  vShiftDown(i_Tag);
 
-  m_xaTag[i_Tag].m_i_Name  = m_xyStrings.iAppend(szName);
-  m_xaTag[i_Tag].m_i_Value = iValue;
-  m_xaTag[i_Tag].m_eToken  = TN_INTEGER;
-
-  m_nItems++;
-
-//  if (szName->bSame("<param0>"_Stz)) {
-//    vTrace("TagSet::vInsert i : %s %lld\n"_Stz,szName,iValue);
-//    vDumpSet(true);
-//  }
-  
-  ASSERT(bHasName(szName));
+  Tag xTag{m_pStrings->pAdd(szName), iValue, TN_INTEGER};
+  m_oTagArray.vInsert(xTag, i_Tag);
 }
 
 /*----------------------------------------------------------------------------*/
-/* add name and value                                                         */
+/* Insert the tag in alphabetical order according to the tag name             */
 /*----------------------------------------------------------------------------*/
 void TagSet::vInsert(Stz* szName, Object* pValue)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
 
-  i8 i_Tag = i_InsertPoint(szName);
-  vShiftDown(i_Tag);
+  WriteLocker oWriteLocker(&m_oLock);
+  vInsertNL(szName, pValue);
 
-  m_xaTag[i_Tag].m_i_Name  = m_xyStrings.iAppend(szName);
-  m_xaTag[i_Tag].m_i_Value = (i8)pValue;
-  m_xaTag[i_Tag].m_eToken  = TN_OBJECT;
-
-  m_nItems++;
-
-//  if (szName->bSame("<param0>"_Stz)) {
-//
-//    vTrace("TagSet::vInsert s : %s %s\n"_Stz,szName,szValue);
-//    vDumpSet(true);
-//  }
-  ASSERT(bHasName(szName));
+  ASSERT(bHasNameNL(szName));
 }
 
+/*----------------------------------------------------------------------------*/
+/* Insert the tag in alphabetical order according to the tag name             */
+/*----------------------------------------------------------------------------*/
+void TagSet::vInsertNL(Stz* szName, Object* pValue)
+{
+  _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
+  ASSERT(m_oLock.bIsWriteLocked());
+
+  i8 i_Tag = i_InsertPoint(szName);
+
+  Tag xTag{m_pStrings->pAdd(szName), (i8) pValue, TN_OBJECT};
+  m_oTagArray.vInsert(xTag, i_Tag);
+}
 
 /*----------------------------------------------------------------------------*/
-/* add name and value                                                         */
-/*----------------------------------------------------------------------------*/
-//void TagSet::vInsert(Stz* szName, Stz* szValue)
-//{
-//  _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
-//
-//  i8 i_Tag = m_nEnames;
-//
-//  m_xaTag[i_Tag].m_i_Name  = m_xyStrings.iAppend(szName);
-//  m_xaTag[i_Tag].m_i_Value = m_xyStrings.iAppend(szValue);
-//  m_xaTag[i_Tag].m_eToken  = TN_STRING;
-//
-//  m_nEnames++;
-//
-//  //vDumpSet();
-//  if (! bHasName(szName)) {
-//    RASSERT(0);
-//  }
-//}
+/* Insert the tag in alphabetical order according to the tag name             */
 /*----------------------------------------------------------------------------*/
 void TagSet::vInsert(Stz* szName, Stz* szValue)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
 
-  i8 i_Tag = i_InsertPoint(szName);
-  vShiftDown(i_Tag);
+  WriteLocker oWriteLocker(&m_oLock);
+  vInsertNL(szName, szValue);
 
-  m_xaTag[i_Tag].m_i_Name  = m_xyStrings.iAppend(szName);
-  m_xaTag[i_Tag].m_i_Value = m_xyStrings.iAppend(szValue);
-  m_xaTag[i_Tag].m_eToken  = TN_STRING;
-
-  m_nItems++;
-
-//  if (szName->bSame("<param0>"_Stz)) {
-//
-//    vTrace("TagSet::vInsert s : %s %s\n"_Stz,szName,szValue);
-//    vDumpSet(true);
-//  }
-  ASSERT(bHasName(szName));
+  ASSERT(bHasNameNL(szName));
 }
 
+/*----------------------------------------------------------------------------*/
+/* Insert the tag in alphabetical order according to the tag name             */
+/*----------------------------------------------------------------------------*/
+void TagSet::vInsertNL(Stz* szName, Stz* szValue) {
+  _precondition_(_MAGIC_, CN_TAGSET, _FOOTER_);
+  ASSERT(m_oLock.bIsWriteLocked());
+
+  i8 i_Tag = i_InsertPoint(szName);
+
+  Stz *szAddedName = m_pStrings->pAdd(szName);
+  Stz *szAddedValue = m_pStrings->pAdd(szValue);
+  Tag xTag{szAddedName, szAddedValue, TN_STRING};
+  m_oTagArray.vInsert(xTag, i_Tag);
+}
 /*----------------------------------------------------------------------------*/
 /* is token a decodable enum?                                                 */
 /*----------------------------------------------------------------------------*/
 bool TagSet::bIsDecodable(i8 i_Tag)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
-  
+
+  ReadLocker oReadLocker(&m_oLock);
+
   Stz* szName = this->szName(i_Tag);
   
   if (szName->bSame("<crossTopo>"_Stz))
@@ -580,14 +816,52 @@ bool TagSet::bIsDecodable(i8 i_Tag)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is token a decodable enum?                                                 */
+/*----------------------------------------------------------------------------*/
+bool TagSet::bIsDecodable(Tag* pTag)
+{
+  _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
+
+  ReadLocker oReadLocker(&m_oLock);
+
+  Stz* szName = this->szName(pTag);
+
+  if (szName->bSame("<crossTopo>"_Stz))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is token kind an integer?                                                  */
 /*----------------------------------------------------------------------------*/
 bool TagSet::bIsInteger(i8 i_Tag)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
+
+  ReadLocker oReadLocker(&m_oLock);
+
+  ASSERT(i_Tag >= 0);
+  ASSERT(i_Tag < m_oTagArray.nItems());
   
-  eTN eToken = m_xaTag[i_Tag].m_eToken;
+  eTN eToken = m_oTagArray.pGet(i_Tag)->m_eToken;
   
+  if (TN_INTEGER == eToken)
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is token kind an integer?                                                  */
+/*----------------------------------------------------------------------------*/
+bool TagSet::bIsInteger(Tag* pTag)
+{
+  _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
+  ASSERT(pTag);
+
+  eTN eToken = pTag->m_eToken;
+
   if (TN_INTEGER == eToken)
     return true;
 
@@ -601,7 +875,28 @@ bool TagSet::bIsObject(i8 i_Tag)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
 
-  eTN eToken = m_xaTag[i_Tag].m_eToken;
+  ReadLocker oReadLocker(&m_oLock);
+
+  ASSERT(i_Tag >= 0);
+  ASSERT(i_Tag < m_oTagArray.nItems());
+
+  eTN eToken = m_oTagArray.pGet(i_Tag)->m_eToken;
+
+  if (TN_OBJECT == eToken)
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is token kind a pointer to object?                                         */
+/*----------------------------------------------------------------------------*/
+bool TagSet::bIsObject(Tag* pTag)
+{
+  _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
+  ASSERT(pTag);
+
+  eTN eToken = pTag->m_eToken;
 
   if (TN_OBJECT == eToken)
     return true;
@@ -615,9 +910,30 @@ bool TagSet::bIsObject(i8 i_Tag)
 bool TagSet::bIsString(i8 i_Tag)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
+
+  ReadLocker oReadLocker(&m_oLock);
+
+  ASSERT(i_Tag >= 0);
+  ASSERT(i_Tag < m_oTagArray.nItems());
   
-  eTN eToken = m_xaTag[i_Tag].m_eToken;
+  eTN eToken = m_oTagArray.pGet(i_Tag)->m_eToken;
   
+  if (TN_STRING == eToken)
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is token kind a string?                                                    */
+/*----------------------------------------------------------------------------*/
+bool TagSet::bIsString(Tag* pTag)
+{
+  _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
+  ASSERT(pTag);
+
+  eTN eToken = pTag->m_eToken;
+
   if (TN_STRING == eToken)
     return true;
 
@@ -630,8 +946,22 @@ bool TagSet::bIsString(i8 i_Tag)
 i8 TagSet::nItems(void)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
-  
-  return m_nItems;
+
+  ReadLocker oReadLocker(&m_oLock);
+
+  return m_oTagArray.nItems();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get nItems                                                                 */
+/*----------------------------------------------------------------------------*/
+i8 TagSet::nItemsNL(void)
+{
+  _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
+
+  ASSERT(m_oLock.bIsLocked());
+
+  return m_oTagArray.nItems();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -640,10 +970,25 @@ i8 TagSet::nItems(void)
 Stz* TagSet::szName(i8 i_Tag)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
-  
-  Stz* szName = m_xyStrings.szGet(m_xaTag[i_Tag].m_i_Name);
-  
-  return szName;
+
+  ReadLocker oReadLocker(&m_oLock);
+
+  ASSERT(i_Tag >= 0);
+  ASSERT(i_Tag < m_oTagArray.nItems());
+
+  Tag* pTag = m_oTagArray.pGet(i_Tag);
+  return pTag->m_szName;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get name                                                                   */
+/*----------------------------------------------------------------------------*/
+Stz* TagSet::szName(Tag* pTag)
+{
+  _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
+  ASSERT(pTag);
+
+  return pTag->m_szName;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -653,13 +998,18 @@ void TagSet::vNamesString(String* pString)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
 
+  ReadLocker oReadLocker(&m_oLock);
+
   char* azCrs = pString->azStr();
   const char* azDstLastChar = pString->azStr() + pString->nAreaBytes() - 1;
-  
-  for (i8 i_Tag = 0; i_Tag < m_nItems; i_Tag++) {
-    if (i_Tag)
+
+  TagArrayIter xIter = m_oTagArray.xIterator();
+  Tag* pTag;
+
+  while ((pTag = xIter.pNext()) != nullptr) {
+    if (xIter.iArrayIndex())
       StrLib::vAppendChar(&azCrs, azDstLastChar, ' ');
-    char* azName = szName(i_Tag)->azChar();
+    char* azName = pTag->m_szName->azChar();
     StrLib::vAppendString(&azCrs, azDstLastChar, azName);
   }
 }
@@ -667,168 +1017,139 @@ void TagSet::vNamesString(String* pString)
 /*----------------------------------------------------------------------------*/
 /* copy source ename-set into this ename-set and replace an ename pair        */
 /*----------------------------------------------------------------------------*/
-void TagSet::vReplace(Stz* szName, i8 iValue)
+void TagSet::vReplace(Stz* szName, i8 iValue) {
+  _precondition_(_MAGIC_, CN_TAGSET, _FOOTER_);
+
+  WriteLocker oWriteLocker(&m_oLock);
+  vReplaceNL(szName, iValue);
+}
+
+/*----------------------------------------------------------------------------*/
+/* copy source ename-set into this ename-set and replace an ename pair        */
+/*----------------------------------------------------------------------------*/
+void TagSet::vReplaceNL(Stz* szName, i8 iValue)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
 
-  TagSet xOriginalTagSet;
+  ASSERT(m_oLock.bIsWriteLocked());
 
   bool bWasCopied = false;
 
-  xOriginalTagSet.vCopy(this);
-  vReset();
+  TagArrayIter xIter = m_oTagArray.xIterator();
+  Tag* pTag;
 
-  for (i8 i_Tag = 0; i_Tag < xOriginalTagSet.nItems(); i_Tag++) {
+  while ((pTag = xIter.pNext()) != nullptr) {
 
-    if (xOriginalTagSet.szName(i_Tag)->bSame(szName)) {
-      vInsert(szName,iValue);
+    if (pTag->m_szName->bSame(szName)) {
+      if (pTag->m_eToken == TN_STRING && pTag->m_szValue != nullptr) {
+        m_pStrings->vRemove(pTag->m_szValue);
+      }
+      // What if the prior tag value is an object?
+
+      // Update the value on this item
+      pTag->m_iValue = iValue;
+      pTag->m_eToken = TN_INTEGER;
       bWasCopied = true;
       continue;
     }
-
-    if (TN_STRING == xOriginalTagSet.eToken(i_Tag))
-      vInsert(xOriginalTagSet.szName(i_Tag),xOriginalTagSet.szValue(i_Tag));
-    else
-    if (TN_OBJECT == xOriginalTagSet.eToken(i_Tag))
-      vInsert(xOriginalTagSet.szName(i_Tag),xOriginalTagSet.pValue(i_Tag));
-    else
-      vInsert(xOriginalTagSet.szName(i_Tag),xOriginalTagSet.iValue(i_Tag));
   }
 
-  if (! bWasCopied)
-    vInsert(szName,iValue);
+  if (! bWasCopied) {
+    vInsertNL(szName, iValue);
+  }
 }
-/*----------------------------------------------------------------------------*/
-//void TagSet::vReplace(Stz* szName, i8 iValue)
-//{
-//  _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
-//
-//  TagSet xTagSet;
-//
-//  bool bWasCopied = false;
-//
-//  xTagSet.vCopy(this);
-//  vBeginEach_forward();
-//
-//  for (i8 i_Tag = 0; i_Tag < xTagSet.nEnames(); i_Tag++) {
-//
-//    if (TN_STRING == xTagSet.eToken(i_Tag)) {
-//      vInsert(xTagSet.szName(i_Tag),xTagSet.szValue(i_Tag));
-//    }
-//    else {
-//      if (xTagSet.szName(i_Tag)->bSame(szName)) {
-//        vInsert(xTagSet.szName(i_Tag),iValue);
-//        bWasCopied = true;
-//      }
-//      else {
-//        vInsert(xTagSet.szName(i_Tag),xTagSet.iValue(i_Tag));
-//      }
-//    }
-//  }
-//
-//  if (! bWasCopied)
-//    vInsert(szName,iValue);
-//}
 
 /*----------------------------------------------------------------------------*/
 /* copy source ename-set into this ename-set and replace an ename pair        */
 /*----------------------------------------------------------------------------*/
 void TagSet::vReplace(Stz* szName, Object* pValue)
 {
+  _precondition_(_MAGIC_, CN_TAGSET, _FOOTER_);
+
+  WriteLocker oWriteLocker(&m_oLock);
+  vReplaceNL(szName, pValue);
+}
+
+/*----------------------------------------------------------------------------*/
+/* copy source ename-set into this ename-set and replace an ename pair        */
+/*----------------------------------------------------------------------------*/
+void TagSet::vReplaceNL(Stz* szName, Object* pValue)
+{
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
 
-  TagSet xOriginalTagSet;
+  ASSERT(m_oLock.bIsWriteLocked());
 
   bool bWasCopied = false;
 
-  xOriginalTagSet.vCopy(this);
-  vReset();
+  TagArrayIter xIter = m_oTagArray.xIterator();
+  Tag* pTag;
 
-  for (i8 i_Tag = 0; i_Tag < xOriginalTagSet.nItems(); i_Tag++) {
+  while ((pTag = xIter.pNext()) != nullptr) {
 
-    if (xOriginalTagSet.szName(i_Tag)->bSame(szName)) {
-      vInsert(szName,pValue);
+    if (pTag->m_szName->bSame(szName)) {
+      if (pTag->m_eToken == TN_STRING && pTag->m_szValue != nullptr) {
+        m_pStrings->vRemove(pTag->m_szValue);
+      }
+      // What if the prior tag value is an object?
+
+      // Update the value on this item
+      pTag->m_pValue = pValue;
+      pTag->m_eToken = TN_OBJECT;
       bWasCopied = true;
       continue;
     }
-
-    if (TN_STRING == xOriginalTagSet.eToken(i_Tag))
-      vInsert(xOriginalTagSet.szName(i_Tag),xOriginalTagSet.szValue(i_Tag));
-    else
-    if (TN_OBJECT == xOriginalTagSet.eToken(i_Tag))
-      vInsert(xOriginalTagSet.szName(i_Tag),xOriginalTagSet.pValue(i_Tag));
-    else
-      vInsert(xOriginalTagSet.szName(i_Tag),xOriginalTagSet.iValue(i_Tag));
   }
 
-  if (! bWasCopied)
-    vInsert(szName,pValue);
+  if (! bWasCopied) {
+    vInsertNL(szName, pValue);
+  }
 }
+
 /*----------------------------------------------------------------------------*/
 /* copy source ename-set into this ename-set and replace an ename pair        */
 /*----------------------------------------------------------------------------*/
 void TagSet::vReplace(Stz* szName, Stz* szValue)
 {
+  _precondition_(_MAGIC_, CN_TAGSET, _FOOTER_);
+
+  WriteLocker oWriteLocker(&m_oLock);
+  vReplaceNL(szName, szValue);
+}
+
+/*----------------------------------------------------------------------------*/
+/* copy source ename-set into this ename-set and replace an ename pair        */
+/*----------------------------------------------------------------------------*/
+void TagSet::vReplaceNL(Stz* szName, Stz* szValue)
+{
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
 
-  TagSet xOriginalTagSet;
+  ASSERT(m_oLock.bIsWriteLocked());
 
   bool bWasCopied = false;
 
-  xOriginalTagSet.vCopy(this);
-  vReset();
+  TagArrayIter xIter = m_oTagArray.xIterator();
+  Tag* pTag;
 
-  for (i8 i_Tag = 0; i_Tag < xOriginalTagSet.nItems(); i_Tag++) {
+  while ((pTag = xIter.pNext()) != nullptr) {
 
-    if (xOriginalTagSet.szName(i_Tag)->bSame(szName)) {
-      vInsert(szName,szValue);
+    if (pTag->m_szName->bSame(szName)) {
+      if (pTag->m_eToken == TN_STRING && pTag->m_szValue != nullptr) {
+        m_pStrings->vRemove(pTag->m_szValue);
+      }
+      // What if the prior tag value is an object?
+
+      // Update the value on this item
+      pTag->m_szValue = m_pStrings->pAdd(szValue);
+      pTag->m_eToken = TN_STRING;
       bWasCopied = true;
       continue;
     }
-
-    if (TN_STRING == xOriginalTagSet.eToken(i_Tag))
-      vInsert(xOriginalTagSet.szName(i_Tag),xOriginalTagSet.szValue(i_Tag));
-    else
-    if (TN_OBJECT == xOriginalTagSet.eToken(i_Tag))
-      vInsert(xOriginalTagSet.szName(i_Tag),xOriginalTagSet.pValue(i_Tag));
-    else
-      vInsert(xOriginalTagSet.szName(i_Tag),xOriginalTagSet.iValue(i_Tag));
   }
 
-  if (! bWasCopied)
-    vInsert(szName,szValue);
+  if (! bWasCopied) {
+    vInsertNL(szName, szValue);
+  }
 }
-/*----------------------------------------------------------------------------*/
-//void TagSet::vReplace(Stz* szName, Stz* szValue)
-//{
-//  _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
-//
-//  TagSet xTagSet;
-//
-//  bool bWasCopied = false;
-//
-//  xTagSet.vCopy(this);
-//  vBeginEach_forward();
-//
-//  for (i8 i_Tag = 0; i_Tag < xTagSet.nEnames(); i_Tag++) {
-//
-//    if (TN_STRING == xTagSet.eToken(i_Tag)) {
-//
-//      if (xTagSet.szName(i_Tag)->bSame(szName)) {
-//        vInsert(xTagSet.szName(i_Tag),szValue);
-//        bWasCopied = true;
-//      }
-//      else {
-//        vInsert(xTagSet.szName(i_Tag),xTagSet.szValue(i_Tag));
-//      }
-//    }
-//    else
-//      vInsert(xTagSet.szName(i_Tag),xTagSet.iValue(i_Tag));
-//  }
-//
-//  if (! bWasCopied)
-//    vInsert(szName,szValue);
-//}
 
 /*----------------------------------------------------------------------------*/
 /* get token kind                                                             */
@@ -837,9 +1158,10 @@ void TagSet::vReset(void)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
 
-  m_nItems = 0;
-  
-  m_xyStrings.vReset();
+  WriteLocker oWriteLocker(&m_oLock);
+
+  m_oTagArray.vReset();
+  m_pStrings->vReset();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -849,33 +1171,38 @@ void TagSet::vSprint(String* psArgs, bool bParenth, bool bNames, bool bDecode)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
   UNUSED(bDecode);
-  
+
+  ReadLocker oReadLocker(&m_oLock);
+
   if (bParenth)
     psArgs->vCopy("("_Stz);
-  
-  for (i8 i_Tag = 0; i_Tag < m_nItems; i_Tag++) {
-    
-    if (i_Tag)
+
+  TagArrayIter xIter = m_oTagArray.xIterator();
+  Tag* pTag;
+
+  while ((pTag = xIter.pNext()) != nullptr) {
+
+    if (xIter.iArrayIndex())
       psArgs->vConcat(", "_Stz);
     
     if (bNames) {
-      psArgs->vConcat(szName(i_Tag));
+      psArgs->vConcat(szName(pTag));
       psArgs->vConcat("="_Stz);
     }
     
-    if (bIsString(i_Tag)) {
-      psArgs->vConcat(m_xyStrings.szGet(m_xaTag[i_Tag].m_i_Value));
+    if (pTag->m_eToken == TN_STRING) {
+      psArgs->vConcat(pTag->m_szValue);
       continue;
     }
     
-    ASSERT(bIsInteger(i_Tag));
+    ASSERT(bIsInteger(pTag));
 
     s32 sValue;
     
-    if (bIsDecodable(i_Tag))
-      sValue = szValueDecoded(i_Tag);
+    if (bIsDecodable(xIter.iArrayIndex()))
+      sValue = szValueDecoded(xIter.iArrayIndex());
     else
-      sValue.vSprint("%lld"_Stz,iValue(i_Tag));
+      sValue.vSprint("%lld"_Stz, pTag->m_iValue);
     psArgs->vConcat(sValue);
   }
   
@@ -884,23 +1211,14 @@ void TagSet::vSprint(String* psArgs, bool bParenth, bool bNames, bool bDecode)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get tage                                                                   */
-/*----------------------------------------------------------------------------*/
-Tag* TagSet::pTag(i8 i_Tag)
-{
-  _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
-    
-  return & m_xaTag[i_Tag];
-}
-
-/*----------------------------------------------------------------------------*/
 /* get token kind                                                             */
 /*----------------------------------------------------------------------------*/
 eTN TagSet::eToken(i8 i_Tag)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
-  
-  eTN eToken = m_xaTag[i_Tag].m_eToken;
+  ReadLocker oReadLocker(&m_oLock);
+
+  eTN eToken = m_oTagArray.pGet(i_Tag)->m_eToken;
   
   return eToken;
 }
@@ -911,9 +1229,12 @@ eTN TagSet::eToken(i8 i_Tag)
 bool TagSet::bSame(TagSet* pTagSet_arg)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
-  
-  i8 nTags = this->nItems();
-  i8 nTags_arg = pTagSet_arg->nItems();
+
+  ReadLocker oReadLockerThis(&m_oLock);
+  ReadLocker oReadLockerArg(&pTagSet_arg->m_oLock);
+
+  i8 nTags = this->nItemsNL();
+  i8 nTags_arg = pTagSet_arg->nItemsNL();
 
   if (nTags != nTags_arg)
     return false;
@@ -921,7 +1242,7 @@ bool TagSet::bSame(TagSet* pTagSet_arg)
   for (i8 i_Tag = 0; i_Tag < nTags; i_Tag++) {
     
     Stz* szName = this->szName(i_Tag);
-    i8 i_Tag_arg = pTagSet_arg->i_Find(szName);
+    i8 i_Tag_arg = pTagSet_arg->i_FindNL(szName);
     if (C_UNKNOWN == i_Tag_arg)
       return false;
     
@@ -955,28 +1276,33 @@ bool TagSet::bSame(TagSet* pTagSet_arg)
 void TagSet::vToString(String* psStr, bool bValueOnly)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
-  
-  if (! m_nItems) {
+
+  ReadLocker oReadLocker(&m_oLock);
+
+  if (! nItemsNL()) {
     psStr->vConcat("(empty)"_Stz);
     return;
   }
-  
-  for (i8 i_Tag = 0; i_Tag < m_nItems; i_Tag++) {
+
+  TagArrayIter xIter = m_oTagArray.xIterator();
+  Tag* pTag;
+
+  while ((pTag = xIter.pNext()) != nullptr) {
 
     if (bValueOnly) {
-      if (i_Tag)
+      if (xIter.iArrayIndex())
         psStr->vConcat(" "_Stz);
     }
     else {
-      if (i_Tag)
+      if (xIter.iArrayIndex())
         psStr->vConcat(", "_Stz);
 
-      psStr->vConcat(szName(i_Tag));
+      psStr->vConcat(pTag->m_szName);
       psStr->vConcat("="_Stz);
     }
 
-    if (bIsString(i_Tag)) {
-      psStr->vConcat(m_xyStrings.szGet(m_xaTag[i_Tag].m_i_Value));
+    if (bIsString(pTag)) {
+      psStr->vConcat(pTag->m_szValue);
       continue;
     }
     
@@ -984,17 +1310,17 @@ void TagSet::vToString(String* psStr, bool bValueOnly)
 
     s32 sValue;
 
-    if (bIsObject(i_Tag)) {
-      sValue.vSprint( "%p"_Stz, pValue(i_Tag));
+    if (bIsObject(pTag)) {
+      sValue.vSprint( "%p"_Stz, pValue(pTag));
       psStr->vConcat(sValue);
       continue;
     }
 
-    if (bIsDecodable(i_Tag))
-      sValue = szValueDecoded(i_Tag);
+    if (bIsDecodable(pTag))
+      sValue = szValueDecoded(pTag);
 
     else
-      sValue.vSprint("%lld"_Stz,iValue(i_Tag));
+      sValue.vSprint("%lld"_Stz,iValue(pTag));
     psStr->vConcat(sValue);
   }
 }
@@ -1005,20 +1331,24 @@ void TagSet::vToString(String* psStr, bool bValueOnly)
 i8 TagSet::iValue(i8 i_Tag)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
-  
-  //Stz* szValue = m_xyStrings.szGet(m_xaTag[i_Tag].m_i_Value);
-  //i8 iValue = szValue->iToI8();
-  
-  //ASSERT(TN_INTEGER == m_xaTag[i_Tag].m_eToken);
+
+  ReadLocker oReadLocker(&m_oLock);
 
   i8 iValue = C_UNKNOWN;
 
-  if (TN_INTEGER == m_xaTag[i_Tag].m_eToken) {
-    iValue = m_xaTag[i_Tag].m_i_Value;
+  Tag* pTag = m_oTagArray.pGet(i_Tag);
+  ASSERT(pTag);
+
+  if (TN_INTEGER == pTag->m_eToken) {
+    iValue = pTag->m_iValue;
   }
   else {
-    Stz* szValue = m_xyStrings.szGet(m_xaTag[i_Tag].m_i_Value);
-    iValue = szValue->iToI8();
+    Stz* szValue = pTag->m_szValue;
+    if (szValue) {
+      iValue = szValue->iToI8();
+    } else {
+      iValue = 0;
+    }
   }
   return iValue;
 }
@@ -1029,11 +1359,13 @@ i8 TagSet::iValue(i8 i_Tag)
 Stz* TagSet::szValue(i8 i_Tag)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
-  
-  ASSERT(TN_INTEGER != m_xaTag[i_Tag].m_eToken);
-  Stz* szValue = m_xyStrings.szGet(m_xaTag[i_Tag].m_i_Value);
 
-  return szValue;
+  ReadLocker oReadLocker(&m_oLock);
+
+  Tag* pTag = m_oTagArray.pGet(i_Tag);
+  ASSERT(pTag);
+  ASSERT(TN_INTEGER != pTag->m_eToken);
+  return pTag->m_szValue;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1042,8 +1374,10 @@ Stz* TagSet::szValue(i8 i_Tag)
 Stz* TagSet::szValueDecoded(i8 i_Tag)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
-  
-  ASSERT(TN_INTEGER == m_xaTag[i_Tag].m_eToken);
+
+  ReadLocker oReadLocker(&m_oLock);
+
+  ASSERT(TN_INTEGER == m_oTagArray.pGet(i_Tag)->m_eToken);
   Stz* szValue = "cantDecode"_Stz;
 
   Stz* szName = this->szName(i_Tag);
@@ -1057,21 +1391,58 @@ Stz* TagSet::szValueDecoded(i8 i_Tag)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get decoded value                                                          */
+/*----------------------------------------------------------------------------*/
+Stz* TagSet::szValueDecoded(Tag* pTag)
+{
+  _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
+
+  ReadLocker oReadLocker(&m_oLock);
+
+  ASSERT(TN_INTEGER == pTag->m_eToken);
+  Stz* szValue = "cantDecode"_Stz;
+
+  Stz* szName = this->szName(pTag);
+
+  if (szName->bSame("<crossTopo>"_Stz)) {
+    i8 iValue = this->iValue(pTag);
+    szValue = aYX[iValue];
+  }
+
+  return szValue;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get value                                                                  */
 /*----------------------------------------------------------------------------*/
 i8 TagSet::iValue(Stz *szName)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
-  
-  i8 i_Tag = i_Find(szName);
-  
-  if (C_UNKNOWN == i_Tag)
+
+  ReadLocker oReadLocker(&m_oLock);
+
+  Tag* pTag = pFindNL(szName);
+  if (!pTag) {
     return 0;
-  //vPrint();
-  ASSERT(TN_INTEGER == m_xaTag[i_Tag].m_eToken);
-  i8 iValue = m_xaTag[i_Tag].m_i_Value;
+  }
+
+  ASSERT(TN_INTEGER == pTag->m_eToken);
+  i8 iValue = pTag->m_iValue;
 
   return iValue;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get value                                                                  */
+/*----------------------------------------------------------------------------*/
+i8 TagSet::iValue(Tag* pTag)
+{
+  _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
+
+  ReadLocker oReadLocker(&m_oLock);
+
+  ASSERT(TN_INTEGER == pTag->m_eToken);
+  return pTag->m_iValue;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1080,9 +1451,26 @@ i8 TagSet::iValue(Stz *szName)
 Object* TagSet::pValue(i8 i_Tag)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
-  
-  ASSERT(TN_OBJECT == m_xaTag[i_Tag].m_eToken);
-  Object* pObject = (Object*)m_xaTag[i_Tag].m_i_Value;
+
+  ReadLocker oReadLocker(&m_oLock);
+
+  ASSERT(TN_OBJECT == m_oTagArray.pGet(i_Tag)->m_eToken);
+  Object* pObject = m_oTagArray.pGet(i_Tag)->m_pValue;
+
+  return pObject;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get value                                                                  */
+/*----------------------------------------------------------------------------*/
+Object* TagSet::pValue(Tag* pTag)
+{
+  _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
+
+  ReadLocker oReadLocker(&m_oLock);
+
+  ASSERT(TN_OBJECT == pTag->m_eToken);
+  Object* pObject = pTag->m_pValue;
 
   return pObject;
 }
@@ -1093,16 +1481,16 @@ Object* TagSet::pValue(i8 i_Tag)
 Object* TagSet::pValue(Stz *szName)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
-  
-  i8 i_Tag = i_Find(szName);
-  
-  if (C_UNKNOWN == i_Tag)
-    return 0;
-  //vPrint();
-  ASSERT(TN_OBJECT == m_xaTag[i_Tag].m_eToken);
-  Object* pObject = (Object*)m_xaTag[i_Tag].m_i_Value;
 
-  return pObject;
+  ReadLocker oReadLocker(&m_oLock);
+
+  Tag* pTag = pFindNL(szName);
+  if (!pTag) {
+    return nullptr;
+  }
+
+  ASSERT(TN_OBJECT == pTag->m_eToken);
+  return pTag->m_pValue;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1111,16 +1499,53 @@ Object* TagSet::pValue(Stz *szName)
 Stz* TagSet::szValue(Stz *szName)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
-  
-  i8 i_Tag = i_Find(szName);
-  
-  if (C_UNKNOWN == i_Tag)
+
+  ReadLocker oReadLocker(&m_oLock);
+
+  Tag* pTag = pFindNL(szName);
+  if (!pTag) {
     return ""_Stz;
-  
-  ASSERT(TN_INTEGER != m_xaTag[i_Tag].m_eToken);
-  Stz* szValue = m_xyStrings.szGet(m_xaTag[i_Tag].m_i_Value);
-  
-  return szValue;
+  }
+
+  ASSERT(TN_INTEGER != pTag->m_eToken);
+  return pTag->m_szValue;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get value                                                                  */
+/*----------------------------------------------------------------------------*/
+Stz* TagSet::szValue(Tag* pTag)
+{
+  _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
+
+  ReadLocker oReadLocker(&m_oLock);
+
+  ASSERT(TN_INTEGER != pTag->m_eToken);
+  return pTag->m_szValue;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Validate the tag set                                                       */
+/*----------------------------------------------------------------------------*/
+void TagSet::vValidate()
+{
+  TagArrayIter xIter = m_oTagArray.xIterator();
+  Tag* pTag;
+
+  while ((pTag = xIter.pNext()) != nullptr) {
+    RASSERT(pTag->m_szName);
+    RASSERT(m_pStrings->bContainsAddr(pTag->m_szName));
+
+    if (pTag->m_eToken == TN_STRING) {
+      RASSERT(pTag->m_szValue);
+      RASSERT(m_pStrings->bContainsAddr(pTag->m_szValue));
+
+    } else if (pTag->m_eToken == TN_OBJECT) {
+      RASSERT(pTag->m_pValue);
+      Object* pObject = pTag->m_pValue;
+      pObject->vAssertHeader();
+    }
+  }
 }
 
 
@@ -1134,31 +1559,24 @@ Stz* TagSet::szValue(Stz *szName)
 i8 TagSet::i_InsertPoint(Stz* szNewName)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
-  
-  if (! m_nItems)
+
+  ASSERT(m_oLock.bIsWriteLocked());
+
+  i8 iNumItems = nItemsNL();
+  if (! iNumItems)
     return 0;
-  
-  for (i8 i_Scan = 0; i_Scan < m_nItems; i_Scan++)
-    if (szName(i_Scan)->iCompare(szNewName) >= 0)
-      return i_Scan;
-  
-  return m_nItems;
-}
 
+  TagArrayIter xIter = m_oTagArray.xIterator();
+  Tag* pTag;
 
-/*----------------------------------------------------------------------------*/
-/* shift sub set down so as to open up i_From                                 */
-/*----------------------------------------------------------------------------*/
-void TagSet::vShiftDown(i8 i_From)
-{
-  _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
-  
-  for (i8 i_Dst = m_nItems; i_Dst > i_From; i_Dst--) {
-    m_xaTag[i_Dst].m_i_Name  = m_xaTag[i_Dst - 1].m_i_Name;
-    m_xaTag[i_Dst].m_i_Value = m_xaTag[i_Dst - 1].m_i_Value;
-    m_xaTag[i_Dst].m_eToken  = m_xaTag[i_Dst - 1].m_eToken;
+  while ((pTag = xIter.pNext()) != nullptr) {
+    if (szName(pTag)->iCompare(szNewName) >= 0)
+      return xIter.iArrayIndex();
   }
+  
+  return iNumItems;
 }
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/

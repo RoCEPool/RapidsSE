@@ -221,7 +221,7 @@ char Stz::cChar(i8 i_Char)
 /*----------------------------------------------------------------------------*/
 /* get as char*                                                               */
 /*----------------------------------------------------------------------------*/
-char* Stz::azChar(void)
+char* Stz::azChar(void) const
 {
   return (char*)this;
 }
@@ -249,7 +249,7 @@ bool Stz::bContains(Stz* szArg)
 /*----------------------------------------------------------------------------*/
 /* bEqual: test if this Stz is equal to arg (same case)                       */
 /*----------------------------------------------------------------------------*/
-bool Stz::bEqual(Stz* szArg)
+bool Stz::bEqual(const Stz* szArg)
 {
   i8 iDiff = strcmp(azChar(),szArg->azChar());
   
@@ -275,7 +275,7 @@ bool Stz::bGreater(Stz* szArg)
 /*----------------------------------------------------------------------------*/
 /* iLength: get length in bytes of arg (not including terminating null)       */
 /*----------------------------------------------------------------------------*/
-i8 Stz::nLength(void)
+i8 Stz::nLength(void) const
 {
   i8 nLen = strlen(azChar());
   

@@ -17,8 +17,10 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_ResponseOp(void)
 {
-  vAddStep("[ResponseOp]"_Stz,          &Step::vResponseOpGet);
-  vAddStep("[ResponseOp].pipeout"_Stz,  &Step::vResponseOpPipeout);
+  vAddStep("[ResponseOp]"_Stz,           &Step::vResponseOpGet);
+  vAddStep("[ResponseOp].isNull"_Stz,    &Step::vResponseOpIsNull);
+  vAddStep("[ResponseOp].isNotNull"_Stz, &Step::vResponseOpIsNotNull);
+  vAddStep("[ResponseOp].pipeout"_Stz,   &Step::vResponseOpPipeout);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -34,6 +36,38 @@ void Step::vResponseOpGet(void)
 
   m_oDataStack.vPushPtr(p_ResponseOp);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* [ResponseOp].isNotNull -- return boolean                                      */
+/*----------------------------------------------------------------------------*/
+void Step::vResponseOpIsNotNull(void)
+{
+  ENTRY();
+
+  Job* pJob = this->pJob();
+
+  Op* p_ResponseOp = pJob->p_ResponseOp();
+
+  m_oDataStack.vPushBol(p_ResponseOp != nullptr);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* [ResponseOp].isNull -- return boolean                                      */
+/*----------------------------------------------------------------------------*/
+void Step::vResponseOpIsNull(void)
+{
+  ENTRY();
+
+  Job* pJob = this->pJob();
+
+  Op* p_ResponseOp = pJob->p_ResponseOp();
+
+  m_oDataStack.vPushBol(p_ResponseOp == nullptr);
+
   EXIT();
 }
 

@@ -2660,7 +2660,7 @@ bool AM::SHOW::bException(void)
 {
   _static_
 
-  if (gpAttachMap->m_xSysArgs.m_oArgTags.bHasName(C_SHOW_EXCEPTION))
+  if (gpAttachMap && gpAttachMap->m_xSysArgs.m_oArgTags.bHasName(C_SHOW_EXCEPTION))
     return true;
   else
     return false;

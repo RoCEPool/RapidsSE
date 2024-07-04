@@ -8,6 +8,9 @@
 #include "Pds.hpp"
 #include "MiniHeap_t.hpp"
 #include "eCX.h"
+#include "CmdLineArgs.hpp"
+
+extern CmdLineArgs gxCmdLineArgs;
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -662,15 +665,8 @@ void Pds::vDecidedDelete(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
 
-//  i8 nAcksWereRemaining;
-//
-//  if (m_oDecider.bDecAndDecide(nAcksWereRemaining)) {
-//
-//    m_bDeletable = true;
-
     delete this;
-    // dont touch this pointer
-//  }
+    // can't touch this
 }
 
 /*----------------------------------------------------------------------------*/
@@ -700,7 +696,22 @@ bool Pds::bDelete(void* pKey)
 
     if(pNext) {
       // Check if the next key is the same as the key we want to delete
-      i8 iCompareRes = m_fpCompare(pNext->aItem(), pKey);
+
+      i8 iCompareRes;
+      if (!gxCmdLineArgs.m_xSysArgs.m_bStart && gxCmdLineArgs.m_xSysArgs.m_bCommand) {
+        // The PDS came from the SE node but is being processed by the prompt
+        // or another process. The PDS's compare function is a pointer to a
+        // static function within the SE node process, not the current process.
+        // This will cause it to crash while deleting the PDS.
+        // The most likely use case here is a second SE process running a single
+        // command (such as "status") and this command returns a single PDS that
+        // needs to be removed from the hashmap when it is finished with.
+        iCompareRes = PdsUtils::iHashMapEntryKeyCompare(pNext->aItem(), pKey);
+
+      } else {
+        iCompareRes = m_fpCompare(pNext->aItem(), pKey);
+      }
+
       if (iCompareRes == 0) {
         // Found the key, save its address and update the chain pointers/offsets
         pDeleteEntry = pNext;
@@ -939,7 +950,22 @@ SkipListBlock* Pds::pFind(void* pKey)
 
     SkipListBlock* pCursor = pNextSLBlock(pPrev, i_Level);
     while(pCursor != nullptr) {
-      i8 iCompareRes = m_fpCompare(pCursor->aItem(), pKey);
+
+      i8 iCompareRes;
+      if (!gxCmdLineArgs.m_xSysArgs.m_bStart && gxCmdLineArgs.m_xSysArgs.m_bCommand) {
+        // The PDS came from the SE node but is being processed by the prompt
+        // or another process. The PDS's compare function is a pointer to a
+        // static function within the SE node process, not the current process.
+        // This will cause it to crash while deleting the PDS.
+        // The most likely use case here is a second SE process running a single
+        // command (such as "status") and this command returns a single PDS that
+        // needs to be removed from the hashmap when it is finished with.
+        iCompareRes = PdsUtils::iHashMapEntryKeyCompare(pCursor->aItem(), pKey);
+
+      } else {
+        iCompareRes = m_fpCompare(pCursor->aItem(), pKey);
+      }
+
 
       if(iCompareRes == 0) {
         return pCursor;
@@ -1177,6 +1203,18 @@ Row* Pds::pNextRow(Row* pCurr)
     return nullptr;
 
   return pNext->aRow();
+}
+
+/*----------------------------------------------------------------------------*/
+/* post recv function called after being received over a socket               */
+/*----------------------------------------------------------------------------*/
+void Pds::vPostRecv(void* pvPds)
+{
+  _static_
+  UNUSED(pvPds);
+
+  // TODO: fix up any dangling pointers here, or note whether things do
+  //  or do not need to be done
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1461,7 +1499,20 @@ void Pds::vPriorVecToKey(void* pKey, SkipListBlock* aPriorVec[])
     //     until we find
     //       pNext >= pKey at current level
     while(pNext != nullptr) {
-      i8 iCompareRes = m_fpCompare(pNext->aItem(), pKey);
+      i8 iCompareRes;
+      if (!gxCmdLineArgs.m_xSysArgs.m_bStart && gxCmdLineArgs.m_xSysArgs.m_bCommand) {
+        // The PDS came from the SE node but is being processed by the prompt
+        // or another process. The PDS's compare function is a pointer to a
+        // static function within the SE node process, not the current process.
+        // This will cause it to crash while deleting the PDS.
+        // The most likely use case here is a second SE process running a single
+        // command (such as "status") and this command returns a single PDS that
+        // needs to be removed from the hashmap when it is finished with.
+        iCompareRes = PdsUtils::iHashMapEntryKeyCompare(pNext->aItem(), pKey);
+
+      } else {
+        iCompareRes = m_fpCompare(pNext->aItem(), pKey);
+      }
 
       if(iCompareRes >= 0)
         break;

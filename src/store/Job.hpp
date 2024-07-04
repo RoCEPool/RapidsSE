@@ -35,7 +35,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
 
     s32    m_sJobNm;      // name of job
     s4K    m_sEntryPoint; // sen entry code
-    TagSet m_oJobTags;    // tags for the job
+    TagSet* m_pJobTags;    // tags for the job
     s256   m_sFolderPath; // folder path
   
     eJP    m_eJobPhase;   // current phase: JP_BEGINNING, _BEGUN, ...
@@ -128,7 +128,10 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     static JobId tOriginId(Job* pJob);
     static void vPostRecv(void* aJob);
     static void vPrintJobNode(SkipNode* pNode, int i_Level);
-  
+    static bool bObjRecv(Socket* pSocket, Object* pObjBase, SysCall& roSysCall,
+                         Object** ppObject, void* pvAuxBuf, i8 iAuxSize);
+    static bool bObjSend(Socket* pSocket, Object* pObject,  SysCall& roSysCall);
+
     i8   nActiveOps(void);
     void vActiveOpsDec(void);
     void vActiveOpsInc(void);

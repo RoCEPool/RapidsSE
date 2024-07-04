@@ -411,6 +411,7 @@ Stz* BASE::aCN[CN_ENUMS+1]
     /* */ "TABLEDEF"_Stz,             // CN_TABLEDEF
     /* */ "TABLEPTN"_Stz,             // CN_TABLEPTN
     /* */ "TABLEPTNVEC"_Stz,          // CN_TABLEPTNVEC
+    /* */ "TAGARRAY"_Stz,             // CN_TAGARRAY
     /* */ "TAGSET"_Stz,               // CN_TAGSET
     /* */ "TASK"_Stz,                 // CN_TASK
     /* */ "TASKLIST"_Stz,             // CN_TASKLIST

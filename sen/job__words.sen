@@ -348,6 +348,15 @@
    Path[].discardAll
    [task].grabLock
    [job].addExited
+
+   [job].parentResponseOpIsNotNull "<sendErrorsToResponseOp>" [job].tagSet@ tagSet.hasName PdsErr[].isNotNull and and if
+     [job].error@ attachmap::errorText@
+       [job].error@ TableDefErr[] PdsErr[].addExecError assert
+     PdsErr[]\clear [job].pipeToParentResponseOp
+     Marker[].newChildExitMarker
+     Marker[] [job].pipeToParentResponseOp
+   then
+
    [job].updateParent assert
    [job].signalParent assert
    [task].retire
@@ -378,6 +387,15 @@
        Path[].discardAll
        [task].grabLock
        [job].addExited
+
+       [job].parentResponseOpIsNotNull "<sendErrorsToResponseOp>" [job].tagSet@ tagSet.hasName PdsErr[].isNotNull and and if
+         [job].error@ attachmap::errorText@
+           [job].error@ TableDefErr[] PdsErr[].addExecError assert
+         PdsErr[]\clear [job].pipeToParentResponseOp
+         Marker[].newChildExitMarker
+         Marker[] [job].pipeToParentResponseOp
+       then
+
        [job].updateParent assert
        //"Notifying parent" .
        [job].signalParent assert
@@ -392,6 +410,15 @@
         Path[].discardAll
         [task].grabLock
         [job].addExited
+
+        [job].parentResponseOpIsNotNull "<sendErrorsToResponseOp>" [job].tagSet@ tagSet.hasName PdsErr[].isNotNull and and if
+          [job].error@ attachmap::errorText@
+            [job].error@ TableDefErr[] PdsErr[].addExecError assert
+          PdsErr[]\clear [job].pipeToParentResponseOp
+          Marker[].newChildExitMarker
+          Marker[] [job].pipeToParentResponseOp
+        then
+
         [job].updateParent assert
         //"Notifying parent" .
         [job].signalParent assert
@@ -457,6 +484,15 @@
        Path[].discardAll
        [task].grabLock
        [job].addExited
+
+       [job].parentResponseOpIsNotNull "<sendErrorsToResponseOp>" [job].tagSet@ tagSet.hasName PdsErr[].isNotNull and and if
+         [job].error@ attachmap::errorText@
+           [job].error@ TableDefErr[] PdsErr[].addExecError assert
+         PdsErr[]\clear [job].pipeToParentResponseOp
+         Marker[].newChildExitMarker
+         Marker[] [job].pipeToParentResponseOp
+       then
+
        [job].updateParent assert
        //"Notifying parent" .
        [job].signalParent assert
@@ -471,6 +507,15 @@
         Path[].discardAll
         [task].grabLock
         [job].addExited
+
+        [job].parentResponseOpIsNotNull "<sendErrorsToResponseOp>" [job].tagSet@ tagSet.hasName PdsErr[].isNotNull and and if
+          [job].error@ attachmap::errorText@
+            [job].error@ TableDefErr[] PdsErr[].addExecError assert
+          PdsErr[]\clear [job].pipeToParentResponseOp
+          Marker[].newChildExitMarker
+          Marker[] [job].pipeToParentResponseOp
+        then
+
         [job].updateParent assert
         //"Notifying parent" .
         [job].signalParent assert
@@ -737,6 +782,14 @@
         "org_ org" "WAIT/NO_WAIT signalling parent"       [job].trace
       then
 
+      [job].parentResponseOpIsNotNull "<sendErrorsToResponseOp>" [job].tagSet@ tagSet.hasName PdsErr[].isNotNull and and if
+        [job].error@ attachmap::errorText@
+          [job].error@ TableDefErr[] PdsErr[].addExecError assert
+        PdsErr[]\clear [job].pipeToParentResponseOp
+        Marker[].newChildExitMarker
+        Marker[] [job].pipeToParentResponseOp
+      then
+
       [job].updateParent discard
       [job].signalParent discard
 
@@ -747,6 +800,7 @@
 
     //then
 
+    LogicUnit[].cleanup
     [task].retire
 
   HAZARD

@@ -80,6 +80,9 @@ TaskList* Api::pParseCommand(Stz* szCommand, Stz* szCommandTags, Task* pParentTa
   // each job.
   TagSet*   pCommonTagSet = new TagSet;
 
+  // Add a tag that will tell the job to send errors to the response operator, if set
+  pCommonTagSet->vAppend(C_TAG_SENDERRORRESPONSEOP);
+
   // Now we tokenise the command tags passed in and populate the common command tag set.
   TokenVec* pCommonTagTknVec = AM::TOKENISE::pTokeniseSen(szCommandTags);
   CmdHelper::vPopulateTagSet(pCommonTagSet, pCommonTagTknVec);
@@ -189,10 +192,10 @@ eEC Api::eScheduleTask(ENGINE::Task* pTask)
 
   RASSERT(pTask->pJob()->pParentJob());
   Job* pParentJob = pTask->pJob()->pParentJob();
+  pParentJob->vChildError(EC_NONE);
 
-
-  pParentJob->vMutexLock();
-  RASSERT(MS_LOCKED == pParentJob->eMutexSide());
+//  pParentJob->vMutexLock();
+//  RASSERT(MS_LOCKED == pParentJob->eMutexSide());
 
   RASSERT(pChildJob->pTask());
 
@@ -203,15 +206,31 @@ eEC Api::eScheduleTask(ENGINE::Task* pTask)
 
   Scheduler::vTaskApi_Add(pChildJob->pTask());
 
-  pParentJob->vMutexWait();
-  pParentJob->vMutexUnlock();
+  // Raw pipeline jobs can produce errors when they are parsed and executed.
+  // The parent job needs to block and wait until the child updates it with
+  // any possible error codes and then signals it. Failure to wait for this
+  // signal means that the parent will wait forever.
+  //
+  // Pipelines will call:
+  //   [job].updateParent
+  //   [job].signalParent
+  // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  // This is a blocking call.
+  // This means that if there are enough of these calls then all general purpose
+  // threads will be hard blocked and the child jobs won't be able to run.
+  // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//  pParentJob->vMutexWait();
+//  pParentJob->vMutexUnlock();
 
-  // check for error from child job
-  eEC eChildError = pParentJob->eChildError();
 
-  if (eChildError != EC_NONE) {
-    return eChildError;
-  }
+//  This is no longer necessary because the parent task is not blocking on
+//  the child task to return an initial status.
+//  // check for error from child job
+//  eEC eChildError = pParentJob->eChildError();
+//
+//  if (eChildError != EC_NONE) {
+//    return eChildError;
+//  }
 
   return EC_NONE;
 }

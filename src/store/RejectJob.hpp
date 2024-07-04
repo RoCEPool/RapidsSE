@@ -25,6 +25,8 @@ namespace STORE
     RejectJob(void);
    ~RejectJob(void) noexcept(false);
 
+    static bool bObjRecv(Socket* pSocket, Object* pObjBase, SysCall& roSysCall,
+                         Object** ppObject, void* pvAuxBuf, i8 iAuxSize);
     static void vPostRecv(void* aJob);
 
     JobId tDistId(void);

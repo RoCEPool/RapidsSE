@@ -12,6 +12,8 @@
 #include "Node_I.hpp"
 #include "Grid.hpp"
 #include "Op.hpp"
+#include "Socket.hpp"
+#include "SysCall.hpp"
 
 #include "Job.hpp"
 #include "File.hpp"
@@ -32,6 +34,8 @@
 #include "SP_Pointer.hpp"
 
 extern pthread_key_t giTLS_CurrentPoint;
+extern SizeHeap gxaSizeHeap[];
+
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -71,7 +75,7 @@ Job::Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId,
   }
 
   //m_sEntryPoint
-  //m_oJobTags
+  m_pJobTags = new TagSet(PackedStringBuf::SMALL);
   //m_sFolderPath
   
   m_eJobPhase  = JP_NONE;
@@ -137,7 +141,7 @@ Job::Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId,
   
   AM::JOBS::vJobsActiveInc();
   
-  m_oJobTags.vInsert(C_TAG_PATH,C_SE_PATH);
+  m_pJobTags->vInsert(C_TAG_PATH, C_SE_PATH);
 
   AM::JLIST::vInsertJob(this);
   
@@ -161,9 +165,12 @@ Job::~Job(void) noexcept(false)
     //  if (bHasTag(C_TAG_LIFE) || JK_GENERIC == m_eJobKind) {
     //
     //    SP_TagSet spTagSet;
-    //    vPrint("Job Delete: %s\n"_Stz,spTagSet.sz(&m_oJobTags));
-    //    //m_oJobTags.vPrint();
+    //    vPrint("Job Delete: %s\n"_Stz,spTagSet.sz(m_pJobTags));
+    //    //m_pJobTags->vPrint();
     //  }
+
+    delete m_pJobTags;
+    m_pJobTags = nullptr;
 
     // -- -- -- -- -- --
 
@@ -345,6 +352,219 @@ void Job::vPrintJobNode(SkipNode* pNode, int i_Level)
          ,(i8)tJobId.uJobNo()
          ,pNode->m_pRight[i_Level]
          );
+}
+
+/*----------------------------------------------------------------------------*/
+/* Custom receive and deserialisation from a socket                           */
+/*----------------------------------------------------------------------------*/
+bool Job::bObjRecv(Socket* pSocket, Object* pObjBase, SysCall& roSysCall,
+                   Object** ppObject, void* pvAuxBuf, i8 iAuxSize)
+{
+  _static_
+  ASSERT(pSocket);
+  ASSERT(pObjBase);
+  ASSERT(ppObject);
+  ASSERT(pvAuxBuf);
+  ASSERT(iAuxSize > 0);
+
+  UNUSED(pvAuxBuf);
+  UNUSED(iAuxSize);
+
+  // Allocate and receive the rest of the object
+  eCN eClass = pObjBase->eGetClassNo();
+
+  Object* pReceivedObject = Heaps::pAllocate(eClass, pObjBase->bGetPersistent());
+  (*ppObject) = pReceivedObject;
+  MemLib::vCopy(pReceivedObject, pObjBase, sizeof(Object), eClass);
+
+  Job* pJob = _pJob(pReceivedObject);
+
+  void *aBody = aAdd<void *>(pJob, sizeof(Object));
+  i8 nSize = gxaSizeHeap[eClass].m_nClassSize;
+  i8 nRemainingBytes = nSize - sizeof(Object);
+
+  bool bResult = pSocket->bBytesRecv(aBody, nRemainingBytes, roSysCall);
+  if (!bResult) {
+    return false;
+  }
+
+  // Now we handle the rest of the job deserialisation.
+  // Job can contain an extended text and code block. These would have
+  // been sent individually.
+
+  // Note: There is low memory handling for receiving objects (above)
+  // but we need to also handle the case of a low memory condition while
+  // allocating and reading the text/codeblock buffers below.
+
+  try {
+    ASSERT(pJob->bRecvCmdText());
+
+    Object * aCmdText = Heaps::pAllocate(CN_EXTENDEDTEXT, false);
+    nSize = gxaSizeHeap[CN_EXTENDEDTEXT].m_nClassSize;
+    bResult = pSocket->bBytesRecv(aCmdText, nSize, roSysCall);
+    RASSERT(bResult);
+    ExtendedText *pCmdText = _pExtendedText(aCmdText);
+
+    i8 nBlocks = pCmdText->nTextBlocks();
+    for (i8 i_Block = 0; i_Block < nBlocks; i_Block++) {
+      Object *aCmdTextBuffer = Heaps::pAllocate(CN_EXTENDEDTEXTBUFFER, false);
+      nSize = gxaSizeHeap[CN_EXTENDEDTEXTBUFFER].m_nClassSize;
+      bResult = pSocket->bBytesRecv(aCmdTextBuffer, nSize, roSysCall);
+      RASSERT(bResult);
+      ExtendedTextBuffer *pCmdTextBuffer = _pExtendedTextBuffer(aCmdTextBuffer);
+
+      pCmdText->vExtTextBuffer(i_Block, pCmdTextBuffer);
+    }
+    pCmdText->vVerify();
+    pJob->vCmdText(pCmdText);
+
+    // - - - - - - - - - - - - - - - - - - - - -
+
+    if (pJob->bRecvCodeBlock()) {
+      Object *aCodeBlock = Heaps::pAllocate(CN_EXTENDEDTEXT, false);
+      nSize = gxaSizeHeap[CN_EXTENDEDTEXT].m_nClassSize;
+      bResult = pSocket->bBytesRecv(aCodeBlock, nSize, roSysCall);
+      RASSERT(bResult);
+      ExtendedText *pCodeBlock = _pExtendedText(aCodeBlock);
+
+      //RASSERT(1 == pCodeBlock->nTextBlocks());
+
+      nBlocks = pCodeBlock->nTextBlocks();
+      for (i8 i_Block = 0; i_Block < nBlocks; i_Block++) {
+        Object *aCodeBlockBuffer = Heaps::pAllocate(CN_EXTENDEDTEXTBUFFER, false);
+        nSize = gxaSizeHeap[CN_EXTENDEDTEXTBUFFER].m_nClassSize;
+        bResult = pSocket->bBytesRecv(aCodeBlockBuffer, nSize, roSysCall);
+        RASSERT(bResult);
+        ExtendedTextBuffer *pCodeBlockBuffer = _pExtendedTextBuffer(aCodeBlockBuffer);
+
+        pCodeBlock->vExtTextBuffer(i_Block, pCodeBlockBuffer);
+      }
+
+      pCodeBlock->vVerify();
+      pJob->vCodeBlock(pCodeBlock);
+    }
+
+    // There is a TagSet that needs to be read and deserialised for the job tags
+    b32K ayBuf;
+
+    // First read in 8 bytes for the size of the tagset data
+    bResult = pSocket->bBytesRecv(ayBuf.szArea(), sizeof(i8), roSysCall);
+    RASSERT(bResult);
+    ayBuf.vTake(sizeof(i8));
+    i8 iJobTagsSize = ayBuf.iGet(0);
+    ASSERT(iJobTagsSize > 0);
+    ASSERT(iJobTagsSize < ayBuf.nArea());
+
+    // Read in the rest of the data
+    bResult = pSocket->bBytesRecv(ayBuf.szLatter(), iJobTagsSize - sizeof(i8), roSysCall);
+    RASSERT(bResult);
+    ayBuf.vTake(iJobTagsSize - sizeof(i8));
+
+    // Now deserialise the data back into a TagSet
+    pJob->m_pJobTags = TagSet::pDeserialise(ayBuf);
+    ASSERT(pJob->m_pJobTags);
+#ifdef WITH_ASSERT_MACRO
+    pJob->m_pJobTags->vAssertHeader();
+#endif
+
+  } catch (LowMemory& xLowMemory) {
+    // execute the 2PC commands directly for job received/ send reject
+    pSocket->vJobRecv_lowmem(pJob);
+
+    // Delete the job. We will probably leak the extended texts partially allocated above.
+    delete pJob;
+
+    pSocket->vSuccess(true);
+    return true;
+  }
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Custom serialisation and send from a socket                                */
+/*----------------------------------------------------------------------------*/
+bool Job::bObjSend(Socket* pSocket, Object* pObject, SysCall& roSysCall)
+{
+  _static_
+
+  Job* pJob = _pJob(pObject);
+
+  bool bResult;
+  eCN eClass = pObject->eGetClassNo();
+  i8 nBytes = gxaSizeHeap[eClass].m_nClassSize;;
+
+  // Send itself first
+  bResult = pSocket->bBytesSend(pObject, nBytes, roSysCall);
+
+  if (!bResult) {
+    return bResult;
+  }
+
+  if (pJob->bSendCmdText()) {
+    ExtendedText *pCmdText = pJob->pCmdText();
+    RASSERT(pCmdText);
+
+    pCmdText->vVerify();
+
+    eClass = pCmdText->eGetClassNo();
+    nBytes = gxaSizeHeap[eClass].m_nClassSize;
+    bResult = pSocket->bBytesSend(pCmdText, nBytes, roSysCall);
+    RASSERT(bResult);
+
+    i8 nBlocks = pCmdText->nTextBlocks();
+
+    for (i8 i_Block = 0; i_Block < nBlocks; i_Block++) {
+      ExtendedTextBuffer *pExtTextBuffer = pCmdText->pExtTextBuffer(i_Block);
+      RASSERT(pExtTextBuffer);
+      eClass = pExtTextBuffer->eGetClassNo();
+      nBytes = gxaSizeHeap[eClass].m_nClassSize;
+      bResult = pSocket->bBytesSend(pExtTextBuffer, nBytes, roSysCall);
+      RASSERT(bResult);
+    }
+  }
+
+  if (pJob->bSendCodeBlock()) {
+    ExtendedText *pCodeBlock = pJob->pCodeBlock();
+    RASSERT(pCodeBlock);
+
+    pCodeBlock->vVerify();
+
+    eClass = pCodeBlock->eGetClassNo();
+    nBytes = gxaSizeHeap[eClass].m_nClassSize;
+    bResult = pSocket->bBytesSend(pCodeBlock, nBytes, roSysCall);
+    RASSERT(bResult);
+
+    i8 nBlocks = pCodeBlock->nTextBlocks();
+    if (nBlocks > 1)
+      vDebugPoint();
+
+    for (i8 i_Block = 0; i_Block < nBlocks; i_Block++) {
+      ExtendedTextBuffer *pExtTextBuffer = pCodeBlock->pExtTextBuffer(i_Block);
+      RASSERT(pExtTextBuffer);
+      eClass = pExtTextBuffer->eGetClassNo();
+      nBytes = gxaSizeHeap[eClass].m_nClassSize;
+      bResult = pSocket->bBytesSend(pExtTextBuffer, nBytes, roSysCall);
+      RASSERT(bResult);
+    }
+  }
+
+  // Job does contain a tagset that needs to be serialised
+  b32K ayBuf;
+  bResult = TagSet::bSerialise(pJob->m_pJobTags, ayBuf);
+  if (!bResult) {
+    return bResult;
+  }
+
+  ASSERT(ayBuf.i_Latter() > 0);
+
+  bResult = pSocket->bBytesSend(ayBuf.szArea(), ayBuf.i_Latter(), roSysCall);
+
+  if (!bResult) {
+    return bResult;
+  }
+
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -850,7 +1070,7 @@ bool Job::bHasTag(Stz* szTagNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  if (m_oJobTags.bHasName(szTagNm))
+  if (m_pJobTags->bHasName(szTagNm))
     return true;
   
   return false;
@@ -1115,7 +1335,7 @@ TagSet* Job::pJobTags(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  return & m_oJobTags;
+  return m_pJobTags;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1692,6 +1912,8 @@ void Job::vPostRecv(void)
   m_okLock.vResetLock();
   m_okLock.vResetStats();
 
+  // m_pJobTags  // handled in Job::bObjRecv()
+
   if(bHasTag(C_TAG_PERSISTENT))
     vEnablePersistence();
   // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
@@ -1728,9 +1950,9 @@ void Job::vPostRecv(void)
   /* 11 */ m_pJobsSkipNode    = nullptr;
   /* 12 */ m_pGenericSkipNode = nullptr;
 
-  /* 14 */// m_pCmdText = nullptr;
+  /* 14 */// m_pCmdText = nullptr;      // handled in Job::bObjRecv()
 
-  /* 15 */ //RASSERT(! m_pCodeBlock);
+  /* 15 */ //RASSERT(! m_pCodeBlock);   // handled in Job::bObjRecv()
 
   m_tJobId.vNextJobId();
 
@@ -1834,7 +2056,7 @@ void Job::vPrintJobContents(void)
          
          );
   
-  m_oJobTags.vContentDump();
+  m_pJobTags->vContentDump();
 
   vTrace(";;\n\n"_Stz);
 }

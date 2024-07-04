@@ -34,16 +34,16 @@ namespace BASE
 
     b1    bBeginsWith(Stz* szArg);
     char  cChar(i8 i_Char);
-    char* azChar(void);
+    char* azChar(void) const ;
     i8    iCompare(Stz* szArg);
     bool  bContains(Stz* szArg);
-    bool  bEqual(Stz* szArg);
+    bool  bEqual(const Stz* szArg);
     bool  bGreater(Stz* szArg);
     bool  bIsEmpty(void);
     bool  bIsInteger(void);
     bool  bIsSomeFalse(void);
     bool  bIsSomeTrue(void);
-    i8    nLength(void);
+    i8    nLength(void) const;
     bool  bOneOf(Stz* szArg, ...);
     i8    iOrdinal(void);
     bool  bSame(Stz* szArg);

@@ -15,6 +15,8 @@
 /*----------------------------------------------------------------------------*/
 : pipeline:origin:chunk2
 
+/* org_ org */  [job].parentResponseOpIsNotNull "<sendErrorsToResponseOp>" [job].tagSet@ tagSet.hasName and
+/* org_ org */    locals| bSndErrRespOp |
 /* org_ org */
 /* org_ org */  // - - - - - - - - - - - - - - - - - -
 /* org_ org */  // test if distributed job may execute
@@ -218,29 +220,30 @@
 /* org_ ovr */
 /* org_ ovr */  Path[].discardAll
 /* org_ ovr */  [task].grabLock
-/* org_ ovr */  [job].addExited
 /* org_ org */  "<objectTracker>" [job].tagSet@ tagSet.hasName if
 /* org_ org */    [job].printObjectTracker
 /* org_ org */    [job].disableObjectTracker
 /* org_ org */  then
 /* org_ org */
-/* org_ ovr */    "<signalParent>" [job].tagSet@ tagSet.hasName if
+/* org_ ovr */  "<signalParent>" [job].tagSet@ tagSet.hasName if
 /* org_ org */
-/* org_ org */      [args].distJob if
-/* org_ org */        "pipeline" "origin"
-/* org_ org */        "org_ org" "WAIT signalling parent"       [job].trace
-/* org_ org */      then
+/* org_ org */    [args].distJob if
+/* org_ org */      "pipeline" "origin"
+/* org_ org */      "org_ org" "WAIT signalling parent"       [job].trace
+/* org_ org */    then
 /* org_ org */
-/* org_ ovr */      [job].updateParent assert
-/* org_ ovr */      [job].signalParent assert
-/* org_ ovr */    then
+/* org_ ovr */    [job].updateParent assert
+/* org_ ovr */    [job].signalParent assert
+/* org_ ovr */  then
 /* org_ ovr *
-/* org_ ovr */    [args].distJob if
-/* org_ ovr */      "pipeline" "origin"
-/* org_ ovr */        "org_ ovr" "signalled..."                  [job].trace
-/* org_ ovr */    then
+/* org_ ovr */  [args].distJob if
+/* org_ ovr */    "pipeline" "origin"
+/* org_ ovr */      "org_ ovr" "signalled..."                  [job].trace
+/* org_ ovr */  then
 /* org_ ovr */
-/* org_ ovr */    [task].retire
+/* org_ ovr */  LogicUnit[].cleanup
+/* org_ ovr */  [job].addExited
+/* org_ ovr */  [task].retire
 /* org_ ovr */
 /* org_ ovr */  HAZARD
 
@@ -255,7 +258,8 @@
 /*----------------------------------------------------------------------------*/
 : pipeline:origin
   //"pipeline:origin" .
-
+/* org_ org */  false locals| bSndErrRespOp |
+/* org_ org */
 /* org_ org */  // - - - - - - - - - - - - - - - - - -
 /* org_ org */  // start as ordinary job on this node
 /* org_ org */  // - - - - - - - - - - - - - - - - - -
@@ -293,6 +297,22 @@
 /* org_ org */
 /* org_ org */  [job].tscBeginning
 /* org_ org */
+/* org_ org */  // - - - - - - - - - - - - - - - - - -
+/* org_ org */  // Populate PdsErr[] if tag "<sendErrorsToResponseOp>" is set
+/* org_ org */  [job].parentResponseOpIsNotNull "<sendErrorsToResponseOp>" [job].tagSet@ tagSet.hasName and to bSndErrRespOp
+/* org_ org */  bSndErrRespOp if
+/* org_ org */    "Creating PdsErr[]" .verbose
+/* org_ org */    PdsErr[].isNull assert
+/* org_ org */
+/* org_ org */    // create the tableDef for C_TDEF_EXECERRORS
+/* org_ org */    C_TDEF_EXECERRORS "op__tableDef_err" find execute assert
+/* org_ org */
+/* org_ org */    // create a PdsErr operand for commandErrors
+/* org_ org */    // TODO: What if this fails with a low memory error?
+/* org_ org */    BT_EXECERRORS TableDefErr[] PdsErr[].new
+/* org_ org */  then
+/* org_ org */  // - - - - - - - - - - - - - - - - - -
+/* org_ org */
 /* org_ org */  "<preCheck>" [job].tagSet@ tagSet.hasName if
 /* org_ org */    // + tag exists
 /* org_ org */
@@ -306,17 +326,26 @@
 /* org_ org */
 /* org_ org */      Path[].discardAll
 /* org_ org */      [task].grabLock
-/* org_ org */      [job].addExited
 /* org_ org */
 /* org_ org */      [args].distJob if
 /* org_ org */        "pipeline" "origin"
 /* org_ org */        "org_ org" "<preCheck> signalling parent"       [job].trace
 /* org_ org */      then
 /* org_ org */
+/* org_ org */      bSndErrRespOp if
+/* org_ org */        [job].error@ attachmap::errorText@
+/* org_ org */          [job].error@ TableDefErr[] PdsErr[].addExecError assert
+/* org_ org */        PdsErr[]\clear [job].pipeToParentResponseOp
+/* org_ org */        Marker[].newChildExitMarker
+/* org_ org */        Marker[] [job].pipeToParentResponseOp
+/* org_ org */      then
+/* org_ org */
 /* org_ org */      [job].updateParent assert
 /* org_ org */      [job].signalParent assert
+/* org_ org */      LogicUnit[].cleanup
 /* org_ org */
-/* org_ org */        [task].retire // does not queue onto exit demon
+/* org_ org */      [job].addExited
+/* org_ org */      [task].retire // does not queue onto exit demon
 /* org_ org */
 /* org_ org */      HAZARD
 /* org_ org */
@@ -334,16 +363,25 @@
 /* org_ org */    ListedJob[].assertNoRef
 /* org_ org */    Path[].discardAll
 /* org_ org */    [task].grabLock
-/* org_ org */    [job].addExited
 /* org_ org */      [args].distJob if
 /* org_ org */        "pipeline" "origin"
 /* org_ org */        "org_ org" "preExecuteTest signalling parent"       [job].trace
 /* org_ org */      then
 /* org_ org */
+/* org_ org */      bSndErrRespOp if
+/* org_ org */        [job].error@ attachmap::errorText@
+/* org_ org */          [job].error@ TableDefErr[] PdsErr[].addExecError assert
+/* org_ org */        PdsErr[]\clear [job].pipeToParentResponseOp
+/* org_ org */        Marker[].newChildExitMarker
+/* org_ org */        Marker[] [job].pipeToParentResponseOp
+/* org_ org */      then
+/* org_ org */
 /* org_ org */    [job].updateParent assert
 /* org_ ovr */    [job].signalParent assert
+/* org_ org */    LogicUnit[].cleanup
 /* org_ org */
-/* org_ org */      [task].retire // does not queue onto exit demon
+/* org_ org */    [job].addExited
+/* org_ org */    [task].retire // does not queue onto exit demon
 /* org_ org */
 /* org_ org */    HAZARD
 /* org_ org */  then
@@ -390,12 +428,21 @@
 /* org_ org */
 /* org_ org */    Path[].discardAll
 /* org_ org */    [task].grabLock
-/* org_ org */    [job].addExited
+/* org_ org */
+/* org_ org */    bSndErrRespOp if
+/* org_ org */      [job].error@ attachmap::errorText@
+/* org_ org */        [job].error@ TableDefErr[] PdsErr[].addExecError assert
+/* org_ org */      PdsErr[]\clear [job].pipeToParentResponseOp
+/* org_ org */      Marker[].newChildExitMarker
+/* org_ org */        Marker[] [job].pipeToParentResponseOp
+/* org_ org */    then
+/* org_ org */
 /* org_ org */    [job].updateParent assert
-/* org_ org */
 /* org_ ovr */    [job].signalParent assert
+/* org_ org */    LogicUnit[].cleanup
 /* org_ org */
-/* org_ org */      [task].retire // does not queue onto exit demon
+/* org_ org */    [job].addExited
+/* org_ org */    [task].retire // does not queue onto exit demon
 /* org_ org */
 /* org_ org */    HAZARD
 /* org_ org */  then
@@ -444,10 +491,21 @@ then
 /* org_ org */      ListedJob[].assertNoRef
 /* org_ org */      Path[].discardAll
 /* org_ org */      [task].grabLock
-/* org_ org */      [job].addExited
-/* org_ org */      [job].updateParent assert
 /* org_ org */
+/* org_ org */      bSndErrRespOp if
+/* org_ org */        "Sending error to response op" .verbose
+/* org_ org */        [job].error@ attachmap::errorText@
+/* org_ org */          [job].error@ TableDefErr[] PdsErr[].addExecError assert
+/* org_ org */        PdsErr[]\clear [job].pipeToParentResponseOp
+/* org_ org */        Marker[].newChildExitMarker
+/* org_ org */        Marker[] [job].pipeToParentResponseOp
+/* org_ org */      then
+/* org_ org */
+/* org_ org */      [job].updateParent assert
 /* org_ org */      [job].signalParent assert
+/* org_ org */      LogicUnit[].cleanup
+/* org_ org */
+/* org_ org */      [job].addExited
 /* org_ org */
 /* org_ org */      [task].retire // does not queue onto exit demon
 /* org_ org */
@@ -620,7 +678,7 @@ then
 /* _ptp beg */  // create pipeline from spec
 /* _ptp beg */  //   and spawn tasks for ops
 /* _ptp beg */  // - - - - - - - - - - - - - -
-/* _ptp beg */  PipeSpec[] Pipeline[].create
+/* _ptp beg */  PipeSpec[]\clear Pipeline[].create
 /* _ptp beg */  // Pipeline[].dump
 /* _ptp beg */  Pipeline[].spawnOpTasks
 /* _ptp beg */

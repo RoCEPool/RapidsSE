@@ -459,7 +459,7 @@ void Step::vAdaptorWLStatementParsingError(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* AdaptorWL[].statementSubmittedError -- The statement submission failed.    */
+/* AdaptorWL[].stmtSubmittedErr -- The statement submission failed.           */
 /* An error code must be on the stack.                                        */
 /*----------------------------------------------------------------------------*/
 void Step::vAdaptorWLStatementSubmittedError(void)

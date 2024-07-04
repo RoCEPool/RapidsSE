@@ -47,6 +47,7 @@ void Step::vAddSteps_Marker(void)
   vAddStep("Marker[].isNull"_Stz,               &Step::vMarkerIsNull);
   vAddStep("Marker[].newCancelling"_Stz,        &Step::vMarkerNewCancelling);
   vAddStep("Marker[].newCancelledMarker"_Stz,   &Step::vMarkerNewCancelledMarker);
+  vAddStep("Marker[].newChildExitMarker"_Stz,   &Step::vMarkerNewChildExitMarker);
   vAddStep("Marker[].newCsvBuffer"_Stz,         &Step::vMarkerNewCsvBuffer);
   vAddStep("Marker[].newCleaningMarker"_Stz,    &Step::vMarkerNewCleaningMarker);
   vAddStep("Marker[].newCleanedupMarker"_Stz,   &Step::vMarkerNewCleanedupMarker);
@@ -167,6 +168,21 @@ void Step::vMarkerNewCancelledMarker(void)
 
   m_pLogicUnit->m_xpMarker =
     AM::MARKER::pNewMarker(OM_CANCELLEDMARKER,pOuterJobOfTask());
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Marker[].newChildExitMarker -- new a childExit marker                      */
+/*----------------------------------------------------------------------------*/
+void Step::vMarkerNewChildExitMarker(void)
+{
+  ENTRY();
+
+  ASSERT (m_pLogicUnit->m_xpMarker.bIsNull());
+
+  m_pLogicUnit->m_xpMarker =
+    AM::MARKER::pNewMarker(OM_CHILDEXIT,pOuterJobOfTask());
 
   EXIT();
 }

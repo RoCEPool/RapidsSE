@@ -1116,6 +1116,25 @@ void Engine::vNoMemoryLogging(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set object receive functions                                               */
+/*----------------------------------------------------------------------------*/
+void Engine::vObjRecvFns(void)
+{
+  gxaSizeHeap[CN_JOB].m_fpObjRecvFn       = (fpRECVFN *)       Job::bObjRecv;
+  gxaSizeHeap[CN_MARKER].m_fpObjRecvFn    = (fpRECVFN *)    Marker::bObjRecv;
+  gxaSizeHeap[CN_REJECTJOB].m_fpObjRecvFn = (fpRECVFN *) RejectJob::bObjRecv;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set object send functions                                                  */
+/*----------------------------------------------------------------------------*/
+void Engine::vObjSendFns(void)
+{
+  // Note: No RejectJob needed
+  gxaSizeHeap[CN_JOB].m_fpObjSendFn = (fpSENDFN *) Job::bObjSend;
+}
+
+/*----------------------------------------------------------------------------*/
 /* attach or create the shm region                                            */
 /*----------------------------------------------------------------------------*/
 void Engine::vOpenPool(void)
@@ -1289,6 +1308,7 @@ void Engine::vPostRecvFns(void)
   gxaSizeHeap[CN_JOB].m_fpPostRecvFn       = (fpPOSTFN*)Job::vPostRecv;
   gxaSizeHeap[CN_MARKER].m_fpPostRecvFn    = (fpPOSTFN*)Marker::vPostRecv;
   gxaSizeHeap[CN_PARCEL].m_fpPostRecvFn    = (fpPOSTFN*)Parcel::vPostRecv;
+  gxaSizeHeap[CN_PDS].m_fpPostRecvFn       = (fpPOSTFN*)Pds::vPostRecv;
   gxaSizeHeap[CN_PROFILE].m_fpPostRecvFn   = (fpPOSTFN*)Profile::vPostRecv;
   gxaSizeHeap[CN_REJECTJOB].m_fpPostRecvFn = (fpPOSTFN*)RejectJob::vPostRecv;
   gxaSizeHeap[CN_STREAMDEF].m_fpPostRecvFn = (fpPOSTFN*)StreamDef::vPostRecv;
@@ -1901,7 +1921,9 @@ void Engine::vStartSystem(void)
   Step::vAddSteps();
 
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
-    vTrace("  Adding PostRecv Functions\n"_Stz);
+    vTrace("  Adding ObjRecv, ObjSend & PostRecv Functions\n"_Stz);
+  vObjRecvFns();
+  vObjSendFns();
   vPostRecvFns();
 
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT))

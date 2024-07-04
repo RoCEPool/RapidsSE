@@ -9,12 +9,26 @@
 /*----------------------------------------------------------------------------*/
 : pipelineLocal::local
 
-  "" locals| sPreExe |
+  ""    locals| sPreExe |
+  false locals| bSndErrRespOp |
       
   [job].assertStructure
 
   [job].setOriginId
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Populate PdsErr[] if tag "<sendErrorsToResponseOp>" is set
+  [job].parentResponseOpIsNotNull "<sendErrorsToResponseOp>" [job].tagSet@ tagSet.hasName and to bSndErrRespOp
+  bSndErrRespOp if
+    PdsErr[].isNull assert
+
+    // create the tableDef for C_TDEF_EXECERRORS
+    C_TDEF_EXECERRORS "op__tableDef_err" find execute assert
+
+    // create a PdsErr operand for commandErrors
+    // TODO: What if this fails with a low memory error?
+    BT_EXECERRORS TableDefErr[] PdsErr[].new
+  then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compile the pipeline command
@@ -35,9 +49,9 @@
     Path[].discardAll
 
     [task].grabLock
-    [job].addExited
     [job].updateParent assert
     [job].signalParent assert
+    [job].addExited
       [task].retire // does not queue onto exit demon
 
     HAZARD
@@ -72,10 +86,21 @@
     Path[].discardAll
 
     [task].grabLock
-    [job].addExited
+
+    bSndErrRespOp if
+      ErrorCode[] attachmap::errorText@
+        ErrorCode[] TableDefErr[] PdsErr[].addExecError assert
+      PdsErr[]\clear [job].pipeToParentResponseOp
+      Marker[].newChildExitMarker
+      Marker[] [job].pipeToParentResponseOp
+    then
+
     [job].updateParent assert
     [job].signalParent assert
-      [task].retire // does not queue onto exit demon
+    LogicUnit[].cleanup
+
+    [job].addExited
+    [task].retire // does not queue onto exit demon
 
     HAZARD
 
@@ -92,7 +117,7 @@
 /* local */  // - - - - - - - - - - - - - -
 /* local */  [job].newMarkerChain
 
-  PipeSpec[] Pipeline[].create
+  PipeSpec[]\clear Pipeline[].create
   Pipeline[].spawnOpTasks
 
   // run <pre_execute>
@@ -104,8 +129,8 @@
     sPreExe find
     dup not if
       sPreExe "Unable to find pre execute word: %v" .printf
-      [job].updateParent assert
-      [job].signalParent assert
+//      [job].updateParent assert
+//      [job].signalParent assert
       process::quit
     then
       execute
@@ -117,6 +142,7 @@
 
   "<signalParent>" [job].tagSet@ tagSet.hasName not if
      //"SIGNALLING PARENT AS NO WAIT" .
+     // No need to send anything to responseOp as this is a successful case.
      [job].updateParent assert
      [job].signalParent assert
   then
@@ -159,15 +185,16 @@
   Path[].discardAll
 
   [task].grabLock
+
+  "<signalParent>" [job].tagSet@ tagSet.hasName if
+    //"pipelineLocal::local SIGNALLING PARENT" .
+    [job].updateParent assert
+    [job].signalParent assert
+  then
+
+  LogicUnit[].cleanup
   [job].addExited
-
-    "<signalParent>" [job].tagSet@ tagSet.hasName if
-      //"pipelineLocal::local SIGNALLING PARENT" .
-      [job].updateParent assert
-      [job].signalParent assert
-    then
-
-    [task].retire // does not queue onto exit demon
+  [task].retire // does not queue onto exit demon
 ;
 
 /*----------------------------------------------------------------------------*/

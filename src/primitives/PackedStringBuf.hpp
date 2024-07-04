@@ -58,6 +58,9 @@ namespace PRIMITIVES
     static PackedStringBuf* pCreate(eSIZE eFirstSize);
     static void vDestroy(PackedStringBuf* pBuf);
 
+    static bool bSerialise(PackedStringBuf* pPackedStringBuf, Bytes* pBuf);
+    static PackedStringBuf* pDeserialise(Bytes* ayBuf, i8& iPos);
+
   protected:
     // Constructors and destructor are protected, so they aren't instantiated directly
     explicit PackedStringBuf(eCN eClassNo);
@@ -67,9 +70,12 @@ namespace PRIMITIVES
   public:
     Stz*    pAdd(Stz* szItem);
     Stz*    pAdd(Stz* szItem, i8 iSize);
+    Stz*    szAt(i8 iOffset);
     bool    bContainsAddr(Stz* szAddr);
+    eSIZE   eFirstBufSize();
     Footer* aFooter(void);
     i8      nItems(void);
+    i8      iOffsetOf(Stz* szAddr);
     void    vReset(void);
     void    vRemove(Stz* szItem);
     i8      nSegments(void);
@@ -106,12 +112,16 @@ namespace PRIMITIVES
    ~PackedStringSegment(void) noexcept(false);
 
     static i8 nArea(void);
+    static bool bSerialise(PackedStringSegment* pSeg, Bytes* pBuf);
+    static PackedStringSegment* pDeserialise(Bytes* ayBuf, i8& iPos, PackedStringBuf* pHead);
 
     Stz*    pAddToSeg(Stz* szItem);
+    Stz*    szAtSegOffset(i8 iSegOffset);
     bool    bCanFitInSeg(i8 iSize);
     void    vDestroy(void);
     i8      nEntriesInSeg();
     bool    bSegContainsAddr(Stz* szAddr);
+    i8      iSegOffsetOf(Stz* szAddr);
     Footer* aFooter(void);
     void    vResetSeg(void);
     void    vRemoveFromSeg(Stz* szItem, bool* pbIsEmpty);

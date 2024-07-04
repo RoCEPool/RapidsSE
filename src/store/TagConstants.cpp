@@ -60,6 +60,7 @@ Stz* C_TAG_REQNO        = "<reqNo>"_Stz;
 Stz* C_TAG_REQOF        = "<reqOf>"_Stz;
 Stz* C_TAG_RESOURCELOG  = "<resourceLog>"_Stz;
 Stz* C_TAG_SECTION      = "<section>"_Stz;
+Stz* C_TAG_SENDERRORRESPONSEOP = "<sendErrorsToResponseOp>"_Stz;
 Stz* C_TAG_SHM          = "<shm>"_Stz;
 Stz* C_TAG_SIGNALPARENT = "<signalParent>"_Stz;
 Stz* C_TAG_STMT         = "<stmt>"_Stz;

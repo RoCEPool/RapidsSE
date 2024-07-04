@@ -439,19 +439,21 @@ void Lock::vGrabRead(void)
   if (AM::SYSARGS::bLockTracking())
     ++AM::pLocks()->m_ixReadCollisions[m_eLockKind];
 #endif
-  
-  Timer oTimer;
-  oTimer.vStart();
+
+  i8 iCount = 0;
   
   while (! Lock::iLockGrabRead(&m_uLockWord) ) {
 
-    if (! m_pObjectLocked)
-      continue;
-    
-    oTimer.vUpdate();
-    if (oTimer.iMilliseconds() < 100 )
-      continue;
-    
+    // On CentOS 7 with GCC 11 we seem to get a very weird situation where two threads
+    // end up competing for a read lock forever with neither making forward progress.
+    // It looks like this loop somehow gets optimised into a while(1). However, the
+    // debugging code below seems to stop this behaviour so it is being left in.
+    // The thought is that it adds enough brownian motion so that the compiler doesn't
+    // optimise this loop out entirely.
+    if (++iCount % 1000 == 0 && iCount <= 10000) {
+      vTrace("Thread %lld; Task %p; read lock count %lld"_Stz,
+             AM::THREAD::iThisThreadNo(), AM::pThisTLSTask(), iCount);
+    }
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

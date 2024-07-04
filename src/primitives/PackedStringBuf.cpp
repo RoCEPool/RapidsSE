@@ -4,8 +4,21 @@
 
 #include "BASE.h"
 #include "PackedStringBuf.hpp"
+#include "Bytes.hpp"
 
 using namespace PRIMITIVES;
+
+extern AttachMap* gpAttachMap;
+
+static const Stz* C_BEGIN_STRBUF    = "Begin_StrBuf"_Stz;
+static const Stz* C_END_STRBUF      = "End_StrBuf"_Stz;
+static const Stz* C_BEGIN_STRSEG    = "Begin_StrSeg"_Stz;
+static const Stz* C_END_STRSEG      = "End_StrSeg"_Stz;
+
+static const i8 C_SIZE_BEGIN_STRBUF  = C_BEGIN_STRBUF->nLength() + 1;
+static const i8 C_SIZE_END_STRBUF    = C_END_STRBUF->nLength() + 1;
+static const i8 C_SIZE_BEGIN_STRSEG  = C_BEGIN_STRSEG->nLength() + 1;
+static const i8 C_SIZE_END_STRSEG    = C_END_STRSEG->nLength() + 1;
 
 __pCastFunction(PRIMITIVES,PackedStringSegmentTiny,CN_PACKEDSTRINGBUFTINY)
 __pCastFunction(PRIMITIVES,PackedStringSegmentSmall,CN_PACKEDSTRINGBUFSMALL)
@@ -50,6 +63,143 @@ void PackedStringBuf::vDestroy(PackedStringBuf *pBuf)
 }
 
 /*----------------------------------------------------------------------------*/
+/* serialise a PackedStringBuf to a byte buffer                               */
+/*----------------------------------------------------------------------------*/
+bool PackedStringBuf::bSerialise(PackedStringBuf* pPackedStringBuf, Bytes* pBuf)
+{
+  _static_
+
+  ASSERT(pPackedStringBuf);
+  ASSERT(pBuf);
+  ASSERT(pBuf->i_Latter() >= 0);
+
+
+  // (1) First write a basic human-readable string for debugging/verification purposes
+  pBuf->iAppend(C_BEGIN_STRBUF);
+
+  // (2) First write the number of items in the entire buffer
+  pBuf->iAppend(pPackedStringBuf->nItems());
+
+  // (3) Write the number of segments
+  pBuf->iAppend(pPackedStringBuf->nSegments());
+
+  // Serialise each segment
+  PackedStringBuf* pSeg = pPackedStringBuf;
+  do {
+    RASSERT(pBuf->iRemaining() >= 0);
+
+    // (4) Write the class number as this indicates the size of the segment
+    pBuf->iAppend((i8) pSeg->eGetClassNo());
+
+    // (5) Serialise the data in the current segment
+    switch (pSeg->eGetClassNo()) {
+      case CN_PACKEDSTRINGBUFTINY:      PackedStringSegmentTiny::bSerialise(  _pPackedStringSegmentTiny(pSeg), pBuf); break;
+      case CN_PACKEDSTRINGBUFSMALL:    PackedStringSegmentSmall::bSerialise( _pPackedStringSegmentSmall(pSeg), pBuf); break;
+      case CN_PACKEDSTRINGBUFMEDIUM:  PackedStringSegmentMedium::bSerialise(_pPackedStringSegmentMedium(pSeg), pBuf); break;
+      case CN_PACKEDSTRINGBUFLARGE:    PackedStringSegmentLarge::bSerialise( _pPackedStringSegmentLarge(pSeg), pBuf); break;
+      default:
+        NEVER_REACH
+    }
+  } while ((pSeg = pSeg->m_pNext) != nullptr);
+
+  // (8) Write a short human-readable footer
+  pBuf->iAppend(C_END_STRBUF);
+
+  RASSERT(pBuf->iRemaining() >= 0);
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* deserialise a tagset from a byte buffer                                    */
+/*----------------------------------------------------------------------------*/
+PackedStringBuf* PackedStringBuf::pDeserialise(Bytes* pBuf, i8& iPos)
+{
+  _static_
+
+  ASSERT(pBuf);
+  ASSERT(pBuf->i_Latter() > 0);
+  ASSERT(iPos >= 0);
+
+  PackedStringBuf* pPackedStringBuf = nullptr;
+
+
+  // (1) Read C_BEGIN_STRBUF
+  ASSERT(pBuf->szGet(iPos)->bEqual(C_BEGIN_STRBUF));
+  iPos += C_SIZE_BEGIN_STRBUF;
+
+  // (2) Read the number of items in the entire buffer
+  i8 nItems = pBuf->iGet(iPos);
+  iPos += sizeof(i8);
+  ASSERT(nItems >= 0);
+
+  // (3) Read the number of segments
+  i8 nSegments = pBuf->iGet(iPos);
+  iPos += sizeof(i8);
+  ASSERT(nSegments > 0);
+
+  PackedStringBuf* pHead = nullptr;
+  PackedStringBuf* pSeg;
+  PackedStringBuf* pLastSeg = nullptr;
+
+  for (i8 i=0; i<nSegments; i++) {
+    // (4) Read the class number of the segment
+    eCN eSegClass = (eCN) pBuf->iGet(iPos);
+    iPos += sizeof(i8);
+
+    // (5) Deserialise the segment
+    switch (eSegClass) {
+      case BASE::CN_PACKEDSTRINGBUFTINY:
+        pSeg = PackedStringSegmentTiny::pDeserialise(pBuf, iPos, pHead);
+        break;
+
+      case BASE::CN_PACKEDSTRINGBUFSMALL:
+        pSeg = PackedStringSegmentSmall::pDeserialise(pBuf, iPos, pHead);
+        break;
+
+      case BASE::CN_PACKEDSTRINGBUFMEDIUM:
+        pSeg = PackedStringSegmentMedium::pDeserialise(pBuf, iPos, pHead);
+        break;
+
+      case BASE::CN_PACKEDSTRINGBUFLARGE:
+        pSeg = PackedStringSegmentLarge::pDeserialise(pBuf, iPos, pHead);
+        break;
+
+      default: NEVER_REACH
+    }
+
+    if (!pHead) {
+      pHead = pSeg;
+    }
+
+    if (!pPackedStringBuf) {
+      pPackedStringBuf = pSeg;
+      pPackedStringBuf->m_nItems = nItems;
+
+      ASSERT(pPackedStringBuf->m_pHead == pSeg);
+      ASSERT(!pPackedStringBuf->m_pNext);
+      ASSERT(!pLastSeg);
+
+    } else {
+      ASSERT(pSeg->m_pHead == pPackedStringBuf);
+      ASSERT(pLastSeg);
+      pLastSeg->m_pNext = pSeg;
+    }
+
+    pLastSeg = pSeg;
+  }
+
+  // (6) Read C_END_STRBUF
+  ASSERT(pBuf->szGet(iPos)->bEqual(C_END_STRBUF));
+  iPos += C_SIZE_END_STRBUF;
+
+
+  return pPackedStringBuf;
+}
+
+
+
+
+/*----------------------------------------------------------------------------*/
 /* Constructor of PackedStringBuf class                                       */
 /*----------------------------------------------------------------------------*/
 PackedStringBuf::PackedStringBuf(BASE::eCN eClassNo)
@@ -69,7 +219,7 @@ PackedStringBuf::PackedStringBuf(BASE::eCN eClassNo)
 PackedStringBuf::PackedStringBuf(BASE::eCN eClassNo, PackedStringBuf* pHead)
 : Object (eClassNo)
 {
-  this->m_pHead = pHead;
+  this->m_pHead = (pHead == nullptr ? this : pHead);
   this->m_pNext = nullptr;
   this->m_nItems = 0;
   this->u.m_pVoid = this;
@@ -94,19 +244,6 @@ PackedStringBuf::~PackedStringBuf(void) noexcept(false)
 
     m_pNext = nullptr;
   }
-
-//  // Call the destructor of the derived class to ensure that the bytespace
-//  // is cleaned up. This is necessary because in many cases it is the base class
-//  // pointer that is being deleted, and this would normally result in a leak
-//  // of the bytespace object in the derived class.
-//  switch (this->eGetClassNo()) {
-//    case CN_PACKEDSTRINGBUFTINY:      _pPackedStringSegmentTiny(this)->vDestroy();   break;
-//    case CN_PACKEDSTRINGBUFSMALL:    _pPackedStringSegmentSmall(this)->vDestroy();  break;
-//    case CN_PACKEDSTRINGBUFMEDIUM:  _pPackedStringSegmentMedium(this)->vDestroy(); break;
-//    case CN_PACKEDSTRINGBUFLARGE:    _pPackedStringSegmentLarge(this)->vDestroy();  break;
-//    default:
-//      NEVER_REACH
-//  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -115,6 +252,10 @@ PackedStringBuf::~PackedStringBuf(void) noexcept(false)
 Stz* PackedStringBuf::pAdd(Stz* szItem)
 {
   ASSERT(m_pHead == this);
+
+  if (!szItem) {
+    szItem = ""_Stz;
+  }
 
   return pAdd(szItem, szItem->nSize());
 }
@@ -165,6 +306,53 @@ Stz* PackedStringBuf::pAdd(Stz* szItem, i8 iSize)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Returns the string pointer for the given offset from the buffer beginning  */
+/*----------------------------------------------------------------------------*/
+Stz* PackedStringBuf::szAt(i8 iOffset) {
+  ASSERT(this == m_pHead);
+  ASSERT(iOffset >= 0);
+  ASSERT(iOffset < iTotalArea());
+
+  // Get the seg and the offset into that segment
+
+  PackedStringBuf* pSegment = this;
+  i8 iLower = 0;
+
+  do {
+    i8   iArea;
+
+    switch (pSegment->eGetClassNo()) {
+      case CN_PACKEDSTRINGBUFTINY:    iArea =   _pPackedStringSegmentTiny(pSegment)->nArea(); break;
+      case CN_PACKEDSTRINGBUFSMALL:   iArea =  _pPackedStringSegmentSmall(pSegment)->nArea(); break;
+      case CN_PACKEDSTRINGBUFMEDIUM:  iArea = _pPackedStringSegmentMedium(pSegment)->nArea(); break;
+      case CN_PACKEDSTRINGBUFLARGE:   iArea =  _pPackedStringSegmentLarge(pSegment)->nArea(); break;
+      default:
+        NEVER_REACH
+    }
+
+    if (iOffset >= iLower && iOffset < iLower + iArea) {
+      // It's in this segment
+      i8 iSegOffset = iOffset - iLower;
+
+      switch (pSegment->eGetClassNo()) {
+        case CN_PACKEDSTRINGBUFTINY:    return   _pPackedStringSegmentTiny(pSegment)->szAtSegOffset(iSegOffset);
+        case CN_PACKEDSTRINGBUFSMALL:   return  _pPackedStringSegmentSmall(pSegment)->szAtSegOffset(iSegOffset);
+        case CN_PACKEDSTRINGBUFMEDIUM:  return _pPackedStringSegmentMedium(pSegment)->szAtSegOffset(iSegOffset);
+        case CN_PACKEDSTRINGBUFLARGE:   return  _pPackedStringSegmentLarge(pSegment)->szAtSegOffset(iSegOffset);
+        default:
+          NEVER_REACH
+      }
+      NEVER_REACH
+    }
+
+    iLower += iArea;
+    pSegment = pSegment->m_pNext;
+  } while (pSegment != nullptr);
+
+  NEVER_REACH
+}
+
+/*----------------------------------------------------------------------------*/
 /* Returns true if the given address falls within range of one of the segments*/
 /*----------------------------------------------------------------------------*/
 bool PackedStringBuf::bContainsAddr(Stz* szAddr)
@@ -177,10 +365,10 @@ bool PackedStringBuf::bContainsAddr(Stz* szAddr)
     bool bResult = false;
 
     switch (pSegment->eGetClassNo()) {
-      case CN_PACKEDSTRINGBUFTINY:    bResult = _pPackedStringSegmentTiny(pSegment)->bSegContainsAddr(szAddr); break;
-      case CN_PACKEDSTRINGBUFSMALL:   bResult = _pPackedStringSegmentSmall(pSegment)->bSegContainsAddr(szAddr); break;
+      case CN_PACKEDSTRINGBUFTINY:    bResult =   _pPackedStringSegmentTiny(pSegment)->bSegContainsAddr(szAddr); break;
+      case CN_PACKEDSTRINGBUFSMALL:   bResult =  _pPackedStringSegmentSmall(pSegment)->bSegContainsAddr(szAddr); break;
       case CN_PACKEDSTRINGBUFMEDIUM:  bResult = _pPackedStringSegmentMedium(pSegment)->bSegContainsAddr(szAddr); break;
-      case CN_PACKEDSTRINGBUFLARGE:   bResult = _pPackedStringSegmentLarge(pSegment)->bSegContainsAddr(szAddr); break;
+      case CN_PACKEDSTRINGBUFLARGE:   bResult =  _pPackedStringSegmentLarge(pSegment)->bSegContainsAddr(szAddr); break;
       default:
         NEVER_REACH
     }
@@ -193,6 +381,23 @@ bool PackedStringBuf::bContainsAddr(Stz* szAddr)
   } while (pSegment);
 
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the size enum of this first buffer                                 */
+/*----------------------------------------------------------------------------*/
+PackedStringBuf::eSIZE PackedStringBuf::eFirstBufSize()
+{
+  ASSERT(this == m_pHead);
+
+  switch (this->eGetClassNo()) {
+    case CN_PACKEDSTRINGBUFTINY:    return TINY;
+    case CN_PACKEDSTRINGBUFSMALL:   return SMALL;
+    case CN_PACKEDSTRINGBUFMEDIUM:  return MEDIUM;
+    case CN_PACKEDSTRINGBUFLARGE:   return LARGE;
+    default:
+      NEVER_REACH
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -222,6 +427,63 @@ i8 PackedStringBuf::nItems(void)
   } else {
     return this->m_pHead->m_nItems;
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the offset from the start of the buffer for a given address            */
+/*----------------------------------------------------------------------------*/
+i8 PackedStringBuf::iOffsetOf(Stz* szAddr)
+{
+  ASSERT(this->m_pHead);
+
+  PackedStringBuf* pSegment = this;
+  i8 iLower = 0;
+
+  do {
+    i8   iArea;
+    bool bHasAddr;
+
+    switch (pSegment->eGetClassNo()) {
+      case CN_PACKEDSTRINGBUFTINY:    bHasAddr =   _pPackedStringSegmentTiny(pSegment)->bSegContainsAddr(szAddr); break;
+      case CN_PACKEDSTRINGBUFSMALL:   bHasAddr =  _pPackedStringSegmentSmall(pSegment)->bSegContainsAddr(szAddr); break;
+      case CN_PACKEDSTRINGBUFMEDIUM:  bHasAddr = _pPackedStringSegmentMedium(pSegment)->bSegContainsAddr(szAddr); break;
+      case CN_PACKEDSTRINGBUFLARGE:   bHasAddr =  _pPackedStringSegmentLarge(pSegment)->bSegContainsAddr(szAddr); break;
+      default:
+        NEVER_REACH
+    }
+
+    if (!bHasAddr) {
+      switch (pSegment->eGetClassNo()) {
+        case CN_PACKEDSTRINGBUFTINY:    iArea =   _pPackedStringSegmentTiny(pSegment)->nArea(); break;
+        case CN_PACKEDSTRINGBUFSMALL:   iArea =  _pPackedStringSegmentSmall(pSegment)->nArea(); break;
+        case CN_PACKEDSTRINGBUFMEDIUM:  iArea = _pPackedStringSegmentMedium(pSegment)->nArea(); break;
+        case CN_PACKEDSTRINGBUFLARGE:   iArea =  _pPackedStringSegmentLarge(pSegment)->nArea(); break;
+        default:
+          NEVER_REACH
+      }
+
+      iLower += iArea;
+      pSegment = pSegment->m_pNext;
+      continue;
+    }
+
+    // It's in this segment. Get the offset of this string into this specific segment
+    i8 iSegOffset = 0;
+
+    switch (pSegment->eGetClassNo()) {
+      case CN_PACKEDSTRINGBUFTINY:    iSegOffset =   _pPackedStringSegmentTiny(pSegment)->iSegOffsetOf(szAddr); break;
+      case CN_PACKEDSTRINGBUFSMALL:   iSegOffset =  _pPackedStringSegmentSmall(pSegment)->iSegOffsetOf(szAddr); break;
+      case CN_PACKEDSTRINGBUFMEDIUM:  iSegOffset = _pPackedStringSegmentMedium(pSegment)->iSegOffsetOf(szAddr); break;
+      case CN_PACKEDSTRINGBUFLARGE:   iSegOffset =  _pPackedStringSegmentLarge(pSegment)->iSegOffsetOf(szAddr); break;
+      default:
+        NEVER_REACH
+    }
+
+    return iLower + iSegOffset;
+
+  } while (pSegment != nullptr);
+
+  NEVER_REACH
 }
 
 /*----------------------------------------------------------------------------*/
@@ -498,9 +760,18 @@ PackedStringBuf* PackedStringBuf::pAddSegmentFor(i8 iSize)
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
 template <eCN CLASSNO, i8 AREA>
-void* PackedStringSegment<CLASSNO, AREA>::operator new(size_t)
+void* PackedStringSegment<CLASSNO, AREA>::operator new(size_t iObjSize)
 {
-  void* pObject = Heaps::pAllocate(CLASSNO);
+  void* pObject;
+
+  // This is a hack because TagSet is used before the allocators are setup
+  // and ready by the SysArgs class to record command line arguments. These
+  // instances, once setup, really shouldn't be changing.
+  if (gpAttachMap) {
+    pObject = Heaps::pAllocate(CLASSNO);
+  } else {
+    pObject = MemLib::aMallocBlock(iObjSize);
+  }
   
   return pObject;
 }
@@ -515,7 +786,14 @@ void PackedStringSegment<CLASSNO, AREA>::operator delete(void* aAddr)
     (PackedStringSegment<CLASSNO, AREA>*)(aAddr);
 
   ASSERT(pPackedStringBuf->m_pNext == nullptr);
-  Heaps::vFree(pPackedStringBuf);
+
+  if (gpAttachMap && AM::pHeaps() && AM::bInBufferPool(pPackedStringBuf)) {
+    Heaps::vFree(pPackedStringBuf);
+  } else {
+    // For the case of running the status command on the command line
+    // but SE is not actually running (so no heaps exist).
+    free(pPackedStringBuf);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -571,6 +849,20 @@ Stz* PackedStringSegment<CLASSNO, AREA>::pAddToSeg(Stz* szItem)
   return szDst;
 }
 
+
+/*----------------------------------------------------------------------------*/
+/* Get a Stz* for a given offset into this particular segment                 */
+/*----------------------------------------------------------------------------*/
+template <eCN CLASSNO, i8 AREA>
+Stz* PackedStringSegment<CLASSNO, AREA>::szAtSegOffset(i8 iSegOffset)
+{
+  ASSERT(iSegOffset >= 0);
+  ASSERT(iSegOffset < AREA);
+  ASSERT(m_nSegEntries > 0);
+
+  return m_xBytes.szGet(iSegOffset);
+}
+
 /*----------------------------------------------------------------------------*/
 /* returns the buffer size of this packed string buffer segment               */
 /*----------------------------------------------------------------------------*/
@@ -578,6 +870,78 @@ template <eCN CLASSNO, i8 AREA>
 i8 PackedStringSegment<CLASSNO, AREA>::nArea()
 {
   return AREA;
+}
+
+/*----------------------------------------------------------------------------*/
+/* serialise a PackedStringBuf to a byte buffer                               */
+/*----------------------------------------------------------------------------*/
+template <eCN CLASSNO, i8 AREA>
+bool PackedStringSegment<CLASSNO, AREA>::bSerialise(PackedStringSegment<CLASSNO, AREA>* pSeg, Bytes* pBuf)
+{
+  _static_
+
+  ASSERT(pSeg);
+  ASSERT(pBuf);
+  ASSERT(pBuf->i_Latter() >= 0);
+
+
+  // (1) Write a short human-readable header text for this segment
+  pBuf->iAppend(C_BEGIN_STRSEG);
+
+  // (2) Write the number of entries in this segment
+  pBuf->iAppend(pSeg->m_nSegEntries);
+
+  // (3) Now write the size of the data in this segment
+  i8 iStrSize = pSeg->m_xBytes.i_Latter();
+  pBuf->iAppend(iStrSize);
+
+  // (4) Write the data in this segment
+  pBuf->iAppend(reinterpret_cast<byte*>(pSeg->m_xBytes.szArea()), iStrSize);
+
+  // (5) Write a human-readable footer for the end of this segment's data
+  pBuf->iAppend(C_END_STRSEG);
+
+  RASSERT(pBuf->iRemaining() >= 0);
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* deserialise a byte buffer to a PackedStringSegment                         */
+/*----------------------------------------------------------------------------*/
+template <eCN CLASSNO, i8 AREA>
+PackedStringSegment<CLASSNO,AREA>* PackedStringSegment<CLASSNO, AREA>::pDeserialise(Bytes* pBuf, i8& iPos, PackedStringBuf* pHead)
+{
+  _static_
+
+  ASSERT(pBuf);
+  ASSERT(pBuf->i_Latter() > 0);
+  ASSERT(iPos >= 0);
+
+  PackedStringSegment<CLASSNO,AREA>* pSeg = new PackedStringSegment<CLASSNO,AREA>(pHead);
+
+  // (1) Read C_BEGIN_STRSEG
+  ASSERT(pBuf->szGet(iPos)->bEqual(C_BEGIN_STRSEG));
+  iPos += C_SIZE_BEGIN_STRSEG;
+
+  // (2) Read in the number of entries in the segment
+  pSeg->m_nSegEntries = pBuf->iGet(iPos);
+  iPos += sizeof(i8);
+  ASSERT(pSeg->m_nSegEntries >= 0);
+
+  // (3) Read in the size of the string data in this segment
+  i8 iStrSize = pBuf->iGet(iPos);
+  iPos += sizeof(i8);
+  ASSERT(iStrSize >= 0);
+
+  // (4) Read in the string data
+  pSeg->m_xBytes.iAppend(reinterpret_cast<byte*>(pBuf->szGet(iPos)), iStrSize);
+  iPos += iStrSize;
+
+  // (5) Read C_END_STRSEG
+  ASSERT(pBuf->szGet(iPos)->bEqual(C_END_STRSEG));
+  iPos += C_SIZE_END_STRSEG;
+
+  return pSeg;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -615,6 +979,21 @@ bool PackedStringSegment<CLASSNO, AREA>::bSegContainsAddr(Stz* szAddr)
 {
   ASSERT(szAddr);
   return m_xBytes.bContains(szAddr);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the offset of the address to this specific segment                 */
+/*----------------------------------------------------------------------------*/
+template <eCN CLASSNO, i8 AREA>
+i8 PackedStringSegment<CLASSNO, AREA>::iSegOffsetOf(Stz* szAddr)
+{
+  ASSERT(szAddr);
+  i8 iSegOffset = nDifference(m_xBytes.szArea(), szAddr);
+
+  ASSERT(iSegOffset >= 0);
+  ASSERT(iSegOffset < AREA);
+
+  return iSegOffset;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -343,7 +343,7 @@ using namespace Parser;
 /*----------------------------------------------------------------------------*/
 /* sizes & heaps                                                              */
 /*----------------------------------------------------------------------------*/
-#define FILL 0,0,0,0,0,0,0
+#define FILL 0,0,0,0,0,0,0,0,0
 
 SizeHeap gxaSizeHeap[]
 {
@@ -553,7 +553,7 @@ SizeHeap gxaSizeHeap[]
   {CN_OPERANDWATCH,             sizeof(OperandWatch),              HT_T_SMALL   , FILL },
   {CN_OPSKETCH,                 sizeof(OpSketch),                  HT_T_MEDIUM  , FILL },
   {CN_OPMETRICS,                sizeof(OpMetrics),                 HT_T_TINY    , FILL },
-  {CN_OPSPEC,                   sizeof(OpSpec),                    HT_T_MEDIUM  , FILL },
+  {CN_OPSPEC,                   sizeof(OpSpec),                    HT_T_SMALL   , FILL },
   {CN_OPTIMISER,                sizeof(Optimiser),                 HT_T_LARGE   , FILL },
   {CN_OTHEROPERAND,             sizeof(OtherOperand),              HT_T_TINY    , FILL },
 
@@ -726,7 +726,8 @@ SizeHeap gxaSizeHeap[]
   { CN_TABLEDEF,                 sizeof(Table),              HT_T_MEDIUM  ,FILL },
   { CN_TABLEPTN,                 sizeof(TablePtn),           HT_T_TINY    ,FILL },
   { CN_TABLEPTNVEC,              sizeof(TablePtnVec),        HT_T_TINY    ,FILL },
-  { CN_TAGSET,                   sizeof(TagSet),             HT_T_MEDIUM  ,FILL },
+  { CN_TAGARRAY,                 sizeof(TagArray),           HT_T_TINY    ,FILL },
+  { CN_TAGSET,                   sizeof(TagSet),             HT_T_TINY    ,FILL },
   { CN_TASK,                     sizeof(Task),               HT_T_MEDIUM  ,FILL },
   { CN_TASKLIST,                 sizeof(TaskList),           HT_T_TINY    ,FILL },
   { CN_TASKQUEUE,                sizeof(TaskQueue),          HT_T_TINY    ,FILL },

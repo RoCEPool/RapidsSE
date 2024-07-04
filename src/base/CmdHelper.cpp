@@ -452,7 +452,7 @@ bool CmdHelper::bMatchesSyntax(TokenVec* pTknVec, TagSet* pSynTags)
 
   }
 
-  if (i_Syn != pSynTags->m_nItems)
+  if (i_Syn != pSynTags->nItems())
     return false;
   
   return true;

@@ -73,6 +73,7 @@ Optimiser::~Optimiser(void) noexcept(false)
 
   //RASSERT(0 == m_pCI->nItems());
 
+  m_p_JobTags = nullptr; // not owned
   delete m_pBench;
 
   delete m_pDissector;

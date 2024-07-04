@@ -89,10 +89,10 @@ namespace BASE
   
     Totup* pWhyTot(void);
 
-  protected:
     bool bBytesRecv(void* pBuffer, i8 nBytes, SysCall& SysCall);
     bool bBytesSend(void* pBuffer, i8 nBytes, SysCall& SysCall);
-  
+
+  protected:
     Footer* aFooter(void);
   };
   
