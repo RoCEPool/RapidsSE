@@ -1,9 +1,8 @@
 /*============================================================================*/
-/* __Q8_OPT1                                                                  */
+/* __Q8_REGION                                                                */
 /*============================================================================*/
 
-/pipeline_def
- /optimise_passthru
+/optimise_passthru
  pipeline Q8
  begin
    stage S00 on origin :
@@ -23,19 +22,19 @@
      | combined 0
      | next
 
-   stage S02 on all partitions multiple threads 4:
+   stage S02 on all partitions:
      indexJoin orders IxO_CUSTKEY "BOUND $I1 C_CUSTKEY =="
      | project "type DATE ( 0 ) as O_ORDERDATE O_ORDERDATE ,
                 type integer ( 19 ) as O_ORDERKEY O_ORDERKEY ,
-                type INTEGER ( 19 ) as O_YEAR O_ORDERDATE extract_year"
+                type DATE ( 0 ) as O_ORDERDATE O_ORDERDATE "
      | filter "type BOOLEAN O_ORDERDATE DATE '1995-01-01' >=  O_ORDERDATE DATE '1996-12-31' <= and"
      | project "type integer ( 19 ) as O_ORDERKEY O_ORDERKEY ,
-                type INTEGER ( 19 ) as O_YEAR O_YEAR"
+                type INTEGER ( 19 ) as O_YEAR O_ORDERDATE extract_year"
      | hash "type INTEGER ( 19 ) O_ORDERKEY"
      | combined 0
      | next hashcast
 
-   stage S03 on all partitions :
+   stage S03 on all partitions  multiple threads 4:
      indexJoin LineItem IxL_ORDERKEY "BOUND $I1 O_ORDERKEY =="
      | project "type INTEGER ( 19 ) as L_SUPPKEY L_SUPPKEY ,
                 type INTEGER ( 19 ) as L_PARTKEY L_PARTKEY ,

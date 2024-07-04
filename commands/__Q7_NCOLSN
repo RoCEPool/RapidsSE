@@ -1,0 +1,110 @@
+/*============================================================================*/
+/* __Q7                                                                       */
+/*============================================================================*/
+
+/optimise_passthru
+pipeline Query7
+begin
+   stage S00 on origin :
+     start
+     | pulse once
+     | next
+
+   stage S01 on all partitions:
+     scan nation
+     | project "type INTEGER ( 19 ) as N_NATIONKEY N_NATIONKEY ,
+                type VARCHAR ( 0 ) as N2_N_NAME N_NAME"
+     | filter "type BOOLEAN N2_N_NAME 'FRANCE' == N2_N_NAME 'GERMANY' == OR"
+     | indexJoin customer IxC_NATIONKEY "BOUND $I1 N_NATIONKEY =="
+     | project "type INTEGER ( 19 ) as C_CUSTKEY C_CUSTKEY ,
+                type VARCHAR ( 0 ) as N2_N_NAME N2_N_NAME"
+     | indexJoin orders IxO_CUSTKEY "BOUND $I1 C_CUSTKEY =="
+     | project "type integer ( 19 ) as O_ORDERKEY O_ORDERKEY ,
+                type INTEGER ( 19 ) as O_YEAR O_ORDERDATE extract_year ,
+                type VARCHAR ( 0 ) as N2_N_NAME N2_N_NAME"
+     | filter "type BOOLEAN } DATE '1995-01-01'  DATE '1996-12-31' L_SHIPDATE between"
+     | project "type integer ( 19 ) as O_ORDERKEY O_ORDERKEY ,
+                     type INTEGER ( 19 ) as O_YEAR O_ORDERDATE extract_year ,
+                     type VARCHAR ( 0 ) as N2_N_NAME N2_N_NAME"
+     | hash "type INTEGER ( 19 ) O_ORDERKEY"
+     | combined 0
+     | next hashcast
+
+   stage S04 on all partitions multiple threads 4:
+     indexJoin LineItem IxL_ORDERKEY "BOUND $I1 O_ORDERKEY =="
+     | project "type INTEGER ( 19 ) as L_SUPPKEY L_SUPPKEY ,
+                type VARCHAR ( 0 ) as N2_N_NAME N2_N_NAME ,
+                type DATE ( 0 ) as L_SHIPDATE L_SHIPDATE ,
+                type DECIMAL ( 19  2 ) as L_EXTENDEDPRICE L_EXTENDEDPRICE  ,
+                type DECIMAL ( 19  2 ) as L_DISCOUNT L_DISCOUNT ,
+                type INTEGER ( 19 ) as O_YEAR O_YEAR"
+     | project "type INTEGER ( 19 ) as L_SUPPKEY L_SUPPKEY ,
+                type VARCHAR ( 0 ) as N2_N_NAME N2_N_NAME ,
+                type INTEGER ( 19 ) as O_YEAR O_YEAR ,
+                type DECIMAL ( 19  2 ) as volume L_EXTENDEDPRICE 1.00 L_DISCOUNT -  * "
+     | hash "type INTEGER ( 19 ) L_SUPPKEY "
+     | combined 0
+     | next hashcast
+
+   stage S05 on all partitions :
+     indexJoin Supplier IxS_SUPPKEY expr bound $I1 L_SUPPKEY ==
+     | project "type INTEGER ( 19 ) as S_NATIONKEY S_NATIONKEY ,
+                type VARCHAR ( 0 ) as N2_N_NAME N2_N_NAME ,
+                type INTEGER ( 19 ) as O_YEAR O_YEAR ,
+                type DECIMAL ( 19  2 ) as VOLUME VOLUME"
+     | combined 0
+     | next
+
+   stage S06 on all partitions :
+     indexJoin Nation IxN_NATIONKEY expr bound $I1 S_NATIONKEY ==
+     | project "type VARCHAR ( 0 ) as N1_N_NAME N_NAME ,
+                     type VARCHAR ( 0 ) as N2_N_NAME N2_N_NAME ,
+                     type INTEGER ( 19 ) as O_YEAR O_YEAR ,
+                     type DECIMAL ( 19  2 ) as VOLUME VOLUME"
+     | filter "type BOOLEAN N1_N_NAME 'FRANCE' == N2_N_NAME 'GERMANY' == and
+                            N1_N_NAME 'GERMANY' == N2_N_NAME 'FRANCE' == and or"
+     | gbyAgg " GroupBy type VARCHAR ( 0 ) as N1_N_NAME N1_N_NAME ,
+                      type VARCHAR ( 0 ) as N2_N_NAME N2_N_NAME ,
+                      type INTEGER ( 19 ) as L_YEAR L_YEAR aggregates
+                      type VARCHAR ( 0 ) as N1_N_NAME $K1 ,
+                      type VARCHAR ( 0 ) as N2_N_NAME $K2 ,
+                      type INTEGER ( 19 ) as O_YEAR $K3 ,
+                      type DECIMAL ( 19  2 ) AS REVENUE ) VOLUME sum  "
+     | combined 0
+     | next
+
+   stage S08 on all nodes :
+    gbyAgg " GroupBy type VARCHAR ( 0 ) as N1_N_NAME N1_N_NAME ,
+                     type VARCHAR ( 0 ) as N2_N_NAME N2_N_NAME ,
+                     type INTEGER ( 19 ) as L_YEAR L_YEAR
+                     aggregates
+                     type VARCHAR ( 0 ) as N1_N_NAME $K1 ,
+                     type VARCHAR ( 0 ) as N2_N_NAME $K2 ,
+                     type INTEGER ( 19 ) as O_YEAR $K3 ,
+                     type DECIMAL ( 19  2 ) AS REVENUE ) REVENUE sum  "
+     | combined 0
+     | next
+
+   stage S09 on origin :
+     gbyAgg " GroupBy type VARCHAR ( 0 ) as SUPP_NATION N1_N_NAME ,
+                      type VARCHAR ( 0 ) as CUST_NATION N2_N_NAME ,
+                      type INTEGER ( 19 ) as L_YEAR L_YEAR
+                      aggregates
+                      type VARCHAR ( 0 ) as N1_N_NAME $K1 ,
+                      type VARCHAR ( 0 ) as N2_N_NAME $K2 ,
+                      type INTEGER ( 19 ) as O_YEAR $K3 ,
+                      type DECIMAL ( 19  2 ) AS REVENUE ) REVENUE sum  "
+     | combined 0
+     | next
+
+   stage S10 on origin :
+     output
+     | sink
+     | first
+ end ;
+
+
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
