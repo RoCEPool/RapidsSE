@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* __Q11                                                                      */
+/* __Q11_NATION                                                               */
 /*============================================================================*/
 
 /optimise_passthru
@@ -12,6 +12,8 @@ begin
 
   stage S01 on all partitions :
     scan nation
+    | project " type INTEGER ( 19 ) as N_NATIONKEY N_NATIONKEY ,
+                type VARCHAR ( 0 ) as N_NAME N_NAME"
     | filter " type BOOLEAN N_NAME 'GERMANY'  ==  "
     | project " type INTEGER ( 19 ) as N_NATIONKEY N_NATIONKEY"
     | indexJoin supplier IxS_NATIONKEY "bound $I1 N_NATIONKEY =="
@@ -40,8 +42,11 @@ begin
     | combined 0
     | next broadcast
 
-  stage S06 on all partitions  multiple threads 4:
+  stage S06 on all partitions :
     indexJoin nation IxN_NATIONKEY "bound $I1"
+    | project " type VARCHAR ( 0 ) as N_NAME N_NAME ,
+                type INTEGER ( 19 ) as N_NATIONKEY N_NATIONKEY ,
+                type DECIMAL ( 19  2 ) as INNERRESULT INNERRESULT"
     | filter " type BOOLEAN N_NAME 'GERMANY'  ==  "
     | project " type INTEGER ( 19 ) as N_NATIONKEY N_NATIONKEY ,
                 type DECIMAL ( 19  2 ) as INNERRESULT INNERRESULT"
@@ -51,7 +56,7 @@ begin
     | combined 0
     | next broadcast
 
-  stage S08 on all partitions :
+  stage S07 on all partitions  multiple threads 4:
     indexJoin partsupp IxPS_SUPPKEY "bound $I1 S_SUPPKEY =="
     | gbyAgg " GroupBy    type INTEGER ( 19 ) PS_PARTKEY
                aggregates
@@ -61,14 +66,7 @@ begin
     | combined 0
     | next
 
-  stage S09 on all nodes :
-    gbyAgg " GroupBy    type INTEGER ( 19 ) PS_PARTKEY
-             aggregates type INTEGER ( 19 ) as PS_PARTKEY $K1 ,
-                        type DECIMAL ( 19  2 ) as VALUE ) VALUE sum  , type DECIMAL ( 19  2 ) as INNERRESULT INNERRESULT"
-    | combined 0
-    | next
-
-  stage S10 on origin :
+  stage S08 on all nodes :
     gbyAgg " GroupBy    type INTEGER ( 19 ) PS_PARTKEY
              aggregates type INTEGER ( 19 ) as PS_PARTKEY $K1 ,
                         type DECIMAL ( 19  2 ) as VALUE ) VALUE sum  ,
@@ -76,7 +74,15 @@ begin
     | combined 0
     | next
 
-  stage S11 on origin :
+  stage S09 on origin :
+    gbyAgg " GroupBy    type INTEGER ( 19 ) PS_PARTKEY
+             aggregates type INTEGER ( 19 ) as PS_PARTKEY $K1 ,
+                        type DECIMAL ( 19  2 ) as VALUE ) VALUE sum  ,
+                        type DECIMAL ( 19  2 ) as INNERRESULT INNERRESULT"
+    | combined 0
+    | next
+
+  stage S10 on origin :
     filter " type BOOLEAN  value INNERRESULT  >  "
     | project " type INTEGER ( 19 ) as PS_PARTKEY PS_PARTKEY ,
                 type DECIMAL ( 19  2 ) as VALUE VALUE"
@@ -84,7 +90,7 @@ begin
     | combined 0
     | next
 
-  stage S12 on origin :
+  stage S11 on origin :
     output
     | sink
     | first
