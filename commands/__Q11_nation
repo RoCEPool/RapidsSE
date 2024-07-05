@@ -21,7 +21,7 @@ begin
     | combined 0
     | next broadcast
 
- stage S02 on all partitions:
+ stage S02 on all partitions multiple threads 4:
     indexJoin partsupp IxPS_SUPPKEY "bound $I1 S_SUPPKEY =="
     | aggreg " type DECIMAL ( 19  2 ) )  PS_SUPPLYCOST PS_AVAILQTY casttype DECIMAL ( 19  2 ) CAST  *  sum  "
     | combined 0

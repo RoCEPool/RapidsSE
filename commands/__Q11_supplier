@@ -17,7 +17,7 @@ begin
     | combined 0
     | next broadcast
 
- stage S02 on all partitions:
+ stage S02 on all partitions multiple threads 4:
     indexJoin partsupp IxPS_SUPPKEY "bound $I1 S_SUPPKEY =="
     | project "type INTEGER ( 19 ) as S_NATIONKEY S_NATIONKEY ,
                type INTEGER ( 19 ) as PS_AVAILQTY PS_AVAILQTY ,

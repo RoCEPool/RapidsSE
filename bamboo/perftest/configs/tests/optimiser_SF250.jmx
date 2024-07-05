@@ -10745,7 +10745,7 @@ begin
     | combined 0
     | next broadcast
 
- stage S02 on all partitions:
+ stage S02 on all partitions multiple threads 4:
     indexJoin partsupp IxPS_SUPPKEY &quot;bound $I1 S_SUPPKEY ==&quot;
     | aggreg &quot; type DECIMAL ( 19  2 ) )  PS_SUPPLYCOST PS_AVAILQTY casttype DECIMAL ( 19  2 ) CAST  *  sum  &quot;
     | combined 0
@@ -10846,7 +10846,7 @@ begin
     | combined 0
     | next broadcast
 
- stage S02 on all partitions:
+ stage S02 on all partitions multiple threads 4:
     indexJoin partsupp IxPS_SUPPKEY &quot;bound $I1 S_SUPPKEY ==&quot;
     | project &quot;type INTEGER ( 19 ) as S_NATIONKEY S_NATIONKEY ,
                type INTEGER ( 19 ) as PS_AVAILQTY PS_AVAILQTY ,
@@ -10871,11 +10871,11 @@ begin
     | next
 
   stage S05 on origin :
-    aggreg &quot; type DECIMAL ( 19  2 ) as INNERRESULT INNERRESULT 0.0000004  *  &quot;
+    aggreg &quot; type DECIMAL ( 19  2 ) as INNERRESULT INNERRESULT 0.00001  *  &quot;
     | combined 0
     | next broadcast
 
-  stage S06 on all partitions  multiple threads 4:
+  stage S06 on all partitions:
     indexJoin nation IxN_NATIONKEY &quot;bound $I1&quot;
     | project &quot; type VARCHAR ( 0 ) as N_NAME N_NAME ,
                 type INTEGER ( 19 ) as N_NATIONKEY N_NATIONKEY ,
@@ -10889,13 +10889,134 @@ begin
     | combined 0
     | next broadcast
 
-  stage S07 on all partitions :
+  stage S07 on all partitions   multiple threads 4:
     indexJoin partsupp IxPS_SUPPKEY &quot;bound $I1 S_SUPPKEY ==&quot;
     | gbyAgg &quot; GroupBy    type INTEGER ( 19 ) PS_PARTKEY
                aggregates
                           type INTEGER ( 19 ) as PS_PARTKEY $K1 ,
                           type DECIMAL ( 19  2 ) as VALUE ) PS_SUPPLYCOST PS_AVAILQTY casttype DECIMAL ( 19  2 ) CAST  *  sum  ,
                           type DECIMAL ( 19  2 ) as INNERRESULT INNERRESULT&quot;
+    | combined 0
+    | next
+
+  stage S08 on all nodes :
+    gbyAgg &quot; GroupBy    type INTEGER ( 19 ) PS_PARTKEY
+             aggregates type INTEGER ( 19 ) as PS_PARTKEY $K1 ,
+                        type DECIMAL ( 19  2 ) as VALUE ) VALUE sum  ,
+                        type DECIMAL ( 19  2 ) as INNERRESULT INNERRESULT&quot;
+    | combined 0
+    | next
+
+  stage S09 on origin :
+    gbyAgg &quot; GroupBy    type INTEGER ( 19 ) PS_PARTKEY
+             aggregates type INTEGER ( 19 ) as PS_PARTKEY $K1 ,
+                        type DECIMAL ( 19  2 ) as VALUE ) VALUE sum  ,
+                        type DECIMAL ( 19  2 ) as INNERRESULT INNERRESULT&quot;
+    | combined 0
+    | next
+
+  stage S10 on origin :
+    filter &quot; type BOOLEAN  value INNERRESULT  &gt;  &quot;
+    | project &quot; type INTEGER ( 19 ) as PS_PARTKEY PS_PARTKEY ,
+                type DECIMAL ( 19  2 ) as VALUE VALUE&quot;
+    | sort &quot; type DECIMAL ( 19  2 ) VALUE DESC  &quot;
+    | combined 0
+    | next
+
+  stage S11 on origin :
+    output
+    | sink
+    | first
+end ;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q11_partsupp" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">/optimise_passthru
+pipeline Query11
+begin
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
+
+  stage S01 on all partitions :
+    scan partsupp
+    | project &quot;type INTEGER ( 19 ) as PS_SUPPKEY PS_SUPPKEY ,
+               type INTEGER ( 19 ) as PS_AVAILQTY PS_AVAILQTY ,
+               type DECIMAL ( 19  2 ) as PS_SUPPLYCOST PS_SUPPLYCOST&quot;
+    | hash &quot;type INTEGER ( 19 ) PS_SUPPKEY&quot;
+    | combined 0
+    | next hashcast
+
+  stage S02 on all partitions multiple threads 4:
+    indexJoin supplier IxS_SUPPKEY &quot;bound $I1 PS_SUPPKEY ==&quot;
+    | project &quot;type INTEGER ( 19 ) as PS_AVAILQTY PS_AVAILQTY ,
+               type DECIMAL ( 19  2 ) as PS_SUPPLYCOST PS_SUPPLYCOST ,
+                type INTEGER ( 19 ) as S_NATIONKEY S_NATIONKEY&quot;
+    | indexJoin nation IxN_NATIONKEY &quot;bound $I1 S_NATIONKEY ==&quot;
+    | project &quot;type INTEGER ( 19 ) as PS_AVAILQTY PS_AVAILQTY ,
+               type DECIMAL ( 19  2 ) as PS_SUPPLYCOST PS_SUPPLYCOST ,
+               type VARCHAR ( 0 ) as N_NAME N_NAME&quot;
+    | filter &quot; type BOOLEAN N_NAME &apos;GERMANY&apos;  ==  &quot;
+    | aggreg &quot; type DECIMAL ( 19  2 ) )  PS_SUPPLYCOST PS_AVAILQTY casttype DECIMAL ( 19  2 ) CAST  *  sum  &quot;
+    | combined 0
+    | next
+
+  stage S03 on all nodes :
+    aggreg &quot; type DECIMAL ( 19  2 ) as INNERRESULT )  $1 sum  &quot;
+    | combined 0
+    | next
+
+  stage S04 on origin :
+    aggreg &quot; type DECIMAL ( 19  2 ) as INNERRESULT )  $1 sum&quot;
+    | combined 0
+    | next
+
+  stage S05 on origin :
+    aggreg &quot; type DECIMAL ( 19  2 ) as INNERRESULT INNERRESULT 0.00001  *  &quot;
+    | combined 0
+    | next broadcast
+
+  stage S05 on all partitions :
+    indexJoin partsupp IxPS_PARTKEY &quot;bound $I1&quot;
+  | project &quot;type INTEGER ( 19 ) as PS_SUPPKEY PS_SUPPKEY ,
+             type INTEGER ( 19 ) as PS_PARTKEY PS_PARTKEY ,
+             type INTEGER ( 19 ) as PS_AVAILQTY PS_AVAILQTY ,
+             type DECIMAL ( 19  2 ) as PS_SUPPLYCOST PS_SUPPLYCOST ,
+             type DECIMAL ( 19  2 ) as INNERRESULT INNERRESULT&quot;
+  | hash &quot;type INTEGER ( 19 ) PS_SUPPKEY&quot;
+  | combined 0
+  | next hashcast
+
+  stage S02 on all partitions   multiple threads 4:
+    indexJoin supplier IxS_SUPPKEY &quot;bound $I1 PS_SUPPKEY ==&quot;
+    | project &quot;type INTEGER ( 19 ) as PS_PARTKEY PS_PARTKEY ,
+               type INTEGER ( 19 ) as PS_AVAILQTY PS_AVAILQTY ,
+               type DECIMAL ( 19  2 ) as PS_SUPPLYCOST PS_SUPPLYCOST ,
+               type INTEGER ( 19 ) as S_NATIONKEY S_NATIONKEY ,
+               type DECIMAL ( 19  2 ) as INNERRESULT INNERRESULT&quot;
+
+    | indexJoin nation IxN_NATIONKEY &quot;bound $I1 S_NATIONKEY ==&quot;
+    | project &quot;type INTEGER ( 19 ) as PS_PARTKEY PS_PARTKEY ,
+               type INTEGER ( 19 ) as PS_AVAILQTY PS_AVAILQTY ,
+               type DECIMAL ( 19  2 ) as PS_SUPPLYCOST PS_SUPPLYCOST ,
+               type DECIMAL ( 19  2 ) as INNERRESULT INNERRESULT ,
+               type VARCHAR ( 0 ) as N_NAME N_NAME&quot;
+    | filter &quot; type BOOLEAN N_NAME &apos;GERMANY&apos;  ==  &quot;
+    | gbyAgg &quot; GroupBy    type INTEGER ( 19 ) PS_PARTKEY
+                   aggregates
+                              type INTEGER ( 19 ) as PS_PARTKEY $K1 ,
+                              type DECIMAL ( 19  2 ) as VALUE ) PS_SUPPLYCOST PS_AVAILQTY casttype DECIMAL ( 19  2 ) CAST  *  sum  ,
+                              type DECIMAL ( 19  2 ) as INNERRESULT INNERRESULT&quot;
     | combined 0
     | next
 
@@ -11702,7 +11823,7 @@ order by
               </hashTree>
             </hashTree>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q17 Group" enabled="false"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q17 Group" enabled="true"/>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
@@ -11762,7 +11883,7 @@ where
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q17_poc3_4mt" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q17_part" enabled="true">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
 pipeline Query17
@@ -11774,12 +11895,15 @@ begin
 
  stage S01 on all partitions :
      scan rapidsse public part
-     | filter &quot; type BOOLEAN  P_BRAND &apos;Brand#23&apos;  ==  P_CONTAINER &apos;MED BAG&apos;  ==  and&quot;
+     | project &quot;type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY ,
+                type VARCHAR ( 0 ) as P_BRAND P_BRAND ,
+                type VARCHAR ( 0 ) as P_CONTAINER P_CONTAINER &quot;
+     | filter &quot; type BOOLEAN  P_BRAND &apos;Brand#23&apos;  ==  P_CONTAINER &apos;MED BOX&apos;  == and&quot;
      | project &quot;type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY&quot;
      | combined 0
      | next broadcast
 
-  stage S02 on all partitions multiple threads 4:
+  stage S02 on all partitions  multiple threads 4:
     indexJoin lineitem IxL_PARTKEY &quot;bound $I1 P_PARTKEY ==&quot;
     | ordagg &quot; ordgroupBy type integer ( 19 ) P_PARTKEY
                aggregates type integer ( 19 ) as P_PARTKEY $K1 ,
