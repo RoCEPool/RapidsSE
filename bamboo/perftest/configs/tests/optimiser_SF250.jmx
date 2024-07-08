@@ -11075,7 +11075,7 @@ end ;</stringProp>
               </hashTree>
             </hashTree>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q12 Group" enabled="false"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q12 Group" enabled="true"/>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
@@ -11135,7 +11135,7 @@ order by
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q12_poc3_4mt" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q12_lo" enabled="true">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
 pipeline Query12
@@ -11155,17 +11155,156 @@ pipeline Query12
      | filter &quot; type BOOLEAN }  &apos;MAIL&apos;  &apos;SHIP&apos;  #2  L_SHIPMODE in&quot;
      | filter &quot; type BOOLEAN L_SHIPDATE L_COMMITDATE &lt; &quot;
      | filter &quot; type BOOLEAN L_COMMITDATE L_RECEIPTDATE &lt;&quot;
-     | project &quot;type INTEGER ( 19 ) as L_ORDERKEY L_ORDERKEY , type VARCHAR ( 0 ) as L_SHIPMODE L_SHIPMODE&quot;
+     | project &quot;type INTEGER ( 19 ) as L_ORDERKEY L_ORDERKEY ,
+                type VARCHAR ( 0 ) as L_SHIPMODE L_SHIPMODE&quot;
      | combined 0
      | next broadcast
 
    stage S02 on all partitions multiple threads 4:
      indexJoin Orders IxO_ORDERKEY expr bound $I1 L_ORDERKEY ==   // Orders - J1
-     | project &quot;type VARCHAR ( 0 ) as O_ORDERPRIORITY O_ORDERPRIORITY , type VARCHAR ( 0 ) as L_SHIPMODE L_SHIPMODE&quot;
+     | project &quot;type VARCHAR ( 0 ) as O_ORDERPRIORITY O_ORDERPRIORITY ,
+                type VARCHAR ( 0 ) as L_SHIPMODE L_SHIPMODE&quot;
      | gbyAgg &quot; GroupBy type VARCHAR ( 0 ) as L_SHIPMODE L_SHIPMODE
               aggregates type VARCHAR ( 0 ) $K1 ,
                          type INTEGER ( 19 ) ) }  O_ORDERPRIORITY &apos;1-URGENT&apos;  == O_ORDERPRIORITY &apos;2-HIGH&apos;  ==  or WHEN  1 THEN  0  ELSE  ENDIF  CASE  sum  ,
                          type INTEGER ( 19 ) ) }  O_ORDERPRIORITY &apos;1-URGENT&apos;  !=  O_ORDERPRIORITY &apos;2-HIGH&apos;  !=  and  WHEN  1 THEN  0  ELSE  ENDIF  CASE  sum  &quot;
+     | combined 0
+     | next
+
+   stage S03 on all nodes :
+     gbyAgg &quot; GroupBy type VARCHAR ( 0 ) as L_SHIPMODE $1
+              aggregates type VARCHAR ( 0 ) $K1 ,
+                         type INTEGER ( 19 ) )  $2 sum  ,
+                         type INTEGER ( 19 ) )  $3 sum  &quot;
+     | combined 0
+     | next
+
+   stage S04 on origin :
+     gbyAgg &quot; GroupBy type VARCHAR ( 0 ) as L_SHIPMODE $1
+              aggregates  type VARCHAR ( 0 ) $K1 ,
+                          type INTEGER ( 19 ) as high_line_count )  $2 sum  ,
+                          type INTEGER ( 19 ) as low_line_count )  $3 sum  &quot;
+     | combined 0
+     | next
+
+   stage S05 on origin :
+     output
+     | sink
+     | first
+ end ;
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q12_lo_rrf" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">/optimise_passthru
+pipeline Query12
+ begin
+   stage S00 on origin :
+     start
+     | pulse once
+     | next
+
+   stage S01 on all partitions :
+     indexScan lineitem IxL_RECEIPTDATE &quot;LBOUND $I1 DATE &apos;1994-01-01&apos; &gt;= UBOUND $I1 DATE &apos;1995-01-01&apos;  &lt;&quot;
+     | project &quot;type INTEGER ( 19 ) as L_ORDERKEY L_ORDERKEY ,
+                type DATE ( 0 ) as L_SHIPDATE L_SHIPDATE ,
+                type DATE ( 0 ) as L_COMMITDATE L_COMMITDATE ,
+                type DATE ( 0 ) as L_RECEIPTDATE L_RECEIPTDATE ,
+                type VARCHAR ( 0 ) as L_SHIPMODE L_SHIPMODE&quot;
+     | filter &quot; type BOOLEAN }  &apos;MAIL&apos;  &apos;SHIP&apos;  #2  L_SHIPMODE in&quot;
+     | filter &quot; type BOOLEAN L_SHIPDATE L_COMMITDATE &lt; &quot;
+     | filter &quot; type BOOLEAN L_COMMITDATE L_RECEIPTDATE &lt;&quot;
+     | project &quot;type INTEGER ( 19 ) as L_ORDERKEY L_ORDERKEY ,
+                type VARCHAR ( 0 ) as L_SHIPMODE L_SHIPMODE&quot;
+     | globalHash ORDERS GxO_ORDERKEY &quot;type INTEGER ( 19 ) L_ORDERKEY&quot;
+     | combined 0
+     | next hashcast
+
+   stage S02 on all partitions multiple threads 4:
+     rrfJoin Orders &quot;type INTEGER ( 19 ) L_ORDERKEY&quot;
+     | project &quot;type VARCHAR ( 0 ) as O_ORDERPRIORITY O_ORDERPRIORITY ,
+                type VARCHAR ( 0 ) as L_SHIPMODE L_SHIPMODE&quot;
+     | gbyAgg &quot; GroupBy type VARCHAR ( 0 ) as L_SHIPMODE L_SHIPMODE
+               aggregates type VARCHAR ( 0 ) $K1 ,
+                          type INTEGER ( 19 ) ) }  O_ORDERPRIORITY &apos;1-URGENT&apos;  == O_ORDERPRIORITY &apos;2-HIGH&apos;  ==  or WHEN  1 THEN  0  ELSE  ENDIF  CASE  sum  ,
+                          type INTEGER ( 19 ) ) }  O_ORDERPRIORITY &apos;1-URGENT&apos;  !=  O_ORDERPRIORITY &apos;2-HIGH&apos;  !=  and  WHEN  1 THEN  0  ELSE  ENDIF  CASE  sum  &quot;
+     | combined 0
+     | next
+
+   stage S03 on all nodes :
+     gbyAgg &quot; GroupBy type VARCHAR ( 0 ) as L_SHIPMODE $1
+              aggregates type VARCHAR ( 0 ) $K1 ,
+                         type INTEGER ( 19 ) )  $2 sum  ,
+                         type INTEGER ( 19 ) )  $3 sum  &quot;
+     | combined 0
+     | next
+
+   stage S04 on origin :
+     gbyAgg &quot; GroupBy type VARCHAR ( 0 ) as L_SHIPMODE $1
+              aggregates  type VARCHAR ( 0 ) $K1 ,
+                          type INTEGER ( 19 ) as high_line_count )  $2 sum  ,
+                          type INTEGER ( 19 ) as low_line_count )  $3 sum  &quot;
+     | combined 0
+     | next
+
+   stage S05 on origin :
+     output
+     | sink
+     | first
+ end ;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q12_ol" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">/optimise_passthru
+pipeline Query12
+ begin
+   stage S00 on origin :
+     start
+     | pulse once
+     | next
+
+   stage S02 on all partitions multiple threads 4:
+     scan Orders
+     | project &quot;type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY ,
+                type VARCHAR ( 0 ) as O_ORDERPRIORITY O_ORDERPRIORITY &quot;
+     | hash &quot;type INTEGER ( 19 ) O_ORDERKEY&quot;
+     | combined 0
+     | next hashcast
+
+   stage S01 on all partitions :
+     indexJoin LINEITEM IxL_ORDERKEY &quot;bound $I1 O_ORDERKEY ==&quot;
+     | project &quot;type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY ,
+                type VARCHAR ( 0 ) as O_ORDERPRIORITY O_ORDERPRIORITY ,
+                type DATE ( 0 ) as L_SHIPDATE L_SHIPDATE ,
+                type DATE ( 0 ) as L_COMMITDATE L_COMMITDATE ,
+                type DATE ( 0 ) as L_RECEIPTDATE L_RECEIPTDATE ,
+                type VARCHAR ( 0 ) as L_SHIPMODE L_SHIPMODE&quot;
+     | filter &quot;type BOOLEAN L_RECEIPTDATE DATE &apos;1994-01-01&apos; &gt;= L_RECEIPTDATE DATE &apos;1995-01-01&apos; &lt; and&quot;
+     | filter &quot; type BOOLEAN }  &apos;MAIL&apos;  &apos;SHIP&apos;  #2  L_SHIPMODE in&quot;
+     | filter &quot; type BOOLEAN L_SHIPDATE L_COMMITDATE &lt; &quot;
+     | filter &quot; type BOOLEAN L_COMMITDATE L_RECEIPTDATE &lt;&quot;
+     | gbyAgg &quot; GroupBy type VARCHAR ( 0 ) as L_SHIPMODE L_SHIPMODE
+                aggregates type VARCHAR ( 0 ) $K1 ,
+                           type INTEGER ( 19 ) ) }  O_ORDERPRIORITY &apos;1-URGENT&apos;  == O_ORDERPRIORITY &apos;2-HIGH&apos;  ==  or WHEN  1 THEN  0  ELSE  ENDIF  CASE  sum  ,
+                           type INTEGER ( 19 ) ) }  O_ORDERPRIORITY &apos;1-URGENT&apos;  !=  O_ORDERPRIORITY &apos;2-HIGH&apos;  !=  and  WHEN  1 THEN  0  ELSE  ENDIF  CASE  sum  &quot;
      | combined 0
      | next
 
@@ -12408,7 +12547,7 @@ begin
               </hashTree>
             </hashTree>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q19 Group" enabled="false">
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q19 Group" enabled="true">
             <stringProp name="TestPlan.comments">Currently disabled as it produces an error no join index</stringProp>
           </GenericController>
           <hashTree>
@@ -12484,7 +12623,7 @@ where
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q19_poc3_4mt" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q19_PL_1" enabled="true">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
 pipeline Query19
@@ -12522,6 +12661,93 @@ begin
                type INTEGER ( 19 ) as P_SIZE P_SIZE ,
                type VARCHAR ( 0 ) as P_BRAND P_BRAND ,
                type varchar ( 0 ) as P_CONTAINER P_CONTAINER&quot;
+   | filter &quot; type BOOLEAN P_BRAND &apos;Brand#12&apos;  ==
+                }  &apos;SM CASE&apos;  &apos;M BOX&apos;  &apos;SM PACK&apos;  &apos;SM PKG&apos;  #4  P_CONTAINER in  and
+                }  L_QUANTITY 1.0 &gt;= L_QUANTITY 11.0 &lt;= and and
+                }  1  5  P_SIZE between  and
+                }  &apos;AIR&apos;  &apos;AIR REG&apos;  #2  L_SHIPMODE in  and
+                L_SHIPINSTRUCT &apos;DELIVER IN PERSON&apos;  ==  and
+                P_BRAND &apos;Brand#23&apos;  ==
+                }  &apos;MED BAG&apos;  &apos;MED BOX&apos;  &apos;MED PKG&apos;  &apos;MED PACK&apos;  #4 P_CONTAINER in and
+                }  L_QUANTITY 10.0 &gt;= L_QUANTITY 20.0 &lt;= and and
+                }  1  10  P_SIZE between  and
+                }  &apos;AIR&apos;  &apos;AIR REG&apos;  #2  L_SHIPMODE in  and L_SHIPINSTRUCT &apos;DELIVER IN PERSON&apos;  ==  and  or
+                P_BRAND &apos;Brand#34&apos;  ==
+                }  &apos;LG CASE&apos;  &apos;LG BOX&apos;  &apos;LG PACK&apos;  &apos;LG PKG&apos;  #4  P_CONTAINER in  and
+                }  L_QUANTITY 20.0 &gt;= L_QUANTITY 30.0 &lt;= and and }  1  15  P_SIZE between  and
+                }  &apos;AIR&apos;  &apos;AIR REG&apos;  #2  L_SHIPMODE in  and
+                L_SHIPINSTRUCT &apos;DELIVER IN PERSON&apos;  ==  and  or  &quot;
+   | aggreg &quot; type DECIMAL ( 19  2 ) )  L_EXTENDEDPRICE 1.00  L_DISCOUNT - * sum  &quot;
+   | combined 0
+   | next
+
+ stage S04 on all nodes :
+   aggreg &quot; type DECIMAL ( 19  2 ) )  $1 sum  &quot;
+   | combined 0
+   | next
+
+ stage S05 on origin :
+   aggreg &quot; type DECIMAL ( 19  2 ) as revenue )  $1 sum  &quot;
+   | combined 0
+   | next
+
+ stage S06 on origin :
+   output
+   | sink
+   | first
+end ;
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q19_PL_2" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">/optimise_passthru
+pipeline Query19
+begin
+ stage S00 on origin :
+   start
+   | pulse once
+   | next
+
+ stage S01 on all partitions :
+   scan rapidsse public part
+   | filter &quot; type BOOLEAN P_BRAND &apos;Brand#12&apos;  ==
+                } &apos;SM CASE&apos;  &apos;M BOX&apos;  &apos;SM PACK&apos;  &apos;SM PKG&apos;  #4  P_CONTAINER in  and
+                }  1  5  P_SIZE between  and
+                P_BRAND &apos;Brand#23&apos;  ==
+                }  &apos;MED BAG&apos;  &apos;MED BOX&apos;  &apos;MED PKG&apos;  &apos;MED PACK&apos;  #4 P_CONTAINER in and
+                }  1  10  P_SIZE between  and  or P_BRAND &apos;Brand#34&apos;  ==
+                }  &apos;LG CASE&apos;  &apos;LG BOX&apos;  &apos;LG PACK&apos;  &apos;LG PKG&apos;  #4  P_CONTAINER in  and
+                }  1  15  P_SIZE between  and or  &quot;
+   | project &quot; type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY ,
+               type VARCHAR ( 0 ) as P_BRAND P_BRAND ,
+               type VARCHAR ( 0 ) as P_CONTAINER P_CONTAINER ,
+               type INTEGER ( 19 ) AS P_SIZE P_SIZE&quot;
+   | combined 0
+   | next broadcast
+
+ stage S02 on all partitions multiple threads 4:
+   indexJoin lineitem IxL_PARTKEY &quot;BOUND $I1 p_partkey ==&quot; //J1
+   | project &quot; type INTEGER ( 19 ) as L_PARTKEY l_partkey ,
+               type DECIMAL ( 19  2 ) as L_QUANTITY L_QUANTITY ,
+               type DECIMAL ( 19  2 ) as L_DISCOUNT L_DISCOUNT ,
+               type DECIMAL ( 19  2 ) as l_extendedprice l_extendedprice  ,
+               type VARCHAR ( 0 ) as L_SHIPMODE L_SHIPMODE ,
+               type VARCHAR ( 0 ) as L_SHIPINSTRUCT L_SHIPINSTRUCT ,
+               type INTEGER ( 19 ) as P_SIZE P_SIZE ,
+               type VARCHAR ( 0 ) as P_BRAND P_BRAND ,
+               type varchar ( 0 ) as P_CONTAINER P_CONTAINER&quot;
+   | filter &quot; type BOOLEAN }  &apos;AIR&apos;  &apos;AIR REG&apos;  #2  L_SHIPMODE in
+                   L_SHIPINSTRUCT &apos;DELIVER IN PERSON&apos;  ==  and
+                   }  L_QUANTITY 1.0 &gt;= L_QUANTITY 30.0 &lt;= and and&quot;
    | filter &quot; type BOOLEAN P_BRAND &apos;Brand#12&apos;  ==
                 }  &apos;SM CASE&apos;  &apos;M BOX&apos;  &apos;SM PACK&apos;  &apos;SM PKG&apos;  #4  P_CONTAINER in  and
                 }  L_QUANTITY 1.0 &gt;= L_QUANTITY 11.0 &lt;= and and

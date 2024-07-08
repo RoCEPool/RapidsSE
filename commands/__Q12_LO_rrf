@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* __Q12_run                                                                  */
+/* __Q12_LO_rrf                                                                  */
 /*============================================================================*/
 
 /optimise_passthru
@@ -20,21 +20,24 @@ pipeline Query12
      | filter " type BOOLEAN }  'MAIL'  'SHIP'  #2  L_SHIPMODE in"
      | filter " type BOOLEAN L_SHIPDATE L_COMMITDATE < "
      | filter " type BOOLEAN L_COMMITDATE L_RECEIPTDATE <"
-     | project "type INTEGER ( 19 ) as L_ORDERKEY L_ORDERKEY , type VARCHAR ( 0 ) as L_SHIPMODE L_SHIPMODE"
+     | project "type INTEGER ( 19 ) as L_ORDERKEY L_ORDERKEY ,
+                type VARCHAR ( 0 ) as L_SHIPMODE L_SHIPMODE"
+     | globalHash ORDERS GxO_ORDERKEY "type INTEGER ( 19 ) L_ORDERKEY"
      | combined 0
-     | next broadcast
+     | next hashcast
 
    stage S02 on all partitions multiple threads 4:
-     indexJoin Orders IxO_ORDERKEY expr bound $I1 L_ORDERKEY ==   // Orders - J1
-     | project "type VARCHAR ( 0 ) as O_ORDERPRIORITY O_ORDERPRIORITY , type VARCHAR ( 0 ) as L_SHIPMODE L_SHIPMODE"
+     rrfJoin Orders "type INTEGER ( 19 ) L_ORDERKEY"
+     | project "type VARCHAR ( 0 ) as O_ORDERPRIORITY O_ORDERPRIORITY ,
+                type VARCHAR ( 0 ) as L_SHIPMODE L_SHIPMODE"
      | gbyAgg " GroupBy type VARCHAR ( 0 ) as L_SHIPMODE L_SHIPMODE
-              aggregates type VARCHAR ( 0 ) $K1 ,
-                         type INTEGER ( 19 ) ) }  O_ORDERPRIORITY '1-URGENT'  == O_ORDERPRIORITY '2-HIGH'  ==  or WHEN  1 THEN  0  ELSE  ENDIF  CASE  sum  ,
-                         type INTEGER ( 19 ) ) }  O_ORDERPRIORITY '1-URGENT'  !=  O_ORDERPRIORITY '2-HIGH'  !=  and  WHEN  1 THEN  0  ELSE  ENDIF  CASE  sum  "
+               aggregates type VARCHAR ( 0 ) $K1 ,
+                          type INTEGER ( 19 ) ) }  O_ORDERPRIORITY '1-URGENT'  == O_ORDERPRIORITY '2-HIGH'  ==  or WHEN  1 THEN  0  ELSE  ENDIF  CASE  sum  ,
+                          type INTEGER ( 19 ) ) }  O_ORDERPRIORITY '1-URGENT'  !=  O_ORDERPRIORITY '2-HIGH'  !=  and  WHEN  1 THEN  0  ELSE  ENDIF  CASE  sum  "
      | combined 0
      | next
 
-   stage S04 on all nodes :
+   stage S03 on all nodes :
      gbyAgg " GroupBy type VARCHAR ( 0 ) as L_SHIPMODE $1
               aggregates type VARCHAR ( 0 ) $K1 ,
                          type INTEGER ( 19 ) )  $2 sum  ,
@@ -42,7 +45,7 @@ pipeline Query12
      | combined 0
      | next
 
-   stage S05 on origin :
+   stage S04 on origin :
      gbyAgg " GroupBy type VARCHAR ( 0 ) as L_SHIPMODE $1
               aggregates  type VARCHAR ( 0 ) $K1 ,
                           type INTEGER ( 19 ) as high_line_count )  $2 sum  ,
@@ -50,7 +53,7 @@ pipeline Query12
      | combined 0
      | next
 
-   stage S06 on origin :
+   stage S05 on origin :
      output
      | sink
      | first

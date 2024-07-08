@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* __Q19                                                                      */
+/* __Q19_PL_2                                                                 */
 /*============================================================================*/
 
 /optimise_passthru
@@ -38,6 +38,9 @@ begin
                type INTEGER ( 19 ) as P_SIZE P_SIZE ,
                type VARCHAR ( 0 ) as P_BRAND P_BRAND ,
                type varchar ( 0 ) as P_CONTAINER P_CONTAINER"
+   | filter " type BOOLEAN }  'AIR'  'AIR REG'  #2  L_SHIPMODE in
+                   L_SHIPINSTRUCT 'DELIVER IN PERSON'  ==  and
+                   }  L_QUANTITY 1.0 >= L_QUANTITY 30.0 <= and and"
    | filter " type BOOLEAN P_BRAND 'Brand#12'  ==
                 }  'SM CASE'  'M BOX'  'SM PACK'  'SM PKG'  #4  P_CONTAINER in  and
                 }  L_QUANTITY 1.0 >= L_QUANTITY 11.0 <= and and
