@@ -11,7 +11,12 @@ begin
     | next
 
   stage S01 on all partitions :
-    indexscan lineitem IxL_SHIPDATE "LBOUND DATE '1995-09-01' >= UBOUND DATE '1995-10-01' <"
+    scan lineitem
+    | project "type INTEGER ( 19 ) as L_PARTKEY L_PARTKEY ,
+               type DATE ( 0 ) as L_SHIPDATE L_SHIPDATE ,
+               type DECIMAL ( 19  2 ) as L_EXTENDEDPRICE L_EXTENDEDPRICE ,
+               type DECIMAL ( 19  2 ) as L_DISCOUNT L_DISCOUNT"
+    | filter "type BOOLEAN L_SHIPDATE DATE '1995-09-01' >= L_SHIPDATE DATE '1995-10-01' < and"
     | project "type INTEGER ( 19 ) as L_PARTKEY L_PARTKEY ,
                type DECIMAL ( 19  2 ) as L_EXTENDEDPRICE L_EXTENDEDPRICE ,
                type DECIMAL ( 19  2 ) as L_DISCOUNT L_DISCOUNT"
@@ -22,8 +27,8 @@ begin
   stage S02 on all partitions multiple threads 4:
     indexJoin part IxP_PARTKEY "bound $I1 L_PARTKEY =="
     | project "type DECIMAL ( 19  2 ) as L_EXTENDEDPRICE L_EXTENDEDPRICE ,
-                   type DECIMAL ( 19  2 ) as L_DISCOUNT L_DISCOUNT ,
-                   type VARCHAR ( 19 ) as P_TYPE P_TYPE "
+               type DECIMAL ( 19  2 ) as L_DISCOUNT L_DISCOUNT ,
+               type VARCHAR ( 19 ) as P_TYPE P_TYPE "
     | aggreg " type DECIMAL ( 19  2 ) )  L_EXTENDEDPRICE 1.  L_DISCOUNT -  *  sum  ,
                 type DECIMAL ( 19  2 ) )  }  }  P_TYPE 'PROMO%'  6 matchLeading WHEN  L_EXTENDEDPRICE 1. L_DISCOUNT -  * THEN  0.  ELSE  ENDIF  CASE  sum  "
     | combined 0
@@ -31,7 +36,7 @@ begin
 
   stage S03 on all nodes :
     aggreg " type DECIMAL ( 19  2 ) ) $1 sum  ,
-              type DECIMAL ( 19  2 ) ) $2 sum  "
+             type DECIMAL ( 19  2 ) ) $2 sum  "
     | combined 0
     | next
 

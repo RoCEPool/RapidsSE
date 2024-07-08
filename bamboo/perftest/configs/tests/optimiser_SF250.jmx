@@ -11687,7 +11687,7 @@ begin
               </hashTree>
             </hashTree>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q14 Group" enabled="false"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q14 Group" enabled="true"/>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
@@ -11738,7 +11738,74 @@ where
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q14_poc3_4mt" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q14_lp" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">/optimise_passthru
+pipeline Query14
+begin
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
+
+  stage S01 on all partitions :
+    scan lineitem
+    | project &quot;type INTEGER ( 19 ) as L_PARTKEY L_PARTKEY ,
+               type DATE ( 0 ) as L_SHIPDATE L_SHIPDATE ,
+               type DECIMAL ( 19  2 ) as L_EXTENDEDPRICE L_EXTENDEDPRICE ,
+               type DECIMAL ( 19  2 ) as L_DISCOUNT L_DISCOUNT&quot;
+    | filter &quot;type BOOLEAN L_SHIPDATE DATE &apos;1995-09-01&apos; &gt;= L_SHIPDATE DATE &apos;1995-10-01&apos; &lt; and&quot;
+    | project &quot;type INTEGER ( 19 ) as L_PARTKEY L_PARTKEY ,
+               type DECIMAL ( 19  2 ) as L_EXTENDEDPRICE L_EXTENDEDPRICE ,
+               type DECIMAL ( 19  2 ) as L_DISCOUNT L_DISCOUNT&quot;
+    | hash &quot;type INTEGER ( 19 ) L_PARTKEY&quot;
+    | combined 0
+    | next hashcast
+
+  stage S02 on all partitions multiple threads 4:
+    indexJoin part IxP_PARTKEY &quot;bound $I1 L_PARTKEY ==&quot;
+    | project &quot;type DECIMAL ( 19  2 ) as L_EXTENDEDPRICE L_EXTENDEDPRICE ,
+               type DECIMAL ( 19  2 ) as L_DISCOUNT L_DISCOUNT ,
+               type VARCHAR ( 19 ) as P_TYPE P_TYPE &quot;
+    | aggreg &quot; type DECIMAL ( 19  2 ) )  L_EXTENDEDPRICE 1.  L_DISCOUNT -  *  sum  ,
+                type DECIMAL ( 19  2 ) )  }  }  P_TYPE &apos;PROMO%&apos;  6 matchLeading WHEN  L_EXTENDEDPRICE 1. L_DISCOUNT -  * THEN  0.  ELSE  ENDIF  CASE  sum  &quot;
+    | combined 0
+    | next
+
+  stage S03 on all nodes :
+    aggreg &quot; type DECIMAL ( 19  2 ) ) $1 sum  ,
+             type DECIMAL ( 19  2 ) ) $2 sum  &quot;
+    | combined 0
+    | next
+
+  stage S04 on origin :
+    aggreg &quot; type DECIMAL ( 19  2 ) ) $1 sum  ,
+              type DECIMAL ( 19  2 ) ) $2 sum  &quot;
+    | combined 0
+    | next
+
+  stage S05 on origin :
+    project &quot; type DECIMAL ( 19  2 ) as promo_revenue 100.00  $2 *  $1 /  &quot;
+    | combined 0
+    | next
+
+  stage S06 on origin :
+    output
+    | sink
+    | first
+end ;
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q14_lp_iscan" enabled="true">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
 pipeline Query14
@@ -11760,8 +11827,8 @@ begin
   stage S02 on all partitions multiple threads 4:
     indexJoin part IxP_PARTKEY &quot;bound $I1 L_PARTKEY ==&quot;
     | project &quot;type DECIMAL ( 19  2 ) as L_EXTENDEDPRICE L_EXTENDEDPRICE ,
-                   type DECIMAL ( 19  2 ) as L_DISCOUNT L_DISCOUNT ,
-                   type VARCHAR ( 19 ) as P_TYPE P_TYPE &quot;
+               type DECIMAL ( 19  2 ) as L_DISCOUNT L_DISCOUNT ,
+               type VARCHAR ( 19 ) as P_TYPE P_TYPE &quot;
     | aggreg &quot; type DECIMAL ( 19  2 ) )  L_EXTENDEDPRICE 1.  L_DISCOUNT -  *  sum  ,
                 type DECIMAL ( 19  2 ) )  }  }  P_TYPE &apos;PROMO%&apos;  6 matchLeading WHEN  L_EXTENDEDPRICE 1. L_DISCOUNT -  * THEN  0.  ELSE  ENDIF  CASE  sum  &quot;
     | combined 0
@@ -11769,7 +11836,7 @@ begin
 
   stage S03 on all nodes :
     aggreg &quot; type DECIMAL ( 19  2 ) ) $1 sum  ,
-              type DECIMAL ( 19  2 ) ) $2 sum  &quot;
+             type DECIMAL ( 19  2 ) ) $2 sum  &quot;
     | combined 0
     | next
 
@@ -11788,7 +11855,8 @@ begin
     output
     | sink
     | first
-end ;</stringProp>
+end ;
+</stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="queryTimeout"></stringProp>
