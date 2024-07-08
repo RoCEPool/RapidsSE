@@ -11356,7 +11356,7 @@ pipeline Query12
               </hashTree>
             </hashTree>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q13 Group" enabled="false"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q13 Group" enabled="true"/>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
@@ -11419,7 +11419,7 @@ order by
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q13_poc3_4mt" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q13_co_1" enabled="true">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
 pipeline Query13
@@ -11444,7 +11444,7 @@ begin
     | combined 0
     | next
 
-  stage S04 on origin :
+  stage S03 on origin :
     gbyAgg &quot; GroupBy    type INTEGER ( 19 ) as c_count $2
              aggregates
                         type INTEGER ( 19 ) $K1 ,
@@ -11452,17 +11452,215 @@ begin
     | combined 0
     | next
 
-  stage S05 on origin :
+  stage S04 on origin :
     sort &quot; type INTEGER ( 19 ) as c_count $2  desc ,
            type INTEGER ( 19 ) $1  desc &quot;
     | combined 0
     | next
 
- stage S06 on origin :
+ stage S05 on origin :
    output
    | sink
    | first
- end ;</stringProp>
+ end ;
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q13_co_2" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">/optimise_passthru
+pipeline Query13
+begin
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
+
+  stage S01 on all partitions :
+    scan rapidsse public customer
+    | project &quot;type INTEGER ( 19 ) as C_CUSTKEY C_CUSTKEY&quot;
+    | next
+
+  stage S02 on all partitions multiple threads 4:
+    indexJoin orders IxO_CUSTKEY &quot;LEFT_OUTER BOUND $I1 $1 ==&quot;
+           &quot;type BOOLEAN }  O_COMMENT &apos;%special%requests%&apos;  7 8 matchMiddle1  not&quot;
+    | gbyAgg &quot; GroupBy     type INTEGER ( 19 ) as c_custkey $1
+              aggregates
+                         type INTEGER ( 19 ) $K1 ,
+                         type INTEGER ( 19 ) as total_count )  $9 count  &quot;
+    | combined 0
+    | next
+
+  stage S03 on all nodes :
+      gbyAgg &quot; GroupBy    type INTEGER ( 19 ) as c_custkey $1
+               aggregates
+                          type INTEGER ( 19 ) $K1 ,
+                          type INTEGER ( 19 ) as total_count ) total_count sum  &quot;
+      | combined 0
+      | next
+
+   stage S04 on origin :
+      gbyAgg &quot; GroupBy    type INTEGER ( 19 ) as c_custkey $1
+               aggregates
+                          type INTEGER ( 19 ) $K1 ,
+                          type INTEGER ( 19 ) as total_count ) total_count sum  &quot;
+      | combined 0
+      | next
+
+   stage S05 on origin :
+      gbyAgg &quot; GroupBy    type INTEGER ( 19 ) as c_count total_count
+               aggregates
+                          type INTEGER ( 19 ) as c_count $K1 ,
+                          type INTEGER ( 19 ) as custdist )  countAll  &quot;
+      | combined 0
+      | next
+
+   stage S06 on origin :
+      sort &quot; type INTEGER ( 19 ) custdist  desc ,
+             type INTEGER ( 19 ) c_count  desc &quot;
+      | combined 0
+      | next
+
+   stage S07 on origin :
+     output
+     | sink
+     | first
+    end ;
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q13_co_ordagg_1" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">/optimise_passthru
+pipeline Query13
+begin
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
+
+  stage S01 on all partitions :
+    scan rapidsse public customer
+    | project &quot;type INTEGER ( 19 ) as C_CUSTKEY C_CUSTKEY&quot;
+    | next
+
+  stage S02 on all partitions multiple threads 4:
+    indexJoin orders IxO_CUSTKEY &quot;LEFT_OUTER BOUND $I1 $1 ==&quot;
+           &quot;type BOOLEAN }  O_COMMENT &apos;%special%requests%&apos;  7 8 matchMiddle1  not&quot;
+    | ordAgg &quot; OrdGroupBy     type INTEGER ( 19 ) as c_custkey $1
+              aggregates
+                         type INTEGER ( 19 ) $K1 ,
+                         type INTEGER ( 19 ) )  $9 count  &quot;
+    | combined 0
+    | next
+
+  stage S03 on origin :
+    gbyAgg &quot; GroupBy    type INTEGER ( 19 ) as c_count $2
+             aggregates
+                        type INTEGER ( 19 ) $K1 ,
+                        type INTEGER ( 19 ) as custdist )  countAll  &quot;
+    | combined 0
+    | next
+
+  stage S04 on origin :
+    sort &quot; type INTEGER ( 19 ) as c_count $2  desc ,
+           type INTEGER ( 19 ) $1  desc &quot;
+    | combined 0
+    | next
+
+ stage S05 on origin :
+   output
+   | sink
+   | first
+ end ;
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q13_co_ordagg_2" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">/optimise_passthru
+pipeline Query13
+begin
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
+
+  stage S01 on all partitions :
+    scan rapidsse public customer
+    | project &quot;type INTEGER ( 19 ) as C_CUSTKEY C_CUSTKEY&quot;
+    | next
+
+  stage S02 on all partitions multiple threads 4:
+    indexJoin orders IxO_CUSTKEY &quot;LEFT_OUTER BOUND $I1 $1 ==&quot;
+           &quot;type BOOLEAN }  O_COMMENT &apos;%special%requests%&apos;  7 8 matchMiddle1  not&quot;
+    | ordAgg &quot; OrdGroupBy     type INTEGER ( 19 ) as c_custkey $1
+              aggregates
+                         type INTEGER ( 19 ) $K1 ,
+                         type INTEGER ( 19 ) as total_count )  $9 count  &quot;
+    | combined 0
+    | next
+
+  stage S03 on all nodes :
+    gbyAgg &quot; GroupBy    type INTEGER ( 19 ) as c_custkey $1
+             aggregates
+                        type INTEGER ( 19 ) $K1 ,
+                        type INTEGER ( 19 ) as total_count ) total_count sum  &quot;
+    | combined 0
+    | next
+
+  stage S04 on origin :
+    gbyAgg &quot; GroupBy    type INTEGER ( 19 ) as c_custkey $1
+             aggregates
+                        type INTEGER ( 19 ) $K1 ,
+                        type INTEGER ( 19 ) as total_count ) total_count sum  &quot;
+    | combined 0
+    | next
+
+  stage S05 on origin :
+    gbyAgg &quot; GroupBy    type INTEGER ( 19 ) as c_count total_count
+             aggregates
+                        type INTEGER ( 19 ) as c_count $K1 ,
+                        type INTEGER ( 19 ) as custdist )  countAll  &quot;
+    | combined 0
+    | next
+
+  stage S06 on origin :
+    sort &quot; type INTEGER ( 19 ) custdist  desc ,
+           type INTEGER ( 19 ) c_count  desc &quot;
+    | combined 0
+    | next
+
+ stage S07 on origin :
+   output
+   | sink
+   | first
+ end ;
+</stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="queryTimeout"></stringProp>
@@ -13194,7 +13392,7 @@ order by
               </hashTree>
             </hashTree>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q22 Group" enabled="false"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q22 Group" enabled="true"/>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
@@ -13270,7 +13468,7 @@ order by
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q22_poc3" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q22_co" enabled="true">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
 pipeline Query22
@@ -13282,8 +13480,10 @@ begin
 
   stage S01 on all partitions:
     scan Customer
-    | filter &quot; type BOOLEAN  C_ACCTBAL 0.00  &gt;
-               }  &apos;13&apos;  &apos;31&apos;  &apos;23&apos;  &apos;29&apos;  &apos;30&apos;  &apos;18&apos;  &apos;17&apos;  #7  C_PHONE 1  2  substring3  in  and  &quot;
+    | project &quot;type DECIMAL ( 19  2 ) as C_ACCTBAL C_ACCTBAL ,
+               type VARCHAR ( 0 ) as C_PHONE C_PHONE&quot;
+    | filter &quot; type BOOLEAN  C_ACCTBAL 0.00  &gt; &quot;
+    | filter &quot; type BOOLEAN  }  &apos;13&apos;  &apos;31&apos;  &apos;23&apos;  &apos;29&apos;  &apos;30&apos;  &apos;18&apos;  &apos;17&apos;  #7  C_PHONE 1  2  substring3  in &quot;
     | aggreg &quot; type DECIMAL ( 19  2 ) )  C_ACCTBAL sum  , type INTEGER ( 19 ) )  C_ACCTBAL count  &quot;
     | combined 0
     | next
@@ -13303,11 +13503,17 @@ begin
     | combined 0
     | next broadcast
 
-  stage S05 on all partitions  multiple threads 4:
+  stage S05 on all partitions multiple threads 4:
     indexJoin Customer IxC_CUSTKEY &quot;bound $I1&quot;
-    | filter &quot; type BOOLEAN  }  &apos;13&apos;  &apos;31&apos;  &apos;23&apos;  &apos;29&apos;  &apos;30&apos;  &apos;18&apos;  &apos;17&apos;  #7  C_PHONE 1  2  substring3  in
-              C_ACCTBAL acctbal  &gt;  and &quot;
-    | project &quot; type INTEGER ( 19 ) as C_CUSTKEY C_CUSTKEY , type VARCHAR ( 0 ) as cntrycode C_PHONE 1  2  substring3  , type DECIMAL ( 19  2 ) as C_ACCTBAL C_ACCTBAL &quot;
+    | project &quot;type INTEGER ( 0 ) as C_CUSTKEY C_CUSTKEY ,
+               type DECIMAL ( 19  2 ) as C_ACCTBAL C_ACCTBAL ,
+               type VARCHAR ( 0 ) as C_PHONE C_PHONE ,
+               type DECIMAL ( 19  2 ) as acctbal acctbal&quot;
+    | filter &quot; type BOOLEAN C_ACCTBAL acctbal  &gt;&quot;
+    | filter &quot; type BOOLEAN }  &apos;13&apos;  &apos;31&apos;  &apos;23&apos;  &apos;29&apos;  &apos;30&apos;  &apos;18&apos;  &apos;17&apos;  #7  C_PHONE 1  2  substring3  in &quot;
+    | project &quot; type INTEGER ( 19 ) as C_CUSTKEY C_CUSTKEY ,
+                type VARCHAR ( 0 ) as cntrycode C_PHONE 1  2  substring3  ,
+                type DECIMAL ( 19  2 ) as C_ACCTBAL C_ACCTBAL &quot;
     | combined 0
     | next
 

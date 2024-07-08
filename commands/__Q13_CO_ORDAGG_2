@@ -1,0 +1,67 @@
+/*============================================================================*/
+/* __Q13_CO_OA_2                                                              */
+/*============================================================================*/
+
+/optimise_passthru
+pipeline Query13
+begin
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
+
+  stage S01 on all partitions :
+    scan rapidsse public customer
+    | project "type INTEGER ( 19 ) as C_CUSTKEY C_CUSTKEY"
+    | next
+
+  stage S02 on all partitions multiple threads 4:
+    indexJoin orders IxO_CUSTKEY "LEFT_OUTER BOUND $I1 $1 =="
+           "type BOOLEAN }  O_COMMENT '%special%requests%'  7 8 matchMiddle1  not"
+    | ordAgg " OrdGroupBy     type INTEGER ( 19 ) as c_custkey $1
+              aggregates
+                         type INTEGER ( 19 ) $K1 ,
+                         type INTEGER ( 19 ) as total_count )  $9 count  "
+    | combined 0
+    | next
+
+  stage S03 on all nodes :
+    gbyAgg " GroupBy    type INTEGER ( 19 ) as c_custkey $1
+             aggregates
+                        type INTEGER ( 19 ) $K1 ,
+                        type INTEGER ( 19 ) as total_count ) total_count sum  "
+    | combined 0
+    | next
+
+  stage S04 on origin :
+    gbyAgg " GroupBy    type INTEGER ( 19 ) as c_custkey $1
+             aggregates
+                        type INTEGER ( 19 ) $K1 ,
+                        type INTEGER ( 19 ) as total_count ) total_count sum  "
+    | combined 0
+    | next
+
+  stage S05 on origin :
+    gbyAgg " GroupBy    type INTEGER ( 19 ) as c_count total_count
+             aggregates
+                        type INTEGER ( 19 ) as c_count $K1 ,
+                        type INTEGER ( 19 ) as custdist )  countAll  "
+    | combined 0
+    | next
+
+  stage S06 on origin :
+    sort " type INTEGER ( 19 ) custdist  desc ,
+           type INTEGER ( 19 ) c_count  desc "
+    | combined 0
+    | next
+
+ stage S07 on origin :
+   output
+   | sink
+   | first
+ end ;
+
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

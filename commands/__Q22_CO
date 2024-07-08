@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* __Q20_NOT_YET                                                              */
+/* __Q20_CO                                                                   */
 /*============================================================================*/
 
 /optimise_passthru
@@ -12,8 +12,10 @@ begin
 
   stage S01 on all partitions:
     scan Customer
-    | filter " type BOOLEAN  C_ACCTBAL 0.00  >
-               }  '13'  '31'  '23'  '29'  '30'  '18'  '17'  #7  C_PHONE 1  2  substring3  in  and  "
+    | project "type DECIMAL ( 19  2 ) as C_ACCTBAL C_ACCTBAL ,
+               type VARCHAR ( 0 ) as C_PHONE C_PHONE"
+    | filter " type BOOLEAN  C_ACCTBAL 0.00  > "
+    | filter " type BOOLEAN  }  '13'  '31'  '23'  '29'  '30'  '18'  '17'  #7  C_PHONE 1  2  substring3  in "
     | aggreg " type DECIMAL ( 19  2 ) )  C_ACCTBAL sum  , type INTEGER ( 19 ) )  C_ACCTBAL count  "
     | combined 0
     | next
@@ -33,11 +35,17 @@ begin
     | combined 0
     | next broadcast
 
-  stage S05 on all partitions  multiple threads 4:
+  stage S05 on all partitions multiple threads 4:
     indexJoin Customer IxC_CUSTKEY "bound $I1"
-    | filter " type BOOLEAN  }  '13'  '31'  '23'  '29'  '30'  '18'  '17'  #7  C_PHONE 1  2  substring3  in
-              C_ACCTBAL acctbal  >  and "
-    | project " type INTEGER ( 19 ) as C_CUSTKEY C_CUSTKEY , type VARCHAR ( 0 ) as cntrycode C_PHONE 1  2  substring3  , type DECIMAL ( 19  2 ) as C_ACCTBAL C_ACCTBAL "
+    | project "type INTEGER ( 0 ) as C_CUSTKEY C_CUSTKEY ,
+               type DECIMAL ( 19  2 ) as C_ACCTBAL C_ACCTBAL ,
+               type VARCHAR ( 0 ) as C_PHONE C_PHONE ,
+               type DECIMAL ( 19  2 ) as acctbal acctbal"
+    | filter " type BOOLEAN C_ACCTBAL acctbal  >"
+    | filter " type BOOLEAN }  '13'  '31'  '23'  '29'  '30'  '18'  '17'  #7  C_PHONE 1  2  substring3  in "
+    | project " type INTEGER ( 19 ) as C_CUSTKEY C_CUSTKEY ,
+                type VARCHAR ( 0 ) as cntrycode C_PHONE 1  2  substring3  ,
+                type DECIMAL ( 19  2 ) as C_ACCTBAL C_ACCTBAL "
     | combined 0
     | next
 
