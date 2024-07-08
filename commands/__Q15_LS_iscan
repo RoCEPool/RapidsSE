@@ -1,0 +1,63 @@
+/*============================================================================*/
+/* __Q15_LS_ISCAN                                                             */
+/*============================================================================*/
+
+/optimise_passthru
+pipeline Query15
+ begin
+   stage S00 on origin :
+     start
+     | pulse once
+     | next
+
+   stage S01 on all partitions :
+     indexScan lineitem IxL_SHIPDATE "LBOUND $I1 DATE '1996-01-01' >= UBOUND $I1 DATE '1996-04-01' <"
+     | project "type INTEGER as L_SUPPKEY L_SUPPKEY ,
+                type DECIMAL ( 19 2 ) as L_EXTENDEDPRICE L_EXTENDEDPRICE ,
+                type DECIMAL ( 19 2 ) as L_DISCOUNT L_DISCOUNT"
+     | gbyAgg " GroupBy    type INTEGER ( 19 ) as L_SUPPKEY L_SUPPKEY
+                aggregates type INTEGER ( 19 ) as SUPPKEY_NO $K1 ,
+                           type DECIMAL ( 19  2 ) as TOTAL_REVENUE )  L_EXTENDEDPRICE 1.00  L_DISCOUNT -  *  sum"
+     | combined 0
+     | next
+
+   stage S02 on all nodes :
+     gbyAgg " GroupBy    type INTEGER ( 19 ) as SUPPKEY_NO SUPPKEY_NO
+              aggregates type INTEGER ( 19 ) as SUPPKEY_NO $K1 ,
+                         type DECIMAL ( 19  2 ) as TOTAL_REVENUE )  TOTAL_REVENUE sum  "
+     | combined 0
+     | next
+
+   stage S03 on origin :
+     gbyAgg " GroupBy    type INTEGER ( 19 ) as SUPPKEY_NO SUPPKEY_NO
+              aggregates type INTEGER ( 19 ) as SUPPKEY_NO $K1 ,
+                         type DECIMAL ( 19  2 ) as TOTAL_REVENUE )  TOTAL_REVENUE sum  "
+     | combined 0
+     | next
+
+   stage S04 on origin:
+     top "type DECIMAL ( 19  2 ) TOTAL_REVENUE" 1
+     | hash "type INTEGER ( 19 ) SUPPKEY_NO"
+     | combined 0
+     | next hashcast
+
+   stage S05 on all partitions multiple threads 4:
+     indexJoin supplier IxS_SUPPKEY "BOUND $I1 SUPPKEY_NO =="
+     | Project   "   type INTEGER ( 19 ) as S_SUPPKEY S_SUPPKEY
+                   , type VARCHAR ( 25 ) as S_NAME S_NAME
+                   , type VARCHAR ( 40 ) as S_ADDRESS S_ADDRESS
+                   , type VARCHAR ( 15 ) as S_PHONE S_PHONE
+                   , type DECIMAL ( 19  2 ) as TOTAL_REVENUE TOTAL_REVENUE"
+
+     | combined 0
+     | next
+
+   stage S06 on origin :
+     output
+     | sink
+     | first
+ end ;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

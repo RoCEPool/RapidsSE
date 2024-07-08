@@ -21,6 +21,3 @@ select 100.00 *
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
-
-//select count(*) from Part where p_type like 'PROMO%';
-//select count(*) from Part where p_type between 'PROMO' and 'PROMOZ';

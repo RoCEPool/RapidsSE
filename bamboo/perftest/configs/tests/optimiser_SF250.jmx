@@ -11942,7 +11942,7 @@ order by
 This query requires a view to be created first.</stringProp>
               </JDBCSampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q15_poc3" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q15_ls" enabled="true">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
 pipeline Query15
@@ -11953,43 +11953,45 @@ pipeline Query15
      | next
 
    stage S01 on all partitions :
-     indexScan lineitem IxL_SHIPDATE &quot;LBOUND $I1 DATE &apos;1996-01-01&apos; &gt;= UBOUND $I1 DATE &apos;1996-04-01&apos; &lt;&quot;
-     | project &quot;type INTEGER as L_SUPPKEY L_SUPPKEY ,
-                type DECIMAL ( 19 2 ) as L_EXTENDEDPRICE L_EXTENDEDPRICE ,
-                type DECIMAL ( 19 2 ) as L_DISCOUNT L_DISCOUNT&quot;
-     | gbyAgg &quot; GroupBy    type INTEGER ( 19 ) as l_suppkey $3
-                aggregates type INTEGER ( 19 ) $K1 ,
-                           type DECIMAL ( 19  2 ) as total_revenue )  L_EXTENDEDPRICE 1.00  L_DISCOUNT -  *  sum&quot;
-     | combined 0
-     | next
+     Scan lineitem
+      | project &quot;type INTEGER as L_SUPPKEY L_SUPPKEY ,
+                 type DECIMAL ( 19 2 ) as L_EXTENDEDPRICE L_EXTENDEDPRICE ,
+                 type DECIMAL ( 19 2 ) as L_DISCOUNT L_DISCOUNT ,
+                 type DATE as L_SHIPDATE L_SHIPDATE&quot;
+      | filter &quot; type BOOLEAN L_SHIPDATE DATE &apos;1996-01-01&apos; &gt;= L_SHIPDATE DATE &apos;1996-04-01&apos; &lt; and&quot;
+      | gbyAgg &quot; GroupBy    type INTEGER ( 19 ) as L_SUPPKEY L_SUPPKEY
+                 aggregates type INTEGER ( 19 ) as SUPPKEY_NO $K1 ,
+                           type DECIMAL ( 19  2 ) as TOTAL_REVENUE )  L_EXTENDEDPRICE 1.00  L_DISCOUNT -  *  sum&quot;
+      | combined 0
+      | next
 
    stage S02 on all nodes :
-     gbyAgg &quot; GroupBy    type INTEGER ( 19 ) as l_suppkey $1
-              aggregates type INTEGER ( 19 ) $K1 ,
-                         type DECIMAL ( 19  2 ) as total_revenue )  $2 sum  &quot;
+     gbyAgg &quot; GroupBy    type INTEGER ( 19 ) as SUPPKEY_NO SUPPKEY_NO
+              aggregates type INTEGER ( 19 ) as SUPPKEY_NO $K1 ,
+                        type DECIMAL ( 19  2 ) as TOTAL_REVENUE )  TOTAL_REVENUE sum  &quot;
      | combined 0
      | next
 
    stage S03 on origin :
-     gbyAgg &quot; GroupBy    type INTEGER ( 19 ) as l_suppkey $1
-              aggregates type INTEGER ( 19 ) as supplier_no $K1 ,
-                         type DECIMAL ( 19  2 ) as total_revenue )  $2 sum  &quot;
-     | combined 0
-     | next
+      gbyAgg &quot; GroupBy    type INTEGER ( 19 ) as SUPPKEY_NO SUPPKEY_NO
+               aggregates type INTEGER ( 19 ) as SUPPKEY_NO $K1 ,
+                            type DECIMAL ( 19  2 ) as TOTAL_REVENUE )  TOTAL_REVENUE sum  &quot;
+      | combined 0
+      | next
 
    stage S04 on origin:
-     top &quot;type DECIMAL ( 19  2 ) $2&quot; 1
-     | hash &quot;type INTEGER ( 19 ) supplier_no&quot;
+     top &quot;type DECIMAL ( 19  2 ) TOTAL_REVENUE&quot; 1
+     | hash &quot;type INTEGER ( 19 ) SUPPKEY_NO&quot;
      | combined 0
      | next hashcast
 
-   stage S05 on all partitions:
-     indexJoin supplier IxS_SuppKey &quot;BOUND $I1 supplier_no ==&quot; //J1
-     | Project   &quot;   type INTEGER ( 19 ) as s_suppkey s_suppkey
-                   , type VARCHAR ( 25 ) as s_name s_name
-                   , type VARCHAR ( 40 ) as s_address s_address
-                   , type VARCHAR ( 15 ) as s_phone s_phone
-                   , type DECIMAL ( 19  2 ) as total_revenue total_revenue&quot;
+   stage S05 on all partitions multiple threads 4:
+     indexJoin supplier IxS_SUPPKEY &quot;BOUND $I1 SUPPKEY_NO ==&quot;
+     | Project   &quot;   type INTEGER ( 19 ) as S_SUPPKEY S_SUPPKEY
+                  , type VARCHAR ( 25 ) as S_NAME S_NAME
+                  , type VARCHAR ( 40 ) as S_ADDRESS S_ADDRESS
+                  , type VARCHAR ( 15 ) as S_PHONE S_PHONE
+                  , type DECIMAL ( 19  2 ) as TOTAL_REVENUE TOTAL_REVENUE&quot;
 
      | combined 0
      | next
@@ -11998,7 +12000,8 @@ pipeline Query15
      output
      | sink
      | first
- end ;</stringProp>
+  end ;
+</stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="queryTimeout"></stringProp>
@@ -12012,7 +12015,7 @@ pipeline Query15
 This query requires a view to be created first.</stringProp>
               </JDBCSampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q15_poc3_mt" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q15_ls_iscan" enabled="true">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
 pipeline Query15
@@ -12027,39 +12030,39 @@ pipeline Query15
      | project &quot;type INTEGER as L_SUPPKEY L_SUPPKEY ,
                 type DECIMAL ( 19 2 ) as L_EXTENDEDPRICE L_EXTENDEDPRICE ,
                 type DECIMAL ( 19 2 ) as L_DISCOUNT L_DISCOUNT&quot;
-     | gbyAgg &quot; GroupBy    type INTEGER ( 19 ) as l_suppkey $3
-                aggregates type INTEGER ( 19 ) $K1 ,
-                           type DECIMAL ( 19  2 ) as total_revenue )  L_EXTENDEDPRICE 1.00  L_DISCOUNT -  *  sum&quot;
+     | gbyAgg &quot; GroupBy    type INTEGER ( 19 ) as L_SUPPKEY L_SUPPKEY
+                aggregates type INTEGER ( 19 ) as SUPPKEY_NO $K1 ,
+                           type DECIMAL ( 19  2 ) as TOTAL_REVENUE )  L_EXTENDEDPRICE 1.00  L_DISCOUNT -  *  sum&quot;
      | combined 0
      | next
 
    stage S02 on all nodes :
-     gbyAgg &quot; GroupBy    type INTEGER ( 19 ) as l_suppkey $1
-              aggregates type INTEGER ( 19 ) $K1 ,
-                         type DECIMAL ( 19  2 ) as total_revenue )  $2 sum  &quot;
+     gbyAgg &quot; GroupBy    type INTEGER ( 19 ) as SUPPKEY_NO SUPPKEY_NO
+              aggregates type INTEGER ( 19 ) as SUPPKEY_NO $K1 ,
+                         type DECIMAL ( 19  2 ) as TOTAL_REVENUE )  TOTAL_REVENUE sum  &quot;
      | combined 0
      | next
 
    stage S03 on origin :
-     gbyAgg &quot; GroupBy    type INTEGER ( 19 ) as l_suppkey $1
-              aggregates type INTEGER ( 19 ) as supplier_no $K1 ,
-                         type DECIMAL ( 19  2 ) as total_revenue )  $2 sum  &quot;
+     gbyAgg &quot; GroupBy    type INTEGER ( 19 ) as SUPPKEY_NO SUPPKEY_NO
+              aggregates type INTEGER ( 19 ) as SUPPKEY_NO $K1 ,
+                         type DECIMAL ( 19  2 ) as TOTAL_REVENUE )  TOTAL_REVENUE sum  &quot;
      | combined 0
      | next
 
    stage S04 on origin:
-     top &quot;type DECIMAL ( 19  2 ) $2&quot; 1
-     | hash &quot;type INTEGER ( 19 ) supplier_no&quot;
+     top &quot;type DECIMAL ( 19  2 ) TOTAL_REVENUE&quot; 1
+     | hash &quot;type INTEGER ( 19 ) SUPPKEY_NO&quot;
      | combined 0
      | next hashcast
 
    stage S05 on all partitions multiple threads 4:
-     indexJoin supplier IxS_SuppKey &quot;BOUND $I1 supplier_no ==&quot; //J1
-     | Project   &quot;   type INTEGER ( 19 ) as s_suppkey s_suppkey
-                   , type VARCHAR ( 25 ) as s_name s_name
-                   , type VARCHAR ( 40 ) as s_address s_address
-                   , type VARCHAR ( 15 ) as s_phone s_phone
-                   , type DECIMAL ( 19  2 ) as total_revenue total_revenue&quot;
+     indexJoin supplier IxS_SUPPKEY &quot;BOUND $I1 SUPPKEY_NO ==&quot;
+     | Project   &quot;   type INTEGER ( 19 ) as S_SUPPKEY S_SUPPKEY
+                   , type VARCHAR ( 25 ) as S_NAME S_NAME
+                   , type VARCHAR ( 40 ) as S_ADDRESS S_ADDRESS
+                   , type VARCHAR ( 15 ) as S_PHONE S_PHONE
+                   , type DECIMAL ( 19  2 ) as TOTAL_REVENUE TOTAL_REVENUE&quot;
 
      | combined 0
      | next
@@ -12068,7 +12071,8 @@ pipeline Query15
      output
      | sink
      | first
- end ;</stringProp>
+ end ;
+</stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="queryTimeout"></stringProp>
