@@ -13481,7 +13481,7 @@ end ;</stringProp>
               </hashTree>
             </hashTree>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q20 Group" enabled="false"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q20 Group" enabled="true"/>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
@@ -13560,7 +13560,7 @@ order by
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q20_poc3" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q20_part" enabled="true">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
 pipeline Query20
@@ -13571,21 +13571,27 @@ begin
       | pulse once
       | next
 
-    stage S01 on all partitions :
+    stage S01 on all partitions multiple threads 4:
       scan rapidsse public Part
-      | filter &quot; type BOOLEAN  }  $2 &apos;forest%&apos;  7 matchLeading &quot;
-      | project &quot; type INTEGER ( 19 ) as p_partkey $1 &quot;
+      | project &quot; type INTEGER ( 19 ) as p_partkey p_partkey ,
+                  type VARCHAR ( 0 ) as P_NAME P_NAME&quot;
+      | filter &quot; type BOOLEAN  }  P_NAME &apos;forest%&apos;  7 matchLeading &quot;
+      | project &quot; type INTEGER ( 19 ) as p_partkey p_partkey &quot;
       | combined 0
       | next broadcast
 
-    stage S02 on all partitions :
+    stage S02 on all partitions:
       indexJoin lineitem IxL_PARTKEY &quot;BOUND $I1 P_PARTKEY ==&quot;
+      | project &quot;type integer ( 19 ) as P_PARTKEY P_PARTKEY ,
+                 type integer ( 19 ) as L_SUPPKEY L_SUPPKEY ,
+                 type DATE ( 0 ) as L_SHIPDATE L_SHIPDATE ,
+                 type DECIMAL ( 19 2 ) as L_QUANTITY L_QUANTITY&quot;
       | filter &quot; type BOOLEAN  L_SHIPDATE DATE &apos;1994-01-01&apos; &gt;= L_SHIPDATE DATE &apos;1995-01-01&apos;  &lt;  and  &quot;
       | gbyAgg &quot; groupBy  type integer ( 19 ) P_PARTKEY ,
                           type integer ( 19 ) L_SUPPKEY
                        aggregates type integer ( 19 ) as P_PARTKEY $K1 ,
                                   type integer ( 19 ) as L_SUPPKEY $K2 ,
-                                  type DECIMAL ( 19  2 ) )  $6 sum&quot;
+                                  type DECIMAL ( 19  2 ) )  L_QUANTITY sum&quot;
       | combined 0
       | next
 
@@ -13608,30 +13614,40 @@ begin
       | next
 
     stage S05 on origin :
-      project &quot; type integer ( 19 ) as P_PARTKEY P_PARTKEY , type integer ( 19 ) as L_SUPPKEY L_SUPPKEY , type DECIMAL ( 19  2 ) as sqyResult 0.5  $3 *  &quot;
+      project &quot; type integer ( 19 ) as P_PARTKEY P_PARTKEY ,
+                type integer ( 19 ) as L_SUPPKEY L_SUPPKEY ,
+                type DECIMAL ( 19  2 ) as sqyResult 0.5  $3 *  &quot;
       | combined 0
       | next broadcast
 
-   stage S06 on all partitions :
+   stage S06 on all partitions  multiple threads 4:
      indexJoin partSupp IxPS_SUPPKEY &quot;BOUND $I1 L_SUPPKEY ==&quot;
-     | filter &quot; type BOOLEAN P_PARTKEY PS_PARTKEY == PS_AVAILQTY casttype DECIMAL ( 19  2 ) CAST sqyResult  &gt; and &quot;
-     | project &quot; type INTEGER ( 19 ) as PS_SUPPKEY $2&quot;
-     | hash &quot;type INTEGER ( 19 ) PS_SUPPKEY&quot;
+     | project &quot; type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY ,
+                 type INTEGER ( 19 ) as L_SUPPKEY L_SUPPKEY ,
+                 type INTEGER ( 19 ) as PS_PARTKEY PS_PARTKEY ,
+                 type INTEGER ( 19 ) as PS_AVAILQTY PS_AVAILQTY ,
+                 type DECIMAL ( 19  2 ) as sqyResult sqyResult&quot;
+     | filter &quot; type BOOLEAN P_PARTKEY PS_PARTKEY == PS_AVAILQTY casttype DECIMAL ( 19  2 ) CAST sqyResult &gt; and &quot;
+     | project &quot; type INTEGER ( 19 ) as L_SUPPKEY L_SUPPKEY&quot;
+     | hash &quot;type INTEGER ( 19 ) L_SUPPKEY&quot;
      | combined 0
      | next hashcast
 
    stage S07 on all partitions :
-     gbyAgg &quot; groupBy type integer ( 19 ) PS_SUPPKEY
-                        aggregates type integer ( 19 ) as PS_SUPPKEY $K1&quot;
+     gbyAgg &quot; groupBy type integer ( 19 ) L_SUPPKEY
+                        aggregates type integer ( 19 ) as L_SUPPKEY $K1&quot;
      | combined 0
      | next
 
   stage S08 on all partitions :
-    indexJoin Supplier IxS_SUPPKEY &quot;BOUND $I1 PS_SUPPKEY ==&quot;
-    | project &quot; type INTEGER ( 19 ) as S_NATIONKEY S_NATIONKEY , type VARCHAR ( 0 ) as S_NAME S_NAME , type VARCHAR ( 0 ) as S_ADDRESS S_ADDRESS&quot;
+    indexJoin Supplier IxS_SUPPKEY &quot;BOUND $I1 L_SUPPKEY ==&quot;
+    | project &quot; type INTEGER ( 19 ) as S_NATIONKEY S_NATIONKEY ,
+                type VARCHAR ( 0 ) as S_NAME S_NAME ,
+                type VARCHAR ( 0 ) as S_ADDRESS S_ADDRESS&quot;
     | indexJoin Nation IxN_NATIONKEY &quot;BOUND $I1 S_NATIONKEY ==&quot;
     | filter &quot; type BOOLEAN N_NAME &apos;CANADA&apos; ==  &quot;
-    | project &quot; type VARCHAR ( 0 ) as S_NAME S_NAME , type VARCHAR ( 0 ) as S_ADDRESS S_ADDRESS &quot;
+    | project &quot; type VARCHAR ( 0 ) as S_NAME S_NAME ,
+                type VARCHAR ( 0 ) as S_ADDRESS S_ADDRESS &quot;
     | sort &quot; type VARCHAR ( 0 ) S_NAME ASC  &quot;
     | combined 0
     | next
@@ -13656,7 +13672,7 @@ end ;</stringProp>
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q20_poc3_mt" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q20_lineitem_isan" enabled="true">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
 pipeline Query20
@@ -13667,82 +13683,214 @@ begin
       | pulse once
       | next
 
-    stage S01 on all partitions multiple threads 4:
-      scan rapidsse public Part
-      | filter &quot; type BOOLEAN  }  $2 &apos;forest%&apos;  7 matchLeading &quot;
-      | project &quot; type INTEGER ( 19 ) as p_partkey $1 &quot;
+    stage S01 on all partitions:
+      indexScan lineitem IxL_SHIPDATE &quot;LBOUND $I1 DATE &apos;1994-01-01&apos; &gt;= UBOUND $I1 DATE &apos;1995-01-01&apos; &lt;&quot;
+      | project &quot;type integer ( 19 ) as L_PARTKEY L_PARTKEY ,
+                 type integer ( 19 ) as L_SUPPKEY L_SUPPKEY ,
+                 type DECIMAL ( 19 2 ) as L_QUANTITY L_QUANTITY&quot;
+      | hash &quot;type INTEGER ( 19 ) L_PARTKEY&quot;
       | combined 0
-      | next broadcast
+      | next hashcast
 
-    stage S02 on all partitions:
-      indexJoin lineitem IxL_PARTKEY &quot;BOUND $I1 P_PARTKEY ==&quot;
-      | filter &quot; type BOOLEAN  L_SHIPDATE DATE &apos;1994-01-01&apos; &gt;= L_SHIPDATE DATE &apos;1995-01-01&apos;  &lt;  and  &quot;
-      | gbyAgg &quot; groupBy  type integer ( 19 ) P_PARTKEY ,
+    stage S02 on all partitions multiple threads 4:
+      indexJoin part IxP_PARTKEY &quot;BOUND $I1 L_PARTKEY ==&quot;
+      | project &quot; type INTEGER ( 19 ) as L_PARTKEY L_PARTKEY ,
+                  type integer ( 19 ) as L_SUPPKEY L_SUPPKEY ,
+                  type DECIMAL ( 19 2 ) as L_QUANTITY L_QUANTITY ,
+                  type VARCHAR ( 0 ) as P_NAME P_NAME&quot;
+      | filter &quot; type BOOLEAN  }  P_NAME &apos;forest%&apos;  7 matchLeading &quot;
+      | gbyAgg &quot; groupBy  type integer ( 19 ) L_PARTKEY ,
                           type integer ( 19 ) L_SUPPKEY
-                       aggregates type integer ( 19 ) as P_PARTKEY $K1 ,
-                                  type integer ( 19 ) as L_SUPPKEY $K2 ,
-                                  type DECIMAL ( 19  2 ) )  $6 sum&quot;
+                     aggregates type integer ( 19 ) as L_PARTKEY $K1 ,
+                                type integer ( 19 ) as L_SUPPKEY $K2 ,
+                                type DECIMAL ( 19  2 ) )  L_QUANTITY sum&quot;
       | combined 0
       | next
 
     stage S03 on all nodes :
-      gbyAgg &quot; groupBy type integer ( 19 ) P_PARTKEY ,
+      gbyAgg &quot; groupBy type integer ( 19 ) L_PARTKEY ,
                        type integer ( 19 ) L_SUPPKEY
-                  aggregates type integer ( 19 ) as P_PARTKEY $K1 ,
+                  aggregates type integer ( 19 ) as L_PARTKEY $K1 ,
+                             type integer ( 19 ) as L_SUPPKEY $K2 ,
+                             type DECIMAL ( 19  2 ) )  $3 sum&quot;
+      | combined 0
+      | next
+    
+    stage S04 on origin :
+      gbyAgg &quot; groupBy type integer ( 19 ) L_PARTKEY ,
+                       type integer ( 19 ) L_SUPPKEY
+                   aggregates type integer ( 19 ) as L_PARTKEY $K1 ,
+                              type integer ( 19 ) as L_SUPPKEY $K2 ,
+                              type DECIMAL ( 19  2 ) )  $3 sum&quot;
+      | combined 0
+      | next
+    
+    stage S05 on origin :
+      project &quot; type integer ( 19 ) as L_PARTKEY L_PARTKEY ,
+                type integer ( 19 ) as L_SUPPKEY L_SUPPKEY ,
+                type DECIMAL ( 19  2 ) as sqyResult 0.5  $3 *  &quot;
+      | combined 0
+      | next broadcast
+    
+    stage S06 on all partitions  multiple threads 4:
+      indexJoin partSupp IxPS_SUPPKEY &quot;BOUND $I1 L_SUPPKEY ==&quot;
+      | project &quot; type INTEGER ( 19 ) as L_PARTKEY L_PARTKEY ,
+                  type INTEGER ( 19 ) as L_SUPPKEY L_SUPPKEY ,
+                  type INTEGER ( 19 ) as PS_PARTKEY PS_PARTKEY ,
+                  type INTEGER ( 19 ) as PS_AVAILQTY PS_AVAILQTY ,
+                  type DECIMAL ( 19  2 ) as sqyResult sqyResult&quot;
+      | filter &quot; type BOOLEAN L_PARTKEY PS_PARTKEY == PS_AVAILQTY casttype DECIMAL ( 19  2 ) CAST sqyResult &gt; and &quot;
+      | project &quot; type INTEGER ( 19 ) as L_SUPPKEY L_SUPPKEY&quot;
+      | hash &quot;type INTEGER ( 19 ) L_SUPPKEY&quot;
+      | combined 0
+      | next hashcast
+    
+     stage S07 on all partitions :
+       gbyAgg &quot; groupBy type integer ( 19 ) L_SUPPKEY
+                          aggregates type integer ( 19 ) as L_SUPPKEY $K1&quot;
+       | combined 0
+       | next
+    
+    stage S08 on all partitions :
+      indexJoin Supplier IxS_SUPPKEY &quot;BOUND $I1 L_SUPPKEY ==&quot;
+      | project &quot; type INTEGER ( 19 ) as S_NATIONKEY S_NATIONKEY ,
+                  type VARCHAR ( 0 ) as S_NAME S_NAME ,
+                  type VARCHAR ( 0 ) as S_ADDRESS S_ADDRESS&quot;
+      | indexJoin Nation IxN_NATIONKEY &quot;BOUND $I1 S_NATIONKEY ==&quot;
+      | filter &quot; type BOOLEAN N_NAME &apos;CANADA&apos; ==  &quot;
+      | project &quot; type VARCHAR ( 0 ) as S_NAME S_NAME ,
+                  type VARCHAR ( 0 ) as S_ADDRESS S_ADDRESS &quot;
+      | sort &quot; type VARCHAR ( 0 ) S_NAME ASC  &quot;
+      | combined 0
+      | next
+    
+    stage S09 on origin :
+      sort &quot; type VARCHAR ( 0 ) S_NAME ASC  &quot;
+      | combined 0
+      | next
+    
+    stage S10 on origin :
+       output
+       | sink
+       | first
+      end ;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q20_lineitem" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">/optimise_passthru
+pipeline Query20
+begin
+
+    stage S00 on origin :
+      start
+      | pulse once
+      | next
+
+    stage S01 on all partitions:
+      scan lineitem
+      | project &quot;type integer ( 19 ) as L_PARTKEY L_PARTKEY ,
+                 type integer ( 19 ) as L_SUPPKEY L_SUPPKEY ,
+                 type DATE ( 0 ) as L_SHIPDATE L_SHIPDATE ,
+                 type DECIMAL ( 19 2 ) as L_QUANTITY L_QUANTITY&quot;
+      | filter &quot; type BOOLEAN  L_SHIPDATE DATE &apos;1994-01-01&apos; &gt;= L_SHIPDATE DATE &apos;1995-01-01&apos;  &lt;  and  &quot;
+      | project &quot;type integer ( 19 ) as L_PARTKEY L_PARTKEY ,
+                 type integer ( 19 ) as L_SUPPKEY L_SUPPKEY ,
+                 type DECIMAL ( 19 2 ) as L_QUANTITY L_QUANTITY&quot;
+      | hash &quot;type INTEGER ( 19 ) L_PARTKEY&quot;
+      | combined 0
+      | next hashcast
+
+    stage S02 on all partitions multiple threads 4:
+      indexJoin part IxP_PARTKEY &quot;BOUND $I1 L_PARTKEY ==&quot;
+      | project &quot; type INTEGER ( 19 ) as L_PARTKEY L_PARTKEY ,
+                  type integer ( 19 ) as L_SUPPKEY L_SUPPKEY ,
+                  type DECIMAL ( 19 2 ) as L_QUANTITY L_QUANTITY ,
+                  type VARCHAR ( 0 ) as P_NAME P_NAME&quot;
+      | filter &quot; type BOOLEAN  }  P_NAME &apos;forest%&apos;  7 matchLeading &quot;
+      | gbyAgg &quot; groupBy  type integer ( 19 ) L_PARTKEY ,
+                          type integer ( 19 ) L_SUPPKEY
+                     aggregates type integer ( 19 ) as L_PARTKEY $K1 ,
+                                type integer ( 19 ) as L_SUPPKEY $K2 ,
+                                type DECIMAL ( 19  2 ) )  L_QUANTITY sum&quot;
+      | combined 0
+      | next
+
+    stage S03 on all nodes :
+      gbyAgg &quot; groupBy type integer ( 19 ) L_PARTKEY ,
+                       type integer ( 19 ) L_SUPPKEY
+                  aggregates type integer ( 19 ) as L_PARTKEY $K1 ,
                              type integer ( 19 ) as L_SUPPKEY $K2 ,
                              type DECIMAL ( 19  2 ) )  $3 sum&quot;
       | combined 0
       | next
 
     stage S04 on origin :
-      gbyAgg &quot; groupBy type integer ( 19 ) P_PARTKEY ,
+      gbyAgg &quot; groupBy type integer ( 19 ) L_PARTKEY ,
                        type integer ( 19 ) L_SUPPKEY
-                   aggregates type integer ( 19 ) as P_PARTKEY $K1 ,
+                   aggregates type integer ( 19 ) as L_PARTKEY $K1 ,
                               type integer ( 19 ) as L_SUPPKEY $K2 ,
                               type DECIMAL ( 19  2 ) )  $3 sum&quot;
       | combined 0
       | next
 
     stage S05 on origin :
-      project &quot; type integer ( 19 ) as P_PARTKEY P_PARTKEY , type integer ( 19 ) as L_SUPPKEY L_SUPPKEY , type DECIMAL ( 19  2 ) as sqyResult 0.5  $3 *  &quot;
+      project &quot; type integer ( 19 ) as L_PARTKEY L_PARTKEY ,
+                type integer ( 19 ) as L_SUPPKEY L_SUPPKEY ,
+                type DECIMAL ( 19  2 ) as sqyResult 0.5  $3 *  &quot;
       | combined 0
       | next broadcast
 
-   stage S06 on all partitions  multiple threads 4:
-     indexJoin partSupp IxPS_SUPPKEY &quot;BOUND $I1 L_SUPPKEY ==&quot;
-     | filter &quot; type BOOLEAN P_PARTKEY PS_PARTKEY == PS_AVAILQTY casttype DECIMAL ( 19  2 ) CAST sqyResult  &gt; and &quot;
-     | project &quot; type INTEGER ( 19 ) as PS_SUPPKEY $2&quot;
-     | hash &quot;type INTEGER ( 19 ) PS_SUPPKEY&quot;
-     | combined 0
-     | next hashcast
+    stage S06 on all partitions  multiple threads 4:
+      indexJoin partSupp IxPS_SUPPKEY &quot;BOUND $I1 L_SUPPKEY ==&quot;
+      | project &quot; type INTEGER ( 19 ) as L_PARTKEY L_PARTKEY ,
+                  type INTEGER ( 19 ) as L_SUPPKEY L_SUPPKEY ,
+                  type INTEGER ( 19 ) as PS_PARTKEY PS_PARTKEY ,
+                  type INTEGER ( 19 ) as PS_AVAILQTY PS_AVAILQTY ,
+                  type DECIMAL ( 19  2 ) as sqyResult sqyResult&quot;
+      | filter &quot; type BOOLEAN L_PARTKEY PS_PARTKEY == PS_AVAILQTY casttype DECIMAL ( 19  2 ) CAST sqyResult &gt; and &quot;
+      | project &quot; type INTEGER ( 19 ) as L_SUPPKEY L_SUPPKEY&quot;
+      | hash &quot;type INTEGER ( 19 ) L_SUPPKEY&quot;
+      | combined 0
+      | next hashcast
 
-   stage S07 on all partitions :
-     gbyAgg &quot; groupBy type integer ( 19 ) PS_SUPPKEY
-                        aggregates type integer ( 19 ) as PS_SUPPKEY $K1&quot;
-     | combined 0
-     | next
+     stage S07 on all partitions :
+       gbyAgg &quot; groupBy type integer ( 19 ) L_SUPPKEY
+                          aggregates type integer ( 19 ) as L_SUPPKEY $K1&quot;
+       | combined 0
+       | next
 
-  stage S08 on all partitions :
-    indexJoin Supplier IxS_SUPPKEY &quot;BOUND $I1 PS_SUPPKEY ==&quot;
-    | project &quot; type INTEGER ( 19 ) as S_NATIONKEY S_NATIONKEY , type VARCHAR ( 0 ) as S_NAME S_NAME , type VARCHAR ( 0 ) as S_ADDRESS S_ADDRESS&quot;
-    | indexJoin Nation IxN_NATIONKEY &quot;BOUND $I1 S_NATIONKEY ==&quot;
-    | filter &quot; type BOOLEAN N_NAME &apos;CANADA&apos; ==  &quot;
-    | project &quot; type VARCHAR ( 0 ) as S_NAME S_NAME , type VARCHAR ( 0 ) as S_ADDRESS S_ADDRESS &quot;
-    | sort &quot; type VARCHAR ( 0 ) S_NAME ASC  &quot;
-    | combined 0
-    | next
+    stage S08 on all partitions :
+      indexJoin Supplier IxS_SUPPKEY &quot;BOUND $I1 L_SUPPKEY ==&quot;
+      | project &quot; type INTEGER ( 19 ) as S_NATIONKEY S_NATIONKEY ,
+                  type VARCHAR ( 0 ) as S_NAME S_NAME ,
+                  type VARCHAR ( 0 ) as S_ADDRESS S_ADDRESS&quot;
+      | indexJoin Nation IxN_NATIONKEY &quot;BOUND $I1 S_NATIONKEY ==&quot;
+      | filter &quot; type BOOLEAN N_NAME &apos;CANADA&apos; ==  &quot;
+      | project &quot; type VARCHAR ( 0 ) as S_NAME S_NAME ,
+                  type VARCHAR ( 0 ) as S_ADDRESS S_ADDRESS &quot;
+      | sort &quot; type VARCHAR ( 0 ) S_NAME ASC  &quot;
+      | combined 0
+      | next
 
-  stage S10 on origin :
-    sort &quot; type VARCHAR ( 0 ) S_NAME ASC  &quot;
-    | combined 0
-    | next
+    stage S09 on origin :
+      sort &quot; type VARCHAR ( 0 ) S_NAME ASC  &quot;
+      | combined 0
+      | next
 
-  stage S11 on origin :
-    output
-    | sink
-    | first
-end ;
-</stringProp>
+    stage S10 on origin :
+       output
+       | sink
+       | first
+      end ;</stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="queryTimeout"></stringProp>

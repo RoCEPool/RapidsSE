@@ -1,0 +1,108 @@
+/*============================================================================*/
+/* __Q20_lineitem_iscan                                                       */
+/*============================================================================*/
+
+/optimise_passthru
+pipeline Query20
+begin
+
+    stage S00 on origin :
+      start
+      | pulse once
+      | next
+
+    stage S01 on all partitions:
+      indexScan lineitem IxL_SHIPDATE "LBOUND $I1 DATE '1994-01-01' >= UBOUND $I1 DATE '1995-01-01' <"
+      | project "type integer ( 19 ) as L_PARTKEY L_PARTKEY ,
+                 type integer ( 19 ) as L_SUPPKEY L_SUPPKEY ,
+                 type DECIMAL ( 19 2 ) as L_QUANTITY L_QUANTITY"
+      | hash "type INTEGER ( 19 ) L_PARTKEY"
+      | combined 0
+      | next hashcast
+
+    stage S02 on all partitions multiple threads 4:
+      indexJoin part IxP_PARTKEY "BOUND $I1 L_PARTKEY =="
+      | project " type INTEGER ( 19 ) as L_PARTKEY L_PARTKEY ,
+                  type integer ( 19 ) as L_SUPPKEY L_SUPPKEY ,
+                  type DECIMAL ( 19 2 ) as L_QUANTITY L_QUANTITY ,
+                  type VARCHAR ( 0 ) as P_NAME P_NAME"
+      | filter " type BOOLEAN  }  P_NAME 'forest%'  7 matchLeading "
+      | gbyAgg " groupBy  type integer ( 19 ) L_PARTKEY ,
+                          type integer ( 19 ) L_SUPPKEY
+                     aggregates type integer ( 19 ) as L_PARTKEY $K1 ,
+                                type integer ( 19 ) as L_SUPPKEY $K2 ,
+                                type DECIMAL ( 19  2 ) )  L_QUANTITY sum"
+      | combined 0
+      | next
+
+    stage S03 on all nodes :
+      gbyAgg " groupBy type integer ( 19 ) L_PARTKEY ,
+                       type integer ( 19 ) L_SUPPKEY
+                  aggregates type integer ( 19 ) as L_PARTKEY $K1 ,
+                             type integer ( 19 ) as L_SUPPKEY $K2 ,
+                             type DECIMAL ( 19  2 ) )  $3 sum"
+      | combined 0
+      | next
+
+    stage S04 on origin :
+      gbyAgg " groupBy type integer ( 19 ) L_PARTKEY ,
+                       type integer ( 19 ) L_SUPPKEY
+                   aggregates type integer ( 19 ) as L_PARTKEY $K1 ,
+                              type integer ( 19 ) as L_SUPPKEY $K2 ,
+                              type DECIMAL ( 19  2 ) )  $3 sum"
+      | combined 0
+      | next
+
+    stage S05 on origin :
+      project " type integer ( 19 ) as L_PARTKEY L_PARTKEY ,
+                type integer ( 19 ) as L_SUPPKEY L_SUPPKEY ,
+                type DECIMAL ( 19  2 ) as sqyResult 0.5  $3 *  "
+      | combined 0
+      | next broadcast
+
+    stage S06 on all partitions  multiple threads 4:
+      indexJoin partSupp IxPS_SUPPKEY "BOUND $I1 L_SUPPKEY =="
+      | project " type INTEGER ( 19 ) as L_PARTKEY L_PARTKEY ,
+                  type INTEGER ( 19 ) as L_SUPPKEY L_SUPPKEY ,
+                  type INTEGER ( 19 ) as PS_PARTKEY PS_PARTKEY ,
+                  type INTEGER ( 19 ) as PS_AVAILQTY PS_AVAILQTY ,
+                  type DECIMAL ( 19  2 ) as sqyResult sqyResult"
+      | filter " type BOOLEAN L_PARTKEY PS_PARTKEY == PS_AVAILQTY casttype DECIMAL ( 19  2 ) CAST sqyResult > and "
+      | project " type INTEGER ( 19 ) as L_SUPPKEY L_SUPPKEY"
+      | hash "type INTEGER ( 19 ) L_SUPPKEY"
+      | combined 0
+      | next hashcast
+
+     stage S07 on all partitions :
+       gbyAgg " groupBy type integer ( 19 ) L_SUPPKEY
+                          aggregates type integer ( 19 ) as L_SUPPKEY $K1"
+       | combined 0
+       | next
+
+    stage S08 on all partitions :
+      indexJoin Supplier IxS_SUPPKEY "BOUND $I1 L_SUPPKEY =="
+      | project " type INTEGER ( 19 ) as S_NATIONKEY S_NATIONKEY ,
+                  type VARCHAR ( 0 ) as S_NAME S_NAME ,
+                  type VARCHAR ( 0 ) as S_ADDRESS S_ADDRESS"
+      | indexJoin Nation IxN_NATIONKEY "BOUND $I1 S_NATIONKEY =="
+      | filter " type BOOLEAN N_NAME 'CANADA' ==  "
+      | project " type VARCHAR ( 0 ) as S_NAME S_NAME ,
+                  type VARCHAR ( 0 ) as S_ADDRESS S_ADDRESS "
+      | sort " type VARCHAR ( 0 ) S_NAME ASC  "
+      | combined 0
+      | next
+
+    stage S09 on origin :
+      sort " type VARCHAR ( 0 ) S_NAME ASC  "
+      | combined 0
+      | next
+
+    stage S10 on origin :
+       output
+       | sink
+       | first
+      end ;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
