@@ -12270,7 +12270,7 @@ This query requires a view to be created first.</stringProp>
               </hashTree>
             </hashTree>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q16 Group" enabled="false"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q16 Group" enabled="true"/>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
@@ -12374,6 +12374,240 @@ order by
   p_brand, 
   p_type, 
   p_size;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q16_part_1" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">/optimise_passthru
+pipeline Query16
+begin
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
+
+  stage S01 on all partitions :
+    scan rapidsse public part
+    | project &quot;type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY ,
+                   type VARCHAR ( 0 ) as P_BRAND P_BRAND ,
+                   type VARCHAR ( 0 ) as P_TYPE P_TYPE ,
+                   type INTEGER ( 19 ) as P_SIZE P_SIZE&quot;
+    | filter &quot; type BOOLEAN  }  49  14  23  45  19  3  36  9  #8  P_SIZE in&quot;
+    | filter &quot; type BOOLEAN  P_BRAND &apos;Brand#45&apos; !=&quot;
+    | filter &quot; type BOOLEAN  }  P_TYPE &apos;MEDIUM POLISHED%&apos;  16 matchLeading not &quot;
+    | indexjoin PartSupp IxPS_PARTKEY &quot;BOUND $I1 P_PARTKEY ==&quot;
+    | project &quot;type INTEGER ( 19 ) as PS_SUPPKEY PS_SUPPKEY ,
+               type VARCHAR ( 0 ) as P_BRAND P_BRAND ,
+               type VARCHAR ( 0 ) as P_TYPE P_TYPE ,
+               type INTEGER ( 19 ) as P_SIZE P_SIZE&quot;
+    | hash &quot; type INTEGER ( 19 ) PS_SUPPKEY&quot;
+    | combined 0
+    | next hashcast
+
+  stage S03 on all partitions :
+    keyNotExists SUPPLIER IxS_SUPPKEY  &quot;BOUND $I1 PS_SUPPKEY ==&quot;
+               &quot;type BOOLEAN  }  S_COMMENT &apos;%Customer%Complaints%&apos;  8 10 matchMiddle1&quot;
+    | gbyAgg &quot; GroupBy type VARCHAR ( 0 ) as P_BRAND P_BRAND ,
+                       type VARCHAR ( 0 ) as P_TYPE P_TYPE ,
+                       type INTEGER ( 19 ) as P_SIZE P_SIZE ,
+                       type INTEGER ( 19 ) as PS_SUPPKEY PS_SUPPKEY
+               aggregates
+                       type VARCHAR ( 0 )  as P_BRAND $K1 ,
+                       type VARCHAR ( 0 )  as P_TYPE $K2 ,
+                       type INTEGER ( 19 )  as P_SIZE $K3 ,
+                       type INTEGER ( 19 )  as PS_SUPPKEY $K4&quot;
+
+    | combined 0
+    | next
+
+  stage S04 on all nodes :
+    gbyAgg &quot; GroupBy type VARCHAR ( 0 ) as P_BRAND P_BRAND ,
+                     type VARCHAR ( 0 ) as P_TYPE P_TYPE ,
+                     type INTEGER ( 19 ) as P_SIZE P_SIZE ,
+                     type INTEGER ( 19 ) as PS_SUPPKEY PS_SUPPKEY
+             aggregates
+                    type VARCHAR ( 0 )  as P_BRAND $K1 ,
+                    type VARCHAR ( 0 )  as P_TYPE $K2 ,
+                    type INTEGER ( 19 )  as P_SIZE $K3 ,
+                    type INTEGER ( 19 )  as PS_SUPPKEY $K4 &quot;
+    | combined 0
+    | next
+
+  stage S05 on origin :
+    gbyAgg &quot; GroupBy type VARCHAR ( 0 ) as P_BRAND P_BRAND ,
+                     type VARCHAR ( 0 ) as P_TYPE P_TYPE ,
+                     type INTEGER ( 19 ) as P_SIZE P_SIZE ,
+                     type INTEGER ( 19 ) as PS_SUPPKEY PS_SUPPKEY
+             aggregates
+                    type VARCHAR ( 0 )  as P_BRAND $K1 ,
+                    type VARCHAR ( 0 )  as P_TYPE $K2 ,
+                    type INTEGER ( 19 )  as P_SIZE $K3 ,
+                    type INTEGER ( 19 )  as PS_SUPPKEY $K4 &quot;
+    | hash &quot; type INTEGER ( 19 ) PS_SUPPKEY&quot;
+    | combined 0
+    | next hashcast
+
+  stage S06 on all partitions :
+    gbyAgg &quot; GroupBy  type VARCHAR ( 0 ) as P_BRAND P_BRAND ,
+                       type VARCHAR ( 0 ) as P_TYPE P_TYPE ,
+                       type INTEGER ( 19 ) as P_SIZE P_SIZE
+                       aggregates
+                       type VARCHAR ( 0 )  as P_BRAND $K1 ,
+                       type VARCHAR ( 0 )  as P_TYPE $K2 ,
+                       type INTEGER ( 19 )  as P_SIZE $K3 ,
+                       type INTEGER ( 19 )  as SUPPLIER_CNT ) PS_SUPPKEY COUNT&quot;
+    | combined 0
+    | next
+
+  stage S07 on all nodes :
+    gbyAgg &quot; GroupBy type VARCHAR ( 0 ) as P_BRAND P_BRAND ,
+                     type VARCHAR ( 0 ) as P_TYPE P_TYPE ,
+                     type INTEGER ( 19 ) as P_SIZE P_SIZE
+                     aggregates
+                     type VARCHAR ( 0 )  as P_BRAND $K1 ,
+                     type VARCHAR ( 0 )  as P_TYPE $K2 ,
+                     type INTEGER ( 19 )  as P_SIZE $K3 ,
+                     type INTEGER ( 19 )  as SUPPLIER_CNT ) SUPPLIER_CNT SUM&quot;
+    | combined 0
+    | next
+
+  stage S08 on origin :
+    gbyAgg &quot; GroupBy  type VARCHAR ( 0 ) as P_BRAND P_BRAND ,
+                      type VARCHAR ( 0 ) as P_TYPE P_TYPE ,
+                      type INTEGER ( 19 ) as P_SIZE P_SIZE
+                      aggregates
+                      type VARCHAR ( 0 )  as P_BRAND $K1 ,
+                      type VARCHAR ( 0 )  as P_TYPE $K2 ,
+                      type INTEGER ( 19 )  as P_SIZE $K3 ,
+                      type INTEGER ( 19 )  as SUPPLIER_CNT ) SUPPLIER_CNT SUM&quot;
+    | combined 0
+    | next
+
+  stage S09 on origin :
+    sort &quot; type INTEGER ( 19 ) SUPPLIER_CNT DESC  ,
+           type VARCHAR ( 0 ) as P_BRAND P_BRAND ASC ,
+           type VARCHAR ( 0 ) as P_TYPE P_TYPE ASC ,
+           type INTEGER ( 19 ) as P_SIZE P_SIZE ASC &quot;
+    | combined 0
+    | next
+
+  stage stageLast on origin :
+    output
+    | sink
+    | first
+end ;
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q16_part_2" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">/optimise_passthru
+pipeline Query16
+begin
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
+
+  stage S01 on all partitions :
+    scan rapidsse public part
+    | project &quot;type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY ,
+                   type VARCHAR ( 0 ) as P_BRAND P_BRAND ,
+                   type VARCHAR ( 0 ) as P_TYPE P_TYPE ,
+                   type INTEGER ( 19 ) as P_SIZE P_SIZE&quot;
+    | filter &quot; type BOOLEAN  }  49  14  23  45  19  3  36  9  #8  P_SIZE in&quot;
+    | filter &quot; type BOOLEAN  P_BRAND &apos;Brand#45&apos; !=&quot;
+    | filter &quot; type BOOLEAN  }  P_TYPE &apos;MEDIUM POLISHED%&apos;  16 matchLeading not &quot;
+    | indexjoin PartSupp IxPS_PARTKEY &quot;BOUND $I1 P_PARTKEY ==&quot;
+    | project &quot;type INTEGER ( 19 ) as PS_SUPPKEY PS_SUPPKEY ,
+               type VARCHAR ( 0 ) as P_BRAND P_BRAND ,
+               type VARCHAR ( 0 ) as P_TYPE P_TYPE ,
+               type INTEGER ( 19 ) as P_SIZE P_SIZE&quot;
+    | hash &quot; type INTEGER ( 19 ) PS_SUPPKEY&quot;
+    | combined 0
+    | next hashcast
+
+  stage S03 on all partitions :
+    keyNotExists SUPPLIER IxS_SUPPKEY  &quot;BOUND $I1 PS_SUPPKEY ==&quot;
+               &quot;type BOOLEAN  }  S_COMMENT &apos;%Customer%Complaints%&apos;  8 10 matchMiddle1&quot;
+    | gbyAgg &quot; GroupBy type VARCHAR ( 0 ) as P_BRAND P_BRAND ,
+                       type VARCHAR ( 0 ) as P_TYPE P_TYPE ,
+                       type INTEGER ( 19 ) as P_SIZE P_SIZE ,
+                       type INTEGER ( 19 ) as PS_SUPPKEY PS_SUPPKEY
+               aggregates
+                       type VARCHAR ( 0 )  as P_BRAND $K1 ,
+                       type VARCHAR ( 0 )  as P_TYPE $K2 ,
+                       type INTEGER ( 19 )  as P_SIZE $K3 ,
+                       type INTEGER ( 19 )  as PS_SUPPKEY $K4&quot;
+
+    | combined 0
+    | next
+
+  stage S06 on all partitions :
+    gbyAgg &quot; GroupBy  type VARCHAR ( 0 ) as P_BRAND P_BRAND ,
+                       type VARCHAR ( 0 ) as P_TYPE P_TYPE ,
+                       type INTEGER ( 19 ) as P_SIZE P_SIZE
+                       aggregates
+                       type VARCHAR ( 0 )  as P_BRAND $K1 ,
+                       type VARCHAR ( 0 )  as P_TYPE $K2 ,
+                       type INTEGER ( 19 )  as P_SIZE $K3 ,
+                       type INTEGER ( 19 )  as SUPPLIER_CNT ) PS_SUPPKEY COUNT&quot;
+    | combined 0
+    | next
+
+  stage S07 on all nodes :
+    gbyAgg &quot; GroupBy type VARCHAR ( 0 ) as P_BRAND P_BRAND ,
+                     type VARCHAR ( 0 ) as P_TYPE P_TYPE ,
+                     type INTEGER ( 19 ) as P_SIZE P_SIZE
+                     aggregates
+                     type VARCHAR ( 0 )  as P_BRAND $K1 ,
+                     type VARCHAR ( 0 )  as P_TYPE $K2 ,
+                     type INTEGER ( 19 )  as P_SIZE $K3 ,
+                     type INTEGER ( 19 )  as SUPPLIER_CNT ) SUPPLIER_CNT SUM&quot;
+    | combined 0
+    | next
+
+  stage S08 on origin :
+    gbyAgg &quot; GroupBy  type VARCHAR ( 0 ) as P_BRAND P_BRAND ,
+                      type VARCHAR ( 0 ) as P_TYPE P_TYPE ,
+                      type INTEGER ( 19 ) as P_SIZE P_SIZE
+                      aggregates
+                      type VARCHAR ( 0 )  as P_BRAND $K1 ,
+                      type VARCHAR ( 0 )  as P_TYPE $K2 ,
+                      type INTEGER ( 19 )  as P_SIZE $K3 ,
+                      type INTEGER ( 19 )  as SUPPLIER_CNT ) SUPPLIER_CNT SUM&quot;
+    | combined 0
+    | next
+
+  stage S09 on origin :
+    sort &quot; type INTEGER ( 19 ) SUPPLIER_CNT DESC  ,
+           type VARCHAR ( 0 ) as P_BRAND P_BRAND ASC ,
+           type VARCHAR ( 0 ) as P_TYPE P_TYPE ASC ,
+           type INTEGER ( 19 ) as P_SIZE P_SIZE ASC &quot;
+    | combined 0
+    | next
+
+  stage stageLast on origin :
+    output
+    | sink
+    | first
+end ;</stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="queryTimeout"></stringProp>

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* __Q16_run                                                                  */
+/* __Q16_part_2                                                               */
 /*============================================================================*/
 
 /optimise_passthru
@@ -43,34 +43,7 @@ begin
 
     | combined 0
     | next
-/*
-  stage S04 on all nodes :
-    gbyAgg " GroupBy type VARCHAR ( 0 ) as P_BRAND P_BRAND ,
-                     type VARCHAR ( 0 ) as P_TYPE P_TYPE ,
-                     type INTEGER ( 19 ) as P_SIZE P_SIZE ,
-                     type INTEGER ( 19 ) as PS_SUPPKEY PS_SUPPKEY
-             aggregates
-                    type VARCHAR ( 0 )  as P_BRAND $K1 ,
-                    type VARCHAR ( 0 )  as P_TYPE $K2 ,
-                    type INTEGER ( 19 )  as P_SIZE $K3 ,
-                    type INTEGER ( 19 )  as PS_SUPPKEY $K4 "
-    | combined 0
-    | next
 
-  stage S05 on origin :
-    gbyAgg " GroupBy type VARCHAR ( 0 ) as P_BRAND P_BRAND ,
-                     type VARCHAR ( 0 ) as P_TYPE P_TYPE ,
-                     type INTEGER ( 19 ) as P_SIZE P_SIZE ,
-                     type INTEGER ( 19 ) as PS_SUPPKEY PS_SUPPKEY
-             aggregates
-                    type VARCHAR ( 0 )  as P_BRAND $K1 ,
-                    type VARCHAR ( 0 )  as P_TYPE $K2 ,
-                    type INTEGER ( 19 )  as P_SIZE $K3 ,
-                    type INTEGER ( 19 )  as PS_SUPPKEY $K4 "
-    | hash " type INTEGER ( 19 ) PS_SUPPKEY"
-    | combined 0
-    | next hashcast
-*/
   stage S06 on all partitions :
     gbyAgg " GroupBy  type VARCHAR ( 0 ) as P_BRAND P_BRAND ,
                        type VARCHAR ( 0 ) as P_TYPE P_TYPE ,
