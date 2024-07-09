@@ -12,13 +12,13 @@ begin
 
   stage S01 on all partitions :
     scan rapidsse public part
-    | filter " type BOOLEAN  P_BRAND 'Brand#45' !=
-              }  P_TYPE 'MEDIUM POLISHED%'  16 matchLeading not and
-              }  49  14  23  45  19  3  36  9  #8  P_SIZE in and"
     | project "type INTEGER ( 19 ) as P_PARTKEY P_PARTKEY ,
-               type VARCHAR ( 0 ) as P_BRAND P_BRAND ,
-               type VARCHAR ( 0 ) as P_TYPE P_TYPE ,
-               type INTEGER ( 19 ) as P_SIZE P_SIZE"
+                   type VARCHAR ( 0 ) as P_BRAND P_BRAND ,
+                   type VARCHAR ( 0 ) as P_TYPE P_TYPE ,
+                   type INTEGER ( 19 ) as P_SIZE P_SIZE"
+    | filter " type BOOLEAN  }  49  14  23  45  19  3  36  9  #8  P_SIZE in"
+    | filter " type BOOLEAN  P_BRAND 'Brand#45' !="
+    | filter " type BOOLEAN  }  P_TYPE 'MEDIUM POLISHED%'  16 matchLeading not "
     | indexjoin PartSupp IxPS_PARTKEY "BOUND $I1 P_PARTKEY =="
     | project "type INTEGER ( 19 ) as PS_SUPPKEY PS_SUPPKEY ,
                type VARCHAR ( 0 ) as P_BRAND P_BRAND ,
@@ -43,7 +43,7 @@ begin
 
     | combined 0
     | next
-
+/*
   stage S04 on all nodes :
     gbyAgg " GroupBy type VARCHAR ( 0 ) as P_BRAND P_BRAND ,
                      type VARCHAR ( 0 ) as P_TYPE P_TYPE ,
@@ -70,7 +70,7 @@ begin
     | hash " type INTEGER ( 19 ) PS_SUPPKEY"
     | combined 0
     | next hashcast
-
+*/
   stage S06 on all partitions :
     gbyAgg " GroupBy  type VARCHAR ( 0 ) as P_BRAND P_BRAND ,
                        type VARCHAR ( 0 ) as P_TYPE P_TYPE ,
@@ -79,7 +79,7 @@ begin
                        type VARCHAR ( 0 )  as P_BRAND $K1 ,
                        type VARCHAR ( 0 )  as P_TYPE $K2 ,
                        type INTEGER ( 19 )  as P_SIZE $K3 ,
-                       type INTEGER ( 19 )  as supplier_cnt ) PS_SUPPKEY COUNT"
+                       type INTEGER ( 19 )  as SUPPLIER_CNT ) PS_SUPPKEY COUNT"
     | combined 0
     | next
 
@@ -91,7 +91,7 @@ begin
                      type VARCHAR ( 0 )  as P_BRAND $K1 ,
                      type VARCHAR ( 0 )  as P_TYPE $K2 ,
                      type INTEGER ( 19 )  as P_SIZE $K3 ,
-                     type INTEGER ( 19 )  as supplier_cnt ) supplier_cnt SUM"
+                     type INTEGER ( 19 )  as SUPPLIER_CNT ) SUPPLIER_CNT SUM"
     | combined 0
     | next
 
@@ -103,12 +103,12 @@ begin
                       type VARCHAR ( 0 )  as P_BRAND $K1 ,
                       type VARCHAR ( 0 )  as P_TYPE $K2 ,
                       type INTEGER ( 19 )  as P_SIZE $K3 ,
-                      type INTEGER ( 19 )  as supplier_cnt ) supplier_cnt SUM"
+                      type INTEGER ( 19 )  as SUPPLIER_CNT ) SUPPLIER_CNT SUM"
     | combined 0
     | next
 
   stage S09 on origin :
-    sort " type INTEGER ( 19 ) $4 DESC  ,
+    sort " type INTEGER ( 19 ) SUPPLIER_CNT DESC  ,
            type VARCHAR ( 0 ) as P_BRAND P_BRAND ASC ,
            type VARCHAR ( 0 ) as P_TYPE P_TYPE ASC ,
            type INTEGER ( 19 ) as P_SIZE P_SIZE ASC "
