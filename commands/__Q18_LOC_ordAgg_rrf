@@ -2,7 +2,6 @@
 /* __Q18_run                                                                  */
 /*============================================================================*/
 
-/keepCodeFile
 /optimise_passthru
 pipeline Query18
 begin

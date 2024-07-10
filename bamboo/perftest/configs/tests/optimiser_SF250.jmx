@@ -12798,7 +12798,7 @@ end ;</stringProp>
               </hashTree>
             </hashTree>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q18 Group" enabled="false"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q18 Group" enabled="true"/>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
@@ -12874,7 +12874,7 @@ limit 100;</stringProp>
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q18_POC3" enabled="false">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q18_loc" enabled="true">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
 pipeline Query18
@@ -12885,17 +12885,17 @@ begin
      | next
 
    stage S01 on all partitions :
-      indexscan lineitem IxL_ORDERKEY &quot;lbound $I1 0 &gt;=&quot;
-     | ordAgg &quot; ordgroupBy  type INTEGER ( 19 ) as L_ORDERKEY L_ORDERKEY aggregates  type INTEGER ( 19 ) as L_ORDERKEY $K1 , type DECIMAL ( 19  2 ) as SUM_QTY )  L_QUANTITY sum  &quot;
+      scan lineitem
+     | gbyAgg &quot; groupBy  type INTEGER ( 19 ) as L_ORDERKEY L_ORDERKEY aggregates  type INTEGER ( 19 ) as L_ORDERKEY $K1 , type DECIMAL ( 19  2 ) as SUM_QTY )  L_QUANTITY sum  &quot;
      | combined 0
      | next
 
-  stage S02 on origin :
+    stage S01a on all partitions :
      filter  &quot; type BOOLEAN  SUM_QTY 300.00  &gt;  &quot;
      | combined 0
      | next broadcast
 
-   stage S03 on all partitions :
+   stage S02 on all partitions  multiple threads 4:
      indexJoin orders IxO_ORDERKEY &quot;bound $I1 $1 ==&quot;
      | project &quot;type INTEGER ( 19 ) as O_CUSTKEY O_CUSTKEY ,
                 type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY ,
@@ -12905,7 +12905,7 @@ begin
      | combined 0
      | next
 
-   stage S04 on all partitions :
+   stage S03 on all partitions :
      indexJoin customer IxC_CUSTKEY &quot;bound $I1 $1 ==&quot;
      | project &quot;type VARCHAR ( 0 ) as C_NAME C_NAME ,
                 type INTEGER ( 19 ) as C_CUSTKEY C_CUSTKEY ,
@@ -12916,7 +12916,7 @@ begin
      | combined 0
      | next
 
-   stage S05 on all partitions :
+   stage S04 on all partitions :
      gbyAgg &quot; GroupBy type VARCHAR ( 0 ) as C_NAME C_NAME ,
                       type INTEGER ( 19 ) as C_CUSTKEY C_CUSTKEY ,
                       type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY ,
@@ -12932,7 +12932,23 @@ begin
      | combined 0
      | next
 
-   stage S06 on all nodes :
+   stage S05 on all nodes :
+     gbyAgg &quot; GroupBy  type VARCHAR ( 0 ) as C_NAME C_NAME ,
+                       type INTEGER ( 19 ) as C_CUSTKEY C_CUSTKEY ,
+                       type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY ,
+                       type DATE as O_ORDERDATE O_ORDERDATE ,
+                       type DECIMAL ( 19  2 ) as O_TOTALPRICE O_TOTALPRICE
+                       aggregates
+                       type VARCHAR ( 0 ) as C_NAME $K1 ,
+                       type INTEGER ( 19 ) as C_CUSTKEY $K2 ,
+                       type INTEGER ( 19 ) as O_ORDERKEY $K3 ,
+                       type DATE as O_ORDERDATE $K4 ,
+                       type DECIMAL ( 19  2 ) as O_TOTALPRICE $K5 ,
+                       type DECIMAL ( 19  2 ) as SUM_QTY ) SUM_QTY sum  &quot;
+     | combined 0
+     | next
+
+   stage S06 on origin :
      gbyAgg &quot; GroupBy  type VARCHAR ( 0 ) as C_NAME C_NAME ,
                        type INTEGER ( 19 ) as C_CUSTKEY C_CUSTKEY ,
                        type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY ,
@@ -12949,28 +12965,12 @@ begin
      | next
 
    stage S07 on origin :
-     gbyAgg &quot; GroupBy  type VARCHAR ( 0 ) as C_NAME C_NAME ,
-                       type INTEGER ( 19 ) as C_CUSTKEY C_CUSTKEY ,
-                       type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY ,
-                       type DATE as O_ORDERDATE O_ORDERDATE ,
-                       type DECIMAL ( 19  2 ) as O_TOTALPRICE O_TOTALPRICE
-                       aggregates
-                       type VARCHAR ( 0 ) as C_NAME $K1 ,
-                       type INTEGER ( 19 ) as C_CUSTKEY $K2 ,
-                       type INTEGER ( 19 ) as O_ORDERKEY $K3 ,
-                       type DATE as O_ORDERDATE $K4 ,
-                       type DECIMAL ( 19  2 ) as O_TOTALPRICE $K5 ,
-                       type DECIMAL ( 19  2 ) as SUM_QTY ) SUM_QTY sum  &quot;
-     | combined 0
-     | next
-
-   stage S08 on origin :
      sort &quot; type DECIMAL ( 19  2 ) as O_TOTALPRICE O_TOTALPRICE DESC  , type DATE as O_ORDERDATE O_ORDERDATE ASC  &quot;
      | limit 100
      | combined 0
      | next
 
-   stage S10 on origin :
+   stage S08 on origin :
      output
      | sink
      | first
@@ -12986,7 +12986,119 @@ begin
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q18_POC3_mt" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q18_loc_iscan" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">/optimise_passthru
+pipeline Query18
+begin
+   stage S00 on origin :
+     start
+     | pulse once
+     | next
+
+   stage S01 on all partitions :
+      indexscan lineitem IxL_ORDERKEY &quot;lbound $I1 0 &gt;=&quot;
+     //| ordAgg &quot; ordgroupBy  type INTEGER ( 19 ) as L_ORDERKEY L_ORDERKEY aggregates  type INTEGER ( 19 ) as L_ORDERKEY $K1 , type DECIMAL ( 19  2 ) as SUM_QTY )  L_QUANTITY sum  &quot;
+     | gbyAgg &quot; groupBy  type INTEGER ( 19 ) as L_ORDERKEY L_ORDERKEY aggregates  type INTEGER ( 19 ) as L_ORDERKEY $K1 , type DECIMAL ( 19  2 ) as SUM_QTY )  L_QUANTITY sum  &quot;
+     | combined 0
+     | next
+
+    stage S01a on all partitions :
+     filter  &quot; type BOOLEAN  SUM_QTY 300.00  &gt;  &quot;
+     | combined 0
+     | next broadcast
+
+   stage S02 on all partitions  multiple threads 4:
+     indexJoin orders IxO_ORDERKEY &quot;bound $I1 $1 ==&quot;
+     | project &quot;type INTEGER ( 19 ) as O_CUSTKEY O_CUSTKEY ,
+                type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY ,
+                type DATE as O_ORDERDATE O_ORDERDATE ,
+                type DECIMAL ( 19  2 ) as O_TOTALPRICE O_TOTALPRICE ,
+                type DECIMAL ( 19  2 ) as SUM_QTY SUM_QTY &quot;
+     | combined 0
+     | next
+
+   stage S03 on all partitions :
+     indexJoin customer IxC_CUSTKEY &quot;bound $I1 $1 ==&quot;
+     | project &quot;type VARCHAR ( 0 ) as C_NAME C_NAME ,
+                type INTEGER ( 19 ) as C_CUSTKEY C_CUSTKEY ,
+                type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY ,
+                type DATE as O_ORDERDATE O_ORDERDATE ,
+                type DECIMAL ( 19  2 ) as O_TOTALPRICE O_TOTALPRICE ,
+                type DECIMAL ( 19  2 ) as SUM_QTY SUM_QTY &quot;
+     | combined 0
+     | next
+
+   stage S04 on all partitions :
+     gbyAgg &quot; GroupBy type VARCHAR ( 0 ) as C_NAME C_NAME ,
+                      type INTEGER ( 19 ) as C_CUSTKEY C_CUSTKEY ,
+                      type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY ,
+                      type DATE as O_ORDERDATE O_ORDERDATE ,
+                      type DECIMAL ( 19  2 ) as O_TOTALPRICE O_TOTALPRICE
+                      aggregates
+                      type VARCHAR ( 0 ) as C_NAME $K1 ,
+                      type INTEGER ( 19 ) as C_CUSTKEY $K2 ,
+                      type INTEGER ( 19 ) as O_ORDERKEY $K3 ,
+                      type DATE as O_ORDERDATE $K4 ,
+                      type DECIMAL ( 19  2 ) as O_TOTALPRICE $K5 ,
+                      type DECIMAL ( 19  2 ) as SUM_QTY ) SUM_QTY sum  &quot;
+     | combined 0
+     | next
+
+   stage S05 on all nodes :
+     gbyAgg &quot; GroupBy  type VARCHAR ( 0 ) as C_NAME C_NAME ,
+                       type INTEGER ( 19 ) as C_CUSTKEY C_CUSTKEY ,
+                       type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY ,
+                       type DATE as O_ORDERDATE O_ORDERDATE ,
+                       type DECIMAL ( 19  2 ) as O_TOTALPRICE O_TOTALPRICE
+                       aggregates
+                       type VARCHAR ( 0 ) as C_NAME $K1 ,
+                       type INTEGER ( 19 ) as C_CUSTKEY $K2 ,
+                       type INTEGER ( 19 ) as O_ORDERKEY $K3 ,
+                       type DATE as O_ORDERDATE $K4 ,
+                       type DECIMAL ( 19  2 ) as O_TOTALPRICE $K5 ,
+                       type DECIMAL ( 19  2 ) as SUM_QTY ) SUM_QTY sum  &quot;
+     | combined 0
+     | next
+
+   stage S06 on origin :
+     gbyAgg &quot; GroupBy  type VARCHAR ( 0 ) as C_NAME C_NAME ,
+                       type INTEGER ( 19 ) as C_CUSTKEY C_CUSTKEY ,
+                       type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY ,
+                       type DATE as O_ORDERDATE O_ORDERDATE ,
+                       type DECIMAL ( 19  2 ) as O_TOTALPRICE O_TOTALPRICE
+                       aggregates
+                       type VARCHAR ( 0 ) as C_NAME $K1 ,
+                       type INTEGER ( 19 ) as C_CUSTKEY $K2 ,
+                       type INTEGER ( 19 ) as O_ORDERKEY $K3 ,
+                       type DATE as O_ORDERDATE $K4 ,
+                       type DECIMAL ( 19  2 ) as O_TOTALPRICE $K5 ,
+                       type DECIMAL ( 19  2 ) as SUM_QTY ) SUM_QTY sum  &quot;
+     | combined 0
+     | next
+
+   stage S07 on origin :
+     sort &quot; type DECIMAL ( 19  2 ) as O_TOTALPRICE O_TOTALPRICE DESC  , type DATE as O_ORDERDATE O_ORDERDATE ASC  &quot;
+     | limit 100
+     | combined 0
+     | next
+
+   stage S08 on origin :
+     output
+     | sink
+     | first
+ end ;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q18_loc_ordagg" enabled="true">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
 pipeline Query18
@@ -13094,7 +13206,225 @@ begin
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q18_rrf" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q18_loc_rrf" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">/optimise_passthru
+pipeline Query18
+begin
+   stage S00 on origin :
+     start
+     | pulse once
+     | next
+
+   stage S01 on all partitions :
+      scan lineitem
+     | gbyAgg &quot; groupBy  type INTEGER ( 19 ) as L_ORDERKEY L_ORDERKEY aggregates  type INTEGER ( 19 ) as L_ORDERKEY $K1 , type DECIMAL ( 19  2 ) as SUM_QTY )  L_QUANTITY sum  &quot;
+     | combined 0
+     | next
+
+  stage S02 on origin :
+     filter  &quot; type BOOLEAN  SUM_QTY 300.00  &gt;  &quot;
+     | globalHash ORDERS GxO_ORDERKEY &quot;type INTEGER ( 19 ) L_ORDERKEY&quot;
+     | combined 0
+     | next hashcast
+
+   stage S03 on all partitions multiple threads 4:
+     indexJoin orders IxO_ORDERKEY &quot;bound $I1 $1 ==&quot;
+     | project &quot;type INTEGER ( 19 ) as O_CUSTKEY O_CUSTKEY ,
+                type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY ,
+                type DATE as O_ORDERDATE O_ORDERDATE ,
+                type DECIMAL ( 19  2 ) as O_TOTALPRICE O_TOTALPRICE ,
+                type DECIMAL ( 19  2 ) as SUM_QTY SUM_QTY &quot;
+     | indexJoin customer IxC_CUSTKEY &quot;bound $I1 $1 ==&quot;
+     | project &quot;type VARCHAR ( 0 ) as C_NAME C_NAME ,
+                type INTEGER ( 19 ) as C_CUSTKEY C_CUSTKEY ,
+                type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY ,
+                type DATE as O_ORDERDATE O_ORDERDATE ,
+                type DECIMAL ( 19  2 ) as O_TOTALPRICE O_TOTALPRICE ,
+                type DECIMAL ( 19  2 ) as SUM_QTY SUM_QTY &quot;
+     | combined 0
+     | next
+
+   stage S05 on all partitions :
+     gbyAgg &quot; GroupBy type VARCHAR ( 0 ) as C_NAME C_NAME ,
+                      type INTEGER ( 19 ) as C_CUSTKEY C_CUSTKEY ,
+                      type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY ,
+                      type DATE as O_ORDERDATE O_ORDERDATE ,
+                      type DECIMAL ( 19  2 ) as O_TOTALPRICE O_TOTALPRICE
+                      aggregates
+                      type VARCHAR ( 0 ) as C_NAME $K1 ,
+                      type INTEGER ( 19 ) as C_CUSTKEY $K2 ,
+                      type INTEGER ( 19 ) as O_ORDERKEY $K3 ,
+                      type DATE as O_ORDERDATE $K4 ,
+                      type DECIMAL ( 19  2 ) as O_TOTALPRICE $K5 ,
+                      type DECIMAL ( 19  2 ) as SUM_QTY ) SUM_QTY sum  &quot;
+     | combined 0
+     | next
+
+   stage S06 on all nodes :
+     gbyAgg &quot; GroupBy  type VARCHAR ( 0 ) as C_NAME C_NAME ,
+                       type INTEGER ( 19 ) as C_CUSTKEY C_CUSTKEY ,
+                       type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY ,
+                       type DATE as O_ORDERDATE O_ORDERDATE ,
+                       type DECIMAL ( 19  2 ) as O_TOTALPRICE O_TOTALPRICE
+                       aggregates
+                       type VARCHAR ( 0 ) as C_NAME $K1 ,
+                       type INTEGER ( 19 ) as C_CUSTKEY $K2 ,
+                       type INTEGER ( 19 ) as O_ORDERKEY $K3 ,
+                       type DATE as O_ORDERDATE $K4 ,
+                       type DECIMAL ( 19  2 ) as O_TOTALPRICE $K5 ,
+                       type DECIMAL ( 19  2 ) as SUM_QTY ) SUM_QTY sum  &quot;
+     | combined 0
+     | next
+
+   stage S07 on origin :
+     gbyAgg &quot; GroupBy  type VARCHAR ( 0 ) as C_NAME C_NAME ,
+                       type INTEGER ( 19 ) as C_CUSTKEY C_CUSTKEY ,
+                       type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY ,
+                       type DATE as O_ORDERDATE O_ORDERDATE ,
+                       type DECIMAL ( 19  2 ) as O_TOTALPRICE O_TOTALPRICE
+                       aggregates
+                       type VARCHAR ( 0 ) as C_NAME $K1 ,
+                       type INTEGER ( 19 ) as C_CUSTKEY $K2 ,
+                       type INTEGER ( 19 ) as O_ORDERKEY $K3 ,
+                       type DATE as O_ORDERDATE $K4 ,
+                       type DECIMAL ( 19  2 ) as O_TOTALPRICE $K5 ,
+                       type DECIMAL ( 19  2 ) as SUM_QTY ) SUM_QTY sum  &quot;
+     | combined 0
+     | next
+
+   stage S08 on origin :
+     sort &quot; type DECIMAL ( 19  2 ) as O_TOTALPRICE O_TOTALPRICE DESC  , type DATE as O_ORDERDATE O_ORDERDATE ASC  &quot;
+     | limit 100
+     | combined 0
+     | next
+
+   stage S10 on origin :
+     output
+     | sink
+     | first
+ end ;
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q18_loc_iscan_rrf" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">/optimise_passthru
+pipeline Query18
+begin
+   stage S00 on origin :
+     start
+     | pulse once
+     | next
+
+   stage S01 on all partitions :
+      indexscan lineitem IxL_ORDERKEY &quot;lbound $I1 0 &gt;=&quot;
+     | gbyAgg &quot; groupBy  type INTEGER ( 19 ) as L_ORDERKEY L_ORDERKEY aggregates  type INTEGER ( 19 ) as L_ORDERKEY $K1 , type DECIMAL ( 19  2 ) as SUM_QTY )  L_QUANTITY sum  &quot;
+     | combined 0
+     | next
+
+  stage S02 on origin :
+     filter  &quot; type BOOLEAN  SUM_QTY 300.00  &gt;  &quot;
+     | globalHash ORDERS GxO_ORDERKEY &quot;type INTEGER ( 19 ) L_ORDERKEY&quot;
+     | combined 0
+     | next hashcast
+
+   stage S03 on all partitions multiple threads 4:
+     indexJoin orders IxO_ORDERKEY &quot;bound $I1 $1 ==&quot;
+     | project &quot;type INTEGER ( 19 ) as O_CUSTKEY O_CUSTKEY ,
+                type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY ,
+                type DATE as O_ORDERDATE O_ORDERDATE ,
+                type DECIMAL ( 19  2 ) as O_TOTALPRICE O_TOTALPRICE ,
+                type DECIMAL ( 19  2 ) as SUM_QTY SUM_QTY &quot;
+     | indexJoin customer IxC_CUSTKEY &quot;bound $I1 $1 ==&quot;
+     | project &quot;type VARCHAR ( 0 ) as C_NAME C_NAME ,
+                type INTEGER ( 19 ) as C_CUSTKEY C_CUSTKEY ,
+                type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY ,
+                type DATE as O_ORDERDATE O_ORDERDATE ,
+                type DECIMAL ( 19  2 ) as O_TOTALPRICE O_TOTALPRICE ,
+                type DECIMAL ( 19  2 ) as SUM_QTY SUM_QTY &quot;
+     | combined 0
+     | next
+
+   stage S05 on all partitions :
+     gbyAgg &quot; GroupBy type VARCHAR ( 0 ) as C_NAME C_NAME ,
+                      type INTEGER ( 19 ) as C_CUSTKEY C_CUSTKEY ,
+                      type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY ,
+                      type DATE as O_ORDERDATE O_ORDERDATE ,
+                      type DECIMAL ( 19  2 ) as O_TOTALPRICE O_TOTALPRICE
+                      aggregates
+                      type VARCHAR ( 0 ) as C_NAME $K1 ,
+                      type INTEGER ( 19 ) as C_CUSTKEY $K2 ,
+                      type INTEGER ( 19 ) as O_ORDERKEY $K3 ,
+                      type DATE as O_ORDERDATE $K4 ,
+                      type DECIMAL ( 19  2 ) as O_TOTALPRICE $K5 ,
+                      type DECIMAL ( 19  2 ) as SUM_QTY ) SUM_QTY sum  &quot;
+     | combined 0
+     | next
+
+   stage S06 on all nodes :
+     gbyAgg &quot; GroupBy  type VARCHAR ( 0 ) as C_NAME C_NAME ,
+                       type INTEGER ( 19 ) as C_CUSTKEY C_CUSTKEY ,
+                       type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY ,
+                       type DATE as O_ORDERDATE O_ORDERDATE ,
+                       type DECIMAL ( 19  2 ) as O_TOTALPRICE O_TOTALPRICE
+                       aggregates
+                       type VARCHAR ( 0 ) as C_NAME $K1 ,
+                       type INTEGER ( 19 ) as C_CUSTKEY $K2 ,
+                       type INTEGER ( 19 ) as O_ORDERKEY $K3 ,
+                       type DATE as O_ORDERDATE $K4 ,
+                       type DECIMAL ( 19  2 ) as O_TOTALPRICE $K5 ,
+                       type DECIMAL ( 19  2 ) as SUM_QTY ) SUM_QTY sum  &quot;
+     | combined 0
+     | next
+
+   stage S07 on origin :
+     gbyAgg &quot; GroupBy  type VARCHAR ( 0 ) as C_NAME C_NAME ,
+                       type INTEGER ( 19 ) as C_CUSTKEY C_CUSTKEY ,
+                       type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY ,
+                       type DATE as O_ORDERDATE O_ORDERDATE ,
+                       type DECIMAL ( 19  2 ) as O_TOTALPRICE O_TOTALPRICE
+                       aggregates
+                       type VARCHAR ( 0 ) as C_NAME $K1 ,
+                       type INTEGER ( 19 ) as C_CUSTKEY $K2 ,
+                       type INTEGER ( 19 ) as O_ORDERKEY $K3 ,
+                       type DATE as O_ORDERDATE $K4 ,
+                       type DECIMAL ( 19  2 ) as O_TOTALPRICE $K5 ,
+                       type DECIMAL ( 19  2 ) as SUM_QTY ) SUM_QTY sum  &quot;
+     | combined 0
+     | next
+
+   stage S08 on origin :
+     sort &quot; type DECIMAL ( 19  2 ) as O_TOTALPRICE O_TOTALPRICE DESC  , type DATE as O_ORDERDATE O_ORDERDATE ASC  &quot;
+     | limit 100
+     | combined 0
+     | next
+
+   stage S10 on origin :
+     output
+     | sink
+     | first
+ end ;
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q18_loc_ordagg_rrf" enabled="true">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
 pipeline Query18
@@ -13191,8 +13521,7 @@ begin
      output
      | sink
      | first
- end ;
-</stringProp>
+ end ;</stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="queryTimeout"></stringProp>
