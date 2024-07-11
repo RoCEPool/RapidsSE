@@ -13206,7 +13206,186 @@ begin
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q18_loc_rrf" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q18_opt1" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">/optimise_passthru
+pipeline Query18
+begin
+   stage S00 on origin :
+     start
+     | pulse once
+     | next
+
+  stage S01 on all partitions:
+     scan orders
+     | project &quot;type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY ,
+                type INTEGER ( 19 ) as O_CUSTKEY O_CUSTKEY &quot;
+     | indexJoin customer IxC_CUSTKEY &quot;bound $I1 O_CUSTKEY ==&quot;
+     | project &quot;type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY ,
+                type INTEGER ( 19 ) as O_CUSTKEY O_CUSTKEY&quot;
+     | hash &quot; type INTEGER ( 19 ) O_ORDERKEY&quot;
+     | combined 0
+     | next hashcast
+
+   stage S02 on all partitions multiple threads 4:
+      indexJoin lineitem IxL_ORDERKEY &quot;bound $I1 O_ORDERKEY ==&quot;
+      | project &quot;type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY ,
+                      type INTEGER ( 19 ) as O_CUSTKEY O_CUSTKEY ,
+                      type DECIMAL ( 19  2 ) as L_QUANTITY L_QUANTITY&quot;
+      | ordAgg &quot; ordGroupBy  type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY
+                  aggregates
+                     type INTEGER ( 19 ) as O_ORDERKEY $K1 ,
+                     type INTEGER ( 19 ) as O_CUSTKEY O_CUSTKEY ,
+                     type DECIMAL ( 19  2 ) as SUM_QTY )  L_QUANTITY sum  &quot;
+      | combined 0
+      | next
+
+   stage S03 on all partitions :
+     filter  &quot; type BOOLEAN  SUM_QTY 300.00  &gt;  &quot;
+     | combined 0
+     | next broadcast
+
+  stage S04 on all partitions :
+    indexJoin orders IxO_ORDERKEY &quot;bound $I1 O_ORDERKEY ==&quot;
+    | gbyAgg &quot; GroupBy type INTEGER ( 19 ) as O_CUSTKEY O_CUSTKEY ,
+                     type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY ,
+                     type DATE as O_ORDERDATE O_ORDERDATE ,
+                     type DECIMAL ( 19  2 ) as O_TOTALPRICE O_TOTALPRICE ,
+                      aggregates
+                     type INTEGER ( 19 ) as O_CUSTKEY $K1 ,
+                     type INTEGER ( 19 ) as O_ORDERKEY $K2 ,
+                     type DATE as O_ORDERDATE $K3 ,
+                     type DECIMAL ( 19  2 ) as O_TOTALPRICE $K4 ,
+                     type DECIMAL ( 19  2 ) as SUM_QTY ) SUM_QTY sum  &quot;
+    | combined 0
+    | next
+
+  stage S05 on all partitions :
+    indexJoin customer IxC_CUSTKEY &quot;bound $I1 O_CUSTKEY ==&quot;
+    | project &quot;type VARCHAR ( 0 ) as C_NAME C_NAME ,
+               type INTEGER ( 19 ) as O_CUSTKEY O_CUSTKEY ,
+               type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY ,
+               type DATE as O_ORDERDATE O_ORDERDATE ,
+               type DECIMAL ( 19  2 ) as O_TOTALPRICE O_TOTALPRICE ,
+               type DECIMAL ( 19  2 ) as SUM_QTY SUM_QTY &quot;
+
+    | sort &quot; type DECIMAL ( 19  2 ) as O_TOTALPRICE O_TOTALPRICE DESC  ,
+              type DATE as O_ORDERDATE O_ORDERDATE ASC  &quot;
+    | limit 100
+    | combined 0
+    | next
+
+  stage S06 on origin :
+    sort &quot; type DECIMAL ( 19  2 ) as O_TOTALPRICE O_TOTALPRICE DESC  ,
+           type DATE as O_ORDERDATE O_ORDERDATE ASC  &quot;
+    | limit 100
+    | combined 0
+    | next
+
+   stage S07 on origin :
+     output
+     | sink
+     | first
+ end ;
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q18_opt2" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">/optimise_passthru
+pipeline Query18
+begin
+   stage S00 on origin :
+     start
+     | pulse once
+     | next
+
+  stage S01 on all partitions:
+     scan orders
+     | project &quot;type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY ,
+                type INTEGER ( 19 ) as O_CUSTKEY O_CUSTKEY &quot;
+     | indexJoin customer IxC_CUSTKEY &quot;bound $I1 O_CUSTKEY ==&quot;
+     | project &quot;type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY ,
+                type INTEGER ( 19 ) as O_CUSTKEY O_CUSTKEY ,
+                type VARCHAR ( 0 ) as C_NAME C_NAME&quot;
+     | hash &quot; type INTEGER ( 19 ) O_ORDERKEY&quot;
+     | combined 0
+     | next hashcast
+
+   stage S02 on all partitions multiple threads 4:
+      indexJoin lineitem IxL_ORDERKEY &quot;bound $I1 O_ORDERKEY ==&quot;
+      | project &quot;type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY ,
+                      type INTEGER ( 19 ) as O_CUSTKEY O_CUSTKEY ,
+                      type VARCHAR ( 0 ) as C_NAME C_NAME ,
+                      type DECIMAL ( 19  2 ) as L_QUANTITY L_QUANTITY&quot;
+      | ordAgg &quot; ordGroupBy  type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY
+                  aggregates
+                     type INTEGER ( 19 ) as O_ORDERKEY $K1 ,
+                     type INTEGER ( 19 ) as O_CUSTKEY O_CUSTKEY ,
+                     type VARCHAR ( 0 ) as C_NAME C_NAME ,
+                     type DECIMAL ( 19  2 ) as SUM_QTY )  L_QUANTITY sum  &quot;
+      | combined 0
+      | next
+
+   stage S03 on all partitions :
+     filter  &quot; type BOOLEAN  SUM_QTY 300.00  &gt;  &quot;
+     | combined 0
+     | next broadcast
+
+  stage S04 on all partitions :
+    indexJoin orders IxO_ORDERKEY &quot;bound $I1 O_ORDERKEY ==&quot;
+    | gbyAgg &quot; GroupBy type INTEGER ( 19 ) as O_CUSTKEY O_CUSTKEY ,
+                     type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY ,
+                     type DATE as O_ORDERDATE O_ORDERDATE ,
+                     type DECIMAL ( 19  2 ) as O_TOTALPRICE O_TOTALPRICE ,
+                      aggregates
+                     type VARCHAR ( 0 ) as C_NAME C_NAME ,
+                     type INTEGER ( 19 ) as O_CUSTKEY $K1 ,
+                     type INTEGER ( 19 ) as O_ORDERKEY $K2 ,
+                     type DATE as O_ORDERDATE $K3 ,
+                     type DECIMAL ( 19  2 ) as O_TOTALPRICE $K4 ,
+                     type DECIMAL ( 19  2 ) as SUM_QTY ) SUM_QTY sum  &quot;
+    | combined 0
+    | next
+
+  stage S05 on all partitions :
+    sort &quot; type DECIMAL ( 19  2 ) as O_TOTALPRICE O_TOTALPRICE DESC  ,
+              type DATE as O_ORDERDATE O_ORDERDATE ASC  &quot;
+    | limit 100
+    | combined 0
+    | next
+
+  stage S06 on origin :
+    sort &quot; type DECIMAL ( 19  2 ) as O_TOTALPRICE O_TOTALPRICE DESC  ,
+           type DATE as O_ORDERDATE O_ORDERDATE ASC  &quot;
+    | limit 100
+    | combined 0
+    | next
+
+   stage S07 on origin :
+     output
+     | sink
+     | first
+ end ;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q18_loc_rrf" enabled="false">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
 pipeline Query18
@@ -13315,7 +13494,7 @@ begin
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q18_loc_iscan_rrf" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q18_loc_iscan_rrf" enabled="false">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
 pipeline Query18
@@ -13424,7 +13603,7 @@ begin
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q18_loc_ordagg_rrf" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q18_loc_ordagg_rrf" enabled="false">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
 pipeline Query18

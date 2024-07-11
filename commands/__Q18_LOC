@@ -12,7 +12,10 @@ begin
 
    stage S01 on all partitions :
       scan lineitem
-     | gbyAgg " groupBy  type INTEGER ( 19 ) as L_ORDERKEY L_ORDERKEY aggregates  type INTEGER ( 19 ) as L_ORDERKEY $K1 , type DECIMAL ( 19  2 ) as SUM_QTY )  L_QUANTITY sum  "
+     | gbyAgg " groupBy  type INTEGER ( 19 ) as L_ORDERKEY L_ORDERKEY
+                  aggregates
+                     type INTEGER ( 19 ) as L_ORDERKEY $K1 ,
+                     type DECIMAL ( 19  2 ) as SUM_QTY )  L_QUANTITY sum  "
      | combined 0
      | next
 

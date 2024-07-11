@@ -1,0 +1,87 @@
+/*============================================================================*/
+/* __Q18_LOC                                                                  */
+/*============================================================================*/
+
+/optimise_passthru
+pipeline Query18
+begin
+   stage S00 on origin :
+     start
+     | pulse once
+     | next
+
+  stage S01 on all partitions:
+     scan orders
+     | project "type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY ,
+                type INTEGER ( 19 ) as O_CUSTKEY O_CUSTKEY "
+     | indexJoin customer IxC_CUSTKEY "bound $I1 O_CUSTKEY =="
+     | project "type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY ,
+                type INTEGER ( 19 ) as O_CUSTKEY O_CUSTKEY"
+     | hash " type INTEGER ( 19 ) O_ORDERKEY"
+     | combined 0
+     | next hashcast
+
+   stage S02 on all partitions multiple threads 4:
+      indexJoin lineitem IxL_ORDERKEY "bound $I1 O_ORDERKEY =="
+      | project "type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY ,
+                      type INTEGER ( 19 ) as O_CUSTKEY O_CUSTKEY ,
+                      type DECIMAL ( 19  2 ) as L_QUANTITY L_QUANTITY"
+      | ordAgg " ordGroupBy  type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY
+                  aggregates
+                     type INTEGER ( 19 ) as O_ORDERKEY $K1 ,
+                     type INTEGER ( 19 ) as O_CUSTKEY O_CUSTKEY ,
+                     type DECIMAL ( 19  2 ) as SUM_QTY )  L_QUANTITY sum  "
+      | combined 0
+      | next
+
+   stage S03 on all partitions :
+     filter  " type BOOLEAN  SUM_QTY 300.00  >  "
+     | combined 0
+     | next broadcast
+
+  stage S04 on all partitions :
+    indexJoin orders IxO_ORDERKEY "bound $I1 O_ORDERKEY =="
+    | gbyAgg " GroupBy type INTEGER ( 19 ) as O_CUSTKEY O_CUSTKEY ,
+                     type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY ,
+                     type DATE as O_ORDERDATE O_ORDERDATE ,
+                     type DECIMAL ( 19  2 ) as O_TOTALPRICE O_TOTALPRICE ,
+                      aggregates
+                     type INTEGER ( 19 ) as O_CUSTKEY $K1 ,
+                     type INTEGER ( 19 ) as O_ORDERKEY $K2 ,
+                     type DATE as O_ORDERDATE $K3 ,
+                     type DECIMAL ( 19  2 ) as O_TOTALPRICE $K4 ,
+                     type DECIMAL ( 19  2 ) as SUM_QTY ) SUM_QTY sum  "
+    | combined 0
+    | next
+
+  stage S05 on all partitions :
+    indexJoin customer IxC_CUSTKEY "bound $I1 O_CUSTKEY =="
+    | project "type VARCHAR ( 0 ) as C_NAME C_NAME ,
+               type INTEGER ( 19 ) as O_CUSTKEY O_CUSTKEY ,
+               type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY ,
+               type DATE as O_ORDERDATE O_ORDERDATE ,
+               type DECIMAL ( 19  2 ) as O_TOTALPRICE O_TOTALPRICE ,
+               type DECIMAL ( 19  2 ) as SUM_QTY SUM_QTY "
+
+    | sort " type DECIMAL ( 19  2 ) as O_TOTALPRICE O_TOTALPRICE DESC  ,
+              type DATE as O_ORDERDATE O_ORDERDATE ASC  "
+    | limit 100
+    | combined 0
+    | next
+
+  stage S06 on origin :
+    sort " type DECIMAL ( 19  2 ) as O_TOTALPRICE O_TOTALPRICE DESC  ,
+           type DATE as O_ORDERDATE O_ORDERDATE ASC  "
+    | limit 100
+    | combined 0
+    | next
+
+   stage S07 on origin :
+     output
+     | sink
+     | first
+ end ;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
