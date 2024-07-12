@@ -3608,7 +3608,7 @@ end ;
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="false">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">sleep ${SLEEP_TIME} ;</stringProp>
                 <stringProp name="queryArguments"></stringProp>
@@ -3621,7 +3621,7 @@ end ;
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q3_loc" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q3_loc" enabled="false">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
 pipeline Query3
@@ -3727,7 +3727,7 @@ end ;</stringProp>
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="false">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">sleep ${SLEEP_TIME} ;</stringProp>
                 <stringProp name="queryArguments"></stringProp>
@@ -3740,7 +3740,7 @@ end ;</stringProp>
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q3_loc_iscan" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q3_loc_iscan" enabled="false">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
 pipeline Query3
@@ -3842,7 +3842,7 @@ end ;
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="false">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">sleep ${SLEEP_TIME} ;</stringProp>
                 <stringProp name="queryArguments"></stringProp>
