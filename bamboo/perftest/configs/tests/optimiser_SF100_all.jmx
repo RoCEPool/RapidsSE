@@ -11880,7 +11880,7 @@ pipeline Query12
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="false">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">sleep ${SLEEP_TIME} ;</stringProp>
                 <stringProp name="queryArguments"></stringProp>
@@ -11893,7 +11893,7 @@ pipeline Query12
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q12_lo_rrf" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q12_lo_rrf" enabled="false">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
 pipeline Query12
@@ -11961,7 +11961,7 @@ pipeline Query12
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="false">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">sleep ${SLEEP_TIME} ;</stringProp>
                 <stringProp name="queryArguments"></stringProp>
