@@ -1802,6 +1802,43 @@ end ;
             </BeanShellSampler>
             <hashTree/>
           </hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
+            <stringProp name="dataSource">SEConnPool</stringProp>
+            <stringProp name="query">sleep ${SLEEP_TIME} ;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+            <stringProp name="resultSetMaxRows"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <com.rapidsdata.jmeter.samplers.JdbcRecorder guiclass="com.rapidsdata.jmeter.samplers.gui.JdbcRecorderGui" testclass="com.rapidsdata.jmeter.samplers.JdbcRecorder" testname="space-load" enabled="true">
+            <stringProp name="JdbcRecorder.connPoolVarName">SEConnPool</stringProp>
+            <stringProp name="JdbcRecorder.queries">space;
+bpa;</stringProp>
+            <boolProp name="JdbcRecorder.incColumnNames">true</boolProp>
+            <boolProp name="JdbcRecorder.incColumnTypes">false</boolProp>
+            <boolProp name="JdbcRecorder.overrideOutput">false</boolProp>
+            <stringProp name="JdbcRecorder.fileName"></stringProp>
+            <stringProp name="JdbcRecorder.fileFormat">pretty</stringProp>
+          </com.rapidsdata.jmeter.samplers.JdbcRecorder>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
+            <stringProp name="dataSource">SEConnPool</stringProp>
+            <stringProp name="query">sleep ${SLEEP_TIME} ;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+            <stringProp name="resultSetMaxRows"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+          </JDBCSampler>
+          <hashTree/>
         </hashTree>
         <IfController guiclass="IfControllerPanel" testclass="IfController" testname="Check for setup failure" enabled="true">
           <stringProp name="IfController.condition">${__jexl3(!${JMeterThread.last_sample_ok},)}</stringProp>
@@ -1978,7 +2015,7 @@ order by
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q1_2n_p_opt1" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q1_2n_p_opt1" enabled="false">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
 pipeline Query1
@@ -2079,6 +2116,19 @@ end ;</stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="queryTimeout"></stringProp>
                 <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="false">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">sleep ${SLEEP_TIME} ;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
                 <stringProp name="resultSetHandler">Store as String</stringProp>
                 <stringProp name="resultSetMaxRows"></stringProp>
                 <stringProp name="resultVariable"></stringProp>
@@ -2192,7 +2242,20 @@ end ;</stringProp>
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q1_2n_p_opt1_8" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">sleep ${SLEEP_TIME} ;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q1_2n_p_opt1_8" enabled="false">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
 pipeline Query1
@@ -2314,6 +2377,17 @@ end ;</stringProp>
                 <hashTree/>
               </hashTree>
             </hashTree>
+            <com.rapidsdata.jmeter.samplers.JdbcRecorder guiclass="com.rapidsdata.jmeter.samplers.gui.JdbcRecorderGui" testclass="com.rapidsdata.jmeter.samplers.JdbcRecorder" testname="space-q1" enabled="true">
+              <stringProp name="JdbcRecorder.connPoolVarName">SEConnPool</stringProp>
+              <stringProp name="JdbcRecorder.queries">space;
+bpa;</stringProp>
+              <boolProp name="JdbcRecorder.incColumnNames">true</boolProp>
+              <boolProp name="JdbcRecorder.incColumnTypes">false</boolProp>
+              <boolProp name="JdbcRecorder.overrideOutput">false</boolProp>
+              <stringProp name="JdbcRecorder.fileName"></stringProp>
+              <stringProp name="JdbcRecorder.fileFormat">pretty</stringProp>
+            </com.rapidsdata.jmeter.samplers.JdbcRecorder>
+            <hashTree/>
           </hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q2 Group" enabled="true"/>
           <hashTree>
@@ -2547,6 +2621,19 @@ end ;</stringProp>
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">sleep ${SLEEP_TIME} ;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q2_poc3_opt2" enabled="true">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
@@ -2704,6 +2791,19 @@ end ;</stringProp>
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">sleep ${SLEEP_TIME} ;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
               <IfController guiclass="IfControllerPanel" testclass="IfController" testname="Check for error" enabled="true">
                 <stringProp name="IfController.condition">${__jexl3(!${JMeterThread.last_sample_ok},)}</stringProp>
                 <boolProp name="IfController.evaluateAll">false</boolProp>
@@ -2719,6 +2819,17 @@ end ;</stringProp>
                 <hashTree/>
               </hashTree>
             </hashTree>
+            <com.rapidsdata.jmeter.samplers.JdbcRecorder guiclass="com.rapidsdata.jmeter.samplers.gui.JdbcRecorderGui" testclass="com.rapidsdata.jmeter.samplers.JdbcRecorder" testname="space-q2" enabled="true">
+              <stringProp name="JdbcRecorder.connPoolVarName">SEConnPool</stringProp>
+              <stringProp name="JdbcRecorder.queries">space;
+bpa;</stringProp>
+              <boolProp name="JdbcRecorder.incColumnNames">true</boolProp>
+              <boolProp name="JdbcRecorder.incColumnTypes">false</boolProp>
+              <boolProp name="JdbcRecorder.overrideOutput">false</boolProp>
+              <stringProp name="JdbcRecorder.fileName"></stringProp>
+              <stringProp name="JdbcRecorder.fileFormat">pretty</stringProp>
+            </com.rapidsdata.jmeter.samplers.JdbcRecorder>
+            <hashTree/>
           </hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q3 Group" enabled="true"/>
           <hashTree>
@@ -2785,7 +2896,7 @@ limit 10;</stringProp>
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q3_ocl" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q3_ocl" enabled="false">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
 pipeline Query3
@@ -2891,7 +3002,7 @@ end ;
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q3_ocl_iscan" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q3_ocl_iscan" enabled="false">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
 pipeline Query3
@@ -2996,7 +3107,7 @@ end ;
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q3_olc" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q3_olc" enabled="false">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
 pipeline Query3
@@ -3107,7 +3218,7 @@ end ;
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q3_olc_iscan" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q3_olc_iscan" enabled="false">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
 pipeline Query3
@@ -3216,7 +3327,7 @@ end ;</stringProp>
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q3_col" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q3_col" enabled="false">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
 pipeline unamed
@@ -3394,6 +3505,19 @@ end ;</stringProp>
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">sleep ${SLEEP_TIME} ;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q3_col_oa_2" enabled="true">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
@@ -3473,6 +3597,19 @@ end ;
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="queryTimeout"></stringProp>
                 <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">sleep ${SLEEP_TIME} ;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
                 <stringProp name="resultSetHandler">Store as String</stringProp>
                 <stringProp name="resultSetMaxRows"></stringProp>
                 <stringProp name="resultVariable"></stringProp>
@@ -3559,6 +3696,19 @@ end ;</stringProp>
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">sleep ${SLEEP_TIME} ;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q3_col_oa_4" enabled="true">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
@@ -3634,6 +3784,19 @@ end ;
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="queryTimeout"></stringProp>
                 <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">sleep ${SLEEP_TIME} ;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
                 <stringProp name="resultSetHandler">Store as String</stringProp>
                 <stringProp name="resultSetMaxRows"></stringProp>
                 <stringProp name="resultVariable"></stringProp>
@@ -3746,6 +3909,19 @@ end ;</stringProp>
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">sleep ${SLEEP_TIME} ;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q3_loc_iscan" enabled="true">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
@@ -3848,6 +4024,19 @@ end ;
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">sleep ${SLEEP_TIME} ;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
               <IfController guiclass="IfControllerPanel" testclass="IfController" testname="Check for error" enabled="true">
                 <stringProp name="IfController.condition">${__jexl3(!${JMeterThread.last_sample_ok},)}</stringProp>
                 <boolProp name="IfController.evaluateAll">false</boolProp>
@@ -3863,6 +4052,17 @@ end ;
                 <hashTree/>
               </hashTree>
             </hashTree>
+            <com.rapidsdata.jmeter.samplers.JdbcRecorder guiclass="com.rapidsdata.jmeter.samplers.gui.JdbcRecorderGui" testclass="com.rapidsdata.jmeter.samplers.JdbcRecorder" testname="space-q3" enabled="true">
+              <stringProp name="JdbcRecorder.connPoolVarName">SEConnPool</stringProp>
+              <stringProp name="JdbcRecorder.queries">space;
+bpa;</stringProp>
+              <boolProp name="JdbcRecorder.incColumnNames">true</boolProp>
+              <boolProp name="JdbcRecorder.incColumnTypes">false</boolProp>
+              <boolProp name="JdbcRecorder.overrideOutput">false</boolProp>
+              <stringProp name="JdbcRecorder.fileName"></stringProp>
+              <stringProp name="JdbcRecorder.fileFormat">pretty</stringProp>
+            </com.rapidsdata.jmeter.samplers.JdbcRecorder>
+            <hashTree/>
           </hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q4 Group" enabled="true"/>
           <hashTree>
@@ -3994,6 +4194,19 @@ end ;
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">sleep ${SLEEP_TIME} ;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q4_ol_iscan" enabled="true">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
@@ -4058,6 +4271,19 @@ end ;
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">sleep ${SLEEP_TIME} ;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
               <IfController guiclass="IfControllerPanel" testclass="IfController" testname="Check for error" enabled="true">
                 <stringProp name="IfController.condition">${__jexl3(!${JMeterThread.last_sample_ok},)}</stringProp>
                 <boolProp name="IfController.evaluateAll">false</boolProp>
@@ -4073,6 +4299,17 @@ end ;
                 <hashTree/>
               </hashTree>
             </hashTree>
+            <com.rapidsdata.jmeter.samplers.JdbcRecorder guiclass="com.rapidsdata.jmeter.samplers.gui.JdbcRecorderGui" testclass="com.rapidsdata.jmeter.samplers.JdbcRecorder" testname="space-q4" enabled="true">
+              <stringProp name="JdbcRecorder.connPoolVarName">SEConnPool</stringProp>
+              <stringProp name="JdbcRecorder.queries">space;
+bpa;</stringProp>
+              <boolProp name="JdbcRecorder.incColumnNames">true</boolProp>
+              <boolProp name="JdbcRecorder.incColumnTypes">false</boolProp>
+              <boolProp name="JdbcRecorder.overrideOutput">false</boolProp>
+              <stringProp name="JdbcRecorder.fileName"></stringProp>
+              <stringProp name="JdbcRecorder.fileFormat">pretty</stringProp>
+            </com.rapidsdata.jmeter.samplers.JdbcRecorder>
+            <hashTree/>
           </hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q5 Group" enabled="true"/>
           <hashTree>
@@ -4140,7 +4377,7 @@ order by
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q5_oclsnr_1" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q5_oclsnr_1" enabled="false">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
 pipeline Query5
@@ -4236,7 +4473,20 @@ end ;</stringProp>
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q5_oclsnr_2" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="false">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">sleep ${SLEEP_TIME} ;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q5_oclsnr_2" enabled="false">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
 pipeline Query5
@@ -4331,7 +4581,20 @@ end ;</stringProp>
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q5_oclsnr_iscan1" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="false">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">sleep ${SLEEP_TIME} ;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q5_oclsnr_iscan1" enabled="false">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
 pipeline Query5
@@ -4421,7 +4684,20 @@ end ;</stringProp>
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q5_oclsnr_iscan2" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="false">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">sleep ${SLEEP_TIME} ;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q5_oclsnr_iscan2" enabled="false">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
 pipeline Query5
@@ -4516,7 +4792,20 @@ begin
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q5_locsnr_rrf_4" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="false">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">sleep ${SLEEP_TIME} ;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q5_locsnr_rrf_4" enabled="false">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
 pipeline Query5
@@ -4617,7 +4906,20 @@ end ;
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q5_locsnr_rrf_8" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="false">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">sleep ${SLEEP_TIME} ;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q5_locsnr_rrf_8" enabled="false">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
 pipeline Query5
@@ -4712,6 +5014,19 @@ end ;
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="queryTimeout"></stringProp>
                 <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="false">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">sleep ${SLEEP_TIME} ;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
                 <stringProp name="resultSetHandler">Store as String</stringProp>
                 <stringProp name="resultSetMaxRows"></stringProp>
                 <stringProp name="resultVariable"></stringProp>
@@ -4809,6 +5124,19 @@ end ;
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="queryTimeout"></stringProp>
                 <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">sleep ${SLEEP_TIME} ;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
                 <stringProp name="resultSetHandler">Store as String</stringProp>
                 <stringProp name="resultSetMaxRows"></stringProp>
                 <stringProp name="resultVariable"></stringProp>
@@ -4916,6 +5244,19 @@ end ;
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">sleep ${SLEEP_TIME} ;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
               <IfController guiclass="IfControllerPanel" testclass="IfController" testname="Check for error" enabled="true">
                 <stringProp name="IfController.condition">${__jexl3(!${JMeterThread.last_sample_ok},)}</stringProp>
                 <boolProp name="IfController.evaluateAll">false</boolProp>
@@ -4931,6 +5272,17 @@ end ;
                 <hashTree/>
               </hashTree>
             </hashTree>
+            <com.rapidsdata.jmeter.samplers.JdbcRecorder guiclass="com.rapidsdata.jmeter.samplers.gui.JdbcRecorderGui" testclass="com.rapidsdata.jmeter.samplers.JdbcRecorder" testname="space-q5" enabled="true">
+              <stringProp name="JdbcRecorder.connPoolVarName">SEConnPool</stringProp>
+              <stringProp name="JdbcRecorder.queries">space;
+bpa;</stringProp>
+              <boolProp name="JdbcRecorder.incColumnNames">true</boolProp>
+              <boolProp name="JdbcRecorder.incColumnTypes">false</boolProp>
+              <boolProp name="JdbcRecorder.overrideOutput">false</boolProp>
+              <stringProp name="JdbcRecorder.fileName"></stringProp>
+              <stringProp name="JdbcRecorder.fileFormat">pretty</stringProp>
+            </com.rapidsdata.jmeter.samplers.JdbcRecorder>
+            <hashTree/>
           </hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q6 Group" enabled="true"/>
           <hashTree>
@@ -5034,6 +5386,19 @@ end ;
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">sleep ${SLEEP_TIME} ;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q6_iscan" enabled="true">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
@@ -5080,6 +5445,19 @@ end ;
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">sleep ${SLEEP_TIME} ;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
               <IfController guiclass="IfControllerPanel" testclass="IfController" testname="Check for error" enabled="true">
                 <stringProp name="IfController.condition">${__jexl3(!${JMeterThread.last_sample_ok},)}</stringProp>
                 <boolProp name="IfController.evaluateAll">false</boolProp>
@@ -5095,6 +5473,17 @@ end ;
                 <hashTree/>
               </hashTree>
             </hashTree>
+            <com.rapidsdata.jmeter.samplers.JdbcRecorder guiclass="com.rapidsdata.jmeter.samplers.gui.JdbcRecorderGui" testclass="com.rapidsdata.jmeter.samplers.JdbcRecorder" testname="space-q6" enabled="true">
+              <stringProp name="JdbcRecorder.connPoolVarName">SEConnPool</stringProp>
+              <stringProp name="JdbcRecorder.queries">space;
+bpa;</stringProp>
+              <boolProp name="JdbcRecorder.incColumnNames">true</boolProp>
+              <boolProp name="JdbcRecorder.incColumnTypes">false</boolProp>
+              <boolProp name="JdbcRecorder.overrideOutput">false</boolProp>
+              <stringProp name="JdbcRecorder.fileName"></stringProp>
+              <stringProp name="JdbcRecorder.fileFormat">pretty</stringProp>
+            </com.rapidsdata.jmeter.samplers.JdbcRecorder>
+            <hashTree/>
           </hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q7 Group" enabled="true"/>
           <hashTree>
@@ -5286,7 +5675,20 @@ begin
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q7_OLCSN" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">sleep ${SLEEP_TIME} ;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q7_OLCSN" enabled="false">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
 pipeline Query7
@@ -5409,6 +5811,19 @@ end ;</stringProp>
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="false">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">sleep ${SLEEP_TIME} ;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
               <IfController guiclass="IfControllerPanel" testclass="IfController" testname="Check for error" enabled="true">
                 <stringProp name="IfController.condition">${__jexl3(!${JMeterThread.last_sample_ok},)}</stringProp>
                 <boolProp name="IfController.evaluateAll">false</boolProp>
@@ -5424,6 +5839,17 @@ end ;</stringProp>
                 <hashTree/>
               </hashTree>
             </hashTree>
+            <com.rapidsdata.jmeter.samplers.JdbcRecorder guiclass="com.rapidsdata.jmeter.samplers.gui.JdbcRecorderGui" testclass="com.rapidsdata.jmeter.samplers.JdbcRecorder" testname="space-7" enabled="true">
+              <stringProp name="JdbcRecorder.connPoolVarName">SEConnPool</stringProp>
+              <stringProp name="JdbcRecorder.queries">space;
+bpa;</stringProp>
+              <boolProp name="JdbcRecorder.incColumnNames">true</boolProp>
+              <boolProp name="JdbcRecorder.incColumnTypes">false</boolProp>
+              <boolProp name="JdbcRecorder.overrideOutput">false</boolProp>
+              <stringProp name="JdbcRecorder.fileName"></stringProp>
+              <stringProp name="JdbcRecorder.fileFormat">pretty</stringProp>
+            </com.rapidsdata.jmeter.samplers.JdbcRecorder>
+            <hashTree/>
           </hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q8 Group" enabled="true"/>
           <hashTree>
@@ -5624,6 +6050,19 @@ order by
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">sleep ${SLEEP_TIME} ;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q8_region" enabled="true">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
@@ -5743,6 +6182,19 @@ order by
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">sleep ${SLEEP_TIME} ;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
               <IfController guiclass="IfControllerPanel" testclass="IfController" testname="Check for error" enabled="true">
                 <stringProp name="IfController.condition">${__jexl3(!${JMeterThread.last_sample_ok},)}</stringProp>
                 <boolProp name="IfController.evaluateAll">false</boolProp>
@@ -5758,6 +6210,17 @@ order by
                 <hashTree/>
               </hashTree>
             </hashTree>
+            <com.rapidsdata.jmeter.samplers.JdbcRecorder guiclass="com.rapidsdata.jmeter.samplers.gui.JdbcRecorderGui" testclass="com.rapidsdata.jmeter.samplers.JdbcRecorder" testname="space-8" enabled="true">
+              <stringProp name="JdbcRecorder.connPoolVarName">SEConnPool</stringProp>
+              <stringProp name="JdbcRecorder.queries">space;
+bpa;</stringProp>
+              <boolProp name="JdbcRecorder.incColumnNames">true</boolProp>
+              <boolProp name="JdbcRecorder.incColumnTypes">false</boolProp>
+              <boolProp name="JdbcRecorder.overrideOutput">false</boolProp>
+              <stringProp name="JdbcRecorder.fileName"></stringProp>
+              <stringProp name="JdbcRecorder.fileFormat">pretty</stringProp>
+            </com.rapidsdata.jmeter.samplers.JdbcRecorder>
+            <hashTree/>
           </hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q9 Group" enabled="true"/>
           <hashTree>
@@ -7133,6 +7596,19 @@ pipeline Query9
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">sleep ${SLEEP_TIME} ;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q9_jo2_split" enabled="true">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
@@ -7246,6 +7722,19 @@ pipeline Query9
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="queryTimeout"></stringProp>
                 <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">sleep ${SLEEP_TIME} ;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
                 <stringProp name="resultSetHandler">Store as String</stringProp>
                 <stringProp name="resultSetMaxRows"></stringProp>
                 <stringProp name="resultVariable"></stringProp>
@@ -7370,7 +7859,20 @@ pipeline Query9
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q9_jo2_spli_3" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">sleep ${SLEEP_TIME} ;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q9_jo2_spli_3" enabled="false">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
 pipeline Query9
@@ -7483,6 +7985,19 @@ pipeline Query9
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="queryTimeout"></stringProp>
                 <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="false">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">sleep ${SLEEP_TIME} ;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
                 <stringProp name="resultSetHandler">Store as String</stringProp>
                 <stringProp name="resultSetMaxRows"></stringProp>
                 <stringProp name="resultVariable"></stringProp>
@@ -7604,6 +8119,19 @@ pipeline Query9
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">sleep ${SLEEP_TIME} ;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q9_jo2_iscan" enabled="true">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
@@ -7712,6 +8240,19 @@ pipeline Query9
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="queryTimeout"></stringProp>
                 <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">sleep ${SLEEP_TIME} ;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
                 <stringProp name="resultSetHandler">Store as String</stringProp>
                 <stringProp name="resultSetMaxRows"></stringProp>
                 <stringProp name="resultVariable"></stringProp>
@@ -7837,7 +8378,20 @@ pipeline Query9
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q9_jo2a_8" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">sleep ${SLEEP_TIME} ;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q9_jo2a_8" enabled="false">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
 pipeline Query9
@@ -7956,7 +8510,7 @@ pipeline Query9
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q9_jo2b" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q9_jo2b_EXP" enabled="false">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
 pipeline Query9
@@ -8060,7 +8614,7 @@ pipeline Query9
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q9_jo2d" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q9_jo2d_EXP" enabled="false">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
 pipeline Query9
@@ -8151,7 +8705,7 @@ pipeline Query9
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q9_jo2c" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q9_jo2c_EXP" enabled="false">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
 pipeline Query9
@@ -8357,6 +8911,19 @@ pipeline Query9
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">sleep ${SLEEP_TIME} ;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q9_jo3a" enabled="true">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
@@ -8479,7 +9046,20 @@ pipeline Query9
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q9_jo3b" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">sleep ${SLEEP_TIME} ;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q9_jo3b_EXP" enabled="false">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
 pipeline Query9
@@ -8586,7 +9166,7 @@ pipeline Query9
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q9_jo3c_8" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q9_jo3c_8" enabled="false">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
 pipeline Query9
@@ -8822,6 +9402,19 @@ pipeline Query9
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">sleep ${SLEEP_TIME} ;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q9_jo3d" enabled="true">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
@@ -8938,6 +9531,19 @@ pipeline Query9
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="queryTimeout"></stringProp>
                 <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">sleep ${SLEEP_TIME} ;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
                 <stringProp name="resultSetHandler">Store as String</stringProp>
                 <stringProp name="resultSetMaxRows"></stringProp>
                 <stringProp name="resultVariable"></stringProp>
@@ -9459,7 +10065,7 @@ end ;
                 <hashTree/>
               </hashTree>
             </hashTree>
-            <com.rapidsdata.jmeter.samplers.JdbcRecorder guiclass="com.rapidsdata.jmeter.samplers.gui.JdbcRecorderGui" testclass="com.rapidsdata.jmeter.samplers.JdbcRecorder" testname="results-q9" enabled="true">
+            <com.rapidsdata.jmeter.samplers.JdbcRecorder guiclass="com.rapidsdata.jmeter.samplers.gui.JdbcRecorderGui" testclass="com.rapidsdata.jmeter.samplers.JdbcRecorder" testname="results-q9" enabled="false">
               <stringProp name="JdbcRecorder.connPoolVarName">SEConnPool</stringProp>
               <stringProp name="JdbcRecorder.queries">/optimise_passthru
 pipeline Query9
@@ -10363,6 +10969,17 @@ end ;
               <stringProp name="JdbcRecorder.fileFormat">pretty</stringProp>
             </com.rapidsdata.jmeter.samplers.JdbcRecorder>
             <hashTree/>
+            <com.rapidsdata.jmeter.samplers.JdbcRecorder guiclass="com.rapidsdata.jmeter.samplers.gui.JdbcRecorderGui" testclass="com.rapidsdata.jmeter.samplers.JdbcRecorder" testname="space-9" enabled="true">
+              <stringProp name="JdbcRecorder.connPoolVarName">SEConnPool</stringProp>
+              <stringProp name="JdbcRecorder.queries">space;
+bpa;</stringProp>
+              <boolProp name="JdbcRecorder.incColumnNames">true</boolProp>
+              <boolProp name="JdbcRecorder.incColumnTypes">false</boolProp>
+              <boolProp name="JdbcRecorder.overrideOutput">false</boolProp>
+              <stringProp name="JdbcRecorder.fileName"></stringProp>
+              <stringProp name="JdbcRecorder.fileFormat">pretty</stringProp>
+            </com.rapidsdata.jmeter.samplers.JdbcRecorder>
+            <hashTree/>
           </hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q10 Group" enabled="true"/>
           <hashTree>
@@ -10438,7 +11055,7 @@ limit 20;</stringProp>
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q10_ocnl_1" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q10_ocnl_1" enabled="false">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
 pipeline Query10
@@ -10627,7 +11244,20 @@ end ;
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q10_ocnl_iscan_1" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">sleep ${SLEEP_TIME} ;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q10_ocnl_iscan_1" enabled="false">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
 pipeline Query10
@@ -10806,6 +11436,19 @@ end ;</stringProp>
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">sleep ${SLEEP_TIME} ;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
               <IfController guiclass="IfControllerPanel" testclass="IfController" testname="Check for error" enabled="true">
                 <stringProp name="IfController.condition">${__jexl3(!${JMeterThread.last_sample_ok},)}</stringProp>
                 <boolProp name="IfController.evaluateAll">false</boolProp>
@@ -10821,6 +11464,17 @@ end ;</stringProp>
                 <hashTree/>
               </hashTree>
             </hashTree>
+            <com.rapidsdata.jmeter.samplers.JdbcRecorder guiclass="com.rapidsdata.jmeter.samplers.gui.JdbcRecorderGui" testclass="com.rapidsdata.jmeter.samplers.JdbcRecorder" testname="space-10" enabled="true">
+              <stringProp name="JdbcRecorder.connPoolVarName">SEConnPool</stringProp>
+              <stringProp name="JdbcRecorder.queries">space;
+bpa;</stringProp>
+              <boolProp name="JdbcRecorder.incColumnNames">true</boolProp>
+              <boolProp name="JdbcRecorder.incColumnTypes">false</boolProp>
+              <boolProp name="JdbcRecorder.overrideOutput">false</boolProp>
+              <stringProp name="JdbcRecorder.fileName"></stringProp>
+              <stringProp name="JdbcRecorder.fileFormat">pretty</stringProp>
+            </com.rapidsdata.jmeter.samplers.JdbcRecorder>
+            <hashTree/>
           </hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q11 Group" enabled="true"/>
           <hashTree>
@@ -10997,6 +11651,19 @@ end ;</stringProp>
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">sleep ${SLEEP_TIME} ;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q11_supplier" enabled="true">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
@@ -11106,7 +11773,20 @@ end ;</stringProp>
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q11_partsupp" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">sleep ${SLEEP_TIME} ;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q11_partsupp" enabled="false">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
 pipeline Query11
@@ -11242,6 +11922,17 @@ end ;</stringProp>
                 <hashTree/>
               </hashTree>
             </hashTree>
+            <com.rapidsdata.jmeter.samplers.JdbcRecorder guiclass="com.rapidsdata.jmeter.samplers.gui.JdbcRecorderGui" testclass="com.rapidsdata.jmeter.samplers.JdbcRecorder" testname="space-11" enabled="true">
+              <stringProp name="JdbcRecorder.connPoolVarName">SEConnPool</stringProp>
+              <stringProp name="JdbcRecorder.queries">space;
+bpa;</stringProp>
+              <boolProp name="JdbcRecorder.incColumnNames">true</boolProp>
+              <boolProp name="JdbcRecorder.incColumnTypes">false</boolProp>
+              <boolProp name="JdbcRecorder.overrideOutput">false</boolProp>
+              <stringProp name="JdbcRecorder.fileName"></stringProp>
+              <stringProp name="JdbcRecorder.fileFormat">pretty</stringProp>
+            </com.rapidsdata.jmeter.samplers.JdbcRecorder>
+            <hashTree/>
           </hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q12 Group" enabled="true"/>
           <hashTree>
@@ -11371,6 +12062,19 @@ pipeline Query12
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">sleep ${SLEEP_TIME} ;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q12_lo_rrf" enabled="true">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
@@ -11439,7 +12143,20 @@ pipeline Query12
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q12_ol" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">sleep ${SLEEP_TIME} ;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q12_ol" enabled="false">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
 pipeline Query12
@@ -11523,6 +12240,17 @@ pipeline Query12
                 <hashTree/>
               </hashTree>
             </hashTree>
+            <com.rapidsdata.jmeter.samplers.JdbcRecorder guiclass="com.rapidsdata.jmeter.samplers.gui.JdbcRecorderGui" testclass="com.rapidsdata.jmeter.samplers.JdbcRecorder" testname="space-12" enabled="true">
+              <stringProp name="JdbcRecorder.connPoolVarName">SEConnPool</stringProp>
+              <stringProp name="JdbcRecorder.queries">space;
+bpa;</stringProp>
+              <boolProp name="JdbcRecorder.incColumnNames">true</boolProp>
+              <boolProp name="JdbcRecorder.incColumnTypes">false</boolProp>
+              <boolProp name="JdbcRecorder.overrideOutput">false</boolProp>
+              <stringProp name="JdbcRecorder.fileName"></stringProp>
+              <stringProp name="JdbcRecorder.fileFormat">pretty</stringProp>
+            </com.rapidsdata.jmeter.samplers.JdbcRecorder>
+            <hashTree/>
           </hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q13 Group" enabled="true"/>
           <hashTree>
@@ -11642,7 +12370,20 @@ begin
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q13_co_2" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">sleep ${SLEEP_TIME} ;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q13_co_2" enabled="false">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
 pipeline Query13
@@ -11768,7 +12509,20 @@ begin
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q13_co_ordagg_2" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">sleep ${SLEEP_TIME} ;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q13_co_ordagg_2" enabled="false">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
 pipeline Query13
@@ -11854,6 +12608,17 @@ begin
                 <hashTree/>
               </hashTree>
             </hashTree>
+            <com.rapidsdata.jmeter.samplers.JdbcRecorder guiclass="com.rapidsdata.jmeter.samplers.gui.JdbcRecorderGui" testclass="com.rapidsdata.jmeter.samplers.JdbcRecorder" testname="space-13" enabled="true">
+              <stringProp name="JdbcRecorder.connPoolVarName">SEConnPool</stringProp>
+              <stringProp name="JdbcRecorder.queries">space;
+bpa;</stringProp>
+              <boolProp name="JdbcRecorder.incColumnNames">true</boolProp>
+              <boolProp name="JdbcRecorder.incColumnTypes">false</boolProp>
+              <boolProp name="JdbcRecorder.overrideOutput">false</boolProp>
+              <stringProp name="JdbcRecorder.fileName"></stringProp>
+              <stringProp name="JdbcRecorder.fileFormat">pretty</stringProp>
+            </com.rapidsdata.jmeter.samplers.JdbcRecorder>
+            <hashTree/>
           </hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q14 Group" enabled="true"/>
           <hashTree>
@@ -11973,6 +12738,19 @@ end ;
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">sleep ${SLEEP_TIME} ;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q14_lp_iscan" enabled="true">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
@@ -12035,6 +12813,19 @@ end ;
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">sleep ${SLEEP_TIME} ;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
               <IfController guiclass="IfControllerPanel" testclass="IfController" testname="Check for error" enabled="true">
                 <stringProp name="IfController.condition">${__jexl3(!${JMeterThread.last_sample_ok},)}</stringProp>
                 <boolProp name="IfController.evaluateAll">false</boolProp>
@@ -12050,6 +12841,17 @@ end ;
                 <hashTree/>
               </hashTree>
             </hashTree>
+            <com.rapidsdata.jmeter.samplers.JdbcRecorder guiclass="com.rapidsdata.jmeter.samplers.gui.JdbcRecorderGui" testclass="com.rapidsdata.jmeter.samplers.JdbcRecorder" testname="space-14" enabled="true">
+              <stringProp name="JdbcRecorder.connPoolVarName">SEConnPool</stringProp>
+              <stringProp name="JdbcRecorder.queries">space;
+bpa;</stringProp>
+              <boolProp name="JdbcRecorder.incColumnNames">true</boolProp>
+              <boolProp name="JdbcRecorder.incColumnTypes">false</boolProp>
+              <boolProp name="JdbcRecorder.overrideOutput">false</boolProp>
+              <stringProp name="JdbcRecorder.fileName"></stringProp>
+              <stringProp name="JdbcRecorder.fileFormat">pretty</stringProp>
+            </com.rapidsdata.jmeter.samplers.JdbcRecorder>
+            <hashTree/>
           </hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q15 Group" enabled="true"/>
           <hashTree>
@@ -12183,6 +12985,19 @@ pipeline Query15
 This query requires a view to be created first.</stringProp>
               </JDBCSampler>
               <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">sleep ${SLEEP_TIME} ;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q15_ls_iscan" enabled="true">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
@@ -12254,6 +13069,19 @@ pipeline Query15
 This query requires a view to be created first.</stringProp>
               </JDBCSampler>
               <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">sleep ${SLEEP_TIME} ;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
               <IfController guiclass="IfControllerPanel" testclass="IfController" testname="Check for error" enabled="true">
                 <stringProp name="IfController.condition">${__jexl3(!${JMeterThread.last_sample_ok},)}</stringProp>
                 <boolProp name="IfController.evaluateAll">false</boolProp>
@@ -12269,6 +13097,17 @@ This query requires a view to be created first.</stringProp>
                 <hashTree/>
               </hashTree>
             </hashTree>
+            <com.rapidsdata.jmeter.samplers.JdbcRecorder guiclass="com.rapidsdata.jmeter.samplers.gui.JdbcRecorderGui" testclass="com.rapidsdata.jmeter.samplers.JdbcRecorder" testname="space-15" enabled="true">
+              <stringProp name="JdbcRecorder.connPoolVarName">SEConnPool</stringProp>
+              <stringProp name="JdbcRecorder.queries">space;
+bpa;</stringProp>
+              <boolProp name="JdbcRecorder.incColumnNames">true</boolProp>
+              <boolProp name="JdbcRecorder.incColumnTypes">false</boolProp>
+              <boolProp name="JdbcRecorder.overrideOutput">false</boolProp>
+              <stringProp name="JdbcRecorder.fileName"></stringProp>
+              <stringProp name="JdbcRecorder.fileFormat">pretty</stringProp>
+            </com.rapidsdata.jmeter.samplers.JdbcRecorder>
+            <hashTree/>
           </hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q16 Group" enabled="true"/>
           <hashTree>
@@ -12384,7 +13223,7 @@ order by
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q16_part_1" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q16_part_1" enabled="false">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
 pipeline Query16
@@ -12618,6 +13457,19 @@ end ;</stringProp>
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">sleep ${SLEEP_TIME} ;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
               <IfController guiclass="IfControllerPanel" testclass="IfController" testname="Check for error" enabled="true">
                 <stringProp name="IfController.condition">${__jexl3(!${JMeterThread.last_sample_ok},)}</stringProp>
                 <boolProp name="IfController.evaluateAll">false</boolProp>
@@ -12633,6 +13485,17 @@ end ;</stringProp>
                 <hashTree/>
               </hashTree>
             </hashTree>
+            <com.rapidsdata.jmeter.samplers.JdbcRecorder guiclass="com.rapidsdata.jmeter.samplers.gui.JdbcRecorderGui" testclass="com.rapidsdata.jmeter.samplers.JdbcRecorder" testname="space-16" enabled="true">
+              <stringProp name="JdbcRecorder.connPoolVarName">SEConnPool</stringProp>
+              <stringProp name="JdbcRecorder.queries">space;
+bpa;</stringProp>
+              <boolProp name="JdbcRecorder.incColumnNames">true</boolProp>
+              <boolProp name="JdbcRecorder.incColumnTypes">false</boolProp>
+              <boolProp name="JdbcRecorder.overrideOutput">false</boolProp>
+              <stringProp name="JdbcRecorder.fileName"></stringProp>
+              <stringProp name="JdbcRecorder.fileFormat">pretty</stringProp>
+            </com.rapidsdata.jmeter.samplers.JdbcRecorder>
+            <hashTree/>
           </hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q17 Group" enabled="true"/>
           <hashTree>
@@ -12782,6 +13645,19 @@ end ;</stringProp>
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">sleep ${SLEEP_TIME} ;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
               <IfController guiclass="IfControllerPanel" testclass="IfController" testname="Check for error" enabled="true">
                 <stringProp name="IfController.condition">${__jexl3(!${JMeterThread.last_sample_ok},)}</stringProp>
                 <boolProp name="IfController.evaluateAll">false</boolProp>
@@ -12797,6 +13673,17 @@ end ;</stringProp>
                 <hashTree/>
               </hashTree>
             </hashTree>
+            <com.rapidsdata.jmeter.samplers.JdbcRecorder guiclass="com.rapidsdata.jmeter.samplers.gui.JdbcRecorderGui" testclass="com.rapidsdata.jmeter.samplers.JdbcRecorder" testname="space-17" enabled="true">
+              <stringProp name="JdbcRecorder.connPoolVarName">SEConnPool</stringProp>
+              <stringProp name="JdbcRecorder.queries">space;
+bpa;</stringProp>
+              <boolProp name="JdbcRecorder.incColumnNames">true</boolProp>
+              <boolProp name="JdbcRecorder.incColumnTypes">false</boolProp>
+              <boolProp name="JdbcRecorder.overrideOutput">false</boolProp>
+              <stringProp name="JdbcRecorder.fileName"></stringProp>
+              <stringProp name="JdbcRecorder.fileFormat">pretty</stringProp>
+            </com.rapidsdata.jmeter.samplers.JdbcRecorder>
+            <hashTree/>
           </hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q18 Group" enabled="true"/>
           <hashTree>
@@ -12986,6 +13873,19 @@ begin
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">sleep ${SLEEP_TIME} ;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q18_loc_iscan" enabled="true">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
@@ -13092,6 +13992,19 @@ begin
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="queryTimeout"></stringProp>
                 <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">sleep ${SLEEP_TIME} ;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
                 <stringProp name="resultSetHandler">Store as String</stringProp>
                 <stringProp name="resultSetMaxRows"></stringProp>
                 <stringProp name="resultVariable"></stringProp>
@@ -13206,6 +14119,19 @@ begin
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">sleep ${SLEEP_TIME} ;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q18_opt1" enabled="true">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
@@ -13298,6 +14224,19 @@ begin
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">sleep ${SLEEP_TIME} ;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q18_opt2" enabled="true">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
@@ -13379,6 +14318,19 @@ begin
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="queryTimeout"></stringProp>
                 <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">sleep ${SLEEP_TIME} ;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
                 <stringProp name="resultSetHandler">Store as String</stringProp>
                 <stringProp name="resultSetMaxRows"></stringProp>
                 <stringProp name="resultVariable"></stringProp>
@@ -13726,6 +14678,17 @@ begin
                 <hashTree/>
               </hashTree>
             </hashTree>
+            <com.rapidsdata.jmeter.samplers.JdbcRecorder guiclass="com.rapidsdata.jmeter.samplers.gui.JdbcRecorderGui" testclass="com.rapidsdata.jmeter.samplers.JdbcRecorder" testname="space-18" enabled="true">
+              <stringProp name="JdbcRecorder.connPoolVarName">SEConnPool</stringProp>
+              <stringProp name="JdbcRecorder.queries">space;
+bpa;</stringProp>
+              <boolProp name="JdbcRecorder.incColumnNames">true</boolProp>
+              <boolProp name="JdbcRecorder.incColumnTypes">false</boolProp>
+              <boolProp name="JdbcRecorder.overrideOutput">false</boolProp>
+              <stringProp name="JdbcRecorder.fileName"></stringProp>
+              <stringProp name="JdbcRecorder.fileFormat">pretty</stringProp>
+            </com.rapidsdata.jmeter.samplers.JdbcRecorder>
+            <hashTree/>
           </hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q19 Group" enabled="true">
             <stringProp name="TestPlan.comments">Currently disabled as it produces an error no join index</stringProp>
@@ -13803,7 +14766,7 @@ where
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q19_PL_1" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q19_PL_1" enabled="false">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
 pipeline Query19
@@ -13973,6 +14936,19 @@ end ;</stringProp>
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">sleep ${SLEEP_TIME} ;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
               <IfController guiclass="IfControllerPanel" testclass="IfController" testname="Check for error" enabled="true">
                 <stringProp name="IfController.condition">${__jexl3(!${JMeterThread.last_sample_ok},)}</stringProp>
                 <boolProp name="IfController.evaluateAll">false</boolProp>
@@ -13988,6 +14964,17 @@ end ;</stringProp>
                 <hashTree/>
               </hashTree>
             </hashTree>
+            <com.rapidsdata.jmeter.samplers.JdbcRecorder guiclass="com.rapidsdata.jmeter.samplers.gui.JdbcRecorderGui" testclass="com.rapidsdata.jmeter.samplers.JdbcRecorder" testname="space-19" enabled="true">
+              <stringProp name="JdbcRecorder.connPoolVarName">SEConnPool</stringProp>
+              <stringProp name="JdbcRecorder.queries">space;
+bpa;</stringProp>
+              <boolProp name="JdbcRecorder.incColumnNames">true</boolProp>
+              <boolProp name="JdbcRecorder.incColumnTypes">false</boolProp>
+              <boolProp name="JdbcRecorder.overrideOutput">false</boolProp>
+              <stringProp name="JdbcRecorder.fileName"></stringProp>
+              <stringProp name="JdbcRecorder.fileFormat">pretty</stringProp>
+            </com.rapidsdata.jmeter.samplers.JdbcRecorder>
+            <hashTree/>
           </hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q20 Group" enabled="true"/>
           <hashTree>
@@ -14180,7 +15167,20 @@ end ;</stringProp>
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q20_lineitem_isan" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">sleep ${SLEEP_TIME} ;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q20_lineitem_isan" enabled="false">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
 pipeline Query20
@@ -14292,7 +15292,7 @@ begin
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q20_lineitem" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q20_lineitem" enabled="false">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
 pipeline Query20
@@ -14424,8 +15424,19 @@ begin
                 <hashTree/>
               </hashTree>
             </hashTree>
+            <com.rapidsdata.jmeter.samplers.JdbcRecorder guiclass="com.rapidsdata.jmeter.samplers.gui.JdbcRecorderGui" testclass="com.rapidsdata.jmeter.samplers.JdbcRecorder" testname="space-20" enabled="true">
+              <stringProp name="JdbcRecorder.connPoolVarName">SEConnPool</stringProp>
+              <stringProp name="JdbcRecorder.queries">space;
+bpa;</stringProp>
+              <boolProp name="JdbcRecorder.incColumnNames">true</boolProp>
+              <boolProp name="JdbcRecorder.incColumnTypes">false</boolProp>
+              <boolProp name="JdbcRecorder.overrideOutput">false</boolProp>
+              <stringProp name="JdbcRecorder.fileName"></stringProp>
+              <stringProp name="JdbcRecorder.fileFormat">pretty</stringProp>
+            </com.rapidsdata.jmeter.samplers.JdbcRecorder>
+            <hashTree/>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q21 Group" enabled="false"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q21 Group" enabled="true"/>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
@@ -14455,7 +15466,7 @@ OUT.flush();</stringProp>
               <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
             </LoopController>
             <hashTree>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q21" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q21" enabled="false">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">select
   s_name,
@@ -14506,6 +15517,117 @@ order by
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q21_olsn" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">/optimise_passthru
+pipeline Query21
+begin
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
+
+stage S01 on all partitions :
+    scan Orders
+    | project &quot; type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY ,
+                type VARCHAR ( 0 ) as O_ORDERSTATUS O_ORDERSTATUS&quot;
+    | filter &quot; type BOOLEAN  O_ORDERSTATUS &apos;F&apos;  == &quot;
+    | project &quot; type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY &quot;
+    | hash &quot; type INTEGER ( 19 ) O_ORDERKEY&quot;
+    | combined 0
+    | next hashcast
+
+  stage S02 on all partitions multiple threads 4:
+    indexJoin lineitem IxL_ORDERKEY &quot;BOUND $I1 O_ORDERKEY ==&quot;
+    | project &quot; type INTEGER ( 19 ) as L1_ORDERKEY L_ORDERKEY ,
+                type INTEGER ( 19 ) as L1_SUPPKEY L_SUPPKEY ,
+                type DATE ( 0 ) as L_RECEIPTDATE L_RECEIPTDATE ,
+                type DATE ( 0 ) as L_COMMITDATE L_COMMITDATE&quot;
+    | filter &quot; type BOOLEAN  L_RECEIPTDATE L_COMMITDATE &gt; &quot;
+    | project &quot; type INTEGER ( 19 ) as L1_ORDERKEY L1_ORDERKEY ,
+                type INTEGER ( 19 ) as L1_SUPPKEY L1_SUPPKEY &quot;
+    | hash &quot; type INTEGER ( 19 ) L1_SUPPKEY&quot;
+    | combined 0
+    | next hashcast
+
+  stage S03 on all partitions :
+    indexJoin Supplier IxS_SUPPKEY &quot;BOUND $I1 L1_SUPPKEY ==&quot;
+    | project &quot; type INTEGER ( 19 ) as L1_ORDERKEY L_ORDERKEY ,
+                type INTEGER ( 19 ) as L1_SUPPKEY L_SUPPKEY ,
+                type INTEGER ( 19 ) as S_NATIONKEY S_NATIONKEY ,
+                type VARCHAR ( 0 ) as S_NAME S_NAME &quot;
+    | hash &quot; type INTEGER ( 19 ) L1_ORDERKEY&quot;
+    | combined 0
+    | next hashcast
+
+  stage S04 on all partitions :
+    keyExists lineitem IxL_ORDERKEY  &quot;BOUND $I1 L1_ORDERKEY ==&quot;
+       &quot;type BOOLEAN L1_SUPPKEY L_SUPPKEY != &quot;
+    | combined 0
+    | next
+
+  stage S05 on all partitions :
+    keyNotExists lineitem IxL_ORDERKEY  &quot;BOUND $I1 L1_ORDERKEY ==&quot;
+       &quot;type BOOLEAN L1_SUPPKEY L_SUPPKEY !=
+                     L_RECEIPTDATE L_COMMITDATE &gt; and&quot;
+   | project &quot; type INTEGER ( 19 ) as S_NATIONKEY S_NATIONKEY ,
+                type VARCHAR ( 0 ) as S_NAME S_NAME &quot;
+    | combined 0
+    | next
+
+  stage S04 on all partitions :
+    indexJoin Nation IxN_NATIONKEY &quot;BOUND $I1 S_NATIONKEY ==&quot;
+    | filter &quot; type BOOLEAN N_NAME &apos;SAUDI ARABIA&apos; ==  &quot;
+    | gbyAgg &quot; groupBy    type VARCHAR ( 0 ) as S_NAME $2
+               aggregates type VARCHAR ( 0 ) $K1 ,
+                          type INTEGER ( 19 ) )  countAll  &quot;
+    | combined 0
+    | next
+
+  stage S05 on all nodes :
+    gbyAgg &quot; groupBy  type VARCHAR ( 0 ) as s_name $1 aggregates  type VARCHAR ( 0 ) $K1 , type INTEGER ( 19 ) )  $2 sum  &quot;
+    | combined 0
+    | next
+
+  stage S06 on origin :
+    gbyAgg &quot; groupBy  type VARCHAR ( 0 ) as s_name $1 aggregates  type VARCHAR ( 0 ) $K1 , type INTEGER ( 19 ) as numwait )  $2 sum  &quot;
+    | combined 0
+    | next
+
+  stage S05 on origin :
+    sort &quot; type INTEGER ( 19 ) $2 DESC  , type VARCHAR ( 0 ) as s_name $1 ASC  &quot;
+    | combined 0
+    | next
+
+  stage S07 on origin :
+    output
+    | sink
+    | first
+end ;
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">sleep ${SLEEP_TIME} ;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
               <IfController guiclass="IfControllerPanel" testclass="IfController" testname="Check for error" enabled="true">
                 <stringProp name="IfController.condition">${__jexl3(!${JMeterThread.last_sample_ok},)}</stringProp>
                 <boolProp name="IfController.evaluateAll">false</boolProp>
@@ -14521,6 +15643,17 @@ order by
                 <hashTree/>
               </hashTree>
             </hashTree>
+            <com.rapidsdata.jmeter.samplers.JdbcRecorder guiclass="com.rapidsdata.jmeter.samplers.gui.JdbcRecorderGui" testclass="com.rapidsdata.jmeter.samplers.JdbcRecorder" testname="space-q21" enabled="true">
+              <stringProp name="JdbcRecorder.connPoolVarName">SEConnPool</stringProp>
+              <stringProp name="JdbcRecorder.queries">space;
+bpa;</stringProp>
+              <boolProp name="JdbcRecorder.incColumnNames">true</boolProp>
+              <boolProp name="JdbcRecorder.incColumnTypes">false</boolProp>
+              <boolProp name="JdbcRecorder.overrideOutput">false</boolProp>
+              <stringProp name="JdbcRecorder.fileName"></stringProp>
+              <stringProp name="JdbcRecorder.fileFormat">pretty</stringProp>
+            </com.rapidsdata.jmeter.samplers.JdbcRecorder>
+            <hashTree/>
           </hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q22 Group" enabled="true"/>
           <hashTree>
@@ -14690,6 +15823,19 @@ end ;
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">sleep ${SLEEP_TIME} ;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
               <IfController guiclass="IfControllerPanel" testclass="IfController" testname="Check for error" enabled="true">
                 <stringProp name="IfController.condition">${__jexl3(!${JMeterThread.last_sample_ok},)}</stringProp>
                 <boolProp name="IfController.evaluateAll">false</boolProp>
@@ -14705,6 +15851,17 @@ end ;
                 <hashTree/>
               </hashTree>
             </hashTree>
+            <com.rapidsdata.jmeter.samplers.JdbcRecorder guiclass="com.rapidsdata.jmeter.samplers.gui.JdbcRecorderGui" testclass="com.rapidsdata.jmeter.samplers.JdbcRecorder" testname="space-q22" enabled="true">
+              <stringProp name="JdbcRecorder.connPoolVarName">SEConnPool</stringProp>
+              <stringProp name="JdbcRecorder.queries">space;
+bpa;</stringProp>
+              <boolProp name="JdbcRecorder.incColumnNames">true</boolProp>
+              <boolProp name="JdbcRecorder.incColumnTypes">false</boolProp>
+              <boolProp name="JdbcRecorder.overrideOutput">false</boolProp>
+              <stringProp name="JdbcRecorder.fileName"></stringProp>
+              <stringProp name="JdbcRecorder.fileFormat">pretty</stringProp>
+            </com.rapidsdata.jmeter.samplers.JdbcRecorder>
+            <hashTree/>
           </hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="q9_5 Group" enabled="false"/>
           <hashTree>
