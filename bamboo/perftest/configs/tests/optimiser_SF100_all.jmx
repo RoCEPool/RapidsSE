@@ -735,6 +735,38 @@ group by
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createIndex_GxO_ORDERKEY" enabled="true">
+              <stringProp name="dataSource">SEConnPool</stringProp>
+              <stringProp name="query">pipeline createGblIdx
+begin
+
+  stage S00 on origin :
+    start
+    | pulse once
+    | createGlobalIndexDef ORDERS GxO_ORDERKEY O_ORDERKEY
+    | next
+
+  stage S01 on all nodes :
+    createGlobalIndex ORDERS GxO_ORDERKEY
+    | next
+
+  stage S02 on origin :
+    output
+    | sink
+    | first
+
+end ;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree/>
             <ResultCollector guiclass="SimpleDataWriter" testclass="ResultCollector" testname="Simple Data Writer" enabled="true">
               <boolProp name="ResultCollector.error_logging">false</boolProp>
               <objProp>
