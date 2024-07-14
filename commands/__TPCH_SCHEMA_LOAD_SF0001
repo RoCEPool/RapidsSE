@@ -105,7 +105,7 @@ create        index IxR_NAME        on Region   (R_NAME);
 
 // Supplier (partitioned on s_suppkey)
 create        index IxS_SUPPKEY     on Supplier (S_SUPPKEY);
-
+create        index IxS_NATIONKEY     on Supplier (S_NATIONKEY);
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /time loadReplicated region   "../TPCH/SF_0001/region.tbl"   ;
