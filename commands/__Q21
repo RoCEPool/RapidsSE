@@ -53,9 +53,11 @@ order by
 select
   *
 from
-  lineitem l1
+  lineitem l1,
+  supplier
 where
   l1.l_receiptdate > l1.l_commitdate
+  and s_suppkey = l1.l_suppkey
   and exists (
     select
       *
@@ -74,34 +76,27 @@ where
       l3.l_orderkey = l1.l_orderkey
       and l3.l_suppkey <> l1.l_suppkey
       and l3.l_receiptdate > l3.l_commitdate
-  );
+  )
+
 
 select
     count(*)
   from
     lineitem l1,
-    orders
+    orders,
+    supplier
   where
      o_orderkey = l_orderkey
     and o_orderstatus = 'F'
-    and l_receiptdate > l_commitdate
-    and exists (
-        select
-          *
-        from
-          lineitem l2
-        where
-          l2.l_orderkey = l1.l_orderkey
-          and l2.l_suppkey <> l1.l_suppkey
-      )
-      ;
+
 
   select
     count(*)
   from
     lineitem l1,
     supplier,
-    orders
+    orders,
+    nation
   where
   s_suppkey = l1.l_suppkey
    and  o_orderkey = l_orderkey
@@ -125,14 +120,6 @@ select
           l3.l_orderkey = l1.l_orderkey
           and l3.l_suppkey <> l1.l_suppkey
           and l3.l_receiptdate > l3.l_commitdate
-      );
-
-select
-    count(*)
-  from
-    lineitem,
-    orders
-  where
-     o_orderkey = l_orderkey
-    and o_orderstatus = 'F'
-    and l_receiptdate > l_commitdate;
+      )
+and  s_nationkey = n_nationkey
+        and n_name = 'SAUDI ARABIA';
