@@ -565,12 +565,14 @@ void XF_Synthesise_Craft_pipelineDef::vCraftColInj(void)
 
     m_pCI->E.p_Op->vDump(__FUNCTION__ );
     vDebugPoint();
+    vCraftColInj_constraint(pColInj, p_OP_curr, p_OP_curr->pSub_constraint());
   }
   else
   if (CK_o_KEYNOTEXISTS == eCard_OP) {
 
     m_pCI->E.p_Op->vDump(__FUNCTION__ );
     vDebugPoint();
+    vCraftColInj_constraint(pColInj, p_OP_curr, p_OP_curr->pSub_constraint());
   }
 
   pColInj->vValidate();
@@ -662,8 +664,11 @@ void XF_Synthesise_Craft_pipelineDef::vCraftColInj_constraint(ColInj* pColInj,
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_CRAFT_PIPELINEDEF, _FOOTER_);
 
+  UNUSED(pColInj);
+  UNUSED(pSubCard);
   UNUSED(p_constraint);
 
+  /*
   Card_Injectable* p_injected = pSubCard->pSub_injectable();
   Card_Emit*   p_emit = pSubCard->pSub_emit();
 
@@ -732,6 +737,8 @@ void XF_Synthesise_Craft_pipelineDef::vCraftColInj_constraint(ColInj* pColInj,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   p_injected->bLambdaWalk(CK_EXPR, bfAddDescriptors);
+  */
+
 }
 
 /*----------------------------------------------------------------------------*/
