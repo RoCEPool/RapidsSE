@@ -2195,10 +2195,114 @@ end ;</stringProp>
                 <hashTree/>
               </hashTree>
             </hashTree>
-            <com.rapidsdata.jmeter.samplers.JdbcRecorder guiclass="com.rapidsdata.jmeter.samplers.gui.JdbcRecorderGui" testclass="com.rapidsdata.jmeter.samplers.JdbcRecorder" testname="space-q1" enabled="true">
+            <com.rapidsdata.jmeter.samplers.JdbcRecorder guiclass="com.rapidsdata.jmeter.samplers.gui.JdbcRecorderGui" testclass="com.rapidsdata.jmeter.samplers.JdbcRecorder" testname="space-q1" enabled="false">
               <stringProp name="JdbcRecorder.connPoolVarName">SEConnPool</stringProp>
               <stringProp name="JdbcRecorder.queries">space;
 bpa;</stringProp>
+              <boolProp name="JdbcRecorder.incColumnNames">true</boolProp>
+              <boolProp name="JdbcRecorder.incColumnTypes">false</boolProp>
+              <boolProp name="JdbcRecorder.overrideOutput">false</boolProp>
+              <stringProp name="JdbcRecorder.fileName"></stringProp>
+              <stringProp name="JdbcRecorder.fileFormat">pretty</stringProp>
+            </com.rapidsdata.jmeter.samplers.JdbcRecorder>
+            <hashTree/>
+            <com.rapidsdata.jmeter.samplers.JdbcRecorder guiclass="com.rapidsdata.jmeter.samplers.gui.JdbcRecorderGui" testclass="com.rapidsdata.jmeter.samplers.JdbcRecorder" testname="results-q1" enabled="true">
+              <stringProp name="JdbcRecorder.connPoolVarName">SEConnPool</stringProp>
+              <stringProp name="JdbcRecorder.queries">/optimise_passthru
+pipeline Query1
+begin
+
+  stage S00 on origin :
+      start
+    | pulse     once
+    | next
+
+  stage S01 on all partitions  multiple threads 4:
+    scan      Lineitem
+  | project   &quot;   type VARCHAR ( 0 ) as L_RETURNFLAG L_RETURNFLAG
+                , type VARCHAR ( 0 ) as L_LINESTATUS L_LINESTATUS
+                , type DECIMAL as L_QUANTITY L_QUANTITY
+                , type DECIMAL as L_EXTENDEDPRICE L_EXTENDEDPRICE
+                , type DECIMAL as L_DISCOUNT L_DISCOUNT
+                , type DECIMAL as L_TAX L_TAX
+                , type DATE $11&quot;
+  | filter    &quot; type BOOLEAN $7 DATE &apos;1998-09-01&apos; &lt;=&quot;
+  |  gbyAgg    &quot; groupBy
+                  type VARCHAR ( 0 ) as L_RETURNFLAG L_RETURNFLAG
+                , type VARCHAR ( 0 ) as L_LINESTATUS L_LINESTATUS
+                aggregates
+                  type VARCHAR ( 0 ) as COL0 $K1
+                , type VARCHAR ( 0 ) as COL1 $K2
+                , type DECIMAL as C2_COL2 ) $3 sum
+                , type DECIMAL as C3_COL3 ) $4 sum
+                , type DECIMAL as C4_COL4 ) $4 1.00 $5 - * sum
+                , type DECIMAL as C5_COL5 ) $4 1.00 $5 - * 1.00 $6 + * sum
+                , type INTEGER as C6_COL6 ) $3 count
+                , type INTEGER as C7_COL7 ) $4 count
+                , type DECIMAL as C8_COL8 ) $5 sum
+                , type INTEGER as C9_COL9 ) $5 count
+                , type INTEGER as C10_COL10 ) countAll &quot;
+    |  dynamic
+    | next
+
+  stage S04 on all nodes :
+    gbyAgg    &quot; groupBy
+                  type VARCHAR ( 0 ) $1
+                , type VARCHAR ( 0 ) $2
+                aggregates
+                  type VARCHAR ( 0 ) as C0_COL0 $K1
+                , type VARCHAR ( 0 ) as C1_COL1 $K2
+                , type DECIMAL as C2_COL2 ) $3 sum
+                , type DECIMAL as C3_COL3 ) $4 sum
+                , type DECIMAL as C4_COL4 ) $5 sum
+                , type DECIMAL as C5_COL5 ) $6 sum
+                , type INTEGER as C6_COL6 ) $7 sum
+                , type INTEGER as C7_COL7 ) $8 sum
+                , type DECIMAL as C8_COL8 ) $9 sum
+                , type INTEGER as C9_COL9 ) $10 sum
+                , type INTEGER as C10_COL10 ) $11 sum &quot;
+    |  dynamic
+    | next
+
+  stage S05 on origin :
+    gbyAgg    &quot; groupBy
+                  type VARCHAR ( 0 ) $1
+                , type VARCHAR ( 0 ) $2
+                aggregates
+                  type VARCHAR ( 0 ) as C0_COL0 $K1
+                , type VARCHAR ( 0 ) as C1_COL1 $K2
+                , type DECIMAL as C2_sum_qty ) $3 sum
+                , type DECIMAL as C3_sum_base_price ) $4 sum
+                , type DECIMAL as C4_sum_disc_price ) $5 sum
+                , type DECIMAL as C5_sum_charge ) $6 sum
+                , type INTEGER as C6_count_order ) $11 sum
+                , type INTEGER as C7_COL7 ) $7 sum
+                , type INTEGER as C8_COL8 ) $8 sum
+                , type INTEGER as C9_COL9 ) $10 sum
+                , type DECIMAL as C10_COL10 ) $9 sum &quot;
+    |  dynamic
+    | next
+
+  stage S06 on origin :
+    project   &quot;   type VARCHAR ( 0 ) as C0_l_returnflag $1
+                , type VARCHAR ( 0 ) as C1_l_linestatus $2
+                , type DECIMAL as C2_sum_qty $3
+                , type DECIMAL as C3_sum_base_price $4
+                , type DECIMAL as C4_sum_disc_price $5
+                , type DECIMAL as C5_sum_charge $6
+                , type DECIMAL as C6_avg_qty $3 $8 casttype DECIMAL CAST /
+                , type DECIMAL as C7_avg_price $4 $9 casttype DECIMAL CAST /
+                , type DECIMAL as C8_avg_disc $11 $10 casttype DECIMAL CAST /
+                , type INTEGER as C9_count_order $7 &quot;
+    |  dynamic
+    | next
+
+stage S07 on origin :
+      output
+    | sink
+    | first
+
+end ;</stringProp>
               <boolProp name="JdbcRecorder.incColumnNames">true</boolProp>
               <boolProp name="JdbcRecorder.incColumnTypes">false</boolProp>
               <boolProp name="JdbcRecorder.overrideOutput">false</boolProp>
@@ -2637,7 +2741,7 @@ end ;</stringProp>
                 <hashTree/>
               </hashTree>
             </hashTree>
-            <com.rapidsdata.jmeter.samplers.JdbcRecorder guiclass="com.rapidsdata.jmeter.samplers.gui.JdbcRecorderGui" testclass="com.rapidsdata.jmeter.samplers.JdbcRecorder" testname="space-q2" enabled="true">
+            <com.rapidsdata.jmeter.samplers.JdbcRecorder guiclass="com.rapidsdata.jmeter.samplers.gui.JdbcRecorderGui" testclass="com.rapidsdata.jmeter.samplers.JdbcRecorder" testname="space-q2" enabled="false">
               <stringProp name="JdbcRecorder.connPoolVarName">SEConnPool</stringProp>
               <stringProp name="JdbcRecorder.queries">space;
 bpa;</stringProp>
@@ -3870,7 +3974,7 @@ end ;
                 <hashTree/>
               </hashTree>
             </hashTree>
-            <com.rapidsdata.jmeter.samplers.JdbcRecorder guiclass="com.rapidsdata.jmeter.samplers.gui.JdbcRecorderGui" testclass="com.rapidsdata.jmeter.samplers.JdbcRecorder" testname="space-q3" enabled="true">
+            <com.rapidsdata.jmeter.samplers.JdbcRecorder guiclass="com.rapidsdata.jmeter.samplers.gui.JdbcRecorderGui" testclass="com.rapidsdata.jmeter.samplers.JdbcRecorder" testname="space-q3" enabled="false">
               <stringProp name="JdbcRecorder.connPoolVarName">SEConnPool</stringProp>
               <stringProp name="JdbcRecorder.queries">space;
 bpa;</stringProp>
@@ -4117,7 +4221,7 @@ end ;
                 <hashTree/>
               </hashTree>
             </hashTree>
-            <com.rapidsdata.jmeter.samplers.JdbcRecorder guiclass="com.rapidsdata.jmeter.samplers.gui.JdbcRecorderGui" testclass="com.rapidsdata.jmeter.samplers.JdbcRecorder" testname="space-q4" enabled="true">
+            <com.rapidsdata.jmeter.samplers.JdbcRecorder guiclass="com.rapidsdata.jmeter.samplers.gui.JdbcRecorderGui" testclass="com.rapidsdata.jmeter.samplers.JdbcRecorder" testname="space-q4" enabled="false">
               <stringProp name="JdbcRecorder.connPoolVarName">SEConnPool</stringProp>
               <stringProp name="JdbcRecorder.queries">space;
 bpa;</stringProp>
@@ -5090,7 +5194,7 @@ end ;
                 <hashTree/>
               </hashTree>
             </hashTree>
-            <com.rapidsdata.jmeter.samplers.JdbcRecorder guiclass="com.rapidsdata.jmeter.samplers.gui.JdbcRecorderGui" testclass="com.rapidsdata.jmeter.samplers.JdbcRecorder" testname="space-q5" enabled="true">
+            <com.rapidsdata.jmeter.samplers.JdbcRecorder guiclass="com.rapidsdata.jmeter.samplers.gui.JdbcRecorderGui" testclass="com.rapidsdata.jmeter.samplers.JdbcRecorder" testname="space-q5" enabled="false">
               <stringProp name="JdbcRecorder.connPoolVarName">SEConnPool</stringProp>
               <stringProp name="JdbcRecorder.queries">space;
 bpa;</stringProp>
@@ -5291,10 +5395,58 @@ end ;
                 <hashTree/>
               </hashTree>
             </hashTree>
-            <com.rapidsdata.jmeter.samplers.JdbcRecorder guiclass="com.rapidsdata.jmeter.samplers.gui.JdbcRecorderGui" testclass="com.rapidsdata.jmeter.samplers.JdbcRecorder" testname="space-q6" enabled="true">
+            <com.rapidsdata.jmeter.samplers.JdbcRecorder guiclass="com.rapidsdata.jmeter.samplers.gui.JdbcRecorderGui" testclass="com.rapidsdata.jmeter.samplers.JdbcRecorder" testname="space-q6" enabled="false">
               <stringProp name="JdbcRecorder.connPoolVarName">SEConnPool</stringProp>
               <stringProp name="JdbcRecorder.queries">space;
 bpa;</stringProp>
+              <boolProp name="JdbcRecorder.incColumnNames">true</boolProp>
+              <boolProp name="JdbcRecorder.incColumnTypes">false</boolProp>
+              <boolProp name="JdbcRecorder.overrideOutput">false</boolProp>
+              <stringProp name="JdbcRecorder.fileName"></stringProp>
+              <stringProp name="JdbcRecorder.fileFormat">pretty</stringProp>
+            </com.rapidsdata.jmeter.samplers.JdbcRecorder>
+            <hashTree/>
+            <com.rapidsdata.jmeter.samplers.JdbcRecorder guiclass="com.rapidsdata.jmeter.samplers.gui.JdbcRecorderGui" testclass="com.rapidsdata.jmeter.samplers.JdbcRecorder" testname="results-q6" enabled="true">
+              <stringProp name="JdbcRecorder.connPoolVarName">SEConnPool</stringProp>
+              <stringProp name="JdbcRecorder.queries">/optimise_passthru
+pipeline Query6
+begin
+
+  stage S00 on origin : 
+      start
+    | pulse     once
+    | next
+
+  stage S01 on all partitions  multiple threads 4:
+      scan      lineitem
+      | project   &quot;type DECIMAL ( 15 2 ) as L_QUANTITY L_QUANTITY
+                 , type DECIMAL ( 15 2 ) as L_EXTENDEDPRICE L_EXTENDEDPRICE
+                 , type DECIMAL ( 15 2 ) as L_DISCOUNT L_DISCOUNT
+                 , type DATE as L_SHIPDATE L_SHIPDATE&quot;
+      | filter    &quot; type BOOLEAN } L_SHIPDATE DATE &apos;1994-01-01&apos; &gt;= L_SHIPDATE DATE &apos;1995-01-01&apos; &lt; and 0.05 0.07 L_DISCOUNT between and L_QUANTITY 24.00 &lt; and &quot;
+      | project   &quot; type DECIMAL ( 15 2 ) as L_EXTENDEDPRICE L_EXTENDEDPRICE
+                  , type DECIMAL ( 15 2 ) as L_DISCOUNT L_DISCOUNT &quot;
+      | aggreg    &quot;   type DECIMAL ( 19 2 ) as REVENUE ) L_EXTENDEDPRICE L_DISCOUNT * sum &quot;
+      | dynamic
+      | next
+
+  stage S02 on all nodes :
+    aggreg    &quot;   type DECIMAL ( 19 2 ) as REVENUE ) REVENUE sum &quot;
+    | dynamic
+    | next      
+
+  stage S03 on origin :
+    aggreg    &quot;   type DECIMAL ( 19 2 ) as REVENUE ) REVENUE sum &quot;
+    | dynamic
+    | next      
+
+  stage S04 on origin :
+      output
+    | sink
+    | first
+
+end ;
+</stringProp>
               <boolProp name="JdbcRecorder.incColumnNames">true</boolProp>
               <boolProp name="JdbcRecorder.incColumnTypes">false</boolProp>
               <boolProp name="JdbcRecorder.overrideOutput">false</boolProp>
@@ -5657,7 +5809,7 @@ end ;</stringProp>
                 <hashTree/>
               </hashTree>
             </hashTree>
-            <com.rapidsdata.jmeter.samplers.JdbcRecorder guiclass="com.rapidsdata.jmeter.samplers.gui.JdbcRecorderGui" testclass="com.rapidsdata.jmeter.samplers.JdbcRecorder" testname="space-7" enabled="true">
+            <com.rapidsdata.jmeter.samplers.JdbcRecorder guiclass="com.rapidsdata.jmeter.samplers.gui.JdbcRecorderGui" testclass="com.rapidsdata.jmeter.samplers.JdbcRecorder" testname="space-7" enabled="false">
               <stringProp name="JdbcRecorder.connPoolVarName">SEConnPool</stringProp>
               <stringProp name="JdbcRecorder.queries">space;
 bpa;</stringProp>
@@ -6028,7 +6180,7 @@ order by
                 <hashTree/>
               </hashTree>
             </hashTree>
-            <com.rapidsdata.jmeter.samplers.JdbcRecorder guiclass="com.rapidsdata.jmeter.samplers.gui.JdbcRecorderGui" testclass="com.rapidsdata.jmeter.samplers.JdbcRecorder" testname="space-8" enabled="true">
+            <com.rapidsdata.jmeter.samplers.JdbcRecorder guiclass="com.rapidsdata.jmeter.samplers.gui.JdbcRecorderGui" testclass="com.rapidsdata.jmeter.samplers.JdbcRecorder" testname="space-8" enabled="false">
               <stringProp name="JdbcRecorder.connPoolVarName">SEConnPool</stringProp>
               <stringProp name="JdbcRecorder.queries">space;
 bpa;</stringProp>
@@ -10787,7 +10939,7 @@ end ;
               <stringProp name="JdbcRecorder.fileFormat">pretty</stringProp>
             </com.rapidsdata.jmeter.samplers.JdbcRecorder>
             <hashTree/>
-            <com.rapidsdata.jmeter.samplers.JdbcRecorder guiclass="com.rapidsdata.jmeter.samplers.gui.JdbcRecorderGui" testclass="com.rapidsdata.jmeter.samplers.JdbcRecorder" testname="space-9" enabled="true">
+            <com.rapidsdata.jmeter.samplers.JdbcRecorder guiclass="com.rapidsdata.jmeter.samplers.gui.JdbcRecorderGui" testclass="com.rapidsdata.jmeter.samplers.JdbcRecorder" testname="space-9" enabled="false">
               <stringProp name="JdbcRecorder.connPoolVarName">SEConnPool</stringProp>
               <stringProp name="JdbcRecorder.queries">space;
 bpa;</stringProp>
@@ -11282,7 +11434,7 @@ end ;</stringProp>
                 <hashTree/>
               </hashTree>
             </hashTree>
-            <com.rapidsdata.jmeter.samplers.JdbcRecorder guiclass="com.rapidsdata.jmeter.samplers.gui.JdbcRecorderGui" testclass="com.rapidsdata.jmeter.samplers.JdbcRecorder" testname="space-10" enabled="true">
+            <com.rapidsdata.jmeter.samplers.JdbcRecorder guiclass="com.rapidsdata.jmeter.samplers.gui.JdbcRecorderGui" testclass="com.rapidsdata.jmeter.samplers.JdbcRecorder" testname="space-10" enabled="false">
               <stringProp name="JdbcRecorder.connPoolVarName">SEConnPool</stringProp>
               <stringProp name="JdbcRecorder.queries">space;
 bpa;</stringProp>
@@ -11751,6 +11903,108 @@ bpa;</stringProp>
               <stringProp name="JdbcRecorder.fileFormat">pretty</stringProp>
             </com.rapidsdata.jmeter.samplers.JdbcRecorder>
             <hashTree/>
+            <com.rapidsdata.jmeter.samplers.JdbcRecorder guiclass="com.rapidsdata.jmeter.samplers.gui.JdbcRecorderGui" testclass="com.rapidsdata.jmeter.samplers.JdbcRecorder" testname="results-q11" enabled="true">
+              <stringProp name="JdbcRecorder.connPoolVarName">SEConnPool</stringProp>
+              <stringProp name="JdbcRecorder.queries">/optimise_passthru
+pipeline Query11
+begin
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
+
+  stage S01 on all partitions :
+    scan nation
+    | project &quot; type INTEGER ( 19 ) as N_NATIONKEY N_NATIONKEY ,
+                type VARCHAR ( 0 ) as N_NAME N_NAME&quot;
+    | filter &quot; type BOOLEAN N_NAME &apos;GERMANY&apos;  ==  &quot;
+    | project &quot; type INTEGER ( 19 ) as N_NATIONKEY N_NATIONKEY&quot;
+    | indexJoin supplier IxS_NATIONKEY &quot;bound $I1 N_NATIONKEY ==&quot;
+    | project &quot; type INTEGER ( 19 ) as S_SUPPKEY S_SUPPKEY&quot;
+    | combined 0
+    | next broadcast
+
+ stage S02 on all partitions multiple threads 4:
+    indexJoin partsupp IxPS_SUPPKEY &quot;bound $I1 S_SUPPKEY ==&quot;
+    | aggreg &quot; type DECIMAL ( 19  2 ) )  PS_SUPPLYCOST PS_AVAILQTY casttype DECIMAL ( 19  2 ) CAST  *  sum  &quot;
+    | combined 0
+    | next
+
+  stage S03 on all nodes :
+    aggreg &quot; type DECIMAL ( 19  2 ) as INNERRESULT )  $1 sum  &quot;
+    | combined 0
+    | next
+
+  stage S04 on origin :
+    aggreg &quot; type DECIMAL ( 19  2 ) as INNERRESULT )  $1 sum&quot;
+    | combined 0
+    | next
+
+  stage S05 on origin :
+    aggreg &quot; type DECIMAL ( 19  2 ) as INNERRESULT INNERRESULT 0.000001  *  &quot;
+    | combined 0
+    | next broadcast
+
+  stage S06 on all partitions :
+    indexJoin nation IxN_NATIONKEY &quot;bound $I1&quot;
+    | project &quot; type VARCHAR ( 0 ) as N_NAME N_NAME ,
+                type INTEGER ( 19 ) as N_NATIONKEY N_NATIONKEY ,
+                type DECIMAL ( 19  2 ) as INNERRESULT INNERRESULT&quot;
+    | filter &quot; type BOOLEAN N_NAME &apos;GERMANY&apos;  ==  &quot;
+    | project &quot; type INTEGER ( 19 ) as N_NATIONKEY N_NATIONKEY ,
+                type DECIMAL ( 19  2 ) as INNERRESULT INNERRESULT&quot;
+    | indexJoin supplier IxS_NATIONKEY &quot;bound $I1 N_NATIONKEY ==&quot;
+    | project &quot; type INTEGER ( 19 ) as S_SUPPKEY S_SUPPKEY ,
+                type DECIMAL ( 19  2 ) as INNERRESULT INNERRESULT&quot;
+    | combined 0
+    | next broadcast
+
+  stage S07 on all partitions  multiple threads 4:
+    indexJoin partsupp IxPS_SUPPKEY &quot;bound $I1 S_SUPPKEY ==&quot;
+    | gbyAgg &quot; GroupBy    type INTEGER ( 19 ) PS_PARTKEY
+               aggregates
+                          type INTEGER ( 19 ) as PS_PARTKEY $K1 ,
+                          type DECIMAL ( 19  2 ) as VALUE ) PS_SUPPLYCOST PS_AVAILQTY casttype DECIMAL ( 19  2 ) CAST  *  sum  ,
+                          type DECIMAL ( 19  2 ) as INNERRESULT INNERRESULT&quot;
+    | combined 0
+    | next
+
+  stage S08 on all nodes :
+    gbyAgg &quot; GroupBy    type INTEGER ( 19 ) PS_PARTKEY
+             aggregates type INTEGER ( 19 ) as PS_PARTKEY $K1 ,
+                        type DECIMAL ( 19  2 ) as VALUE ) VALUE sum  ,
+                        type DECIMAL ( 19  2 ) as INNERRESULT INNERRESULT&quot;
+    | combined 0
+    | next
+
+  stage S09 on origin :
+    gbyAgg &quot; GroupBy    type INTEGER ( 19 ) PS_PARTKEY
+             aggregates type INTEGER ( 19 ) as PS_PARTKEY $K1 ,
+                        type DECIMAL ( 19  2 ) as VALUE ) VALUE sum  ,
+                        type DECIMAL ( 19  2 ) as INNERRESULT INNERRESULT&quot;
+    | combined 0
+    | next
+
+  stage S10 on origin :
+    filter &quot; type BOOLEAN  value INNERRESULT  &gt;  &quot;
+    | project &quot; type INTEGER ( 19 ) as PS_PARTKEY PS_PARTKEY ,
+                type DECIMAL ( 19  2 ) as VALUE VALUE&quot;
+    | sort &quot; type DECIMAL ( 19  2 ) VALUE DESC  &quot;
+    | combined 0
+    | next
+
+  stage S11 on origin :
+    output
+    | sink
+    | first
+end ;</stringProp>
+              <boolProp name="JdbcRecorder.incColumnNames">true</boolProp>
+              <boolProp name="JdbcRecorder.incColumnTypes">false</boolProp>
+              <boolProp name="JdbcRecorder.overrideOutput">false</boolProp>
+              <stringProp name="JdbcRecorder.fileName"></stringProp>
+              <stringProp name="JdbcRecorder.fileFormat">pretty</stringProp>
+            </com.rapidsdata.jmeter.samplers.JdbcRecorder>
+            <hashTree/>
           </hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q12 Group" enabled="true"/>
           <hashTree>
@@ -12058,7 +12312,7 @@ pipeline Query12
                 <hashTree/>
               </hashTree>
             </hashTree>
-            <com.rapidsdata.jmeter.samplers.JdbcRecorder guiclass="com.rapidsdata.jmeter.samplers.gui.JdbcRecorderGui" testclass="com.rapidsdata.jmeter.samplers.JdbcRecorder" testname="space-12" enabled="true">
+            <com.rapidsdata.jmeter.samplers.JdbcRecorder guiclass="com.rapidsdata.jmeter.samplers.gui.JdbcRecorderGui" testclass="com.rapidsdata.jmeter.samplers.JdbcRecorder" testname="space-12" enabled="false">
               <stringProp name="JdbcRecorder.connPoolVarName">SEConnPool</stringProp>
               <stringProp name="JdbcRecorder.queries">space;
 bpa;</stringProp>
@@ -12426,7 +12680,7 @@ begin
                 <hashTree/>
               </hashTree>
             </hashTree>
-            <com.rapidsdata.jmeter.samplers.JdbcRecorder guiclass="com.rapidsdata.jmeter.samplers.gui.JdbcRecorderGui" testclass="com.rapidsdata.jmeter.samplers.JdbcRecorder" testname="space-13" enabled="true">
+            <com.rapidsdata.jmeter.samplers.JdbcRecorder guiclass="com.rapidsdata.jmeter.samplers.gui.JdbcRecorderGui" testclass="com.rapidsdata.jmeter.samplers.JdbcRecorder" testname="space-13" enabled="false">
               <stringProp name="JdbcRecorder.connPoolVarName">SEConnPool</stringProp>
               <stringProp name="JdbcRecorder.queries">space;
 bpa;</stringProp>
@@ -12659,7 +12913,7 @@ end ;
                 <hashTree/>
               </hashTree>
             </hashTree>
-            <com.rapidsdata.jmeter.samplers.JdbcRecorder guiclass="com.rapidsdata.jmeter.samplers.gui.JdbcRecorderGui" testclass="com.rapidsdata.jmeter.samplers.JdbcRecorder" testname="space-14" enabled="true">
+            <com.rapidsdata.jmeter.samplers.JdbcRecorder guiclass="com.rapidsdata.jmeter.samplers.gui.JdbcRecorderGui" testclass="com.rapidsdata.jmeter.samplers.JdbcRecorder" testname="space-14" enabled="false">
               <stringProp name="JdbcRecorder.connPoolVarName">SEConnPool</stringProp>
               <stringProp name="JdbcRecorder.queries">space;
 bpa;</stringProp>
@@ -12887,7 +13141,7 @@ pipeline Query15
 This query requires a view to be created first.</stringProp>
               </JDBCSampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="false">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">sleep ${SLEEP_TIME} ;</stringProp>
                 <stringProp name="queryArguments"></stringProp>
@@ -12915,7 +13169,7 @@ This query requires a view to be created first.</stringProp>
                 <hashTree/>
               </hashTree>
             </hashTree>
-            <com.rapidsdata.jmeter.samplers.JdbcRecorder guiclass="com.rapidsdata.jmeter.samplers.gui.JdbcRecorderGui" testclass="com.rapidsdata.jmeter.samplers.JdbcRecorder" testname="space-15" enabled="true">
+            <com.rapidsdata.jmeter.samplers.JdbcRecorder guiclass="com.rapidsdata.jmeter.samplers.gui.JdbcRecorderGui" testclass="com.rapidsdata.jmeter.samplers.JdbcRecorder" testname="space-15" enabled="false">
               <stringProp name="JdbcRecorder.connPoolVarName">SEConnPool</stringProp>
               <stringProp name="JdbcRecorder.queries">space;
 bpa;</stringProp>
@@ -13491,7 +13745,7 @@ end ;</stringProp>
                 <hashTree/>
               </hashTree>
             </hashTree>
-            <com.rapidsdata.jmeter.samplers.JdbcRecorder guiclass="com.rapidsdata.jmeter.samplers.gui.JdbcRecorderGui" testclass="com.rapidsdata.jmeter.samplers.JdbcRecorder" testname="space-17" enabled="true">
+            <com.rapidsdata.jmeter.samplers.JdbcRecorder guiclass="com.rapidsdata.jmeter.samplers.gui.JdbcRecorderGui" testclass="com.rapidsdata.jmeter.samplers.JdbcRecorder" testname="space-17" enabled="false">
               <stringProp name="JdbcRecorder.connPoolVarName">SEConnPool</stringProp>
               <stringProp name="JdbcRecorder.queries">space;
 bpa;</stringProp>
@@ -14496,7 +14750,7 @@ begin
                 <hashTree/>
               </hashTree>
             </hashTree>
-            <com.rapidsdata.jmeter.samplers.JdbcRecorder guiclass="com.rapidsdata.jmeter.samplers.gui.JdbcRecorderGui" testclass="com.rapidsdata.jmeter.samplers.JdbcRecorder" testname="space-18" enabled="true">
+            <com.rapidsdata.jmeter.samplers.JdbcRecorder guiclass="com.rapidsdata.jmeter.samplers.gui.JdbcRecorderGui" testclass="com.rapidsdata.jmeter.samplers.JdbcRecorder" testname="space-18" enabled="false">
               <stringProp name="JdbcRecorder.connPoolVarName">SEConnPool</stringProp>
               <stringProp name="JdbcRecorder.queries">space;
 bpa;</stringProp>
@@ -14782,7 +15036,7 @@ end ;</stringProp>
                 <hashTree/>
               </hashTree>
             </hashTree>
-            <com.rapidsdata.jmeter.samplers.JdbcRecorder guiclass="com.rapidsdata.jmeter.samplers.gui.JdbcRecorderGui" testclass="com.rapidsdata.jmeter.samplers.JdbcRecorder" testname="space-19" enabled="true">
+            <com.rapidsdata.jmeter.samplers.JdbcRecorder guiclass="com.rapidsdata.jmeter.samplers.gui.JdbcRecorderGui" testclass="com.rapidsdata.jmeter.samplers.JdbcRecorder" testname="space-19" enabled="false">
               <stringProp name="JdbcRecorder.connPoolVarName">SEConnPool</stringProp>
               <stringProp name="JdbcRecorder.queries">space;
 bpa;</stringProp>
@@ -15569,7 +15823,7 @@ end ;
                 <hashTree/>
               </hashTree>
             </hashTree>
-            <com.rapidsdata.jmeter.samplers.JdbcRecorder guiclass="com.rapidsdata.jmeter.samplers.gui.JdbcRecorderGui" testclass="com.rapidsdata.jmeter.samplers.JdbcRecorder" testname="space-q21" enabled="true">
+            <com.rapidsdata.jmeter.samplers.JdbcRecorder guiclass="com.rapidsdata.jmeter.samplers.gui.JdbcRecorderGui" testclass="com.rapidsdata.jmeter.samplers.JdbcRecorder" testname="space-q21" enabled="false">
               <stringProp name="JdbcRecorder.connPoolVarName">SEConnPool</stringProp>
               <stringProp name="JdbcRecorder.queries">space;
 bpa;</stringProp>
