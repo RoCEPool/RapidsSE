@@ -11294,7 +11294,7 @@ bpa;</stringProp>
             </com.rapidsdata.jmeter.samplers.JdbcRecorder>
             <hashTree/>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q11 Group" enabled="false"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q11 Group" enabled="true"/>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
@@ -11364,7 +11364,7 @@ order by
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q11_nation" enabled="false">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q11_nation" enabled="true">
                 <stringProp name="dataSource">SEConnPool</stringProp>
                 <stringProp name="query">/optimise_passthru
 pipeline Query11
@@ -11402,7 +11402,7 @@ begin
     | next
 
   stage S05 on origin :
-    aggreg &quot; type DECIMAL ( 19  2 ) as INNERRESULT INNERRESULT 0.0000004  *  &quot;
+    aggreg &quot; type DECIMAL ( 19  2 ) as INNERRESULT INNERRESULT 0.000001  *  &quot;
     | combined 0
     | next broadcast
 
@@ -11524,7 +11524,7 @@ begin
     | next
 
   stage S05 on origin :
-    aggreg &quot; type DECIMAL ( 19  2 ) as INNERRESULT INNERRESULT 0.00001  *  &quot;
+    aggreg &quot; type DECIMAL ( 19  2 ) as INNERRESULT INNERRESULT 0.000001  *  &quot;
     | combined 0
     | next broadcast
 
@@ -12671,7 +12671,7 @@ bpa;</stringProp>
             </com.rapidsdata.jmeter.samplers.JdbcRecorder>
             <hashTree/>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q15 Group" enabled="false"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q15 Group" enabled="true"/>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
@@ -13503,7 +13503,7 @@ bpa;</stringProp>
             </com.rapidsdata.jmeter.samplers.JdbcRecorder>
             <hashTree/>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q18 Group" enabled="false"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q18 Group" enabled="true"/>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
