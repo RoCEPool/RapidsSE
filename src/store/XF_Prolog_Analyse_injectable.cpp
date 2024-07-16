@@ -111,6 +111,17 @@ void XF_Prolog_Analyse_injectable::vAnalyse_injectable_passThru(void)
     m_pCI->E.p_indexJoin->vAnalyse_injectable(m_pCI);
   }
 
+  m_pCI->vBeginEach();
+  while (m_pCI->bEachOp(CK_o_KEYEXISTS, CK_p_TABLE)) {
+    m_pCI->E.p_keyExists->vAnalyse_injectable(m_pCI);
+  }
+
+  m_pCI->vBeginEach();
+  while (m_pCI->bEachOp(CK_o_KEYNOTEXISTS, CK_p_TABLE)) {
+    m_pCI->E.p_keyNotExists->vAnalyse_injectable(m_pCI);
+  }
+
+
   m_pCI->vEndTransform(__LINE__);
 }
 

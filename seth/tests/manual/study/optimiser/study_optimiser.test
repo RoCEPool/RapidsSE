@@ -19,7 +19,7 @@ INCLUDE 'create_partsupp.test';
 INCLUDE 'create_region.test';
 INCLUDE 'create_supplier.test';
  
-INCLUDE '__Q21_2.test';
+//INCLUDE '__Q21_2.test';
 
 //INCLUDE 'tpch_q9_globalHash.test';
 

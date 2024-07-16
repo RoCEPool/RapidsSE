@@ -668,8 +668,7 @@ void XF_Synthesise_Craft_pipelineDef::vCraftColInj_constraint(ColInj* pColInj,
   UNUSED(pSubCard);
   UNUSED(p_constraint);
 
-  /*
-  Card_Injectable* p_injected = pSubCard->pSub_injectable();
+  Card_Injectable* p_injectable = pSubCard->pSub_injectable();
   Card_Emit*   p_emit = pSubCard->pSub_emit();
 
   pColInj->m_sRefer.vSprint("]emit #%lld"_Stz,
@@ -689,11 +688,27 @@ void XF_Synthesise_Craft_pipelineDef::vCraftColInj_constraint(ColInj* pColInj,
   // add colInj descriptor(s) for given injected expr_i
 
   CardIter* pCI = m_pCI;
-  auto bfAddDescriptors = [pCI, pColInj, p_emit] (Card* pCard_expr_i) {
+  auto bfAddDescriptors = [pCI, pColInj, p_injectable, p_emit] (Card* pCard_term) {
+    UNUSED(pCI);
+    UNUSED(pColInj);
+    UNUSED(p_emit);
+    UNUSED(p_injectable);
+    UNUSED(pCard_term);
 
+    vDebugPoint();
+
+    if ( ! pCard_term->pSymbol()->bHasFacet(SF_NMD_COL))
+      return C_CONTINUE_RECURSION;
+
+    pCard_term->vDump(__FUNCTION__ );
+
+    return C_CONTINUE_RECURSION;
+
+    /*
     // get details of column injected (e.g. $b.1)
     Card_Expr*   p_expr_i = _pCard_Expr(pCard_expr_i);
     i8    i_CrwCol_expr_i = StrLib::iGleanInt(p_expr_i->szFacet(SF_ITM_COL)->azChar());
+
 
     Symbol* pSym_tblCol_i = p_expr_i->pFirst_tblCol(pCI);
     Stz*       szTblCol_i = pSym_tblCol_i->szFacet(SF_TBL_COL);
@@ -732,13 +747,12 @@ void XF_Synthesise_Craft_pipelineDef::vCraftColInj_constraint(ColInj* pColInj,
       p_prior_expr_e = p_expr_e;
     }
     NEVER_REACH
+     */
   };
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  p_injected->bLambdaWalk(CK_EXPR, bfAddDescriptors);
-  */
-
+  p_constraint->bLambdaWalk(CK_TERM, bfAddDescriptors);
 }
 
 /*----------------------------------------------------------------------------*/
