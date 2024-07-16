@@ -173,7 +173,8 @@ void CombinedSrc::vSynthesizeCode(Stencil* pStencil, bool bFirstStage, bool bLas
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // inflate the right table columns
-        vAppendCodeInflateRightCols(pOpSketch, "L_RetT_ColIJ"_Stz, pInflateFile);
+        //vAppendCodeInflateRightCols(pOpSketch, "L_RetT_ColIJ"_Stz, pInflateFile);
+        vAppendCodeInflateInjCols(pOpSketch, "L_RetT_ColIJ"_Stz, pInflateFile);
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // generate code for the constraint
@@ -1086,6 +1087,15 @@ void CombinedSrc::vAppendCodeInflateInjCols(OpSketch* pOpSketch, Stz* sReturnPre
 	Column* pColumn;
 	i8 i_StreamRightCol = 0;
 
+  // sort the columns as per m_iCrwCol
+  for (i8 i_Col = 0; i_Col < pOpSketch->m_pColInj->m_nCols-1; i_Col++) {
+    if (pOpSketch->m_pColInj->m_axCol[i_Col].m_i_CrwCol > pOpSketch->m_pColInj->m_axCol[i_Col+1].m_i_CrwCol) {
+      i8 iTemp = pOpSketch->m_pColInj->m_axCol[i_Col+1].m_i_CrwCol;
+      pOpSketch->m_pColInj->m_axCol[i_Col+1].m_i_CrwCol = pOpSketch->m_pColInj->m_axCol[i_Col].m_i_CrwCol;
+      pOpSketch->m_pColInj->m_axCol[i_Col].m_i_CrwCol = iTemp;
+    }
+  }
+
 	for (i8 i_Col = 0; i_Col < pOpSketch->m_pColInj->m_nCols; i_Col++) {
 
 		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1111,8 +1121,8 @@ void CombinedSrc::vAppendCodeInflateInjCols(OpSketch* pOpSketch, Stz* sReturnPre
 
 			sCode = ""_Stz;
 			pOperatorFile->vSeekStart();
-			pColumn = pOpSketch->m_pStreamDefOut->pGetColumn(pOpSketch->m_pColInj->m_axCol[i_Col].m_i_StructCell);
-      //pColumn = pOpSketch->m_pStreamDefRht->pGetColumn(i_StreamRightCol);
+			//pColumn = pOpSketch->m_pStreamDefOut->pGetColumn(pOpSketch->m_pColInj->m_axCol[i_Col].m_i_StructCell);
+      pColumn = pOpSketch->m_pStreamDefRht->pGetColumn(i_StreamRightCol);
       bExtracted = CodeSynthUtils::bExtractInflate(pOperatorFile, pOpSketch, pColumn, sReturnToColumn, "vInflateCrwCol"_Stz, sCode);
 			RASSERT(bExtracted);
 			StrLib::vAppendString(&m_azCodeCrs, azCodeLastChar(), sCode.azChar());

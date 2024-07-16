@@ -563,6 +563,20 @@ void XF_Synthesise_Craft_pipelineDef::vCraftColInj(void)
       ) {
     vCraftColInj(pColInj, p_OP_curr);
   }
+  else
+  if (CK_o_KEYEXISTS == eCard_OP) {
+
+    m_pCI->E.p_Op->vDump(__FUNCTION__ );
+    vDebugPoint();
+    vCraftColInj_constraint(pColInj, p_OP_curr, p_OP_curr->pSub_constraint());
+  }
+  else
+  if (CK_o_KEYNOTEXISTS == eCard_OP) {
+
+    m_pCI->E.p_Op->vDump(__FUNCTION__ );
+    vDebugPoint();
+    vCraftColInj_constraint(pColInj, p_OP_curr, p_OP_curr->pSub_constraint());
+  }
 
   pColInj->vValidate();
 }
@@ -642,6 +656,81 @@ void XF_Synthesise_Craft_pipelineDef::vCraftColInj(ColInj* pColInj, Card *pSubCa
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   p_injected->bLambdaWalk(CK_EXPR, bfAddDescriptors);
+}
+
+/*----------------------------------------------------------------------------*/
+/* craft the columns injected to emitted map for given card                   */
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/* craft the columns injected to emitted map for given card                   */
+/*----------------------------------------------------------------------------*/
+void XF_Synthesise_Craft_pipelineDef::vCraftColInj_constraint(ColInj* pColInj,
+                                                              Card *pSubCard,
+                                                              Card_Constraint *p_constraint)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_CRAFT_PIPELINEDEF, _FOOTER_);
+
+  UNUSED(pColInj);
+  UNUSED(pSubCard);
+  UNUSED(p_constraint);
+
+  Card_Injectable* p_injectable = pSubCard->pSub_injectable();
+  Card_Emit*       p_emit       = pSubCard->pSub_emit();
+
+  pColInj->m_sRefer.vSprint("]emit #%lld"_Stz,
+          //pSubCard->szCardNm(),
+                            p_emit->iSequence());
+
+  //p_emit->vDump(__func__);
+
+  if (m_pStageDef->i_Stage() == 2) {
+    vDebugPoint();
+    if (m_pOpDef->i_Op() == 0)
+      vDebugPoint();
+  }
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // add colInj descriptor(s) for given injected expr_i
+
+  //CardIter* pCI = m_pCI;
+  i8 i_StructCell_rng = 0;
+  auto bfAddDescriptors =
+          [pColInj, p_injectable, p_emit, &i_StructCell_rng]
+                  (Card* p_term) {
+
+              if ( ! p_term->pSymbol()->bHasFacet(SF_NMD_COL))
+                return C_CONTINUE_RECURSION;
+
+              p_term->vDump(__FUNCTION__ );
+
+              //Stz* szNmdCol = p_term->pSymbol()->szFacet(SF_NMD_COL);
+              Card_Expr* p_expr_inj = p_injectable->pFind_expr(p_term->pSymbol());
+              if (! p_expr_inj)
+                return C_CONTINUE_RECURSION;
+
+              p_expr_inj->vDump(__FUNCTION__ );
+
+              // get details of column injected (e.g. $b.1)
+              i8    i_CrwCol_expr_inj = StrLib::iGleanInt(p_expr_inj->szFacet(SF_ITM_COL)->azChar());
+              UNUSED(i_CrwCol_expr_inj);
+
+
+              // add descriptor
+              pColInj->vAdd(i_CrwCol_expr_inj,
+                            p_emit->nItems() + i_StructCell_rng++,
+                            p_term->pSymbol()->szFacet(SF_NMD_COL),
+                            p_term->pSymbol()->szFacet(SF_NMD_COL),
+                            p_term->pSymbol()->szFacet(SF_NMD_COL));
+
+              return C_CONTINUE_RECURSION;
+
+
+          };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  p_constraint->bLambdaWalk(CK_TERM, bfAddDescriptors);
 }
 
 /*----------------------------------------------------------------------------*/

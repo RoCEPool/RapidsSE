@@ -1097,6 +1097,9 @@ OpSketch* Stencil::pSketchSemiJoin(StageDef* pStageDef, OpDef* pOpDef, OpSketch*
   StreamDef *pStreamDefLft = pOpDef->m_pStreamDef_arriving;
   StreamDef *pStreamDefOut = pOpDef->m_pStreamDef_arriving;
 
+  // get the colInj
+  ColInj* pColInj = pOpDef->m_pColInj;
+
   // get the index
   Index *pIndex = pOpDef->m_pIndex_indexSemi;
 
@@ -1136,6 +1139,10 @@ OpSketch* Stencil::pSketchSemiJoin(StageDef* pStageDef, OpDef* pOpDef, OpSketch*
 
   // set the labels in the opSketch
   pOpSketch->vSetLabels(sLabel, sLabelNext, m_sLabelLoop);
+
+  // copy the colInj
+  if (pColInj)
+    pOpSketch->vCopyColInj(pColInj);
 
   // set the indexDef
   pOpSketch->vTable(pTable);
@@ -1337,6 +1344,9 @@ OpSketch* Stencil::pSketchAntiJoin(StageDef* pStageDef, OpDef* pOpDef, OpSketch*
   StreamDef *pStreamDefLft = pOpDef->m_pStreamDef_arriving;
   StreamDef *pStreamDefOut = pOpDef->m_pStreamDef_arriving;
 
+  // get the colInj
+  ColInj* pColInj = pOpDef->m_pColInj;
+
   // get the index
   Index *pIndex = pOpDef->m_pIndex_indexSemi;
 
@@ -1377,6 +1387,10 @@ OpSketch* Stencil::pSketchAntiJoin(StageDef* pStageDef, OpDef* pOpDef, OpSketch*
   StrLib::vSprint(sLabelTemp, sizeof(sLabelTemp), nullptr, "L_AdvanceNextRowJ_%lld"_Stz, pOpSketch->m_iOperatorNo);
 
   pOpSketch->vSetLabels(sLabel, sLabelNext, sLabelTemp, m_sLabelLoop);
+
+  // copy the colInj
+  if (pColInj)
+    pOpSketch->vCopyColInj(pColInj);
 
   // set the indexDef
   pOpSketch->vTable(pTable);
