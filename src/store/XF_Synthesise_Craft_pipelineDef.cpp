@@ -586,7 +586,7 @@ void XF_Synthesise_Craft_pipelineDef::vCraftColInj(ColInj* pColInj, Card *pSubCa
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_CRAFT_PIPELINEDEF, _FOOTER_);
 
   Card_Injectable* p_injected = pSubCard->pSub_injectable();
-  Card_Emit*   p_emit = pSubCard->pSub_emit();
+  Card_Emit*       p_emit     = pSubCard->pSub_emit();
 
   pColInj->m_sRefer.vSprint("]emit #%lld"_Stz,
                             //pSubCard->szCardNm(),
@@ -669,7 +669,7 @@ void XF_Synthesise_Craft_pipelineDef::vCraftColInj_constraint(ColInj* pColInj,
   UNUSED(p_constraint);
 
   Card_Injectable* p_injectable = pSubCard->pSub_injectable();
-  Card_Emit*   p_emit = pSubCard->pSub_emit();
+  Card_Emit*       p_emit       = pSubCard->pSub_emit();
 
   pColInj->m_sRefer.vSprint("]emit #%lld"_Stz,
       //pSubCard->szCardNm(),
@@ -687,67 +687,39 @@ void XF_Synthesise_Craft_pipelineDef::vCraftColInj_constraint(ColInj* pColInj,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // add colInj descriptor(s) for given injected expr_i
 
-  CardIter* pCI = m_pCI;
-  auto bfAddDescriptors = [pCI, pColInj, p_injectable, p_emit] (Card* pCard_term) {
-    UNUSED(pCI);
-    UNUSED(pColInj);
-    UNUSED(p_emit);
-    UNUSED(p_injectable);
-    UNUSED(pCard_term);
+  //CardIter* pCI = m_pCI;
+  i8 i_StructCell_rng = 0;
+  auto bfAddDescriptors =
+      [pColInj, p_injectable, p_emit, &i_StructCell_rng]
+      (Card* p_term) {
 
-    vDebugPoint();
-
-    if ( ! pCard_term->pSymbol()->bHasFacet(SF_NMD_COL))
+    if ( ! p_term->pSymbol()->bHasFacet(SF_NMD_COL))
       return C_CONTINUE_RECURSION;
 
-    pCard_term->vDump(__FUNCTION__ );
+    p_term->vDump(__FUNCTION__ );
+
+    //Stz* szNmdCol = p_term->pSymbol()->szFacet(SF_NMD_COL);
+    Card_Expr* p_expr_inj = p_injectable->pFind_expr(p_term->pSymbol());
+    if (! p_expr_inj)
+      return C_CONTINUE_RECURSION;
+
+    p_expr_inj->vDump(__FUNCTION__ );
+
+    // get details of column injected (e.g. $b.1)
+    i8    i_CrwCol_expr_inj = StrLib::iGleanInt(p_expr_inj->szFacet(SF_ITM_COL)->azChar());
+    UNUSED(i_CrwCol_expr_inj);
+
+
+    // add descriptor
+    pColInj->vAdd(i_CrwCol_expr_inj,
+                  p_emit->nItems() + i_StructCell_rng++,
+                  p_term->pSymbol()->szFacet(SF_NMD_COL),
+                  p_term->pSymbol()->szFacet(SF_NMD_COL),
+                  p_term->pSymbol()->szFacet(SF_NMD_COL));
 
     return C_CONTINUE_RECURSION;
 
-    /*
-    // get details of column injected (e.g. $b.1)
-    Card_Expr*   p_expr_i = _pCard_Expr(pCard_expr_i);
-    i8    i_CrwCol_expr_i = StrLib::iGleanInt(p_expr_i->szFacet(SF_ITM_COL)->azChar());
 
-
-    Symbol* pSym_tblCol_i = p_expr_i->pFirst_tblCol(pCI);
-    Stz*       szTblCol_i = pSym_tblCol_i->szFacet(SF_TBL_COL);
-    //pSym_tblCol_i->vDump();
-
-    // test if the injected column is actually emitted?
-    // n.b. it may be emitted more than once
-    Card_Expr *p_prior_expr_e = nullptr;
-
-    Kid xEmit(p_emit);
-    for (;;) {
-      Card_Expr *p_expr_e =
-          p_emit->pFind_expr(pSym_tblCol_i, &xEmit);
-      if (! p_expr_e)
-        return C_CONTINUE_RECURSION;
-
-      // -- injected column is actually emitted --
-      // e.g. expr $1 as C0_C_CUSTKEY
-
-      //p_expr_e->vDump(__func__);
-
-      // get details of emitted column
-      i8 i_StructCell_e = p_expr_e->pSymbol()->iTo_ordinal(SF_EXP_COL) - 1;
-
-      // add descriptor
-      pColInj->vAdd(i_CrwCol_expr_i,
-                    i_StructCell_e,
-                    p_expr_e->szFacet(SF_ITM_COL),
-                    szTblCol_i,
-                    p_expr_e->szFacet(SF_NMD_COL));
-
-      if (p_prior_expr_e) {
-        pColInj->vRepeatsPrior();
-        vDebugPoint();
-      }
-      p_prior_expr_e = p_expr_e;
-    }
-    NEVER_REACH
-     */
   };
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
