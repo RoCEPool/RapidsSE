@@ -11677,7 +11677,7 @@ begin
     | next
 
   stage S05 on origin :
-    aggreg &quot; type DECIMAL ( 19  2 ) as INNERRESULT INNERRESULT 0.0000004  *  &quot;
+    aggreg &quot; type DECIMAL ( 19  2 ) as INNERRESULT INNERRESULT 0.0000002  *  &quot;
     | combined 0
     | next broadcast
 
@@ -11799,7 +11799,7 @@ begin
     | next
 
   stage S05 on origin :
-    aggreg &quot; type DECIMAL ( 19  2 ) as INNERRESULT INNERRESULT 0.00001  *  &quot;
+    aggreg &quot; type DECIMAL ( 19  2 ) as INNERRESULT INNERRESULT 0.0000002  *  &quot;
     | combined 0
     | next broadcast
 
