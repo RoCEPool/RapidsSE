@@ -15562,7 +15562,7 @@ bpa;</stringProp>
             </com.rapidsdata.jmeter.samplers.JdbcRecorder>
             <hashTree/>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q21 Group" enabled="false"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q21 Group" enabled="true"/>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="sleep" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
@@ -15729,8 +15729,114 @@ stage S01 on all partitions :
     output
     | sink
     | first
-end ;
-</stringProp>
+end ;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q21_2" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">/optimise_passthru
+pipeline Query21
+begin
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
+
+stage S01 on all partitions :
+    scan Orders
+    | project &quot; type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY ,
+                type VARCHAR ( 0 ) as O_ORDERSTATUS O_ORDERSTATUS&quot;
+    | filter &quot; type BOOLEAN  O_ORDERSTATUS &apos;F&apos;  == &quot;
+    | project &quot; type INTEGER ( 19 ) as O_ORDERKEY O_ORDERKEY &quot;
+    | hash &quot; type INTEGER ( 19 ) O_ORDERKEY&quot;
+    | combined 0
+    | next hashcast
+
+  stage S02 on all partitions multiple threads 4:
+    indexJoin lineitem IxL_ORDERKEY &quot;BOUND $I1 O_ORDERKEY ==&quot;
+    | project &quot; type INTEGER ( 19 ) as L1_ORDERKEY L_ORDERKEY ,
+                type INTEGER ( 19 ) as L1_SUPPKEY L_SUPPKEY ,
+                type DATE ( 0 ) as L_RECEIPTDATE L_RECEIPTDATE ,
+                type DATE ( 0 ) as L_COMMITDATE L_COMMITDATE&quot;
+    | filter &quot; type BOOLEAN  L_RECEIPTDATE L_COMMITDATE &gt; &quot;
+    | project &quot; type INTEGER ( 19 ) as L1_ORDERKEY L1_ORDERKEY ,
+                type INTEGER ( 19 ) as L1_SUPPKEY L1_SUPPKEY &quot;
+    | combined 0
+    | next
+
+  stage S03 on all partitions :
+    keyExists lineitem IxL_ORDERKEY  &quot;BOUND $I1 L1_ORDERKEY ==&quot;
+       &quot;type BOOLEAN L1_SUPPKEY L_SUPPKEY != &quot;
+    | combined 0
+    | next
+
+  stage S04 on all partitions :
+    keyNotExists lineitem IxL_ORDERKEY  &quot;BOUND $I1 L1_ORDERKEY ==&quot;
+       &quot;type BOOLEAN L1_SUPPKEY L_SUPPKEY !=
+                     L_RECEIPTDATE L_COMMITDATE &gt; and&quot;
+    | hash &quot; type INTEGER ( 19 ) L1_SUPPKEY&quot;
+    | combined 0
+    | next hashcast
+
+  stage S05 on all partitions :
+    indexJoin Supplier IxS_SUPPKEY &quot;BOUND $I1 L1_SUPPKEY ==&quot;
+    | project &quot; type INTEGER ( 19 ) as L1_SUPPKEY L_SUPPKEY ,
+                type INTEGER ( 19 ) as S_NATIONKEY S_NATIONKEY &quot;
+    | combined 0
+    | next
+
+  stage S06 on all partitions :
+    indexJoin Nation IxN_NATIONKEY &quot;BOUND $I1 S_NATIONKEY ==&quot;
+    //| project &quot; type INTEGER ( 19 ) as L1_SUPPKEY L_SUPPKEY ,
+    //                type VARCHAR ( 0 ) as N_NAME N_NAME &quot;
+    | filter &quot; type BOOLEAN N_NAME &apos;SAUDI ARABIA&apos; ==  &quot;
+    | ordAgg &quot; ordGroupBy    type INTEGER ( 19 ) as L1_SUPPKEY L1_SUPPKEY
+               aggregates type INTEGER ( 19 ) as L1_SUPPKEY $K1 ,
+                          type INTEGER ( 19 ) )  countAll  &quot;
+    | combined 0
+    | next
+
+  stage S05 on all nodes :
+    gbyAgg &quot; groupBy  type VARCHAR ( 0 ) as L1_SUPPKEY $1
+      aggregates  type INTEGER ( 19 ) as L1_SUPPKEY $K1 ,
+                  type INTEGER ( 19 ) )  $2 sum  &quot;
+    | combined 0
+    | next
+
+  stage S06 on origin :
+    gbyAgg &quot; groupBy  type VARCHAR ( 0 ) as L1_SUPPKEY $1
+       aggregates  type INTEGER ( 19 ) as L1_SUPPKEY $K1 ,
+                   type INTEGER ( 19 ) as numwait )  $2 sum  &quot;
+    | hash &quot; type INTEGER ( 19 ) L1_SUPPKEY&quot;
+        | combined 0
+        | next hashcast
+
+  stage S03 on all partitions :
+    indexJoin Supplier IxS_SUPPKEY &quot;BOUND $I1 L1_SUPPKEY ==&quot;
+    | project &quot; type VARCHAR ( 0 ) as S_NAME S_NAME ,
+                type INTEGER ( 19 ) as numwait numwait&quot;
+    | combined 0
+    | next
+
+  stage S05 on origin :
+    sort &quot; type INTEGER ( 19 ) as numwait numwait DESC  ,
+           type INTEGER ( 19 ) as L1_SUPPKEY $1 ASC  &quot;
+    | combined 0
+    | next
+
+  stage S07 on origin :
+    output
+    | sink
+    | first
+end ;</stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="queryTimeout"></stringProp>
