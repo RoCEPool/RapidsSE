@@ -1,0 +1,71 @@
+name: mirror
+# RapidsSE from Bitbucket into this repository: every branch and tag, add-only
+# (README.md says what that means), and a git bundle of it all on the release "backup"
+on:
+  push:
+    branches: [mirror-sync]
+  schedule:
+    - cron: "17 18 * * *"   # daily, 03:17 Tokyo
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency: mirror
+jobs:
+  sync:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    env:
+      UPSTREAM: https://bitbucket.org/rapidsdataproject/rapidsse.git
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: fetch upstream
+        id: up
+        run: |
+          if ! git clone -q --mirror "$UPSTREAM" up.git 2> err.txt; then
+            echo "::warning title=upstream unreachable::$(tr '\n' ' ' < err.txt) -- nothing changed here"
+            echo "ok=0" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          echo "ok=1" >> "$GITHUB_OUTPUT"
+          echo "upstream: $(git -C up.git for-each-ref refs/heads | wc -l) branches, $(git -C up.git tag | wc -l) tags, $(git -C up.git rev-list --all --count) commits"
+      - name: push branches and tags (add-only)
+        if: steps.up.outputs.ok == '1'
+        run: |
+          cd up.git
+          git remote add gh "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          d=$(date -u +%Y%m%d)
+          fail=0
+          for b in $(git for-each-ref --format='%(refname:strip=2)' refs/heads/); do
+            [ "$b" = mirror-sync ] && continue
+            if ! git push -q gh "refs/heads/$b:refs/heads/$b" 2> err.txt; then
+              if grep -qiE "non-fast-forward|fetch first|rejected" err.txt; then
+                # upstream rewrote this branch: ours stays, theirs goes beside it
+                git push -q gh "refs/heads/$b:refs/heads/upstream-rewritten/$d/$b" 2>> err.txt || true
+                echo "::warning title=branch rewritten upstream::$b -- kept, upstream's is upstream-rewritten/$d/$b"
+              else
+                echo "::error title=push $b::$(tr '\n' ' ' < err.txt)"; fail=1
+              fi
+            fi
+          done
+          for t in $(git tag); do
+            if ! git push -q gh "refs/tags/$t:refs/tags/$t" 2> err.txt; then
+              if grep -qiE "already exists|rejected" err.txt; then
+                git push -q gh "refs/tags/$t:refs/tags/$t-upstream-$d" 2>> err.txt || true
+                echo "::warning title=tag changed upstream::$t -- kept, upstream's is $t-upstream-$d"
+              else
+                echo "::error title=push tag $t::$(tr '\n' ' ' < err.txt)"; fail=1
+              fi
+            fi
+          done
+          exit $fail
+      - name: backup bundle on the release "backup"
+        if: steps.up.outputs.ok == '1'
+        run: |
+          git -C up.git bundle create "$PWD/rapidsse.bundle" --all
+          git bundle verify rapidsse.bundle > /dev/null
+          notes="The whole RapidsSE repository (every branch and tag, full history) as of $(date -u '+%Y-%m-%d %H:%M UTC'), from $UPSTREAM. Restore: \`git clone rapidsse.bundle rapidsse\`."
+          if ! gh release view backup -R "$GITHUB_REPOSITORY" > /dev/null 2>&1; then
+            gh release create backup -R "$GITHUB_REPOSITORY" --target mirror-sync --title "Backup: the whole repository in one file" --notes "$notes" --latest=false
+          fi
+          gh release upload backup rapidsse.bundle -R "$GITHUB_REPOSITORY" --clobber
+          gh release edit backup -R "$GITHUB_REPOSITORY" --notes "$notes"
