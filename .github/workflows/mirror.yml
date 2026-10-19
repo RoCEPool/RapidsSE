@@ -61,11 +61,24 @@ jobs:
       - name: backup bundle on the release "backup"
         if: steps.up.outputs.ok == '1'
         run: |
-          git -C up.git bundle create "$PWD/rapidsse.bundle" --all
-          git bundle verify rapidsse.bundle > /dev/null
-          notes="The whole RapidsSE repository (every branch and tag, full history) as of $(date -u '+%Y-%m-%d %H:%M UTC'), from $UPSTREAM. Restore: \`git clone rapidsse.bundle rapidsse\`."
-          if ! gh release view backup -R "$GITHUB_REPOSITORY" > /dev/null 2>&1; then
-            gh release create backup -R "$GITHUB_REPOSITORY" --target mirror-sync --title "Backup: the whole repository in one file" --notes "$notes" --latest=false
+          # every failure says why, as an annotation (readable without the raw log)
+          run() { if ! out=$("$@" 2>&1); then echo "::error title=backup: $1 $2::$(echo "$out" | tail -5 | tr '\n' ' ')"; exit 1; fi; }
+          run git -C up.git bundle create "$PWD/rapidsse.bundle" --all
+          run git bundle verify rapidsse.bundle
+          size=$(stat -c %s rapidsse.bundle)
+          echo "::notice title=bundle::$((size / 1048576)) MiB"
+          if [ "$size" -ge 2000000000 ]; then
+            # a release file may not exceed 2 GiB: split it, the notes say how to join
+            split -b 1900m -d rapidsse.bundle rapidsse.bundle.part
+            files=$(ls rapidsse.bundle.part*)
+            join="cat rapidsse.bundle.part* > rapidsse.bundle && "
+          else
+            files=rapidsse.bundle
+            join=""
           fi
-          gh release upload backup rapidsse.bundle -R "$GITHUB_REPOSITORY" --clobber
-          gh release edit backup -R "$GITHUB_REPOSITORY" --notes "$notes"
+          notes="The whole RapidsSE repository (every branch and tag, full history) as of $(date -u '+%Y-%m-%d %H:%M UTC'), from $UPSTREAM. Restore: \`${join}git clone rapidsse.bundle rapidsse\`."
+          if ! gh release view backup -R "$GITHUB_REPOSITORY" > /dev/null 2>&1; then
+            run gh release create backup -R "$GITHUB_REPOSITORY" --target mirror-sync --title "Backup: the whole repository in one file" --notes "$notes" --latest=false
+          fi
+          run gh release upload backup $files -R "$GITHUB_REPOSITORY" --clobber
+          run gh release edit backup -R "$GITHUB_REPOSITORY" --notes "$notes"
