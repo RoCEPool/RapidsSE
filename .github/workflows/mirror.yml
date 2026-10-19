@@ -64,7 +64,7 @@ jobs:
           # every failure says why, as an annotation (readable without the raw log)
           run() { if ! out=$("$@" 2>&1); then echo "::error title=backup: $1 $2::$(echo "$out" | tail -5 | tr '\n' ' ')"; exit 1; fi; }
           run git -C up.git bundle create "$PWD/rapidsse.bundle" --all
-          run git bundle verify rapidsse.bundle
+          run git -C up.git bundle verify "$PWD/rapidsse.bundle"
           size=$(stat -c %s rapidsse.bundle)
           echo "::notice title=bundle::$((size / 1048576)) MiB"
           if [ "$size" -ge 2000000000 ]; then
