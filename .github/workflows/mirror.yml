@@ -35,7 +35,8 @@ jobs:
           git remote add gh "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
           d=$(date -u +%Y%m%d)
           fail=0
-          for b in $(git for-each-ref --format='%(refname:strip=2)' refs/heads/); do
+          # (the default branch first)
+          for b in master $(git for-each-ref --format='%(refname:strip=2)' refs/heads/ | grep -vx master); do
             [ "$b" = mirror-sync ] && continue
             if ! git push -q gh "refs/heads/$b:refs/heads/$b" 2> err.txt; then
               if grep -qiE "non-fast-forward|fetch first|rejected" err.txt; then
@@ -73,7 +74,8 @@ jobs:
           warn() { echo "::warning title=$1::$(tail -5 ../lfs_err.txt | tr '\n' ' ')"; }
           # 1. what each branch tip needs (what a clone builds from), first:
           #    a time-out in step 2 must not lose it
-          for b in $(git for-each-ref --format='%(refname:strip=2)' refs/heads/); do
+          # (the default branch first)
+          for b in master $(git for-each-ref --format='%(refname:strip=2)' refs/heads/ | grep -vx master); do
             timeout 15m git lfs fetch origin "$b" 2> ../lfs_err.txt || warn "LFS fetch $b"
             git lfs push gh "$b" 2> ../lfs_err.txt || warn "LFS push $b"
           done
