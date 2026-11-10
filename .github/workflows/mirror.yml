@@ -13,7 +13,7 @@ concurrency: mirror
 jobs:
   sync:
     runs-on: ubuntu-24.04
-    timeout-minutes: 60
+    timeout-minutes: 180
     env:
       UPSTREAM: https://bitbucket.org/rapidsdataproject/rapidsse.git
       GH_TOKEN: ${{ github.token }}
@@ -68,17 +68,21 @@ jobs:
           # tar file on the release.
           cd up.git
           git lfs install --local > /dev/null
-          if ! git lfs fetch --all origin 2> ../lfs_err.txt; then
-            echo "::warning title=LFS fetch::$(tail -5 ../lfs_err.txt | tr '\n' ' ')"
-          fi
+          git remote add gh "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" 2>/dev/null || true
+          git config lfs.https://github.com/${GITHUB_REPOSITORY}.git/info/lfs.locksverify false
+          warn() { echo "::warning title=$1::$(tail -5 ../lfs_err.txt | tr '\n' ' ')"; }
+          # 1. what each branch tip needs (what a clone builds from), first:
+          #    a time-out in step 2 must not lose it
+          for b in $(git for-each-ref --format='%(refname:strip=2)' refs/heads/); do
+            timeout 15m git lfs fetch origin "$b" 2> ../lfs_err.txt || warn "LFS fetch $b"
+            git lfs push gh "$b" 2> ../lfs_err.txt || warn "LFS push $b"
+          done
+          # 2. every older object too, as far as the time allows (resumed next run)
+          timeout 70m git lfs fetch --all origin 2> ../lfs_err.txt || warn "LFS fetch --all (the next run tries again)"
           n=$(find lfs/objects -type f 2>/dev/null | wc -l)
           echo "::notice title=LFS::$n objects, $(du -sh lfs/objects 2>/dev/null | cut -f1)"
           [ "$n" -gt 0 ] || exit 0
-          git remote add gh "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" 2>/dev/null || true
-          git config lfs.https://github.com/${GITHUB_REPOSITORY}.git/info/lfs.locksverify false
-          if ! git lfs push --all gh 2> ../lfs_err.txt; then
-            echo "::warning title=LFS push::$(tail -5 ../lfs_err.txt | tr '\n' ' ') -- the release copy still has them"
-          fi
+          git lfs push --all gh 2> ../lfs_err.txt || warn "LFS push --all (the release copy still has them)"
           tar -cf ../rapidsse-lfs.tar lfs/objects
       - name: backup bundle on the release "backup"
         if: steps.up.outputs.ok == '1'
