@@ -15,7 +15,9 @@ the full history, unmodified.
   reached, nothing here changes.
 - **Backup.** Every run also attaches the whole repository as one file to the
   release [`backup`](../../releases/tag/backup): `rapidsse.bundle`.
-  `git clone rapidsse.bundle rapidsse` restores everything from it.
+  `git clone rapidsse.bundle rapidsse` restores everything from it. The
+  files upstream keeps in Git LFS (build tarballs, jars, ...) are copied too: into
+  this repository's LFS, and as `rapidsse-lfs.tar` on the same release.
 
 RapidsSE's license, copyright notice and README are in the upstream branches,
 unchanged. rocepool (https://github.com/RoCEPool/rocepool-fs) uses RapidsSE's

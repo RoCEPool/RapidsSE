@@ -58,6 +58,28 @@ jobs:
             fi
           done
           exit $fail
+      - name: LFS objects (into this repository's LFS and the release "backup")
+        if: steps.up.outputs.ok == '1'
+        run: |
+          # The build needs files stored in Git LFS upstream (thirdparty/*.tar.gz,
+          # jars, ...). A plain mirror clone has only their pointers, so copy the
+          # objects too: into GitHub LFS (so `git lfs pull` works on a clone of
+          # this repository) and, as a second copy outside any LFS quota, as one
+          # tar file on the release.
+          cd up.git
+          git lfs install --local > /dev/null
+          if ! git lfs fetch --all origin 2> ../lfs_err.txt; then
+            echo "::warning title=LFS fetch::$(tail -5 ../lfs_err.txt | tr '\n' ' ')"
+          fi
+          n=$(find lfs/objects -type f 2>/dev/null | wc -l)
+          echo "::notice title=LFS::$n objects, $(du -sh lfs/objects 2>/dev/null | cut -f1)"
+          [ "$n" -gt 0 ] || exit 0
+          git remote add gh "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" 2>/dev/null || true
+          git config lfs.https://github.com/${GITHUB_REPOSITORY}.git/info/lfs.locksverify false
+          if ! git lfs push --all gh 2> ../lfs_err.txt; then
+            echo "::warning title=LFS push::$(tail -5 ../lfs_err.txt | tr '\n' ' ') -- the release copy still has them"
+          fi
+          tar -cf ../rapidsse-lfs.tar lfs/objects
       - name: backup bundle on the release "backup"
         if: steps.up.outputs.ok == '1'
         run: |
@@ -79,6 +101,13 @@ jobs:
           notes="The whole RapidsSE repository (every branch and tag, full history) as of $(date -u '+%Y-%m-%d %H:%M UTC'), from $UPSTREAM. Restore: \`${join}git clone rapidsse.bundle rapidsse\`."
           if ! gh release view backup -R "$GITHUB_REPOSITORY" > /dev/null 2>&1; then
             run gh release create backup -R "$GITHUB_REPOSITORY" --target mirror-sync --title "Backup: the whole repository in one file" --notes "$notes" --latest=false
+          fi
+          if [ -f rapidsse-lfs.tar ]; then
+            if [ "$(stat -c %s rapidsse-lfs.tar)" -ge 2000000000 ]; then
+              split -b 1900m -d rapidsse-lfs.tar rapidsse-lfs.tar.part && rm rapidsse-lfs.tar
+            fi
+            files="$files $(ls rapidsse-lfs.tar*)"
+            notes="$notes LFS objects (build tarballs, jars, ...): \`rapidsse-lfs.tar\` (join parts with cat first); \`tar -xf rapidsse-lfs.tar -C rapidsse/.git && git -C rapidsse lfs checkout\`."
           fi
           run gh release upload backup $files -R "$GITHUB_REPOSITORY" --clobber
           run gh release edit backup -R "$GITHUB_REPOSITORY" --notes "$notes"
